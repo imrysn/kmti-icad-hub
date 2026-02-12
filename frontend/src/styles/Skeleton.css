@@ -1,0 +1,124 @@
+/* Skeleton Components */
+.skeleton-container {
+    pointer-events: none;
+    border: 1px solid var(--border-color);
+    background: var(--bg-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+}
+
+.skeleton-title {
+    height: 28px;
+    width: 70%;
+}
+
+.skeleton-text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.skeleton-line {
+    height: 16px;
+    width: 100%;
+    /* Default width */
+}
+
+.skeleton-line.w-90 {
+    width: 90%;
+}
+
+.skeleton-line.w-85 {
+    width: 85%;
+}
+
+.skeleton-line.w-60 {
+    width: 60%;
+}
+
+.skeleton-btn {
+    height: 40px;
+    width: 140px;
+    border-radius: 6px;
+}
+
+/* Assistant Search Result Skeleton */
+.skeleton-result-card {
+    border-left: 4px solid #444;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.skeleton-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.skeleton-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.skeleton-source {
+    width: 120px;
+    height: 14px;
+}
+
+.skeleton-content-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.skeleton-chips-row {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skeleton-chip {
+    width: 100px;
+    height: 32px;
+    border-radius: 20px;
+}
+
+/* Admin Stat Card Skeleton */
+.skeleton-stat-card {
+    background: #1e293b;
+    /* Slate-800 */
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.skeleton-stat-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.skeleton-stat-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+}
+
+.skeleton-stat-value {
+    width: 60px;
+    height: 36px;
+}

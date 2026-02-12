@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 18ca2cc5b8a6e62b253c158e750db13f550d2d99 imrysn <imrays23@gmail.com> 1770364062 +0800	commit (initial): gitignore
+18ca2cc5b8a6e62b253c158e750db13f550d2d99 0000000000000000000000000000000000000000 imrysn <imrays23@gmail.com> 1770364134 +0800	Branch: renamed refs/heads/main to refs/heads/main
+18ca2cc5b8a6e62b253c158e750db13f550d2d99 18ca2cc5b8a6e62b253c158e750db13f550d2d99 imrysn <imrays23@gmail.com> 1770364134 +0800	Branch: renamed refs/heads/main to refs/heads/main
+18ca2cc5b8a6e62b253c158e750db13f550d2d99 c44127894bb65139ed0ebca8ca0412c664be3a0e imrysn <imrays23@gmail.com> 1770364158 +0800	commit: SRP
+c44127894bb65139ed0ebca8ca0412c664be3a0e 8d6e731f05877024c550b75a473cb38196aed258 imrysn <imrays23@gmail.com> 1770714774 +0800	commit: feat: establish initial frontend application structure including user modes, authentication, and course management.
+8d6e731f05877024c550b75a473cb38196aed258 39e733ab89b850346c996f2c21b44f71d0425976 imrysn <imrays23@gmail.com> 1770866644 +0800	commit: LOGIN

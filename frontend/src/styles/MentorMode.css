@@ -1,0 +1,274 @@
+.video-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Skeleton Loader Specifics */
+.skeleton-avatar {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+}
+
+.skeleton-header-title {
+    width: 200px;
+    height: 40px;
+    margin: 0 auto 0.5rem;
+}
+
+.skeleton-subtitle {
+    width: 150px;
+    height: 20px;
+    margin: 0 auto;
+}
+
+.mentor-mode {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mentor-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.mentor-header h1 {
+    margin: 0.5rem 0;
+    font-size: 2.5rem;
+    color: var(--text-main);
+}
+
+.mentor-header p {
+    color: var(--text-muted);
+}
+
+.course-selection h2 {
+    color: #cbd5e1;
+    /* Keep distinct or map to var */
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.course-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.course-card:hover {
+    border-color: var(--primary-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+}
+
+.course-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-main);
+}
+
+.course-card p {
+    color: var(--text-muted);
+    flex: 1;
+}
+
+.course-progress {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.lesson-content {
+    background: #f8fafc;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.step-indicator {
+    color: var(--text-main);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.step-indicator::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+}
+
+.lesson-text h3 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+}
+
+.lesson-text p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #cbd5e1;
+    /* Slightly brighter than muted */
+    max-width: 65ch;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+    background: #ffffff;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-dim);
+    color: var(--text-main);
+    background: #f1f5f9;
+}
+
+.btn-show-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--primary);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-show-me:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.active-test {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: rgba(15, 23, 42, 0.6);
+    border-left: 4px solid var(--success);
+    border-radius: 0 8px 8px 0;
+}
+
+.active-test h4 {
+    color: var(--success);
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+}
+
+.video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.video-modal-content {
+    background: var(--bg-surface);
+    padding: 2rem;
+    border-radius: 16px;
+    max-width: 900px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.video-modal-content h3 {
+    margin-top: 0;
+    color: var(--text-main);
+}
+
+.video-modal-content video {
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 8px;
+    background: black;
+}
+
+.video-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-main);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}

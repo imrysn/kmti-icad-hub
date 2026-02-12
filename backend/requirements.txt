@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+langchain
+
+chromadb
+pandas
+openpyxl
+pydantic
+sqlalchemy
+python-multipart
+python-dotenv
+pymysql
+bcrypt
+python-jose[cryptography]
+
+
