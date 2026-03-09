@@ -6,8 +6,8 @@ class CourseService:
     def get_available_courses(self) -> CourseList:
         # In a real app, this might fetch from a DB
         courses = [
-            Course(id="1", title="Introduction to iCAD", description="Basic functions and tools."),
-            Course(id="2", title="Advanced Surfacing", description="Complex 3D modeling techniques.")
+            Course(id="1", title="iCAD Operation Manual 3D Modeling", description="Basic functions and tools."),
+            Course(id="2", title="iCAC Operation Manual 2D Drawing ", description="Complex 3D modeling techniques.")
         ]
         return CourseList(courses=courses)
 

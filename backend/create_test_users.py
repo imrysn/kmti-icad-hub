@@ -56,7 +56,7 @@ def create_test_users():
         existing = db.query(User).filter(User.username == user_data["username"]).first()
         
         if existing:
-            print(f"⚠️  User '{user_data['username']}' already exists, skipping...")
+            print(f"[INFO] User '{user_data['username']}' already exists, skipping...")
             continue
         
         # Create new user
@@ -71,7 +71,7 @@ def create_test_users():
         )
         
         db.add(new_user)
-        print(f"✅ Created user: {user_data['username']} (Role: {user_data['role']})")
+        print(f"[SUCCESS] Created user: {user_data['username']} (Role: {user_data['role']})")
     
     db.commit()
     db.close()

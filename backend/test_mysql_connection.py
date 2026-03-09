@@ -26,28 +26,28 @@ def test_connection():
     try:
         # Test connection
         with engine.connect() as conn:
-            print("\n✅ Connection successful!")
+            print("\n[SUCCESS] Connection successful!")
             
             # Create tables
             print("\nCreating tables...")
             Base.metadata.create_all(bind=engine)
-            print("✅ Tables created successfully!")
+            print("[SUCCESS] Tables created successfully!")
             
             # List tables
             from sqlalchemy import inspect
             inspector = inspect(engine)
             tables = inspector.get_table_names()
             
-            print(f"\n📊 Database Tables ({len(tables)}):")
+            print(f"\n[INFO] Database Tables ({len(tables)}):")
             for table in tables:
                 print(f"   - {table}")
             
             print("\n" + "="*60)
-            print("✅ MySQL migration successful! Ready to proceed.")
+            print("[SUCCESS] Migration successful! Ready to proceed.")
             print("="*60)
             
     except Exception as e:
-        print(f"\n❌ Connection failed: {e}")
+        print(f"\n[ERROR] Connection failed: {e}")
         print("\nTroubleshooting:")
         print("1. Verify MySQL server is running on KMTI-NAS")
         print("2. Check credentials in .env file")
