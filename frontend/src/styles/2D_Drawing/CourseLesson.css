@@ -1,0 +1,95 @@
+/* Copy of CourseLesson.css for 2D Drawing */
+@import '../MentorMode.css';
+
+.course-lesson-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lesson-intro {
+  margin-bottom: 2rem;
+}
+
+.lesson-intro h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.75rem;
+  color: var(--text-main);
+  margin: 0 0 1rem 0;
+}
+
+.lesson-intro-icon {
+  color: var(--primary);
+}
+
+.lesson-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.single-card {
+  grid-template-columns: 1fr;
+}
+
+.lesson-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.lesson-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.nav-button:hover:not(:disabled) {
+  background: var(--bg-hover);
+}
+
+.nav-button.next {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.nav-button.next:hover {
+  background: var(--primary-dark);
+}
+
+/* Add more shared styles as needed */

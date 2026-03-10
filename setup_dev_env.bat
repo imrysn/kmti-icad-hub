@@ -64,6 +64,14 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo.
+echo Initializing Database...
+python init_db.py
+if %ERRORLEVEL% neq 0 (
+    echo Database initialization failed.
+    exit /b 1
+)
+
+echo.
 echo Setup complete!
 echo To start the backend, run: run_backend.bat
 pause
