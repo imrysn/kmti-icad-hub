@@ -54,7 +54,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
                 <span className="step-label">Select <strong>Arrange Machine Part</strong> from the icon menu.</span>
               </div>
               <div className="step-content">
-                <div className="image-wrapper-row" style={{ gap: '2rem' }}>
+                <div className="image-wrapper-row image-wrapper-row--wide">
                   <div className="image-container-with-label">
                     <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" />
                     <span className="image-sub-label">Icon Menu</span>
@@ -74,7 +74,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
               </div>
               <div className="step-content">
                 <div className="centered-image-wrapper">
-                  <img src={listTools} alt="List of available tools" className="software-screenshot" style={{ maxWidth: '100%' }} />
+                  <img src={listTools} alt="List of available tools" className="software-screenshot screenshot-full" />
                 </div>
               </div>
             </div>
@@ -90,7 +90,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
               <div className="step-header">
                 <span className="step-number">4</span>
                 <span className="step-label">
-                  Click the location of the hole on the solid entity <MousePointer2 size={16} style={{ display: 'inline', verticalAlign: 'middle' }} /> to create the cut.
+                  Click the location of the hole on the solid entity <MousePointer2 size={16} className="icon-inline" /> to create the cut.
                 </span>
               </div>
               <div className="step-content">
@@ -98,7 +98,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
                   <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-large" />
                 </div>
 
-                <div className="info-box-premium" style={{ marginTop: '2rem' }}>
+                <div className="info-box-premium info-box-premium--spaced">
                   <div className="info-box-header">
                     <div className="shortcut-badge">無変換 + Q</div>
                     <span>Shortcut Key</span>
@@ -108,15 +108,15 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
               </div>
             </div>
 
-            <div className="special-note-container" style={{ marginTop: '3rem' }}>
+            <div className="special-note-container special-note-container--spaced">
               <div className="note-banner">
                 <Info size={20} />
                 <span>IMPORTANT NOTE</span>
               </div>
               <div className="note-content">
                 <p><strong>Tapped holes</strong> must be painted <strong>green</strong> to indicate that those are threaded and to distinguish it from drill holes.</p>
-                <div className="centered-image-wrapper" style={{ marginTop: '1.5rem' }}>
-                  <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot" style={{ maxWidth: '100%' }} />
+                <div className="centered-image-wrapper">
+                  <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-full" />
                 </div>
               </div>
             </div>

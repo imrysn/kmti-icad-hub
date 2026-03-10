@@ -6,6 +6,7 @@ import AssistantMode from './views/AssistantMode';
 import { AdminMode } from './views/AdminMode';
 import { useAuth } from './hooks/useAuth';
 import { AppMode } from './types';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import './styles/App.css';
 
@@ -17,7 +18,6 @@ function App() {
   useEffect(() => {
     if (user && user.role) {
       const role = user.role.toLowerCase().trim();
-      console.log('App: Setting mode for role:', role);
 
       if (role === 'admin') {
         setMode('admin');
@@ -88,9 +88,11 @@ function App() {
 
       {/* Render Selected Mode */}
       <div className="app-content">
-        {mode === 'mentor' && <MentorMode />}
-        {mode === 'assistant' && <AssistantMode />}
-        {mode === 'admin' && <AdminMode />}
+        <ErrorBoundary>
+          {mode === 'mentor' && <MentorMode />}
+          {mode === 'assistant' && <AssistantMode />}
+          {mode === 'admin' && <AdminMode />}
+        </ErrorBoundary>
       </div>
     </div>
   );

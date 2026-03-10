@@ -1,33 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Database, Activity } from 'lucide-react';
+import { Users, Database, Activity, RefreshCw } from 'lucide-react';
 import { authService, User } from '../services/authService';
 import '../styles/AdminMode.css';
 
-interface UserListItem {
-    id: number;
-    username: string;
-    email: string;
-    full_name: string;
-    role: string;
-    is_active: boolean;
-    last_login: string;
-}
-
 export const AdminMode: React.FC = () => {
-    const [users, setUsers] = useState<UserListItem[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [loadingUsers, setLoadingUsers] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchUsers = async () => {
+        setLoadingUsers(true);
+        setError(null);
+        try {
+            const [me, allUsers] = await Promise.all([
+                authService.getCurrentUser(),
+                authService.getUsers(),
+            ]);
+            setCurrentUser(me);
+            setUsers(allUsers);
+        } catch (err: any) {
+            setError(err.response?.data?.detail || 'Failed to load users.');
+        } finally {
+            setLoadingUsers(false);
+        }
+    };
 
     useEffect(() => {
-        // Determine current user
-        authService.getCurrentUser().then(setCurrentUser);
-
-        // Mock data for display
-        setUsers([
-            { id: 1, username: 'trainee', email: 'trainee@kmti.com', full_name: 'Test Trainee', role: 'trainee', is_active: true, last_login: '2023-10-27T10:00:00Z' },
-            { id: 2, username: 'employee', email: 'employee@kmti.com', full_name: 'Test Employee', role: 'employee', is_active: true, last_login: '2023-10-27T11:30:00Z' },
-            { id: 3, username: 'admin', email: 'admin@kmti.com', full_name: 'System Admin', role: 'admin', is_active: true, last_login: '2023-10-27T09:15:00Z' },
-        ]);
+        fetchUsers();
     }, []);
+
+    const handleToggleStatus = async (userId: number) => {
+        try {
+            const updated = await authService.toggleUserStatus(userId);
+            setUsers(prev =>
+                prev.map(u => u.id === updated.id ? { ...u, is_active: updated.is_active } : u)
+            );
+        } catch (err: any) {
+            setError(err.response?.data?.detail || 'Failed to update user status.');
+        }
+    };
+
+    const activeCount = users.filter(u => u.is_active).length;
 
     return (
         <div className="admin-mode">
@@ -42,15 +56,15 @@ export const AdminMode: React.FC = () => {
                         <Users size={24} color="#63b3ed" />
                         <h3>Total Users</h3>
                     </div>
-                    <p className="stat-value">{users.length}</p>
+                    <p className="stat-value">{loadingUsers ? '—' : users.length}</p>
                 </div>
 
                 <div className="stat-card">
                     <div className="stat-header">
                         <Database size={24} color="#68d391" />
-                        <h3>Knowledge Base</h3>
+                        <h3>Active Users</h3>
                     </div>
-                    <p className="stat-value">Active</p>
+                    <p className="stat-value">{loadingUsers ? '—' : activeCount}</p>
                 </div>
 
                 <div className="stat-card">
@@ -65,45 +79,64 @@ export const AdminMode: React.FC = () => {
             <section className="admin-section">
                 <div className="section-header">
                     <h2 className="section-title">User Management</h2>
-                    <button className="action-btn">
-                        Add User
+                    <button className="action-btn" onClick={fetchUsers} title="Refresh">
+                        <RefreshCw size={14} className="action-btn__icon" />
+                        Refresh
                     </button>
                 </div>
 
+                {error && (
+                    <div className="api-error api-error--spaced">
+                        {error}
+                    </div>
+                )}
+
                 <div className="trainee-table-container">
-                    <table className="trainee-table">
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Full Name</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map(u => (
-                                <tr key={u.id}>
-                                    <td>{u.username}</td>
-                                    <td>{u.full_name}</td>
-                                    <td>
-                                        <span className={`status-badge status-${u.role}`}>
-                                            {u.role}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span className={`status-badge ${u.is_active ? 'status-active' : 'status-inactive'}`}>
-                                            {u.is_active ? 'Active' : 'Inactive'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button className="btn-icon edit">Edit</button>
-                                        <button className="btn-icon delete">Disable</button>
-                                    </td>
+                    {loadingUsers ? (
+                        <p className="table-loading-msg">Loading users…</p>
+                    ) : (
+                        <table className="trainee-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {users.map(u => (
+                                    <tr key={u.id}>
+                                        <td>{u.username}</td>
+                                        <td>{u.full_name}</td>
+                                        <td>{u.email}</td>
+                                        <td>
+                                            <span className={`status-badge status-${u.role}`}>
+                                                {u.role}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className={`status-badge ${u.is_active ? 'status-active' : 'status-inactive'}`}>
+                                                {u.is_active ? 'Active' : 'Inactive'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button
+                                                className={`btn-icon ${u.is_active ? 'delete' : 'edit'}`}
+                                                onClick={() => handleToggleStatus(u.id)}
+                                                disabled={u.id === currentUser?.id}
+                                                title={u.id === currentUser?.id ? 'Cannot disable your own account' : undefined}
+                                            >
+                                                {u.is_active ? 'Disable' : 'Enable'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </section>
         </div>

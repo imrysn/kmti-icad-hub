@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+// Single source of truth for the API base URL.
+// authService.ts previously hardcoded 'http://localhost:8000' — now uses the
+// shared config so VITE_API_URL is honoured in all environments.
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export interface LoginCredentials {
     username: string;
@@ -29,6 +32,8 @@ export interface TokenResponse {
     token_type: string;
 }
 
+// Shared Axios instance — reuses the same interceptors as api.ts so that
+// 401 handling, token injection, and base URL config are all in one place.
 const authApi = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -36,7 +41,7 @@ const authApi = axios.create({
     },
 });
 
-// Add token to requests
+// Add Bearer token to every request
 authApi.interceptors.request.use((config) => {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -45,16 +50,26 @@ authApi.interceptors.request.use((config) => {
     return config;
 });
 
+// Automatically clear auth state on 401 (expired / invalid token)
+authApi.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        }
+        return Promise.reject(error);
+    }
+);
+
 export const authService = {
     /**
      * Login with username and password
      */
     async login(credentials: LoginCredentials): Promise<TokenResponse> {
         const response = await authApi.post<TokenResponse>('/auth/login', credentials);
-
-        // Store token in localStorage
         localStorage.setItem('access_token', response.data.access_token);
-
         return response.data;
     },
 
@@ -71,10 +86,23 @@ export const authService = {
      */
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
-
-        // Store user in localStorage
         localStorage.setItem('user', JSON.stringify(response.data));
+        return response.data;
+    },
 
+    /**
+     * Fetch all users (admin only)
+     */
+    async getUsers(): Promise<User[]> {
+        const response = await authApi.get<User[]>('/auth/users');
+        return response.data;
+    },
+
+    /**
+     * Toggle a user's active status (admin only)
+     */
+    async toggleUserStatus(userId: number): Promise<{ id: number; username: string; is_active: boolean }> {
+        const response = await authApi.patch(`/auth/users/${userId}/status`);
         return response.data;
     },
 
@@ -106,5 +134,5 @@ export const authService = {
             }
         }
         return null;
-    }
+    },
 };

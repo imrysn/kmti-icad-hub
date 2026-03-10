@@ -58,22 +58,8 @@ async def get_current_user(
     
     return user
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
-    """
-    Ensure the current user is active.
-    
-    Args:
-        current_user: User from get_current_user dependency
-        
-    Returns:
-        Active user
-        
-    Raises:
-        HTTPException: If user is inactive
-    """
-    if not current_user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
+# get_current_active_user is intentionally removed — get_current_user already
+# validates is_active. Use get_current_user directly everywhere.
 
 def require_role(required_role: str):
     """

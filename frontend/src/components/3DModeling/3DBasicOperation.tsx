@@ -457,7 +457,7 @@ const BasicOperation2: React.FC = () => {
               <p>Same as mirror tool but makes a mirror duplicate of the entity.</p>
             </div>
             <div className="instruction-step"><img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-icon" /></div>
-            <div className="result-preview" style={{ marginTop: '2rem' }}><span className="preview-label">RESULT</span><img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot preview-img" /></div>
+            <div className="result-preview result-preview--spaced"><span className="preview-label">RESULT</span><img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot preview-img" /></div>
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
@@ -530,7 +530,7 @@ const BasicOperation3: React.FC = () => {
                   <img src={sketch1} alt="Sketch Example" className="software-screenshot screenshot-small" />
                   <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-icon" />
                 </div>
-                <div className="flex-col-center" style={{ marginLeft: 'auto' }}>
+                <div className="flex-col-right">
                   <img src={sketchP1} alt="Sketch P1" className="software-screenshot screenshot-small" />
                   <ArrowDown size={32} color="#d32f2f" strokeWidth={2.5} />
                 </div>
@@ -539,7 +539,7 @@ const BasicOperation3: React.FC = () => {
             {/* EXTRUDE / REVOLVE Header */}
             <div className="section-divider">
               <div className="card-header card-sub-header"><h4>EXTRUDE / REVOLVE</h4></div>
-              <div className="instruction-box" style={{ marginTop: '0.75rem' }}>
+              <div className="instruction-box instruction-box--tight">
                 <p>Tools used to create solids from sketch in the 3D space.</p>
               </div>
               <div className="instruction-step">
@@ -548,14 +548,14 @@ const BasicOperation3: React.FC = () => {
             </div>
             {/* EXTRUDE */}
             <div className="section-divider">
-              <div className="step-header" style={{ marginBottom: '1rem' }}>
+              <div className="step-header step-header--spaced">
                 <span className="step-label step-label-primary">EXTRUDE</span>
               </div>
               <div className="flex-row">
                 <div className="flex-1">
                   <div className="instruction-step">
                     <div className="step-header"><span className="step-number">1</span><span className="step-label">Select Extrude from the icon menu.</span></div>
-                    <div className="flex-row" style={{ marginTop: '0.75rem', paddingLeft: '2.5rem', flexWrap: 'wrap' }}>
+                    <div className="flex-row-tags">
                       <div className="text-center">
                         <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" />
                         <p className="img-caption">EXTRUSION (ONE SIDE)</p>
@@ -568,7 +568,7 @@ const BasicOperation3: React.FC = () => {
                   </div>
                   <div className="instruction-step">
                     <div className="step-header"><span className="step-number">2</span><span className="step-label">Select the perimeter of the sketch to be extruded &gt; GO</span></div>
-                    <p style={{ paddingLeft: '2.5rem' }}>*A hatch will appear indicating the specified area to be extruded.</p>
+                    <p className="p-flush">*A hatch will appear indicating the specified area to be extruded.</p>
                     <div className="image-wrapper"><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" /></div>
                   </div>
                   <div className="instruction-step">
@@ -587,7 +587,7 @@ const BasicOperation3: React.FC = () => {
             </div>
             {/* REVOLVE */}
             <div className="section-divider">
-              <div className="step-header" style={{ marginBottom: '1rem' }}>
+              <div className="step-header step-header--spaced">
                 <span className="step-label step-label-primary">REVOLVE</span>
               </div>
               <div className="flex-row">
@@ -602,14 +602,14 @@ const BasicOperation3: React.FC = () => {
                   </div>
                   <div className="instruction-step">
                     <div className="step-header"><span className="step-number">3</span><span className="step-label">Select the axis of rotation (pick points or edge) &gt; GO</span></div>
-                    <p style={{ paddingLeft: '2.5rem' }}>A hatch will appear indicating the specified area to be revolved.</p>
+                    <p className="p-flush">A hatch will appear indicating the specified area to be revolved.</p>
                     <div className="image-wrapper"><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" /></div>
                   </div>
                 </div>
-                <div className="flex-col-center flex-no-shrink" style={{ gap: '0.5rem', alignItems: 'flex-start' }}>
+                <div className="flex-col-start">
                   <div className="flex-col-center">
                     <img src={revolveP1} alt="Revolve P1" className="software-screenshot screenshot-small" />
-                    <ArrowDown size={28} color="#d32f2f" strokeWidth={2.5} style={{ marginTop: '3.25rem' }} />
+                    <ArrowDown size={28} color="#d32f2f" strokeWidth={2.5} className="arrow-down-offset" />
                   </div>
                   <div className="flex-row-center">
                     <img src={revolveP2} alt="Revolve P2" className="software-screenshot screenshot-small" />
@@ -630,31 +630,31 @@ const BasicOperation3: React.FC = () => {
           <div className="lesson-card tab-content">
             <div className="card-header"><h4>SHOW / HIDE</h4></div>
             <div className="instruction-step">
-              <p className="p-flush" style={{ marginTop: '0.5rem' }}>Tools used to switch between displaying and hiding entities.</p>
+              <p className="p-flush p-mt-sm">Tools used to switch between displaying and hiding entities.</p>
               <div className="image-wrapper-flush"><img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" /></div>
             </div>
-            <div className="instruction-step" style={{ marginTop: '1rem' }}>
+            <div className="instruction-step instruction-step--spaced">
               <div className="step-header"><span className="step-label step-label-blue">SHOW / HIDE ENTITY</span></div>
               <p className="p-flush">1. Select <strong>Show/Hide</strong> from the icon menu.</p>
-              <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-icon" style={{ marginLeft: 0, marginBottom: '0.5rem' }} />
+              <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-icon--flush" />
               <p className="p-flush">2. Select the entities for showing/hiding &gt; GO</p>
-              <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: 0 }} />
+              <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--flush" />
             </div>
             <div className="instruction-step section-divider-sm">
               <div className="step-header"><span className="step-label step-label-blue">SHOW / HIDE DRAFTING ENTITY</span></div>
               <p className="p-flush">1. Select <strong>Show/Hide Drafting Entity</strong> from the icon menu.</p>
-              <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-icon" style={{ marginLeft: 0, marginBottom: '0.5rem' }} />
+              <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-icon--flush" />
               <p className="p-flush">2. Right-click to show/hide all drafting entities. <br />Drafting Entities includes:</p>
-              <div className="image-wrapper-flush"><img src={draftingEntitiesTable} alt="Drafting Entities Diagram" className="software-screenshot screenshot-wide" style={{ marginTop: '0.5rem' }} /></div>
+              <div className="image-wrapper-flush image-wrapper-flush--mb"><img src={draftingEntitiesTable} alt="Drafting Entities Diagram" className="software-screenshot screenshot-wide img-mt-sm" /></div>
             </div>
             <div className="instruction-step section-divider-sm">
               <div className="step-header"><span className="step-label step-label-blue">HIDE UNSELECTED ENTITY</span></div>
               <div className="flex-row">
                 <div className="flex-1">
                   <p className="p-flush">1. Select <strong>Hide Unselected Entity</strong> from the icon menu.</p>
-                  <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon" style={{ marginLeft: 0, marginBottom: '0.5rem' }} />
+                  <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" />
                   <p className="p-flush">2. Select all entities to be retained &gt; GO <br />All unselected will be hidden.</p>
-                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: 0 }} />
+                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--flush" />
                 </div>
                 <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium flex-no-shrink" />
               </div>
@@ -684,15 +684,15 @@ const BasicOperation3: React.FC = () => {
               <p>Specify the additional length of stretch on the item entry. Press Enter.</p>
               <div className="image-wrapper"><img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" /></div>
             </div>
-            <div className="image-wrapper" style={{ paddingLeft: 0, marginTop: '0.75rem' }}>
+            <div className="image-wrapper image-wrapper--flush-top">
               <img src={stretch1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" />
             </div>
             <div className="instruction-step section-divider-sm">
               <div className="step-header"><span className="step-label step-label-primary">OR</span></div>
-              <p style={{ paddingLeft: 0 }}>Select face &gt; Drag &gt; Left-click on the 3D Space.</p>
-              <p style={{ paddingLeft: 0 }}>A linear scale will appear on the 3D space.<br />Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</p>
+              <p className="p-zero-pad">Select face &gt; Drag &gt; Left-click on the 3D Space.</p>
+              <p className="p-zero-pad">A linear scale will appear on the 3D space.<br />Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</p>
             </div>
-            <div className="image-wrapper" style={{ paddingLeft: 0, marginTop: '0.75rem' }}>
+            <div className="image-wrapper image-wrapper--flush-top">
               <img src={stretch2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" />
             </div>
             <div className="lesson-navigation">
@@ -718,9 +718,9 @@ const BasicOperation3: React.FC = () => {
             <div className="instruction-step">
               <div className="step-header"><span className="step-number">3</span><span className="step-label">Scale Up/Down</span></div>
               <p>Using resize allows the user to scale up or scale down the size of the solid entry. <br />Specifiy the scale on the item entry &gt; Left click on the 3D Space.</p>
-              <div className="flex-row-center" style={{ flexWrap: 'wrap', gap: '5.5rem' }}>
-                <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot flex-no-shrink" style={{ maxWidth: '150px' }} />
-                <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot flex-no-shrink" style={{ maxWidth: '450px' }} />
+              <div className="flex-row-center--wide">
+                <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot flex-no-shrink screenshot-sm-150" />
+                <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot flex-no-shrink screenshot-md-450" />
               </div>
             </div>
             <div className="lesson-navigation">
@@ -754,7 +754,7 @@ const BasicOperation4: React.FC = () => {
           <div className="lesson-card tab-content">
             <div className="card-header"><h4>CREATING SHAPE STEELS</h4></div>
             <div className="instruction-step">
-              <div className="image-wrapper-flush" style={{ marginBottom: '1rem' }}>
+              <div className="image-wrapper-flush image-wrapper-flush--mb">
                 <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot screenshot-medium" />
               </div>
               <p><strong>Shape Steels includes:</strong></p>
@@ -773,7 +773,7 @@ const BasicOperation4: React.FC = () => {
             <div className="instruction-step">
               <div className="step-header"><span className="step-number">3</span><span className="step-label">Set Origin Position</span></div>
               <p>In the Key Entry Area, enter the coordinates for the position (origin point). For example, <span className="code-inline">0 0 0</span>.</p>
-              <div className="flex-row-center" style={{ flexWrap: 'wrap' }}>
+              <div className="flex-row-center--wrap">
                 <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" />
                 <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-medium flex-no-shrink" />
               </div>

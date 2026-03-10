@@ -10,8 +10,6 @@ This implementation:
 import os
 from typing import List, Dict
 import chromadb
-from chromadb.config import Settings
-from chromadb.utils import embedding_functions
 
 class RAGEngine:
     def __init__(self, persist_directory: str = "./vector_db"):
@@ -23,14 +21,11 @@ class RAGEngine:
         """
         self.persist_directory = persist_directory
         
-        # Initialize ChromaDB client with persistent storage
-        self.client = chromadb.Client(Settings(
-            persist_directory=persist_directory,
-            anonymized_telemetry=False
-        ))
+        # Use PersistentClient (replaces the removed chromadb.Client(Settings(...)))
+        self.client = chromadb.PersistentClient(path=persist_directory)
         
         # Use default embedding function (all-MiniLM-L6-v2)
-        self.embedding_function = embedding_functions.DefaultEmbeddingFunction()
+        self.embedding_function = chromadb.utils.embedding_functions.DefaultEmbeddingFunction()
         
         # Get or create collection
         self.collection = self.client.get_or_create_collection(
@@ -53,7 +48,8 @@ class RAGEngine:
         texts = [doc['text'] for doc in documents]
         metadatas = [doc.get('metadata', {}) for doc in documents]
         
-        self.collection.add(
+        # Use upsert so re-running ingestion doesn't crash on duplicate IDs
+        self.collection.upsert(
             ids=ids,
             documents=texts,
             metadatas=metadatas

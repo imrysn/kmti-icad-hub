@@ -197,18 +197,18 @@ export const LoginView: React.FC = () => {
             {showForgotPasswordModal && (
                 <div className="modal-overlay" onClick={handleForgotPasswordCancel}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h3>Reset Password</h3>
-                        <p>Enter your email address to receive password reset instructions.</p>
+                        {forgotPasswordMessage && (
+                            <p className="modal-success-msg">{forgotPasswordMessage}</p>
+                        )}
+                        <label htmlFor="forgot-email" className="modal-field-label">Email or Username</label>
                         <input
+                            id="forgot-email"
                             type="text"
                             value={forgotPasswordEmail}
                             onChange={(e) => setForgotPasswordEmail(e.target.value)}
                             placeholder="Email or Username"
                             disabled={isForgotPasswordSubmitting}
                         />
-                        {forgotPasswordMessage && (
-                            <p style={{ color: 'green', fontSize: '0.9rem' }}>{forgotPasswordMessage}</p>
-                        )}
                         <div className="modal-buttons">
                             <button
                                 onClick={handleForgotPasswordCancel}
