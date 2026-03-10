@@ -1,6 +1,6 @@
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
 from dotenv import load_dotenv
@@ -43,6 +43,13 @@ else:
         SQLALCHEMY_DATABASE_URL, 
         connect_args={"check_same_thread": False}
     )
+
+    # Enable WAL journal mode for better concurrency under multiple readers/writers
+    @event.listens_for(engine, "connect")
+    def set_sqlite_pragma(dbapi_connection, _connection_record):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.close()
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

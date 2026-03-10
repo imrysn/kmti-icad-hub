@@ -5,7 +5,7 @@ export interface Course {
 }
 
 export interface MediaAsset {
-    media_type: string;  // "video" | "image" | "3d_model"
+    media_type: 'video' | 'image' | '3d_model';
     media_url: string;
     timestamp_start?: number;
     timestamp_end?: number;

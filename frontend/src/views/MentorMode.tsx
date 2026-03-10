@@ -281,7 +281,7 @@ const MentorMode: React.FC = () => {
 
             <div className="sidebar-section">
               <div className="sidebar-header-row">
-                <div className="sidebar-title" onClick={() => setSelectedCourse(null)} style={{ cursor: 'pointer' }}>
+                <div className="sidebar-title sidebar-title--clickable" onClick={() => setSelectedCourse(null)}>
                   <ChevronDown size={16} /> COURSE OVERVIEW
                 </div>
                 <button className="sidebar-search-btn">
@@ -292,8 +292,8 @@ const MentorMode: React.FC = () => {
 
             <div className="lesson-list">
               {is2DDrawingCourse ? (
-                <div style={{ padding: '2rem 1.5rem', color: '#94a3b8', fontSize: '0.9rem', textAlign: 'center' }}>
-                  <p style={{ margin: 0 }}>Content coming soon.</p>
+                <div className="lesson-list__coming-soon">
+                  <p>Content coming soon.</p>
                 </div>
               ) : (
                 ICAD_3D_LESSONS.map((lesson) => ( // cspell:disable-line
@@ -312,7 +312,7 @@ const MentorMode: React.FC = () => {
                         {lesson.children ? (
                           expandedIds.has(lesson.id) ? <ChevronDown size={16} /> : <ChevronRight size={16} />
                         ) : (
-                          <Menu size={16} style={{ opacity: 0.6 }} />
+                          <Menu size={16} className="lesson-icon--dim" />
                         )}
                         <span>{lesson.title}</span>
                       </div>
@@ -327,7 +327,7 @@ const MentorMode: React.FC = () => {
                             className={`sub-lesson-item ${activeLessonId === child.id ? 'active' : ''}`}
                             onClick={() => setActiveLessonId(child.id)}
                           >
-                            <Menu size={14} style={{ opacity: 0.5, marginRight: '0.75rem' }} />
+                             <Menu size={14} className="sub-lesson-icon" />
                             {child.title}
                           </div>
                         ))}
@@ -357,42 +357,54 @@ const MentorMode: React.FC = () => {
           </div>
 
           <div className="lesson-content-body">
-            {is2DDrawingCourse ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', gap: '1rem', color: '#94a3b8', textAlign: 'center' }}>
+          {/* ── Lesson Registry ──────────────────────────────────────────────────── */}
+          {/* To add a new lesson: just add an entry to LESSON_REGISTRY in MentorMode.tsx */}
+          {(() => {
+            // Registry: maps a lesson id (or id prefix) → component factory
+            const registry: Record<string, () => React.ReactNode> = {
+              'interface':    () => <IcadInterfaceLesson />,
+              'toolbars':     () => <ToolBarsLesson />,
+              'origin':       () => <div className="origin-lesson-container"><OriginLesson /></div>,
+              'hole-details': () => <HoleDetailsLesson onNextLesson={goToNextLesson} />,
+            };
+
+            // Sub-lesson prefixes (basic-op-1, 2d-3d-2, etc.)
+            const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
+              'basic-op': (id) => <BasicOperationLesson subLessonId={id} />,
+              '2d-3d':    (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+            };
+
+            // Exact match first
+            if (registry[activeLessonId]) return registry[activeLessonId]();
+
+            // Prefix match for sub-lessons (e.g. 'basic-op-3' → 'basic-op')
+            const prefix = Object.keys(prefixRegistry).find(p => activeLessonId.startsWith(p + '-'));
+            if (prefix) return prefixRegistry[prefix](activeLessonId);
+
+            // 2D Course placeholder
+            if (is2DDrawingCourse) return (
+              <div className="content-2d-placeholder">
                 <BookOpen size={48} strokeWidth={1.5} />
-                <h3 style={{ margin: 0, color: '#475569', fontWeight: 700, fontSize: '1.35rem' }}>
-                  iCAC Operation Manual 2D Drawing
-                </h3>
-                <p style={{ margin: 0, fontSize: '1rem' }}>Content will be available soon.</p>
+                <h3 className="content-2d-placeholder__title">iCAC Operation Manual 2D Drawing</h3>
+                <p className="content-2d-placeholder__text">Content will be available soon.</p>
               </div>
-            ) : activeLessonId === 'interface' ? (
-              <IcadInterfaceLesson />
-            ) : activeLessonId === 'toolbars' ? (
-              <ToolBarsLesson />
-            ) : activeLessonId === 'origin' ? (
-              <div className="origin-lesson-container">
-                <OriginLesson />
-              </div>
-            ) : (activeLessonId === 'basic-op-1' || activeLessonId === 'basic-op-2' || activeLessonId === 'basic-op-3' || activeLessonId === 'basic-op-4') ? (
-              <BasicOperationLesson subLessonId={activeLessonId} />
-            ) : (activeLessonId === '2d-3d-1' || activeLessonId === '2d-3d-2' || activeLessonId === '2d-3d-3') ? (
-              <TwoDTo3DLesson subLessonId={activeLessonId} onNextLesson={goToNextLesson} />
-            ) : activeLessonId === 'hole-details' ? (
-              <HoleDetailsLesson onNextLesson={goToNextLesson} />
-            ) : (
+            );
+
+            // Fallback placeholder for unimplemented lessons
+            return (
               <div className="content-placeholder">
-                <Video size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
+                <Video size={48} className="content-placeholder__icon" />
                 <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
-                <p style={{ fontSize: '0.875rem', marginTop: '1rem' }}>
+                <p className="content-placeholder__note">
                   This area will host the instructional text, video demonstrations, and active testing prompts.
                 </p>
               </div>
-            )}
+            );
+          })()}
 
-            <div className="content-actions" style={{ marginTop: '3rem', display: 'flex', gap: '1rem' }}>
+            <div className="content-actions">
               <button
-                className="btn-primary"
-                style={{ padding: '0.85rem 2rem' }}
+                className="btn-primary next-lesson-btn"
                 onClick={goToNextLesson}
                 disabled={currentLessonIndex === allLessonIds.length - 1}
               >

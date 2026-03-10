@@ -19,8 +19,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     // Check authentication status on mount
     useEffect(() => {
-        const checkAuth = async () => {
-            console.log('AuthProvider: checking authentication...');
+    const checkAuth = async () => {
             try {
                 if (authService.isAuthenticated()) {
                     const userData = await authService.getCurrentUser();
@@ -29,7 +28,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     setUser(null);
                 }
             } catch (err) {
-                console.error('AuthProvider: session check failed', err);
                 authService.logout();
                 setUser(null);
             } finally {
@@ -69,7 +67,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const logout = () => {
-        console.log('AuthProvider: logging out');
         authService.logout();
         setUser(null);
     };

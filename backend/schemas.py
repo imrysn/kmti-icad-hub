@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import List, Optional
+from pydantic import BaseModel, EmailStr, field_validator
+from typing import List, Literal, Optional
 
 class MediaAsset(BaseModel):
     """Multimedia asset linked to a search result"""
@@ -37,10 +37,32 @@ class CourseProgress(BaseModel):
 class UserCreate(BaseModel):
     """Schema for user registration"""
     username: str
-    email: str
+    email: EmailStr
     password: str
     full_name: str
-    role: str = "trainee"  # "trainee", "employee", "admin"
+    # Admin accounts can only be created directly in the DB — never via API
+    role: Literal["trainee", "employee"] = "trainee"
+
+    @field_validator("username")
+    @classmethod
+    def username_min_length(cls, v: str) -> str:
+        if len(v.strip()) < 3:
+            raise ValueError("Username must be at least 3 characters")
+        return v.strip()
+
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        return v
+
+    @field_validator("full_name")
+    @classmethod
+    def full_name_not_empty(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("Full name cannot be empty")
+        return v.strip()
 
 class UserLogin(BaseModel):
     """Schema for user login"""

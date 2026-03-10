@@ -17,7 +17,7 @@ const AssistantMode: React.FC = () => {
   const { query, setQuery, results, loading, performSearch } = useSearch();
   const [selectedMedia, setSelectedMedia] = React.useState<MediaAsset | null>(null);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       performSearch();
     }
@@ -37,12 +37,14 @@ const AssistantMode: React.FC = () => {
         <div className="search-icon">
           <Search size={24} />
         </div>
+        <label htmlFor="assistant-search" className="visually-hidden">Search knowledge base</label>
         <input
+          id="assistant-search"
           type="text"
           placeholder="Ask a technical question..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           autoFocus
           className="spotlight-input"
         />
@@ -57,7 +59,7 @@ const AssistantMode: React.FC = () => {
 
       <div className="results-container">
         {results.map((result, idx) => (
-          <div key={idx} className="result-card">
+          <div key={`${result.source}-${idx}`} className="result-card">
             <div className="result-header">
               <Zap size={18} color="#6366f1" />
               <span className="result-source">{result.source}</span>

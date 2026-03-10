@@ -542,3 +542,256 @@
 .screenshot-medium {
   max-width: 320px;
 }
+
+/* ── Classes migrated from inline styles in 3DModeling components ─────────── */
+
+/* image-wrapper-row gap variant (3DHoleDetails) */
+.image-wrapper-row--wide {
+  gap: 2rem;
+}
+
+/* Full-width screenshot override */
+.screenshot-full {
+  max-width: 100%;
+}
+
+/* Centered image block (e.g. tapped holes in 3DHoleDetails) */
+.centered-image-wrapper {
+  margin-top: 1.5rem;
+}
+
+/* Info/special note block spacing */
+.info-box-premium--spaced {
+  margin-top: 2rem;
+}
+
+.special-note-container--spaced {
+  margin-top: 3rem;
+}
+
+/* Alert box inner override (tighter padding for inline alerts) */
+.alert-box--compact {
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  margin-left: 2.5rem;
+}
+
+/* Step-number pill variant with horizontal padding */
+.step-number--pill {
+  width: auto;
+  padding: 0 8px;
+  border-radius: 14px;
+}
+
+/* flex-col-center with small gap */
+.flex-col-center--tight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Muted description text below an icon */
+.icon-description {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Inline icon (inside p tag — appears inline with text) */
+.icon-inline {
+  display: inline;
+  vertical-align: middle;
+}
+
+/* flex-col-center aligned left for image stacks */
+.flex-col-start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+/* flex-col-center pushing to right side */
+.flex-col-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* Arrow icon with extra top margin for visual alignment */
+.arrow-down-offset {
+  margin-top: 3.25rem;
+}
+
+/* Instruction step with margin-top */
+.instruction-step--spaced {
+  margin-top: 1rem;
+}
+
+/* instruction-box with tight top margin */
+.instruction-box--tight {
+  margin-top: 0.75rem;
+}
+
+/* step-header with margin-bottom */
+.step-header--spaced {
+  margin-bottom: 1rem;
+}
+
+/* flex-row with wrap + custom gap */
+.flex-row-tags {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding-left: 2.5rem;
+}
+
+/* result-preview with top margin */
+.result-preview--spaced {
+  margin-top: 2rem;
+}
+
+/* image-wrapper-flush with bottom margin */
+.image-wrapper-flush--mb {
+  margin-top: 0.5rem;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+/* flex-row-center with wrap */
+.flex-row-center--wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* flex-row-center with large gap (resize images) */
+.flex-row-center--wide {
+  display: flex;
+  align-items: center;
+  gap: 5.5rem;
+  flex-wrap: wrap;
+}
+
+/* max-width constraint for resize entry screenshot */
+.screenshot-sm-150 {
+  max-width: 150px;
+}
+
+/* max-width constraint for resize result screenshot */
+.screenshot-md-450 {
+  max-width: 450px;
+}
+
+/* image-wrapper with zero left padding + top spacing */
+.image-wrapper--flush-top {
+  padding-left: 0;
+  margin-top: 0.75rem;
+}
+
+/* 3DToolBars intro paragraph override */
+.intro-paragraph--muted {
+  margin-bottom: 2rem;
+  color: #64748b;
+}
+
+/* 3D2Dto3D slight bottom margin for intro text */
+.card-header--spaced {
+  margin-top: 2rem;
+}
+
+/* p with small top margin */
+.p-mt-sm {
+  margin-top: 0.75rem;
+}
+
+/* image-wrapper as flex-row with center justify */
+.image-wrapper--centered {
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Final residual classes ───────────────────────────────────────────────── */
+
+/* step-label with normal font weight (3D2Dto3D) */
+.step-label--normal {
+  font-weight: normal;
+}
+
+/* screenshot-click pushed right a little (vs. flush left) */
+.screenshot-click--indent {
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* image-wrapper-row with top margin variants */
+.image-wrapper-row--mt-sm {
+  margin-top: 0.5rem;
+}
+
+.image-wrapper-row--mt-md {
+  margin-top: 1rem;
+}
+
+.image-wrapper-row--mt-lg {
+  margin-top: 1.5rem;
+}
+
+/* image-wrapper-row with wrap */
+.image-wrapper-row--wrap {
+  flex-wrap: wrap;
+}
+
+/* Warning note text (red bold) */
+.note-text--warning {
+  color: #dc2626;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Step label keyword emphasis (red inline strong) */
+.keyword--danger {
+  color: #dc2626;
+}
+
+/* Paragraphs with zero padding-left (flush match for p-flush) */
+.p-zero-pad {
+  padding-left: 0;
+}
+
+/* screenshots with flush-left margin (icon/click images in show-hide) */
+.screenshot-icon--flush {
+  margin-left: 0;
+  margin-bottom: 0.5rem;
+}
+
+.screenshot-click--flush {
+  margin-left: 0;
+}
+
+/* image inside flush wrapper with top margin */
+.img-mt-sm {
+  margin-top: 0.5rem;
+}
+
+/* p with both margins reset */
+.p-reset {
+  margin: 0;
+}
+
+/* Small font-size text inside compact alert boxes */
+.alert-text--sm {
+  font-size: 0.9rem;
+}
+
+/* Icon with small right margin (used inline) */
+.icon-mr-sm {
+  margin-right: 6px;
+}
+

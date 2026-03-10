@@ -164,7 +164,7 @@ const TwoDTo3D2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
           <div className="lesson-card tab-content">
             <div className="card-header"><h4>COMMAND MENU</h4></div>
             <div className="instruction-step">
-              <p className="p-flush-bottom" style={{ marginBottom: '1.25rem' }}>Most tools used for sketching on the work plane can be found on the command menu.</p>
+              <p className="p-flush-bottom">Most tools used for sketching on the work plane can be found on the command menu.</p>
               <img src={commandMenu} alt="Command Menu" />
             </div>
             <div className="lesson-navigation">
@@ -238,15 +238,15 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
               <div className="image-wrapper">
                 <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-medium" />
               </div>
-              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
+              <p className="p-mt-sm">Most commonly used tools are the following:</p>
             </div>
 
-            <div className="card-header" style={{ marginTop: '2rem' }}><h4>EXTRUDE</h4></div>
+            <div className="card-header card-header--spaced"><h4>EXTRUDE</h4></div>
             <p className="p-flush-bottom">Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical at projection.</p>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) Select <strong>Extrude</strong> from the icon menu.</span>
+                <span className="step-label step-label--normal">1.) Select <strong>Extrude</strong> from the icon menu.</span>
               </div>
               <div className="image-wrapper-flush">
                 <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" />
@@ -255,10 +255,10 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
+                <span className="step-label step-label--normal">2.) Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--indent" />
               </div>
-              <div className="image-wrapper-row" style={{ marginTop: '1rem' }}>
+              <div className="image-wrapper-row image-wrapper-row--mt-md">
                 <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-medium" />
 
               </div>
@@ -266,16 +266,16 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
+                <span className="step-label step-label--normal">3.) Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--indent" />
               </div>
             </div>
 
-            <p className="p-flush-bottom" style={{ marginTop: '0.75rem', marginBottom: '0' }}>A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane.</p>
-            <p className="p-flush-bottom" style={{ color: 'red', fontWeight: 'bold', margin: '0' }}>Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.</p>
-            <p className="p-flush" style={{ margin: '0' }}>Select Cancel to keep the work plane together with all the 2D sketches.</p>
+            <p className="p-flush-bottom p-mt-sm">A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane.</p>
+            <p className="note-text--warning">Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.</p>
+            <p className="p-flush p-reset">Select Cancel to keep the work plane together with all the 2D sketches.</p>
 
-            <div className="image-wrapper-row" style={{ marginTop: '1.5rem' }}>
+            <div className="image-wrapper-row image-wrapper-row--mt-lg">
               <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot screenshot-medium" />
               <img src={extrudeResultFinal} alt="Extrude Result" className="software-screenshot screenshot-medium" />
             </div>
@@ -295,15 +295,15 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
               <div className="image-wrapper">
                 <img src={commandMenu2} alt="Revolve Tools" className="software-screenshot screenshot-medium" />
               </div>
-              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
+              <p className="p-mt-sm">Most commonly used tools are the following:</p>
             </div>
 
-            <div className="card-header" style={{ marginTop: '2rem' }}><h4>REVOLVE</h4></div>
+            <div className="card-header card-header--spaced"><h4>REVOLVE</h4></div>
             <p className="p-flush-bottom">Creates a solid entity from a section from creatd on a work plane or 2D drawing, by performing rotation projection.</p>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) Select <strong>Revolve</strong> from the icon menu.</span>
+                <span className="step-label step-label--normal">1.) Select <strong>Revolve</strong> from the icon menu.</span>
               </div>
               <div className="image-wrapper-flush">
                 <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
@@ -312,16 +312,16 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Pick the cross section to be revolved &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
+                <span className="step-label step-label--normal">2.) Pick the cross section to be revolved &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--indent" />
               </div>
               <p className="p-flush">A hatch will appear to show that the sketch is an enclosed figure</p>
             </div>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Select the axis of rotation &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
+                <span className="step-label step-label--normal">3.) Select the axis of rotation &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--indent" />
               </div>
             </div>
 
@@ -342,15 +342,15 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
               <div className="image-wrapper">
                 <img src={commandMenu2} alt="Spiral Tools" className="software-screenshot screenshot-medium" />
               </div>
-              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
+              <p className="p-mt-sm">Most commonly used tools are the following:</p>
             </div>
 
-            <div className="card-header" style={{ marginTop: '2rem' }}><h4>SPIRAL FORM</h4></div>
+            <div className="card-header card-header--spaced"><h4>SPIRAL FORM</h4></div>
             <p className="p-flush-bottom">Creates a 3D spiral form from a section form created on a 2D sketch.</p>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) First do the sketch.</span>
+                <span className="step-label step-label--normal">1.) First do the sketch.</span>
               </div>
               <div className="image-wrapper-flush">
                 <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" />
@@ -359,7 +359,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Select <strong style={{ color: 'red' }}>Spiral Form</strong> from the icon menu.</span>
+                <span className="step-label step-label--normal">2.) Select <strong className="keyword--danger">Spiral Form</strong> from the icon menu.</span>
               </div>
               <div className="image-wrapper-flush">
                 <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" />
@@ -369,11 +369,11 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
+                <span className="step-label step-label--normal">3.) Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--indent" />
               </div>
-              <p className="p-flush-bottom" style={{ color: 'red', fontWeight: 'bold' }}>*Note: Pitch must be greater than Thickness</p>
-              <div className="image-wrapper-row" style={{ marginTop: '0.5rem' }}>
+              <p className="p-flush-bottom note-text--warning">*Note: Pitch must be greater than Thickness</p>
+              <div className="image-wrapper-row image-wrapper-row--mt-sm">
                 <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-medium" />
                 <img src={spiralPitch} alt="Spiral Pitch Diagram" className="software-screenshot screenshot-medium" />
               </div>
@@ -381,11 +381,11 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>4.) Select the ends of the length of the spiral along the axis of rotation Then GO</span>
+                <span className="step-label step-label--normal">4.) Select the ends of the length of the spiral along the axis of rotation Then GO</span>
               </div>
             </div>
 
-            <div className="image-wrapper-row" style={{ marginTop: '1.5rem', flexWrap: 'wrap' }}>
+            <div className="image-wrapper-row image-wrapper-row--mt-lg image-wrapper-row--wrap">
               <img src={spiralRotation1} alt="Spiral Axis 1" className="software-screenshot screenshot-medium-small" />
               <img src={spiralRotation} alt="Spiral Axis" className="software-screenshot screenshot-medium-small" />
               <img src={spiralRotation2} alt="Spiral Result" className="software-screenshot screenshot-medium-small" />

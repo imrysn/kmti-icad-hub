@@ -296,3 +296,19 @@
 .log-msg {
   color: var(--text-main);
 }
+
+/* ── Classes migrated from inline styles ──────────────────────────────────── */
+
+.api-error--spaced {
+  margin-bottom: 1rem;
+}
+
+.table-loading-msg {
+  padding: 1.5rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.action-btn__icon {
+  margin-right: 0.4rem;
+}

@@ -401,3 +401,17 @@
     padding: 32px 24px;
   }
 }
+
+/* ── Classes migrated from inline styles ──────────────────────────────────── */
+
+.modal-success-msg {
+  color: #22c55e;
+  font-size: 0.9rem;
+}
+
+.modal-field-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  display: block;
+  margin-bottom: 0.25rem;
+}

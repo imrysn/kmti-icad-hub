@@ -149,7 +149,7 @@ const ICAD_TOOLBARS = [ // cspell:disable-line
 const ToolBarsLesson: React.FC = () => {
   return (
     <div className="interactive-toolbars-lesson">
-      <p style={{ marginBottom: '2rem', color: '#64748b' }}>
+      <p className="intro-paragraph--muted">
         Select a toolbar from the side navigation to explore active commands and features available in each category.
       </p>
       <ToolbarExplorer toolbars={ICAD_TOOLBARS} />

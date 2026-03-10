@@ -62,7 +62,7 @@ const OriginLesson: React.FC = () => {
             <div className="card-header">
               <h4>STANDARD PROJECTIONS</h4>
             </div>
-            <div className="image-wrapper flex-row-center" style={{ justifyContent: 'center' }}>
+            <div className="image-wrapper flex-row-center image-wrapper--centered">
               <img src={originOverview} alt="Origin Overview and Views" className="software-screenshot screenshot-large" />
             </div>
             <div className="lesson-navigation">
@@ -79,9 +79,9 @@ const OriginLesson: React.FC = () => {
         {activeTab === 'layout' && (
           <div className="lesson-card tab-content">
             <div className="card-header">
-              <div className="flex-col-center" style={{ gap: '0.25rem' }}>
+              <div className="flex-col-center--tight">
                 <h4>CHANGE 3D PART LAYOUT</h4>
-                <p style={{ color: '#64748b', fontSize: '0.95rem', margin: 0, fontWeight: 500 }}>Use this tool to set the location of origin.</p>
+                <p className="icon-description">Use this tool to set the location of origin.</p>
               </div>
             </div>
 
@@ -96,7 +96,7 @@ const OriginLesson: React.FC = () => {
 
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-number" style={{ width: 'auto', padding: '0 8px', borderRadius: '14px' }}>2-5</span>
+                <span className="step-number step-number--pill">2-5</span>
                 <span className="step-label">Relocate Origin</span>
               </div>
               <p>Follow the interaction sequence to relocate the origin:</p>
@@ -106,8 +106,8 @@ const OriginLesson: React.FC = () => {
                 <li><strong>4.)</strong> Left-click on a 2nd point to set the X-axis.</li>
                 <li><strong>5.)</strong> Left-click on a 3rd point to set the Y-axis.</li>
               </ul>
-              <div className="alert-box" style={{ padding: '0.75rem 1rem', marginTop: '0.5rem', marginLeft: '2.5rem' }}>
-                <p style={{ fontSize: '0.9rem' }}><Info size={16} style={{ display: 'inline', marginRight: '6px' }} />The XY-plane will be the front view.</p>
+              <div className="alert-box alert-box--compact">
+                <p className="alert-text--sm"><Info size={16} className="icon-inline icon-mr-sm" />The XY-plane will be the front view.</p>
               </div>
               <div className="image-wrapper">
                 <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot" />
