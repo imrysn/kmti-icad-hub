@@ -29,7 +29,7 @@
  *    If selectedCourse.id === '2', `is2DDrawingCourse` is true and both the
  *    sidebar and main content render a placeholder — NO 3D lesson data is used.
  *
- * FILE STRUCTURE (src/components/3DModeling/)
+ * FILE STRUCTURE (src/components/3D_Modeling/)
  * ────────────────────────────────────────────
  *   3DiCadInterface.tsx     iCAD Interface lesson
  *   3DToolBars.tsx          Tool Bars lesson  (toolbar data lives here)
@@ -54,12 +54,42 @@ import {
 import { useCourses } from '../hooks/useCourses';
 import { Course, MediaAsset } from '../types';
 import { CourseCardSkeleton } from '../components/SkeletonComponents';
-import IcadInterfaceLesson from '../components/3DModeling/3DiCadInterface';
-import ToolBarsLesson from '../components/3DModeling/3DToolBars';
-import OriginLesson from '../components/3DModeling/3DOrigin';
-import BasicOperationLesson from '../components/3DModeling/3DBasicOperation';
-import TwoDTo3DLesson from '../components/3DModeling/3D2Dto3D';
-import HoleDetailsLesson from '../components/3DModeling/3DHoleDetails';
+import IcadInterfaceLesson from '../components/3D_Modeling/3D_iCadInterface';
+import ToolBarsLesson from '../components/3D_Modeling/3D_ToolBars';
+import OriginLesson from '../components/3D_Modeling/3D_Origin';
+import BasicOperationLesson from '../components/3D_Modeling/3D_BasicOperation';
+import TwoDTo3DLesson from '../components/3D_Modeling/3D_2Dto3D';
+import HoleDetailsLesson from '../components/3D_Modeling/3D_HoleDetails';
+import BooleanLesson from '../components/3D_Modeling/3D_Boolean';
+import ComponentLesson from '../components/3D_Modeling/3D_Component';
+import FairingLesson from '../components/3D_Modeling/3D_Fairing';
+import PartLesson from '../components/3D_Modeling/3D_Part';
+import MaterialSettingLesson from '../components/3D_Modeling/3D_MaterialSetting';
+
+// 2D Drawing Lesson Imports
+import OrthographicViewLesson from '../components/2D_Drawing/2D_OrthographicView';
+import CommandMenuLesson from '../components/2D_Drawing/2D_CommandMenu';
+import LinePropertiesLesson from '../components/2D_Drawing/2D_LineProperties';
+import DimensioningLesson from '../components/2D_Drawing/2D_Dimensioning';
+import StandardPartLesson from '../components/2D_Drawing/2D_StandardPart';
+import SurfaceApplicationLesson from '../components/2D_Drawing/2D_SurfaceApplication';
+import KeywayLesson from '../components/2D_Drawing/2D_Keyway';
+import RetainingRingLesson from '../components/2D_Drawing/2D_RetainingRing';
+import GeometricToleranceLesson from '../components/2D_Drawing/2D_GeometricTolerance';
+import PartNoteLesson from '../components/2D_Drawing/2D_PartNote';
+import MachiningSymbolLesson from '../components/2D_Drawing/2D_MachiningSymbol';
+import WeldingSymbolLesson from '../components/2D_Drawing/2D_WeldingSymbol';
+import HeatTreatmentLesson from '../components/2D_Drawing/2D_HeatTreatment';
+import SurfaceCoatingLesson from '../components/2D_Drawing/2D_SurfaceCoating';
+import WeightComputationLesson from '../components/2D_Drawing/2D_WeightComputation';
+import BillOfMaterialLesson from '../components/2D_Drawing/2D_BillOfMaterial';
+import BalloonLesson from '../components/2D_Drawing/2D_Balloon';
+import TitleblockLesson from '../components/2D_Drawing/2D_Titleblock';
+import AdditionalViewLesson from '../components/2D_Drawing/2D_AdditionalView';
+import OperalViewLesson from '../components/2D_Drawing/2D_OperalView';
+import NormalMirrorPartsLesson from '../components/2D_Drawing/2D_NormalMirrorParts';
+import RevisionCodeLesson from '../components/2D_Drawing/2D_RevisionCode';
+import StandardLibraryLesson from '../components/2D_Drawing/2D_StandardLibrary';
 
 import '../styles/MentorMode.css';
 
@@ -148,23 +178,60 @@ const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   }
 ];
 
+const ICAD_2D_LESSONS: Lesson[] = [
+  { id: '2d-orthographic', title: 'Create Orthographic View', children: Array.from({ length: 3 }, (_, i) => ({ id: `2d-orthographic-${i + 1}`, title: `Create Orthographic View (${i + 1})` })) },
+  { id: '2d-command-menu', title: 'Command Menu', children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-command-menu-${i + 1}`, title: `Command Menu (${i + 1})` })) },
+  { id: '2d-line-props', title: 'Line Properties', children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-line-props-${i + 1}`, title: `Line Properties (${i + 1})` })) },
+  { id: '2d-dimensioning', title: 'Dimensioning', children: Array.from({ length: 5 }, (_, i) => ({ id: `2d-dimensioning-${i + 1}`, title: `Dimensioning (${i + 1})` })) },
+  { id: '2d-standard-part', title: 'Standard Part Detail', children: Array.from({ length: 7 }, (_, i) => ({ id: `2d-standard-part-${i + 1}`, title: `Standard Part Detail (${i + 1})` })) },
+  { id: '2d-surface-app', title: 'Application of Surface', children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Application of Surface (${i + 1})` })) },
+  { id: '2d-keyway', title: 'Keyway' },
+  { id: '2d-retaining-ring', title: 'Retaining Ring', children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-retaining-ring-${i + 1}`, title: `Retaining Ring (${i + 1})` })) },
+  { id: '2d-geometric-tol', title: 'Geometric Tolerance', children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })) },
+  { id: '2d-part-note', title: 'Part Note' },
+  { id: '2d-machining-symbol', title: 'Machining Symbol' },
+  { id: '2d-welding-symbol', title: 'Welding Symbol' },
+  { id: '2d-heat-treatment', title: 'Heat Treatment', children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-heat-treatment-${i + 1}`, title: `Heat Treatment (${i + 1})` })) },
+  { id: '2d-surface-coating', title: 'Surface Coating' },
+  { id: '2d-weight-computation', title: 'Material Weight Computation' },
+  { id: '2d-bom', title: 'Bill of Material', children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-bom-${i + 1}`, title: `Bill of Material (${i + 1})` })) },
+  { id: '2d-balloon', title: 'Balloon' },
+  { id: '2d-titleblock', title: 'Titleblock' },
+  { id: '2d-additional-view', title: 'Additional View', children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-additional-view-${i + 1}`, title: `Additional View (${i + 1})` })) },
+  { id: '2d-operal-view', title: 'Operal View', children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-operal-view-${i + 1}`, title: `Operal View (${i + 1})` })) },
+  { id: '2d-normal-mirror', title: 'Normal and Mirror Parts', children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-normal-mirror-${i + 1}`, title: `Normal and Mirror Parts (${i + 1})` })) },
+  { id: '2d-revision-code', title: 'Revision Code' },
+  { id: '2d-standard-library', title: 'Standard Part Library' }
+];
+
 
 
 const MentorMode: React.FC = () => {
   const { courses, loading, error } = useCourses();
   const [selectedCourse, setSelectedCourse] = React.useState<Course | null>(null);
-  const [activeLessonId, setActiveLessonId] = React.useState<string>('interface');
+  // True when the selected course is iCAC 2D Drawing (id = '2')
+  const is2DDrawingCourse = selectedCourse?.id === '2';
+
+  const [activeLessonId, setActiveLessonId] = React.useState<string>(is2DDrawingCourse ? '2d-orthographic-1' : 'interface');
   const [expandedIds, setExpandedIds] = React.useState<Set<string>>(new Set());
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
+
+  React.useEffect(() => {
+    // Reset active lesson when course changes
+    if (is2DDrawingCourse) {
+      setActiveLessonId('2d-orthographic-1');
+      setExpandedIds(new Set(['2d-orthographic']));
+    } else {
+      setActiveLessonId('interface');
+      setExpandedIds(new Set());
+    }
+  }, [selectedCourse?.id]);
 
   // Scroll to top of content when lesson changes
   React.useEffect(() => {
     const viewer = document.querySelector('.main-content-viewer');
     if (viewer) viewer.scrollTo(0, 0);
   }, [activeLessonId]);
-
-  // True when the selected course is iCAC 2D Drawing (id = '2')
-  const is2DDrawingCourse = selectedCourse?.id === '2';
 
   const toggleExpand = (id: string) => {
     const newExpanded = new Set(expandedIds);
@@ -177,7 +244,7 @@ const MentorMode: React.FC = () => {
   };
 
   // Build a flat list of all selectable lesson IDs (the "leaf" nodes)
-  const allLessonIds = ICAD_3D_LESSONS.flatMap(l =>
+  const allLessonIds = (is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS).flatMap(l =>
     l.children ? l.children.map(c => c.id) : [l.id]
   );
 
@@ -191,7 +258,7 @@ const MentorMode: React.FC = () => {
       // Auto-expand parent if the next lesson is a sub-lesson
       setExpandedIds(prev => {
         const nextSet = new Set(prev);
-        ICAD_3D_LESSONS.forEach(l => {
+        (is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS).forEach(l => {
           if (l.children?.some(c => c.id === nextId)) {
             nextSet.add(l.id);
           }
@@ -291,51 +358,45 @@ const MentorMode: React.FC = () => {
             </div>
 
             <div className="lesson-list">
-              {is2DDrawingCourse ? (
-                <div className="lesson-list__coming-soon">
-                  <p>Content coming soon.</p>
-                </div>
-              ) : (
-                ICAD_3D_LESSONS.map((lesson) => ( // cspell:disable-line
-                  <div key={lesson.id}>
-                    <div
-                      className={`lesson-item ${activeLessonId === lesson.id ? 'active' : ''} ${lesson.isCompleted ? 'completed' : ''}`}
-                      onClick={() => {
-                        if (lesson.children) {
-                          toggleExpand(lesson.id);
-                        } else {
-                          setActiveLessonId(lesson.id);
-                        }
-                      }}
-                    >
-                      <div className="lesson-item-title">
-                        {lesson.children ? (
-                          expandedIds.has(lesson.id) ? <ChevronDown size={16} /> : <ChevronRight size={16} />
-                        ) : (
-                          <Menu size={16} className="lesson-icon--dim" />
-                        )}
-                        <span>{lesson.title}</span>
-                      </div>
-                      {lesson.isCompleted && <CheckCircle2 size={18} color="#0066ff" />}
+              {(is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS).map((lesson) => ( // cspell:disable-line
+                <div key={lesson.id}>
+                  <div
+                    className={`lesson-item ${activeLessonId === lesson.id || (lesson.children?.some(c => c.id === activeLessonId)) ? 'active' : ''} ${lesson.isCompleted ? 'completed' : ''}`}
+                    onClick={() => {
+                      if (lesson.children) {
+                        toggleExpand(lesson.id);
+                      } else {
+                        setActiveLessonId(lesson.id);
+                      }
+                    }}
+                  >
+                    <div className="lesson-item-title">
+                      {lesson.children ? (
+                        expandedIds.has(lesson.id) ? <ChevronDown size={16} /> : <ChevronRight size={16} />
+                      ) : (
+                        <Menu size={16} className="lesson-icon--dim" />
+                      )}
+                      <span>{lesson.title}</span>
                     </div>
-
-                    {lesson.children && expandedIds.has(lesson.id) && (
-                      <div className="sub-lesson-list">
-                        {lesson.children.map((child) => (
-                          <div
-                            key={child.id}
-                            className={`sub-lesson-item ${activeLessonId === child.id ? 'active' : ''}`}
-                            onClick={() => setActiveLessonId(child.id)}
-                          >
-                             <Menu size={14} className="sub-lesson-icon" />
-                            {child.title}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    {lesson.isCompleted && <CheckCircle2 size={18} color="#0066ff" />}
                   </div>
-                ))
-              )}
+
+                  {lesson.children && expandedIds.has(lesson.id) && (
+                    <div className="sub-lesson-list">
+                      {lesson.children.map((child) => (
+                        <div
+                          key={child.id}
+                          className={`sub-lesson-item ${activeLessonId === child.id ? 'active' : ''}`}
+                          onClick={() => setActiveLessonId(child.id)}
+                        >
+                          <Menu size={14} className="sub-lesson-icon" />
+                          {child.title}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </aside>
@@ -352,55 +413,95 @@ const MentorMode: React.FC = () => {
 
           <div className="lesson-header-banner">
             <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIds.length}</p>
-            <h2 className="lesson-banner-title">{getActiveLessonTitle(ICAD_3D_LESSONS, activeLessonId)}</h2> {/* cspell:disable-line */}
+            <h2 className="lesson-banner-title">{getActiveLessonTitle(is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS, activeLessonId)}</h2> {/* cspell:disable-line */}
             <div className="lesson-banner-divider"></div>
           </div>
 
           <div className="lesson-content-body">
-          {/* ── Lesson Registry ──────────────────────────────────────────────────── */}
-          {/* To add a new lesson: just add an entry to LESSON_REGISTRY in MentorMode.tsx */}
-          {(() => {
-            // Registry: maps a lesson id (or id prefix) → component factory
-            const registry: Record<string, () => React.ReactNode> = {
-              'interface':    () => <IcadInterfaceLesson />,
-              'toolbars':     () => <ToolBarsLesson />,
-              'origin':       () => <div className="origin-lesson-container"><OriginLesson /></div>,
-              'hole-details': () => <HoleDetailsLesson onNextLesson={goToNextLesson} />,
-            };
 
-            // Sub-lesson prefixes (basic-op-1, 2d-3d-2, etc.)
-            const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
-              'basic-op': (id) => <BasicOperationLesson subLessonId={id} />,
-              '2d-3d':    (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={goToNextLesson} />,
-            };
+            {/* ── Lesson Registry ──────────────────────────────────────────────────── */}
+            {/* To add a new lesson: just add an entry to LESSON_REGISTRY in MentorMode.tsx */}
+            {
+              (() => {
+                // Registry: maps a lesson id (or id prefix) → component factory
+                const registry: Record<string, () => React.ReactNode> = {
+                  'interface': () => <IcadInterfaceLesson />,
+                  'toolbars': () => <ToolBarsLesson />,
+                  'origin': () => <div className="origin-lesson-container"><OriginLesson /></div>,
+                  'hole-details': () => <HoleDetailsLesson onNextLesson={goToNextLesson} />,
+                  'fairing': () => <FairingLesson onNextLesson={goToNextLesson} />,
+                  // Add other exact match lessons here
+                };
 
-            // Exact match first
-            if (registry[activeLessonId]) return registry[activeLessonId]();
+                // Sub-lesson prefixes (basic-op-1, 2d-3d-2, etc.)
+                const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
+                  'basic-op': (id) => <BasicOperationLesson subLessonId={id} />,
+                  '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  '2d-orthographic': () => <OrthographicViewLesson />,
+                  '2d-command-menu': () => <CommandMenuLesson />,
+                  '2d-line-props': () => <LinePropertiesLesson />,
+                  '2d-dimensioning': () => <DimensioningLesson />,
+                  '2d-standard-part': () => <StandardPartLesson />,
+                  '2d-surface-app': () => <SurfaceApplicationLesson />,
+                  '2d-retaining-ring': () => <RetainingRingLesson />,
+                  '2d-geometric-tol': () => <GeometricToleranceLesson />,
+                  '2d-heat-treatment': () => <HeatTreatmentLesson />,
+                  '2d-bom': () => <BillOfMaterialLesson />,
+                  '2d-additional-view': () => <AdditionalViewLesson />,
+                  '2d-operal-view': () => <OperalViewLesson />,
+                  '2d-normal-mirror': () => <NormalMirrorPartsLesson />,
+                  // Add other prefix match lessons here
+                };
 
-            // Prefix match for sub-lessons (e.g. 'basic-op-3' → 'basic-op')
-            const prefix = Object.keys(prefixRegistry).find(p => activeLessonId.startsWith(p + '-'));
-            if (prefix) return prefixRegistry[prefix](activeLessonId);
+                // Exact match first
+                const exactMatch = activeLessonId ? registry[activeLessonId] : null;
+                if (exactMatch) return exactMatch();
 
-            // 2D Course placeholder
-            if (is2DDrawingCourse) return (
-              <div className="content-2d-placeholder">
-                <BookOpen size={48} strokeWidth={1.5} />
-                <h3 className="content-2d-placeholder__title">iCAC Operation Manual 2D Drawing</h3>
-                <p className="content-2d-placeholder__text">Content will be available soon.</p>
-              </div>
-            );
+                // Prefix match for sub-lessons (e.g. 'basic-op-3' → 'basic-op')
+                const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && activeLessonId.startsWith(p + '-'));
+                if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
 
-            // Fallback placeholder for unimplemented lessons
-            return (
-              <div className="content-placeholder">
-                <Video size={48} className="content-placeholder__icon" />
-                <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
-                <p className="content-placeholder__note">
-                  This area will host the instructional text, video demonstrations, and active testing prompts.
-                </p>
-              </div>
-            );
-          })()}
+                // Special 2D lessons that are exact matches but not in the main registry
+                if (is2DDrawingCourse) {
+                  switch (activeLessonId) {
+                    case '2d-keyway': return <KeywayLesson />;
+                    case '2d-part-note': return <PartNoteLesson />;
+                    case '2d-machining-symbol': return <MachiningSymbolLesson />;
+                    case '2d-welding-symbol': return <WeldingSymbolLesson />;
+                    case '2d-surface-coating': return <SurfaceCoatingLesson />;
+                    case '2d-weight-computation': return <WeightComputationLesson />;
+                    case '2d-balloon': return <BalloonLesson />;
+                    case '2d-titleblock': return <TitleblockLesson />;
+                    case '2d-revision-code': return <RevisionCodeLesson />;
+                    case '2d-standard-library': return <StandardLibraryLesson />;
+                    default:
+                      // 2D Course placeholder for any other 2D lesson not explicitly handled
+                      return (
+                        <div className="content-2d-placeholder">
+                          <BookOpen size={48} strokeWidth={1.5} />
+                          <h3 className="content-2d-placeholder__title">iCAC Operation Manual 2D Drawing</h3>
+                          <p className="content-2d-placeholder__text">Content will be available soon.</p>
+                        </div>
+                      );
+                  }
+                }
+
+                // Fallback placeholder for unimplemented lessons (3D or unhandled 2D)
+                return (
+                  <div className="content-placeholder">
+                    <Video size={48} className="content-placeholder__icon" />
+                    <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
+                    <p className="content-placeholder__note">
+                      This area will host the instructional text, video demonstrations, and active testing prompts.
+                    </p>
+                  </div>
+                );
+              })()
+            }
 
             <div className="content-actions">
               <button
@@ -413,8 +514,8 @@ const MentorMode: React.FC = () => {
             </div>
           </div>
         </main>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 

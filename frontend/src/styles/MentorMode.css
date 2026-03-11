@@ -13,8 +13,8 @@
 
 /* Sidebar Toggle for Mobile */
 .sidebar-toggle {
-  background: white;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
   color: var(--primary);
   width: 38px;
   height: 38px;
@@ -29,7 +29,7 @@
 }
 
 .sidebar-toggle:hover {
-  background: white;
+  background: var(--bg-dark);
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
   color: var(--primary-dark);
@@ -45,11 +45,10 @@
 .course-sidebar {
   width: 320px;
   background: #fcfcfc;
-  border-right: 1px solid #e2e8f0;
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /* Important for width collapse */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
@@ -65,7 +64,7 @@
 .sidebar-course-header {
   padding: 2.5rem 2rem;
   background: var(--primary);
-  color: white;
+  color: var(--text-white);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -80,7 +79,7 @@
 .sidebar-search-btn-top {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--text-white);
   cursor: pointer;
   opacity: 0.8;
   padding: 4px;
@@ -91,7 +90,7 @@
   font-size: 1.75rem;
   font-weight: 700;
   line-height: 1.2;
-  color: white;
+  color: var(--text-white);
 }
 
 .sidebar-progress-container {
@@ -108,7 +107,7 @@
 
 .sidebar-progress-bar-fill {
   height: 100%;
-  background: white;
+  background: var(--text-white);
   border-radius: 2px;
 }
 
@@ -142,7 +141,7 @@
 .sidebar-title {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #475569;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   display: flex;
@@ -154,7 +153,7 @@
 .sidebar-search-btn {
   background: transparent;
   border: none;
-  color: #64748b;
+  color: var(--text-dim);
   cursor: pointer;
   padding: 4px;
   display: flex;
@@ -181,16 +180,16 @@
   justify-content: space-between;
   transition: all 0.2s;
   border-left: 3px solid transparent;
-  color: #334155;
+  color: var(--text-main);
   font-weight: 500;
 }
 
 .lesson-item:hover {
-  background: #f1f5f9;
+  background: var(--bg-surface);
 }
 
 .lesson-item.active {
-  background: #eff6ff;
+  background: var(--primary-soft);
   border-left-color: var(--primary);
   color: var(--primary);
 }
@@ -206,7 +205,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,31 +214,32 @@
 .lesson-item.completed .lesson-status-icon {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
+  color: var(--text-white);
 }
 
 /* Sub-lessons */
 .sub-lesson-list {
-  background: #fafafa;
+  background: var(--bg-surface);
 }
 
 .sub-lesson-item {
   padding: 0.75rem 1.5rem 0.75rem 3.5rem;
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s;
   border-left: 3px solid transparent;
 }
 
 .sub-lesson-item:hover {
-  background: #f1f5f9;
+  background: var(--bg-surface);
+  color: var(--text-main);
 }
 
 .sub-lesson-item.active {
   color: var(--primary);
   border-left-color: var(--primary);
-  background: #eff6ff;
+  background: var(--primary-soft);
 }
 
 /* Content Area */
@@ -253,7 +253,7 @@
 
 .lesson-header-banner {
   background: var(--primary);
-  color: white;
+  color: var(--text-white);
   padding: 3rem 4rem;
   display: flex;
   flex-direction: column;
@@ -282,9 +282,9 @@
 }
 
 .exit-course-btn {
-  background: white;
+  background: var(--bg-dark);
   color: var(--primary);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -297,7 +297,7 @@
 }
 
 .exit-course-btn:hover {
-  background: white;
+  background: var(--bg-dark);
   color: var(--primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
@@ -313,7 +313,7 @@
 .lesson-banner-title {
   font-size: 2.3rem;
   font-weight: 700;
-  color: white !important;
+  color: var(--text-white) !important;
   margin: 0 !important;
   max-width: 800px;
 }

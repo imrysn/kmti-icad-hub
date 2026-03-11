@@ -13,14 +13,16 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.25rem;
+  font-weight: 800;
   margin-bottom: 0.5rem;
   color: var(--text-main);
+  letter-spacing: -0.025em;
 }
 
 .admin-header p {
   color: var(--text-muted);
+  font-size: 1.1rem;
 }
 
 .stats-grid {
@@ -41,7 +43,7 @@
 .stat-card:hover {
   transform: translateY(-2px);
   border-color: var(--primary);
-  background: #ffffff;
+  background: var(--bg-dark);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
@@ -51,9 +53,10 @@
   gap: 0.75rem;
   margin-bottom: 1rem;
   color: var(--text-muted);
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .stat-value {
@@ -82,16 +85,16 @@
   align-items: center;
   gap: 0.75rem;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-main);
 }
 
 .action-btn {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   background: var(--primary);
-  color: white;
+  color: var(--text-white);
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s;
@@ -122,49 +125,48 @@
 
 .trainee-table th {
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   letter-spacing: 0.05em;
 }
 
 .trainee-table tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .trainee-name {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .avatar-placeholder {
   width: 32px;
   height: 32px;
-  background: #475569;
-  /* Keep specific gray for avatar */
+  background: var(--text-muted);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
-  color: white;
+  color: var(--text-white);
 }
 
 .status-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   border: 1px solid transparent;
 }
 
 .status-active {
-  background: rgba(52, 211, 153, 0.1);
+  background: rgba(16, 185, 129, 0.1);
   color: var(--success);
-  border-color: rgba(52, 211, 153, 0.2);
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
 .status-inactive {
@@ -183,7 +185,6 @@
   display: inline-block;
   vertical-align: middle;
   margin-right: 0.5rem;
-  border: 1px solid var(--border-color);
 }
 
 .progress-fill {
@@ -200,7 +201,7 @@
 .system-logs {
   background: var(--bg-dark);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1.25rem;
   height: 300px;
   overflow-y: auto;
   font-family: 'Fira Code', monospace;
@@ -211,31 +212,28 @@
 .log-entry {
   display: flex;
   gap: 1rem;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .log-time {
   color: var(--text-dim);
-  min-width: 80px;
+  min-width: 85px;
 }
 
 .log-level {
-  font-weight: bold;
+  font-weight: 700;
   min-width: 60px;
 }
 
 .level-info {
   color: var(--info);
-  font-weight: bold;
 }
 
-/* Blue */
 .level-warn {
   color: var(--warning);
 }
 
-/* Amber */
 .text-operational {
   color: var(--success);
 }
@@ -249,19 +247,18 @@
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .btn-icon.edit {
   color: var(--info);
-  margin-right: 0.5rem;
-  opacity: 0.9;
+  margin-right: 0.75rem;
 }
 
 .btn-icon.edit:hover {
-  color: #2563eb;
-  text-decoration: none;
+  color: var(--primary);
+  text-decoration: underline;
 }
 
 .btn-icon.delete {
@@ -269,29 +266,27 @@
 }
 
 .btn-icon.delete:hover {
-  color: #feb2b2;
+  color: var(--secondary);
 }
 
 .status-admin {
-  background: rgba(159, 122, 234, 0.2);
-  color: #d6bcfa;
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
 }
 
 .status-employee {
-  background: rgba(66, 153, 225, 0.2);
-  color: #90cdf4;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
 }
 
 .status-trainee {
-  background: rgba(72, 187, 120, 0.2);
-  color: #9ae6b4;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
 }
 
 .level-error {
   color: var(--error);
 }
-
-/* Red */
 
 .log-msg {
   color: var(--text-main);

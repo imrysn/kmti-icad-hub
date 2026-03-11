@@ -1,0 +1,1347 @@
+/* ==========================================================================
+   CourseLesson.css - Global Stylesheet for 3D Modeling Lessons
+   Provides a unified, premium "online course" aesthetic across all modules.
+   ========================================================================== */
+
+.course-lesson-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  animation: fadeInSlideUp 0.6s ease-out forwards;
+  padding-bottom: 2rem;
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Lesson Header & Intro --- */
+
+.lesson-intro {
+  text-align: left;
+  max-width: 850px;
+  padding: 1rem 0;
+}
+
+.lesson-intro h3 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lesson-intro-icon {
+  color: var(--primary);
+}
+
+.lesson-intro p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* Instruction / Alert Boxes */
+.instruction-box,
+.alert-box {
+  background: var(--bg-surface);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-top: 1.5rem;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.alert-box.warning {
+  border-left-color: var(--warning);
+  background: #fffbeb;
+}
+
+.instruction-box p,
+.alert-box p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* --- Grid Layouts --- */
+
+.lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 2.5rem;
+}
+
+/* --- Lesson Cards --- */
+
+.lesson-card {
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.lesson-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--info));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lesson-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  border-color: var(--border-hover);
+}
+
+.lesson-card:hover::before {
+  opacity: 1;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--bg-surface);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* --- Steps & Instructions --- */
+
+.instruction-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 0.85rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.step-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.instruction-step p {
+  font-size: 1rem;
+  color: var(--text-main);
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 2.5rem;
+}
+
+/* Sub-steps lists */
+.interaction-list {
+  list-style: none;
+  padding: 0 0 0 2.5rem;
+  margin: 0.5rem 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.interaction-list li {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.interaction-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-dim);
+}
+
+/* --- Image Formatting --- */
+
+.image-wrapper {
+  margin-top: 0.5rem;
+  padding-left: 2.5rem;
+}
+
+.software-screenshot {
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+  display: block;
+  max-width: 520px;
+  width: 100%;
+  height: auto;
+  background: var(--bg-dark);
+}
+
+.screenshot-large {
+  max-width: 600px;
+}
+
+.screenshot-small {
+  max-width: 180px;
+}
+
+.screenshot-icon {
+  max-width: 200px;
+  border: none;
+  box-shadow: none;
+  padding-left: 0;
+  margin-left: 2.5rem;
+}
+
+.screenshot-click {
+  max-width: 60px;
+  border: none;
+  box-shadow: none;
+  padding-left: 0;
+  margin-left: 2.5rem;
+}
+
+.screenshot-wide {
+  max-width: 100%;
+}
+
+.screenshot-plain {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* --- Result Previews --- */
+
+.result-preview {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.preview-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  background: var(--primary-soft);
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+
+.preview-img {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid var(--bg-surface);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* --- Interactive Tabs Navigation --- */
+
+.lesson-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lesson-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-button {
+  background: transparent;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tab-button:hover {
+  color: var(--primary);
+  background: var(--bg-surface);
+}
+
+.tab-button.active {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px 3px 0 0;
+}
+
+/* Tab Content Animation */
+.tab-content {
+  animation: fadeInSlideRight 0.4s ease-out forwards;
+}
+
+@keyframes fadeInSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- Card Navigation (Prev/Next) --- */
+
+.lesson-navigation {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-dark);
+  color: var(--text-muted);
+}
+
+.nav-button:hover:not(:disabled) {
+  background: var(--bg-surface);
+  border-color: var(--border-strong);
+  color: var(--text-main);
+}
+
+.nav-button.next {
+  background: var(--primary);
+  color: var(--text-white);
+  border-color: var(--primary);
+  margin-left: auto;
+}
+
+.nav-button.next:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Adjust lesson grid for single active card */
+.lesson-grid.single-card {
+  display: block;
+}
+
+.lesson-grid.single-card .lesson-card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Shared Layout Utilities (used across multiple lesson components)
+   ========================================================================== */
+
+/* Flex row: side-by-side content */
+.flex-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.flex-row-center {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.flex-row-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Flex column */
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Flex fill: takes remaining space */
+.flex-1 {
+  flex: 1;
+}
+
+/* Prevent shrink */
+.flex-no-shrink {
+  flex-shrink: 0;
+}
+
+/* Center text block (e.g. image captions) */
+.text-center {
+  text-align: center;
+}
+
+/* Image caption label below screenshots */
+.img-caption {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  color: var(--text-main);
+  text-align: center;
+}
+
+/* Section divider between sub-topics within a card */
+.section-divider {
+  border-top: 2px solid var(--bg-surface);
+  padding-top: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Thin divider variant */
+.section-divider-sm {
+  border-top: 1px solid var(--bg-surface);
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Sub-topic header inside a card (no bottom border) */
+.card-sub-header {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Inline step label variant — primary color, larger */
+.step-label-primary {
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+/* Inline step label variant — accent blue */
+.step-label-blue {
+  color: #2563eb;
+}
+
+/* image-wrapper with no left padding override */
+.image-wrapper-flush {
+  margin-top: 0.5rem;
+  padding-left: 0;
+}
+
+/* image-wrapper with top spacing */
+.image-wrapper-top {
+  margin-top: 0.75rem;
+  padding-left: 0;
+}
+
+/* image-wrapper as flex row (icon + text) */
+.image-wrapper-row {
+  margin-top: 0.75rem;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Paragraph with no padding-left override */
+.p-flush {
+  padding-left: 2.5rem !important;
+  margin-bottom: 0;
+}
+
+/* Paragraph with flushed bottom */
+.p-flush-bottom {
+  padding-left: 2.5rem !important;
+  margin-bottom: 0.5rem;
+}
+
+/* Monospace code-like span */
+.code-inline {
+  font-family: monospace;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* screenshot-medium size */
+.screenshot-medium {
+  max-width: 320px;
+}
+
+
+/* ==========================================================================
+   CourseLesson.css - Global Stylesheet for 3D Modeling Lessons
+   Provides a unified, premium "online course" aesthetic across all modules.
+   ========================================================================== */
+
+.course-lesson-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  animation: fadeInSlideUp 0.6s ease-out forwards;
+  padding-bottom: 2rem;
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Lesson Header & Intro --- */
+
+.lesson-intro {
+  text-align: left;
+  max-width: 850px;
+  padding: 1rem 0;
+}
+
+.lesson-intro h3 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lesson-intro p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* Instruction / Alert Boxes */
+.instruction-box,
+.alert-box {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-top: 1.5rem;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.alert-box.warning {
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.instruction-box p,
+.alert-box p {
+  margin: 0;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* --- Grid Layouts --- */
+
+.lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 2.5rem;
+}
+
+/* --- Lesson Cards --- */
+
+.lesson-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.lesson-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lesson-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.lesson-card:hover::before {
+  opacity: 1;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: 0.02em;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* --- Steps & Instructions --- */
+
+.instruction-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #eff6ff;
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 0.85rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.step-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.instruction-step p {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 2.5rem;
+  /* Aligns with text after step number */
+}
+
+/* Sub-steps lists */
+.interaction-list {
+  list-style: none;
+  padding: 0 0 0 2.5rem;
+  margin: 0.5rem 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.interaction-list li {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.interaction-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+/* --- Image Formatting --- */
+
+.image-wrapper {
+  margin-top: 0.5rem;
+  padding-left: 2.5rem;
+  /* Aligns with text */
+}
+
+.software-screenshot {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+  display: block;
+  max-width: 520px;
+  /* Standardize max width constraints */
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+
+.screenshot-large {
+  max-width: 600px;
+}
+
+.screenshot-small {
+  max-width: 180px;
+}
+
+.screenshot-icon {
+  max-width: 200px;
+  border: none;
+  box-shadow: none;
+  padding-left: 0;
+  /* Reset padding for raw icons */
+  margin-left: 2.5rem;
+  /* Push over manually */
+}
+
+.screenshot-click {
+  max-width: 60px;
+  border: none;
+  box-shadow: none;
+  padding-left: 0;
+  margin-left: 2.5rem;
+}
+
+.screenshot-wide {
+  max-width: 100%;
+}
+
+/* --- Result Previews --- */
+
+.result-preview {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.preview-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  background: #eff6ff;
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+
+.preview-img {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid #f8fafc;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* --- Interactive Tabs Navigation --- */
+
+.lesson-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lesson-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-button {
+  background: transparent;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tab-button:hover {
+  color: var(--primary);
+  background: var(--bg-surface);
+}
+
+.tab-button.active {
+  color: var(--primary);
+  background: #eff6ff;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px 3px 0 0;
+}
+
+/* Tab Content Animation */
+.tab-content {
+  animation: fadeInSlideRight 0.4s ease-out forwards;
+}
+
+@keyframes fadeInSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- Card Navigation (Prev/Next) --- */
+
+.lesson-navigation {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.nav-button.next {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  margin-left: auto;
+}
+
+.nav-button.next:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Adjust lesson grid for single active card */
+.lesson-grid.single-card {
+  display: block;
+}
+
+.lesson-grid.single-card .lesson-card {
+  max-width: 900px;
+  /* Optional constraint to keep it readable */
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Shared Layout Utilities (used across multiple lesson components)
+   ========================================================================== */
+
+/* Flex row: side-by-side content */
+.flex-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.flex-row-center {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.flex-row-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Flex column */
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Flex fill: takes remaining space */
+.flex-1 {
+  flex: 1;
+}
+
+/* Prevent shrink */
+.flex-no-shrink {
+  flex-shrink: 0;
+}
+
+/* Center text block (e.g. image captions) */
+.text-center {
+  text-align: center;
+}
+
+/* Image caption label below screenshots */
+.img-caption {
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  color: #334155;
+  text-align: center;
+}
+
+/* Section divider between sub-topics within a card */
+.section-divider {
+  border-top: 2px solid #f1f5f9;
+  padding-top: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Thin divider variant */
+.section-divider-sm {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Sub-topic header inside a card (no bottom border) */
+.card-sub-header {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Inline step label variant — primary color, larger */
+.step-label-primary {
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+/* Inline step label variant — accent blue */
+.step-label-blue {
+  color: #2563eb;
+}
+
+/* image-wrapper with no left padding override */
+.image-wrapper-flush {
+  margin-top: 0.5rem;
+  padding-left: 0;
+}
+
+/* image-wrapper with top spacing */
+.image-wrapper-top {
+  margin-top: 0.75rem;
+  padding-left: 0;
+}
+
+/* image-wrapper as flex row (icon + text) */
+.image-wrapper-row {
+  margin-top: 0.75rem;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Paragraph with no padding-left override */
+.p-flush {
+  padding-left: 0 !important;
+  margin-bottom: 0;
+}
+
+/* Paragraph with flushed bottom */
+.p-flush-bottom {
+  padding-left: 0;
+  margin-bottom: 0.5rem;
+}
+
+/* Monospace code-like span */
+.code-inline {
+  font-family: monospace;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* screenshot-medium size */
+.screenshot-medium {
+  max-width: 320px;
+}
+
+/* ── Classes migrated from inline styles in 3DModeling components ─────────── */
+
+/* image-wrapper-row gap variant (3DHoleDetails) */
+.image-wrapper-row--wide {
+  gap: 2rem;
+}
+
+/* Full-width screenshot override */
+.screenshot-full {
+  max-width: 100%;
+}
+
+/* Centered image block (e.g. tapped holes in 3DHoleDetails) */
+.centered-image-wrapper {
+  margin-top: 1.5rem;
+}
+
+/* Info/special note block spacing */
+.info-box-premium--spaced {
+  margin-top: 2rem;
+}
+
+.special-note-container--spaced {
+  margin-top: 3rem;
+}
+
+/* Alert box inner override (tighter padding for inline alerts) */
+.alert-box--compact {
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  margin-left: 2.5rem;
+}
+
+/* Step-number pill variant with horizontal padding */
+.step-number--pill {
+  width: auto;
+  padding: 0 8px;
+  border-radius: 14px;
+}
+
+/* flex-col-center with small gap */
+.flex-col-center--tight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Muted description text below an icon */
+.icon-description {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Inline icon (inside p tag — appears inline with text) */
+.icon-inline {
+  display: inline;
+  vertical-align: middle;
+}
+
+/* flex-col-center aligned left for image stacks */
+.flex-col-start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+/* flex-col-center pushing to right side */
+.flex-col-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* Arrow icon with extra top margin for visual alignment */
+.arrow-down-offset {
+  margin-top: 3.25rem;
+}
+
+/* Instruction step with margin-top */
+.instruction-step--spaced {
+  margin-top: 1rem;
+}
+
+/* instruction-box with tight top margin */
+.instruction-box--tight {
+  margin-top: 0.75rem;
+}
+
+/* step-header with margin-bottom */
+.step-header--spaced {
+  margin-bottom: 1rem;
+}
+
+/* flex-row with wrap + custom gap */
+.flex-row-tags {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding-left: 2.5rem;
+}
+
+/* result-preview with top margin */
+.result-preview--spaced {
+  margin-top: 2rem;
+}
+
+/* image-wrapper-flush with bottom margin */
+.image-wrapper-flush--mb {
+  margin-top: 0.5rem;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+/* flex-row-center with wrap */
+.flex-row-center--wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* flex-row-center with large gap (resize images) */
+.flex-row-center--wide {
+  display: flex;
+  align-items: center;
+  gap: 5.5rem;
+  flex-wrap: wrap;
+}
+
+/* max-width constraint for resize entry screenshot */
+.screenshot-sm-150 {
+  max-width: 150px;
+}
+
+/* max-width constraint for resize result screenshot */
+.screenshot-md-450 {
+  max-width: 450px;
+}
+
+/* image-wrapper with zero left padding + top spacing */
+.image-wrapper--flush-top {
+  padding-left: 0;
+  margin-top: 0.75rem;
+}
+
+/* 3DToolBars intro paragraph override */
+.intro-paragraph--muted {
+  margin-bottom: 2rem;
+  color: #64748b;
+}
+
+/* 3D2Dto3D slight bottom margin for intro text */
+.card-header--spaced {
+  margin-top: 2rem;
+}
+
+/* p with small top margin */
+.p-mt-sm {
+  margin-top: 0.75rem;
+}
+
+/* image-wrapper as flex-row with center justify */
+.image-wrapper--centered {
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Final residual classes ───────────────────────────────────────────────── */
+
+/* step-label with normal font weight (3D2Dto3D) */
+.step-label--normal {
+  font-weight: normal;
+}
+
+/* screenshot-click pushed right a little (vs. flush left) */
+.screenshot-click--indent {
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* image-wrapper-row with top margin variants */
+.image-wrapper-row--mt-sm {
+  margin-top: 0.5rem;
+}
+
+.image-wrapper-row--mt-md {
+  margin-top: 1rem;
+}
+
+.image-wrapper-row--mt-lg {
+  margin-top: 1.5rem;
+}
+
+/* image-wrapper-row with wrap */
+.image-wrapper-row--wrap {
+  flex-wrap: wrap;
+}
+
+/* Warning note text (red bold) */
+.note-text--warning {
+  color: #dc2626;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Step label keyword emphasis (red inline strong) */
+.keyword--danger {
+  color: #dc2626;
+}
+
+/* Paragraphs with zero padding-left (flush match for p-flush) */
+.p-zero-pad {
+  padding-left: 0;
+}
+
+/* screenshots with flush-left margin (icon/click images in show-hide) */
+.screenshot-icon--flush {
+  margin-left: 0;
+  margin-bottom: 0.5rem;
+}
+
+.screenshot-click--flush {
+  margin-left: 0;
+}
+
+/* image inside flush wrapper with top margin */
+.img-mt-sm {
+  margin-top: 0.5rem;
+}
+
+/* p with both margins reset */
+.p-reset {
+  margin: 0;
+}
+
+/* Small font-size text inside compact alert boxes */
+.alert-text--sm {
+  font-size: 0.9rem;
+}
+
+/* Icon with small right margin (used inline) */
+.icon-mr-sm {
+  margin-right: 6px;
+}
