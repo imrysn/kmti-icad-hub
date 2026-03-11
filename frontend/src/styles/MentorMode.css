@@ -422,3 +422,79 @@
     padding: 1.5rem;
   }
 }
+
+/* ── Classes migrated from inline styles ──────────────────────────────────── */
+
+/* sidebar-title is already pointer-capable but override for clickable 'back' */
+.sidebar-title--clickable {
+  cursor: pointer;
+}
+
+/* 2D drawing course — sidebar placeholder */
+.lesson-list__coming-soon {
+  padding: 2rem 1.5rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.lesson-list__coming-soon p {
+  margin: 0;
+}
+
+/* Lesson sidebar icon opacity helpers */
+.lesson-icon--dim {
+  opacity: 0.6;
+}
+
+.sub-lesson-icon {
+  opacity: 0.5;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* 2D drawing content placeholder */
+.content-2d-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 1rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.content-2d-placeholder__title {
+  margin: 0;
+  color: #475569;
+  font-weight: 700;
+  font-size: 1.35rem;
+}
+
+.content-2d-placeholder__text {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Generic lesson placeholder (unimplemented lessons) */
+.content-placeholder__icon {
+  margin-bottom: 1rem;
+  opacity: 0.2;
+}
+
+.content-placeholder__note {
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+/* Next-lesson action bar */
+.content-actions {
+  margin-top: 3rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.next-lesson-btn {
+  padding: 0.85rem 2rem;
+}

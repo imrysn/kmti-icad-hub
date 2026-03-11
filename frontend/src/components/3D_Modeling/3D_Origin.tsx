@@ -39,8 +39,10 @@ const OriginLesson: React.FC = () => {
       <div className="lesson-grid single-card">
         {activeTab === 'projections' && (
           <div className="lesson-card tab-content">
-            <div className="card-header"><h4>STANDARD PROJECTIONS</h4></div>
-            <div className="image-wrapper flex-row-center" style={{ justifyContent: 'center' }}>
+            <div className="card-header">
+              <h4>STANDARD PROJECTIONS</h4>
+            </div>
+            <div className="image-wrapper flex-row-center image-wrapper--centered">
               <img src={originOverview} alt="Origin Overview and Views" className="software-screenshot screenshot-large" />
             </div>
             <div className="lesson-navigation">
@@ -49,44 +51,46 @@ const OriginLesson: React.FC = () => {
             </div>
           </div>
         )}
-        {activeTab === 'layout' && (
-          <div className="lesson-card tab-content">
-            <div className="card-header">
-              <div className="flex-col-center" style={{ gap: '0.25rem' }}>
-                <h4>CHANGE 3D PART LAYOUT</h4>
-                <p style={{ color: '#64748b', fontSize: '0.95rem', margin: 0, fontWeight: 500 }}>Use this tool to set the location of origin.</p>
+        {
+          activeTab === 'layout' && (
+            <div className="lesson-card tab-content">
+              <div className="card-header">
+                <div className="flex-col-center--tight">
+                  <h4>CHANGE 3D PART LAYOUT</h4>
+                  <p className="icon-description">Use this tool to set the location of origin.</p>
+                </div>
+              </div>
+              <div className="instruction-step">
+                <div className="step-header"><span className="step-number">1</span><span className="step-label">Select Tool</span></div>
+                <p>Select the Change 3D Part Layout from the icon menu.</p>
+                <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-icon" />
+              </div>
+              <div className="instruction-step">
+                <div className="step-header">
+                  <span className="step-number step-number--pill">2-5</span>
+                  <span className="step-label">Relocate Origin</span>
+                </div>
+                <p>Follow the interaction sequence to relocate the origin:</p>
+                <ul className="interaction-list">
+                  <li><strong>2.)</strong> Right-click to show the current location of the origin.</li>
+                  <li><strong>3.)</strong> Left-click on the point of the desired new location of origin.</li>
+                  <li><strong>4.)</strong> Left-click on a 2nd point to set the X-axis.</li>
+                  <li><strong>5.)</strong> Left-click on a 3rd point to set the Y-axis.</li>
+                </ul>
+                <div className="alert-box alert-box--compact">
+                  <p className="alert-text--sm"><Info size={16} className="icon-inline icon-mr-sm" />The XY-plane will be the front view.</p>
+                </div>
+                <div className="image-wrapper"><img src={interactionSteps} alt="Interaction Steps" className="software-screenshot" /></div>
+              </div>
+              <div className="lesson-navigation">
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+                <button className="nav-button next" disabled>Finish <ChevronRight size={18} /></button>
               </div>
             </div>
-            <div className="instruction-step">
-              <div className="step-header"><span className="step-number">1</span><span className="step-label">Select Tool</span></div>
-              <p>Select the Change 3D Part Layout from the icon menu.</p>
-              <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-icon" />
-            </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-number" style={{ width: 'auto', padding: '0 8px', borderRadius: '14px' }}>2-5</span>
-                <span className="step-label">Relocate Origin</span>
-              </div>
-              <p>Follow the interaction sequence to relocate the origin:</p>
-              <ul className="interaction-list">
-                <li><strong>2.)</strong> Right-click to show the current location of the origin.</li>
-                <li><strong>3.)</strong> Left-click on the point of the desired new location of origin.</li>
-                <li><strong>4.)</strong> Left-click on a 2nd point to set the X-axis.</li>
-                <li><strong>5.)</strong> Left-click on a 3rd point to set the Y-axis.</li>
-              </ul>
-              <div className="alert-box" style={{ padding: '0.75rem 1rem', marginTop: '0.5rem', marginLeft: '2.5rem' }}>
-                <p style={{ fontSize: '0.9rem' }}><Info size={16} style={{ display: 'inline', marginRight: '6px' }} />The XY-plane will be the front view.</p>
-              </div>
-              <div className="image-wrapper"><img src={interactionSteps} alt="Interaction Steps" className="software-screenshot" /></div>
-            </div>
-            <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" disabled>Finish <ChevronRight size={18} /></button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+          )
+        }
+      </div >
+    </div >
   );
 };
 

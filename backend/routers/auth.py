@@ -4,7 +4,8 @@ Authentication Router
 Handles user registration, login, and user management endpoints.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -12,7 +13,7 @@ from ..database import get_db
 from ..models import User
 from ..schemas import UserCreate, UserLogin, Token, UserResponse
 from ..auth.security import hash_password, verify_password, create_access_token
-from ..auth.dependencies import get_current_user
+from ..auth.dependencies import get_current_user, require_role
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -54,7 +55,7 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
         hashed_password=hash_password(user_data.password),
         full_name=user_data.full_name,
         role=user_data.role,
-        created_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc)
     )
     
     db.add(new_user)
@@ -95,7 +96,7 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
         )
     
     # Update last login
-    user.last_login = datetime.utcnow()
+    user.last_login = datetime.now(timezone.utc)
     db.commit()
     
     # Create access token
@@ -122,14 +123,40 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
 async def logout(current_user: User = Depends(get_current_user)):
     """
     Logout (client-side token removal).
-    
+
     Note: JWT tokens are stateless, so logout is handled client-side
     by removing the token from storage.
-    
-    Args:
-        current_user: Current authenticated user
-        
-    Returns:
-        Success message
     """
     return {"message": "Successfully logged out"}
+
+
+@router.get("/users", response_model=List[UserResponse])
+def list_users(
+    db: Session = Depends(get_db),
+    _: User = Depends(require_role("admin"))
+):
+    """
+    List all registered users. Admin only.
+    """
+    return db.query(User).order_by(User.created_at.desc()).all()
+
+
+@router.patch("/users/{user_id}/status")
+def toggle_user_status(
+    user_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """
+    Enable or disable a user account. Admin only.
+    Cannot disable your own account.
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.id == admin.id:
+        raise HTTPException(status_code=400, detail="Cannot disable your own account")
+    user.is_active = not user.is_active
+    db.commit()
+    db.refresh(user)
+    return {"id": user.id, "username": user.username, "is_active": user.is_active}

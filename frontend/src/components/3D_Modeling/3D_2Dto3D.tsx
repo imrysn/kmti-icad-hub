@@ -149,28 +149,45 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
         {activeTab === 'extrude' && (
           <div className="lesson-card tab-content">
             <div className="instruction-box">
-              <p>These are the tools use for extruding 2D sketches to 3D Solid Entities.</p>
-              <div className="image-wrapper"><img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-medium" /></div>
+              <p>These are the tools use for extruding 2D sketches to 3D solid Entities.</p>
+              <div className="image-wrapper">
+                <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-medium" />
+              </div>
+              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
             </div>
-            <div className="card-header"><h4>EXTRUDE</h4></div>
+
+            <div className="card-header" style={{ marginTop: '2rem' }}><h4>EXTRUDE</h4></div>
+            <p className="p-flush-bottom">Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical at projection.</p>
+
             <div className="instruction-step">
-              <div className="step-header"><span className="step-label">1.) Select Extrude from the icon menu.</span></div>
-              <div className="image-wrapper-flush"><img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" /></div>
+              <div className="step-header">
+                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) Select <strong>Extrude</strong> from the icon menu.</span>
+              </div>
+              <div className="image-wrapper-flush">
+                <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" />
+              </div>
             </div>
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label">2.) Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
               </div>
-              <div className="image-wrapper-row" style={{ marginTop: '1rem' }}><img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-medium" /></div>
+              <div className="image-wrapper-row" style={{ marginTop: '1rem' }}>
+                <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-medium" />
+
+              </div>
             </div>
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label">3.) Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
               </div>
             </div>
-            <p className="text-danger">Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.</p>
+
+            <p className="p-flush-bottom" style={{ marginTop: '0.75rem', marginBottom: '0' }}>A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane.</p>
+            <p className="p-flush-bottom" style={{ color: 'red', fontWeight: 'bold', margin: '0' }}>Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.</p>
+            <p className="p-flush" style={{ margin: '0' }}>Select Cancel to keep the work plane together with all the 2D sketches.</p>
+
             <div className="image-wrapper-row" style={{ marginTop: '1.5rem' }}>
               <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot screenshot-medium" />
               <img src={extrudeResultFinal} alt="Extrude Result" className="software-screenshot screenshot-medium" />
@@ -185,25 +202,33 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
           <div className="lesson-card tab-content">
             <div className="instruction-box">
               <p>These are the tools use for revolving 2D sketches to 3D solid Entities.</p>
-              <div className="image-wrapper"><img src={commandMenu2} alt="Revolve Tools" className="software-screenshot screenshot-medium" /></div>
+              <div className="image-wrapper">
+                <img src={commandMenu2} alt="Revolve Tools" className="software-screenshot screenshot-medium" />
+              </div>
+              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
             </div>
-            <h3 className="section-title">REVOLVE</h3>
+
+            <div className="card-header" style={{ marginTop: '2rem' }}><h4>REVOLVE</h4></div>
+            <p className="p-flush-bottom">Creates a solid entity from a section from creatd on a work plane or 2D drawing, by performing rotation projection.</p>
+
             <div className="instruction-step">
-              <div className="step-header"><span className="step-label">1.) Select Revolve from the icon menu.</span></div>
+              <div className="step-header">
+                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) Select <strong>Revolve</strong> from the icon menu.</span>
+              </div>
               <div className="image-wrapper-flush">
                 <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
               </div>
             </div>
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label">2.) Pick the cross section to be revolved &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Pick the cross section to be revolved &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
               </div>
             </div>
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label">3.) Select the axis of rotation &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Select the axis of rotation &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
               </div>
             </div>
             <div className="image-wrapper-flush mt-6 text-center"><img src={revolveSteps} alt="Revolve Steps" className="software-screenshot screenshot-wide screenshot-plain" /></div>
@@ -217,31 +242,49 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
           <div className="lesson-card tab-content">
             <div className="instruction-box">
               <p>These are the tools use for spiraling 2D sketches to 3D solid Entities.</p>
-              <div className="image-wrapper"><img src={commandMenu2} alt="Spiral Tools" className="software-screenshot screenshot-medium" /></div>
+              <div className="image-wrapper">
+                <img src={commandMenu2} alt="Spiral Tools" className="software-screenshot screenshot-medium" />
+              </div>
+              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
             </div>
-            <div className="card-header"><h4>SPIRAL FORM</h4></div>
+
+            <div className="card-header" style={{ marginTop: '2rem' }}><h4>SPIRAL FORM</h4></div>
+            <p className="p-flush-bottom">Creates a 3D spiral form from a section form created on a 2D sketch.</p>
+
             <div className="instruction-step">
-              <div className="step-header"><span className="step-label">1.) First do the sketch.</span></div>
-              <div className="image-wrapper-flush"><img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" /></div>
+              <div className="step-header">
+                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) First do the sketch.</span>
+              </div>
+              <div className="image-wrapper-flush">
+                <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" />
+              </div>
             </div>
             <div className="instruction-step">
-              <div className="step-header"><span className="step-number">2</span><span className="step-label">Select Spiral Form Icon</span></div>
-              <img src={spiralIcon} alt="Spiral Icon" className="software-screenshot screenshot-icon" />
+              <div className="step-header">
+                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Select <strong style={{ color: 'red' }}>Spiral Form</strong> from the icon menu.</span>
+              </div>
+              <div className="image-wrapper-flush">
+                <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" />
+              </div>
               <p className="p-flush">Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO </p>
             </div>
             <div className="instruction-step">
               <div className="step-header">
-                <span className="step-label">3.) Specify pitch &gt; Press Enter &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
               </div>
-              <div className="image-wrapper-flush flex-col-center" style={{ marginTop: '1.5rem', gap: '1.5rem' }}>
-                <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-large" />
+              <p className="p-flush-bottom" style={{ color: 'red', fontWeight: 'bold' }}>*Note: Pitch must be greater than Thickness</p>
+              <div className="image-wrapper-row" style={{ marginTop: '0.5rem' }}>
+                <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-medium" />
                 <img src={spiralPitch} alt="Spiral Pitch Diagram" className="software-screenshot screenshot-medium" />
               </div>
             </div>
             <div className="instruction-step">
-              <div className="step-header"><span className="step-label">4.) Select the ends of the length &gt; GO</span></div>
+              <div className="step-header">
+                <span className="step-label" style={{ fontWeight: 'normal' }}>4.) Select the ends of the length of the spiral along the axis of rotation Then GO</span>
+              </div>
             </div>
+
             <div className="image-wrapper-row" style={{ marginTop: '1.5rem', flexWrap: 'wrap' }}>
               <img src={spiralRotation1} alt="Spiral Axis 1" className="software-screenshot screenshot-medium-small" />
               <img src={spiralRotation} alt="Spiral Axis" className="software-screenshot screenshot-medium-small" />

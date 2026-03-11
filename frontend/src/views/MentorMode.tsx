@@ -348,7 +348,7 @@ const MentorMode: React.FC = () => {
 
             <div className="sidebar-section">
               <div className="sidebar-header-row">
-                <div className="sidebar-title" onClick={() => setSelectedCourse(null)} style={{ cursor: 'pointer' }}>
+                <div className="sidebar-title sidebar-title--clickable" onClick={() => setSelectedCourse(null)}>
                   <ChevronDown size={16} /> COURSE OVERVIEW
                 </div>
                 <button className="sidebar-search-btn">
@@ -374,7 +374,7 @@ const MentorMode: React.FC = () => {
                       {lesson.children ? (
                         expandedIds.has(lesson.id) ? <ChevronDown size={16} /> : <ChevronRight size={16} />
                       ) : (
-                        <Menu size={16} style={{ opacity: 0.6 }} />
+                        <Menu size={16} className="lesson-icon--dim" />
                       )}
                       <span>{lesson.title}</span>
                     </div>
@@ -389,7 +389,7 @@ const MentorMode: React.FC = () => {
                           className={`sub-lesson-item ${activeLessonId === child.id ? 'active' : ''}`}
                           onClick={() => setActiveLessonId(child.id)}
                         >
-                          <Menu size={14} style={{ opacity: 0.5, marginRight: '0.75rem' }} />
+                          <Menu size={14} className="sub-lesson-icon" />
                           {child.title}
                         </div>
                       ))}
@@ -418,57 +418,94 @@ const MentorMode: React.FC = () => {
           </div>
 
           <div className="lesson-content-body">
-            {/* 3D Modeling Lessons */}
-            {!is2DDrawingCourse && activeLessonId === 'interface' && <IcadInterfaceLesson />}
-            {!is2DDrawingCourse && activeLessonId === 'toolbars' && <ToolBarsLesson />}
-            {!is2DDrawingCourse && activeLessonId === 'origin' && <div className="origin-lesson-container"><OriginLesson /></div>}
-            {!is2DDrawingCourse && (activeLessonId.startsWith('basic-op-')) && <BasicOperationLesson subLessonId={activeLessonId} />}
-            {!is2DDrawingCourse && (activeLessonId.startsWith('2d-3d-')) && <TwoDTo3DLesson subLessonId={activeLessonId} onNextLesson={goToNextLesson} />}
-            {!is2DDrawingCourse && activeLessonId === 'hole-details' && <HoleDetailsLesson onNextLesson={goToNextLesson} />}
-            {!is2DDrawingCourse && activeLessonId === 'fairing' && <FairingLesson onNextLesson={goToNextLesson} />}
-            {!is2DDrawingCourse && (activeLessonId.startsWith('3d-part-')) && <PartLesson subLessonId={activeLessonId} onNextLesson={goToNextLesson} />}
-            {!is2DDrawingCourse && (activeLessonId.startsWith('material-')) && <MaterialSettingLesson subLessonId={activeLessonId} onNextLesson={goToNextLesson} />}
-            {!is2DDrawingCourse && (activeLessonId.startsWith('boolean-')) && <BooleanLesson subLessonId={activeLessonId} onNextLesson={goToNextLesson} />}
-            {!is2DDrawingCourse && (activeLessonId.startsWith('component-')) && <ComponentLesson subLessonId={activeLessonId} onNextLesson={goToNextLesson} />}
 
-            {/* 2D Drawing Lessons */}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-orthographic-') && <OrthographicViewLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-command-menu-') && <CommandMenuLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-line-props-') && <LinePropertiesLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-dimensioning-') && <DimensioningLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-standard-part-') && <StandardPartLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-surface-app-') && <SurfaceApplicationLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-keyway' && <KeywayLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-retaining-ring-') && <RetainingRingLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-geometric-tol-') && <GeometricToleranceLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-part-note' && <PartNoteLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-machining-symbol' && <MachiningSymbolLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-welding-symbol' && <WeldingSymbolLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-heat-treatment-') && <HeatTreatmentLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-surface-coating' && <SurfaceCoatingLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-weight-computation' && <WeightComputationLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-bom-') && <BillOfMaterialLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-balloon' && <BalloonLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-titleblock' && <TitleblockLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-additional-view-') && <AdditionalViewLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-operal-view-') && <OperalViewLesson />}
-            {is2DDrawingCourse && activeLessonId.startsWith('2d-normal-mirror-') && <NormalMirrorPartsLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-revision-code' && <RevisionCodeLesson />}
-            {is2DDrawingCourse && activeLessonId === '2d-standard-library' && <StandardLibraryLesson />}
+            {/* ── Lesson Registry ──────────────────────────────────────────────────── */}
+            {/* To add a new lesson: just add an entry to LESSON_REGISTRY in MentorMode.tsx */}
+            {
+              (() => {
+                // Registry: maps a lesson id (or id prefix) → component factory
+                const registry: Record<string, () => React.ReactNode> = {
+                  'interface': () => <IcadInterfaceLesson />,
+                  'toolbars': () => <ToolBarsLesson />,
+                  'origin': () => <div className="origin-lesson-container"><OriginLesson /></div>,
+                  'hole-details': () => <HoleDetailsLesson onNextLesson={goToNextLesson} />,
+                  'fairing': () => <FairingLesson onNextLesson={goToNextLesson} />,
+                  // Add other exact match lessons here
+                };
 
-            {/* Fallback Placeholder */}
-            {!activeLessonId.startsWith('2d-') && !['interface', 'toolbars', 'origin', 'hole-details', 'fairing'].includes(activeLessonId) &&
-              !['basic-op-', '2d-3d-', '3d-part-', 'material-', 'boolean-', 'component-'].some(prefix => activeLessonId.startsWith(prefix)) && (
-                <div className="content-placeholder">
-                  <Video size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
-                  <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
-                </div>
-              )}
+                // Sub-lesson prefixes (basic-op-1, 2d-3d-2, etc.)
+                const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
+                  'basic-op': (id) => <BasicOperationLesson subLessonId={id} />,
+                  '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  '2d-orthographic': () => <OrthographicViewLesson />,
+                  '2d-command-menu': () => <CommandMenuLesson />,
+                  '2d-line-props': () => <LinePropertiesLesson />,
+                  '2d-dimensioning': () => <DimensioningLesson />,
+                  '2d-standard-part': () => <StandardPartLesson />,
+                  '2d-surface-app': () => <SurfaceApplicationLesson />,
+                  '2d-retaining-ring': () => <RetainingRingLesson />,
+                  '2d-geometric-tol': () => <GeometricToleranceLesson />,
+                  '2d-heat-treatment': () => <HeatTreatmentLesson />,
+                  '2d-bom': () => <BillOfMaterialLesson />,
+                  '2d-additional-view': () => <AdditionalViewLesson />,
+                  '2d-operal-view': () => <OperalViewLesson />,
+                  '2d-normal-mirror': () => <NormalMirrorPartsLesson />,
+                  // Add other prefix match lessons here
+                };
 
-            <div className="content-actions" style={{ marginTop: '3rem', display: 'flex', gap: '1rem' }}>
+                // Exact match first
+                const exactMatch = activeLessonId ? registry[activeLessonId] : null;
+                if (exactMatch) return exactMatch();
+
+                // Prefix match for sub-lessons (e.g. 'basic-op-3' → 'basic-op')
+                const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && activeLessonId.startsWith(p + '-'));
+                if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
+
+                // Special 2D lessons that are exact matches but not in the main registry
+                if (is2DDrawingCourse) {
+                  switch (activeLessonId) {
+                    case '2d-keyway': return <KeywayLesson />;
+                    case '2d-part-note': return <PartNoteLesson />;
+                    case '2d-machining-symbol': return <MachiningSymbolLesson />;
+                    case '2d-welding-symbol': return <WeldingSymbolLesson />;
+                    case '2d-surface-coating': return <SurfaceCoatingLesson />;
+                    case '2d-weight-computation': return <WeightComputationLesson />;
+                    case '2d-balloon': return <BalloonLesson />;
+                    case '2d-titleblock': return <TitleblockLesson />;
+                    case '2d-revision-code': return <RevisionCodeLesson />;
+                    case '2d-standard-library': return <StandardLibraryLesson />;
+                    default:
+                      // 2D Course placeholder for any other 2D lesson not explicitly handled
+                      return (
+                        <div className="content-2d-placeholder">
+                          <BookOpen size={48} strokeWidth={1.5} />
+                          <h3 className="content-2d-placeholder__title">iCAC Operation Manual 2D Drawing</h3>
+                          <p className="content-2d-placeholder__text">Content will be available soon.</p>
+                        </div>
+                      );
+                  }
+                }
+
+                // Fallback placeholder for unimplemented lessons (3D or unhandled 2D)
+                return (
+                  <div className="content-placeholder">
+                    <Video size={48} className="content-placeholder__icon" />
+                    <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
+                    <p className="content-placeholder__note">
+                      This area will host the instructional text, video demonstrations, and active testing prompts.
+                    </p>
+                  </div>
+                );
+              })()
+            }
+
+            <div className="content-actions">
               <button
-                className="btn-primary"
-                style={{ padding: '0.85rem 2rem' }}
+                className="btn-primary next-lesson-btn"
                 onClick={goToNextLesson}
                 disabled={currentLessonIndex === allLessonIds.length - 1}
               >
@@ -477,8 +514,8 @@ const MentorMode: React.FC = () => {
             </div>
           </div>
         </main>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
