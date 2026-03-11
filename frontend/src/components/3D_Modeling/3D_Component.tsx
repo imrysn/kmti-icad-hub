@@ -87,7 +87,7 @@ const Component1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
           <div className="instruction-step">
             <div className="step-header" style={{ marginBottom: '1.5rem' }}>
               <span className="step-number">2</span>
-              <span className="step-label">Select the component to be move &gt; </span>
+              <span className="step-label">Select the component to be move &gt; GO </span>
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
 
@@ -184,7 +184,7 @@ const Component1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
           <div className="instruction-step">
             <div className="step-header" style={{ marginBottom: '1rem' }}>
               <span className="step-number">2</span>
-              <span className="step-label">Select the components to be mirror &gt; </span>
+              <span className="step-label">Select the components to be mirror &gt; GO</span>
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
           </div>
@@ -228,7 +228,7 @@ const Component1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
           <div className="instruction-step">
             <div className="step-header" style={{ marginBottom: '1rem' }}>
               <span className="step-number">2</span>
-              <span className="step-label">Select the component to be rotate &gt; </span>
+              <span className="step-label">Select the component to be rotate &gt; GO</span>
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
           </div>
@@ -243,15 +243,15 @@ const Component1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
           <div className="instruction-step">
             <div className="step-header">
               <span className="step-number">4</span>
-              <span className="step-label">Specify the desired angle of rotation on the item entry &gt; Press Enter</span>
+              <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter</span>
             </div>
             <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
               <div className="flex-row">
                 <div className="flex-1">
-                  <img src={rotateEntry} alt="Rotate Angle Entry" className="software-screenshot screenshot-small" />
+                  <img src={rotateEntry} alt="Rotate Angle Entry" className="software-screenshot screenshot-large" />
                 </div>
                 <div className="flex-1">
-                  <img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-medium" />
+                  <img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-large" />
                 </div>
               </div>
             </div>
@@ -355,15 +355,16 @@ const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
         <div className="tab-pane fade-in">
           <h3 className="section-title">ROTATE COPY COMPONENT</h3>
           <p className="p-flush-bottom">Use to create a duplicate of a component by rotating on an axis.</p>
+          <div className="image-wrapper-flush">
+            <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot screenshot-small" />
+          </div>
 
-          <div className="instruction-step">
+          <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
               <span className="step-number">1</span>
               <span className="step-label">Select Rotate Component from the icon menu.</span>
             </div>
-            <div className="image-wrapper-flush">
-              <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot screenshot-small" />
-            </div>
+
           </div>
 
           <div className="instruction-step">
@@ -384,13 +385,13 @@ const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className="instruction-step" style={{ marginTop: '1rem' }}>
             <div className="step-header">
               <span className="step-number">4</span>
               <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter.</span>
             </div>
             <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-              <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot screenshot-large" />
+              <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot screenshot-wide" />
             </div>
           </div>
 
@@ -409,12 +410,12 @@ const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
         <div className="tab-pane fade-in">
           <h3 className="section-title">MIRROR COPY COMPONENT</h3>
           <p className="p-flush-bottom">Use to create a duplicate of a component by mirror movement.</p>
-          <p className="p-flush">Same procedure with Mirror Component.</p>
+          <div className="image-wrapper-flush">
+            <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot screenshot-small" />
+          </div>
+          <p className="p-flush" style={{ marginTop: '1rem' }}>Same procedure with Mirror Component.</p>
 
           <div className="instruction-step">
-            <div className="image-wrapper-flush">
-              <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot screenshot-small" />
-            </div>
             <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
               <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot screenshot-large" />
             </div>
@@ -447,7 +448,7 @@ const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
           <div className="instruction-step">
             <div className="step-header">
               <span className="step-number">2</span>
-              <span className="step-label">Select components to be deleted.</span>
+              <span className="step-label" style={{ marginTop: '1rem' }}>Select components to be deleted.</span>
             </div>
           </div>
 

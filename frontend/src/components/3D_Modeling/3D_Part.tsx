@@ -64,7 +64,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
               <div className="instruction-step">
                 <div className="step-header">
                   <span className="step-number">2</span>
-                  <span className="step-label">Select a single entity &gt; </span>
+                  <span className="step-label">Select a single entity &gt; GO</span>
                   <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
                 </div>
               </div>
@@ -75,12 +75,12 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot" />
+                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
 
               <div className="instruction-step">
-                <div className="step-header">
+                <div className="step-header" style={{ marginTop: '1rem' }}>
                   <span className="step-number">4</span>
                   <span className="step-label">All created 3D Part will appear on the tree view.</span>
                 </div>
@@ -90,12 +90,8 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
               </div>
 
               <div className="material-details-section" style={{ marginTop: '3rem' }}>
-                <h3 className="section-title">Material Description</h3>
-                <p className="note-text">*Use BATSU = ×</p>
-                <p className="note-text">*In cases of round-shaped materials, use FAI φ</p>
-
                 <div className="material-grid" style={{ marginTop: '1.5rem' }}>
-                  <img src={materialDescriptionImg} alt="Material Description and Plate Thickness" className="full-width-image" style={{ border: '1px solid #eee', borderRadius: '4px' }} />
+                  <img src={materialDescriptionImg} alt="Material Description and Plate Thickness" className="full-width-image" style={{ maxWidth: '100%', height: 'auto', border: '1px solid #eee', borderRadius: '4px', display: 'block' }} />
                 </div>
               </div>
             </div>
@@ -113,7 +109,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                 </div>
               </div>
 
-              <div className="instruction-step">
+              <div className="instruction-step" style={{ marginTop: '1rem' }}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <span className="step-label">Select an entity or Right-click on the 3D Space.</span>
@@ -126,30 +122,18 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={modalInfo2} alt="Change Name Window" className="software-screenshot" />
+                  <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
 
-              <div className="instruction-step">
+              <div className="instruction-step" style={{ marginTop: '1rem' }}>
                 <div className="step-header">
                   <span className="step-number">4</span>
                   <span className="step-label">A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name &gt; Select <strong className="text-highlight">Yes</strong>.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot" />
+                  <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
                 </div>
-                <p className="note-text" style={{ marginTop: '1rem' }}>2D part name will be generated once orthographic projections were made on the 2D dimension. Every view creates 2D part names once the part is visible on that certain view.</p>
-              </div>
-
-              <div className="warning-box">
-                <div className="flex items-center gap-2 mb-2">
-                  <Info size={20} className="text-error" />
-                  <strong className="text-danger">NOTE:</strong>
-                </div>
-                <p className="text-highlight">
-                  ALL 3D PART NAMES AND 2D PART NAMES MUST ALWAYS MATCH EACH OTHER.
-                  DIFFERENCES ON THE 3D AND 2D PART NAME WILL CUT THE LINK.
-                </p>
               </div>
             </div>
           )}

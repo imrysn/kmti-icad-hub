@@ -65,6 +65,8 @@ import ComponentLesson from '../components/3D_Modeling/3D_Component';
 import FairingLesson from '../components/3D_Modeling/3D_Fairing';
 import PartLesson from '../components/3D_Modeling/3D_Part';
 import MaterialSettingLesson from '../components/3D_Modeling/3D_MaterialSetting';
+import PropertiesLesson from '../components/3D_Modeling/3D_Properties';
+import AnnotationLesson from '../components/3D_Modeling/3D_Annotation';
 
 // 2D Drawing Lesson Imports
 import OrthographicViewLesson from '../components/2D_Drawing/2D_OrthographicView';
@@ -439,6 +441,8 @@ const MentorMode: React.FC = () => {
                   '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'annotation': (id) => <AnnotationLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   '2d-orthographic': () => <OrthographicViewLesson />,
