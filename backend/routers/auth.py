@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User
+from ..models import User, SystemLog
 from ..schemas import UserCreate, UserLogin, Token, UserResponse
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
@@ -104,6 +104,16 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
         data={"sub": user.username, "role": user.role}
     )
     
+    # Log the login
+    log_entry = SystemLog(
+        level="INFO",
+        message=f"User {user.username} logged in",
+        context="AUTH",
+        user_id=user.id
+    )
+    db.add(log_entry)
+    db.commit()
+    
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get("/me", response_model=UserResponse)
@@ -157,6 +167,16 @@ def toggle_user_status(
     if user.id == admin.id:
         raise HTTPException(status_code=400, detail="Cannot disable your own account")
     user.is_active = not user.is_active
+    
+    # Log the status change
+    log_entry = SystemLog(
+        level="INFO",
+        message=f"Admin {admin.username} {'enabled' if user.is_active else 'disabled'} user {user.username}",
+        context="USER_MGMT",
+        user_id=admin.id
+    )
+    db.add(log_entry)
+    
     db.commit()
     db.refresh(user)
     return {"id": user.id, "username": user.username, "is_active": user.is_active}

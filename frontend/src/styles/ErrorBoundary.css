@@ -1,4 +1,6 @@
-/* ErrorBoundary.css — migrated from inline styles in ErrorBoundary.tsx */
+/* ============================================================
+   Error Boundary
+   ============================================================ */
 
 .error-boundary__container {
   display: flex;
@@ -7,36 +9,44 @@
   justify-content: center;
   height: 60vh;
   gap: 1.25rem;
-  color: #94a3b8;
   text-align: center;
   padding: 2rem;
+  color: var(--text-muted);
 }
 
 .error-boundary__title {
   margin: 0;
-  color: #f87171;
-  font-size: 1.2rem;
-  font-weight: 700;
+  color: var(--color-error);
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 
 .error-boundary__detail {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--text-dim);
   max-width: 600px;
   overflow-x: auto;
   text-align: left;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 .error-boundary__retry-btn {
-  padding: 0.6rem 1.5rem;
-  background: #3b82f6;
-  color: #fff;
+  padding: 0.5rem 1.5rem;
+  background: var(--primary);
+  color: var(--text-white);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.875rem;
+  font-family: inherit;
+  transition: all 0.15s ease;
 }
 
 .error-boundary__retry-btn:hover {
-  background: #2563eb;
+  background: var(--primary-hover);
 }

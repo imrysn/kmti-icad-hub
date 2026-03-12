@@ -59,3 +59,15 @@ class User(Base):
     created_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
 
+
+class SystemLog(Base):
+    """Stores system events for audit trail"""
+    __tablename__ = "system_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    level = Column(String(20))  # "INFO", "WARNING", "ERROR"
+    message = Column(String(500))
+    context = Column(String(100))  # "AUTH", "KB", "USER_MGMT"
+    user_id = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=func.now())
+
