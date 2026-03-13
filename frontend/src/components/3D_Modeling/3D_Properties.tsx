@@ -64,6 +64,18 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
     <div className="course-lesson-container">
       <section className="lesson-intro">
         <h3><Sliders size={28} className="lesson-intro-icon" /> PROPERTIES</h3>
+        {!isProperties1 && (
+          <p className="lesson-description">
+            Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information)
+          </p>
+        )}
+        {isProperties1 && activeTab === 'color' && (
+          <div className="instruction-box">
+            <div className="image-wrapper">
+              <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" />
+            </div>
+          </div>
+        )}
       </section>
 
       <div className="lesson-grid single-card">
@@ -90,35 +102,26 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                   <div className="tab-pane fade-in">
                     <h3 className="section-title">CHANGE COLOR</h3>
 
-                    <div className="flex-row-wrap" style={{ alignItems: 'flex-start' }}>
-                      <div className="flex-1">
-                        <div className="instruction-step">
-                          <div className="step-header">
-                            <span className="step-number">1</span>
-                            <span className="step-label">Select <strong className="text-highlight">Change Color</strong> from the icon menu.</span>
-                          </div>
-                          <div className="image-wrapper-flush">
-                            <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" />
-                          </div>
-                        </div>
+                    <div className="instruction-step">
+                      <div className="step-header">
+                        <span className="step-number">1</span>
+                        <span className="step-label">Select <strong className="text-highlight">Change Color</strong> from the icon menu.</span>
                       </div>
-                      <div className="flex-col-center" style={{ marginLeft: '8rem', flex: '1.2' }}>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0' }}>
-                          <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" />
-                        </div>
+                      <div className="image-wrapper-flush">
+                        <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" />
                       </div>
                     </div>
 
                     <div className="instruction-step" style={{ marginTop: '1rem' }}>
                       <div className="step-header">
                         <span className="step-number">2</span>
-                        <span className="step-label">Select either <strong className="text-highlight">Entity</strong> or <strong className="text-highlight">Face</strong></span>
+                        <span className="step-label font-bold">Select either <strong className="text-highlight">Entity</strong> or <strong className="text-highlight">Face</strong></span>
                       </div>
 
                       <div style={{ marginTop: '1.5rem', marginLeft: '2.5rem' }}>
                         <div className="flex-row-wrap" style={{ alignItems: 'flex-start' }}>
                           <div className="flex-1">
-                            <p className="font-bold text-lg mb-0" style={{ marginLeft: '-2rem' }}>&gt; Entity</p>
+                            <p className="font-bold text-lg mb-0" style={{ marginLeft: '-2rem' }}><strong>&gt; Entity</strong></p>
                             <p className="step-description mt-1 mb-0" style={{ paddingLeft: '0' }}>
                               The entire solid entity will change its color.
                               <br />Pick a color &gt; Select the solid entity
@@ -126,14 +129,14 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                           </div>
                           <div className="flex-col-center" style={{ marginLeft: '1rem', flex: '1' }}>
                             <div className="image-wrapper-flush" style={{ marginBottom: '-3rem' }}>
-                              <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-medium" />
+                              <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-large" />
                             </div>
                           </div>
                         </div>
 
                         <div className="flex-row-wrap mt-0" style={{ alignItems: 'flex-start', marginTop: '0rem' }}>
                           <div className="flex-1" style={{ marginTop: '5.5rem' }}>
-                            <p className="font-bold text-lg mb-0" style={{ marginLeft: '-2rem' }}>&gt; Face</p>
+                            <p className="font-bold text-lg mb-0" style={{ marginLeft: '-2rem' }}><strong>&gt; Face</strong></p>
                             <div className="flex items-center gap-2 mt-1">
                               <p className="step-description mb-0" style={{ paddingLeft: '0' }}>
                                 Only selected faces/surfaces will change its color.
@@ -143,7 +146,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                           </div>
                           <div className="flex-col-center" style={{ marginLeft: '1rem', flex: '1' }}>
                             <div className="image-wrapper-flush" style={{ marginTop: '5rem' }}>
-                              <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" />
+                              <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-large" />
                             </div>
                           </div>
                         </div>
@@ -172,7 +175,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         <span className="step-label">Specify the layer on the item entry.</span>
                       </div>
                       <div className="image-wrapper-flush">
-                        <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-medium" />
+                        <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
 
@@ -188,7 +191,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
 
                     <div className="mt-6 mb-8">
                       <h4 className="font-bold text-lg mb-2">Layer 1</h4>
-                      <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '0' }}>
+                      <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
                         <li>All common parts need to be fabricated or machined</li>
                         <li>Parts that undergo Annealing, Shot blasting, Annealing Shot blasting</li>
                         <li>Covers for purchase parts (No mechanism)</li>
@@ -201,35 +204,36 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
 
                     <div className="mt-8">
                       <h4 className="font-bold text-lg mb-2">Layer 2</h4>
-                      <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '0' }}>
+                      <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
                         <li>Fabricated parts/Machined parts with color/paint</li>
                         <li>Safety Cover - Yellow (No. 4)</li>
                       </ul>
                       <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                         <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" />
                       </div>
-                      <p className="note-text mt-4 text-center">
+                      <p className="note-text mt-4 text-center" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
                         Safety color applies to covers for machine guarding such as chain, belt and gear drive power transmission system.
                       </p>
 
                       <div className="mt-8">
-                        <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '0' }}>
-                          <li>Parts that does not need to be painted</li>
-                          <ul style={{ paddingLeft: '1.5rem', listStyleType: 'circle', marginTop: '0.25rem' }}>
-                            <li>All Stainless Steel (SUS) - white (No.1)</li>
-                            <li>Acrylic - white (No.1)</li>
-                          </ul>
+                        <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
+                          <li>Parts that do not need to be painted</li>
+                          <li>All Stainless Steel (SUS) - white (No.1)</li>
+                          <li>Acrylic - white (No.1)</li>
                         </ul>
                         <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                           <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" />
                         </div>
+                        <h4 className="note-text mt-4 text-center" style={{ color: 'red', fontWeight: 'bold', marginTop: '1.5rem', marginBottom: '3rem' }}>
+                          Red paint only on the pointer
+                        </h4>
                       </div>
 
                       <div className="flex-row-wrap mt-8" style={{ alignItems: 'flex-start', marginTop: '1.8rem' }}>
                         <div className="flex-1">
                           <p className="font-semibold mb-2">Materials with Color codes on the material list</p>
-                          <p className="mb-1">Examples:</p>
-                          <ul style={{ paddingLeft: '1.5rem', listStyleType: 'circle', marginBottom: '1rem' }}>
+                          <p><strong>Examples:</strong></p>
+                          <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
                             <li>MC Nylon - Blue (No.5)</li>
                             <li>Urethane - (No.18)</li>
                             <li>Rubber - Black (No.16)</li>
@@ -238,17 +242,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         </div>
                         <div className="flex-col-center" style={{ marginLeft: '1rem', flex: '1' }}>
                           <div className="image-wrapper-flush" style={{ marginTop: '0' }}>
-                            <img src={propertiesMaterialImg} alt="Properties Material" className="software-screenshot screenshot-medium" />
+                            <img src={propertiesMaterialImg} alt="Properties Material" className="software-screenshot screenshot-large" />
                           </div>
                         </div>
                       </div>
 
                       <div className="flex-row-wrap mt-8" style={{ alignItems: 'flex-start' }}>
                         <div className="flex-1">
-                          <p className="font-semibold mb-2">
-                            Fabricated parts/Machined parts with <strong style={{ color: 'red' }}>Heat Treatment</strong>
-                          </p>
-                          <ul style={{ paddingLeft: '1.5rem', listStyleType: 'circle', marginBottom: '1rem' }}>
+                          <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
+                            <li>Fabricated parts/Machined parts with <strong style={{ color: 'red' }}>Heat Treatment</strong></li>
                             <li>Preheat/ heated surface coating part - white (No.1)</li>
                             <li>Isonite, Ionite, Parsonite - Gray (No. 8)</li>
                             <li>Parkerizing, Manganese Phosphate - Black (No. 16)</li>
@@ -256,7 +258,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         </div>
                         <div className="flex-col-center" style={{ marginLeft: '1rem', flex: '1' }}>
                           <div className="image-wrapper-flush">
-                            <img src={isoniteManganeseImg} alt="Heat Treatment Parts" className="software-screenshot screenshot-medium" />
+                            <img src={isoniteManganeseImg} alt="Heat Treatment Parts" className="software-screenshot screenshot-large" />
                           </div>
                         </div>
                       </div>
@@ -264,7 +266,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
 
                     <div className="mt-10">
                       <h4 className="font-bold text-lg mb-2">Layer 3</h4>
-                      <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '0' }}>
+                      <ul className="interaction-list" style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
                         <li>Purchase Parts (Include stud bolt)</li>
                         <li>Purchase Parts with Additional Process</li>
                         <li>Use manufacturer standard color</li>
@@ -279,75 +281,65 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
             ) : (
               <div className="fade-in">
                 <h3 className="section-title" style={{ borderBottom: '2px solid #ddd', paddingBottom: '0.5rem', marginBottom: '1rem' }}>INFORMATION</h3>
-                <p className="mb-6">
-                  Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information)
-                </p>
 
                 <div className="flex-row-wrap" style={{ alignItems: 'flex-start', gap: '2rem' }}>
-                  {/* Left Column */}
+                  {/* Content Column */}
                   <div className="flex-1" style={{ minWidth: '300px' }}>
 
                     {/* Item 1 */}
                     <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem' }}>
-                      <img src={information1} alt="Coordinates" className="software-screenshot" style={{ width: '40px', padding: '0.2rem' }} />
+                      <img src={information1} alt="Coordinates" className="software-screenshot" style={{ width: '60px', padding: '0.2rem' }} />
                       <div className="flex-1">
                         <p className="mb-0">Displays coordinates of a point from the origin</p>
                         <p className="step-description mt-1 mb-0" style={{ paddingLeft: '0' }}>&gt; Pick a point</p>
-                        <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-wide mt-2" />
+                        <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-large" style={{ marginTop: '1.5rem' }} />
                       </div>
                     </div>
 
                     {/* Item 2 */}
-                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem' }}>
-                      <img src={information2} alt="Length" className="software-screenshot" style={{ width: '40px', padding: '0.2rem' }} />
+                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem', marginTop: '2rem' }}>
+                      <img src={information2} alt="Length" className="software-screenshot" style={{ width: '60px', padding: '0.2rem' }} />
                       <div className="flex-1">
                         <p className="mb-0">Measures the length of an edge</p>
                         <p className="step-description mt-1 mb-0 flex items-center gap-2" style={{ paddingLeft: '0' }}>
                           &gt; Pick an edge &gt; GO
-                          <img src={leftClick} alt="Left Click" style={{ height: '24px' }} />
                         </p>
-                        <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-wide mt-2" />
+                        <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-large" style={{ marginTop: '1.5rem' }} />
                       </div>
                     </div>
 
                     {/* Item 3 */}
-                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem' }}>
-                      <img src={information3} alt="Distance" className="software-screenshot" style={{ width: '40px', padding: '0.2rem' }} />
+                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem', marginTop: '2rem' }}>
+                      <img src={information3} alt="Distance" className="software-screenshot" style={{ width: '60px', padding: '0.2rem' }} />
                       <div className="flex-1">
                         <p className="mb-0">Measures the distance between two points or edges</p>
                         <p className="step-description mt-1 mb-0" style={{ paddingLeft: '0' }}>&gt; Pick first point/edge &gt; Pick second point/edge</p>
-                        <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-wide mt-2" />
+                        <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-large" style={{ marginTop: '1.5rem' }} />
                       </div>
                     </div>
 
-                  </div>
-
-                  {/* Right Column */}
-                  <div className="flex-1" style={{ minWidth: '300px' }}>
-
                     {/* Item 4 */}
-                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem' }}>
-                      <img src={information4} alt="Angle" className="software-screenshot" style={{ width: '40px', padding: '0.2rem' }} />
+                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem', marginTop: '2rem' }}>
+                      <img src={information4} alt="Angle" className="software-screenshot" style={{ width: '60px', padding: '0.2rem' }} />
                       <div className="flex-1">
                         <p className="mb-0">Measures the angle between two edges or three points</p>
                         <div className="step-description mt-1 mb-0" style={{ paddingLeft: '0' }}>
                           <p className="mb-0">&gt; Pick 2 edges</p>
                           <p className="mb-0">&gt; Pick 3 points</p>
                         </div>
-                        <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-wide mt-2" />
+                        <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-large" style={{ marginTop: '1.5rem' }} />
                       </div>
                     </div>
 
                     {/* Item 5 */}
-                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem' }}>
-                      <img src={information5} alt="Entity Info" className="software-screenshot" style={{ width: '40px', padding: '0.2rem' }} />
+                    <div className="flex-row-wrap mb-6" style={{ alignItems: 'flex-start', gap: '1rem', marginTop: '2rem' }}>
+                      <img src={information5} alt="Entity Info" className="software-screenshot" style={{ width: '60px', padding: '0.2rem' }} />
                       <div className="flex-1">
                         <p className="mb-0">Displays the informations about the selected entity</p>
                         <p className="step-description mt-1 mb-0 flex items-center gap-2" style={{ paddingLeft: '0' }}>
                           &gt; Pick the solid entity &gt; GO
-                          <img src={leftClick} alt="Left Click" style={{ height: '24px' }} />
                         </p>
-                        <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-wide mt-2" />
+                        <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-large" style={{ marginTop: '1.5rem' }} />
                       </div>
                     </div>
 

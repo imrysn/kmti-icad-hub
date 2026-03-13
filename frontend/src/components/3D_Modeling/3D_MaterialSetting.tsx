@@ -11,7 +11,9 @@ import setMaterialIcon from '../../assets/3D_Image_File/material_setting(1)_set_
 import materialListImg from '../../assets/3D_Image_File/material_setting(1)_material_list.jpg';
 import step4ResultImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_4.jpg';
 import step5DialogImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_5.jpg';
+import materialSettingImg from '../../assets/3D_Image_File/material_setting(1)_material_setting.jpg';
 import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+
 
 // Material Setting (2) Assets
 import mat2RefImg from '../../assets/3D_Image_File/material_setting(2)_material.jpg';
@@ -30,7 +32,17 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     <div className="course-lesson-container">
       <section className="lesson-intro">
         <h3><Layers size={28} className="lesson-intro-icon" /> {isMaterial1 ? 'MATERIAL SETTING' : 'MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST'}</h3>
+        <p>Setting material is important in order to measure the weight of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part.</p>
+
+        {isMaterial1 && (
+          <div className="instruction-box">
+            <div className="image-wrapper">
+              <img src={materialSettingImg} alt="Material Setting" className="software-screenshot screenshot-small" />
+            </div>
+          </div>
+        )}
       </section>
+
 
       <div className="lesson-grid single-card">
         <div className="lesson-card">
@@ -41,7 +53,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="instruction-step">
                   <div className="step-header">
                     <span className="step-number">1</span>
-                    <span className="step-label">Select the Set Material from the icon menu.</span>
+                    <span className="step-label">Select the <span style={{ color: 'red' }}>Set Material</span> from the icon menu.</span>
                   </div>
                   <div className="image-wrapper-flush">
                     <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot screenshot-small" />
@@ -62,7 +74,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className="step-label">The Material Setting Window will appear. Select the material from the list &gt; Press OK</span>
                   </div>
                   <p className="step-description">
-                    The list consists of the materials and their corresponding Notation, Specific Gravity and Color. <br /> However, we follow the color base on the color codes. Materials that don't have color code must be machine color (WHITE).
+                    The list consists of the materials and their corresponding Notation, Specific Gravity and Color. <br /> However, we follow the color base on the <span style={{ color: 'red' }}>color codes</span>. Materials that don't have color code must be machine color <span style={{ color: 'red' }}>(WHITE)</span>.
                   </p>
                   <div className="image-wrapper-flush">
                     <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" />
@@ -85,7 +97,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="instruction-step" style={{ marginTop: '1rem' }}>
                   <div className="step-header">
                     <span className="step-number">5</span>
-                    <span className="step-label">In case there are changes in the material, select <strong className="text-highlight">Set Material</strong> from the icon menu.</span>
+                    <span className="step-label">In case there are changes in the material, select <span style={{ color: 'red' }}>Set Material</span> from the icon menu.</span>
                   </div>
                   <p className="step-description">
                     A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.
@@ -95,9 +107,9 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   </div>
 
                   <div className="instruction-step-indent">
-                    <p>Select <strong className="text-highlight">OK</strong> &gt; Material Settings window will appear &gt; Reselect new material for the part</p>
-                    <p><strong className="text-highlight">OR</strong></p>
-                    <p>Select <strong className="text-highlight">Cancel</strong> &gt; No changes will be made.</p>
+                    <p>Select OK &gt; Material Settings window will appear &gt; Reselect new material for the part</p>
+                    <p>OR</p>
+                    <p>Select Cancel &gt; No changes will be made.</p>
                   </div>
                 </div>
               </>

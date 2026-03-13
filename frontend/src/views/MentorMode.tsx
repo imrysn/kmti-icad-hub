@@ -67,6 +67,9 @@ import PartLesson from '../components/3D_Modeling/3D_Part';
 import MaterialSettingLesson from '../components/3D_Modeling/3D_MaterialSetting';
 import PropertiesLesson from '../components/3D_Modeling/3D_Properties';
 import AnnotationLesson from '../components/3D_Modeling/3D_Annotation';
+import InterferenceLesson from '../components/3D_Modeling/3D_Interference';
+import PurchasePartsLesson from '../components/3D_Modeling/3D_PurchaseParts';
+import ParasolidLesson from '../components/3D_Modeling/3D_Parasolid';
 
 // 2D Drawing Lesson Imports
 import OrthographicViewLesson from '../components/2D_Drawing/2D_OrthographicView';
@@ -432,6 +435,7 @@ const MentorMode: React.FC = () => {
                   'origin': () => <div className="origin-lesson-container"><OriginLesson /></div>,
                   'hole-details': () => <HoleDetailsLesson onNextLesson={goToNextLesson} />,
                   'fairing': () => <FairingLesson onNextLesson={goToNextLesson} />,
+                  'interference': () => <InterferenceLesson onNextLesson={goToNextLesson} />,
                   // Add other exact match lessons here
                 };
 
@@ -445,6 +449,8 @@ const MentorMode: React.FC = () => {
                   'annotation': (id) => <AnnotationLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                  'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                   '2d-orthographic': () => <OrthographicViewLesson />,
                   '2d-command-menu': () => <CommandMenuLesson />,
                   '2d-line-props': () => <LinePropertiesLesson />,

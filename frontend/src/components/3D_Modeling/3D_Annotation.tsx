@@ -25,10 +25,10 @@ import textEntryImg from '../../assets/3D_Image_File/text_entry_window.jpg';
 // Annotation (2) Assets
 import editDimensionImg from '../../assets/3D_Image_File/edit_dimension_characters_window.jpg';
 import changePropertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.jpg';
-import changesDraftingEntityImg from '../../assets/3D_Image_File/changes_drafting_entity.jpg';
+import changesDraftingEntityImg from '../../assets/3D_Image_File/annotation(2)_edits_drafting.jpg';
 import changesPositionDraftingEntitiesImg from '../../assets/3D_Image_File/changes_position_drafting_entities.jpg';
-import collectiveDimensionImg from '../../assets/3D_Image_File/annotation.jpg';
-import collectiveResultImg from '../../assets/3D_Image_File/sample_3d_modeling_parts.jpg';
+import collectiveDimensionImg from '../../assets/3D_Image_File/annotation(2)_dimension.jpg';
+import annotation2Img from '../../assets/3D_Image_File/angular_dimension1.jpg';
 
 interface AnnotationLessonProps {
   subLessonId?: string;
@@ -55,7 +55,11 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
         {isAnnotation1 && (
           <div className="instruction-box">
             <div className="image-wrapper-flush">
-              <img src={annotationImg} alt="Annotation Tool Menu" className="software-screenshot screenshot-small" />
+              <img
+                src={isAnnotation1 ? annotationImg : annotation2Img}
+                alt={isAnnotation1 ? "Annotation Tool Menu" : "Annotation Dimension Result"}
+                className={isAnnotation1 ? "software-screenshot screenshot-small" : "software-screenshot screenshot-medium"}
+              />
             </div>
           </div>
         )}
@@ -185,18 +189,19 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
 
                     {/* Item 1 */}
                     <div className="mb-10">
-                      <h4 className="section-title text-base sm:text-lg mb-4" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: 0 }}>Creates dimensions for 3D entities collectively.</h4>
-                      <div className="flex-row-wrap" style={{ alignItems: 'flex-start', gap: '1.5rem' }}>
-                        <div>
-                          <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
-                            <img src={collectiveDimensionImg} alt="Collectively Creates Dimension" className="software-screenshot" style={{ width: '120px', padding: '0.2rem' }} />
+                      <div className="flex-row-wrap" style={{ alignItems: 'flex-start', gap: '2rem', marginTop: '2rem' }}>
+                        <div className="flex-1">
+                          <h4 className="section-title text-base sm:text-lg mb-4" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: 0 }}>Creates dimensions for 3D entities collectively.</h4>
+                          {/* Result image on left */}
+                          <div className="image-wrapper-flush" style={{ maxWidth: '250px', marginBottom: '1rem' }}>
+                            <img src={annotation2Img} alt="Collective Dimension Result" className="software-screenshot screenshot-wide" />
                           </div>
                           <div className="pl-2">
                             <p className="step-description mb-1 flex items-center gap-2" style={{ paddingLeft: '0', color: '#475569' }}>
-                              1.) Select entity &gt;
-                              <img src={leftClick} alt="Left Click" style={{ height: '24px' }} />
+                              1.) Select entity &gt; GO
+                              <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" />
                             </p>
-                            <p className="step-description mb-1" style={{ paddingLeft: '0', color: '#dc2626', fontWeight: 'bold' }}>
+                            <p className="step-description mb-1" style={{ paddingLeft: '0', fontWeight: 'bold', marginTop: '1rem' }}>
                               *Dimensions will generate automatically.
                             </p>
                             <p className="step-description mb-0" style={{ paddingLeft: '0', color: '#475569' }}>
@@ -204,56 +209,68 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                             </p>
                           </div>
                         </div>
-
-                        <div className="image-wrapper-flush" style={{ margin: 0, maxWidth: '280px' }}>
-                          <img src={collectiveResultImg} alt="Collective Dimension Result" className="software-screenshot" />
+                        {/* Tool icon on right */}
+                        <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
+                          <img src={collectiveDimensionImg} alt="Collectively Creates Dimension" className="software-screenshot" style={{ width: '280px', padding: '0.2rem' }} />
                         </div>
                       </div>
                     </div>
 
                     {/* Item 2 */}
                     <div className="mb-10">
-                      <h4 className="section-title text-base sm:text-lg mb-4" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: 0 }}>Edits drafting entity characters</h4>
-                      <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
-                        <img src={changesDraftingEntityImg} alt="Edits Drafting Entity Characters" className="software-screenshot" style={{ width: '120px', padding: '0.2rem' }} />
-                      </div>
-                      <div className="pl-2">
-                        <p className="step-description mb-1 flex items-center gap-2" style={{ paddingLeft: '0', color: '#475569' }}>
-                          1.) Select drafting entity &gt;
-                          <img src={leftClick} alt="Left Click" style={{ height: '24px' }} />
-                        </p>
-                        <p className="step-description mb-1" style={{ paddingLeft: '0', color: '#475569' }}>
-                          2.) <span className="text-highlight" style={{ color: '#dc2626', fontWeight: 'bold' }}>Edit Dimension Characters window</span> will appear.
-                        </p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '350px' }}>
-                          <img src={editDimensionImg} alt="Edit Dimension Characters Window" className="software-screenshot screenshot-wide" />
+                      <div className="flex-row-wrap" style={{ alignItems: 'flex-start', gap: '2rem', marginTop: '2rem' }}>
+                        <div className="flex-1">
+                          <h4 className="section-title text-base sm:text-lg mb-4" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: 0 }}>Edits drafting entity characters</h4>
+                          <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
+                            <img src={changesDraftingEntityImg} alt="Edits Drafting Entity Characters" className="software-screenshot" style={{ width: '250px', padding: '0.2rem' }} />
+                          </div>
+                          <div className="pl-2">
+                            <p className="step-description mb-1 flex items-center gap-2" style={{ paddingLeft: '0', color: '#475569' }}>
+                              1.) Select drafting entity &gt; GO
+                              <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" />
+                            </p>
+                            <p className="step-description mb-1" style={{ paddingLeft: '0', color: '#475569' }}>
+                              2.) <strong className="text-highlight" style={{ color: '#dc2626' }}>Edit Dimension Characters window</strong> will appear.
+                            </p>
+                            <p className="step-description mb-0" style={{ paddingLeft: '0', color: '#475569' }}>
+                              3.) After editing the dimension characters, Press OK.
+                            </p>
+                          </div>
                         </div>
-                        <p className="step-description mb-0" style={{ paddingLeft: '0', color: '#475569' }}>
-                          3.) After editing the dimension characters, Press OK.
-                        </p>
+
+                        {/* Screenshot on right */}
+                        <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
+                          <img src={editDimensionImg} alt="Edit Dimension Characters Window" className="software-screenshot screenshot-wide" style={{ width: '450px', padding: '0.2rem' }} />
+                        </div>
                       </div>
                     </div>
 
                     {/* Item 3 */}
                     <div className="mb-10">
-                      <h4 className="section-title text-base sm:text-lg mb-4" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: 0 }}>Changes the attributes of a drafting entity</h4>
-                      <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
-                        <img src={changesDraftingEntityImg} alt="Changes Draft Entity Attribute" className="software-screenshot" style={{ width: '120px', padding: '0.2rem' }} />
-                      </div>
-                      <div className="pl-2">
-                        <p className="step-description mb-1 flex items-center gap-2" style={{ paddingLeft: '0', color: '#475569' }}>
-                          1.) Select drafting entity &gt;
-                          <img src={leftClick} alt="Left Click" style={{ height: '24px' }} />
-                        </p>
-                        <p className="step-description mb-1" style={{ paddingLeft: '0', color: '#475569' }}>
-                          2.) <span className="text-highlight" style={{ color: '#dc2626', fontWeight: 'bold' }}>Change Properties window</span> will appear.
-                        </p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '350px' }}>
-                          <img src={changePropertiesWindowImg} alt="Change Properties Window" className="software-screenshot screenshot-wide" />
+                      <div className="flex-row-wrap" style={{ alignItems: 'flex-start', gap: '2rem', marginTop: '2rem' }}>
+                        <div className="flex-1">
+                          <h4 className="section-title text-base sm:text-lg mb-4" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: 0 }}>Changes the attributes of a drafting entity</h4>
+                          <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
+                            <img src={changesDraftingEntityImg} alt="Changes Draft Entity Attribute" className="software-screenshot" style={{ width: '250px', padding: '0.2rem' }} />
+                          </div>
+                          <div className="pl-2">
+                            <p className="step-description mb-1 flex items-center gap-2" style={{ paddingLeft: '0', color: '#475569' }}>
+                              1.) Select drafting entity &gt; GO
+                              <img src={leftClick} alt="Left Click" style={{ height: '24px' }} />
+                            </p>
+                            <p className="step-description mb-1" style={{ paddingLeft: '0', color: '#475569' }}>
+                              2.) <span className="text-highlight" style={{ color: '#dc2626', fontWeight: 'bold' }}>Change Properties window</span> will appear.
+                            </p>
+                            <p className="step-description mb-0" style={{ paddingLeft: '0', color: '#475569' }}>
+                              3.) After changing the properties, Press OK
+                            </p>
+                          </div>
                         </div>
-                        <p className="step-description mb-0" style={{ paddingLeft: '0', color: '#475569' }}>
-                          3.) After changing the properties, Press OK
-                        </p>
+
+                        {/* Screenshot on right */}
+                        <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
+                          <img src={changePropertiesWindowImg} alt="Change Properties Window" className="software-screenshot screenshot-wide" style={{ width: '450px', padding: '0.2rem' }} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -265,7 +282,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                   <div className="mb-10">
                     <h4 className="section-title text-base sm:text-lg mb-4" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: 0 }}>Changes the positions of drafting entities</h4>
                     <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '0.5rem', display: 'inline-block' }}>
-                      <img src={changesPositionDraftingEntitiesImg} alt="Changes Position Tool" className="software-screenshot" style={{ width: '120px', padding: '0.2rem' }} />
+                      <img src={changesPositionDraftingEntitiesImg} alt="Changes Position Tool" className="software-screenshot" style={{ width: '250px', padding: '0.2rem' }} />
                     </div>
                   </div>
                 </div>
