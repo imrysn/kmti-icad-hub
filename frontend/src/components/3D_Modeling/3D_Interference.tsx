@@ -37,7 +37,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
           <div className="instruction-step">
             <div className="step-header">
               <span className="step-number">1</span>
-              <span className="step-label">Select <strong className="text-highlight" style={{ color: '#dc2626' }}>Interference Check</strong> from the icon menu.</span>
+              <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
             </div>
             <div className="flex-1">
               <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" />
@@ -47,7 +47,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
           <div className="instruction-step">
             <div className="step-header">
               <span className="step-number">2</span>
-              <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
+              <span className="step-label">On the command menu, unselect <strong>High-speed detection</strong>.</span>
             </div>
             <div className="flex-row" style={{ marginTop: '0.5rem' }}>
               <div className="image-wrapper-flush">
@@ -85,7 +85,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
           <div className="instruction-step">
             <div className="step-header">
               <span className="step-number">1</span>
-              <span className="step-label">Select the tool on the icon menu &gt; </span>
+              <span className="step-label">Select the tool on the icon menu &gt; GO </span>
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
 
@@ -94,11 +94,11 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
           <div className="instruction-step">
             <div className="step-header">
               <span className="step-number">2</span>
-              <span className="step-label">The <strong className="text-highlight">List Display</strong> window will appear showing all the 3D part names that interfere with each other.</span>
+              <span className="step-label">The List Display window will appear showing all the 3D part names that interfere with each other.</span>
             </div>
             <div className="flex-row" style={{ marginTop: '0.5rem' }}>
               <div className="flex-1">
-                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-large" />
+                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           </div>
