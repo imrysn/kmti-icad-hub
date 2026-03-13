@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
-import MentorMode from './views/MentorMode';
-import AssistantMode from './views/AssistantMode';
-import { AdminMode } from './views/AdminMode';
+import MentorMode from './views/mentor/MentorMode';
+import AssistantMode from './views/assistant/AssistantMode';
+import { AdminMode } from './views/admin/AdminMode';
 import { useAuth } from './hooks/useAuth';
 import { AppMode } from './types';
 import ErrorBoundary from './components/ErrorBoundary';

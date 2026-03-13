@@ -11,7 +11,7 @@
  * import its image from src/assets/3D_Image_File/.
  */
 import React from 'react';
-import ToolbarExplorer from './ToolbarExplorer';
+import ToolbarExplorer from '../3D_Modeling/ToolbarExplorer';
 import '../../styles/3DModeling/CourseLesson.css';
 import '../../styles/3DModeling/3DToolBars.css';
 

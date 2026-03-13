@@ -1,0 +1,178 @@
+import React from 'react';
+import { ChevronRight, Menu, BookOpen, Video } from 'lucide-react';
+import { Course } from '../../../types';
+import { Lesson } from '../mentorConstants';
+
+// 3D Lesson Imports
+import IcadInterfaceLesson from '../../../components/3D_Modeling/3D_iCadInterface';
+import ToolBarsLesson from '../../../components/3D_Modeling/3D_ToolBars';
+import OriginLesson from '../../../components/3D_Modeling/3D_Origin';
+import BasicOperationLesson from '../../../components/3D_Modeling/3D_BasicOperation';
+import TwoDTo3DLesson from '../../../components/3D_Modeling/3D_2Dto3D';
+import HoleDetailsLesson from '../../../components/3D_Modeling/3D_HoleDetails';
+import BooleanLesson from '../../../components/3D_Modeling/3D_Boolean';
+import ComponentLesson from '../../../components/3D_Modeling/3D_Component';
+import FairingLesson from '../../../components/3D_Modeling/3D_Fairing';
+import PartLesson from '../../../components/3D_Modeling/3D_Part';
+import MaterialSettingLesson from '../../../components/3D_Modeling/3D_MaterialSetting';
+import PropertiesLesson from '../../../components/3D_Modeling/3D_Properties';
+import AnnotationLesson from '../../../components/3D_Modeling/3D_Annotation';
+
+// 2D Lesson Imports
+import OrthographicViewLesson from '../../../components/2D_Drawing/2D_OrthographicView';
+import CommandMenuLesson from '../../../components/2D_Drawing/2D_CommandMenu';
+import LinePropertiesLesson from '../../../components/2D_Drawing/2D_LineProperties';
+import DimensioningLesson from '../../../components/2D_Drawing/2D_Dimensioning';
+import StandardPartLesson from '../../../components/2D_Drawing/2D_StandardPart';
+import SurfaceApplicationLesson from '../../../components/2D_Drawing/2D_SurfaceApplication';
+import KeywayLesson from '../../../components/2D_Drawing/2D_Keyway';
+import RetainingRingLesson from '../../../components/2D_Drawing/2D_RetainingRing';
+import GeometricToleranceLesson from '../../../components/2D_Drawing/2D_GeometricTolerance';
+import PartNoteLesson from '../../../components/2D_Drawing/2D_PartNote';
+import MachiningSymbolLesson from '../../../components/2D_Drawing/2D_MachiningSymbol';
+import WeldingSymbolLesson from '../../../components/2D_Drawing/2D_WeldingSymbol';
+import HeatTreatmentLesson from '../../../components/2D_Drawing/2D_HeatTreatment';
+import SurfaceCoatingLesson from '../../../components/2D_Drawing/2D_SurfaceCoating';
+import WeightComputationLesson from '../../../components/2D_Drawing/2D_WeightComputation';
+import BillOfMaterialLesson from '../../../components/2D_Drawing/2D_BillOfMaterial';
+import BalloonLesson from '../../../components/2D_Drawing/2D_Balloon';
+import TitleblockLesson from '../../../components/2D_Drawing/2D_Titleblock';
+import AdditionalViewLesson from '../../../components/2D_Drawing/2D_AdditionalView';
+import OperalViewLesson from '../../../components/2D_Drawing/2D_OperalView';
+import NormalMirrorPartsLesson from '../../../components/2D_Drawing/2D_NormalMirrorParts';
+import RevisionCodeLesson from '../../../components/2D_Drawing/2D_RevisionCode';
+import StandardLibraryLesson from '../../../components/2D_Drawing/2D_StandardLibrary';
+
+interface LessonViewerProps {
+    is2DDrawingCourse: boolean;
+    activeLessonId: string;
+    currentLessonIndex: number;
+    allLessonIdsLength: number;
+    goToNextLesson: () => void;
+    sidebarOpen: boolean;
+    setSidebarOpen: (open: boolean) => void;
+    setSelectedCourse: (course: Course | null) => void;
+    getActiveLessonTitle: (lessons: Lesson[], id: string) => string;
+    ICAD_2D_LESSONS: Lesson[];
+    ICAD_3D_LESSONS: Lesson[];
+}
+
+export const LessonViewer: React.FC<LessonViewerProps> = ({
+    is2DDrawingCourse,
+    activeLessonId,
+    currentLessonIndex,
+    allLessonIdsLength,
+    goToNextLesson,
+    sidebarOpen,
+    setSidebarOpen,
+    setSelectedCourse,
+    getActiveLessonTitle,
+    ICAD_2D_LESSONS,
+    ICAD_3D_LESSONS
+}) => {
+    return (
+        <main className="main-content-viewer">
+            <div className="sticky-lesson-controls">
+                <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+                    <Menu size={20} />
+                </button>
+                <button className="exit-course-btn" onClick={() => setSelectedCourse(null)}>
+                    EXIT COURSE
+                </button>
+            </div>
+
+            <div className="lesson-header-banner">
+                <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIdsLength}</p>
+                <h2 className="lesson-banner-title">{getActiveLessonTitle(is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS, activeLessonId)}</h2>
+                <div className="lesson-banner-divider"></div>
+            </div>
+
+            <div className="lesson-content-body">
+                {
+                    (() => {
+                        const registry: Record<string, () => React.ReactNode> = {
+                            'interface': () => <IcadInterfaceLesson />,
+                            'toolbars': () => <ToolBarsLesson />,
+                            'origin': () => <div className="origin-lesson-container"><OriginLesson /></div>,
+                            'hole-details': () => <HoleDetailsLesson onNextLesson={goToNextLesson} />,
+                            'fairing': () => <FairingLesson onNextLesson={goToNextLesson} />,
+                        };
+
+                        const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
+                            'basic-op': (id) => <BasicOperationLesson subLessonId={id} />,
+                            '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'annotation': (id) => <AnnotationLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            '2d-orthographic': () => <OrthographicViewLesson />,
+                            '2d-command-menu': () => <CommandMenuLesson />,
+                            '2d-line-props': () => <LinePropertiesLesson />,
+                            '2d-dimensioning': () => <DimensioningLesson />,
+                            '2d-standard-part': () => <StandardPartLesson />,
+                            '2d-surface-app': () => <SurfaceApplicationLesson />,
+                            '2d-retaining-ring': () => <RetainingRingLesson />,
+                            '2d-geometric-tol': () => <GeometricToleranceLesson />,
+                            '2d-heat-treatment': () => <HeatTreatmentLesson />,
+                            '2d-bom': () => <BillOfMaterialLesson />,
+                            '2d-additional-view': () => <AdditionalViewLesson />,
+                            '2d-operal-view': () => <OperalViewLesson />,
+                            '2d-normal-mirror': () => <NormalMirrorPartsLesson />,
+                        };
+
+                        const exactMatch = activeLessonId ? registry[activeLessonId] : null;
+                        if (exactMatch) return exactMatch();
+
+                        const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && activeLessonId.startsWith(p + '-'));
+                        if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
+
+                        if (is2DDrawingCourse) {
+                            switch (activeLessonId) {
+                                case '2d-keyway': return <KeywayLesson />;
+                                case '2d-part-note': return <PartNoteLesson />;
+                                case '2d-machining-symbol': return <MachiningSymbolLesson />;
+                                case '2d-welding-symbol': return <WeldingSymbolLesson />;
+                                case '2d-surface-coating': return <SurfaceCoatingLesson />;
+                                case '2d-weight-computation': return <WeightComputationLesson />;
+                                case '2d-balloon': return <BalloonLesson />;
+                                case '2d-titleblock': return <TitleblockLesson />;
+                                case '2d-revision-code': return <RevisionCodeLesson />;
+                                case '2d-standard-library': return <StandardLibraryLesson />;
+                                default:
+                                    return (
+                                        <div className="content-2d-placeholder">
+                                            <BookOpen size={48} strokeWidth={1.5} />
+                                            <h3 className="content-2d-placeholder__title">iCAC Operation Manual 2D Drawing</h3>
+                                            <p className="content-2d-placeholder__text">Content will be available soon.</p>
+                                        </div>
+                                    );
+                            }
+                        }
+
+                        return (
+                            <div className="content-placeholder">
+                                <Video size={48} className="content-placeholder__icon" />
+                                <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
+                                <p className="content-placeholder__note">
+                                    This area will host the instructional text, video demonstrations, and active testing prompts.
+                                </p>
+                            </div>
+                        );
+                    })()
+                }
+
+                <div className="content-actions">
+                    <button
+                        className="btn-primary next-lesson-btn"
+                        onClick={goToNextLesson}
+                        disabled={currentLessonIndex === allLessonIdsLength - 1}
+                    >
+                        Next Lesson <ChevronRight size={18} />
+                    </button>
+                </div>
+            </div>
+        </main>
+    );
+};
