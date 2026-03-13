@@ -7,6 +7,7 @@ import { AdminMode } from './views/admin/AdminMode';
 import { useAuth } from './hooks/useAuth';
 import { AppMode } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
+import { BroadcastBanner } from './components/BroadcastBanner';
 
 import './styles/App.css';
 
@@ -41,6 +42,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <BroadcastBanner />
       {/* Header with User Info and Logout */}
       <div className="app-header">
         <div className="app-title">

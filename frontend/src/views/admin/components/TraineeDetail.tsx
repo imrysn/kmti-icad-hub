@@ -5,9 +5,14 @@ import { TraineeProgress } from '../../../services/adminService';
 interface TraineeDetailProps {
     selectedTrainee: TraineeProgress;
     setSelectedTrainee: (trainee: TraineeProgress | null) => void;
+    onExport: (userId: number) => void;
 }
 
-export const TraineeDetail: React.FC<TraineeDetailProps> = ({ selectedTrainee, setSelectedTrainee }) => {
+export const TraineeDetail: React.FC<TraineeDetailProps> = ({ 
+    selectedTrainee, 
+    setSelectedTrainee,
+    onExport
+}) => {
     return (
         <section className="trainee-detail-view">
             <button className="back-btn" onClick={() => setSelectedTrainee(null)}>
@@ -24,6 +29,14 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({ selectedTrainee, s
                             <span className="val">{selectedTrainee.average_score}%</span>
                             <span className="lab">Global Mastery</span>
                         </div>
+
+                        <button 
+                            className="btn-secondary export-detail-btn" 
+                            onClick={() => onExport(selectedTrainee.id)}
+                            style={{ marginTop: '1.5rem', width: '100%', gap: '0.5rem' }}
+                        >
+                            <FileText size={16} /> Export Progress Report
+                        </button>
                     </div>
                 </div>
                 

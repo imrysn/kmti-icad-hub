@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, cast, String
 from typing import List, Dict
 import os
 import psutil
 
 from ..database import get_db
-from ..models import User, UserProgress, QuizScore, SystemLog
+from ..models import User, UserProgress, QuizScore, SystemLog, Broadcast
 from ..auth.dependencies import require_role
 from ..rag_engine import rag_engine
+from ..ingest_knowledge_base import ingest_directory
 
 router = APIRouter(prefix="/admin", tags=["Administration"])
 
@@ -147,3 +148,155 @@ def delete_user(
     db.commit()
     
     return {"message": f"User {user_id} deleted successfully"}
+
+
+@router.post("/broadcast")
+def create_broadcast(
+    message: str,
+    level: str = "info",
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Create a new system-wide broadcast message"""
+    broadcast = Broadcast(message=message, level=level, created_by=admin.id)
+    db.add(broadcast)
+    db.commit()
+    return {"message": "Broadcast sent successfully"}
+
+
+@router.get("/broadcasts/active")
+def get_active_broadcasts(
+    db: Session = Depends(get_db)
+):
+    """Get all currently active broadcasts with sender name"""
+    broadcasts = db.query(Broadcast, User.full_name)\
+        .join(User, Broadcast.created_by == User.id)\
+        .filter(Broadcast.is_active == True)\
+        .order_by(Broadcast.created_at.desc()).all()
+    
+    return [
+        {
+            "id": b[0].id,
+            "message": b[0].message,
+            "level": b[0].level,
+            "created_at": b[0].created_at,
+            "sender_name": b[1]
+        } for b in broadcasts
+    ]
+
+
+@router.get("/heatmap")
+def get_training_heatmap(
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Get activity counts per course for heatmap (Recent 60 mins)"""
+    from datetime import datetime, timedelta
+    one_hour_ago = datetime.utcnow() - timedelta(minutes=60)
+    
+    stats = db.query(
+        UserProgress.course_id,
+        func.count(UserProgress.id).label("active_count")
+    ).filter(UserProgress.last_accessed >= one_hour_ago)\
+     .group_by(UserProgress.course_id).all()
+    
+    return [{"course_id": s[0], "count": s[1]} for s in stats]
+
+
+@router.get("/export/progress")
+def export_trainee_progress(
+    user_id: int = None,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Export granular trainee progress data as CSV"""
+    import csv
+    import io
+    from fastapi.responses import StreamingResponse
+    
+    # Base query for progress
+    query = db.query(UserProgress, User.username, User.full_name)\
+        .join(User, UserProgress.user_id == cast(User.id, String))
+        
+    if user_id:
+        query = query.filter(User.id == user_id)
+        
+    results = query.all()
+    
+    if not results:
+        # If no progress yet, at least export user info if user_id is specified
+        if user_id:
+            user = db.query(User).filter(User.id == user_id).first()
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found")
+            results = [(None, user.username, user.full_name)]
+        else:
+            raise HTTPException(status_code=404, detail="No progress data found to export")
+    
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Trainee Username", "Full Name", "Course ID", "Status", 
+        "Progress %", "Highest Quiz Score", "Last Activity"
+    ])
+    
+    for progress, username, full_name in results:
+        course_id = progress.course_id if progress else "N/A"
+        progress_pct = progress.progress_percentage if progress else 0
+        last_act = progress.last_accessed if progress else "N/A"
+        
+        # Get highest quiz score for this user-course pair
+        uid_str = str(user_id) if user_id else None
+        # If we are looping over all, we need the user_id from the join result... 
+        # Wait, the join result should include the User object or its ID.
+        
+    # Re-writing for better performance and clarity
+    query = db.query(UserProgress, User)\
+        .join(User, UserProgress.user_id == cast(User.id, String))
+    if user_id:
+        query = query.filter(User.id == user_id)
+    
+    rows = query.all()
+    
+    for progress, user in rows:
+        # Get best score
+        best_score = db.query(func.max(QuizScore.score))\
+            .filter(QuizScore.user_id == str(user.id))\
+            .filter(QuizScore.course_id == progress.course_id).scalar() or 0
+            
+        status = "Completed" if progress.progress_percentage >= 100 else "In Progress"
+        
+        writer.writerow([
+            user.username,
+            user.full_name,
+            progress.course_id,
+            status,
+            f"{progress.progress_percentage}%",
+            f"{best_score}%",
+            progress.last_accessed
+        ])
+    
+    output.seek(0)
+    filename = f"trainee_granular_report_{user_id if user_id else 'all'}.csv"
+    return StreamingResponse(
+        io.BytesIO(output.getvalue().encode()),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+
+@router.post("/reindex")
+def trigger_kb_reindex(
+    admin: User = Depends(require_role("admin"))
+):
+    """Manually trigger re-indexing of the knowledge base directory"""
+    kb_dir = "knowledge_base/"
+    if not os.path.exists(kb_dir):
+        # Check relative to backend or root
+        kb_dir = os.path.join(os.getcwd(), "knowledge_base")
+        
+    try:
+        ingest_directory(kb_dir)
+        return {"message": "Knowledge base re-indexing triggered successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Re-indexing failed: {str(e)}")

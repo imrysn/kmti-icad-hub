@@ -11,7 +11,7 @@ Usage:
 import sys
 import pandas as pd
 from pathlib import Path
-from rag_engine import rag_engine
+from .rag_engine import rag_engine
 
 def ingest_excel_file(excel_path: str, text_columns: list = None):
     """

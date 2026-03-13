@@ -71,3 +71,15 @@ class SystemLog(Base):
     user_id = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=func.now())
 
+
+class Broadcast(Base):
+    """System-wide announcements from admins"""
+    __tablename__ = "broadcasts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    message = Column(String(1000), nullable=False)
+    level = Column(String(20), default="info")  # "info", "warning", "critical"
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=func.now())
+    created_by = Column(Integer)  # Admin user ID
+

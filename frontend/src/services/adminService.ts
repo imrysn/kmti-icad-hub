@@ -62,5 +62,38 @@ export const adminService = {
 
     async deleteUser(userId: number): Promise<void> {
         await api.delete(`/admin/users/${userId}`);
+    },
+
+    async sendBroadcast(message: string, level: string = 'info'): Promise<void> {
+        await api.post(`/admin/broadcast`, null, { params: { message, level } });
+    },
+
+    async getActiveBroadcasts(): Promise<any[]> {
+        const response = await api.get('/admin/broadcasts/active');
+        return response.data;
+    },
+
+    async getHeatmap(): Promise<{ course_id: string; count: number }[]> {
+        const response = await api.get('/admin/heatmap');
+        return response.data;
+    },
+
+    async triggerReindex(): Promise<void> {
+        await api.post('/admin/reindex');
+    },
+
+    async downloadProgressExport(userId?: number): Promise<void> {
+        const response = await api.get('/admin/export/progress', { 
+            params: { user_id: userId },
+            responseType: 'blob' 
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        const filename = userId ? `trainee_report_${userId}.csv` : 'trainee_progress.csv';
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
     }
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Shield, User as UserIcon, Trash2 } from 'lucide-react';
+import { Search, Shield, User as UserIcon, Trash2, FileText } from 'lucide-react';
 import { User } from '../../../services/authService';
 
 interface UserManagementProps {
@@ -17,7 +17,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
     searchQuery, 
     setSearchQuery, 
     handleToggleStatus, 
-    handleDeleteUser 
+    handleDeleteUser
 }) => {
     const filteredUsers = users.filter((u: User) => 
         u.username.toLowerCase().includes(searchQuery.toLowerCase()) || 
