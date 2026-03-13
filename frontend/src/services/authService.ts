@@ -25,6 +25,8 @@ export interface User {
     full_name: string;
     role: string;
     is_active: boolean;
+    created_at?: string;
+    last_login?: string;
 }
 
 export interface TokenResponse {

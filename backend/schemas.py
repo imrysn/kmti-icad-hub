@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr, field_validator
+from datetime import datetime
 from typing import List, Literal, Optional
 
 class MediaAsset(BaseModel):
@@ -82,6 +83,8 @@ class UserResponse(BaseModel):
     full_name: str
     role: str
     is_active: bool
+    created_at: Optional[datetime] = None
+    last_login: Optional[datetime] = None
     
     class Config:
         from_attributes = True

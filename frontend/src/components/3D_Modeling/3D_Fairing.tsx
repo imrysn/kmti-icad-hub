@@ -11,6 +11,7 @@ import fairingMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rota
 import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.jpg';
 import chamferEntry from '../../assets/3D_Image_File/fairing_chamfer_1.jpg';
 import chamferResult from '../../assets/3D_Image_File/fairing_chamfer_2.jpg';
+import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.jpg';
 import filletIcon from '../../assets/3D_Image_File/fairing_fillet_1.jpg';
 import filletEntry from '../../assets/3D_Image_File/fairing_fillet_2.jpg';
 import filletResult from '../../assets/3D_Image_File/fairing_fillet_3.jpg';
@@ -27,14 +28,24 @@ interface FairingLessonProps {
 const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'chamfer' | 'fillet' | 'shell'>('chamfer');
 
+  const handleNext = () => {
+    if (activeTab === 'chamfer') setActiveTab('fillet');
+    else if (activeTab === 'fillet') setActiveTab('shell');
+    else if (onNextLesson) onNextLesson();
+  };
+
+  const handlePrev = () => {
+    if (activeTab === 'fillet') setActiveTab('chamfer');
+    else if (activeTab === 'shell') setActiveTab('fillet');
+  };
+
   return (
     <div className="course-lesson-container">
       <section className="lesson-intro">
         <h3><BoxIcon size={28} className="lesson-intro-icon" /> FAIRING</h3>
-        <p>Fairing tools are used to refine the edges and surfaces of 3D entities, such as creating chamfers, fillets, or hollowing out solids.</p>
         <div className="instruction-box">
           <div className="image-wrapper">
-            <img src={fairingMenu} alt="Fairing Menu" className="software-screenshot screenshot-small" />
+            <img src={chamferIcon} alt="Fairing Menu" className="software-screenshot screenshot-small" />
           </div>
         </div>
       </section>
@@ -79,7 +90,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                 </div>
 
                 <div className="instruction-step">
-                  <div className="step-header">
+                  <div className="step-header" style={{ marginTop: '1rem' }}>
                     <span className="step-number">2</span>
                     <span className="step-label">Specify chamfer length on the item entry.</span>
                   </div>
@@ -89,14 +100,19 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                 </div>
 
                 <div className="instruction-step">
-                  <div className="step-header" style={{ marginBottom: '1.5rem' }}>
+                  <div className="step-header">
                     <span className="step-number">3</span>
-                    <span className="step-label">Select the edge of the entity to be chamfered &gt; </span>
-                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                    <span className="step-label">Select the edge of the entity to be chamfered &gt; GO</span>
+                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginTop: '1.5rem', marginLeft: '1rem' }} />
                   </div>
-                  <p className="note-text"><strong className="text-red-600">Note:</strong> Several edges can be chamfered all at once.</p>
+                  <p className="note-text" style={{ paddingLeft: '2.5rem', marginTop: '-1.5rem' }}>
+                    <strong className="text-red-600">Note:</strong> Several edges can be chamfered all at once.
+                  </p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
                     <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-large" />
+                  </div>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                    <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
               </div>
@@ -118,7 +134,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                 </div>
 
                 <div className="instruction-step">
-                  <div className="step-header">
+                  <div className="step-header" style={{ marginTop: '1rem' }}>
                     <span className="step-number">2</span>
                     <span className="step-label">Specify fillet radius on the item entry.</span>
                   </div>
@@ -128,12 +144,14 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                 </div>
 
                 <div className="instruction-step">
-                  <div className="step-header" style={{ marginBottom: '1.5rem' }}>
+                  <div className="step-header">
                     <span className="step-number">3</span>
-                    <span className="step-label">Select the edge of the entity to be chamfered &gt; </span>
-                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                    <span className="step-label">Select the edge of the entity to be fillet &gt; GO</span>
+                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginTop: '1.5rem', marginLeft: '1rem' }} />
                   </div>
-                  <p className="note-text"><strong className="text-red-600">Note:</strong> Several edges can be fillet all at once.</p>
+                  <p className="note-text" style={{ paddingLeft: '2.5rem', marginTop: '-1.5rem' }}>
+                    <strong className="text-red-600">Note:</strong> Several edges can be fillet all at once.
+                  </p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
                     <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" />
                   </div>
@@ -157,32 +175,27 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                 </div>
 
                 <div className="instruction-step">
-                  <div className="step-header" style={{ marginBottom: '1.5rem' }}>
+                  <div className="step-header" style={{ marginTop: '1rem' }}>
                     <span className="step-number">2</span>
                     <span className="step-label">Select the two endfaces of the solid entity &gt; </span>
-                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginBottom: '1rem', marginLeft: '1rem' }} />
                   </div>
-                  <div className="image-wrapper-flush">
+                  <div className="image-wrapper-flush" style={{ marginTop: '-1.5rem' }}>
                     <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
 
                 <div className="instruction-step">
-                  <div className="step-header">
+                  <div className="step-header" style={{ marginTop: '1rem' }}>
                     <span className="step-number">3</span>
-                    <span className="step-label">Specify the desired thickness of the solid entity after shell on the item entry &gt; </span>
-                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
-                    <span> double GO</span>
+                    <span className="step-label">Specify the desired thickness of the solid entity after shell on the item entry &gt; double GO</span>
+                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginTop: '1.5rem', marginLeft: '1rem' }} />
+                  </div>
+                  <div className="image-wrapper-flush" style={{ marginTop: '-1.5rem' }}>
+                    <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-large" />
                   </div>
                   <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-                    <div className="flex-row">
-                      <div className="flex-1">
-                        <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-large" />
-                      </div>
-                      <div className="flex-1">
-                        <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-large" />
-                      </div>
-                    </div>
+                    <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
               </div>
@@ -190,8 +203,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={handlePrev} disabled={activeTab === 'chamfer'}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={handleNext}>
+              {activeTab === 'shell' ? 'Finish' : 'Next'} <ChevronRight size={18} />
+            </button>
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ from .models import User
 from .services.search_service import search_service
 from .services.course_service import course_service
 from .schemas import SearchResponse, CourseList, CourseProgress
-from .routers import auth
+from .routers import auth, admin
 from .auth.dependencies import get_current_user
 
 # Create database tables
@@ -31,6 +31,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(auth.router)
+app.include_router(admin.router)
 
 @app.get("/")
 def read_root():
