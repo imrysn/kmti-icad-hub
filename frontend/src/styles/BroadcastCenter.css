@@ -1,0 +1,312 @@
+.broadcast-center-floating {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 4000;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+}
+
+.chatbox-bubble {
+    width: auto;
+    height: 48px;
+    padding: 0 24px 0 16px;
+    border-radius: 24px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    /* Default text to White */
+    cursor: pointer;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    /* Stronger shadow for separation on white pages */
+    box-shadow: 0 12px 48px -12px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Inner Background Mask - Default Black */
+.chatbox-bubble::after {
+    content: '';
+    position: absolute;
+    inset: 2.5px;
+    /* Increased from 1px for a thicker border effect */
+    background: #000;
+    border-radius: 22px;
+    /* Adjusted to maintain smooth curvature */
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Flowing Border Light Layer */
+.chatbox-bubble::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+            #6366f1,
+            /* Indigo light streak for visibility on white ops */
+            transparent 40% /* Increased from 15% for a longer tail */
+    );
+    animation: rotateBorder 3s linear infinite;
+    transition: background 0.4s;
+}
+
+.bubble-label {
+    position: relative;
+    z-index: 2;
+    /* Sit above the mask */
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0.95;
+    color: inherit;
+    /* Inherits from parent, handled by hover */
+    transition: color 0.4s;
+}
+
+/* Ensure icon is above mask */
+.chatbox-bubble svg {
+    position: relative;
+    z-index: 2;
+    color: inherit;
+    transition: color 0.4s;
+}
+
+@keyframes rotateBorder {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.chatbox-bubble:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 20px 60px -12px rgba(0, 0, 0, 0.25);
+    color: #000;
+    /* Invert text to Black */
+}
+
+.chatbox-bubble:hover::after {
+    background: #fff;
+    /* Invert background to White on hover */
+}
+
+.chatbox-bubble:hover::before {
+    animation-duration: 1s;
+    /* Speed up on hover */
+    background: conic-gradient(
+        transparent,
+            #000,
+            /* Black light streak on white pill */
+            transparent 35% /* Slightly longer tail on hover */
+    );
+}
+
+/* Old hover styles removed */
+
+.chatbox-bubble.active {
+    background: var(--primary, #6366f1);
+    border-color: white;
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+}
+
+.chatbox-expanded {
+    width: 360px;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.7);
+    animation: slideUpPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpPop {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.chatbox-header {
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbox-header h3 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.minimize-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.minimize-btn:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.chatbox-form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.chatbox-form textarea {
+    width: 100%;
+    min-height: 120px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    color: white;
+    font-size: 0.875rem;
+    font-family: inherit;
+    resize: none;
+    transition: all 0.2s;
+}
+
+.chatbox-form textarea:focus {
+    outline: none;
+    border-color: var(--primary, #6366f1);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.chatbox-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.level-picker {
+    display: flex;
+    gap: 8px;
+}
+
+.lvl-chip {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.lvl-chip:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.lvl-chip.active.info {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+.lvl-chip.active.warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+.lvl-chip.active.critical {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.send-action {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: var(--primary, #6366f1);
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.send-action:hover:not(:disabled) {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.send-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chat-status {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.chat-status.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.chat-status.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+}

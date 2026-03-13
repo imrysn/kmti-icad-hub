@@ -152,9 +152,6 @@ export const AdminMode: React.FC = () => {
                                 heatmap={heatmap}
                                 onReindex={handleReindex}
                             />
-                            <div className="dashboard-row">
-                                <BroadcastCenter />
-                            </div>
                         </div>
                     )}
 
@@ -195,6 +192,7 @@ export const AdminMode: React.FC = () => {
                     </div>
                 )}
             </main>
+            <BroadcastCenter />
         </div>
     );
 };
