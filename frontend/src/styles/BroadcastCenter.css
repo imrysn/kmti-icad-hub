@@ -50,12 +50,12 @@
     top: -50%;
     width: 200%;
     height: 200%;
-    background: conic-gradient(
-        transparent,
+    background: conic-gradient(transparent,
             #6366f1,
             /* Indigo light streak for visibility on white ops */
-            transparent 40% /* Increased from 15% for a longer tail */
-    );
+            transparent 40%
+            /* Increased from 15% for a longer tail */
+        );
     animation: rotateBorder 3s linear infinite;
     transition: background 0.4s;
 }
@@ -108,12 +108,12 @@
 .chatbox-bubble:hover::before {
     animation-duration: 1s;
     /* Speed up on hover */
-    background: conic-gradient(
-        transparent,
+    background: conic-gradient(transparent,
             #000,
             /* Black light streak on white pill */
-            transparent 35% /* Slightly longer tail on hover */
-    );
+            transparent 35%
+            /* Slightly longer tail on hover */
+        );
 }
 
 /* Old hover styles removed */
@@ -125,15 +125,16 @@
 }
 
 .chatbox-expanded {
-    width: 360px;
-    background: rgba(15, 23, 42, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    width: 380px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgb(0, 0, 0);
+    /* Darker border for white bg */
     border-radius: 20px;
     padding: 0;
     overflow: hidden;
-    box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.2);
     animation: slideUpPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -151,8 +152,8 @@
 
 .chatbox-header {
     padding: 16px 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(163, 163, 163, 0.062);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -161,7 +162,8 @@
 .chatbox-header h3 {
     font-size: 0.9375rem;
     font-weight: 700;
-    color: white;
+    color: #000000;
+    /* Rich Black */
     margin: 0;
     display: flex;
     align-items: center;
@@ -171,7 +173,7 @@
 .minimize-btn {
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.4);
     cursor: pointer;
     padding: 4px;
     display: flex;
@@ -182,8 +184,8 @@
 }
 
 .minimize-btn:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
+    color: #0f172a;
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .chatbox-form {
@@ -196,21 +198,26 @@
 .chatbox-form textarea {
     width: 100%;
     min-height: 120px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    padding: 12px;
-    color: white;
-    font-size: 0.875rem;
+    padding: 16px;
+    color: #0f172a;
+    font-size: 0.9375rem;
     font-family: inherit;
     resize: none;
     transition: all 0.2s;
+    line-height: 1.5;
+}
+
+.chatbox-form textarea::placeholder {
+    color: rgba(15, 23, 42, 0.4);
 }
 
 .chatbox-form textarea:focus {
     outline: none;
-    border-color: var(--primary, #6366f1);
-    background: rgba(0, 0, 0, 0.3);
+    border-color: #000000;
+    box-shadow: 0 0 0 2px rgba(49, 49, 49, 0.1);
 }
 
 .chatbox-controls {
@@ -226,11 +233,11 @@
 
 .lvl-chip {
     flex: 1;
-    padding: 8px;
+    padding: 10px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(255, 255, 255, 0.03);
-    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: #f8fafc;
+    color: #64748b;
     font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
@@ -242,34 +249,36 @@
 }
 
 .lvl-chip:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: white;
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 .lvl-chip.active.info {
-    background: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
-    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
 .lvl-chip.active.warning {
-    background: rgba(245, 158, 11, 0.15);
-    color: #fbbf24;
-    border-color: rgba(245, 158, 11, 0.4);
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    border-color: rgba(245, 158, 11, 0.3);
 }
 
 .lvl-chip.active.critical {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .send-action {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     border-radius: 12px;
     border: none;
-    background: var(--primary, #6366f1);
+    background: #0f172a;
+    /* Solid dark background for premium feel */
     color: white;
     font-weight: 700;
     font-size: 0.875rem;
@@ -282,31 +291,34 @@
 }
 
 .send-action:hover:not(:disabled) {
-    background: #4f46e5;
+    background: #000000;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
 }
 
 .send-action:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
+    background: #94a3b8;
 }
 
 .chat-status {
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: 8px;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-align: center;
     animation: fadeIn 0.3s ease;
 }
 
 .chat-status.success {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
 }
 
 .chat-status.error {
-    background: rgba(239, 68, 68, 0.1);
-    color: #f87171;
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
 }

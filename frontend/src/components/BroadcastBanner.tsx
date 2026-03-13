@@ -12,9 +12,9 @@ interface Broadcast {
 }
 
 // Sub-component for individual banner cards to isolate state
-const BannerCard: React.FC<{ 
-    broadcast: Broadcast; 
-    index: number; 
+const BannerCard: React.FC<{
+    broadcast: Broadcast;
+    index: number;
     onDismiss: (id: number) => void;
 }> = ({ broadcast, index, onDismiss }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -54,7 +54,7 @@ const BannerCard: React.FC<{
     const zIndex = 100 - index;
 
     return (
-        <div 
+        <div
             className={`broadcast-banner ${broadcast.level} ${isExpanded ? 'expanded' : ''}`}
             style={{
                 transform: `translateY(${offset}px) scale(${scale})`,
@@ -82,7 +82,7 @@ const BannerCard: React.FC<{
                     <div className="banner-footer">
                         <div className="sender-chip">
                             <span className="dot"></span>
-                            Sent by: {broadcast.sender_name}
+                            {broadcast.sender_name}
                         </div>
                         {(canExpand || isExpanded) && (
                             <button className="expand-toggle-icon" onClick={(e) => {
@@ -107,7 +107,7 @@ export const BroadcastBanner: React.FC = () => {
         const saved = localStorage.getItem('dismissed_broadcasts');
         return saved ? JSON.parse(saved) : [];
     });
-    
+
     const lastAlertedId = useRef<number | null>(null);
 
     // Audio synthesis
@@ -180,11 +180,11 @@ export const BroadcastBanner: React.FC = () => {
     return (
         <div className="broadcast-banner-container">
             {activeBroadcasts.slice(0, 3).map((b, idx) => (
-                <BannerCard 
-                    key={b.id} 
-                    broadcast={b} 
-                    index={idx} 
-                    onDismiss={dismiss} 
+                <BannerCard
+                    key={b.id}
+                    broadcast={b}
+                    index={idx}
+                    onDismiss={dismiss}
                 />
             ))}
         </div>
