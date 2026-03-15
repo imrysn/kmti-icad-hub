@@ -4,7 +4,9 @@ import { authService, LoginCredentials, User } from '../services/authService';
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
+  isLoading: boolean; // Keep for backward compatibility or rename
+  isInitialLoading: boolean; 
+  isLoggingIn: boolean;
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => void;
@@ -14,7 +16,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Check authentication status on mount
@@ -35,7 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         authService.logout();
         setUser(null);
       } finally {
-        setIsLoading(false);
+        setIsInitialLoading(false);
       }
     };
 
@@ -43,7 +46,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<void> => {
-    setIsLoading(true);
+    setIsLoggingIn(true);
     setError(null);
 
     try {
@@ -54,10 +57,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       let errorMessage = 'Login failed. Please try again.';
 
       if (err.response) {
-        if (err.response.status === 401) {
-          errorMessage = 'Invalid username or password.';
-        } else if (err.response.data?.detail) {
+        if (err.response.data?.detail) {
           errorMessage = err.response.data.detail;
+        } else if (err.response.status === 401) {
+          errorMessage = 'Invalid username or password.';
         }
       } else if (err.message) {
         errorMessage = err.message;
@@ -66,7 +69,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
-      setIsLoading(false);
+      setIsLoggingIn(false);
     }
   };
 
@@ -80,7 +83,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     <AuthContext.Provider value={{
       user,
       isAuthenticated: !!user,
-      isLoading,
+      isLoading: isInitialLoading || isLoggingIn, // Combined for those who still use it
+      isInitialLoading,
+      isLoggingIn,
       error,
       login,
       logout

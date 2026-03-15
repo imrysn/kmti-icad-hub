@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Shield, User as UserIcon, Trash2, FileText } from 'lucide-react';
+import { Search, Shield, User as UserIcon, Trash2, Edit2, UserPlus } from 'lucide-react';
 import { User } from '../../../services/authService';
 
 interface UserManagementProps {
@@ -9,6 +9,8 @@ interface UserManagementProps {
     setSearchQuery: (query: string) => void;
     handleToggleStatus: (id: number) => Promise<void>;
     handleDeleteUser: (id: number) => Promise<void>;
+    onAddUser: () => void;
+    onEditUser: (user: User) => void;
 }
 
 export const UserManagement: React.FC<UserManagementProps> = ({ 
@@ -17,7 +19,9 @@ export const UserManagement: React.FC<UserManagementProps> = ({
     searchQuery, 
     setSearchQuery, 
     handleToggleStatus, 
-    handleDeleteUser
+    handleDeleteUser,
+    onAddUser,
+    onEditUser
 }) => {
     const filteredUsers = users.filter((u: User) => 
         u.username.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -37,6 +41,9 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
+                <button className="add-user-btn" onClick={onAddUser}>
+                    <UserPlus size={16} /> Add New User
+                </button>
             </div>
 
             <div className="table-responsive">
@@ -77,20 +84,31 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                                 </td>
                                 <td>{new Date(u.created_at || '').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                                 <td className="actions-cell">
-                                    <button 
-                                        className="toggle-btn"
-                                        onClick={() => handleToggleStatus(u.id)}
-                                        disabled={u.id === currentUser?.id}
-                                    >
-                                        {u.is_active ? 'Revoke' : 'Permit'}
-                                    </button>
-                                    <button 
-                                        className="delete-btn"
-                                        onClick={() => handleDeleteUser(u.id)}
-                                        disabled={u.id === currentUser?.id}
-                                    >
-                                        <Trash2 size={14} />
-                                    </button>
+                                    <div className="action-buttons">
+                                        <button 
+                                            className="action-icon-btn edit-btn"
+                                            onClick={() => onEditUser(u)}
+                                            title="Edit User"
+                                        >
+                                            <Edit2 size={14} />
+                                        </button>
+                                        <button 
+                                            className="action-icon-btn toggle-btn"
+                                            onClick={() => handleToggleStatus(u.id)}
+                                            disabled={u.id === currentUser?.id}
+                                            title={u.is_active ? 'Deactivate' : 'Activate'}
+                                        >
+                                            {u.is_active ? 'Revoke' : 'Permit'}
+                                        </button>
+                                        <button 
+                                            className="action-icon-btn delete-btn"
+                                            onClick={() => handleDeleteUser(u.id)}
+                                            disabled={u.id === currentUser?.id}
+                                            title="Delete User"
+                                        >
+                                            <Trash2 size={14} />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

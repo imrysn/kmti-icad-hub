@@ -13,6 +13,7 @@ import { PerformanceDirectory } from './components/PerformanceDirectory';
 import { TraineeDetail } from './components/TraineeDetail';
 import { AuditLogs } from './components/AuditLogs';
 import { BroadcastCenter } from './components/BroadcastCenter';
+import { UserModal } from './components/UserModal';
 
 type AdminTab = 'overview' | 'users' | 'progress' | 'logs';
 
@@ -29,6 +30,10 @@ export const AdminMode: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null);
     const [heatmap, setHeatmap] = useState<{course_id: string, count: number}[]>([]);
+
+    // User CRUD state
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const fetchData = async () => {
         setLoading(true);
@@ -88,6 +93,20 @@ export const AdminMode: React.FC = () => {
             if (activeTab === 'overview') fetchData();
         } catch (err: any) {
             setError(err.response?.data?.detail || 'Failed to delete user.');
+        }
+    };
+
+    const handleSaveUser = async (userData: any) => {
+        try {
+            if (selectedUser) {
+                await adminService.updateUser(selectedUser.id, userData);
+            } else {
+                await adminService.createUser(userData);
+            }
+            await fetchData();
+            setIsUserModalOpen(false);
+        } catch (err: any) {
+            throw err; // Propagate to modal for display
         }
     };
 
@@ -163,6 +182,14 @@ export const AdminMode: React.FC = () => {
                             setSearchQuery={setSearchQuery} 
                             handleToggleStatus={handleToggleStatus} 
                             handleDeleteUser={handleDeleteUser} 
+                            onAddUser={() => {
+                                setSelectedUser(null);
+                                setIsUserModalOpen(true);
+                            }}
+                            onEditUser={(user) => {
+                                setSelectedUser(user);
+                                setIsUserModalOpen(true);
+                            }}
                         />
                     )}
 
@@ -193,6 +220,13 @@ export const AdminMode: React.FC = () => {
                 )}
             </main>
             <BroadcastCenter />
+
+            <UserModal 
+                isOpen={isUserModalOpen}
+                onClose={() => setIsUserModalOpen(false)}
+                onSave={handleSaveUser}
+                user={selectedUser}
+            />
         </div>
     );
 };

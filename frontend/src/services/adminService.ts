@@ -64,6 +64,16 @@ export const adminService = {
         await api.delete(`/admin/users/${userId}`);
     },
 
+    async createUser(data: any): Promise<any> {
+        const response = await api.post('/admin/users', data);
+        return response.data;
+    },
+
+    async updateUser(userId: number, data: any): Promise<any> {
+        const response = await api.put(`/admin/users/${userId}`, data);
+        return response.data;
+    },
+
     async sendBroadcast(message: string, level: string = 'info'): Promise<void> {
         await api.post(`/admin/broadcast`, null, { params: { message, level } });
     },

@@ -8,6 +8,8 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 export interface LoginCredentials {
     username: string;
     password: string;
+    remember_me?: boolean;
+    required_role?: "trainee" | "employee" | "admin" | "user";
 }
 
 export interface RegisterData {
@@ -56,7 +58,12 @@ authApi.interceptors.request.use((config) => {
 authApi.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
+        // Only redirect if NOT a login attempt AND not already on the login page.
+        // This prevents failed logins from refreshing the page and clearing error messages.
+        const isLoginRequest = error.config.url?.includes('login');
+        const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
+
+        if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
             localStorage.removeItem('access_token');
             localStorage.removeItem('user');
             window.location.href = '/';
@@ -89,6 +96,16 @@ export const authService = {
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
         localStorage.setItem('user', JSON.stringify(response.data));
+        return response.data;
+    },
+
+    /**
+     * Request a password reset
+     */
+    async forgotPassword(usernameOrEmail: string): Promise<{ message: string }> {
+        const response = await authApi.post('/auth/forgot-password', {
+            username_or_email: usernameOrEmail
+        });
         return response.data;
     },
 

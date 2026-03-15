@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti_logo.png';
 import LightPillar from '../components/LightPillar';
 
 export const LoginView: React.FC = () => {
-    const { login, isLoading, error } = useAuth();
+    const { login, isLoggingIn, error } = useAuth();
     const [loginType, setLoginType] = useState<'user' | 'admin'>('user');
     const [formData, setFormData] = useState({
         username: '',
@@ -21,6 +22,15 @@ export const LoginView: React.FC = () => {
     const [forgotPasswordMessage, setForgotPasswordMessage] = useState('');
     const [isForgotPasswordSubmitting, setIsForgotPasswordSubmitting] = useState(false);
 
+    // Load remembered username on mount
+    useEffect(() => {
+        const rememberedUser = localStorage.getItem('remembered_username');
+        if (rememberedUser) {
+            setFormData(prev => ({ ...prev, username: rememberedUser }));
+            setRememberMe(true);
+        }
+    }, []);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -32,7 +42,12 @@ export const LoginView: React.FC = () => {
 
     const handleToggle = () => {
         setLoginType(prev => prev === 'user' ? 'admin' : 'user');
-        setFormData({ username: '', password: '' });
+        // Pre-fill username if toggle changes but remember me was active
+        const rememberedUser = localStorage.getItem('remembered_username');
+        setFormData({ 
+            username: rememberedUser || '', 
+            password: '' 
+        });
         setLocalError('');
     };
 
@@ -46,7 +61,23 @@ export const LoginView: React.FC = () => {
         }
 
         try {
-            await login({ username: formData.username, password: formData.password });
+            // Handle Remember Me persistence
+            if (rememberMe) {
+                localStorage.setItem('remembered_username', formData.username);
+            } else {
+                localStorage.removeItem('remembered_username');
+            }
+
+            // Pass required_role to enforce toggle logic on the backend
+            // Admin toggle requires 'admin' role
+            // User toggle requires NO 'admin' role (handled by 'user' check in backend)
+            const required_role = loginType === 'admin' ? 'admin' : 'user';
+            await login({ 
+                username: formData.username, 
+                password: formData.password,
+                remember_me: rememberMe,
+                required_role
+            });
             // Navigation will happen automatically via App.tsx when user state updates
         } catch (err: any) {
             setLocalError(err.message || 'Login failed');
@@ -65,17 +96,22 @@ export const LoginView: React.FC = () => {
         setForgotPasswordMessage('');
     };
 
-    const handleForgotPasswordSubmit = () => {
-        // Mock implementation for now as per previous logical scope, 
-        // real implementation would go here if API exists.
+    const handleForgotPasswordSubmit = async () => {
+        if (!forgotPasswordEmail.trim()) return;
+
         setIsForgotPasswordSubmitting(true);
-        setTimeout(() => {
-            setForgotPasswordMessage('Password reset instructions have been sent to Admin.');
-            setIsForgotPasswordSubmitting(false);
+        try {
+            const response = await authService.forgotPassword(forgotPasswordEmail);
+            setForgotPasswordMessage(response.message);
+            // Close modal after delay
             setTimeout(() => {
                 setShowForgotPasswordModal(false);
-            }, 2000);
-        }, 1000);
+            }, 3000);
+        } catch (err: any) {
+            setForgotPasswordMessage(err.response?.data?.detail || 'Failed to send reset request. Please try again later.');
+        } finally {
+            setIsForgotPasswordSubmitting(false);
+        }
     };
 
     return (
@@ -121,7 +157,7 @@ export const LoginView: React.FC = () => {
                                     name="username"
                                     value={formData.username}
                                     onChange={handleInputChange}
-                                    disabled={isLoading}
+                                    disabled={isLoggingIn}
                                     placeholder="User Name"
                                     className={localError ? 'error' : ''}
                                 />
@@ -135,7 +171,7 @@ export const LoginView: React.FC = () => {
                                         name="password"
                                         value={formData.password}
                                         onChange={handleInputChange}
-                                        disabled={isLoading}
+                                        disabled={isLoggingIn}
                                         placeholder="Password"
                                         className={localError ? 'error' : ''}
                                     />
@@ -177,9 +213,9 @@ export const LoginView: React.FC = () => {
                             <button
                                 type="submit"
                                 className={`login-button ${loginType}`}
-                                disabled={isLoading}
+                                disabled={isLoggingIn}
                             >
-                                {isLoading ? (
+                                {isLoggingIn ? (
                                     <>
                                         <span className="loading-spinner"></span>
                                         <span>Signing in...</span>

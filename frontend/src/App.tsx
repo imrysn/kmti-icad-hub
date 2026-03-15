@@ -12,7 +12,7 @@ import { BroadcastBanner } from './components/BroadcastBanner';
 import './styles/App.css';
 
 function App() {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const [mode, setMode] = useState<AppMode>('mentor');
 
   // Automatically set mode based on user role
@@ -31,7 +31,7 @@ function App() {
   }, [user]);
 
   // Show loading state while checking authentication
-  if (isLoading) {
+  if (isInitialLoading) {
     return <LoadingScreen />;
   }
 
