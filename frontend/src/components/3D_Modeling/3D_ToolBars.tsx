@@ -1,11 +1,26 @@
 /**
  * 3D_ToolBars.tsx  —  Tool Bars lesson
  */
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ToolbarExplorer from './ToolbarExplorer';
 import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/3D_ToolBars.css';
 import '../../styles/3D_Modeling/ToolbarExplorer.css';
+
+import { Zap } from 'lucide-react';
+
+// Reusable ProTip Component
+const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="pro-tip-card">
+    <div className="pro-tip-icon-wrapper">
+      <Zap size={20} fill="currentColor" />
+    </div>
+    <div className="pro-tip-content">
+      <h5>{title}</h5>
+      <p>{children}</p>
+    </div>
+  </div>
+);
 
 // Toolbar image imports
 import tbFile from '../../assets/3D_Image_File/tool_bars_file.jpg';
@@ -44,10 +59,59 @@ const ICAD_TOOLBARS = [
 ];
 
 const ToolBarsLesson: React.FC = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+
+    return () => {
+      if (currentContainer) {
+        currentContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
   return (
-    <div className="interactive-toolbars-lesson">
-      <p style={{ marginBottom: '2rem', color: '#64748b' }}>Select a toolbar from the side navigation to explore active commands and features available in each category.</p>
-      <ToolbarExplorer toolbars={ICAD_TOOLBARS} />
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div
+          className="lesson-progress-bar"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      <section className="lesson-intro">
+        <h3 className="section-title">
+          <Layout size={28} className="lesson-intro-icon" />
+          ICAD TOOLBARS
+        </h3>
+      </section>
+
+      <div className="lesson-grid single-card">
+        <div className="lesson-card">
+          <div className="lesson-content">
+            <ToolbarExplorer toolbars={ICAD_TOOLBARS} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

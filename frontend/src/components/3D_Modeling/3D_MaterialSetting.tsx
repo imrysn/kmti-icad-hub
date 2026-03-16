@@ -1,10 +1,10 @@
 /**
  * 3D_MaterialSetting.tsx — Material Setting lessons
  */
-import React from 'react';
-import { ChevronLeft, ChevronRight, Layers } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Layers, CheckCircle2, Zap, Info } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
-import '../../styles/3D_Modeling/3D_MaterialSetting.css';
+import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Material Setting (1) Assets
 import setMaterialIcon from '../../assets/3D_Image_File/material_setting(1)_set_material.jpg';
@@ -25,134 +25,208 @@ interface MaterialSettingLessonProps {
   onNextLesson?: () => void;
 }
 
+const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="pro-tip-card">
+    <div className="pro-tip-icon-wrapper">
+      <Zap size={20} fill="currentColor" />
+    </div>
+    <div className="pro-tip-content">
+      <h5>{title}</h5>
+      <p>{children}</p>
+    </div>
+  </div>
+);
+
 const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLessonId = 'material-1', onNextLesson }) => {
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const isMaterial1 = subLessonId === 'material-1';
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+
+    return () => {
+      if (currentContainer) {
+        currentContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [subLessonId]);
+
+  const toggleStep = (stepId: string) => {
+    setCompletedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  };
+
+  const getStepClass = (stepId: string) => {
+    return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
+  };
+
   return (
-    <div className="course-lesson-container">
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div 
+          className="lesson-progress-bar" 
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
       <section className="lesson-intro">
-        <h3><Layers size={28} className="lesson-intro-icon" /> {isMaterial1 ? 'MATERIAL SETTING' : 'MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST'}</h3>
-        <p>Setting material is important in order to measure the weight of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part.</p>
+        <h3 className="section-title">
+          <Layers size={28} className="lesson-intro-icon" />
+          {isMaterial1 ? 'MATERIAL SETTING' : 'MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST'}
+        </h3>
+        <p className="p-flush">Setting material is critical for calculating part weight (Specific Gravity) and determining the correct automated layer and color assignments for your 3D models.</p>
 
         {isMaterial1 && (
-          <div className="instruction-box">
-            <div className="image-wrapper">
+          <div className="instruction-box" style={{ marginTop: '1.5rem', border: 'none', background: 'transparent' }}>
+            <div className="image-wrapper-flush" style={{ margin: '0 auto' }}>
               <img src={materialSettingImg} alt="Material Setting" className="software-screenshot screenshot-small" />
             </div>
           </div>
         )}
       </section>
 
-
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="lesson-content fade-in">
-
+          <div className="lesson-content">
             {isMaterial1 ? (
-              <>
-                <div className="instruction-step">
+              <div className="tab-pane">
+                <div className={getStepClass('ms-1')} onClick={() => toggleStep('ms-1')}>
                   <div className="step-header">
-                    <span className="step-number">1</span>
-                    <span className="step-label">Select the <span style={{ color: 'red' }}>Set Material</span> from the icon menu.</span>
+                    <span className={`step-number ${completedSteps.has('ms-1') ? 'completed' : ''}`}>
+                      {completedSteps.has('ms-1') ? <CheckCircle2 size={16} /> : '1'}
+                    </span>
+                    <span className="step-label">Select Tool</span>
                   </div>
-                  <div className="image-wrapper-flush">
-                    <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot screenshot-small" />
-                  </div>
-                </div>
-
-                <div className="instruction-step">
-                  <div className="step-header">
-                    <span className="step-number">2</span>
-                    <span className="step-label">Select the entity/entities &gt; GO </span>
-                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
-                  </div>
-                </div>
-
-                <div className="instruction-step">
-                  <div className="step-header">
-                    <span className="step-number">3</span>
-                    <span className="step-label">The Material Setting Window will appear. Select the material from the list &gt; Press OK</span>
-                  </div>
-                  <p className="step-description">
-                    The list consists of the materials and their corresponding Notation, Specific Gravity and Color. <br /> However, we follow the color base on the <span style={{ color: 'red' }}>color codes</span>. Materials that don't have color code must be machine color <span style={{ color: 'red' }}>(WHITE)</span>.
-                  </p>
-                  <div className="image-wrapper-flush">
-                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" />
-                  </div>
-                </div>
-
-                <div className="instruction-step" style={{ marginTop: '1rem' }}>
-                  <div className="step-header">
-                    <span className="step-number">4</span>
-                    <span className="step-label">After setting the material, a dialog box will appear &gt; Select OK.</span>
-                  </div>
-                  <p className="step-description">
-                    Parts that already have material set will be highlighted to show distinction with parts that does not have yet.
-                  </p>
-                  <div className="image-wrapper-flush">
-                    <img src={step4ResultImg} alt="Material Distinction and Shading Display Dialog" className="software-screenshot screenshot-wide" />
-                  </div>
-                </div>
-
-                <div className="instruction-step" style={{ marginTop: '1rem' }}>
-                  <div className="step-header">
-                    <span className="step-number">5</span>
-                    <span className="step-label">In case there are changes in the material, select <span style={{ color: 'red' }}>Set Material</span> from the icon menu.</span>
-                  </div>
-                  <p className="step-description">
-                    A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.
-                  </p>
-                  <div className="image-wrapper-flush" style={{ marginLeft: '2.5rem' }}>
-                    <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" />
-                  </div>
-
-                  <div className="instruction-step-indent">
-                    <p>Select OK &gt; Material Settings window will appear &gt; Reselect new material for the part</p>
-                    <p>OR</p>
-                    <p>Select Cancel &gt; No changes will be made.</p>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <section className="mt-6">
-
-                  <div className="flex flex-col gap-6">
-                    <div className="image-card max-w-2xl mx-auto">
-                      <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
+                  <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                    <p className="p-flush">Select <strong className="text-highlight">Set Material</strong> from the menu.</p>
+                    <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
+                      <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot screenshot-small" />
                     </div>
+                  </div>
+                </div>
 
-                    <p className="step-description" style={{ marginTop: '1rem', marginBottom: '1rem' }} >
-                      On ICAD, <strong className="text-highlight">S35C</strong> is not included on the material list. In this case, we can use <strong className="text-highlight">S45C</strong> as material on 3D.
-                      In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is used as material for S35C in order to compute for the material weight and final weight of the part.
-                      However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same.
-                    </p>
-
-                    <div className="image-card max-w-2xl mx-auto">
-                      <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
-                    </div>
-
-                    <div className="mt-4" style={{ marginTop: '3rem' }} >
-                      <p className="font-semibold mb-3">Other materials that are not on ICAD Material List includes:</p>
-                      <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                        <img src={materialsListImg} alt="Materials List" className="software-screenshot screenshot-wide" />
+                <div className={getStepClass('ms-2')} onClick={() => toggleStep('ms-2')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('ms-2') ? 'completed' : ''}`}>
+                      {completedSteps.has('ms-2') ? <CheckCircle2 size={16} /> : '2'}
+                    </span>
+                    <span className="step-label">Select Entity</span>
+                  </div>
+                  <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                    <div className="flex-row-center" style={{ gap: '1rem' }}>
+                      <p className="p-flush">Select the entity/entities &gt; <strong className="text-highlight">GO</strong></p>
+                      <div className="image-wrapper-flush">
+                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
                       </div>
                     </div>
                   </div>
-                </section>
-              </>
+                </div>
+
+                <div className={getStepClass('ms-3')} onClick={() => toggleStep('ms-3')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('ms-3') ? 'completed' : ''}`}>
+                      {completedSteps.has('ms-3') ? <CheckCircle2 size={16} /> : '3'}
+                    </span>
+                    <span className="step-label">Choose Material</span>
+                  </div>
+                  <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                    <p className="p-flush">Select the material from the list &gt; Press <strong className="text-highlight">OK</strong></p>
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={getStepClass('ms-4')} onClick={() => toggleStep('ms-4')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('ms-4') ? 'completed' : ''}`}>
+                      {completedSteps.has('ms-4') ? <CheckCircle2 size={16} /> : '4'}
+                    </span>
+                    <span className="step-label">Confirm Dialog</span>
+                  </div>
+                  <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                    <p className="p-flush">Select <strong className="text-highlight">OK</strong> on the completion dialog.</p>
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={getStepClass('ms-5')} onClick={() => toggleStep('ms-5')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('ms-5') ? 'completed' : ''}`}>
+                      {completedSteps.has('ms-5') ? <CheckCircle2 size={16} /> : '5'}
+                    </span>
+                    <span className="step-label">Change Material</span>
+                  </div>
+                  <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                    <p className="p-flush">To change, select <strong className="text-highlight">Set Material</strong> again and overwrite the existing data.</p>
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" />
+                    </div>
+                  </div>
+                </div>
+
+                <ProTip title="Pro Tip: Specific Gravity">
+                  Always ensure material is set BEFORE finalizing your 2D drawings. The Bill of Materials (BOM) relies on this data for accurate weight calculations!
+                </ProTip>
+              </div>
+            ) : (
+              <div className="tab-pane">
+                <div className="image-wrapper-flush">
+                  <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
+                </div>
+
+                <div className="info-box" style={{ marginTop: '1.5rem', borderLeft: '4px solid var(--primary-red)' }}>
+                  <p className="p-flush"><Info size={16} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} /> On iCAD, <strong className="text-highlight">S35C</strong> is not included. Use <strong className="text-highlight">S45C</strong> instead for 3D Modeling (gravity is similar). However, specify <strong className="text-highlight">S35C</strong> on BOM during 2D detailing.</p>
+                </div>
+
+                <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                  <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
+                </div>
+
+                <div className="section-divider" style={{ margin: '2rem 0' }}></div>
+
+                <div className="tool-block">
+                  <h4 className="section-title">Other Non-iCAD Materials</h4>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                    <img src={materialsListImg} alt="Materials List" className="software-screenshot screenshot-wide" />
+                  </div>
+                </div>
+              </div>
             )}
           </div>
 
           <div className="lesson-navigation">
             <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {isMaterial1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button next" onClick={onNextLesson}>{isMaterial1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

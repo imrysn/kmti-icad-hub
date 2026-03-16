@@ -1,9 +1,22 @@
 /**
  * 3D_Parasolid.tsx — Loading Parasolid lessons
  */
-import React from 'react';
-import { ChevronLeft, ChevronRight, FileDown, Info } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, FileDown, Info, CheckCircle2 } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
+
+// Reusable ProTip Component
+const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="pro-tip-card">
+    <div className="pro-tip-icon-wrapper">
+      <Info size={20} />
+    </div>
+    <div className="pro-tip-content">
+      <h5>{title}</h5>
+      <div className="pro-tip-text">{children}</div>
+    </div>
+  </div>
+);
 
 // Assets
 import importIcon from '../../assets/3D_Image_File/parasolid_import.jpg';
@@ -11,6 +24,8 @@ import linkDialogImg from '../../assets/3D_Image_File/parasolid_link_dialog.jpg'
 import nameChangeDialogImg from '../../assets/3D_Image_File/name_change_dialog.jpg';
 import savePartImg from '../../assets/3D_Image_File/save-the-part-parasolid.jpg';
 import otherInfoImg from '../../assets/3D_Image_File/other-info-parasolid..jpg';
+import loadingParasolidImg from '../../assets/3D_Image_File/loading_parasolid.jpg';
+import parasolid43Img from '../../assets/3D_Image_File/parasolid4.3.jpg';
 import lightenBrepIcon from '../../assets/3D_Image_File/lighten_brep_solid.jpg';
 import brepDialogImg from '../../assets/3D_Image_File/dialog_box_brep.jpg';
 import messagePaneImg from '../../assets/3D_Image_File/message_pane_brep.jpg';
@@ -25,17 +40,77 @@ interface ParasolidLessonProps {
 }
 
 const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'parasolid-1', onNextLesson }) => {
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+
+    return () => {
+      if (currentContainer) {
+        currentContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [subLessonId]);
+
+  const toggleStep = (stepId: string) => {
+    setCompletedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  };
+
+  const getStepClass = (stepId: string) => {
+    return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
+  };
+
   const isPart1 = subLessonId === 'parasolid-1';
 
   return (
-    <div className="course-lesson-container">
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div 
+          className="lesson-progress-bar" 
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
       <section className="lesson-intro">
-        <h3><FileDown size={28} className="lesson-intro-icon" /> {isPart1 ? 'LOADING OF PARASOLID' : 'PARASOLID EXPORT & EDIT'}</h3>
-        <p>
+        <h3 className="section-title">
+          <FileDown size={28} className="lesson-intro-icon" /> 
+          {isPart1 ? 'LOADING OF PARASOLID' : 'PARASOLID EXPORT & EDIT'}
+        </h3>
+        <p className="p-flush">
           {isPart1
             ? 'Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.'
             : 'Advanced options for exporting and editing B-Rep solids.'}
         </p>
+        {isPart1 && (
+          <div className="instruction-box">
+            <div className="image-wrapper">
+              <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" />
+            </div>
+          </div>
+        )}
       </section>
 
       <div className="lesson-grid single-card">
@@ -44,124 +119,135 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
             <div className="lesson-content fade-in">
               <h3 className="section-title">IMPORT</h3>
 
-              <div className="instruction-step">
+              <div className={getStepClass('p1-1')} onClick={() => toggleStep('p1-1')}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
-                  <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
+                  <span className={`step-number ${completedSteps.has('p1-1') ? 'completed' : ''}`}>
+                    {completedSteps.has('p1-1') ? <CheckCircle2 size={16} /> : '1'}
+                  </span>
+                  <span className="step-label">Select Import</span>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" />
+                <div style={{ paddingLeft: '2.5rem' }}>
+                  <p className="p-flush">Select <strong className="text-highlight">Import</strong> from the icon menu.</p>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                    <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" />
+                  </div>
                 </div>
               </div>
 
-              <div className="instruction-step" style={{ marginTop: '2rem' }}>
+              <div className={getStepClass('p1-2')} onClick={() => toggleStep('p1-2')}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">The Parasolid Link dialog box will appear. User will be able to browse folders which contain parasolid files to be imported on ICAD.</span>
+                  <span className={`step-number ${completedSteps.has('p1-2') ? 'completed' : ''}`}>
+                    {completedSteps.has('p1-2') ? <CheckCircle2 size={16} /> : '2'}
+                  </span>
+                  <span className="step-label">Browse Files</span>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
-                </div>
-                <div className="instruction-box info" style={{ marginTop: '1rem' }}>
-                  <p><Info size={18} /> <strong>File Extensions:</strong> ICAD supports .xmt_txt, .xmt_bin, .x_t, and .x_b Parasolid files.</p>
+                <div style={{ paddingLeft: '2.5rem' }}>
+                  <p className="p-flush">The Parasolid Link dialog box will appear. Browse for the parasolid files to be imported.</p>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                    <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
 
-              <div className="instruction-step" style={{ marginTop: '2.5rem' }}>
+              <div className={getStepClass('p1-3')} onClick={() => toggleStep('p1-3')}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">Press OK after selecting the parasolid file. The Name Change dialog box will appear &gt; Pick <strong>Cancel</strong>.</span>
+                  <span className={`step-number ${completedSteps.has('p1-3') ? 'completed' : ''}`}>
+                    {completedSteps.has('p1-3') ? <CheckCircle2 size={16} /> : '3'}
+                  </span>
+                  <span className="step-label">Handle Name Change</span>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-small" />
-                </div>
-                <p className="p-flush" style={{ marginTop: '1rem' }}>All Part names of purchase parts must be release on the tree view.</p>
-                <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                  <img src={otherInfoImg} alt="Tree View Release" className="software-screenshot screenshot-large" />
-                </div>
-                <div className="instruction-box warning" style={{ marginTop: '1rem' }}>
-                  <p>Right-click on the 3D Part name on the tree view then pick <strong>Cancel</strong> to release.</p>
+                <div style={{ paddingLeft: '2.5rem' }}>
+                  <p className="p-flush">Press OK after selecting the file. When the Name Change dialog appears, pick <strong>Cancel</strong>.</p>
+                  <p className="p-flush" style={{ marginTop: '0.75rem', color: 'var(--text-muted)' }}>All Part names must be release on the tree view.</p>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                    <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
+
+              <ProTip title="Pro Tip: Importing Standards">
+                When importing purchased parts, canceling the name change ensures the original manufacturer codes are preserved in the tree view, aiding future reference.
+              </ProTip>
             </div>
           ) : (
             <div className="lesson-content fade-in">
               <h3 className="section-title">4.) LIGHTEN B-REP SOLID</h3>
               <p className="p-flush">Use this tool to lighten up the file size.</p>
 
-              <div className="instruction-step">
+              <div className={getStepClass('p2-1')} onClick={() => toggleStep('p2-1')}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
-                  <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
+                  <span className={`step-number ${completedSteps.has('p2-1') ? 'completed' : ''}`}>
+                    {completedSteps.has('p2-1') ? <CheckCircle2 size={16} /> : '1'}
+                  </span>
+                  <span className="step-label">Select Lighten Tool</span>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" />
+                <div style={{ paddingLeft: '2.5rem' }}>
+                  <p className="p-flush">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</p>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                    <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" />
+                  </div>
                 </div>
               </div>
 
-              <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
+              <div className={getStepClass('p2-2')} onClick={() => toggleStep('p2-2')}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">A dialog box will appear. Select <strong>No form changes</strong> &gt; OK.</span>
+                  <span className={`step-number ${completedSteps.has('p2-2') ? 'completed' : ''}`}>
+                    {completedSteps.has('p2-2') ? <CheckCircle2 size={16} /> : '2'}
+                  </span>
+                  <span className="step-label">Set Form Mode</span>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-small" />
+                <div style={{ paddingLeft: '2.5rem' }}>
+                  <p className="p-flush">In the dialog box, select <strong>No form changes</strong> &gt; OK.</p>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                    <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
+                  </div>
                 </div>
               </div>
 
-              <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
+              <div className={getStepClass('p2-3')} onClick={() => toggleStep('p2-3')}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">Select the purchase part.</span>
-                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                  <span className={`step-number ${completedSteps.has('p2-3') ? 'completed' : ''}`}>
+                    {completedSteps.has('p2-3') ? <CheckCircle2 size={16} /> : '3'}
+                  </span>
+                  <span className="step-label">Process Confirmation</span>
                 </div>
-                <p className="p-flush" style={{ marginTop: '1rem' }}>Check the message pane to see if the process is successful.</p>
-                <div className="image-wrapper-flush" style={{ marginTop: '0.5rem' }}>
-                  <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" />
+                <div style={{ paddingLeft: '2.5rem' }}>
+                  <div className="flex-row-center" style={{ gap: '1rem' }}>
+                    <p className="p-flush">Select the purchase part.</p>
+                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+                  </div>
+                  <p className="p-flush" style={{ marginTop: '1rem' }}>Check the message pane to confirm success.</p>
+                  <div className="image-wrapper-flush" style={{ marginTop: '0.5rem' }}>
+                    <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" />
+                  </div>
                 </div>
               </div>
 
               <div className="section-divider"></div>
-              <h3 className="section-title" style={{ marginTop: '1.5rem' }}>5.) SAVE THE PART</h3>
-              <p>Go to <strong>File &gt; Save As &gt; Use the Purchase part code as File name.</strong></p>
+              <h3 className="section-title">5.) SAVE THE PART</h3>
+              <p className="p-flush">Go to <strong>File &gt; Save As &gt; Use the Purchase part code as File name.</strong></p>
 
               <div className="section-divider"></div>
-              <h3 className="section-title" style={{ marginTop: '1.5rem' }}>6.) SET ALL IMPORTANT INFORMATIONS OF THE PART</h3>
-              <p className="p-flush">Other way to add comment to the Part:</p>
+              <h3 className="section-title">6.) SET IMPORTANT INFORMATION</h3>
+              <p className="p-flush">Add metadata and comments to the Part.</p>
 
-              <div className="instruction-step">
-                <div className="step-header">
-                  <span className="step-number">1</span>
-                  <span className="step-label">Right-click the Top 3D Part on the tree view.</span>
+              <div className="instruction-step" style={{ marginTop: '1rem', paddingLeft: '2.5rem' }}>
+                <div className="interaction-list--plain">
+                  <p className="p-flush"><strong>1.)</strong> Right-click the Top 3D Part on the tree view</p>
+                  <p className="p-flush"><strong>2.)</strong> Select Properties.</p>
+                  <p className="p-flush"><strong>3.)</strong> Enter the comment &gt; Press OK</p>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={treeViewNameImg} alt="Tree View Selection" className="software-screenshot screenshot-small" />
+                <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                  <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
+                </div>
+                <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                  <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
 
-              <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
-                <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">Select <strong>Properties</strong>. The Property dialog box will appear.</span>
-                </div>
-              </div>
-
-              <div className="instruction-step" style={{ marginTop: '1rem' }}>
-                <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">Enter the comment for the specific part &gt; Press OK.</span>
-                </div>
-                <div className="image-wrapper-flush">
-                  <img src={propertiesWindowImg} alt="Property Dialog Box" className="software-screenshot screenshot-medium" />
-                </div>
-              </div>
-
-              <div className="instruction-box info" style={{ marginTop: '2rem' }}>
-                <p><Info size={18} /> <strong>Note:</strong> Purchase parts color depends on its color on actual. Threaded portions must be color green.</p>
-                <div className="image-wrapper-flush" style={{ marginTop: '1rem', textAlign: 'center' }}>
-                  <img src={materialSettingIcon} alt="Material Setting Icons" className="software-screenshot screenshot-medium" />
-                </div>
-              </div>
+              <ProTip title="Data Management">
+                  Reducing file size with the Lighten B-rep tool is vital for large assemblies. It keeps your ICAD workspace responsive and reduces server storage strain.
+              </ProTip>
             </div>
           )}
 

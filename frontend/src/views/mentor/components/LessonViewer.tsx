@@ -17,6 +17,12 @@ import PartLesson from '../../../components/3D_Modeling/3D_Part';
 import MaterialSettingLesson from '../../../components/3D_Modeling/3D_MaterialSetting';
 import PropertiesLesson from '../../../components/3D_Modeling/3D_Properties';
 import AnnotationLesson from '../../../components/3D_Modeling/3D_Annotation';
+import InterferenceLesson from '../../../components/3D_Modeling/3D_Interference';
+import PurchasePartsLesson from '../../../components/3D_Modeling/3D_PurchaseParts';
+import ParasolidLesson from '../../../components/3D_Modeling/3D_Parasolid';
+import OperationSampleLesson from '../../../components/3D_Modeling/3D_OperationSample';
+import MirroredPartLesson from '../../../components/3D_Modeling/3D_MirroredPart';
+import StandardLesson from '../../../components/3D_Modeling/3D_Standard';
 
 // 2D Lesson Imports
 import OrthographicViewLesson from '../../../components/2D_Drawing/2D_OrthographicView';
@@ -96,6 +102,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                             'origin': () => <div className="origin-lesson-container"><OriginLesson /></div>,
                             'hole-details': () => <HoleDetailsLesson onNextLesson={goToNextLesson} />,
                             'fairing': () => <FairingLesson onNextLesson={goToNextLesson} />,
+                            'interference': () => <InterferenceLesson onNextLesson={goToNextLesson} />,
                         };
 
                         const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
@@ -107,6 +114,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                             'annotation': (id) => <AnnotationLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                             'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                             'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={goToNextLesson} />,
+                            'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={goToNextLesson} />,
                             '2d-orthographic': () => <OrthographicViewLesson />,
                             '2d-command-menu': () => <CommandMenuLesson />,
                             '2d-line-props': () => <LinePropertiesLesson />,

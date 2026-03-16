@@ -2,9 +2,22 @@
  * 3D_Interference.tsx
  * Interference Check lesson
  */
-import React from 'react';
-import { ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, AlertCircle, CheckCircle2, Info } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
+
+// Reusable ProTip Component
+const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="pro-tip-card">
+    <div className="pro-tip-icon-wrapper">
+      <Info size={20} />
+    </div>
+    <div className="pro-tip-content">
+      <h5>{title}</h5>
+      <div className="pro-tip-text">{children}</div>
+    </div>
+  </div>
+);
 
 // Assets
 import leftClick from '../../assets/3D_Image_File/left_click.jpg';
@@ -20,13 +33,66 @@ interface InterferenceLessonProps {
 }
 
 const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson }) => {
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+
+    return () => {
+      if (currentContainer) {
+        currentContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+  const toggleStep = (stepId: string) => {
+    setCompletedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  };
+
+  const getStepClass = (stepId: string) => {
+    return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
+  };
+
   return (
-    <div className="course-lesson-container">
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div 
+          className="lesson-progress-bar" 
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
       <section className="lesson-intro">
-        <h3><AlertCircle size={28} className="lesson-intro-icon" /> INTERFERENCE CHECK</h3>
-        <p>Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling. These following tools are used to detect interferences on the 3D Modeling.</p>
+        <h3 className="section-title">
+          <AlertCircle size={28} className="lesson-intro-icon" /> 
+          INTERFERENCE CHECK
+        </h3>
+        <p className="p-flush">Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling.</p>
         <div className="instruction-box">
-          <div className="image-wrapper">
+          <div className="image-wrapper-flush">
             <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" />
           </div>
         </div>
@@ -34,82 +100,119 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
 
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="instruction-step">
+          <div className="card-header"><h4>Interference Check Tool</h4></div>
+          
+          <div className={getStepClass('i1')} onClick={() => toggleStep('i1')}>
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
+              <span className={`step-number ${completedSteps.has('i1') ? 'completed' : ''}`}>
+                {completedSteps.has('i1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Tool</span>
             </div>
-            <div className="flex-1">
+            <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+              <p className="p-flush">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</p>
+            </div>
+            <div className="image-wrapper-flush" style={{ paddingLeft: '2.5rem' }}>
               <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" />
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('i2')} onClick={() => toggleStep('i2')}>
             <div className="step-header">
-              <span className="step-number">2</span>
-              <span className="step-label">On the command menu, unselect <strong>High-speed detection</strong>.</span>
+              <span className={`step-number ${completedSteps.has('i2') ? 'completed' : ''}`}>
+                {completedSteps.has('i2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Unselect Filter</span>
             </div>
-            <div className="flex-row" style={{ marginTop: '0.5rem' }}>
-              <div className="image-wrapper-flush">
-                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-large" />
-              </div>
+            <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+              <p className="p-flush">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</p>
+            </div>
+            <div className="image-wrapper-flush" style={{ paddingLeft: '2.5rem' }}>
+              <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" />
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('i3')} onClick={() => toggleStep('i3')}>
             <div className="step-header">
-              <span className="step-number">3</span>
-              <span className="step-label">Select specific entities to check if there are interferences &gt; GO </span>
-              <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
+              <span className={`step-number ${completedSteps.has('i3') ? 'completed' : ''}`}>
+                {completedSteps.has('i3') ? <CheckCircle2 size={16} /> : '3'}
+              </span>
+              <span className="step-label">Select Entities</span>
             </div>
-            <p className="p-flush" style={{ fontSize: '0.9rem', color: '#64748b' }}>A dialog box will appear showing the number of detected interferences.</p>
-            <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+            <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+              <div className="flex-row-center" style={{ gap: '1rem' }}>
+                <p className="p-flush">Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong></p>
+                <div className="image-wrapper-flush">
+                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
+                </div>
+              </div>
+              <p className="p-flush" style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>A dialog box will appear showing the number of detected interferences.</p>
+            </div>
+            <div className="image-wrapper-flush" style={{ marginTop: '1rem', paddingLeft: '2.5rem' }}>
               <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
             </div>
-            <p className="p-flush" style={{ marginTop: '1rem', fontStyle: 'italic', fontWeight: 600 }}>OR Right-click on the 3D Space to check the entire drawing for interferences.</p>
+            <div className="info-box" style={{ marginTop: '1rem', marginLeft: '2.5rem' }}>
+              <p className="p-flush"><strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.</p>
+            </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('i4')} onClick={() => toggleStep('i4')}>
             <div className="step-header">
-              <span className="step-number">4</span>
-              <span className="step-label">Analyze possible countermeasures to remove the interference on the parts.</span>
+              <span className={`step-number ${completedSteps.has('i4') ? 'completed' : ''}`}>
+                {completedSteps.has('i4') ? <CheckCircle2 size={16} /> : '4'}
+              </span>
+              <span className="step-label">Analyze and Fix</span>
             </div>
-            <p className="p-flush">To remove the red CGS solid, use <strong>Undo</strong> or <strong>Ctrl+Z</strong>.</p>
-            <p className="p-flush">Tool use to display the list of all detected interferences.</p>
-            <div className="image-wrapper-flush">
-              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
+            <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+              <p className="p-flush">Analyze possible countermeasures. To remove the red CGS solid, use <strong className="text-highlight">Undo</strong> (Ctrl+Z).</p>
             </div>
           </div>
 
           <div className="section-divider"></div>
-          <div className="instruction-step">
-            <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select the tool on the icon menu &gt; GO </span>
-              <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
-            </div>
+          <div className="card-header"><h4>List All Detected Interferences</h4></div>
 
-          </div>
-
-          <div className="instruction-step">
+          <div className={getStepClass('li1')} onClick={() => toggleStep('li1')}>
             <div className="step-header">
-              <span className="step-number">2</span>
-              <span className="step-label">The List Display window will appear showing all the 3D part names that interfere with each other.</span>
+              <span className={`step-number ${completedSteps.has('li1') ? 'completed' : ''}`}>
+                {completedSteps.has('li1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Tool</span>
             </div>
-            <div className="flex-row" style={{ marginTop: '0.5rem' }}>
-              <div className="flex-1">
-                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
+            <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+              <div className="flex-row-center" style={{ gap: '1rem' }}>
+                <p className="p-flush">Select the tool on the icon menu &gt; <strong className="text-highlight">GO</strong></p>
+                <div className="image-wrapper-flush">
+                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
+                </div>
               </div>
             </div>
+            <div className="image-wrapper-flush" style={{ paddingLeft: '2.5rem' }}>
+              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
+            </div>
           </div>
 
+          <div className={getStepClass('li2')} onClick={() => toggleStep('li2')}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('li2') ? 'completed' : ''}`}>
+                {completedSteps.has('li2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Review List</span>
+            </div>
+            <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+              <p className="p-flush">The List Display window will appear showing all interfering parts.</p>
+            </div>
+            <div className="image-wrapper-flush" style={{ marginTop: '1rem', paddingLeft: '2.5rem' }}>
+              <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
+            </div>
+          </div>
+
+          <ProTip title="Did you know?">
+              Interference checking is a critical step before finalizing any design. Small overlaps can lead to major assembly issues on the factory floor!
+          </ProTip>
+
           <div className="lesson-navigation">
-            <button className="nav-button" disabled>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              Finish <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

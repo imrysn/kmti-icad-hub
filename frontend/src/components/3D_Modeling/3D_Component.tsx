@@ -1,10 +1,10 @@
 /**
  * 3D_Component.tsx  —  Component operations lessons (1 and 2)
  */
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, MousePointer2, Box as BoxIcon } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, MousePointer2, Box as BoxIcon, CheckCircle2, Zap } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
-import '../../styles/3D_Modeling/3D_Component.css';
+import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Component (1) Assets
 import componentMenu from '../../assets/3D_Image_File/component(1)_move_copy_delete.jpg';
@@ -26,8 +26,41 @@ interface ComponentLessonProps {
   onNextLesson?: () => void;
 }
 
+const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="pro-tip-card">
+    <div className="pro-tip-icon-wrapper">
+      <Zap size={20} fill="currentColor" />
+    </div>
+    <div className="pro-tip-content">
+      <h5>{title}</h5>
+      <p>{children}</p>
+    </div>
+  </div>
+);
+
 const Component1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate'>('move');
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+
+  const toggleStep = (stepId: string) => {
+    setCompletedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  };
+
+  const getStepClass = (stepId: string) => {
+    return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
+  };
+
+  const tabs = [
+    { id: 'move', label: 'Move' },
+    { id: 'copy', label: 'Copy' },
+    { id: 'mirror', label: 'Mirror' },
+    { id: 'rotate', label: 'Rotate' }
+  ];
 
   const handleNext = () => {
     if (activeTab === 'move') setActiveTab('copy');
@@ -43,227 +76,278 @@ const Component1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
   };
 
   return (
-    <div className="tab-content-area fade-in">
+    <div className="tab-content-area">
       <div className="lesson-tabs">
-        <button
-          className={`tab-button ${activeTab === 'move' ? 'active' : ''}`}
-          onClick={() => setActiveTab('move')}
-        >
-          Move
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'copy' ? 'active' : ''}`}
-          onClick={() => setActiveTab('copy')}
-        >
-          Copy
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'mirror' ? 'active' : ''}`}
-          onClick={() => setActiveTab('mirror')}
-        >
-          Mirror
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'rotate' ? 'active' : ''}`}
-          onClick={() => setActiveTab('rotate')}
-        >
-          Rotate
-        </button>
+        {tabs.map(tab => (
+          <button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+        ))}
       </div>
 
       {activeTab === 'move' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">MOVE COMPONENT</h3>
-          <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
+          <div className="card-header"><h4>MOVE COMPONENT</h4></div>
+          
+          <div className={getStepClass('move-1')} onClick={() => toggleStep('move-1')}>
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select Move Component from the icon menu.</span>
+              <span className={`step-number ${completedSteps.has('move-1') ? 'completed' : ''}`}>
+                {completedSteps.has('move-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Move Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select <strong className="text-highlight">Move Component</strong> from the icon menu.</p>
             </div>
             <div className="image-wrapper-flush">
               <img src={moveIcon} alt="Move Component Icon" className="software-screenshot screenshot-small" />
             </div>
           </div>
 
-          <div className="instruction-step">
-            <div className="step-header" style={{ marginBottom: '1.5rem' }}>
-              <span className="step-number">2</span>
-              <span className="step-label">Select the component to be move &gt; GO </span>
+          <div className={getStepClass('move-2')} onClick={() => toggleStep('move-2')} style={{ marginTop: '1.5rem' }}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('move-2') ? 'completed' : ''}`}>
+                {completedSteps.has('move-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Select Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select the component to be move &gt; <strong className="text-highlight">GO</strong></p>
+            </div>
+            <div className="image-wrapper-flush">
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
+          </div>
 
+          <div className={getStepClass('move-3')} onClick={() => toggleStep('move-3')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">3</span>
-              <span className="step-label">Specify the movement distance on the X, Y and Z-axis on the item entry &gt; Press Enter</span>
+              <span className={`step-number ${completedSteps.has('move-3') ? 'completed' : ''}`}>
+                {completedSteps.has('move-3') ? <CheckCircle2 size={16} /> : '3'}
+              </span>
+              <span className="step-label">Specify Movement</span>
             </div>
-
-            <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-              <div className="flex-row">
-                <div className="flex-1">
-                  <img src={moveEntry} alt="Move Item Entry" className="software-screenshot screenshot-large" />
-                </div>
-                <div className="flex-1">
-                  <img src={moveResult} alt="Move Result" className="software-screenshot screenshot-large" />
-                </div>
+            <div className="step-description">
+              <p className="p-flush">Specify the movement distance on the X, Y and Z-axis on the item entry &gt; Press <strong className="text-highlight">Enter</strong></p>
+            </div>
+            <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
+              <div className="image-wrapper-flush">
+                <img src={moveEntry} alt="Move Item Entry" className="software-screenshot screenshot-medium" />
+              </div>
+              <div className="image-wrapper-flush">
+                <img src={moveResult} alt="Move Result" className="software-screenshot screenshot-medium" />
               </div>
             </div>
           </div>
 
+          <div style={{ marginTop: '2rem' }}>
+            <ProTip title="Pro Tip: Precision Movement">
+              You don't always need exact numbers! Often it is faster to enter one value, press enter, and then adjust the model visually if you're not working with perfectly strict tolerances.
+            </ProTip>
+          </div>
+
           <div className="lesson-navigation">
-            <button className="nav-button" disabled>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Next <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
 
       {activeTab === 'copy' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">COPY COMPONENT</h3>
-          <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
+          <div className="card-header"><h4>COPY COMPONENT</h4></div>
+          
+          <div className={getStepClass('copy-1')} onClick={() => toggleStep('copy-1')}>
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select Copy Component from the icon menu.</span>
+              <span className={`step-number ${completedSteps.has('copy-1') ? 'completed' : ''}`}>
+                {completedSteps.has('copy-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Copy Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select <strong className="text-highlight">Copy Component</strong> from the icon menu.</p>
             </div>
             <div className="image-wrapper-flush">
               <img src={copyIcon} alt="Copy Component Icon" className="software-screenshot screenshot-small" />
             </div>
           </div>
 
-          <div className="instruction-step">
-            <div className="step-header" style={{ marginBottom: '1rem' }}>
-              <span className="step-number">2</span>
-              <span className="step-label">Select the component to be copy &gt; GO</span>
+          <div className={getStepClass('copy-2')} onClick={() => toggleStep('copy-2')} style={{ marginTop: '1.5rem' }}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('copy-2') ? 'completed' : ''}`}>
+                {completedSteps.has('copy-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Select Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select the component to be copy &gt; <strong className="text-highlight">GO</strong></p>
+            </div>
+            <div className="image-wrapper-flush">
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('copy-3')} onClick={() => toggleStep('copy-3')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">3</span>
-              <span className="step-label">Specify the distance on the X, Y and Z-axis and the number of copies needed &gt; Press Enter</span>
+              <span className={`step-number ${completedSteps.has('copy-3') ? 'completed' : ''}`}>
+                {completedSteps.has('copy-3') ? <CheckCircle2 size={16} /> : '3'}
+              </span>
+              <span className="step-label">Set Distance & Number</span>
             </div>
-            <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-              <div className="flex-row">
-                <div className="flex-1">
-                  <img src={copyFinal} alt="Copy Result" className="software-screenshot screenshot-large screenshot-plain" />
-                </div>
-                <img src={copyDistance} alt="Copy Distance/Number" className="software-screenshot screenshot-medium screenshot-plain" />
+            <div className="step-description">
+              <p className="p-flush">Specify the distance on the X, Y and Z-axis and the number of copies needed &gt; Press <strong className="text-highlight">Enter</strong></p>
+            </div>
+            <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
+              <div className="image-wrapper-flush">
+                <img src={copyDistance} alt="Copy Distance/Number" className="software-screenshot screenshot-medium" />
+              </div>
+              <div className="image-wrapper-flush">
+                <img src={copyFinal} alt="Copy Result" className="software-screenshot screenshot-medium" />
               </div>
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Next <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
 
       {activeTab === 'mirror' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">MIRROR COMPONENT</h3>
-          <p className="p-flush-bottom">Use to move/relocate a component by mirror movement.</p>
+          <div className="card-header"><h4>MIRROR COMPONENT</h4></div>
+          <div className="instruction-box">
+            <p className="p-flush">Use to move/relocate a component by mirror movement.</p>
+          </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('mirror-1')} onClick={() => toggleStep('mirror-1')}>
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select Mirror Component from the icon menu.</span>
+              <span className={`step-number ${completedSteps.has('mirror-1') ? 'completed' : ''}`}>
+                {completedSteps.has('mirror-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Mirror Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select <strong className="text-highlight">Mirror Component</strong> from the icon menu.</p>
             </div>
             <div className="image-wrapper-flush">
               <img src={mirrorIcon} alt="Mirror Component Icon" className="software-screenshot screenshot-small" />
             </div>
           </div>
 
-          <div className="instruction-step">
-            <div className="step-header" style={{ marginBottom: '1rem' }}>
-              <span className="step-number">2</span>
-              <span className="step-label">Select the components to be mirror &gt; GO</span>
+          <div className={getStepClass('mirror-2')} onClick={() => toggleStep('mirror-2')} style={{ marginTop: '1.5rem' }}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('mirror-2') ? 'completed' : ''}`}>
+                {completedSteps.has('mirror-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Select Components</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select the components to be mirror &gt; <strong className="text-highlight">GO</strong></p>
+            </div>
+            <div className="image-wrapper-flush">
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('mirror-3')} onClick={() => toggleStep('mirror-3')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">3</span>
-              <span className="step-label">Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
+              <span className={`step-number ${completedSteps.has('mirror-3') ? 'completed' : ''}`}>
+                {completedSteps.has('mirror-3') ? <CheckCircle2 size={16} /> : '3'}
+              </span>
+              <span className="step-label">Set Plane</span>
             </div>
-            <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-              <img src={mirrorResult} alt="Mirror Points and Result" className="software-screenshot screenshot-large" />
+            <div className="step-description">
+              <p className="p-flush">Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</p>
+            </div>
+            <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+              <img src={mirrorResult} alt="Mirror Points and Result" className="software-screenshot screenshot-wide" />
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Next <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
 
       {activeTab === 'rotate' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">ROTATE COMPONENT</h3>
-          <p className="p-flush-bottom">Use to move/relocate a component by rotating on an axis.</p>
+          <div className="card-header"><h4>ROTATE COMPONENT</h4></div>
+          <div className="instruction-box">
+            <p className="p-flush">Use to move/relocate a component by rotating on an axis.</p>
+          </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('rotate-1')} onClick={() => toggleStep('rotate-1')}>
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select Rotate Component from the icon menu.</span>
+              <span className={`step-number ${completedSteps.has('rotate-1') ? 'completed' : ''}`}>
+                {completedSteps.has('rotate-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Rotate Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select <strong className="text-highlight">Rotate Component</strong> from the icon menu.</p>
             </div>
             <div className="image-wrapper-flush">
               <img src={rotateIcon} alt="Rotate Component Icon" className="software-screenshot screenshot-small" />
             </div>
           </div>
 
-          <div className="instruction-step">
-            <div className="step-header" style={{ marginBottom: '1rem' }}>
-              <span className="step-number">2</span>
-              <span className="step-label">Select the component to be rotate &gt; GO</span>
+          <div className={getStepClass('rotate-2')} onClick={() => toggleStep('rotate-2')} style={{ marginTop: '1.5rem' }}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('rotate-2') ? 'completed' : ''}`}>
+                {completedSteps.has('rotate-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Select Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select the component to be rotate &gt; <strong className="text-highlight">GO</strong></p>
+            </div>
+            <div className="image-wrapper-flush">
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('rotate-3')} onClick={() => toggleStep('rotate-3')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">3</span>
-              <span className="step-label">Select 2-points to set the axis of rotation.</span>
+              <span className={`step-number ${completedSteps.has('rotate-3') ? 'completed' : ''}`}>
+                {completedSteps.has('rotate-3') ? <CheckCircle2 size={16} /> : '3'}
+              </span>
+              <span className="step-label">Set Axis</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select 2-points to set the axis of rotation.</p>
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('rotate-4')} onClick={() => toggleStep('rotate-4')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">4</span>
-              <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter</span>
+              <span className={`step-number ${completedSteps.has('rotate-4') ? 'completed' : ''}`}>
+                {completedSteps.has('rotate-4') ? <CheckCircle2 size={16} /> : '4'}
+              </span>
+              <span className="step-label">Specify Angle</span>
             </div>
-            <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-              <div className="flex-row">
-                <div className="flex-1">
-                  <img src={rotateEntry} alt="Rotate Angle Entry" className="software-screenshot screenshot-large" />
-                </div>
-                <div className="flex-1">
-                  <img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-large" />
-                </div>
+            <div className="step-description">
+              <p className="p-flush">Specify the desired angle of rotation on the item entry &gt; Press <strong className="text-highlight">Enter</strong></p>
+            </div>
+            <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
+              <div className="image-wrapper-flush">
+                <img src={rotateEntry} alt="Rotate Angle Entry" className="software-screenshot screenshot-medium" />
+              </div>
+              <div className="image-wrapper-flush">
+                <img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-medium" />
               </div>
             </div>
           </div>
 
+          <div style={{ marginTop: '2rem' }}>
+            <ProTip title="Pro Tip: Axis Verification">
+              When selecting an axis for rotation, picking the exact center points of cylindrical parts usually gives the most predictable outcome!
+            </ProTip>
+          </div>
+
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Next <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
@@ -283,6 +367,27 @@ import deleteIcon from '../../assets/3D_Image_File/component(2)_delete.jpg';
 
 const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'repeat' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('repeat');
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+
+  const toggleStep = (stepId: string) => {
+    setCompletedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  };
+
+  const getStepClass = (stepId: string) => {
+    return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
+  };
+
+  const tabs = [
+    { id: 'repeat', label: 'Repeat Copy' },
+    { id: 'rotateCopy', label: 'Rotate Copy' },
+    { id: 'mirrorCopy', label: 'Mirror Copy' },
+    { id: 'delete', label: 'Delete' }
+  ];
 
   const handleNext = () => {
     if (activeTab === 'repeat') setActiveTab('rotateCopy');
@@ -298,97 +403,121 @@ const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
   };
 
   return (
-    <div className="tab-content-area fade-in">
+    <div className="tab-content-area">
       <div className="lesson-tabs">
-        <button
-          className={`tab-button ${activeTab === 'repeat' ? 'active' : ''}`}
-          onClick={() => setActiveTab('repeat')}
-        >
-          Repeat Copy
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'rotateCopy' ? 'active' : ''}`}
-          onClick={() => setActiveTab('rotateCopy')}
-        >
-          Rotate Copy
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'mirrorCopy' ? 'active' : ''}`}
-          onClick={() => setActiveTab('mirrorCopy')}
-        >
-          Mirror Copy
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'delete' ? 'active' : ''}`}
-          onClick={() => setActiveTab('delete')}
-        >
-          Delete
-        </button>
+        {tabs.map(tab => (
+          <button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+        ))}
       </div>
 
       {activeTab === 'repeat' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">REPEAT COPY COMPONENT</h3>
-          <p className="p-flush-bottom">Use for continuous duplication of component.</p>
+          <div className="card-header"><h4>REPEAT COPY COMPONENT</h4></div>
+          <div className="instruction-box">
+            <p className="p-flush">Use for continuous duplication of component.</p>
+          </div>
 
-          <div className="instruction-step">
-            <div className="image-wrapper-flush">
-              <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot screenshot-small" />
+          <div className={getStepClass('repeat-1')} onClick={() => toggleStep('repeat-1')}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('repeat-1') ? 'completed' : ''}`}>
+                {completedSteps.has('repeat-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Repeat Copy Tool</span>
             </div>
-            <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-              <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot screenshot-large" />
+            <div className="image-wrapper-flush" style={{ marginLeft: '2.5rem' }}>
+              <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot screenshot-small" />
             </div>
           </div>
 
+          <div className={getStepClass('repeat-2')} onClick={() => toggleStep('repeat-2')} style={{ marginTop: '1.5rem' }}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('repeat-2') ? 'completed' : ''}`}>
+                {completedSteps.has('repeat-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Perform Repeat Copying</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select the base point and repeatedly click to place copies.</p>
+            </div>
+            <div className="image-wrapper-flush" style={{ marginLeft: '2.5rem' }}>
+              <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot screenshot-wide" />
+            </div>
+          </div>
+
+          <div style={{ marginTop: '2rem' }}>
+            <ProTip title="Pro Tip: Patterning Options">
+              Repeat copy is great for an irregular scattering of parts. But if you need components evenly spaced in a row or grid, consider the standard <strong className="text-highlight">Copy Component</strong> with a set distance/quantity instead!
+            </ProTip>
+          </div>
+
           <div className="lesson-navigation">
-            <button className="nav-button" disabled>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Next <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
 
       {activeTab === 'rotateCopy' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">ROTATE COPY COMPONENT</h3>
-          <p className="p-flush-bottom">Use to create a duplicate of a component by rotating on an axis.</p>
-          <div className="image-wrapper-flush">
-            <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot screenshot-small" />
+          <div className="card-header"><h4>ROTATE COPY COMPONENT</h4></div>
+          <div className="instruction-box">
+            <p className="p-flush">Use to create a duplicate of a component by rotating on an axis.</p>
           </div>
 
-          <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
+          <div className={getStepClass('rotateCopy-1')} onClick={() => toggleStep('rotateCopy-1')}>
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select Rotate Component from the icon menu.</span>
+              <span className={`step-number ${completedSteps.has('rotateCopy-1') ? 'completed' : ''}`}>
+                {completedSteps.has('rotateCopy-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Rotate Component</span>
             </div>
-
+            <div className="step-description">
+              <p className="p-flush">Select <strong className="text-highlight">Rotate Component</strong> from the icon menu.</p>
+            </div>
+            <div className="image-wrapper-flush">
+              <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot screenshot-small" />
+            </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('rotateCopy-2')} onClick={() => toggleStep('rotateCopy-2')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">2</span>
-              <span className="step-label">Select the component/s to be rotated &gt; </span>
+              <span className={`step-number ${completedSteps.has('rotateCopy-2') ? 'completed' : ''}`}>
+                {completedSteps.has('rotateCopy-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Select Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select the component/s to be rotated &gt; <strong className="text-highlight">GO</strong></p>
+            </div>
+            <div className="image-wrapper-flush">
               <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('rotateCopy-3')} onClick={() => toggleStep('rotateCopy-3')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">3</span>
-              <span className="step-label">Select 2 points to set the axis of rotation.</span>
+              <span className={`step-number ${completedSteps.has('rotateCopy-3') ? 'completed' : ''}`}>
+                {completedSteps.has('rotateCopy-3') ? <CheckCircle2 size={16} /> : '3'}
+              </span>
+              <span className="step-label">Set Axis</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select 2 points to set the axis of rotation.</p>
             </div>
             <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-              <img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot screenshot-large" />
+              <img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot screenshot-wide" />
             </div>
           </div>
 
-          <div className="instruction-step" style={{ marginTop: '1rem' }}>
+          <div className={getStepClass('rotateCopy-4')} onClick={() => toggleStep('rotateCopy-4')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">4</span>
-              <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter.</span>
+              <span className={`step-number ${completedSteps.has('rotateCopy-4') ? 'completed' : ''}`}>
+                {completedSteps.has('rotateCopy-4') ? <CheckCircle2 size={16} /> : '4'}
+              </span>
+              <span className="step-label">Specify Angle</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Specify the desired angle of rotation on the item entry &gt; Press <strong className="text-highlight">Enter</strong></p>
             </div>
             <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
               <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot screenshot-wide" />
@@ -396,69 +525,91 @@ const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Next <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
 
       {activeTab === 'mirrorCopy' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">MIRROR COPY COMPONENT</h3>
-          <p className="p-flush-bottom">Use to create a duplicate of a component by mirror movement.</p>
-          <div className="image-wrapper-flush">
-            <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot screenshot-small" />
+          <div className="card-header"><h4>MIRROR COPY COMPONENT</h4></div>
+          <div className="instruction-box">
+            <p className="p-flush">Use to create a duplicate of a component by mirror movement.</p>
+            <p className="p-flush" style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>Same procedure with Mirror Component.</p>
           </div>
-          <p className="p-flush" style={{ marginTop: '1rem' }}>Same procedure with Mirror Component.</p>
 
-          <div className="instruction-step">
-            <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-              <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot screenshot-large" />
+          <div className={getStepClass('mirrorCopy-1')} onClick={() => toggleStep('mirrorCopy-1')}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('mirrorCopy-1') ? 'completed' : ''}`}>
+                {completedSteps.has('mirrorCopy-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Mirror Copy Tool</span>
+            </div>
+            <div className="image-wrapper-flush" style={{ marginLeft: '2.5rem' }}>
+              <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot screenshot-small" />
+            </div>
+          </div>
+
+          <div className={getStepClass('mirrorCopy-2')} onClick={() => toggleStep('mirrorCopy-2')} style={{ marginTop: '1.5rem' }}>
+            <div className="step-header">
+              <span className={`step-number ${completedSteps.has('mirrorCopy-2') ? 'completed' : ''}`}>
+                {completedSteps.has('mirrorCopy-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Select Plane and Points</span>
+            </div>
+            <div className="image-wrapper-flush" style={{ marginLeft: '2.5rem' }}>
+              <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot screenshot-wide" />
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Next <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
 
       {activeTab === 'delete' && (
         <div className="tab-pane fade-in">
-          <h3 className="section-title">DELETE COMPONENT</h3>
-          <div className="instruction-step" style={{ marginTop: '1.5rem' }}>
+          <div className="card-header"><h4>DELETE COMPONENT</h4></div>
+          
+          <div className={getStepClass('delete-1')} onClick={() => toggleStep('delete-1')}>
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select Delete Component from the icon menu.</span>
+              <span className={`step-number ${completedSteps.has('delete-1') ? 'completed' : ''}`}>
+                {completedSteps.has('delete-1') ? <CheckCircle2 size={16} /> : '1'}
+              </span>
+              <span className="step-label">Select Delete Component</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select <strong className="text-highlight">Delete Component</strong> from the icon menu.</p>
             </div>
             <div className="image-wrapper-flush">
               <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot screenshot-small" />
             </div>
           </div>
 
-          <div className="instruction-step">
+          <div className={getStepClass('delete-2')} onClick={() => toggleStep('delete-2')} style={{ marginTop: '1.5rem' }}>
             <div className="step-header">
-              <span className="step-number">2</span>
-              <span className="step-label" style={{ marginTop: '1rem' }}>Select components to be deleted.</span>
+              <span className={`step-number ${completedSteps.has('delete-2') ? 'completed' : ''}`}>
+                {completedSteps.has('delete-2') ? <CheckCircle2 size={16} /> : '2'}
+              </span>
+              <span className="step-label">Select Components</span>
+            </div>
+            <div className="step-description">
+              <p className="p-flush">Select components to be deleted &gt; <strong className="text-highlight">GO</strong></p>
             </div>
           </div>
 
+          <div style={{ marginTop: '2rem' }}>
+            <ProTip title="Pro Tip: Don't Panic!">
+              If you delete a component by accident, you can often undo the action (Ctrl+Z or the undo button) to get it right back without having to recreate or reload it!
+            </ProTip>
+          </div>
+
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              Finish <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>Finish <ChevronRight size={18} /></button>
           </div>
         </div>
       )}
@@ -467,13 +618,51 @@ const Component2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =
 };
 
 const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLesson }) => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      // Run once to initialize
+      handleScroll();
+    }
+
+    return () => {
+      if (currentContainer) {
+        currentContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [subLessonId]);
+
   return (
-    <div className="course-lesson-container">
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div 
+          className="lesson-progress-bar" 
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       <section className="lesson-intro">
-        <h3><BoxIcon size={28} className="lesson-intro-icon" /> MOVE/COPY/DELETE COMPONENT</h3>
-        <p>These tools are use to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
+        <h3>MOVE/COPY/DELETE COMPONENT</h3>
+        <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
         <div className="instruction-box">
-          <div className="image-wrapper">
+          <div className="image-wrapper-flush">
             <img src={componentMenu} alt="Component Operation Menu" className="software-screenshot screenshot-small" />
           </div>
         </div>
