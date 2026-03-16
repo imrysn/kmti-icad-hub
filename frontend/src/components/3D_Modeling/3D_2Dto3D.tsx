@@ -1,10 +1,10 @@
 /**
  * 3D_2Dto3D.tsx  —  2D > 3D lessons (1 through 3)
  */
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, ArrowRight, CheckCircle2, Zap } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
-import '../../styles/3D_Modeling/3D_2Dto3D.css';
+import '../../styles/3D_Modeling/CourseLesson.css';
 
 // ══════════════════════════════════════════════════════════════════════════
 // 2D > 3D (1) — WORK PLANE / COMMAND MENU / EXTRUDE
@@ -29,9 +29,60 @@ import spiralRotation1 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_ax
 import spiralRotation from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation.jpg';
 import spiralRotation2 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation2.jpg';
 
+// Reusable ProTip Component
+const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="pro-tip-card">
+    <div className="pro-tip-icon-wrapper">
+      <Zap size={20} fill="currentColor" />
+    </div>
+    <div className="pro-tip-content">
+      <h5>{title}</h5>
+      <p>{children}</p>
+    </div>
+  </div>
+);
+
 /* ── 2D > 3D (1) ── */
 const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'workPlane'>('workPlane');
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+    return () => {
+      if (currentContainer) currentContainer.removeEventListener('scroll', handleScroll);
+    };
+  }, [activeTab]);
+
+  const toggleStep = (stepId: string) => {
+    setCompletedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  };
+
+  const getStepClass = (stepId: string) => `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
+
   const tabs = [{ id: 'workPlane', label: 'Work Plane' }];
 
   const scrollToTop = () => {
@@ -40,9 +91,13 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
   };
 
   return (
-    <div className="course-lesson-container">
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
       <section className="lesson-intro">
-        <h3><ArrowRight size={28} className="lesson-intro-icon" /> 2D &gt; 3D (1)</h3>
+        <h3>2D &gt; 3D (1)</h3>
       </section>
       <div className="lesson-tabs">
         {tabs.map(tab => (
@@ -59,18 +114,50 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
         {activeTab === 'workPlane' && (
           <div className="lesson-card tab-content">
             <div className="card-header"><h4>WORK PLANE</h4></div>
-            <div className="instruction-step">
-              <div className="intro-row">
-                <p className="intro-text">3D modeling can be done by sketching on 2D sketch using a plane on the 3D dimension.</p>
-                <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small intro-plane-img" />
-              </div>
-              <p className="intro-sub-text">To create 2D plane on the 3D Dimension, use Open Work Plane from the toolbar.</p>
-              <div className="image-wrapper-flush"><img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" /></div>
-              <div className="image-wrapper-row">
-                <img src={openWorkPlaneImg2} alt="Open Work Plane" className="software-screenshot screenshot-small" />
-                <p className="p-flush">Use to rotate the work plane to X-Y Plane, X-Z Plane or Y-Z Plane.</p>
+
+            <p className="p-flush">3D modeling can be done by sketching on 2D sketch using a plane on the 3D dimension.</p>
+
+            <div className="tool-block">
+              <div className="image-wrapper-flush">
+                <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" />
               </div>
             </div>
+
+
+            <div className={getStepClass('2d1-1')} onClick={() => toggleStep('2d1-1')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d1-1') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d1-1') ? <CheckCircle2 size={16} /> : '1'}
+                </span>
+                <span className="step-label">Open Work Plane</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">To create 2D plane on the 3D Dimension, use <strong className="text-highlight">Open Work Plane</strong> from the toolbar.</p>
+                <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                  <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" />
+                </div>
+              </div>
+            </div>
+
+            <div className={getStepClass('2d1-2')} onClick={() => toggleStep('2d1-2')} style={{ marginTop: '1.5rem' }}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d1-2') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d1-2') ? <CheckCircle2 size={16} /> : '2'}
+                </span>
+                <span className="step-label">Rotate View</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <div className="flex-row-center" style={{ gap: '2rem' }}>
+                  <div className="image-wrapper-flush">
+                    <img src={openWorkPlaneImg2} alt="Open Work Plane" className="software-screenshot screenshot-small" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="p-flush">Use to rotate the work plane to <strong className="text-highlight">X-Y Plane, X-Z Plane</strong> or <strong className="text-highlight">Y-Z Plane</strong>.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="lesson-navigation">
               <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
@@ -85,11 +172,41 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 /* ── 2D > 3D (2) ── */
 const TwoDTo3D2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'commandMenu'>('commandMenu');
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+    return () => {
+      if (currentContainer) currentContainer.removeEventListener('scroll', handleScroll);
+    };
+  }, [activeTab]);
+
   const tabs = [{ id: 'commandMenu', label: 'Command Menu' }];
   return (
-    <div className="course-lesson-container">
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
       <section className="lesson-intro">
-        <h3><ArrowRight size={28} className="lesson-intro-icon" /> 2D &gt; 3D (2)</h3>
+        <h3>2D &gt; 3D (2)</h3>
       </section>
       <div className="lesson-tabs">
         {tabs.map(tab => (
@@ -100,10 +217,16 @@ const TwoDTo3D2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
         {activeTab === 'commandMenu' && (
           <div className="lesson-card tab-content">
             <div className="card-header"><h4>COMMAND MENU</h4></div>
-            <div className="instruction-step">
-              <p className="p-flush-bottom">Most tools used for sketching on the work plane can be found on the command menu.</p>
-              <img src={commandMenu} alt="Command Menu" />
+
+            <p>Most tools used for sketching on the work plane can be found on the command menu.</p>
+
+            <div className="tool-block">
+              <div className="image-wrapper-flush">
+                <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide" />
+              </div>
             </div>
+
+
             <div className="lesson-navigation">
               <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
@@ -118,6 +241,44 @@ const TwoDTo3D2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 /* ── 2D > 3D (3) ── */
 const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'extrude' | 'revolve' | 'spiral'>('extrude');
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+    return () => {
+      if (currentContainer) currentContainer.removeEventListener('scroll', handleScroll);
+    };
+  }, [activeTab]);
+
+  const toggleStep = (stepId: string) => {
+    setCompletedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  };
+
+  const getStepClass = (stepId: string) => `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
+
   const tabs = [
     { id: 'extrude', label: 'Extrude' },
     { id: 'revolve', label: 'Revolve' },
@@ -138,7 +299,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
   return (
     <div className="course-lesson-container">
       <section className="lesson-intro">
-        <h3><ArrowRight size={28} className="lesson-intro-icon" /> 2D &gt; 3D (3)</h3>
+        <h3>2D &gt; 3D (3)</h3>
       </section>
       <div className="lesson-tabs">
         {tabs.map(tab => (
@@ -149,147 +310,254 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
         {activeTab === 'extrude' && (
           <div className="lesson-card tab-content">
             <div className="instruction-box">
-              <p>These are the tools use for extruding 2D sketches to 3D solid Entities.</p>
-              <div className="image-wrapper">
+              <p className="p-flush">These are the tools used for extruding 2D sketches to 3D solid Entities.</p>
+            </div>
+
+            <div className="tool-block">
+              <div className="image-wrapper-flush">
                 <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-medium" />
               </div>
-              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
+              <p className="p-flush" style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
             </div>
 
-            <div className="card-header" style={{ marginTop: '2rem' }}><h4>EXTRUDE</h4></div>
+
+            <div className="card-header card-sub-header"><h4>EXTRUDE</h4></div>
             <p className="p-flush-bottom">Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical at projection.</p>
 
-            <div className="instruction-step">
+            <div className={getStepClass('2d3e-1')} onClick={() => toggleStep('2d3e-1')}>
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) Select <strong>Extrude</strong> from the icon menu.</span>
+                <span className={`step-number ${completedSteps.has('2d3e-1') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3e-1') ? <CheckCircle2 size={16} /> : '1'}
+                </span>
+                <span className="step-label">Select Tool</span>
               </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Select <strong className="text-highlight">Extrude</strong> from the icon menu.</p>
+                <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
+                  <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" />
+                </div>
+              </div>
+            </div>
+
+            <div className={getStepClass('2d3e-2')} onClick={() => toggleStep('2d3e-2')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d3e-2') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3e-2') ? <CheckCircle2 size={16} /> : '2'}
+                </span>
+                <span className="step-label">Pick Cross-Section</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong></p>
+                <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
+                  <div className="image-wrapper-flush">
+                    <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-medium" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={getStepClass('2d3e-3')} onClick={() => toggleStep('2d3e-3')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d3e-3') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3e-3') ? <CheckCircle2 size={16} /> : '3'}
+                </span>
+                <span className="step-label">Set Height</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Specify the height of extrusion on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong></p>
+              </div>
+            </div>
+
+
+
+            <div className="instruction-box instruction-box--warning">
+              <p className="p-flush">A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select <strong className="text-highlight">OK</strong> to delete the work plane.</p>
+              <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', marginTop: '0.5rem' }}>Note: Deleting the work plane will delete all the sketch made on the plane. This process cannot be undone.</p>
+              <p className="p-flush" style={{ marginTop: '0.5rem' }}>Select <strong className="text-highlight">Cancel</strong> to keep the work plane together with all the 2D sketches.</p>
+            </div>
+
+            <div className="flex-row-center--wrap" style={{ marginTop: '1.5rem', gap: '1.5rem' }}>
               <div className="image-wrapper-flush">
-                <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" />
+                <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot screenshot-medium" />
               </div>
-            </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
-              </div>
-              <div className="image-wrapper-row" style={{ marginTop: '1rem' }}>
-                <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-medium" />
-
-              </div>
-            </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
+              <ArrowRight size={24} color="var(--primary-red)" />
+              <div className="image-wrapper-flush">
+                <img src={extrudeResultFinal} alt="Extrude Result" className="software-screenshot screenshot-medium" />
               </div>
             </div>
 
-            <p className="p-flush-bottom" style={{ marginTop: '0.75rem', marginBottom: '0' }}>A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane.</p>
-            <p className="p-flush-bottom" style={{ color: 'red', fontWeight: 'bold', margin: '0' }}>Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.</p>
-            <p className="p-flush" style={{ margin: '0' }}>Select Cancel to keep the work plane together with all the 2D sketches.</p>
 
-            <div className="image-wrapper-row" style={{ marginTop: '1.5rem' }}>
-              <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot screenshot-medium" />
-              <img src={extrudeResultFinal} alt="Extrude Result" className="software-screenshot screenshot-medium" />
-            </div>
             <div className="lesson-navigation">
               <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
+
         {activeTab === 'revolve' && (
           <div className="lesson-card tab-content">
             <div className="instruction-box">
-              <p>These are the tools use for revolving 2D sketches to 3D solid Entities.</p>
-              <div className="image-wrapper">
+              <p className="p-flush">These are the tools used for revolving 2D sketches to 3D solid Entities.</p>
+            </div>
+
+            <div className="tool-block">
+              <div className="image-wrapper-flush">
                 <img src={commandMenu2} alt="Revolve Tools" className="software-screenshot screenshot-medium" />
               </div>
-              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
+              <p className="p-flush" style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
             </div>
 
-            <div className="card-header" style={{ marginTop: '2rem' }}><h4>REVOLVE</h4></div>
-            <p className="p-flush-bottom">Creates a solid entity from a section from creatd on a work plane or 2D drawing, by performing rotation projection.</p>
+            <div className="section-divider"></div>
+            <div className="card-header card-sub-header"><h4>REVOLVE</h4></div>
+            <p className="p-flush-bottom">Creates a solid entity from a section from created on a work plane or 2D drawing, by performing rotation projection.</p>
 
-            <div className="instruction-step">
+            <div className={getStepClass('2d3r-1')} onClick={() => toggleStep('2d3r-1')}>
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) Select <strong>Revolve</strong> from the icon menu.</span>
+                <span className={`step-number ${completedSteps.has('2d3r-1') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3r-1') ? <CheckCircle2 size={16} /> : '1'}
+                </span>
+                <span className="step-label">Select Tool</span>
               </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Select <strong className="text-highlight">Revolve</strong> from the icon menu.</p>
+                <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
+                  <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
+                </div>
+              </div>
+            </div>
+
+            <div className={getStepClass('2d3r-2')} onClick={() => toggleStep('2d3r-2')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d3r-2') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3r-2') ? <CheckCircle2 size={16} /> : '2'}
+                </span>
+                <span className="step-label">Pick Cross Section</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Pick the cross section to be revolved &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
+              </div>
+            </div>
+
+            <div className={getStepClass('2d3r-3')} onClick={() => toggleStep('2d3r-3')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d3r-3') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3r-3') ? <CheckCircle2 size={16} /> : '3'}
+                </span>
+                <span className="step-label">Select Axis</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Select the axis of rotation &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+            <div className="tool-block">
+              <h4 className="section-title">STEPS</h4>
               <div className="image-wrapper-flush">
-                <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
+                <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot screenshot-wide" />
               </div>
             </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Pick the cross section to be revolved &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
-              </div>
-            </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Select the axis of rotation &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
-              </div>
-            </div>
-            <div className="image-wrapper-flush mt-6 text-center"><img src={revolveSteps} alt="Revolve Steps" className="software-screenshot screenshot-wide screenshot-plain" /></div>
+
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
+
         {activeTab === 'spiral' && (
           <div className="lesson-card tab-content">
             <div className="instruction-box">
-              <p>These are the tools use for spiraling 2D sketches to 3D solid Entities.</p>
-              <div className="image-wrapper">
-                <img src={commandMenu2} alt="Spiral Tools" className="software-screenshot screenshot-medium" />
-              </div>
-              <p style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
+              <p className="p-flush">These are the tools used for spiraling 22D sketches to 3D solid Entities.</p>
             </div>
 
-            <div className="card-header" style={{ marginTop: '2rem' }}><h4>SPIRAL FORM</h4></div>
+            <div className="card-header card-sub-header"><h4>SPIRAL FORM</h4></div>
             <p className="p-flush-bottom">Creates a 3D spiral form from a section form created on a 2D sketch.</p>
 
-            <div className="instruction-step">
+            <div className={getStepClass('2d3s-1')} onClick={() => toggleStep('2d3s-1')}>
               <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>1.) First do the sketch.</span>
+                <span className={`step-number ${completedSteps.has('2d3s-1') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3s-1') ? <CheckCircle2 size={16} /> : '1'}
+                </span>
+                <span className="step-label">Create Sketch</span>
               </div>
-              <div className="image-wrapper-flush">
-                <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" />
-              </div>
-            </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>2.) Select <strong style={{ color: 'red' }}>Spiral Form</strong> from the icon menu.</span>
-              </div>
-              <div className="image-wrapper-flush">
-                <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" />
-              </div>
-              <p className="p-flush">Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO </p>
-            </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>3.) Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" style={{ marginLeft: '0.5rem' }} />
-              </div>
-              <p className="p-flush-bottom" style={{ color: 'red', fontWeight: 'bold' }}>*Note: Pitch must be greater than Thickness</p>
-              <div className="image-wrapper-row" style={{ marginTop: '0.5rem' }}>
-                <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-medium" />
-                <img src={spiralPitch} alt="Spiral Pitch Diagram" className="software-screenshot screenshot-medium" />
-              </div>
-            </div>
-            <div className="instruction-step">
-              <div className="step-header">
-                <span className="step-label" style={{ fontWeight: 'normal' }}>4.) Select the ends of the length of the spiral along the axis of rotation Then GO</span>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <div className="image-wrapper-flush">
+                  <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
             </div>
 
-            <div className="image-wrapper-row" style={{ marginTop: '1.5rem', flexWrap: 'wrap' }}>
-              <img src={spiralRotation1} alt="Spiral Axis 1" className="software-screenshot screenshot-medium-small" />
-              <img src={spiralRotation} alt="Spiral Axis" className="software-screenshot screenshot-medium-small" />
-              <img src={spiralRotation2} alt="Spiral Result" className="software-screenshot screenshot-medium-small" />
+            <div className={getStepClass('2d3s-2')} onClick={() => toggleStep('2d3s-2')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d3s-2') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3s-2') ? <CheckCircle2 size={16} /> : '2'}
+                </span>
+                <span className="step-label">Select Spiral Form</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Select <strong className="text-highlight">Spiral Form</strong> from the icon menu.</p>
+                <p className="p-flush" style={{ marginTop: '0.5rem' }}>Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong></p>
+                <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
+                  <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" />
+                </div>
+              </div>
             </div>
+
+            <div className={getStepClass('2d3s-3')} onClick={() => toggleStep('2d3s-3')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d3s-3') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3s-3') ? <CheckCircle2 size={16} /> : '3'}
+                </span>
+                <span className="step-label">Set Pitch</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Specify the pitch of the spiral on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong></p>
+                <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Pitch must be greater than Thickness</p>
+                <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
+
+                  <div className="image-wrapper-flush">
+                    <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-large" />
+                  </div>
+                  <div className="image-wrapper-flush">
+                    <img src={spiralPitch} alt="Spiral Pitch Diagram" className="software-screenshot screenshot-medium" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={getStepClass('2d3s-4')} onClick={() => toggleStep('2d3s-4')}>
+              <div className="step-header">
+                <span className={`step-number ${completedSteps.has('2d3s-4') ? 'completed' : ''}`}>
+                  {completedSteps.has('2d3s-4') ? <CheckCircle2 size={16} /> : '4'}
+                </span>
+                <span className="step-label">Define Length</span>
+              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                <p className="p-flush">Select the ends of the length of the spiral along the axis of rotation. Then <strong className="text-highlight">GO</strong></p>
+                <div className="image-wrapper-flush">
+                  <img src={spiralRotation1} alt="Spiral Axis 1" className="software-screenshot screenshot-medium" />
+                </div>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+            <div className="tool-block">
+              <h4 className="section-title">RESULT</h4>
+              <div className="flex-row-center--wrap" style={{ gap: '1rem' }}>
+
+                <ArrowRight size={20} color="var(--primary-red)" />
+                <div className="image-wrapper-flush">
+                  <img src={spiralRotation} alt="Spiral Axis" className="software-screenshot screenshot-medium" />
+                </div>
+                <ArrowRight size={20} color="var(--primary-red)" />
+                <div className="image-wrapper-flush">
+                  <img src={spiralRotation2} alt="Spiral Result" className="software-screenshot screenshot-medium" />
+                </div>
+              </div>
+            </div>
+
+
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
@@ -297,7 +565,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
