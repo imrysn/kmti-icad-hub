@@ -12,14 +12,20 @@ from typing import List, Dict
 import chromadb
 
 class RAGEngine:
-    def __init__(self, persist_directory: str = "./vector_db"):
+    def __init__(self, persist_directory: str = None):
         """
         Initialize ChromaDB client and collection.
         
         Args:
-            persist_directory: Path to store ChromaDB data
+            persist_directory: Path to store ChromaDB data. 
+                              If None, defaults to 'vector_db' inside the backend folder.
         """
-        self.persist_directory = persist_directory
+        if persist_directory is None:
+            # Standardize on absolute path relative to this file
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            self.persist_directory = os.path.join(base_dir, "vector_db")
+        else:
+            self.persist_directory = persist_directory
         
         # Use PersistentClient (replaces the removed chromadb.Client(Settings(...)))
         self.client = chromadb.PersistentClient(path=persist_directory)
@@ -57,7 +63,7 @@ class RAGEngine:
         
         print(f"✅ Ingested {len(documents)} documents into ChromaDB")
     
-    def search(self, query: str, n_results: int = 5) -> List[Dict]:
+    def search(self, query: str, n_results: int = 8) -> List[Dict]:
         """
         Semantic search over the knowledge base.
         
@@ -78,10 +84,12 @@ class RAGEngine:
         
         if results['documents'] and results['documents'][0]:
             for i, doc in enumerate(results['documents'][0]):
+                raw_score = 1.0 - results['distances'][0][i] if results['distances'] else None
                 result = {
+                    'id': results['ids'][0][i],
                     'content': doc,
                     'source': results['metadatas'][0][i].get('source', 'unknown'),
-                    'score': 1.0 - results['distances'][0][i] if results['distances'] else None
+                    'score': max(0.0, raw_score) if raw_score is not None else None
                 }
                 formatted_results.append(result)
         

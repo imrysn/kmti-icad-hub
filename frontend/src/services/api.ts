@@ -27,8 +27,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            // Token expired or invalid - clear auth and redirect to login
+        // Token expired or invalid - clear auth and redirect to login
+        // Skip redirect for login attempts so UI can show error message
+        const isLoginRequest = error.config.url?.includes('login');
+        const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
+
+        if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
             localStorage.removeItem('access_token');
             localStorage.removeItem('user');
             window.location.href = '/'; // Redirect to login

@@ -108,6 +108,7 @@
 
 .login-header {
   margin-bottom: 1.75rem;
+  text-align: center;
 }
 
 .login-header h2 {
@@ -122,7 +123,7 @@
 .login-toggle {
   margin-bottom: 1.5rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .toggle-switch {
