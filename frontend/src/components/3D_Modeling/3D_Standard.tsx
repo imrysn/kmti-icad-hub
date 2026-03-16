@@ -47,18 +47,6 @@ import sgpPipesRed from '../../assets/3D_Image_File/standard(8)_SGP_pipes_red.jp
 import sgpPipesYellow from '../../assets/3D_Image_File/standard(8)_SGP_pipes_yellow.jpg';
 
 // Helper component for Pro-Tips
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 interface StandardLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
@@ -194,11 +182,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
                 </div>
 
-                <ProTip title="Did you know?">
-                  Red #3 is the standard indicator color for mechanical scale pointers in KEMCO designs to ensure maximum visibility for operators.
-                </ProTip>
-
-                <div className="section-divider" style={{ margin: '3rem 0' }}></div>
+<div className="section-divider" style={{ margin: '3rem 0' }}></div>
 
                 {/* V-GROOVE POINTER */}
                 <div className={getStepClass('s1-2')} onClick={() => toggleStep('s1-2')}>
@@ -298,11 +282,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Hole Placement">
-                  Always place the φ4 drill hole in a non-visible or protected area of the square pipe to maintain aesthetic quality while ensuring safety.
-                </ProTip>
-
-                <div className="section-divider" style={{ margin: '3rem 0' }}></div>
+<div className="section-divider" style={{ margin: '3rem 0' }}></div>
 
                 {/* OIL GROOVE */}
                 <div className={getStepClass('s2-2')} onClick={() => toggleStep('s2-2')}>
@@ -407,10 +387,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
                 </div>
 
-                <ProTip title="Did you know?">
-                  Aligning the keyway to the tooth center is a common KEMCO precision requirement for synchronized drive systems.
-                </ProTip>
-              </div>
+</div>
             ) : isStandard4 ? (
               <div className="tab-pane">
                 <div className={getStepClass('s4-1')} onClick={() => toggleStep('s4-1')}>
@@ -481,10 +458,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: M6, M8, M10">
-                  M6 = φ6.6, M8 = φ9.0, M10 = φ11.0. These are the most common values you will use daily!
-                </ProTip>
-              </div>
+</div>
             ) : isStandard6 ? (
               <div className="tab-pane">
                 {/* BOLT LENGTH */}
@@ -572,10 +546,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Capscrew Selection">
-                   Use Capscrews (CS) when the bolt head is recessed or when you need higher torque in a compact space.
-                </ProTip>
-              </div>
+</div>
             ) : isStandard7 ? (
               <div className="tab-pane">
                 {/* SLOTTED HOLE */}
@@ -658,10 +629,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
                 </div>
 
-                <ProTip title="Master Rule: Taper Washers">
-                  Always use Taper Washers (AW5) when bolting onto the flange of a C-Channel or I-Beam to ensure the bolt sits flush and doesn't bend.
-                </ProTip>
-              </div>
+</div>
             ) : isStandard8 ? (
               <div className="tab-pane">
                 <div className={getStepClass('s8-1')} onClick={() => toggleStep('s8-1')}>
@@ -703,10 +671,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
                 </div>
 
-                <ProTip title="Color Logic">
-                  Think of it this way: Red means **Flow** (liquid/gas), Yellow means **Frame** (structural). Simple, but effective!
-                </ProTip>
-              </div>
+</div>
             ) : (
               <div className="tab-pane">
                 <div className="content-placeholder">

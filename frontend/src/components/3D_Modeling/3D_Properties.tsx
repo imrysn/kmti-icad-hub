@@ -35,18 +35,6 @@ import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_informati
 import infoAngleImg from '../../assets/3D_Image_File/properties(2)_information_angle.jpg';
 import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_entity.jpg';
 
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 interface PropertiesLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
@@ -215,10 +203,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                       </div>
                     </div>
 
-                    <ProTip title="Pro Tip: Visual Organization">
-                      Use distinct colors for different moving sub-assemblies. It makes understanding deep, complex machines much easier when reviewing designs with the team!
-                    </ProTip>
-                  </div>
+</div>
                 )}
 
                 {activeTab === 'layer' && (
@@ -258,11 +243,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                       </div>
                     </div>
 
-                    <ProTip title="Pro Tip: Layer Best Practices">
-                      Using correct layers from the start makes exporting models to 2D CAM or drafting tools much smoother. The standardized colors help quickly identify materials and parts visually!
-                    </ProTip>
-
-                    <div className="section-divider"></div>
+<div className="section-divider"></div>
                     <h3 className="section-title">LAYER DESIGNATION OF 3D PARTS</h3>
 
                     <div className="tool-block">
@@ -489,10 +470,8 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                 </div>
 
                 <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Measure Twice, Cut Once">
-                    The Information tools are your best friends for QC (Quality Control). Use the 'Distance' and 'Angle' tools frequently to double-check dimensions as you model!
-                  </ProTip>
-                </div>
+
+</div>
               </div>
             )}
           </div>

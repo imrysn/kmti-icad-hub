@@ -5,19 +5,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Play, Box as BoxIcon, Info, CheckCircle2 } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Info size={20} />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <div className="pro-tip-text">{children}</div>
-    </div>
-  </div>
-);
-
 // Shared Assets
 import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 import centerTool from '../../assets/3D_Image_File/center_tool.jpg';
@@ -297,10 +284,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Accuracy Check">
-                  Always use the drawing number as the file name to stay organized and ensure traceability across the KEMCO project database.
-                </ProTip>
-              </div>
+</div>
             ) : subLessonId === 'op-sample-2' ? (
               <div className="tab-pane">
                 <h4 className="section-title">PROCEDURE FOR SAMPLES OF 3D MODELING OF PARTS</h4>
@@ -482,10 +466,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <ProTip title="Did you know?">
-                  Filleting edges isn't just for looks; it reduces stress concentrations in real machine parts, preventing cracks during operation.
-                </ProTip>
-              </div>
+</div>
             ) : isSample3 ? (
               <div className="tab-pane">
                 <h4 className="section-title">HERE IS THE STEP-BY-STEP PROCEDURE OF CREATING 3D MODEL</h4>
@@ -567,10 +548,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Union Tool">
-                   Joining segments early helps you manage the model as a single part, making it easier to apply holistic operations like material settings later.
-                </ProTip>
-              </div>
+</div>
             ) : isSample4 ? (
               <div className="tab-pane">
                 <div className={getStepClass('s4-1')} onClick={() => toggleStep('s4-1')}>
@@ -694,10 +672,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <ProTip title="Did you know?">
-                   The Key Groove tool entity (Box) should always be slightly larger than the cut area to ensure a clean boolean subtract operation.
-                </ProTip>
-              </div>
+</div>
             ) : isSample5 ? (
               <div className="tab-pane">
                 <h4 className="section-title">FINAL FINISHING OPERATIONS</h4>
@@ -776,10 +751,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <ProTip title="Mission Complete!">
-                  You've successfully modeled a complex part using segments, boolean operations, and sketches. This workflow is the foundation of professional 3D design at KEMCO!
-                </ProTip>
-              </div>
+</div>
             ) : (
               <div className="content-placeholder">
                 <p>Content for {subLessonId} will be provided soon.</p>

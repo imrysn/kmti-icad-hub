@@ -34,18 +34,6 @@ interface AnnotationLessonProps {
   onNextLesson?: () => void;
 }
 
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'annotation-1', onNextLesson }) => {
   const isAnnotation1 = subLessonId === 'annotation-1';
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -256,10 +244,8 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                 </div>
 
                 <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Clean Annotations">
-                    Annotations are vital for manufacturing, but cluttered drawings cause confusion. Try placing notes consistently on the same side, grouping related dimensions together, and avoiding overlapping leader lines!
-                  </ProTip>
-                </div>
+
+</div>
               </div>            ) : (
               <div className="fade-in">
 
@@ -377,10 +363,8 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                 </div>
 
                 <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Bulk Annotation">
-                    Auto-generating dimensions collectively is a massive time-saver for standard plates. Run it first, then use the edit and reposition tools to clean up any messy overlaps!
-                  </ProTip>
-                </div>
+
+</div>
               </div>
             )}
           </div>

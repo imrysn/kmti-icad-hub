@@ -25,18 +25,6 @@ interface MaterialSettingLessonProps {
   onNextLesson?: () => void;
 }
 
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLessonId = 'material-1', onNextLesson }) => {
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -87,8 +75,8 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -97,7 +85,8 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           <Layers size={28} className="lesson-intro-icon" />
           {isMaterial1 ? 'MATERIAL SETTING' : 'MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST'}
         </h3>
-        <p className="p-flush">Setting material is critical for calculating part weight (Specific Gravity) and determining the correct automated layer and color assignments for your 3D models.</p>
+        <p className="p-flush">On iCAD, <strong className="text-highlight">S35C</strong> is not included on the material list. In this case, we can use <strong className="text-highlight">S45C</strong> as material on 3D.</p>
+        <p className="p-flush">In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is use as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same.</p>
 
         {isMaterial1 && (
           <div className="instruction-box" style={{ marginTop: '1.5rem', border: 'none', background: 'transparent' }}>
@@ -153,7 +142,10 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className="step-label">Choose Material</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select the material from the list &gt; Press <strong className="text-highlight">OK</strong></p>
+                    <p className="p-flush">The Material Setting Window will appear. Select the material from the list &gt; Press OK </p>
+                    <p className="p-flush">The list consists of the materials and their corresponding Notation, Specific Gravity and Color.</p>
+                    <p className="p-flush">However, we follow the color base on the <strong className="text-highlight">color codes.</strong> Materials that don't have a color code must be machine color <strong className="text-highlight">(WHITE).</strong> </p>
+
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                       <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" />
                     </div>
@@ -168,7 +160,8 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className="step-label">Confirm Dialog</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">OK</strong> on the completion dialog.</p>
+                    <p className="p-flush">After setting the material, a dialog box will appear &gt; Select OK.</p>
+                    <p className="p-flush">Parts that already have material set will be highlighted to show distinction with parts that does not have yet.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                       <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide" />
                     </div>
@@ -183,16 +176,18 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className="step-label">Change Material</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">To change, select <strong className="text-highlight">Set Material</strong> again and overwrite the existing data.</p>
+                    <p className="p-flush">In case there are changes in the material, select <strong className="text-highlight">Set Material</strong> from the icon menu.</p>
+                    <p className="p-flush">A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                       <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" />
                     </div>
+                    <p className="p-flush">Select <strong className="text-highlight">OK</strong> &gt; Material Setting window will appear &gt; Reselect new material for the part</p>
+                    <p className="p-flush"><strong className="text-highlight">OR</strong></p>
+                    <p className="p-flush">Select Cancel &gt; No changes will be made.</p>
+
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Specific Gravity">
-                  Always ensure material is set BEFORE finalizing your 2D drawings. The Bill of Materials (BOM) relies on this data for accurate weight calculations!
-                </ProTip>
               </div>
             ) : (
               <div className="tab-pane">
@@ -200,9 +195,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
                 </div>
 
-                <div className="info-box" style={{ marginTop: '1.5rem', borderLeft: '4px solid var(--primary-red)' }}>
-                  <p className="p-flush"><Info size={16} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} /> On iCAD, <strong className="text-highlight">S35C</strong> is not included. Use <strong className="text-highlight">S45C</strong> instead for 3D Modeling (gravity is similar). However, specify <strong className="text-highlight">S35C</strong> on BOM during 2D detailing.</p>
-                </div>
+
 
                 <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
                   <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
@@ -211,7 +204,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="section-divider" style={{ margin: '2rem 0' }}></div>
 
                 <div className="tool-block">
-                  <h4 className="section-title">Other Non-iCAD Materials</h4>
+                  <h4 className="section-title">Other materials that are not on iCAD Material List includes:</h4>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={materialsListImg} alt="Materials List" className="software-screenshot screenshot-wide" />
                   </div>

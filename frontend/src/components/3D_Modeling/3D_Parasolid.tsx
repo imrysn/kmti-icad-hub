@@ -5,19 +5,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, FileDown, Info, CheckCircle2 } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Info size={20} />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <div className="pro-tip-text">{children}</div>
-    </div>
-  </div>
-);
-
 // Assets
 import importIcon from '../../assets/3D_Image_File/parasolid_import.jpg';
 import linkDialogImg from '../../assets/3D_Image_File/parasolid_link_dialog.jpg';
@@ -165,10 +152,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
               </div>
 
-              <ProTip title="Pro Tip: Importing Standards">
-                When importing purchased parts, canceling the name change ensures the original manufacturer codes are preserved in the tree view, aiding future reference.
-              </ProTip>
-            </div>
+</div>
           ) : (
             <div className="lesson-content fade-in">
               <h3 className="section-title">4.) LIGHTEN B-REP SOLID</h3>
@@ -245,10 +229,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
               </div>
 
-              <ProTip title="Data Management">
-                  Reducing file size with the Lighten B-rep tool is vital for large assemblies. It keeps your ICAD workspace responsive and reduces server storage strain.
-              </ProTip>
-            </div>
+</div>
           )}
 
           <div className="lesson-navigation">

@@ -25,18 +25,6 @@ interface MirroredPartLessonProps {
   onNextLesson?: () => void;
 }
 
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = 'mirrored-1', onNextLesson }) => {
   const isMirrored1 = subLessonId === 'mirrored-1';
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -197,10 +185,8 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = '
                 </div>
 
                 <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: The 'Overlay' Test">
-                    When in doubt, temporarily change the color of the mirror copy to something bright (like red) and slide it directly into the exact same coordinates as the original. Any visible color clashing indicates non-symmetry!
-                  </ProTip>
-                </div>
+
+</div>
               </div>
             ) : (
               <div className="tab-pane">
@@ -267,10 +253,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = '
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Mirror Planes">
-                  Choosing the right 3 points for your mirror plane is crucial. Sometimes, sketching a temporary construction line or triangle is the most reliable way to create a perfect mirror plane!
-                </ProTip>
-              </div>
+</div>
             )}
           </div>
 

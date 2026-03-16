@@ -5,19 +5,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Package, Info } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Info size={20} />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <div className="pro-tip-text">{children}</div>
-    </div>
-  </div>
-);
-
 // Assets
 import purchasePartsFlowchart from '../../assets/3D_Image_File/3d_purchase_parts.jpg';
 import uploadingFlowchart from '../../assets/3D_Image_File/3d_purchase.jpg';
@@ -96,12 +83,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
               </div>
 
               <div style={{ marginTop: '2rem' }}>
-                <ProTip title={isPart1 ? "Workflow Awareness" : "Server Integrity"}>
-                  {isPart1 
-                    ? "Understanding this flowchart is essential for efficient collaboration. It ensures that every team member follows the same path for component creation and approval."
-                    : "Always categorize parts correctly during upload. This maintains a clean server database and allows for faster retrieval by the procurement and assembly teams."}
-                </ProTip>
-              </div>
+
+</div>
             </div>
           </div>
 

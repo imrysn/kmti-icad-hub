@@ -5,19 +5,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MousePointer2, Info, ChevronLeft, ChevronRight, Compass, CheckCircle2, Zap } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 // Asset Imports
 import originOverview from '../../assets/3D_Image_File/origin.jpg';
 import toolSelection from '../../assets/3D_Image_File/origin_change_3d_part_layout.jpg';
@@ -112,10 +99,7 @@ const OriginLesson: React.FC = () => {
                   <img src={originOverview} alt="Origin Overview and Views" className="software-screenshot screenshot-large" />
                 </div>
 
-                <ProTip title="Pro Tip: Perspective Matters">
-                  Always verify the origin's alignment between 2D and 3D. A mismatch here will cause significant errors when generating drafting views later in the design process.
-                </ProTip>
-              </div>
+</div>
             )}
             {activeTab === 'layout' && (
               <div className="tab-pane">
