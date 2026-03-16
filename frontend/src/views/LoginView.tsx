@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { authService } from '../services/authService';
 import '../styles/LoginView.css';
@@ -7,6 +8,7 @@ import LightPillar from '../components/LightPillar';
 
 export const LoginView: React.FC = () => {
     const { login, isLoggingIn, error } = useAuth();
+    const navigate = useNavigate();
     const [loginType, setLoginType] = useState<'user' | 'admin'>('user');
     const [formData, setFormData] = useState({
         username: '',
@@ -78,7 +80,8 @@ export const LoginView: React.FC = () => {
                 remember_me: rememberMe,
                 required_role
             });
-            // Navigation will happen automatically via App.tsx when user state updates
+            // Explicitly navigate to home to trigger role-based redirect in App.tsx
+            navigate('/');
         } catch (err: any) {
             setLocalError(err.message || 'Login failed');
         }

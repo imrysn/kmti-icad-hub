@@ -1,5 +1,11 @@
 import { api } from './api';
 
+export interface KBFile {
+    name: string;
+    size: number;
+    modified: string;
+}
+
 export interface SystemStats {
     users: {
         total: number;
@@ -105,5 +111,22 @@ export const adminService = {
         document.body.appendChild(link);
         link.click();
         link.remove();
+    },
+
+    async getKBFiles(): Promise<KBFile[]> {
+        const response = await api.get('/admin/kb/files');
+        return response.data;
+    },
+
+    async uploadKBFiles(files: File[]): Promise<void> {
+        const formData = new FormData();
+        files.forEach(file => formData.append('files', file));
+        await api.post('/admin/kb/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+    },
+
+    async deleteKBFile(filename: string): Promise<void> {
+        await api.delete(`/admin/kb/files/${filename}`);
     }
 };

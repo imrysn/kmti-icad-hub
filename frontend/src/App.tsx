@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
 import MentorMode from './views/mentor/MentorMode';
 import AssistantMode from './views/assistant/AssistantMode';
 import { AdminMode } from './views/admin/AdminMode';
 import { useAuth } from './hooks/useAuth';
-import { AppMode } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
 import { BroadcastBanner } from './components/BroadcastBanner';
 
@@ -13,22 +13,22 @@ import './styles/App.css';
 
 function App() {
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
-  const [mode, setMode] = useState<AppMode>('mentor');
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Automatically set mode based on user role
+  // Redirect based on user role if on root path
   useEffect(() => {
-    if (user && user.role) {
+    if (isAuthenticated && user && location.pathname === '/') {
       const role = user.role.toLowerCase().trim();
-
       if (role === 'admin') {
-        setMode('admin');
+        navigate('/admin');
       } else if (role === 'employee') {
-        setMode('assistant');
+        navigate('/assistant');
       } else {
-        setMode('mentor');
+        navigate('/mentor');
       }
     }
-  }, [user]);
+  }, [isAuthenticated, user, location.pathname, navigate]);
 
   // Show loading state while checking authentication
   if (isInitialLoading) {
@@ -37,7 +37,12 @@ function App() {
 
   // Show login if not authenticated
   if (!isAuthenticated) {
-    return <LoginView />;
+    return (
+      <Routes>
+        <Route path="/login" element={<LoginView />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
   }
 
   return (
@@ -64,36 +69,40 @@ function App() {
         </div>
       </div>
 
-      {/* Mode Switcher - Only show for Admin or if we want to allow switching */}
+      {/* Mode Switcher - Only show for Admin */}
       {user?.role === 'admin' && (
         <div className="mode-switcher">
           <button
-            className={`mode-btn ${mode === 'mentor' ? 'active' : ''}`}
-            onClick={() => setMode('mentor')}
+            className={`mode-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`}
+            onClick={() => navigate('/mentor')}
           >
             <span>Mentor</span>
           </button>
           <button
-            className={`mode-btn ${mode === 'assistant' ? 'active' : ''}`}
-            onClick={() => setMode('assistant')}
+            className={`mode-btn ${location.pathname.startsWith('/assistant') ? 'active' : ''}`}
+            onClick={() => navigate('/assistant')}
           >
             <span>Assistant</span>
           </button>
           <button
-            className={`mode-btn ${mode === 'admin' ? 'active' : ''}`}
-            onClick={() => setMode('admin')}
+            className={`mode-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
+            onClick={() => navigate('/admin')}
           >
             <span>Admin</span>
           </button>
         </div>
       )}
 
-      {/* Render Selected Mode */}
+      {/* Render Selected Mode via Routes */}
       <div className="app-content">
         <ErrorBoundary>
-          {mode === 'mentor' && <MentorMode />}
-          {mode === 'assistant' && <AssistantMode />}
-          {mode === 'admin' && <AdminMode />}
+          <Routes>
+            <Route path="/mentor" element={<MentorMode />} />
+            <Route path="/assistant" element={<AssistantMode />} />
+            <Route path="/admin/*" element={<AdminMode />} />
+            <Route path="/" element={<Navigate to={user?.role === 'admin' ? "/admin" : (user?.role === 'employee' ? "/assistant" : "/mentor")} replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </ErrorBoundary>
       </div>
     </div>

@@ -1,16 +1,17 @@
 import React from 'react';
-import { Shield, Activity, Users, BarChart3 } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Shield, Activity, Users, BarChart3, Brain } from 'lucide-react';
 import { User } from '../../../services/authService';
-
-type AdminTab = 'overview' | 'users' | 'progress' | 'logs';
+import { AdminTab } from '../AdminMode';
 
 interface AdminSidebarProps {
-    activeTab: AdminTab;
-    setActiveTab: (tab: AdminTab) => void;
     currentUser: User | null;
 }
 
-export const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab, setActiveTab, currentUser }) => {
+export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const activeTab = location.pathname.split('/').pop();
     return (
         <aside className="admin-sidebar">
             <div className="sidebar-header">
@@ -25,12 +26,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab, setActive
                     { id: 'overview', icon: Activity, label: 'Analytics' },
                     { id: 'users', icon: Users, label: 'Users' },
                     { id: 'progress', icon: BarChart3, label: 'Performance' },
+                    { id: 'intelligence', icon: Brain, label: 'Intelligence' },
                     { id: 'logs', icon: Shield, label: 'Audit Logs' }
                 ].map((item) => (
                     <button 
                         key={item.id}
                         className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-                        onClick={() => setActiveTab(item.id as AdminTab)}
+                        onClick={() => navigate(`/admin/${item.id}`)}
                     >
                         <item.icon size={18} />
                         <span>{item.label}</span>

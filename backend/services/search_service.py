@@ -19,25 +19,23 @@ class SearchService:
         # Get text results from RAG engine
         raw_results = self.engine.search(query)
 
-        source_ids = [r['source'] for r in raw_results]
+        source_ids = [r['id'] for r in raw_results]
 
         media_map: dict = {}
         if source_ids:
             # Use a per-request DB session (context manager closes it automatically)
             with SessionLocal() as db:
-                filters = [MediaMetadata.excel_row_id.like(f"%{s}%") for s in source_ids]
-                media_records = db.query(MediaMetadata).filter(or_(*filters)).all()
+                # Use exact match instead of LIKE to avoid substring false positives
+                media_records = db.query(MediaMetadata).filter(MediaMetadata.excel_row_id.in_(source_ids)).all()
 
                 for m in media_records:
-                    for s in source_ids:
-                        if s in m.excel_row_id:
-                            media_map.setdefault(s, []).append(m)
+                    media_map.setdefault(m.excel_row_id, []).append(m)
 
         # Enrich results with multimedia assets
         enriched_results = []
         for r in raw_results:
             result = SearchResult(**r)
-            related_media = media_map.get(result.source, [])
+            related_media = media_map.get(result.id, []) # Use result.id to look up media
 
             if related_media:
                 result.media = [

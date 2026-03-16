@@ -1,6 +1,6 @@
-import React from 'react';
 import { ChevronRight, Menu, BookOpen, Video } from 'lucide-react';
 import { Course } from '../../../types';
+import { useUI } from '../../../context/UIContext';
 import { Lesson } from '../mentorConstants';
 
 // 3D Lesson Imports
@@ -70,13 +70,27 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     ICAD_2D_LESSONS,
     ICAD_3D_LESSONS
 }) => {
+    const { requestConfirmation } = useUI();
+
+    const handleExitCourse = async () => {
+        const confirmed = await requestConfirmation({
+            title: 'Exit Course',
+            message: 'Are you sure you want to exit? Your progress in this session will be saved, but you will return to the selection screen.',
+            confirmText: 'Exit',
+            type: 'info'
+        });
+        if (confirmed) {
+            setSelectedCourse(null);
+        }
+    };
+
     return (
         <main className="main-content-viewer">
             <div className="sticky-lesson-controls">
                 <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
                     <Menu size={20} />
                 </button>
-                <button className="exit-course-btn" onClick={() => setSelectedCourse(null)}>
+                <button className="exit-course-btn" onClick={handleExitCourse}>
                     EXIT COURSE
                 </button>
             </div>

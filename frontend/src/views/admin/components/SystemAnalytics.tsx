@@ -8,7 +8,6 @@ interface SystemAnalyticsProps {
     memoryUsage: number;
     sysStatus: string;
     heatmap: { course_id: string; count: number }[];
-    onReindex: () => void;
 }
 
 export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({ 
@@ -16,8 +15,7 @@ export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
     cpuLoad, 
     memoryUsage, 
     sysStatus, 
-    heatmap,
-    onReindex 
+    heatmap
 }) => {
     // Heatmap color logic
     const getHeatmapColor = (count: number) => {
@@ -125,12 +123,6 @@ export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
                     </div>
                 </div>
 
-                <div className="intelligence-controls">
-                    <button className="btn-secondary reindex-btn" onClick={onReindex}>
-                        <Database size={14} /> Re-index Intelligence Node
-                    </button>
-                    <p className="control-help">Upload new manuals to the 'knowledge_base' folder then click re-index to update the AI's memory.</p>
-                </div>
             </div>
         </div>
     );

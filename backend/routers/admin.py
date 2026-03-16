@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy import func, cast, String
 from typing import List, Dict
 import os
 import psutil
+import shutil
+from datetime import datetime
 
 from ..database import get_db
 from ..models import User, UserProgress, QuizScore, SystemLog, Broadcast
@@ -13,7 +15,19 @@ from ..auth.security import hash_password
 from ..rag_engine import rag_engine
 from ..ingest_knowledge_base import ingest_directory
 
-router = APIRouter(prefix="/admin", tags=["Administration"])
+# Define absolute path for knowledge base to ensure consistency
+BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+KB_DIR = os.path.join(BACKEND_DIR, "knowledge_base")
+
+# Ensure directory exists
+if not os.path.exists(KB_DIR):
+    os.makedirs(KB_DIR)
+
+router = APIRouter(
+    prefix="/admin",
+    tags=["admin"],
+    responses={404: {"description": "Not found"}},
+)
 
 @router.get("/stats")
 def get_system_stats(
@@ -53,8 +67,8 @@ def get_system_stats(
         },
         "system": {
             "status": status_msg,
-            "cpu": cpu_usage,
-            "memory": memory_usage,
+            "cpu_load": cpu_usage,       # Aligned with frontend expectation
+            "memory_usage": memory_usage, # Aligned with frontend expectation
             "disk": disk_usage
         }
     }
@@ -65,39 +79,60 @@ def get_all_trainee_progress(
     admin: User = Depends(require_role("admin"))
 ):
     """Get aggregated and detailed progress for all trainees"""
+    # Fetch all trainees
     users = db.query(User).filter(User.role != "admin").all()
+    user_ids = [str(u.id) for u in users]
+    
+    # Batch fetch all progress and scores to avoid N+1 problem
+    all_progress = db.query(UserProgress).filter(UserProgress.user_id.in_(user_ids)).all()
+    all_scores = db.query(QuizScore).filter(QuizScore.user_id.in_(user_ids)).all()
+    
+    # Organize data by user_id
+    progress_map = {}
+    for p in all_progress:
+        if p.user_id not in progress_map:
+            progress_map[p.user_id] = []
+        progress_map[p.user_id].append(p)
+        
+    scores_map = {}
+    for s in all_scores:
+        if s.user_id not in scores_map:
+            scores_map[s.user_id] = []
+        scores_map[s.user_id].append(s)
     
     results = []
     for user in users:
-        # Detailed lesson progress
-        progress_entries = db.query(UserProgress).filter(UserProgress.user_id == str(user.id)).all()
+        uid_str = str(user.id)
+        user_progress = progress_map.get(uid_str, [])
+        user_scores = scores_map.get(uid_str, [])
+        
         lessons = [
             {
                 "course_id": p.course_id,
                 "percentage": p.progress_percentage,
                 "last_accessed": p.last_accessed
-            } for p in progress_entries
+            } for p in user_progress
         ]
         
-        # Detailed quiz scores
-        quiz_entries = db.query(QuizScore).filter(QuizScore.user_id == str(user.id)).all()
         quizzes = [
             {
                 "course_id": q.course_id,
                 "score": q.score,
                 "completed_at": q.completed_at
-            } for q in quiz_entries
+            } for q in user_scores
         ]
         
-        # Average score
-        avg_score = db.query(func.avg(QuizScore.score)).filter(QuizScore.user_id == str(user.id)).scalar() or 0
+        # Calculate average score in memory
+        avg_score = 0
+        if user_scores:
+            avg_score = sum(q.score for q in user_scores) / len(user_scores)
         
         results.append({
             "id": user.id,
             "username": user.username,
             "full_name": user.full_name,
             "last_login": user.last_login,
-            "completed_lessons": len(progress_entries),
+            "completed_lessons": len(user_progress),
             "average_score": round(float(avg_score), 1),
             "lessons_history": lessons,
             "quizzes_history": quizzes
@@ -299,8 +334,8 @@ def export_trainee_progress(
     import io
     from fastapi.responses import StreamingResponse
     
-    # Base query for progress
-    query = db.query(UserProgress, User.username, User.full_name)\
+    # Optimized query: Fetch progress and join with users
+    query = db.query(UserProgress, User)\
         .join(User, UserProgress.user_id == cast(User.id, String))
         
     if user_id:
@@ -308,15 +343,15 @@ def export_trainee_progress(
         
     results = query.all()
     
-    if not results:
-        # If no progress yet, at least export user info if user_id is specified
-        if user_id:
-            user = db.query(User).filter(User.id == user_id).first()
-            if not user:
-                raise HTTPException(status_code=404, detail="User not found")
-            results = [(None, user.username, user.full_name)]
-        else:
-            raise HTTPException(status_code=404, detail="No progress data found to export")
+    if not results and user_id:
+        # If no progress entries, at least check if user exists
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        # Generate results for user with no progress
+        results = [(None, user)]
+    elif not results:
+        raise HTTPException(status_code=404, detail="No progress data found to export")
     
     output = io.StringIO()
     writer = csv.writer(output)
@@ -325,40 +360,30 @@ def export_trainee_progress(
         "Progress %", "Highest Quiz Score", "Last Activity"
     ])
     
-    for progress, username, full_name in results:
+    for progress, user in results:
+        username = user.username
+        full_name = user.full_name
         course_id = progress.course_id if progress else "N/A"
         progress_pct = progress.progress_percentage if progress else 0
         last_act = progress.last_accessed if progress else "N/A"
         
         # Get highest quiz score for this user-course pair
-        uid_str = str(user_id) if user_id else None
-        # If we are looping over all, we need the user_id from the join result... 
-        # Wait, the join result should include the User object or its ID.
-        
-    # Re-writing for better performance and clarity
-    query = db.query(UserProgress, User)\
-        .join(User, UserProgress.user_id == cast(User.id, String))
-    if user_id:
-        query = query.filter(User.id == user_id)
-    
-    rows = query.all()
-    
-    for progress, user in rows:
-        # Get best score
-        best_score = db.query(func.max(QuizScore.score))\
-            .filter(QuizScore.user_id == str(user.id))\
-            .filter(QuizScore.course_id == progress.course_id).scalar() or 0
+        best_score = 0
+        if progress:
+            best_score = db.query(func.max(QuizScore.score))\
+                .filter(QuizScore.user_id == str(user.id))\
+                .filter(QuizScore.course_id == progress.course_id).scalar() or 0
             
-        status = "Completed" if progress.progress_percentage >= 100 else "In Progress"
+        status = "Completed" if progress_pct >= 100 else "In Progress"
         
         writer.writerow([
-            user.username,
-            user.full_name,
-            progress.course_id,
+            username,
+            full_name,
+            course_id,
             status,
-            f"{progress.progress_percentage}%",
+            f"{progress_pct}%",
             f"{best_score}%",
-            progress.last_accessed
+            last_act
         ])
     
     output.seek(0)
@@ -375,13 +400,65 @@ def trigger_kb_reindex(
     admin: User = Depends(require_role("admin"))
 ):
     """Manually trigger re-indexing of the knowledge base directory"""
-    kb_dir = "knowledge_base/"
-    if not os.path.exists(kb_dir):
-        # Check relative to backend or root
-        kb_dir = os.path.join(os.getcwd(), "knowledge_base")
-        
+    kb_dir = KB_DIR
     try:
         ingest_directory(kb_dir)
         return {"message": "Knowledge base re-indexing triggered successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Re-indexing failed: {str(e)}")
+
+@router.get("/kb/files")
+def list_kb_files(
+    admin: User = Depends(require_role("admin"))
+):
+    """List all files in the knowledge base directory"""
+    kb_dir = KB_DIR
+    files = []
+    for filename in os.listdir(kb_dir):
+        file_path = os.path.join(kb_dir, filename)
+        if os.path.isfile(file_path):
+            stats = os.stat(file_path)
+            files.append({
+                "name": filename,
+                "size": stats.st_size,
+                "modified": datetime.fromtimestamp(stats.st_mtime)
+            })
+    return files
+
+@router.post("/kb/upload")
+async def upload_kb_files(
+    files: List[UploadFile] = File(...),
+    admin: User = Depends(require_role("admin"))
+):
+    """Upload one or more files to the knowledge base"""
+    kb_dir = KB_DIR
+    uploaded_files = []
+    for file in files:
+        # Secure filename or at least check extension
+        if not file.filename.endswith(('.xlsx', '.csv', '.py')):
+            continue
+            
+        file_path = os.path.join(kb_dir, file.filename)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        uploaded_files.append(file.filename)
+        
+    return {"message": f"Uploaded {len(uploaded_files)} files: {', '.join(uploaded_files)}"}
+
+@router.delete("/kb/files/{filename}")
+def delete_kb_file(
+    filename: str,
+    admin: User = Depends(require_role("admin"))
+):
+    """Delete a file from the knowledge base"""
+    kb_dir = "knowledge_base/"
+    file_path = os.path.join(kb_dir, filename)
+    
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+        
+    try:
+        os.remove(file_path)
+        return {"message": f"File {filename} deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete file: {str(e)}")

@@ -1,0 +1,169 @@
+.hybrid-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.15); /* Very light overlay to let background shine through */
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.hybrid-modal-container {
+    background: rgba(255, 255, 255, 0.7); /* Adaptive Glass */
+    width: calc(100% - 3rem);
+    max-width: 440px;
+    position: relative;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+        0 2px 4px -1px rgba(0, 0, 0, 0.06), 
+        0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    
+    animation: hybridReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #1e293b;
+}
+
+@keyframes hybridReveal {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Subtle Technical Markers (Whisper-Thin) */
+.hybrid-marker {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 0.5px solid rgba(59, 130, 246, 0.4);
+    pointer-events: none;
+}
+.hybrid-marker.tl { top: 1rem; left: 1rem; border-right: none; border-bottom: none; }
+.hybrid-marker.br { bottom: 1rem; right: 1rem; border-left: none; border-top: none; }
+
+.hybrid-modal-header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.hybrid-context-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: rgba(59, 130, 246, 0.6);
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hybrid-context-tag .bit {
+    width: 4px;
+    height: 4px;
+    background: #3b82f6;
+    border-radius: 1px;
+}
+
+.hybrid-modal-body {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+}
+
+.hybrid-icon-wrapper {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.hybrid-icon-wrapper.danger {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.hybrid-icon-wrapper.confirm {
+    background: #f0fdf4;
+    color: #22c55e;
+}
+
+.hybrid-text-wrapper {
+    flex: 1;
+}
+
+.hybrid-title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.hybrid-message {
+    margin: 0.5rem 0 0;
+    font-size: 0.9375rem;
+    color: #475569;
+    line-height: 1.5;
+    font-weight: 450;
+}
+
+.hybrid-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.hybrid-btn-secondary {
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.hybrid-btn-secondary:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #1e293b;
+}
+
+.hybrid-btn-primary {
+    padding: 0.5rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    background: #1e293b;
+    color: #ffffff;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(30, 41, 59, 0.2);
+}
+
+.hybrid-btn-primary.danger {
+    background: #ef4444;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.hybrid-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}

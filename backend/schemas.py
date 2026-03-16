@@ -11,6 +11,7 @@ class MediaAsset(BaseModel):
     description: str
 
 class SearchResult(BaseModel):
+    id: str
     content: str
     source: str
     score: Optional[float] = None

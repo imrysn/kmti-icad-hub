@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
 import { XCircle } from 'lucide-react';
 import { authService, User } from '../../services/authService';
 import { adminService, SystemStats, TraineeProgress, SystemAuditLog } from '../../services/adminService';
+import { useUI } from '../../context/UIContext';
 import '../../styles/AdminMode.css';
 
 // Components
@@ -12,14 +14,20 @@ import { UserManagement } from './components/UserManagement';
 import { PerformanceDirectory } from './components/PerformanceDirectory';
 import { TraineeDetail } from './components/TraineeDetail';
 import { AuditLogs } from './components/AuditLogs';
+import { KnowledgeManagement } from './components/KnowledgeManagement';
 import { BroadcastCenter } from './components/BroadcastCenter';
 import { UserModal } from './components/UserModal';
 
-type AdminTab = 'overview' | 'users' | 'progress' | 'logs';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'logs';
 
 export const AdminMode: React.FC = () => {
-    // State
-    const [activeTab, setActiveTab] = useState<AdminTab>('overview');
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { requestConfirmation } = useUI();
+    
+    // Derive active tab from URL path
+    const pathParts = location.pathname.split('/');
+    const activeTab = (pathParts[pathParts.length - 1] as AdminTab) || 'overview';
     const [stats, setStats] = useState<SystemStats | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [progress, setProgress] = useState<TraineeProgress[]>([]);
@@ -71,6 +79,7 @@ export const AdminMode: React.FC = () => {
         }
     };
 
+    // Trigger data fetching on mount and when tab changes
     useEffect(() => {
         fetchData();
         if (activeTab !== 'progress') setSelectedTrainee(null);
@@ -86,7 +95,13 @@ export const AdminMode: React.FC = () => {
     };
 
     const handleDeleteUser = async (userId: number) => {
-        if (!window.confirm('Are you sure you want to permanently delete this user? This action cannot be undone.')) return;
+        const confirmed = await requestConfirmation({
+            title: 'Delete User',
+            message: 'Are you sure you want to permanently delete this user? This action cannot be undone.',
+            confirmText: 'Delete',
+            type: 'danger'
+        });
+        if (!confirmed) return;
         try {
             await adminService.deleteUser(userId);
             setUsers((prev: User[]) => prev.filter(u => u.id !== userId));
@@ -110,19 +125,6 @@ export const AdminMode: React.FC = () => {
         }
     };
 
-    const handleReindex = async () => {
-        if (!window.confirm('Trigger full knowledge base re-indexing? This may take a moment.')) return;
-        setLoading(true);
-        try {
-            await adminService.triggerReindex();
-            alert('Re-indexing complete!');
-            fetchData();
-        } catch (err: any) {
-            setError('Re-indexing failed.');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleExport = async (userId?: number) => {
         try {
@@ -140,14 +142,12 @@ export const AdminMode: React.FC = () => {
     return (
         <div className="admin-layout">
             <AdminSidebar 
-                activeTab={activeTab} 
-                setActiveTab={setActiveTab} 
                 currentUser={currentUser} 
             />
 
             <main className="admin-main">
                 <AdminHeader 
-                    activeTab={activeTab} 
+                    activeTab={activeTab}
                     stats={stats} 
                     selectedTrainee={selectedTrainee} 
                     fetchData={fetchData} 
@@ -161,56 +161,56 @@ export const AdminMode: React.FC = () => {
                         </div>
                     )}
 
-                    {activeTab === 'overview' && stats && (
-                        <div className="dashboard-scrollable">
-                            <SystemAnalytics 
-                                stats={stats} 
-                                cpuLoad={cpuLoad} 
-                                memoryUsage={memoryUsage} 
-                                sysStatus={sysStatus} 
-                                heatmap={heatmap}
-                                onReindex={handleReindex}
+                    <Routes>
+                        <Route path="overview" element={
+                            stats && (
+                                <div className="dashboard-scrollable">
+                                    <SystemAnalytics 
+                                        stats={stats} 
+                                        cpuLoad={cpuLoad} 
+                                        memoryUsage={memoryUsage} 
+                                        sysStatus={sysStatus} 
+                                        heatmap={heatmap}
+                                    />
+                                </div>
+                            )
+                        } />
+                        <Route path="users" element={
+                            <UserManagement 
+                                users={users} 
+                                currentUser={currentUser} 
+                                searchQuery={searchQuery} 
+                                setSearchQuery={setSearchQuery} 
+                                handleToggleStatus={handleToggleStatus} 
+                                handleDeleteUser={handleDeleteUser} 
+                                onAddUser={() => {
+                                    setSelectedUser(null);
+                                    setIsUserModalOpen(true);
+                                }}
+                                onEditUser={(user) => {
+                                    setSelectedUser(user);
+                                    setIsUserModalOpen(true);
+                                }}
                             />
-                        </div>
-                    )}
-
-                    {activeTab === 'users' && (
-                        <UserManagement 
-                            users={users} 
-                            currentUser={currentUser} 
-                            searchQuery={searchQuery} 
-                            setSearchQuery={setSearchQuery} 
-                            handleToggleStatus={handleToggleStatus} 
-                            handleDeleteUser={handleDeleteUser} 
-                            onAddUser={() => {
-                                setSelectedUser(null);
-                                setIsUserModalOpen(true);
-                            }}
-                            onEditUser={(user) => {
-                                setSelectedUser(user);
-                                setIsUserModalOpen(true);
-                            }}
-                        />
-                    )}
-
-                    {activeTab === 'progress' && !selectedTrainee && (
-                        <PerformanceDirectory 
-                            progress={progress} 
-                            setSelectedTrainee={setSelectedTrainee} 
-                        />
-                    )}
-
-                    {activeTab === 'progress' && selectedTrainee && (
-                        <TraineeDetail 
-                            selectedTrainee={selectedTrainee} 
-                            setSelectedTrainee={setSelectedTrainee} 
-                            onExport={handleExport}
-                        />
-                    )}
-
-                    {activeTab === 'logs' && (
-                        <AuditLogs logs={logs} />
-                    )}
+                        } />
+                        <Route path="progress" element={
+                            !selectedTrainee ? (
+                                <PerformanceDirectory 
+                                    progress={progress} 
+                                    setSelectedTrainee={setSelectedTrainee} 
+                                />
+                            ) : (
+                                <TraineeDetail 
+                                    selectedTrainee={selectedTrainee} 
+                                    setSelectedTrainee={setSelectedTrainee} 
+                                    onExport={handleExport}
+                                />
+                            )
+                        } />
+                        <Route path="intelligence" element={<KnowledgeManagement />} />
+                        <Route path="logs" element={<AuditLogs logs={logs} />} />
+                        <Route path="/" element={<Navigate to="overview" replace />} />
+                    </Routes>
                 </div>
 
                 {loading && (

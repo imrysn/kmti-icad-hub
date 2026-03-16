@@ -15,6 +15,8 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="KMTI iCAD Hub API")
 
+from fastapi.staticfiles import StaticFiles
+
 # Enable CORS for Electron app and dev servers
 origins = os.getenv("CORS_ORIGINS", "").split(",")
 if not origins or origins == ['']:
@@ -28,6 +30,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount frontend/src directory to serve RAG multimedia links and other source assets
+frontend_src_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "src")
+if os.path.exists(frontend_src_path):
+    app.mount("/src", StaticFiles(directory=frontend_src_path), name="src")
 
 # Include routers
 app.include_router(auth.router)
