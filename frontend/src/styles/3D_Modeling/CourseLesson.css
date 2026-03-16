@@ -1,6 +1,7 @@
 /* ==========================================================================
    CourseLesson.css - Global Stylesheet for 3D Modeling Lessons
    Provides a unified, premium "online course" aesthetic across all modules.
+   UX Enhanced Version 1.0
    ========================================================================== */
 
 .course-lesson-container {
@@ -16,6 +17,7 @@
     opacity: 0;
     transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -66,7 +68,8 @@
 }
 
 .tool-block {
-  margin-bottom: 4rem; /* Master spacing between major tool sections */
+  margin-bottom: 4rem;
+  /* Master spacing between major tool sections */
 }
 
 .instruction-text {
@@ -119,7 +122,7 @@
 }
 
 .lesson-grid.single-card .lesson-card {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -136,7 +139,8 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  /* Changed to visible for floating tips */
 }
 
 .lesson-card::before {
@@ -269,9 +273,17 @@
   background: var(--bg-dark);
 }
 
-.screenshot-large { max-width: 600px; }
-.screenshot-medium { max-width: 320px; }
-.screenshot-small { max-width: 180px; }
+.screenshot-large {
+  max-width: 600px;
+}
+
+.screenshot-medium {
+  max-width: 320px;
+}
+
+.screenshot-small {
+  max-width: 180px;
+}
 
 .screenshot-icon {
   max-width: 200px;
@@ -287,7 +299,9 @@
   margin-left: 2.5rem;
 }
 
-.screenshot-wide { max-width: 100%; }
+.screenshot-wide {
+  max-width: 100%;
+}
 
 .screenshot-plain {
   border: none !important;
@@ -344,7 +358,9 @@
   scrollbar-width: none;
 }
 
-.lesson-tabs::-webkit-scrollbar { display: none; }
+.lesson-tabs::-webkit-scrollbar {
+  display: none;
+}
 
 .tab-button {
   background: transparent;
@@ -431,19 +447,62 @@
 }
 
 @keyframes fadeInSlideRight {
-  from { opacity: 0; transform: translateX(10px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* --- Shared Layout Utilities --- */
 
-.flex-row { display: flex; align-items: flex-start; gap: 1.5rem; }
-.flex-row-center { display: flex; align-items: center; gap: 1.5rem; }
-.flex-row-wrap { display: flex; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; }
-.flex-col-center { display: flex; flex-direction: column; align-items: center; }
-.flex-1 { flex: 1; }
-.flex-no-shrink { flex-shrink: 0; }
-.text-center { text-align: center; }
+.flex-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.flex-row-center {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.flex-row-center--wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.flex-row-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-no-shrink {
+  flex-shrink: 0;
+}
+
+.text-center {
+  text-align: center;
+}
 
 .img-caption {
   font-size: 0.85rem;
@@ -473,7 +532,133 @@
 }
 
 /* Compatibility/Legacy Shorthands */
-.p-flush { padding-left: 0 !important; }
-.p-flush-bottom { padding-left: 0 !important; margin-bottom: 0.5rem; }
-.screenshot-wide { max-width: 100%; }
-.screenshot-click--indent { margin-left: 0.5rem; margin-top: 0.5rem; }
+.p-flush {
+  padding-left: 0 !important;
+}
+
+.p-flush-bottom {
+  padding-left: 0 !important;
+  margin-bottom: 0.5rem;
+}
+
+.screenshot-wide {
+  max-width: 100%;
+}
+
+.screenshot-click--indent {
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.screenshot-click--inline {
+  max-width: 40px;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.5rem;
+  background: transparent;
+}
+
+/* --- UX Enhancement: Progress Bar --- */
+.lesson-progress-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--bg-surface);
+  z-index: 100;
+  margin-bottom: -6px;
+  overflow: hidden;
+}
+
+.lesson-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
+}
+
+/* --- UX Enhancement: Interactive Steps --- */
+.instruction-step.interactive {
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+  padding: 1rem;
+  margin: -1rem;
+  border-radius: 12px;
+}
+
+.instruction-step.interactive:hover {
+  background: var(--bg-surface);
+  transform: translateX(4px);
+}
+
+.step-number.completed {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 0 0 4px var(--primary-soft);
+  animation: popScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popScale {
+  0% {
+    transform: scale(0.8);
+  }
+
+  70% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* --- UX Enhancement: Pro-Tip Cards (Glassmorphism) --- */
+.pro-tip-card {
+  position: relative;
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: rgba(var(--primary-rgb), 0.03);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
+  border-radius: 16px;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.pro-tip-card:hover {
+  background: rgba(var(--primary-rgb), 0.05);
+  transform: translateY(-2px);
+  border-color: rgba(var(--primary-rgb), 0.2);
+}
+
+.pro-tip-icon-wrapper {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 123px rgba(var(--primary-rgb), 0.3);
+}
+
+.pro-tip-content h5 {
+  margin: 0 0 0.5rem 0;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pro-tip-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.6;
+}

@@ -8,20 +8,85 @@
  * iCAD window structure image and all hotspot data defined inside
  * InteractiveImageMap.tsx.
  */
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Info, Monitor, Zap } from 'lucide-react';
 import InteractiveImageMap from './InteractiveImageMap';
 import icadWindowStructure from '../../assets/3D_Image_File/icad_window_structure.jpg'; // cspell:disable-line
 import '../../styles/3D_Modeling/CourseLesson.css';
-import '../../styles/3D_Modeling/3D_iCadInterface.css';
+
+// Reusable ProTip Component
+const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="pro-tip-card">
+    <div className="pro-tip-icon-wrapper">
+      <Zap size={20} fill="currentColor" />
+    </div>
+    <div className="pro-tip-content">
+      <h5>{title}</h5>
+      <p>{children}</p>
+    </div>
+  </div>
+);
 
 // ── iCAD Interface Lesson ──────────────────────────────────────────────────
 // Lesson-item ID: 'interface'
 // No sub-lessons – single interactive map view of the iCAD 3D window.
 
 const IcadInterfaceLesson: React.FC = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const element = containerRef.current;
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      if (totalHeight === 0) {
+        setScrollProgress(100);
+        return;
+      }
+      const progress = (element.scrollTop / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+
+    return () => {
+      if (currentContainer) {
+        currentContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
   return (
-    <div className="interactive-interface-lesson">
-      <InteractiveImageMap imageSrc={icadWindowStructure} />
+    <div className="course-lesson-container" ref={containerRef}>
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div
+          className="lesson-progress-bar"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      <section className="lesson-intro">
+        <h3 className="section-title">
+          <Monitor size={28} className="lesson-intro-icon" />
+          iCAD WINDOW INTERFACE
+        </h3>
+      </section>
+
+      <div className="lesson-grid single-card">
+        <div className="lesson-card">
+          <div className="lesson-content">
+            <div className="image-zoom-container">
+              <InteractiveImageMap imageSrc={icadWindowStructure} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
