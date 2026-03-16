@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..models import User, SystemLog
-from ..schemas import UserCreate, UserLogin, Token, UserResponse
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
 
@@ -95,13 +95,39 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
             detail="Inactive user account"
         )
     
+    # Check for required role if specified
+    if login_data.required_role:
+        if login_data.required_role == "admin":
+            if user.role != "admin":
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="This account is not authorized for Administrator access."
+                )
+        elif login_data.required_role == "user":
+            if user.role == "admin":
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Administrators must login using the Admin portal."
+                )
+        elif user.role != login_data.required_role:
+             raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"This account is not authorized for {login_data.required_role} access."
+            )
+    
     # Update last login
     user.last_login = datetime.now(timezone.utc)
     db.commit()
     
-    # Create access token
+    # Create access token with optional longer expiration
+    expires_delta = None
+    if login_data.remember_me:
+        # 30 days for Remember Me
+        expires_delta = timedelta(days=30)
+    
     access_token = create_access_token(
-        data={"sub": user.username, "role": user.role}
+        data={"sub": user.username, "role": user.role},
+        expires_delta=expires_delta
     )
     
     # Log the login
@@ -115,6 +141,31 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
     db.commit()
     
     return {"access_token": access_token, "token_type": "bearer"}
+    
+@router.post("/forgot-password")
+async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    """
+    Handle forgot password request by logging it for admin review.
+    """
+    # Find user if possible (for logging context)
+    user = db.query(User).filter(
+        (User.username == request.username_or_email) | 
+        (User.email == request.username_or_email)
+    ).first()
+    
+    message = f"Password reset requested for: {request.username_or_email}"
+    
+    # Log the request
+    log_entry = SystemLog(
+        level="WARNING",
+        message=message,
+        context="AUTH_RESET",
+        user_id=user.id if user else None
+    )
+    db.add(log_entry)
+    db.commit()
+    
+    return {"message": "If an account exists for that username/email, a reset request has been sent to the administrator."}
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_info(current_user: User = Depends(get_current_user)):

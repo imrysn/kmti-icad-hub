@@ -10,4 +10,6 @@ export default defineConfig({
     build: {
         outDir: 'dist',
     },
+    // Cache bust — forces Vite to re-resolve all modules on next start
+    cacheDir: 'node_modules/.vite',
 });

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
 import { XCircle } from 'lucide-react';
 import { authService, User } from '../../services/authService';
 import { adminService, SystemStats, TraineeProgress, SystemAuditLog } from '../../services/adminService';
+import { useUI } from '../../context/UIContext';
 import '../../styles/AdminMode.css';
 
 // Components
+import ErrorBoundary from '../../components/ErrorBoundary';
 import { AdminSidebar } from './components/AdminSidebar';
 import { AdminHeader } from './components/AdminHeader';
 import { SystemAnalytics } from './components/SystemAnalytics';
@@ -12,12 +15,21 @@ import { UserManagement } from './components/UserManagement';
 import { PerformanceDirectory } from './components/PerformanceDirectory';
 import { TraineeDetail } from './components/TraineeDetail';
 import { AuditLogs } from './components/AuditLogs';
+import { KnowledgeManagement } from './components/KnowledgeManagement';
+import { IntelligenceChatbot } from './components/IntelligenceChatbot';
+import { BroadcastCenter } from './components/BroadcastCenter';
+import { UserModal } from './components/UserModal';
 
-type AdminTab = 'overview' | 'users' | 'progress' | 'logs';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'logs';
 
 export const AdminMode: React.FC = () => {
-    // State
-    const [activeTab, setActiveTab] = useState<AdminTab>('overview');
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { requestConfirmation } = useUI();
+    
+    // Derive active tab from URL path
+    const pathParts = location.pathname.split('/');
+    const activeTab = (pathParts[pathParts.length - 1] as AdminTab) || 'overview';
     const [stats, setStats] = useState<SystemStats | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [progress, setProgress] = useState<TraineeProgress[]>([]);
@@ -27,6 +39,11 @@ export const AdminMode: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null);
+    const [heatmap, setHeatmap] = useState<{course_id: string, count: number}[]>([]);
+
+    // User CRUD state
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const fetchData = async () => {
         setLoading(true);
@@ -36,8 +53,12 @@ export const AdminMode: React.FC = () => {
             setCurrentUser(me);
 
             if (activeTab === 'overview') {
-                const s = await adminService.getStats();
+                const [s, h] = await Promise.all([
+                    adminService.getStats(),
+                    adminService.getHeatmap()
+                ]);
                 setStats(s);
+                setHeatmap(h);
             } else if (activeTab === 'users') {
                 const u = await authService.getUsers();
                 setUsers(u);
@@ -60,6 +81,7 @@ export const AdminMode: React.FC = () => {
         }
     };
 
+    // Trigger data fetching on mount and when tab changes
     useEffect(() => {
         fetchData();
         if (activeTab !== 'progress') setSelectedTrainee(null);
@@ -75,13 +97,42 @@ export const AdminMode: React.FC = () => {
     };
 
     const handleDeleteUser = async (userId: number) => {
-        if (!window.confirm('Are you sure you want to permanently delete this user? This action cannot be undone.')) return;
+        const confirmed = await requestConfirmation({
+            title: 'Delete User',
+            message: 'Are you sure you want to permanently delete this user? This action cannot be undone.',
+            confirmText: 'Delete',
+            type: 'danger'
+        });
+        if (!confirmed) return;
         try {
             await adminService.deleteUser(userId);
             setUsers((prev: User[]) => prev.filter(u => u.id !== userId));
             if (activeTab === 'overview') fetchData();
         } catch (err: any) {
             setError(err.response?.data?.detail || 'Failed to delete user.');
+        }
+    };
+
+    const handleSaveUser = async (userData: any) => {
+        try {
+            if (selectedUser) {
+                await adminService.updateUser(selectedUser.id, userData);
+            } else {
+                await adminService.createUser(userData);
+            }
+            await fetchData();
+            setIsUserModalOpen(false);
+        } catch (err: any) {
+            throw err; // Propagate to modal for display
+        }
+    };
+
+
+    const handleExport = async (userId?: number) => {
+        try {
+            await adminService.downloadProgressExport(userId);
+        } catch (err) {
+            setError('Export failed.');
         }
     };
 
@@ -93,14 +144,12 @@ export const AdminMode: React.FC = () => {
     return (
         <div className="admin-layout">
             <AdminSidebar 
-                activeTab={activeTab} 
-                setActiveTab={setActiveTab} 
                 currentUser={currentUser} 
             />
 
             <main className="admin-main">
                 <AdminHeader 
-                    activeTab={activeTab} 
+                    activeTab={activeTab}
                     stats={stats} 
                     selectedTrainee={selectedTrainee} 
                     fetchData={fetchData} 
@@ -114,43 +163,63 @@ export const AdminMode: React.FC = () => {
                         </div>
                     )}
 
-                    {activeTab === 'overview' && stats && (
-                        <SystemAnalytics 
-                            stats={stats} 
-                            cpuLoad={cpuLoad} 
-                            memoryUsage={memoryUsage} 
-                            sysStatus={sysStatus} 
-                        />
-                    )}
-
-                    {activeTab === 'users' && (
-                        <UserManagement 
-                            users={users} 
-                            currentUser={currentUser} 
-                            searchQuery={searchQuery} 
-                            setSearchQuery={setSearchQuery} 
-                            handleToggleStatus={handleToggleStatus} 
-                            handleDeleteUser={handleDeleteUser} 
-                        />
-                    )}
-
-                    {activeTab === 'progress' && !selectedTrainee && (
-                        <PerformanceDirectory 
-                            progress={progress} 
-                            setSelectedTrainee={setSelectedTrainee} 
-                        />
-                    )}
-
-                    {activeTab === 'progress' && selectedTrainee && (
-                        <TraineeDetail 
-                            selectedTrainee={selectedTrainee} 
-                            setSelectedTrainee={setSelectedTrainee} 
-                        />
-                    )}
-
-                    {activeTab === 'logs' && (
-                        <AuditLogs logs={logs} />
-                    )}
+                    <Routes>
+                        <Route path="overview" element={
+                            <ErrorBoundary>
+                                {stats && (
+                                    <div className="dashboard-scrollable">
+                                        <SystemAnalytics 
+                                            stats={stats} 
+                                            cpuLoad={cpuLoad} 
+                                            memoryUsage={memoryUsage} 
+                                            sysStatus={sysStatus} 
+                                            heatmap={heatmap}
+                                        />
+                                    </div>
+                                )}
+                            </ErrorBoundary>
+                        } />
+                        <Route path="users" element={
+                            <ErrorBoundary>
+                                <UserManagement 
+                                    users={users} 
+                                    currentUser={currentUser} 
+                                    searchQuery={searchQuery} 
+                                    setSearchQuery={setSearchQuery} 
+                                    handleToggleStatus={handleToggleStatus} 
+                                    handleDeleteUser={handleDeleteUser} 
+                                    onAddUser={() => {
+                                        setSelectedUser(null);
+                                        setIsUserModalOpen(true);
+                                    }}
+                                    onEditUser={(user) => {
+                                        setSelectedUser(user);
+                                        setIsUserModalOpen(true);
+                                    }}
+                                />
+                            </ErrorBoundary>
+                        } />
+                        <Route path="progress" element={
+                            <ErrorBoundary>
+                                {!selectedTrainee ? (
+                                    <PerformanceDirectory 
+                                        progress={progress} 
+                                        setSelectedTrainee={setSelectedTrainee} 
+                                    />
+                                ) : (
+                                    <TraineeDetail 
+                                        selectedTrainee={selectedTrainee} 
+                                        setSelectedTrainee={setSelectedTrainee} 
+                                        onExport={handleExport}
+                                    />
+                                )}
+                            </ErrorBoundary>
+                        } />
+                        <Route path="intelligence" element={<ErrorBoundary><KnowledgeManagement /></ErrorBoundary>} />
+                        <Route path="chatbot" element={<ErrorBoundary><IntelligenceChatbot /></ErrorBoundary>} />
+                        <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />
+                        <Route path="/" element={<Navigate to="overview" replace />} />
+                    </Routes>
                 </div>
 
                 {loading && (
@@ -159,6 +228,14 @@ export const AdminMode: React.FC = () => {
                     </div>
                 )}
             </main>
+            <BroadcastCenter />
+
+            <UserModal 
+                isOpen={isUserModalOpen}
+                onClose={() => setIsUserModalOpen(false)}
+                onSave={handleSaveUser}
+                user={selectedUser}
+            />
         </div>
     );
 };

@@ -10,8 +10,11 @@ Usage:
 
 import sys
 import pandas as pd
+from datetime import datetime
 from pathlib import Path
-from rag_engine import rag_engine
+from .rag_engine import rag_engine
+from .database import SessionLocal
+from .models import MediaMetadata
 
 def ingest_excel_file(excel_path: str, text_columns: list = None):
     """
@@ -41,8 +44,12 @@ def ingest_excel_file(excel_path: str, text_columns: list = None):
         
         text = " | ".join(text_parts)
         
-        # Create unique ID
-        doc_id = f"{filename}_row_{idx}"
+        # Create unique ID: Use 'Concept ID' column if it exists, otherwise fallback
+        concept_id = row.get('Concept ID')
+        if pd.notna(concept_id) and str(concept_id).strip():
+            doc_id = str(concept_id).strip()
+        else:
+            doc_id = f"{filename}_row_{idx}"
         
         # Create document
         doc = {
@@ -51,7 +58,8 @@ def ingest_excel_file(excel_path: str, text_columns: list = None):
             'metadata': {
                 'source': filename,
                 'row': idx,
-                'excel_path': excel_path
+                'excel_path': excel_path,
+                'original_id': str(concept_id) if pd.notna(concept_id) else None
             }
         }
         
@@ -68,27 +76,69 @@ def ingest_excel_file(excel_path: str, text_columns: list = None):
     print(f"   Total documents: {stats['total_documents']}")
     print(f"   Vector DB: {stats['persist_directory']}")
 
-def ingest_directory(directory: str, pattern: str = "*.xlsx"):
-    """Ingest all Excel files from a directory"""
+def ingest_media_mappings(csv_path: str):
+    """
+    Read media mappings CSV and populate MediaMetadata table.
+    """
+    print(f"🖼️  Ingesting media mappings: {csv_path}")
+    
+    df = pd.read_csv(csv_path)
+    
+    with SessionLocal() as db:
+        # Clear existing mappings to avoid duplicates on re-index
+        # We only clear mappings referenced in this CSV or just all?
+        # Usually re-index implies a fresh start for the controlled directory.
+        db.query(MediaMetadata).delete()
+        
+        count = 0
+        for _, row in df.iterrows():
+            # Skip comments or empty rows
+            if pd.isna(row['excel_row_id']) or str(row['excel_row_id']).startswith('#'):
+                continue
+                
+            metadata = MediaMetadata(
+                excel_row_id=str(row['excel_row_id']),
+                media_type=str(row['media_type']),
+                media_url=str(row['media_url']),
+                timestamp_start=float(row['timestamp_start']) if pd.notna(row['timestamp_start']) else None,
+                timestamp_end=float(row['timestamp_end']) if pd.notna(row['timestamp_end']) else None,
+                description=str(row['description']) if pd.notna(row['description']) else "",
+                created_at=datetime.utcnow()
+            )
+            db.add(metadata)
+            count += 1
+            
+        db.commit()
+    
+    print(f"✅ Ingested {count} media mappings from {csv_path}")
+
+def ingest_directory(directory: str):
+    """Ingest all compatible files from a directory"""
     dir_path = Path(directory)
-    excel_files = list(dir_path.glob(pattern))
     
-    if not excel_files:
-        print(f"⚠️  No Excel files found in {directory}")
-        return
-    
+    # Ingest Excel files
+    excel_files = list(dir_path.glob("*.xlsx"))
     print(f"Found {len(excel_files)} Excel files")
-    
     for filepath in excel_files:
         try:
             ingest_excel_file(str(filepath))
+        except Exception as e:
+            print(f"❌ Error processing {filepath}: {e}")
+            
+    # Ingest Media Mappings CSV
+    mapping_files = list(dir_path.glob("media_mappings*.csv"))
+    print(f"Found {len(mapping_files)} mapping files")
+    for filepath in mapping_files:
+        try:
+            ingest_media_mappings(str(filepath))
         except Exception as e:
             print(f"❌ Error processing {filepath}: {e}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage:")
-        print("  Single file:  python ingest_knowledge_base.py knowledge_base/manual.xlsx")
+        print("  Single Excel:  python ingest_knowledge_base.py knowledge_base/manual.xlsx")
+        print("  Mappings CSV:  python ingest_knowledge_base.py knowledge_base/media_mappings.csv")
         print("  Directory:    python ingest_knowledge_base.py knowledge_base/")
         sys.exit(1)
     
@@ -100,10 +150,14 @@ if __name__ == "__main__":
     
     # Check if path is directory or file
     if Path(path).is_dir():
-        print(f"📁 Ingesting all Excel files from directory: {path}")
+        print(f"📁 Ingesting all files from directory: {path}")
         ingest_directory(path)
     else:
-        print(f"📄 Ingesting single file: {path}")
-        ingest_excel_file(path)
+        if path.endswith('.xlsx'):
+            print(f"📄 Ingesting single Excel file: {path}")
+            ingest_excel_file(path)
+        elif path.endswith('.csv'):
+            print(f"📊 Ingesting mapping CSV file: {path}")
+            ingest_media_mappings(path)
     
     print("\n✨ Done! You can now search the knowledge base via the API.")

@@ -1,8 +1,23 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Walk up from this file to find the project root .env
+_env_path = Path(__file__).resolve().parents[3] / ".env"
+load_dotenv(dotenv_path=_env_path)
+
+import hashlib
+import json
+from datetime import datetime, timedelta
+from typing import Optional
+
 from ..rag_engine import rag_engine
 from ..schemas import SearchResponse, SearchResult, MediaAsset
-from ..models import MediaMetadata
+from ..models import MediaMetadata, QueryCache
 from ..database import SessionLocal
 from sqlalchemy import or_
+
+CACHE_TTL_HOURS = int(os.getenv("CHAT_CACHE_TTL_HOURS", "24"))
 
 
 class SearchService:
@@ -19,25 +34,23 @@ class SearchService:
         # Get text results from RAG engine
         raw_results = self.engine.search(query)
 
-        source_ids = [r['source'] for r in raw_results]
+        source_ids = [r['id'] for r in raw_results]
 
         media_map: dict = {}
         if source_ids:
             # Use a per-request DB session (context manager closes it automatically)
             with SessionLocal() as db:
-                filters = [MediaMetadata.excel_row_id.like(f"%{s}%") for s in source_ids]
-                media_records = db.query(MediaMetadata).filter(or_(*filters)).all()
+                # Use exact match instead of LIKE to avoid substring false positives
+                media_records = db.query(MediaMetadata).filter(MediaMetadata.excel_row_id.in_(source_ids)).all()
 
                 for m in media_records:
-                    for s in source_ids:
-                        if s in m.excel_row_id:
-                            media_map.setdefault(s, []).append(m)
+                    media_map.setdefault(m.excel_row_id, []).append(m)
 
         # Enrich results with multimedia assets
         enriched_results = []
         for r in raw_results:
             result = SearchResult(**r)
-            related_media = media_map.get(result.source, [])
+            related_media = media_map.get(result.id, []) # Use result.id to look up media
 
             if related_media:
                 result.media = [
@@ -58,3 +71,197 @@ class SearchService:
 
 # Singleton instance
 search_service = SearchService(rag_engine)
+
+
+class ChatService:
+    def __init__(self, search: SearchService):
+        self.search = search
+
+    def _make_cache_key(self, message: str) -> str:
+        """SHA-256 of lowercased, stripped message. History is intentionally excluded
+        so conversational follow-ups don't pollute the cache."""
+        normalized = message.strip().lower()
+        return hashlib.sha256(normalized.encode('utf-8')).hexdigest()
+
+    def _get_cache(self, query_hash: str) -> Optional[dict]:
+        """Return cached result if it exists and hasn't expired."""
+        try:
+            with SessionLocal() as db:
+                entry = db.query(QueryCache).filter(
+                    QueryCache.query_hash == query_hash,
+                    QueryCache.expires_at > datetime.utcnow()
+                ).first()
+                if entry:
+                    # Increment hit counter
+                    entry.hit_count += 1
+                    db.commit()
+                    sources = json.loads(entry.sources_json) if entry.sources_json else []
+                    return {"answer": entry.answer, "sources": sources, "cached": True}
+        except Exception as e:
+            print(f"[Cache] Read error: {e}")
+        return None
+
+    def _set_cache(self, query_hash: str, message: str, answer: str, sources: list) -> None:
+        """Store a new cache entry, replacing any expired one with the same hash."""
+        try:
+            with SessionLocal() as db:
+                existing = db.query(QueryCache).filter(QueryCache.query_hash == query_hash).first()
+                if existing:
+                    existing.answer = answer[:8000]
+                    existing.sources_json = json.dumps(sources)[:16000]
+                    existing.created_at = datetime.utcnow()
+                    existing.expires_at = datetime.utcnow() + timedelta(hours=CACHE_TTL_HOURS)
+                    existing.hit_count = 0
+                else:
+                    entry = QueryCache(
+                        query_hash=query_hash,
+                        query_text=message[:2000],
+                        answer=answer[:8000],
+                        sources_json=json.dumps(sources)[:16000],
+                        expires_at=datetime.utcnow() + timedelta(hours=CACHE_TTL_HOURS),
+                    )
+                    db.add(entry)
+                db.commit()
+        except Exception as e:
+            print(f"[Cache] Write error: {e}")
+
+    def chat(self, message: str, history: list) -> dict:
+        """
+        RAG-grounded chat.
+        1. Check query cache — return instantly if hit.
+        2. Retrieve relevant context from ChromaDB.
+        3. Call Gemini, cache result, return.
+        """
+        # Step 1: Cache check (only for standalone queries, not mid-conversation)
+        query_hash = self._make_cache_key(message)
+        if not history:  # Only cache first-turn queries
+            cached = self._get_cache(query_hash)
+            if cached:
+                print(f"[Cache] HIT for: {message[:60]}")
+                return cached
+
+        # Step 2: Retrieve context
+        search_response = self.search.search_knowledge_base(message)
+        sources = search_response.results
+
+        if not sources:
+            return {
+                "answer": "I couldn't find any relevant information in the knowledge base for your question. Try re-indexing or uploading related files.",
+                "sources": []
+            }
+
+        # Step 2: Build context block
+        context_chunks = []
+        for i, s in enumerate(sources[:8]):
+            context_chunks.append(f"[{i+1}] Source: {s.source}\n{s.content}")
+        context_text = "\n\n".join(context_chunks)
+
+        # Step 3: Build conversation history string (last 10 turns = 5 exchanges)
+        history_text = ""
+        for turn in history[-10:]:
+            role_label = "User" if turn.role == "user" else "Assistant"
+            history_text += f"{role_label}: {turn.content}\n"
+
+        # Step 4: Full prompt
+        system_prompt = (
+            "You are the iCAD Intelligence Node — an expert AI training assistant for the KMTI iCAD system. "
+            "Your role is not just to answer questions, but to actively guide the user's understanding. "
+            "When a user asks something, do the following:\n"
+            "1. ANSWER their question directly and accurately using only the provided context.\n"
+            "2. EXPAND on the answer — explain the 'why' or how it connects to other iCAD concepts if the context supports it.\n"
+            "3. SUGGEST related topics — after your answer, identify 1-3 related concepts or follow-up areas "
+            "from the context that the user would likely benefit from knowing. Present these as natural suggestions, "
+            "not a bullet list — weave them into your closing sentence (e.g., 'You might also want to explore X, "
+            "which relates to Y in iCAD').\n"
+            "4. If the question is vague or broad, briefly clarify what aspect you're addressing and mention other "
+            "angles the user could explore.\n"
+            "Keep responses clear and technically accurate. Never fabricate information outside the provided context. "
+            "If the context is insufficient, say so and suggest the user re-index or upload more relevant files."
+        )
+
+        user_prompt = (
+            f"Context from knowledge base:\n{context_text}\n\n"
+            f"{history_text}"
+            f"User: {message}\n\nAssistant:"
+        )
+
+        # Step 5: Call Gemini, fall back to extractive summary
+        answer = self._call_gemini(system_prompt, user_prompt)
+        if answer is None:
+            answer = self._fallback_summary(message, sources)
+
+        serialized_sources = [s.model_dump() for s in sources[:5]]
+
+        # Step 6: Write to cache (only standalone queries without history)
+        if not history and answer:
+            self._set_cache(query_hash, message, answer, serialized_sources)
+
+        return {
+            "answer": answer,
+            "sources": serialized_sources,
+            "cached": False
+        }
+
+    def _call_gemini(self, system_prompt: str, user_prompt: str) -> Optional[str]:
+        """Call Google Gemini API with retry on 429. Returns None if key is missing or all retries fail."""
+        import time, re
+        api_key = os.getenv("GOOGLE_API_KEY", "")
+        if not api_key or api_key == "your_api_key_here":
+            return None
+        try:
+            from google import genai
+            from google.genai import types
+            client = genai.Client(api_key=api_key)
+            model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        except Exception as e:
+            print(f"[Gemini] Init error: {e}")
+            return None
+
+        max_retries = 3
+        backoff = 10
+        for attempt in range(max_retries):
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=user_prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt,
+                        temperature=0.3,
+                    )
+                )
+                return response.text.strip()
+            except Exception as e:
+                err_str = str(e)
+                if "429" in err_str:
+                    retry_after = backoff * (2 ** attempt)
+                    match = re.search(r'retry_delay\s*\{\s*seconds:\s*(\d+)', err_str)
+                    if match:
+                        retry_after = int(match.group(1)) + 2
+                    print(f"[Gemini] Rate limited. Retrying in {retry_after}s (attempt {attempt + 1}/{max_retries})...")
+                    time.sleep(retry_after)
+                else:
+                    print(f"[Gemini] Error: {e}")
+                    return None
+        print("[Gemini] All retries exhausted.")
+        return None
+
+    def _fallback_summary(self, query: str, sources) -> str:
+        """Extractive fallback when Gemini API key is not configured."""
+        top = sources[0]
+        lines = [
+            f"Based on the knowledge base, here is what I found regarding '{query}':",
+            "",
+            top.content,
+        ]
+        if len(sources) > 1:
+            lines.append(
+                f"\nAdditional context found in {len(sources) - 1} other source(s). See the Sources panel below."
+            )
+        lines.append(
+            "\n⚠️ Gemini unavailable (no key configured, quota exceeded, or retries exhausted). "
+            "Generate a new key at https://aistudio.google.com/apikey and update GOOGLE_API_KEY in .env"
+        )
+        return "\n".join(lines)
+
+
+chat_service = ChatService(search_service)

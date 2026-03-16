@@ -1,6 +1,9 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text
 from sqlalchemy.sql import func
-from .database import Base
+try:
+    from .database import Base
+except ImportError:
+    from database import Base
 
 class UserProgress(Base):
     __tablename__ = "user_progress"
@@ -70,4 +73,60 @@ class SystemLog(Base):
     context = Column(String(100))  # "AUTH", "KB", "USER_MGMT"
     user_id = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=func.now())
+
+
+class Broadcast(Base):
+    """System-wide announcements from admins"""
+    __tablename__ = "broadcasts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    message = Column(String(1000), nullable=False)
+    level = Column(String(20), default="info")  # "info", "warning", "critical"
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=func.now())
+    created_by = Column(Integer)  # Admin user ID
+
+
+class ChatLog(Base):
+    """Logs every user interaction with the Intelligence Chatbot"""
+    __tablename__ = "chat_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True, nullable=False)       # FK to users.id
+    username = Column(String(100), index=True, nullable=False)  # Denormalized for fast queries
+    session_id = Column(String(100), index=True, nullable=True) # Client session identifier
+    message = Column(String(2000), nullable=False)              # User's question
+    answer = Column(String(8000), nullable=False)               # AI response
+    sources_used = Column(String(1000), nullable=True)          # Comma-separated source filenames
+    source_count = Column(Integer, default=0)                   # How many KB chunks were retrieved
+    tokens_estimated = Column(Integer, default=0)               # Rough token count (chars / 4)
+    response_time_ms = Column(Integer, default=0)               # End-to-end latency
+    had_media = Column(Boolean, default=False)                  # Whether images were returned
+    created_at = Column(DateTime, default=func.now(), index=True)
+
+
+class ChatFeedback(Base):
+    """Thumbs up/down feedback on individual AI responses"""
+    __tablename__ = "chat_feedback"
+
+    id = Column(Integer, primary_key=True, index=True)
+    chat_log_id = Column(Integer, index=True, nullable=False)  # FK to chat_logs.id
+    user_id = Column(Integer, index=True, nullable=False)
+    username = Column(String(100), nullable=False)
+    rating = Column(String(10), nullable=False)                # "up" or "down"
+    created_at = Column(DateTime, default=func.now())
+
+
+class QueryCache(Base):
+    """Caches AI responses for identical queries to avoid redundant Gemini calls"""
+    __tablename__ = "query_cache"
+
+    id = Column(Integer, primary_key=True, index=True)
+    query_hash = Column(String(64), unique=True, index=True, nullable=False)  # SHA-256 of normalized query
+    query_text = Column(String(2000), nullable=False)          # Original query for debugging
+    answer = Column(String(8000), nullable=False)
+    sources_json = Column(String(16000), nullable=True)        # JSON-serialized sources
+    hit_count = Column(Integer, default=0)                     # Times this cache entry was served
+    created_at = Column(DateTime, default=func.now(), index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)  # TTL expiry
 

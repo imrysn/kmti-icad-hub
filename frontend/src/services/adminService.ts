@@ -1,5 +1,11 @@
 import { api } from './api';
 
+export interface KBFile {
+    name: string;
+    size: number;
+    modified: string;
+}
+
 export interface SystemStats {
     users: {
         total: number;
@@ -62,5 +68,112 @@ export const adminService = {
 
     async deleteUser(userId: number): Promise<void> {
         await api.delete(`/admin/users/${userId}`);
+    },
+
+    async createUser(data: any): Promise<any> {
+        const response = await api.post('/admin/users', data);
+        return response.data;
+    },
+
+    async updateUser(userId: number, data: any): Promise<any> {
+        const response = await api.put(`/admin/users/${userId}`, data);
+        return response.data;
+    },
+
+    async sendBroadcast(message: string, level: string = 'info'): Promise<void> {
+        await api.post(`/admin/broadcast`, null, { params: { message, level } });
+    },
+
+    async getActiveBroadcasts(): Promise<any[]> {
+        const response = await api.get('/admin/broadcasts/active');
+        return response.data;
+    },
+
+    async getHeatmap(): Promise<{ course_id: string; count: number }[]> {
+        const response = await api.get('/admin/heatmap');
+        return response.data;
+    },
+
+    async triggerReindex(): Promise<void> {
+        await api.post('/admin/reindex');
+    },
+
+    async downloadProgressExport(userId?: number): Promise<void> {
+        const response = await api.get('/admin/export/progress', { 
+            params: { user_id: userId },
+            responseType: 'blob' 
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        const filename = userId ? `trainee_report_${userId}.csv` : 'trainee_progress.csv';
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    },
+
+    async getKBFiles(): Promise<KBFile[]> {
+        const response = await api.get('/admin/kb/files');
+        return response.data;
+    },
+
+    async uploadKBFiles(files: File[]): Promise<void> {
+        const formData = new FormData();
+        files.forEach(file => formData.append('files', file));
+        await api.post('/admin/kb/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+    },
+
+    async deleteKBFile(filename: string): Promise<void> {
+        await api.delete(`/admin/kb/files/${filename}`);
+    },
+
+    async previewKBFile(filename: string): Promise<any> {
+        const response = await api.get(`/admin/kb/files/${encodeURIComponent(filename)}/preview`);
+        return response.data;
+    },
+
+    async getChatLogs(params?: { limit?: number; offset?: number; username?: string }): Promise<any> {
+        const response = await api.get('/admin/chat-logs', { params });
+        return response.data;
+    },
+
+    async getChatLogStats(): Promise<any> {
+        const response = await api.get('/admin/chat-logs/stats');
+        return response.data;
+    },
+
+    async deleteChatLog(logId: number): Promise<void> {
+        await api.delete(`/admin/chat-logs/${logId}`);
+    },
+
+    async getFeedbackStats(): Promise<any> {
+        const response = await api.get('/admin/feedback/stats');
+        return response.data;
+    },
+
+    async getCacheStats(): Promise<any> {
+        const response = await api.get('/admin/cache/stats');
+        return response.data;
+    },
+
+    async clearCache(): Promise<void> {
+        await api.delete('/admin/cache');
+    },
+
+    async downloadKBFile(filename: string): Promise<void> {
+        const response = await api.get(`/admin/kb/files/${encodeURIComponent(filename)}/download`, {
+            responseType: 'blob'
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
     }
 };

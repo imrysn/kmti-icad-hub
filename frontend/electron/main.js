@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 function createWindow() {
@@ -13,6 +13,7 @@ function createWindow() {
             // SECURITY: contextIsolation MUST be true — isolates the preload script
             // world from the renderer's JavaScript world.
             contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js'),
             // Disable remote module (deprecated and insecure)
             sandbox: true,
         },
@@ -40,5 +41,17 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();
+    }
+});
+
+// Handle IPC signals from renderer
+ipcMain.on('flash-window', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    if (win && !win.isFocused()) {
+        win.flashFrame(true);
+        // Automatically stop flashing when window is focused
+        win.once('focus', () => {
+            win.flashFrame(false);
+        });
     }
 });
