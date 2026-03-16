@@ -1,110 +1,517 @@
-/* KnowledgeManagement.css */
+/* Sub-tab bar */
+.intel-tab-bar {
+    grid-column: span 12;
+    display: flex;
+    gap: 0.25rem;
+    background: var(--color-white, #fff);
+    border: 1px solid var(--border-color, rgba(0,0,0,0.08));
+    border-radius: 12px;
+    padding: 0.3rem;
+    width: fit-content;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.intel-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--text-muted, #64748b);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.intel-tab:hover {
+    color: var(--text-main, #1e293b);
+    background: var(--bg-surface, #f8fafc);
+}
+
+.intel-tab.active {
+    background: var(--primary, #0f172a);
+    color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+/* Main Bento Container for the whole tab */
 .kb-management {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    height: auto;
+    min-height: calc(100vh - 80px);
+    overflow-y: auto;
+    background: #f8fafc;
+    /* Defined background for contrast */
+}
+
+/* Bento Card Utility Class - Redefined for high contrast */
+.bento-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    /* Darker border for definition */
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* Specific Section Grid Spans */
+.upload-section-card {
+    grid-column: span 12;
+    grid-row: span 2;
+    flex-direction: row;
+    align-items: center;
     gap: 2rem;
-    padding: 1rem;
+    padding: 0.75rem 1.75rem;
+    background: rgba(255, 255, 255, 0.9);
+    /* Solidified for action area */
 }
 
-.result-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.upload-section-card h2,
+.upload-section-card h3 {
+    color: #1e293b;
+    /* High contrast dark text */
 }
 
-.result-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--accent-primary, #4facfe);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+.upload-section-card .section-header {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    flex-shrink: 0;
+    width: auto;
 }
 
-.result-meta {
+.upload-section-card .section-header .primary-btn {
+    display: none;
+    /* We'll move this outside the header in JSX for horizontal flow */
+}
+
+.test-section-card {
+    grid-column: span 12;
+    min-height: calc(100vh - 200px);
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+.files-list-card {
+    grid-column: span 12;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Refined Section Title */
+.section-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.75rem;
-    font-size: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.section-header h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    /* Sharp dark navy */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Files Table High Contrast */
+.files-table-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin: 0 -0.5rem;
+    padding: 0 0.5rem;
+    min-height: 0;
+}
+
+.files-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.files-table th {
+    text-align: left;
+    padding: 0.75rem;
+    font-size: 0.7rem;
+    color: #64748b;
+    /* Slate 500 */
     text-transform: uppercase;
+    font-weight: 700;
     letter-spacing: 0.05em;
 }
 
-.result-source {
-    color: var(--accent-primary, #4facfe);
-    font-weight: 600;
-}
-
-.result-score {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.result-content {
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1.5rem;
-    white-space: pre-wrap;
-}
-
-/* Multimedia Specific Styles */
-.result-media-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.media-preview-container {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.media-preview-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
-}
-
-.media-preview-img:hover {
-    transform: scale(1.05);
-}
-
-.media-caption {
-    padding: 0.75rem;
+.files-table td {
+    padding: 0.875rem 0.75rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(0, 0, 0, 0.4);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #334155;
+    /* Slate 700 */
+}
+
+.files-table tr:hover td {
+    background: rgba(99, 102, 241, 0.03);
+}
+
+/* Upload Zone Refinement */
+.upload-zone {
+    flex-grow: 1;
+    border: 1.5px dashed rgba(99, 102, 241, 0.2);
+    border-radius: 12px;
+    height: 60px;
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(99, 102, 241, 0.02);
+}
+
+.upload-zone:hover {
+    background: rgba(99, 102, 241, 0.05);
+    border-color: #6366f1;
+}
+
+.upload-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.upload-content h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.upload-content p,
+.supported-formats {
+    font-size: 0.7rem;
+    color: #64748b;
+}
+
+.upload-icon {
+    width: 24px;
+    height: 24px;
+    color: #4facfe;
+    flex-shrink: 0;
+}
+
+/* Horizontal Re-index Button next to upload zone */
+.reindex-horizontal-btn {
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+
+.upload-zone.drag-active {
+    background: rgba(79, 172, 254, 0.05);
+    border-color: #4facfe;
+}
+
+/* ── Chat UI ─────────────────────────────────────────── */
+
+.test-section-card {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Scrollable message area */
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem 0.25rem 0.5rem 0;
+    min-height: 0;
+    scroll-behavior: smooth;
+}
+
+.chat-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 0.75rem;
+    color: #94a3b8;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.chat-empty-state p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #64748b;
     margin: 0;
 }
 
-/* Scrollable container for test results */
-.results-display {
-    max-height: 600px;
-    overflow-y: auto;
-    padding-right: 0.5rem;
+.chat-empty-state span {
+    font-size: 0.8rem;
+    color: #94a3b8;
 }
 
-.results-display::-webkit-scrollbar {
-    width: 4px;
+/* Bubbles */
+.chat-bubble {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    max-width: 82%;
+    animation: bubbleIn 0.2s ease;
 }
 
-.results-display::-webkit-scrollbar-track {
+@keyframes bubbleIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.chat-bubble.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.chat-bubble.assistant {
+    align-self: flex-start;
+}
+
+.bubble-avatar {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #4facfe);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-top: 2px;
+}
+
+.bubble-content {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #1e293b;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.bubble-content p {
+    margin: 0;
+}
+
+.chat-bubble.user .bubble-content {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+/* Typing indicator */
+.bubble-content.thinking {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 0.75rem 1.1rem;
+}
+
+.bubble-content.thinking span {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #94a3b8;
+    animation: bounce 1.2s infinite;
+}
+
+.bubble-content.thinking span:nth-child(2) { animation-delay: 0.2s; }
+.bubble-content.thinking span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30%            { transform: translateY(-5px); }
+}
+
+/* Sources strip */
+.chat-sources {
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding: 0.6rem 0 0.4rem;
+    flex-shrink: 0;
+}
+
+.sources-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0 0 0.4rem;
+}
+
+.sources-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.source-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(99,102,241,0.06);
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 20px;
+    padding: 0.2rem 0.65rem;
+    font-size: 0.72rem;
+}
+
+.source-name {
+    color: #6366f1;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.source-score {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Chat input */
+.chat-input-box {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    background: #ffffff;
+    padding: 0.4rem 0.4rem 0.4rem 1rem;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    flex-shrink: 0;
+}
+
+.chat-input {
+    flex-grow: 1;
     background: transparent;
+    border: none;
+    color: #1e293b;
+    font-size: 0.92rem;
+    outline: none;
+    padding: 0.3rem 0;
 }
 
-.results-display::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
+.chat-input::placeholder {
+    color: #cbd5e1;
 }
 
-.results-display::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+.chat-input:disabled {
+    opacity: 0.5;
+}
+
+.chat-send-btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+}
+
+.chat-send-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Custom Scrollbars */
+.chat-messages::-webkit-scrollbar,
+.files-table-wrapper::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Floating Status Banner High Contrast */
+.status-banner-floating {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #1e293b;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.status-banner-floating.success {
+    border-left: 5px solid #10b981;
+}
+
+.status-banner-floating.error {
+    border-left: 5px solid #ef4444;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0 0.5rem;
+}
+
+.chat-messages::-webkit-scrollbar-thumb,
+.files-table-wrapper::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover,
+.files-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
 }

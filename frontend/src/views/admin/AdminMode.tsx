@@ -7,6 +7,7 @@ import { useUI } from '../../context/UIContext';
 import '../../styles/AdminMode.css';
 
 // Components
+import ErrorBoundary from '../../components/ErrorBoundary';
 import { AdminSidebar } from './components/AdminSidebar';
 import { AdminHeader } from './components/AdminHeader';
 import { SystemAnalytics } from './components/SystemAnalytics';
@@ -15,10 +16,11 @@ import { PerformanceDirectory } from './components/PerformanceDirectory';
 import { TraineeDetail } from './components/TraineeDetail';
 import { AuditLogs } from './components/AuditLogs';
 import { KnowledgeManagement } from './components/KnowledgeManagement';
+import { IntelligenceChatbot } from './components/IntelligenceChatbot';
 import { BroadcastCenter } from './components/BroadcastCenter';
 import { UserModal } from './components/UserModal';
 
-export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'logs';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'logs';
 
 export const AdminMode: React.FC = () => {
     const navigate = useNavigate();
@@ -163,52 +165,59 @@ export const AdminMode: React.FC = () => {
 
                     <Routes>
                         <Route path="overview" element={
-                            stats && (
-                                <div className="dashboard-scrollable">
-                                    <SystemAnalytics 
-                                        stats={stats} 
-                                        cpuLoad={cpuLoad} 
-                                        memoryUsage={memoryUsage} 
-                                        sysStatus={sysStatus} 
-                                        heatmap={heatmap}
-                                    />
-                                </div>
-                            )
+                            <ErrorBoundary>
+                                {stats && (
+                                    <div className="dashboard-scrollable">
+                                        <SystemAnalytics 
+                                            stats={stats} 
+                                            cpuLoad={cpuLoad} 
+                                            memoryUsage={memoryUsage} 
+                                            sysStatus={sysStatus} 
+                                            heatmap={heatmap}
+                                        />
+                                    </div>
+                                )}
+                            </ErrorBoundary>
                         } />
                         <Route path="users" element={
-                            <UserManagement 
-                                users={users} 
-                                currentUser={currentUser} 
-                                searchQuery={searchQuery} 
-                                setSearchQuery={setSearchQuery} 
-                                handleToggleStatus={handleToggleStatus} 
-                                handleDeleteUser={handleDeleteUser} 
-                                onAddUser={() => {
-                                    setSelectedUser(null);
-                                    setIsUserModalOpen(true);
-                                }}
-                                onEditUser={(user) => {
-                                    setSelectedUser(user);
-                                    setIsUserModalOpen(true);
-                                }}
-                            />
+                            <ErrorBoundary>
+                                <UserManagement 
+                                    users={users} 
+                                    currentUser={currentUser} 
+                                    searchQuery={searchQuery} 
+                                    setSearchQuery={setSearchQuery} 
+                                    handleToggleStatus={handleToggleStatus} 
+                                    handleDeleteUser={handleDeleteUser} 
+                                    onAddUser={() => {
+                                        setSelectedUser(null);
+                                        setIsUserModalOpen(true);
+                                    }}
+                                    onEditUser={(user) => {
+                                        setSelectedUser(user);
+                                        setIsUserModalOpen(true);
+                                    }}
+                                />
+                            </ErrorBoundary>
                         } />
                         <Route path="progress" element={
-                            !selectedTrainee ? (
-                                <PerformanceDirectory 
-                                    progress={progress} 
-                                    setSelectedTrainee={setSelectedTrainee} 
-                                />
-                            ) : (
-                                <TraineeDetail 
-                                    selectedTrainee={selectedTrainee} 
-                                    setSelectedTrainee={setSelectedTrainee} 
-                                    onExport={handleExport}
-                                />
-                            )
+                            <ErrorBoundary>
+                                {!selectedTrainee ? (
+                                    <PerformanceDirectory 
+                                        progress={progress} 
+                                        setSelectedTrainee={setSelectedTrainee} 
+                                    />
+                                ) : (
+                                    <TraineeDetail 
+                                        selectedTrainee={selectedTrainee} 
+                                        setSelectedTrainee={setSelectedTrainee} 
+                                        onExport={handleExport}
+                                    />
+                                )}
+                            </ErrorBoundary>
                         } />
-                        <Route path="intelligence" element={<KnowledgeManagement />} />
-                        <Route path="logs" element={<AuditLogs logs={logs} />} />
+                        <Route path="intelligence" element={<ErrorBoundary><KnowledgeManagement /></ErrorBoundary>} />
+                        <Route path="chatbot" element={<ErrorBoundary><IntelligenceChatbot /></ErrorBoundary>} />
+                        <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />
                         <Route path="/" element={<Navigate to="overview" replace />} />
                     </Routes>
                 </div>

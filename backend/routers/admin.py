@@ -1,14 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func, cast, String
 from typing import List, Dict
 import os
 import psutil
 import shutil
+import csv
+import json
 from datetime import datetime
 
 from ..database import get_db
-from ..models import User, UserProgress, QuizScore, SystemLog, Broadcast
+from ..models import User, UserProgress, QuizScore, SystemLog, Broadcast, ChatLog, ChatFeedback, QueryCache
 from ..schemas import UserCreateAdmin, UserUpdate, UserResponse
 from ..auth.dependencies import require_role
 from ..auth.security import hash_password
@@ -445,6 +448,80 @@ async def upload_kb_files(
         
     return {"message": f"Uploaded {len(uploaded_files)} files: {', '.join(uploaded_files)}"}
 
+@router.get("/kb/files/{filename}/preview")
+def preview_kb_file(
+    filename: str,
+    admin: User = Depends(require_role("admin"))
+):
+    """Return file contents as JSON rows for in-browser preview (CSV and XLSX only)."""
+    # Sanitize — no path traversal
+    if "/" in filename or "\\" in filename or ".." in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+
+    file_path = os.path.join(KB_DIR, filename)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+
+    ext = filename.lower().rsplit(".", 1)[-1]
+
+    try:
+        if ext == "csv":
+            rows = []
+            with open(file_path, "r", encoding="utf-8", errors="replace") as f:
+                reader = csv.DictReader(f)
+                headers = reader.fieldnames or []
+                for row in reader:
+                    rows.append(dict(row))
+            return {"filename": filename, "type": "csv", "headers": list(headers), "rows": rows[:500]}
+
+        elif ext == "xlsx":
+            try:
+                import openpyxl
+            except ImportError:
+                raise HTTPException(status_code=500, detail="openpyxl not installed")
+            wb = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
+            sheets = {}
+            for sheet_name in wb.sheetnames:
+                ws = wb[sheet_name]
+                rows_data = []
+                headers = []
+                for i, row in enumerate(ws.iter_rows(values_only=True)):
+                    if i == 0:
+                        headers = [str(c) if c is not None else "" for c in row]
+                    else:
+                        rows_data.append({headers[j]: (str(v) if v is not None else "") for j, v in enumerate(row)})
+                    if i > 500:
+                        break
+                sheets[sheet_name] = {"headers": headers, "rows": rows_data}
+            wb.close()
+            return {"filename": filename, "type": "xlsx", "sheets": sheets}
+
+        else:
+            raise HTTPException(status_code=400, detail="Only CSV and XLSX preview supported")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Preview failed: {str(e)}")
+
+
+@router.get("/kb/files/{filename}/download")
+def download_kb_file(
+    filename: str,
+    admin: User = Depends(require_role("admin"))
+):
+    """Download a KB file directly."""
+    if "/" in filename or "\\" in filename or ".." in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    file_path = os.path.join(KB_DIR, filename)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(
+        path=file_path,
+        filename=filename,
+        media_type="application/octet-stream"
+    )
+
+
 @router.delete("/kb/files/{filename}")
 def delete_kb_file(
     filename: str,
@@ -462,3 +539,209 @@ def delete_kb_file(
         return {"message": f"File {filename} deleted successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete file: {str(e)}")
+
+
+# ── Chat Log Monitoring ──────────────────────────────────────────────────────
+
+@router.get("/chat-logs")
+def get_chat_logs(
+    limit: int = 50,
+    offset: int = 0,
+    username: str = None,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Paginated chat log list, optionally filtered by username."""
+    query = db.query(ChatLog)
+    if username:
+        query = query.filter(ChatLog.username.ilike(f"%{username}%"))
+    total = query.count()
+    logs = query.order_by(ChatLog.created_at.desc()).offset(offset).limit(limit).all()
+    return {
+        "total": total,
+        "offset": offset,
+        "limit": limit,
+        "logs": [
+            {
+                "id": l.id,
+                "user_id": l.user_id,
+                "username": l.username,
+                "session_id": l.session_id,
+                "message": l.message,
+                "answer": l.answer,
+                "sources_used": l.sources_used,
+                "source_count": l.source_count,
+                "tokens_estimated": l.tokens_estimated,
+                "response_time_ms": l.response_time_ms,
+                "had_media": l.had_media,
+                "created_at": l.created_at.isoformat() if l.created_at else None,
+            }
+            for l in logs
+        ]
+    }
+
+
+@router.get("/chat-logs/stats")
+def get_chat_log_stats(
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Aggregate stats for the Intelligence dashboard."""
+    from sqlalchemy import func as sqlfunc
+
+    total_queries = db.query(ChatLog).count()
+
+    # Top 10 most active users
+    top_users = (
+        db.query(ChatLog.username, sqlfunc.count(ChatLog.id).label("count"))
+        .group_by(ChatLog.username)
+        .order_by(sqlfunc.count(ChatLog.id).desc())
+        .limit(10)
+        .all()
+    )
+
+    # Total estimated tokens used
+    total_tokens = db.query(sqlfunc.sum(ChatLog.tokens_estimated)).scalar() or 0
+
+    # Average response time
+    avg_response_ms = db.query(sqlfunc.avg(ChatLog.response_time_ms)).scalar() or 0
+
+    # Queries per day (last 14 days)
+    from datetime import timedelta
+    from sqlalchemy import cast, Date as SqlDate
+    fourteen_days_ago = datetime.utcnow() - timedelta(days=14)
+    daily = (
+        db.query(
+            cast(ChatLog.created_at, SqlDate).label("day"),
+            sqlfunc.count(ChatLog.id).label("count")
+        )
+        .filter(ChatLog.created_at >= fourteen_days_ago)
+        .group_by(cast(ChatLog.created_at, SqlDate))
+        .order_by(cast(ChatLog.created_at, SqlDate))
+        .all()
+    )
+
+    # Top 10 most queried sources
+    source_counts: dict = {}
+    all_sources = db.query(ChatLog.sources_used).filter(ChatLog.sources_used != None).all()
+    for row in all_sources:
+        for src in row[0].split(","):
+            src = src.strip()
+            if src:
+                source_counts[src] = source_counts.get(src, 0) + 1
+    top_sources = sorted(source_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+
+    return {
+        "total_queries": total_queries,
+        "total_tokens_estimated": int(total_tokens),
+        "avg_response_ms": int(avg_response_ms),
+        "top_users": [{"username": u, "count": c} for u, c in top_users],
+        "queries_per_day": [{"day": str(d), "count": c} for d, c in daily],
+        "top_sources": [{"source": s, "count": c} for s, c in top_sources],
+    }
+
+
+@router.delete("/chat-logs/{log_id}")
+def delete_chat_log(
+    log_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Delete a single chat log entry."""
+    log = db.query(ChatLog).filter(ChatLog.id == log_id).first()
+    if not log:
+        raise HTTPException(status_code=404, detail="Log not found")
+    db.delete(log)
+    db.commit()
+    return {"message": "Deleted"}
+
+
+# ── Feedback Endpoints ───────────────────────────────────────────────────
+
+@router.get("/feedback/stats")
+def get_feedback_stats(
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Aggregate feedback stats: up/down totals, worst-rated queries."""
+    from sqlalchemy import func as sqlfunc
+
+    total_up = db.query(ChatFeedback).filter(ChatFeedback.rating == "up").count()
+    total_down = db.query(ChatFeedback).filter(ChatFeedback.rating == "down").count()
+
+    # Worst rated: log entries with most thumbs-down
+    worst = (
+        db.query(
+            ChatFeedback.chat_log_id,
+            sqlfunc.count(ChatFeedback.id).label("down_count")
+        )
+        .filter(ChatFeedback.rating == "down")
+        .group_by(ChatFeedback.chat_log_id)
+        .order_by(sqlfunc.count(ChatFeedback.id).desc())
+        .limit(10)
+        .all()
+    )
+
+    worst_with_messages = []
+    for log_id, down_count in worst:
+        log = db.query(ChatLog).filter(ChatLog.id == log_id).first()
+        worst_with_messages.append({
+            "log_id": log_id,
+            "message": log.message if log else "(deleted)",
+            "down_count": down_count
+        })
+
+    return {
+        "total_up": total_up,
+        "total_down": total_down,
+        "satisfaction_rate": round(total_up / (total_up + total_down) * 100, 1) if (total_up + total_down) > 0 else None,
+        "worst_rated": worst_with_messages
+    }
+
+
+# ── Cache Endpoints ─────────────────────────────────────────────────────
+
+@router.get("/cache/stats")
+def get_cache_stats(
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Cache stats: total entries, total hits saved, top cached queries."""
+    from sqlalchemy import func as sqlfunc
+
+    total_entries = db.query(QueryCache).count()
+    active_entries = db.query(QueryCache).filter(QueryCache.expires_at > datetime.utcnow()).count()
+    total_hits = db.query(sqlfunc.sum(QueryCache.hit_count)).scalar() or 0
+
+    top_cached = (
+        db.query(QueryCache)
+        .filter(QueryCache.expires_at > datetime.utcnow())
+        .order_by(QueryCache.hit_count.desc())
+        .limit(10)
+        .all()
+    )
+
+    return {
+        "total_entries": total_entries,
+        "active_entries": active_entries,
+        "total_hits_saved": int(total_hits),
+        "top_cached_queries": [
+            {
+                "query": e.query_text,
+                "hits": e.hit_count,
+                "expires_at": e.expires_at.isoformat() if e.expires_at else None
+            }
+            for e in top_cached
+        ]
+    }
+
+
+@router.delete("/cache")
+def clear_cache(
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Clear all cache entries (force-refresh everything)."""
+    deleted = db.query(QueryCache).delete()
+    db.commit()
+    return {"message": f"Cleared {deleted} cache entries"}

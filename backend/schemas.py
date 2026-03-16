@@ -36,6 +36,35 @@ class CourseProgress(BaseModel):
 
 # Authentication Schemas
 
+# Chat / Intelligence Node Schemas
+
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str
+
+class ChatRequest(BaseModel):
+    message: str
+    history: Optional[List[ChatMessage]] = []
+
+class ChatSource(BaseModel):
+    id: str
+    content: str
+    source: str
+    score: Optional[float] = None
+    media: Optional[List[MediaAsset]] = None
+
+class ChatResponse(BaseModel):
+    answer: str
+    sources: List[ChatSource]
+    cached: bool = False
+    log_id: Optional[int] = None
+
+
+class FeedbackRequest(BaseModel):
+    chat_log_id: int
+    rating: Literal["up", "down"]
+
+
 class UserCreate(BaseModel):
     """Schema for user registration"""
     username: str

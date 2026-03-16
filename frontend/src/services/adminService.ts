@@ -128,5 +128,52 @@ export const adminService = {
 
     async deleteKBFile(filename: string): Promise<void> {
         await api.delete(`/admin/kb/files/${filename}`);
+    },
+
+    async previewKBFile(filename: string): Promise<any> {
+        const response = await api.get(`/admin/kb/files/${encodeURIComponent(filename)}/preview`);
+        return response.data;
+    },
+
+    async getChatLogs(params?: { limit?: number; offset?: number; username?: string }): Promise<any> {
+        const response = await api.get('/admin/chat-logs', { params });
+        return response.data;
+    },
+
+    async getChatLogStats(): Promise<any> {
+        const response = await api.get('/admin/chat-logs/stats');
+        return response.data;
+    },
+
+    async deleteChatLog(logId: number): Promise<void> {
+        await api.delete(`/admin/chat-logs/${logId}`);
+    },
+
+    async getFeedbackStats(): Promise<any> {
+        const response = await api.get('/admin/feedback/stats');
+        return response.data;
+    },
+
+    async getCacheStats(): Promise<any> {
+        const response = await api.get('/admin/cache/stats');
+        return response.data;
+    },
+
+    async clearCache(): Promise<void> {
+        await api.delete('/admin/cache');
+    },
+
+    async downloadKBFile(filename: string): Promise<void> {
+        const response = await api.get(`/admin/kb/files/${encodeURIComponent(filename)}/download`, {
+            responseType: 'blob'
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
     }
 };

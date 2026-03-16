@@ -63,7 +63,7 @@ class RAGEngine:
         
         print(f"✅ Ingested {len(documents)} documents into ChromaDB")
     
-    def search(self, query: str, n_results: int = 5) -> List[Dict]:
+    def search(self, query: str, n_results: int = 8) -> List[Dict]:
         """
         Semantic search over the knowledge base.
         
@@ -84,11 +84,12 @@ class RAGEngine:
         
         if results['documents'] and results['documents'][0]:
             for i, doc in enumerate(results['documents'][0]):
+                raw_score = 1.0 - results['distances'][0][i] if results['distances'] else None
                 result = {
                     'id': results['ids'][0][i],
                     'content': doc,
                     'source': results['metadatas'][0][i].get('source', 'unknown'),
-                    'score': 1.0 - results['distances'][0][i] if results['distances'] else None
+                    'score': max(0.0, raw_score) if raw_score is not None else None
                 }
                 formatted_results.append(result)
         

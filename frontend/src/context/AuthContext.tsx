@@ -75,6 +75,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = () => {
     console.log('AuthProvider: logging out');
+    // Remove the old shared chat history key (pre-namespacing) if it exists
+    localStorage.removeItem('icad_chatbot_history');
     authService.logout();
     setUser(null);
   };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Activity, Users, BarChart3, Brain } from 'lucide-react';
+import { Shield, Activity, Users, BarChart3, Brain, MessageSquare } from 'lucide-react';
 import { User } from '../../../services/authService';
 import { AdminTab } from '../AdminMode';
 
@@ -27,6 +27,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
                     { id: 'users', icon: Users, label: 'Users' },
                     { id: 'progress', icon: BarChart3, label: 'Performance' },
                     { id: 'intelligence', icon: Brain, label: 'Intelligence' },
+                    { id: 'chatbot', icon: MessageSquare, label: 'AI Chatbot' },
                     { id: 'logs', icon: Shield, label: 'Audit Logs' }
                 ].map((item) => (
                     <button 
