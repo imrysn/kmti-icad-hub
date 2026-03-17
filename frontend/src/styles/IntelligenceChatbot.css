@@ -191,66 +191,178 @@
 
 /* ── Empty state ──────────────────────────────────────────── */
 
-.chat-empty-state {
+/* ── Frontier (New Chat Landing) ──────────────────────────── */
+
+.chat-frontier-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    gap: 0.6rem;
-    padding: 4rem 2rem;
+    padding: 2rem;
     text-align: center;
+    animation: frontierFadeIn 0.8s ease-out;
 }
 
-.chat-empty-state svg {
-    color: var(--color-accent);
-    opacity: 0.5;
-    margin-bottom: 0.5rem;
+@keyframes frontierFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.chat-empty-state p {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 0;
-    letter-spacing: -0.01em;
-}
-
-.chat-empty-state span {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    max-width: 360px;
-}
-
-.suggested-prompts {
+.frontier-header {
+    margin-bottom: 3.5rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-top: 1rem;
-    max-width: 500px;
+    flex-direction: column;
+    align-items: center;
 }
 
-.prompt-chip {
-    background: var(--color-white);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    border-radius: var(--radius-full);
+.frontier-brain-icon {
+    position: relative;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+    animation: floatingIcon 4s ease-in-out infinite;
+}
+
+@keyframes floatingIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.frontier-brain-icon .icon-glow {
+    position: absolute;
+    inset: -15px;
+    background: var(--color-accent);
+    filter: blur(30px);
+    opacity: 0.12;
+    z-index: -1;
+    border-radius: 50%;
+}
+
+.frontier-title {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: var(--color-black, #0f172a);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--color-black, #0f172a), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.frontier-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.6;
+    margin: 0 auto;
+}
+
+.frontier-suggestions-section {
+    width: 100%;
+    max-width: 720px;
+}
+
+.suggestions-category-row {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.8rem;
+}
+
+.suggestion-category-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
     padding: 0.4rem 0.9rem;
-    font-size: 0.78rem;
-    font-weight: 500;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.15s ease;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     box-shadow: var(--shadow-xs);
 }
 
-.prompt-chip:hover {
+.frontier-suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+}
+
+.frontier-prompt-card {
+    background: var(--color-white);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.4rem;
+    text-align: left;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    animation: slideUpFade 0.6s ease-out forwards;
+    box-shadow: var(--shadow-xs);
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.frontier-prompt-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
     border-color: var(--color-accent);
+    background: var(--color-accent-dim, rgba(99, 102, 241, 0.03));
+}
+
+.frontier-prompt-card .prompt-card-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.frontier-prompt-card .prompt-icon {
     color: var(--color-accent);
-    background: var(--color-accent-dim, rgba(99, 102, 241, 0.05));
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.frontier-prompt-card span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.45;
+}
+
+.frontier-footer {
+    margin-top: 5rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+}
+
+@media (max-width: 640px) {
+    .frontier-suggestions-grid {
+        grid-template-columns: 1fr;
+    }
+    .frontier-title {
+        font-size: 1.6rem;
+    }
 }
 
 /* ── Bubbles ──────────────────────────────────────────────── */
