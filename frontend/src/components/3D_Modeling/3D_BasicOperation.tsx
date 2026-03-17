@@ -84,6 +84,8 @@ import resize3_2 from '../../assets/3D_Image_File/basic_operation(5)_resize3_2.j
 // Tabs: Shape Steels
 // ══════════════════════════════════════════════════════════════════════════
 import arrangeMachinePartMenu from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part.jpg';
+
+// dito nako haha
 import arrangeMachinePartWindow from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part_window.jpg';
 import shapeSteelsTypes from '../../assets/3D_Image_File/basic_operation(6)_shape_steels.jpg';
 import shapeSteels1 from '../../assets/3D_Image_File/basic_operation(6)_shape_steels1.jpg';

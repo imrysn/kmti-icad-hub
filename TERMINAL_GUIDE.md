@@ -100,3 +100,10 @@ cd frontend
 rm -rf node_modules
 npm install
 ```
+
+### PowerShell Execution Policy Error
+If you see an error like `File ...npm.ps1 cannot be loaded because running scripts is disabled`, run this command in PowerShell:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+```
+Then try your command again.
