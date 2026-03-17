@@ -23,7 +23,12 @@ function createWindow() {
     // Use app.isPackaged as the reliable production signal instead of NODE_ENV,
     // which leaks DevTools in a packaged build if NODE_ENV=production isn't set.
     if (!app.isPackaged) {
-        mainWindow.loadURL('http://localhost:5173');
+        // Try to load from port 5173, but fallback to 5174 if Vite shifted
+        const devUrl = 'http://localhost:5173';
+        mainWindow.loadURL(devUrl).catch(() => {
+            console.log('Failed to load 5173, trying 5174...');
+            mainWindow.loadURL('http://localhost:5174');
+        });
         mainWindow.webContents.openDevTools();
     } else {
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));

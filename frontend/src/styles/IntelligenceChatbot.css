@@ -186,6 +186,7 @@
     min-height: 0;
     scroll-behavior: smooth;
     background: var(--bg-surface, #f8fafc);
+    position: relative;
 }
 
 /* ── Empty state ──────────────────────────────────────────── */
@@ -574,6 +575,37 @@
     cursor: not-allowed;
 }
 
+.scroll-bottom-btn {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-white);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    cursor: pointer;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+    transition: all 0.2s;
+}
+
+.scroll-bottom-btn:hover {
+    background: var(--bg-surface);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Voice UI & Controls ──────────────────────────────────── */
 
 .chat-input-row {
@@ -956,4 +988,150 @@
 .sessions-list::-webkit-scrollbar-thumb:hover,
 .chat-messages::-webkit-scrollbar-thumb:hover {
     background: var(--color-gray-300, #cbd5e1);
+}
+
+/* ───────────────────────────────────────────────────────────
+   PHASE 2: Performance & UX Enhancements
+   ─────────────────────────────────────────────────────────── */
+
+/* PHASE 2 FIX #2: Retry button styling */
+.retry-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--color-accent, #6366f1);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md, 8px);
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 0.75rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
+}
+
+.retry-btn:hover {
+    background: var(--color-black, #0f172a);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.35);
+}
+
+.retry-btn:active {
+    transform: translateY(0);
+}
+
+/* PHASE 2 FIX #4: Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Enhanced focus indicators for keyboard navigation */
+.session-item:focus-visible,
+.prompt-chip:focus-visible,
+.feedback-btn:focus-visible,
+.new-chat-btn:focus-visible,
+.retry-btn:focus-visible {
+    outline: 2px solid var(--color-accent, #6366f1);
+    outline-offset: 2px;
+}
+
+.chat-input:focus-visible,
+.voice-lang-select:focus-visible {
+    outline: none; /* Parent box already has focus ring */
+}
+
+/* Improved button hover states for better UX */
+button:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Performance: Reduced motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+/* ───────────────────────────────────────────────────────────
+   PHASE 4: Advanced Features
+   ─────────────────────────────────────────────────────────── */
+
+.citation-marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--color-accent, #6366f1);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 4px;
+    padding: 0 4px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    margin-left: 2px;
+    vertical-align: super;
+    cursor: help;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.citation-marker:hover {
+    background: var(--color-accent, #6366f1);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+}
+
+.branch-btn:hover {
+    color: #10b981 !important; /* Emerald-500 */
+    background: rgba(16, 185, 129, 0.08) !important;
+    border-color: #10b981 !important;
+}
+
+.thinking span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent, #6366f1);
+    margin: 0 2px;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.thinking span:nth-child(1) { animation-delay: -0.32s; }
+.thinking span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+/* Inline thinking dots for streaming */
+.bubble-content.thinking.inline {
+    display: inline-flex;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    margin-top: 4px;
+    margin-left: 8px;
+}
+
+.bubble-content.thinking.inline span {
+    width: 6px;
+    height: 6px;
+    background: var(--text-muted, #94a3b8);
 }

@@ -52,6 +52,15 @@ class ChatRequest(BaseModel):
     session_id: Optional[str] = None
     images: Optional[List[ImagePayload]] = [] # Support up to 3 images
     language: Optional[str] = "en-US"
+    is_regeneration: Optional[bool] = False # PHASE 3: Flag to bypass cache and vary response
+    
+    # PHASE 1 FIX #5: Backend validation for image upload limit
+    @field_validator("images")
+    @classmethod
+    def validate_image_limit(cls, v: Optional[List[ImagePayload]]) -> Optional[List[ImagePayload]]:
+        if v and len(v) > 3:
+            raise ValueError("Maximum 3 images allowed per request")
+        return v
 
 class ChatSource(BaseModel):
     id: str
@@ -65,11 +74,13 @@ class ChatResponse(BaseModel):
     sources: List[ChatSource]
     cached: bool = False
     log_id: Optional[int] = None
+    suggestions: Optional[List[str]] = None  # PHASE 3: Smart follow-up suggestions
 
 
+# PHASE 1 FIX #2: Updated feedback to accept null rating
 class FeedbackRequest(BaseModel):
     chat_log_id: int
-    rating: Literal["up", "down"]
+    rating: Optional[Literal["up", "down"]] = None  # Allow null for deletion
 
 
 class UserCreate(BaseModel):
@@ -150,4 +161,3 @@ class UserResponse(BaseModel):
     
     class Config:
         from_attributes = True
-

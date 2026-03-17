@@ -3,10 +3,10 @@
     "version": "1.0.0",
     "main": "electron/main.js",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --port 5173 --strictPort",
         "build": "vite build",
         "preview": "vite preview",
-        "electron:dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\""
+        "electron:dev": "concurrently \"vite --port 5173 --strictPort\" \"wait-on tcp:5173 && electron .\""
     },
     "dependencies": {
         "@types/three": "^0.182.0",

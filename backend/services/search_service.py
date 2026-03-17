@@ -77,9 +77,16 @@ class ChatService:
     def __init__(self, search: SearchService):
         self.search = search
 
-    def _make_cache_key(self, message: str, language: str) -> str:
-        """SHA-256 of lowercased, stripped message + language code."""
-        normalized = f"{language.lower()}:{message.strip().lower()}"
+    def _make_cache_key(self, message: str, language: str, images: List[dict] = None) -> str:
+        """SHA-256 of lowercased, stripped message + language code + image hashes."""
+        img_hashes = ""
+        if images:
+            for img in images:
+                # Hash the base64 data to ensure unique keys for different images
+                img_hash = hashlib.md5(img["data"].encode('utf-8')).hexdigest()
+                img_hashes += f":img{img_hash}"
+        
+        normalized = f"{language.lower()}:{message.strip().lower()}{img_hashes}"
         return hashlib.sha256(normalized.encode('utf-8')).hexdigest()
 
     def _get_cache(self, query_hash: str) -> Optional[dict]:
@@ -95,7 +102,12 @@ class ChatService:
                     entry.hit_count += 1
                     db.commit()
                     sources = json.loads(entry.sources_json) if entry.sources_json else []
-                    return {"answer": entry.answer, "sources": sources, "cached": True}
+                    return {
+                        "answer": entry.answer,
+                        "sources": sources,
+                        "cached": True,
+                        "suggestions": []  # PHASE 3: Cached responses don't include suggestions (performance)
+                    }
         except Exception as e:
             print(f"[Cache] Read error: {e}")
         return None
@@ -124,19 +136,15 @@ class ChatService:
         except Exception as e:
             print(f"[Cache] Write error: {e}")
     async def chat(self, message: str, history: List[ChatMessage] = None, session_id: str = None, 
-                   images: List[dict] = None, language: str = "en-US") -> dict:
+                   images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False) -> dict:
         """
         RAG-grounded chat.
-        1. Check query cache — return instantly if hit.
-        2. Retrieve relevant context from ChromaDB.
-        3. Call Gemini, cache result, return.
         """
-        # Step 1: Cache check (only for standalone queries, not mid-conversation)
-        query_hash = self._make_cache_key(message, language)
-        if not history:  # Only cache first-turn queries
+        # Step 1: Cache check
+        query_hash = self._make_cache_key(message, language, images)
+        if not history and not is_regeneration:
             cached = self._get_cache(query_hash)
             if cached:
-                print(f"[Cache] HIT for: {message[:60]}")
                 return cached
 
         # Step 2: Retrieve context
@@ -145,63 +153,230 @@ class ChatService:
 
         if not sources:
             return {
-                "answer": "I couldn't find any relevant information in the knowledge base for your question. Try re-indexing or uploading related files.",
+                "answer": "I couldn't find any relevant information in the knowledge base for your question.",
                 "sources": [],
-                "cached": False
+                "cached": False,
+                "suggestions": []
             }
 
-        # Step 3: Build Context Text & Prompts
+        # Step 3: Prune History & Build Context
+        pruned_history = self._prune_history(history or [])
         context_text = "\n\n".join([f"[{idx+1}] Source: {s.source}\nContent: {s.content}" for idx, s in enumerate(sources[:5])])
         
         history_text = ""
-        if history:
+        if pruned_history:
             history_text = "Recent conversation flow:\n"
-            for turn in history[-6:]: # Keep last 3 turns
+            for turn in pruned_history:
                 role_label = "User" if turn.role == "user" else "Assistant"
                 history_text += f"{role_label}: {turn.content}\n"
 
-        # Step 4: Full prompt
-        lang_map = {
-            "en-US": "ENGLISH",
-            "ja-JP": "JAPANESE",
-            "fil-PH": "FILIPINO (TAGALOG)"
-        }
+        lang_map = {"en-US": "ENGLISH", "ja-JP": "JAPANESE", "fil-PH": "FILIPINO (TAGALOG)"}
         target_lang = lang_map.get(language, "ENGLISH")
 
+        regeneration_instruction = ""
+        if is_regeneration:
+            regeneration_instruction = "\n\nCRITICAL: This is a REGENERATION request. Provide a DIFFERENT approach/explanation."
+
         system_prompt = (
-            "You are the iCAD Intelligence Node — an expert AI training assistant for the KMTI iCAD system. "
-            "Your role is to provide technically precise, RAG-grounded guidance based ONLY on the provided context.\n\n"
+            "You are the iCAD Intelligence Node. Answer ONLY based on the provided context.\n\n"
             "STRICT GUIDELINES:\n"
-            "1. GROUNDED: Answer based strictly on the provided context. If the information is not present, explicitly state: 'I couldn't find specific information on this topic in the knowledge base.'\n"
-            "2. STRUCTURE: Use Markdown for clarity. Use bold for key terms, lists for procedures, and code blocks for technical parameters or commands.\n"
-            "3. EXPANSION: Explain the 'why' behind technical steps if mentioned in context to help the user learn.\n"
-            "4. SUGGESTIONS: Conclude naturally by mentioning 1-2 related iCAD concepts the user might want to explore next (e.g., 'To learn more, you could look into X or Y'). Do not use a bullet list for this.\n"
-            "5. NO FABRICATION: Do not hallucinate URLs, part numbers, or procedures not found in the documents.\n"
-            f"6. LANGUAGE: YOU MUST RESPOND IN {target_lang}. Even if the user asks in a different language, your reply must be in {target_lang}."
+            "1. GROUNDED: Use ONLY provided context. If missing, say you don't know.\n"
+            "2. CITATIONS: Use [1], [2], etc. immediately after sentences that use info from a source. Match the indices from the context.\n"
+            "3. STRUCTURE: Use Markdown. Bold key terms.\n"
+            "4. SUGGESTIONS: Mention 1-2 related concepts at the end naturally.\n"
+            f"5. LANGUAGE: Respond in {target_lang}."
+            f"{regeneration_instruction}"
         )
 
-        user_prompt = (
-            f"Context from knowledge base:\n{context_text}\n\n"
-            f"{history_text}"
-            f"User: {message}\n\nAssistant:"
-        )
+        user_prompt = f"Context:\n{context_text}\n\n{history_text}User: {message}\n\nAssistant:"
 
-        # Step 5: Call Gemini, fall back to extractive summary
+        # Step 5: Call Gemini
         answer = self._call_gemini(system_prompt, user_prompt, images)
         if answer is None:
             answer = self._fallback_summary(message, sources)
 
         serialized_sources = [s.model_dump() for s in sources[:5]]
 
-        # Step 6: Write to cache (only standalone queries without history)
-        if not history and answer:
+        if not history and not is_regeneration and answer:
             self._set_cache(query_hash, message, answer, serialized_sources)
+
+        suggestions = self._generate_suggestions(message, answer, context_text) if answer else []
 
         return {
             "answer": answer,
             "sources": serialized_sources,
-            "cached": False
+            "cached": False,
+            "suggestions": suggestions
         }
+
+    async def chat_stream(self, message: str, history: List[ChatMessage] = None, 
+                          images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False):
+        """
+        Streaming version of chat. Yields dictionary chunks.
+        """
+        # Step 1: Retrieve context
+        print(f"[chat_stream] Starting search for: {message[:50]}...")
+        try:
+            search_response = self.search.search_knowledge_base(message)
+            sources = search_response.results
+            serialized_sources = [s.model_dump() for s in sources[:5]]
+            print(f"[chat_stream] Search complete. Found {len(sources)} sources.")
+        except Exception as e:
+            print(f"[chat_stream] Search error: {e}")
+            yield {"type": "content", "delta": f"\n\n(Error during knowledge search: {str(e)})"}
+            return
+
+        if not sources:
+            print("[chat_stream] No sources found.")
+            yield {"type": "content", "delta": "I couldn't find any relevant information in the knowledge base."}
+            yield {"type": "end", "sources": [], "suggestions": []}
+            return
+
+        # Step 2: Prune History & Build Context
+        pruned_history = self._prune_history(history or [])
+        context_text = "\n\n".join([f"[{idx+1}] Source: {s.source}\nContent: {s.content}" for idx, s in enumerate(sources[:5])])
+        
+        history_text = ""
+        if pruned_history:
+            history_text = "Recent conversation flow:\n"
+            for turn in pruned_history:
+                role_label = "User" if turn.role == "user" else "Assistant"
+                history_text += f"{role_label}: {turn.content}\n"
+
+        lang_map = {"en-US": "ENGLISH", "ja-JP": "JAPANESE", "fil-PH": "FILIPINO (TAGALOG)"}
+        target_lang = lang_map.get(language, "ENGLISH")
+
+        regeneration_instruction = ""
+        if is_regeneration:
+            regeneration_instruction = "\n\nCRITICAL: This is a REGENERATION request. Provide a DIFFERENT approach/explanation."
+
+        system_prompt = (
+            "You are the iCAD Intelligence Node. Answer ONLY based on the provided context.\n"
+            "STRICT GUIDELINES:\n"
+            "1. GROUNDED: Use ONLY provided context.\n"
+            "2. CITATIONS: Use [1], [2], etc. immediately after sentences. Match the context indices.\n"
+            "3. STRUCTURE: Use Markdown.\n"
+            f"4. LANGUAGE: Respond in {target_lang}."
+            f"{regeneration_instruction}"
+        )
+
+        user_prompt = f"Context:\n{context_text}\n\n{history_text}User: {message}\n\nAssistant:"
+
+        # Step 3: Async Stream from Gemini
+        full_answer = ""
+        try:
+            from google import genai
+            from google.genai import types
+            
+            client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+            
+            # List of models confirmed to exist in this environment (March 2026)
+            env_model = os.getenv("GEMINI_MODEL")
+            models_to_try = [m for m in [
+                env_model, 
+                "models/gemini-2.5-flash", 
+                "models/gemini-2.5-pro",
+                "models/gemini-3.1-flash-lite-preview",
+                "models/gemini-3-flash-preview",
+                "models/gemini-2.0-flash",
+                "gemini-1.5-flash" # Last resort
+            ] if m]
+            
+            response_stream = None
+            last_err = None
+            
+            for m_id in models_to_try:
+                try:
+                    print(f"[chat_stream] Trying Gemini model: {m_id}")
+                    # Prepare parts including images for this attempt
+                    parts = [types.Part.from_text(text=user_prompt)]
+                    if images:
+                        for img in images:
+                            parts.append(types.Part.from_bytes(data=img["data"], mime_type=img["mime"]))
+                    
+                    contents = [types.Content(role="user", parts=parts)]
+
+                    response_stream = await client.aio.models.generate_content_stream(
+                        model=m_id,
+                        contents=contents,
+                        config=types.GenerateContentConfig(
+                            system_instruction=system_prompt,
+                            temperature=0.7,
+                        )
+                    )
+                    # If we get here without exception, we tentatively have a stream
+                    # But the exception might happen during iteration. We check the first chunk if possible.
+                    break 
+                except Exception as e:
+                    print(f"[chat_stream] Model {m_id} failed: {e}")
+                    last_err = e
+                    continue
+
+            if not response_stream:
+                raise last_err or Exception("All Gemini models failed")
+
+            print("[chat_stream] Awaiting Gemini stream chunks...")
+            async for chunk in response_stream:
+                if chunk.text:
+                    full_answer += chunk.text
+                    yield {"type": "content", "delta": chunk.text}
+            
+            print(f"[chat_stream] Gemini stream finished. Total content length: {len(full_answer)}")
+
+        except Exception as e:
+            print(f"[Streaming] Error: {e}")
+            yield {"type": "content", "delta": "\n\n(Connection error during streaming. Please retry.)"}
+
+        # Step 4: Final metadata
+        suggestions = self._generate_suggestions(message, full_answer, context_text) if full_answer else []
+        yield {
+            "type": "end", 
+            "full_answer": full_answer,
+            "sources": serialized_sources, 
+            "suggestions": suggestions
+        }
+
+    def _prune_history(self, history: List[ChatMessage], limit: int = 10) -> List[ChatMessage]:
+        """Keep only the most recent N messages for context to prevent token bloat."""
+        if not history:
+            return []
+        return history[-limit:]
+
+    def _generate_suggestions(self, query: str, answer: str, context: str) -> List[str]:
+        """
+        PHASE 3 FEATURE #3: Generate 3 contextual follow-up questions using Gemini.
+        This runs as a separate lightweight call after the main answer.
+        """
+        system_prompt = (
+            "You are a learning assistant for iCAD technical training. "
+            "Based on the user's question and the answer they received, suggest 3 natural follow-up questions "
+            "that would help them deepen their understanding or explore related concepts. "
+            "Each question should be:\n"
+            "- 8-15 words long\n"
+            "- Conversational and specific\n"
+            "- Directly related to the topic\n"
+            "- Actionable (user can ask it immediately)\n\n"
+            "Return ONLY the 3 questions, one per line, no numbering or bullets."
+        )
+        
+        user_prompt = (
+            f"User asked: {query}\n\n"
+            f"They learned: {answer[:400]}...\n\n"
+            f"Context available in knowledge base:\n{context[:300]}...\n\n"
+            "What 3 follow-up questions would help them learn more about this topic or related iCAD concepts?"
+        )
+        
+        try:
+            response = self._call_gemini(system_prompt, user_prompt)
+            if response:
+                # Parse lines, clean up, filter empty, limit to 3
+                lines = [line.strip().strip('-•123456789.') for line in response.strip().split('\n')]
+                suggestions = [line for line in lines if line and len(line) > 10][:3]
+                return suggestions if len(suggestions) == 3 else []
+        except Exception as e:
+            print(f"[Suggestions] Generation error: {e}")
+        
+        return []
 
     def _call_gemini(self, system_prompt: str, user_prompt: str, images: List[dict] = None) -> Optional[str]:
         """Call Google Gemini API with retry on 429. Returns None if key is missing or all retries fail."""
