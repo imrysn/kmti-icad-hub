@@ -26,18 +26,6 @@ interface PartLessonProps {
   onNextLesson?: () => void;
 }
 
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNextLesson }) => {
   const isPart1 = subLessonId === '3d-part-1';
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -92,8 +80,8 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -102,7 +90,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
         <h3 className="section-title">{isPart1 ? 'CREATING 3D PART' : 'CHANGE 3D PART NAME'}</h3>
         <p className="p-flush">
           {isPart1
-            ? 'Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Design.'
+            ? 'Tool use to name 3D parts and provide information.3D part name must always be set since it is a vital part for the 2D Design.'
             : 'Tool use to Changes 3D part names, drawing names (of external 3D parts), and comments.'}
         </p>
         <div className="instruction-box">
@@ -180,13 +168,13 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                 </div>
 
                 <div className="section-divider"></div>
-                
+
                 <div className={getStepClass('create-5')} onClick={() => toggleStep('create-5')}>
                   <div className="step-header">
                     <span className={`step-number ${completedSteps.has('create-5') ? 'completed' : ''}`}>
                       {completedSteps.has('create-5') ? <CheckCircle2 size={16} /> : <Info size={16} />}
                     </span>
-                    <span className="step-label">Material & Plate Thickness Description</span>
+                    <span className="step-label">Material Description</span>
                   </div>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={materialDescriptionImg} alt="Material Description and Plate Thickness" className="software-screenshot screenshot-wide" />
@@ -194,9 +182,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                 </div>
 
                 <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Consistency">
-                    Always double-check your material properties and thickness! The 3D attributes set here flow directly into 2D design calculations and bills of materials.
-                  </ProTip>
+
                 </div>
               </div>
             ) : (
@@ -259,9 +245,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                 </div>
 
                 <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Stay Synchronized">
-                    When renaming parts, almost always say YES to syncing with the 2D Part Name unless you have a very specific workflow reason. Re-syncing manually later can cause broken links!
-                  </ProTip>
+
                 </div>
               </div>
             )}

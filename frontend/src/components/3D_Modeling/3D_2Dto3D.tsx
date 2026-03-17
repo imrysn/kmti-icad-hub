@@ -29,19 +29,6 @@ import spiralRotation1 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_ax
 import spiralRotation from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation.jpg';
 import spiralRotation2 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation2.jpg';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 /* ── 2D > 3D (1) ── */
 const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'workPlane'>('workPlane');

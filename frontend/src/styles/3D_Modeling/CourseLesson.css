@@ -466,6 +466,12 @@
   gap: 1.5rem;
 }
 
+.flex-row--top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
 .flex-row-center {
   display: flex;
   align-items: center;

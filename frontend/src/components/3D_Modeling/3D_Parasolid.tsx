@@ -5,25 +5,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, FileDown, Info, CheckCircle2 } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Info size={20} />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <div className="pro-tip-text">{children}</div>
-    </div>
-  </div>
-);
-
 // Assets
 import importIcon from '../../assets/3D_Image_File/parasolid_import.jpg';
 import linkDialogImg from '../../assets/3D_Image_File/parasolid_link_dialog.jpg';
 import nameChangeDialogImg from '../../assets/3D_Image_File/name_change_dialog.jpg';
 import savePartImg from '../../assets/3D_Image_File/save-the-part-parasolid.jpg';
-import otherInfoImg from '../../assets/3D_Image_File/other-info-parasolid..jpg';
+import otherInfoImg from '../../assets/3D_Image_File/other-info-parasolid.jpg';
 import loadingParasolidImg from '../../assets/3D_Image_File/loading_parasolid.jpg';
 import parasolid43Img from '../../assets/3D_Image_File/parasolid4.3.jpg';
 import lightenBrepIcon from '../../assets/3D_Image_File/lighten_brep_solid.jpg';
@@ -89,20 +76,21 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
-          <FileDown size={28} className="lesson-intro-icon" /> 
+          <FileDown size={28} className="lesson-intro-icon" />
           {isPart1 ? 'LOADING OF PARASOLID' : 'PARASOLID EXPORT & EDIT'}
         </h3>
         <p className="p-flush">
           {isPart1
             ? 'Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.'
             : 'Advanced options for exporting and editing B-Rep solids.'}
+
         </p>
         {isPart1 && (
           <div className="instruction-box">
@@ -142,7 +130,8 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Browse Files</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">The Parasolid Link dialog box will appear. Browse for the parasolid files to be imported.</p>
+                  <p className="p-flush">The Parasolid Link dialog box will appear.</p>
+                  <p className="p-flush">User will be able to browse folders which contain parasolid files to be imported on iCAD</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
                   </div>
@@ -157,22 +146,20 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Handle Name Change</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">Press OK after selecting the file. When the Name Change dialog appears, pick <strong>Cancel</strong>.</p>
-                  <p className="p-flush" style={{ marginTop: '0.75rem', color: 'var(--text-muted)' }}>All Part names must be release on the tree view.</p>
+                  <p className="p-flush">Press OK after selecting the parasolid file &gt; GO</p>
+                  <p className="p-flush">The Name Change dialog box will appear &gt; Pick Cancel</p>
+                  <p className="p-flush">All Part names of purchase parts must be release on the tree view.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
 
-              <ProTip title="Pro Tip: Importing Standards">
-                When importing purchased parts, canceling the name change ensures the original manufacturer codes are preserved in the tree view, aiding future reference.
-              </ProTip>
             </div>
           ) : (
             <div className="lesson-content fade-in">
               <h3 className="section-title">4.) LIGHTEN B-REP SOLID</h3>
-              <p className="p-flush">Use this tool to lighten up the file size.</p>
+              <p className="p-flush" style={{ marginBottom: '1rem' }}>Use this tool to lighten up the file size.</p>
 
               <div className={getStepClass('p2-1')} onClick={() => toggleStep('p2-1')}>
                 <div className="step-header">
@@ -197,7 +184,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Set Form Mode</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">In the dialog box, select <strong>No form changes</strong> &gt; OK.</p>
+                  <p className="p-flush">A dialog box will appear. Select No form changes &gt; OK</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
                   </div>
@@ -213,7 +200,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
                   <div className="flex-row-center" style={{ gap: '1rem' }}>
-                    <p className="p-flush">Select the purchase part.</p>
+                    <p className="p-flush">Select the purchase part &gt; GO</p>
                     <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
                   </div>
                   <p className="p-flush" style={{ marginTop: '1rem' }}>Check the message pane to confirm success.</p>
@@ -234,8 +221,8 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
               <div className="instruction-step" style={{ marginTop: '1rem', paddingLeft: '2.5rem' }}>
                 <div className="interaction-list--plain">
                   <p className="p-flush"><strong>1.)</strong> Right-click the Top 3D Part on the tree view</p>
-                  <p className="p-flush"><strong>2.)</strong> Select Properties.</p>
-                  <p className="p-flush"><strong>3.)</strong> Enter the comment &gt; Press OK</p>
+                  <p className="p-flush"><strong>2.)</strong> Select Properties. The Property dialog box will appear.</p>
+                  <p className="p-flush"><strong>3.)</strong> Enter the comment for the specific part &gt; Press OK</p>
                 </div>
                 <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
                   <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
@@ -245,9 +232,6 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
               </div>
 
-              <ProTip title="Data Management">
-                  Reducing file size with the Lighten B-rep tool is vital for large assemblies. It keeps your ICAD workspace responsive and reduces server storage strain.
-              </ProTip>
             </div>
           )}
 

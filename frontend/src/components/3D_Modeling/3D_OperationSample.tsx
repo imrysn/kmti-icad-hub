@@ -5,19 +5,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Play, Box as BoxIcon, Info, CheckCircle2 } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Info size={20} />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <div className="pro-tip-text">{children}</div>
-    </div>
-  </div>
-);
-
 // Shared Assets
 import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 import centerTool from '../../assets/3D_Image_File/center_tool.jpg';
@@ -65,10 +52,10 @@ import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.jpg';
 import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.jpg';
 import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segmet_a.jpg';
 import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segmet_b.jpg';
-import cylinderTool from '../../assets/3D_Image_File/basic_operation(1)_arrange_cylinder.jpg';
 import unionTool from '../../assets/3D_Image_File/boolean(1)_union.jpg';
 
 // Operation Sample (4) Assets
+import mainDrawing4 from '../../assets/3D_Image_File/operation_sample(3).jpg';
 import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.jpg';
 import sketchImg from '../../assets/3D_Image_File/operation_sample4_revolving.jpg';
 import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.jpg';
@@ -143,38 +130,38 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title"><Play size={28} className="lesson-intro-icon" /> {
-          isSample1 ? 'OPERATION SAMPLE (1)' : 
-          isSample2 ? 'OPERATION SAMPLE (2)' : 
-          isSample3 ? 'OPERATION SAMPLE (3)' :
-          isSample4 ? 'OPERATION SAMPLE (4)' :
-          'OPERATION SAMPLE (5)'
+          isSample1 ? 'OPERATION SAMPLE (1)' :
+            isSample2 ? 'OPERATION SAMPLE (2)' :
+              isSample3 ? 'OPERATION SAMPLE (3)' :
+                isSample4 ? 'OPERATION SAMPLE (4)' :
+                  'OPERATION SAMPLE (5)'
         }</h3>
-        <p className="p-flush">
-          Practical exercises for applying 3D modeling tools in building machine parts.
-        </p>
+
         {isSample1 ? (
           <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
-            <h4 className="section-title">SAMPLES OF 3D MODELING OF PARTS</h4>
             <div className="image-wrapper-flush">
-              <img src={mainDrawing} alt="3D Modeling Samples" className="software-screenshot screenshot-large" />
+              <img src={mainDrawing} alt="3D Modeling Samples" className="software-screenshot screenshot-wide" />
             </div>
           </div>
         ) : isSample2 ? (
           <p className="p-flush">
-            This section covers additional modeling operations, including detailed hole creation, finishing edges, and component management.
           </p>
         ) : (
           <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
             <h4 className="section-title">3D Modeling Using 2D Sketch, Key Groove, Retainer Ring Groove</h4>
             <div className="image-wrapper-flush">
-              <img src={mainDrawing3} alt="Sample 3 Technical Drawing" className="software-screenshot screenshot-large" />
+              <img
+                src={isSample4 ? mainDrawing4 : mainDrawing3}
+                alt={isSample4 ? "Sample 4 Technical Drawing" : "Sample 3 Technical Drawing"}
+                className="software-screenshot screenshot-wide"
+              />
             </div>
             <p className="p-flush" style={{ marginTop: '1rem' }}>Let us try this drawing for example:</p>
           </div>
@@ -194,7 +181,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('s1-1') ? 'completed' : ''}`}>
                       {completedSteps.has('s1-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Open new drawing</span>
+                    <span className="step-label">Open a new drawing</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <p className="p-flush">Go to <strong className="text-highlight">File &gt; New</strong></p>
@@ -260,7 +247,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                         <img src={centerTool} alt="Center Tool" className="software-screenshot screenshot-click--inline" />
                       </div>
                       <div className="flex-row-center" style={{ gap: '1rem', marginTop: '0.5rem' }}>
-                        <p className="p-flush">Left-click on the selected point &gt;</p>
+                        <p className="p-flush">Left-click on the selected point &gt; GO</p>
                         <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click--inline" />
                       </div>
                     </div>
@@ -297,13 +284,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Accuracy Check">
-                  Always use the drawing number as the file name to stay organized and ensure traceability across the KEMCO project database.
-                </ProTip>
               </div>
             ) : subLessonId === 'op-sample-2' ? (
               <div className="tab-pane">
-                <h4 className="section-title">PROCEDURE FOR SAMPLES OF 3D MODELING OF PARTS</h4>
+                <h4 className="section-title">SAMPLES OF 3D MODELING OF PARTS</h4>
 
                 {/* STEP 6 */}
                 <div className={getStepClass('s2-6')} onClick={() => toggleStep('s2-6')}>
@@ -317,18 +301,18 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     <div className="step-description" style={{ flex: 1 }}>
                       <p className="p-flush"><strong>Arrange Box</strong></p>
                       <ul className="interaction-list">
-                        <li>INPUT: Depth = <strong className="text-highlight">16mm</strong></li>
+                        <p className="p-flush"><strong>INPUT:</strong></p>
+                        <li>Depth = <strong className="text-highlight">16mm</strong></li>
                         <li>Width = <strong className="text-highlight">14mm</strong></li>
                         <li>Height = <strong className="text-highlight">38mm</strong></li>
                       </ul>
                       <p className="p-flush">Position the tool entity on the location to be cut.</p>
                       <div className="flex-row-center" style={{ gap: '1rem', marginTop: '1rem' }}>
                         <p className="p-flush">Use subtract to create the [Hole]</p>
-                        <img src={subtractTool} alt="Subtract Tool" className="software-screenshot screenshot-click--inline" />
                       </div>
                     </div>
                     <div className="image-wrapper-flush">
-                      <img src={subtractResult} alt="Subtract Result" className="software-screenshot screenshot-medium" />
+                      <img src={subtractResult} alt="Subtract Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
@@ -344,16 +328,15 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <div className="flex-row-center--wrap" style={{ gap: '2rem', alignItems: 'flex-start', paddingLeft: '2.5rem' }}>
                     <div className="step-description" style={{ flex: 1 }}>
                       <div className="flex-row-center" style={{ gap: '1rem', marginBottom: '1rem' }}>
-                        <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-medium" />
+                        <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" />
                       </div>
-                      <p className="p-flush">Set <strong className="text-highlight">Radius = 7mm</strong></p>
+                      <p className="p-flush">Set Radius = <strong className="text-highlight"> 7mm</strong></p>
                       <div className="flex-row-center" style={{ gap: '1rem', marginTop: '1rem' }}>
-                        <p className="p-flush">Pick all the edges to be filleted &gt;</p>
-                        <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click--inline" />
+                        <p className="p-flush">Pick all the edges to be filleted &gt; GO</p>
                       </div>
                     </div>
                     <div className="image-wrapper-flush">
-                      <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" />
+                      <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
@@ -369,12 +352,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <div className="flex-row-center--wrap" style={{ gap: '2rem', alignItems: 'flex-start', paddingLeft: '2.5rem' }}>
                     <div className="step-description" style={{ flex: 1 }}>
                       <div className="flex-row-center" style={{ gap: '1rem', marginBottom: '1rem' }}>
-                        <img src={copyTool} alt="Copy Tool" className="software-screenshot screenshot-medium" />
+                        <img src={copyTool} alt="Copy Tool" className="software-screenshot screenshot-small" />
                       </div>
                       <p className="p-flush">Select component and position appropriately.</p>
                     </div>
                     <div className="image-wrapper-flush">
-                      <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-medium" />
+                      <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
@@ -390,9 +373,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <div className="flex-row-center--wrap" style={{ gap: '2rem', alignItems: 'flex-start', paddingLeft: '2.5rem' }}>
                     <div className="step-description" style={{ flex: 1 }}>
                       <div className="flex-row-center" style={{ gap: '1rem', marginBottom: '1rem' }}>
-                        <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-medium" />
+                        <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" />
                       </div>
-                      <p className="p-flush">Set <strong className="text-highlight">Chamfer Length = 20mm</strong></p>
+                      <p className="p-flush">Set Chamfer Length = <strong className="text-highlight">20mm</strong></p>
                       <div className="flex-row-center" style={{ gap: '1rem', marginTop: '1rem' }}>
                         <p className="p-flush">Select all edges to be chamfered &gt;</p>
                         <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click--inline" />
@@ -415,7 +398,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <div className="flex-row-center--wrap" style={{ gap: '2rem', alignItems: 'flex-start', paddingLeft: '2.5rem' }}>
                     <div className="step-description" style={{ flex: 1 }}>
                       <div className="flex-row-center" style={{ gap: '1rem', marginBottom: '1rem' }}>
-                        <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-medium" />
+                        <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" />
                       </div>
                       <div className="flex-row-center" style={{ gap: '1rem' }}>
                         <p className="p-flush">Select the entity &gt;</p>
@@ -438,12 +421,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     <span className="step-label">Check properties of Top 3D Part</span>
                   </div>
                   <div className="flex-row-center--wrap" style={{ gap: '2rem', paddingLeft: '2.5rem' }}>
-                    <div className="step-description" style={{ flex: 1 }}>
-                      <ul className="interaction-list">
-                        <li>Delete [Name]</li>
-                        <li>Add Comment</li>
-                      </ul>
-                    </div>
+
+
                     <div className="image-wrapper-flush">
                       <img src={propertiesWindow} alt="Properties Window" className="software-screenshot screenshot-large" />
                     </div>
@@ -459,9 +438,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     <span className="step-label">Set necessary infos (Material, Layer, Color)</span>
                   </div>
                   <div className="flex-row-center--wrap" style={{ gap: '2rem', paddingLeft: '2.5rem' }}>
-                    <div className="image-wrapper-flush" style={{ flex: 1 }}>
-                      <img src={materialSettings} alt="Material Settings" className="software-screenshot screenshot-large" />
-                    </div>
+
                     <div className="image-wrapper-flush">
                       <img src={layerInfo} alt="Layer Information" className="software-screenshot screenshot-small" />
                     </div>
@@ -478,13 +455,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                   <div className="flex-row-center" style={{ gap: '1rem', paddingLeft: '2.5rem' }}>
                     <p className="p-flush">Go to <strong className="text-highlight">File &gt; Save</strong></p>
-                    <img src={fileMenu} alt="File Menu" className="software-screenshot screenshot-click--inline" />
+
                   </div>
                 </div>
 
-                <ProTip title="Did you know?">
-                  Filleting edges isn't just for looks; it reduces stress concentrations in real machine parts, preventing cracks during operation.
-                </ProTip>
               </div>
             ) : isSample3 ? (
               <div className="tab-pane">
@@ -520,17 +494,15 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     </div>
                   </div>
 
-                  <div className="flex-row--top" style={{ marginTop: '3rem', gap: '4rem', padding: '0 1rem', paddingLeft: '2.5rem' }}>
+                  <div className="flex-row" style={{ marginTop: '3rem', gap: '4rem', padding: '0 1rem', paddingLeft: '2.5rem' }}>
                     {/* SEGMENT A */}
                     <div style={{ flex: 1, minWidth: '300px' }}>
                       <h4 className="section-title" style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>SEGMENT A</h4>
                       <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start', marginBottom: '1rem' }}>
                         <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong></p>
-                        <img src={cylinderTool} alt="Cylinder Tool" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
                       </div>
                       <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start', marginBottom: '1rem' }}>
                         <p className="p-flush">Create 3 cylinders to make the retainer ring groove &gt; <strong className="text-highlight">[UNION]</strong></p>
-                        <img src={unionTool} alt="Union Tool" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
                       </div>
                       <ul className="interaction-list--plain" style={{ marginLeft: '1.5rem', marginBottom: '2rem' }}>
                         <li>Cylinder 1: <strong className="text-highlight">Diameter = 20mm, Height = 3.65mm, Coordinates (0,0,0)</strong></li>
@@ -538,8 +510,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                         <li>Cylinder 3: <strong className="text-highlight">Diameter = 20mm, Height = 64.5mm</strong></li>
                       </ul>
                       <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <div className="image-wrapper-flush">
-                          <img src={segmentAResult} alt="Segment A Result" className="software-screenshot screenshot-medium" />
+                        <div className="image-wrapper-flush" style={{ marginBottom: '1rem' }}>
+                          <img src={segmentAResult} alt="Segment A Result" className="software-screenshot screenshot-large" />
                         </div>
                       </div>
                     </div>
@@ -549,7 +521,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <h4 className="section-title" style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>SEGMENT B</h4>
                       <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start', marginBottom: '1rem' }}>
                         <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong></p>
-                        <img src={cylinderTool} alt="Cylinder Tool" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
+
                       </div>
                       <p className="p-flush" style={{ fontWeight: 'bold', marginBottom: '1.5rem' }}>INPUT:</p>
                       <ul className="interaction-list--plain" style={{ marginLeft: '1.5rem', marginBottom: '2rem' }}>
@@ -558,7 +530,6 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       </ul>
                       <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start', marginBottom: '1.5rem' }}>
                         <p className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment A</p>
-                        <img src={centerTool} alt="Center Tool" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
                       </div>
                       <div className="image-wrapper-flush">
                         <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" />
@@ -567,9 +538,6 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Union Tool">
-                   Joining segments early helps you manage the model as a single part, making it easier to apply holistic operations like material settings later.
-                </ProTip>
               </div>
             ) : isSample4 ? (
               <div className="tab-pane">
@@ -581,14 +549,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     <span className="step-label">SEGMENT C</span>
                   </div>
                   <div style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required dimensions precisely.</p>
-                    
-                    <div className="flex-row--top" style={{ marginTop: '2rem', gap: '2rem' }}>
+                    <p className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required dimensions precisely. dimensions enclosed in parentheses are close but not exact with the original dimension.</p>
+
+                    <div className="flex-row" style={{ marginTop: '2rem', gap: '2rem' }}>
                       <div style={{ flex: 1 }}>
                         <p className="p-flush" style={{ color: 'var(--primary-red)', marginBottom: '1rem' }}>Open Work Plane</p>
                         <p className="p-flush">Use <strong className="text-highlight">Center</strong> &gt; Place at end of Segment B</p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                          <img src={workPlaneImg} alt="Open Work Plane" className="software-screenshot screenshot-medium" />
+                        <div className="image-wrapper-flush" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+                          <img src={workPlaneImg} alt="Open Work Plane" className="software-screenshot screenshot-small" />
                         </div>
                       </div>
                       <div style={{ flex: 1 }}>
@@ -608,13 +576,15 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                         </div>
                       </div>
                       <div style={{ flex: 1 }}>
-                         <h4 className="section-title" style={{border: 'none', padding: 0, margin: 0, marginBottom: '1rem'}}>SEGMENT D</h4>
+                        <h4 className="section-title" style={{ border: 'none', padding: 0, margin: 0, marginBottom: '1rem' }}>SEGMENT D</h4>
                         <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start' }}>
                           <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong></p>
-                          <img src={cylinderTool} alt="Cylinder Tool" className="software-screenshot screenshot-click--inline" style={{ height: '20px' }} />
+
                         </div>
                         <ul className="interaction-list--plain" style={{ margin: '0.5rem 0 0.5rem 1.5rem' }}>
-                          <li>INPUT: <strong className="text-highlight">Dia = 30mm, H = 22.25mm</strong></li>
+                          <p className="p-flush" style={{ fontWeight: 'bold' }}>INPUT:</p>
+                          <li>Diameter = 20mm</li>
+                          <li>Height = 32.5mm</li>
                         </ul>
                         <p className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment C</p>
                         <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
@@ -625,78 +595,77 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                 </div>
 
-                <div className="section-divider" style={{ margin: '3rem 0' }}></div>
+                <div className="section-divider" style={{ margin: '1rem 0' }}></div>
 
                 <div className={getStepClass('s4-2')} onClick={() => toggleStep('s4-2')}>
                   <div className="step-header">
                     <span className={`step-number ${completedSteps.has('s4-2') ? 'completed' : ''}`}>
                       {completedSteps.has('s4-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">SEGMENT E & UNION</span>
+                    <span className="step-label">SEGMENT E</span>
                   </div>
-                  <div style={{ paddingLeft: '2.5rem' }}>
-                    <div className="flex-row--top" style={{ gap: '2rem' }}>
-                      <div style={{ flex: 1 }}>
-                        <h4 className="section-title" style={{border: 'none', padding: 0, margin: 0, marginBottom: '1rem'}}>SEGMENT E</h4>
-                        <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start' }}>
-                          <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong></p>
-                          <img src={cylinderTool} alt="Cylinder Tool" className="software-screenshot screenshot-click--inline" style={{ height: '20px' }} />
-                        </div>
-                        <ul className="interaction-list--plain" style={{ margin: '0.5rem 0 0.5rem 1.5rem' }}>
-                          <li>INPUT: <strong className="text-highlight">Dia = 20mm, H = 32.5mm</strong></li>
-                        </ul>
-                        <p className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment D</p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                          <img src={segmentEResult} alt="Segment E Result" className="software-screenshot screenshot-medium" />
-                        </div>
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <h4 className="section-title" style={{border: 'none', padding: 0, margin: 0, marginBottom: '1rem'}}>JOIN ALL SEGMENTS</h4>
-                        <div className="flex-row-center" style={{ gap: '1rem', marginTop: '1rem' }}>
-                          <img src={unionTool} alt="Union Tool" className="software-screenshot screenshot-click--inline" style={{ height: '32px' }} />
-                          <p className="p-flush">Use <strong className="text-highlight">UNION</strong> &gt; Select all segments.</p>
-                        </div>
-                      </div>
+                  <div style={{ paddingLeft: '2.5rem', marginTop: '1rem' }}>
+                    <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start' }}>
+                      <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong></p>
+                    </div>
+                    <ul className="interaction-list--plain" style={{ margin: '0.5rem 0 0.5rem 1.5rem' }}>
+                      <p className="p-flush" style={{ fontWeight: 'bold' }}>INPUT:</p>
+                      <li>Diameter = 20mm</li>
+                      <li>Height = 32.5mm</li>
+                    </ul>
+                    <p className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment D</p>
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={segmentEResult} alt="Segment E Result" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
                 </div>
 
-                <div className="section-divider" style={{ margin: '3rem 0' }}></div>
+                <div className="section-divider" style={{ margin: '1rem 0' }}></div>
 
-                {/* FOR KEY GROOVE */}
+                {/* JOIN ALL SEGMENTS */}
                 <div className={getStepClass('s4-3')} onClick={() => toggleStep('s4-3')}>
                   <div className="step-header">
                     <span className={`step-number ${completedSteps.has('s4-3') ? 'completed' : ''}`}>
                       {completedSteps.has('s4-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Key Groove Preparation</span>
+                    <span className="step-label">JOIN ALL SEGMENTS &gt; Use UNION</span>
                   </div>
-                  <div className="flex-row--top" style={{ marginTop: '1.5rem', gap: '2rem', paddingLeft: '2.5rem' }}>
+                </div>
+
+                <div className="section-divider" style={{ margin: '1rem 0' }}></div>
+
+                {/* FOR KEY GROOVE */}
+                <div className={getStepClass('s4-4')} onClick={() => toggleStep('s4-4')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('s4-4') ? 'completed' : ''}`}>
+                      {completedSteps.has('s4-4') ? <CheckCircle2 size={16} /> : '4'}
+                    </span>
+                    <span className="step-label">For Key Groove</span>
+                  </div>
+                  <div className="flex-row" style={{ marginTop: '1rem', gap: '2rem', paddingLeft: '2.5rem' }}>
                     <div style={{ flex: 1 }}>
                       <p className="p-flush" style={{ color: 'var(--primary-red)', marginBottom: '1rem' }}>Create the tool entity first</p>
                       <div className="flex-row-center" style={{ gap: '0.5rem', justifyContent: 'flex-start', marginBottom: '1rem' }}>
                         <p className="p-flush">Use <strong className="text-highlight">Arrange Box</strong></p>
-                        <img src={arrangeBoxIcon} alt="Arrange Box Tool" className="software-screenshot screenshot-click--inline" style={{ height: '20px' }} />
                       </div>
                       <ul className="interaction-list--plain" style={{ marginLeft: '1.5rem', marginBottom: '1.5rem' }}>
-                        <li>INPUT: <strong className="text-highlight">D=6mm, W=3.5mm, H=43mm</strong></li>
+                        <p className="p-flush" style={{ fontWeight: 'bold' }}>INPUT:</p>
+                        <li>Depth = 6mm</li>
+                        <li>Width = 3.5mm</li>
+                        <li>Height = 43mm</li>
                       </ul>
                       <div className="image-wrapper-flush">
                         <img src={keyGrooveBox} alt="Key Groove Box Tool" className="software-screenshot screenshot-medium" />
                       </div>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <p className="p-flush" style={{ color: 'var(--primary-red)', marginBottom: '1rem' }}>Position the tool entity</p>
+                      <p className="p-flush" style={{ color: 'var(--primary-red)', marginTop: '12rem' }}>Position the tool entity</p>
                       <div className="image-wrapper-flush">
                         <img src={keyGroovePos} alt="Position the tool entity" className="software-screenshot screenshot-medium" />
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <ProTip title="Did you know?">
-                   The Key Groove tool entity (Box) should always be slightly larger than the cut area to ensure a clean boolean subtract operation.
-                </ProTip>
               </div>
             ) : isSample5 ? (
               <div className="tab-pane">
@@ -708,9 +677,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('s5-5') ? 'completed' : ''}`}>
                       {completedSteps.has('s5-5') ? <CheckCircle2 size={16} /> : '5'}
                     </span>
-                    <span className="step-label">Subtract and Fillet Key Groove</span>
+                    <span className="step-label">Subtract the tool entity</span>
                   </div>
-                  <div className="flex-row--top" style={{ marginTop: '1.5rem', gap: '2rem', paddingLeft: '2.5rem' }}>
+                  <div className="flex-row" style={{ marginTop: '1.5rem', gap: '2rem', paddingLeft: '2.5rem' }}>
                     <div style={{ flex: 1 }}>
                       <p className="p-flush" style={{ color: 'var(--primary-red)', marginBottom: '1rem' }}>Subtract the tool entity</p>
                       <div className="image-wrapper-flush">
@@ -735,50 +704,52 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     </span>
                     <span className="step-label">Add all Fairings (Chamfer and Fillet)</span>
                   </div>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1.5rem', paddingLeft: '2.5rem' }}>
-                    <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-large" />
+                  <div className="image-wrapper-flush" style={{ marginTop: '1.5rem', paddingLeft: '2.5rem', marginBottom: '1rem' }}>
+                    <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
 
-                {/* FINAL STEPS */}
-                <div className={getStepClass('s5-final')} onClick={() => toggleStep('s5-final')}>
+                <div className={getStepClass('s5-7')} onClick={() => toggleStep('s5-7')}>
                   <div className="step-header">
-                    <span className={`step-number ${completedSteps.has('s5-final') ? 'completed' : ''}`}>
-                      {completedSteps.has('s5-final') ? <CheckCircle2 size={16} /> : <BoxIcon size={16} />}
+                    <span className={`step-number ${completedSteps.has('s5-7') ? 'completed' : ''}`}>
+                      {completedSteps.has('s5-7') ? <CheckCircle2 size={16} /> : '7'}
                     </span>
-                    <span className="step-label">Final Identification & Metadata</span>
-                  </div>
-                  <div className="flex-col" style={{ gap: '2rem', paddingLeft: '2.5rem', marginTop: '1.5rem' }}>
-                    <div className="flex-row-center" style={{ gap: '2rem' }}>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
-                        <p className="p-flush">Set <strong className="text-highlight">Part Name</strong></p>
-                      </div>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <img src={propertiesWindow} alt="Properties Window" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
-                        <p className="p-flush">Verify <strong className="text-highlight">Properties</strong></p>
-                      </div>
-                    </div>
-                    <div className="flex-row-center" style={{ gap: '2rem' }}>
-                       <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <img src={materialSettings} alt="Material Settings" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
-                        <p className="p-flush">Set <strong className="text-highlight">Material</strong></p>
-                      </div>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <img src={layerInfo} alt="Layer Info" className="software-screenshot screenshot-click--inline" style={{ height: '24px' }} />
-                        <p className="p-flush">Set <strong className="text-highlight">Layer & Color</strong></p>
-                      </div>
-                    </div>
-                    <div className="flex-row-center" style={{ gap: '1rem' }}>
-                      <img src={fileMenu} alt="File Menu" className="software-screenshot screenshot-click--inline" style={{ height: '20px' }} />
-                      <p className="p-flush">Go to <strong className="text-highlight">File &gt; Save</strong></p>
-                    </div>
+                    <span className="step-label">Create 3D Part Name</span>
                   </div>
                 </div>
 
-                <ProTip title="Mission Complete!">
-                  You've successfully modeled a complex part using segments, boolean operations, and sketches. This workflow is the foundation of professional 3D design at KEMCO!
-                </ProTip>
+                {/* STEP 8 */}
+                <div className={getStepClass('s5-8')} onClick={() => toggleStep('s5-8')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('s5-8') ? 'completed' : ''}`}>
+                      {completedSteps.has('s5-8') ? <CheckCircle2 size={16} /> : '8'}
+                    </span>
+                    <span className="step-label">Check the properties of the Top 3D Part</span>
+                  </div>
+                </div>
+
+                {/* STEP 9 */}
+                <div className={getStepClass('s5-9')} onClick={() => toggleStep('s5-9')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('s5-9') ? 'completed' : ''}`}>
+                      {completedSteps.has('s5-9') ? <CheckCircle2 size={16} /> : '9'}
+                    </span>
+                    <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
+                  </div>
+                </div>
+
+                {/* STEP 10 */}
+                <div className={getStepClass('s5-10')} onClick={() => toggleStep('s5-10')}>
+                  <div className="step-header">
+                    <span className={`step-number ${completedSteps.has('s5-10') ? 'completed' : ''}`}>
+                      {completedSteps.has('s5-10') ? <CheckCircle2 size={16} /> : '10'}
+                    </span>
+                    <span className="step-label">Save the file File &gt; Save</span>
+                  </div>
+                  <div style={{ paddingLeft: '2.5rem', marginTop: '0.5rem' }}>
+                    <p className="p-flush">Go to <strong className="text-highlight">File &gt; Save</strong></p>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="content-placeholder">

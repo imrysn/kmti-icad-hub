@@ -6,19 +6,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, AlertCircle, CheckCircle2, Info } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Info size={20} />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <div className="pro-tip-text">{children}</div>
-    </div>
-  </div>
-);
-
 // Assets
 import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 import interfCheckIcon from '../../assets/3D_Image_File/interf_check.jpg';
@@ -206,11 +193,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
             </div>
           </div>
 
-          <ProTip title="Did you know?">
-              Interference checking is a critical step before finalizing any design. Small overlaps can lead to major assembly issues on the factory floor!
-          </ProTip>
-
-          <div className="lesson-navigation">
+<div className="lesson-navigation">
             <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
             <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
           </div>
