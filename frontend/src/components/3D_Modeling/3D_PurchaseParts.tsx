@@ -50,30 +50,23 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
-          <Package size={28} className="lesson-intro-icon" /> 
-          {isPart1 ? '3D PURCHASE PARTS' : 'UPLOADING TO SERVER'}
+          <Package size={28} className="lesson-intro-icon" />
+          {isPart1 ? 'PURCHASE PART 3D MODELING' : 'SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS ON THE SERVER'}
         </h3>
-        <p className="p-flush">
-          {isPart1
-            ? 'Workflow for handling 3D modeling of purchased parts, from server check to final storage.'
-            : 'Workflow for uploading and categorizing purchase parts data on the server.'}
-        </p>
+
       </section>
 
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="lesson-content">
             <div className="tab-pane">
-              <div className="instruction-box">
-                <p className="p-flush">{isPart1 ? 'PURCHASE PART 3D MODELING FLOWCHART' : 'SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS ON THE SERVER'}</p>
-              </div>
               <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
                 <img
                   src={isPart1 ? purchasePartsFlowchart : uploadingFlowchart}
@@ -84,12 +77,12 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
 
               <div style={{ marginTop: '2rem' }}>
 
-</div>
+              </div>
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled={isPart1} onClick={() => {}}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button" disabled={isPart1} onClick={() => { }}><ChevronLeft size={18} /> Previous</button>
             <button className="nav-button next" onClick={onNextLesson}>{isPart1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} /></button>
           </div>
         </div>

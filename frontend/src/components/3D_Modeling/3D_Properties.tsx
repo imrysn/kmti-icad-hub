@@ -105,8 +105,8 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -203,7 +203,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                       </div>
                     </div>
 
-</div>
+                  </div>
                 )}
 
                 {activeTab === 'layer' && (
@@ -243,16 +243,16 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                       </div>
                     </div>
 
-<div className="section-divider"></div>
+                    <div className="section-divider"></div>
                     <h3 className="section-title">LAYER DESIGNATION OF 3D PARTS</h3>
 
                     <div className="tool-block">
                       <h4 className="section-title">Layer 1</h4>
                       <ul className="interaction-list--plain">
-                        <li>• All common parts need to be fabricated or machined</li>
-                        <li>• Parts that undergo Annealing, Shot blasting, Annealing Shot blasting</li>
-                        <li>• Covers for purchase parts (No mechanism)</li>
-                        <li>• All parts must be color white</li>
+                        <li>All common parts need to be fabricated or machined</li>
+                        <li>Parts that undergo Annealing, Shot blasting, Annealing Shot blasting</li>
+                        <li>Covers for purchase parts (No mechanism)</li>
+                        <li>All parts must be color white</li>
                       </ul>
                       <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                         <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot screenshot-wide" />
@@ -262,8 +262,8 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                     <div className="tool-block">
                       <h4 className="section-title">Layer 2</h4>
                       <ul className="interaction-list--plain">
-                        <li>• Fabricated parts/Machined parts with color/paint</li>
-                        <li>• Safety Cover - Yellow (No. 4)</li>
+                        <li>Fabricated parts/Machined parts with color/paint</li>
+                        <li>Safety Cover - Yellow (No. 4)</li>
                       </ul>
                       <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                         <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" />
@@ -275,9 +275,9 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
 
                     <div className="tool-block">
                       <ul className="interaction-list--plain">
-                        <li>• Parts that do not need to be painted</li>
-                        <li>• All Stainless Steel (SUS) - white (No.1)</li>
-                        <li>• Acrylic - white (No.1)</li>
+                        <li>Parts that does not need to be painted</li>
+                        <li>All Stainless Steel (SUS) - white (No.1)</li>
+                        <li>Acrylic - white (No.1)</li>
                       </ul>
                       <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                         <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" />
@@ -293,15 +293,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                           <p className="font-semibold mb-2">Materials with Color codes on the material list</p>
                           <p><strong>Examples:</strong></p>
                           <ul className="interaction-list--plain">
-                            <li>• MC Nylon - Blue (No.5)</li>
-                            <li>• Urethane - (No.18)</li>
-                            <li>• Rubber - Black (No.16)</li>
-                            <li>• New Light - White (No.1)</li>
+                            <li>MC Nylon - Blue (No.5)</li>
+                            <li>Urethane - (No.18)</li>
+                            <li>Rubber - Black (No.16)</li>
+                            <li>New Light - White (No.1)</li>
                           </ul>
                         </div>
                         <div className="flex-1">
                           <div className="image-wrapper-flush">
-                            <img src={propertiesMaterialImg} alt="Properties Material" className="software-screenshot screenshot-medium" />
+                            <img src={propertiesMaterialImg} alt="Properties Material" className="software-screenshot screenshot-large" />
                           </div>
                         </div>
                       </div>
@@ -311,15 +311,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                       <div className="flex-row-wrap" style={{ gap: '2rem' }}>
                         <div className="flex-1">
                           <ul className="interaction-list--plain">
-                            <li>• Fabricated parts/Machined parts with <strong className="text-error">Heat Treatment</strong></li>
-                            <li>• Preheat/ heated surface coating part - white (No.1)</li>
-                            <li>• Isonite, Ionite, Parsonite - Gray (No. 8)</li>
-                            <li>• Parkerizing, Manganese Phosphate - Black (No. 16)</li>
+                            <li>Fabricated parts/Machined parts with <strong className="text-error">Heat Treatment</strong></li>
+                            <li>Preheat/ heated surface coating part - white (No.1)</li>
+                            <li>Isonite, Ionite, Parsonite - Gray (No. 8)</li>
+                            <li>Parkerizing, Manganese Phosphate - Black (No. 16)</li>
                           </ul>
                         </div>
                         <div className="flex-1">
                           <div className="image-wrapper-flush">
-                            <img src={isoniteManganeseImg} alt="Heat Treatment Parts" className="software-screenshot screenshot-medium" />
+                            <img src={isoniteManganeseImg} alt="Heat Treatment Parts" className="software-screenshot screenshot-large" />
                           </div>
                         </div>
                       </div>
@@ -328,9 +328,9 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                     <div className="tool-block">
                       <h4 className="section-title">Layer 3</h4>
                       <ul className="interaction-list--plain">
-                        <li>• Purchase Parts (Include stud bolt)</li>
-                        <li>• Purchase Parts with Additional Process</li>
-                        <li>• Use manufacturer standard color</li>
+                        <li>Purchase Parts (Include stud bolt)</li>
+                        <li>Purchase Parts with Additional Process</li>
+                        <li>Use manufacturer standard color</li>
                       </ul>
                       <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                         <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
@@ -345,7 +345,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
 
                 <div className="tool-block" style={{ padding: '0', background: 'transparent' }}>
                   <div className="flex-row-wrap" style={{ gap: '2rem' }}>
-                    
+
                     {/* Item 1 */}
                     <div className={getStepClass('info-1')} onClick={() => toggleStep('info-1')} style={{ flex: '1', minWidth: '400px', cursor: 'pointer' }}>
                       <div className="flex-row-wrap" style={{ gap: '1rem', alignItems: 'flex-start' }}>
@@ -433,7 +433,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                           <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>4. Angle</h5>
                           <p className="p-flush">Measures the angle between two edges or three points</p>
                           <div className="step-description" style={{ paddingLeft: '0', marginTop: '0.8rem' }}>
-                            <p className="p-flush">&gt; Pick 2 edges <br/> &gt; Pick 3 points</p>
+                            <p className="p-flush">&gt; Pick 2 edges <br /> &gt; Pick 3 points</p>
                             <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
                               <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" />
                             </div>
@@ -471,7 +471,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
 
                 <div style={{ marginTop: '2rem' }}>
 
-</div>
+                </div>
               </div>
             )}
           </div>

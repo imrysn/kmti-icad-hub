@@ -91,8 +91,8 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>      <section className="lesson-intro">
@@ -190,12 +190,12 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                     </div>
                     <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                       <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
-                        <img src={notesLeaderLinesImg} alt="Notes with Leader Lines" className="software-screenshot" style={{ width: '100px', padding: '0.2rem' }} />
+                        <img src={notesLeaderLinesImg} alt="Notes with Leader Lines" className="software-screenshot" style={{ width: '190px', padding: '0.2rem' }} />
                       </div>
                       <div className="pl-2">
                         <p className="p-flush mb-1 flex items-center gap-2">
-                          1.) Pick any edge of the entity &gt;
-                          <img src={leftClick} alt="Left Click" style={{ height: '24px' }} />
+                          1.) Pick any edge of the entity &gt; GO
+                          <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
                         </p>
                         <p className="p-flush mb-1">
                           2.) Left-click to show the <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Note String Entry window</strong>.
@@ -223,7 +223,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                     </div>
                     <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                       <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
-                        <img src={characterStringsImg} alt="Character Strings" className="software-screenshot" style={{ width: '100px', padding: '0.2rem' }} />
+                        <img src={characterStringsImg} alt="Character Strings" className="software-screenshot" style={{ width: '190px', padding: '0.2rem' }} />
                       </div>
                       <div className="pl-2">
                         <p className="p-flush mb-1">
@@ -245,8 +245,8 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
 
                 <div style={{ marginTop: '2rem' }}>
 
-</div>
-              </div>            ) : (
+                </div>
+              </div>) : (
               <div className="fade-in">
 
                 <div className="tool-block" style={{ gap: '2rem', padding: '0', background: 'transparent' }}>
@@ -298,7 +298,6 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                           <p className="p-flush flex items-center gap-2">
                             1.) Select drafting entity &gt; GO
-                            <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
                           </p>
                           <p className="p-flush mt-2">
                             2.) <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Edit Dimension Characters window</strong> will appear.
@@ -330,7 +329,6 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                           <p className="p-flush flex items-center gap-2">
                             1.) Select drafting entity &gt; GO
-                            <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
                           </p>
                           <p className="p-flush mt-2">
                             2.) <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Change Properties window</strong> will appear.
@@ -364,7 +362,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
 
                 <div style={{ marginTop: '2rem' }}>
 
-</div>
+                </div>
               </div>
             )}
           </div>
