@@ -9,19 +9,6 @@ import '../../styles/3D_Modeling/ToolbarExplorer.css';
 
 import { Zap } from 'lucide-react';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 // Toolbar image imports
 import tbFile from '../../assets/3D_Image_File/tool_bars_file.jpg';
 import tb2dView from '../../assets/3D_Image_File/tool_bars_2d_view.jpg';
