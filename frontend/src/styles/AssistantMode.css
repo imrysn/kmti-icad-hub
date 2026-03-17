@@ -1,173 +1,97 @@
 /* ============================================================
-   Assistant Mode — Spotlight Search
+   Assistant Mode — Tabbed Workspace
    ============================================================ */
 
-.assistant-mode {
-  min-height: 100%;
+.assistant-mode-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px); /* Adjust for header height */
+  padding: 1rem 2rem;
   background: var(--bg-surface);
-  padding: 3.5rem 2rem 4rem;
 }
 
-/* ── Spotlight Search ────────────────────────────────────────── */
+/* ── Tabs Navigation ───────────────────────────────────────── */
 
-.spotlight-search {
-  max-width: 640px;
-  margin: 0 auto 2.5rem;
-  position: relative;
-}
-
-.spotlight-input {
-  width: 100%;
-  padding: 1rem 1.125rem 1rem 3.5rem;
-  font-size: 1rem;
-  font-family: inherit;
-  background: var(--color-white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
-  color: var(--text-main);
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
-  outline: none;
-}
-
-.spotlight-input:focus {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-dim), var(--shadow-md);
-}
-
-.spotlight-input::placeholder {
-  color: var(--text-dim);
-}
-
-.search-icon {
-  position: absolute;
-  left: 1.125rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-dim);
-  pointer-events: none;
-}
-
-/* ── Results ─────────────────────────────────────────────────── */
-
-.results-container {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.result-card {
-  background: var(--color-white);
-  padding: 1.5rem;
-  border-radius: var(--radius-lg);
+.assistant-tabs {
+  display: flex;
+  gap: 1.5rem;
   margin-bottom: 1rem;
-  border: 1px solid var(--border-color);
-  border-left: 3px solid var(--primary);
-  box-shadow: var(--shadow-sm);
-  animation: slide-up 0.2s ease-out forwards;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.1rem;
+  flex-shrink: 0;
 }
 
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.result-header {
+.assistant-tab-btn {
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  margin-bottom: 0.875rem;
-  font-size: 0.7rem;
-  font-weight: 700;
+  padding: 0.75rem 0.5rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.result-content {
-  font-size: 0.9375rem;
-  line-height: 1.7;
-  color: var(--text-main);
-}
-
-/* ── Media Attachments ───────────────────────────────────────── */
-
-.media-attachments {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--border-color);
-}
-
-.media-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.625rem;
-}
-
-.media-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 0.875rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
-  margin-right: 0.625rem;
-  margin-bottom: 0.375rem;
   cursor: pointer;
-  color: var(--text-muted);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  transition: all 0.15s ease;
+  position: relative;
+  transition: color 0.2s ease;
 }
 
-.media-chip:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background: var(--color-accent-dim);
+.assistant-tab-btn:hover {
+  color: var(--primary);
 }
 
-/* ── Media Modal ─────────────────────────────────────────────── */
+.assistant-tab-btn.active {
+  color: var(--primary);
+}
 
-.media-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.88);
+.assistant-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.assistant-tab-btn svg {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.assistant-tab-btn.active svg {
+  opacity: 1;
+}
+
+/* ── Content Area ─────────────────────────────────────────── */
+
+.assistant-tab-content {
+  flex-grow: 1;
+  min-height: 0; /* Important for flex children scrollability */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(6px);
+  flex-direction: column;
 }
 
-.media-modal-content {
-  background: var(--color-white);
-  padding: 1.75rem;
-  border-radius: var(--radius-xl);
-  max-width: 960px;
-  width: calc(100% - 2rem);
-  max-height: 90vh;
-  overflow: auto;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-xl);
+/* Ensure Chatbot layout fills the tab content height and overrides its default fixed height */
+.assistant-tab-content .chatbot-layout {
+  height: 100%;
 }
 
-.media-modal-content video,
-.media-modal-content img {
-  width: 100%;
-  margin: 1.25rem 0;
-  border-radius: var(--radius-md);
-  display: block;
+/* ── Training/Mentor Wrapper ───────────────────────────────── */
+/* Adjust MentorMode styles when nested inside AssistantMode tabs */
+
+.assistant-training-wrapper {
+  flex-grow: 1;
+  min-height: 0;
 }
 
-/* ── Empty State ─────────────────────────────────────────────── */
+.assistant-training-wrapper .mentor-mode {
+  padding: 0;
+  height: 100%;
+}
 
-.no-results {
-  text-align: center;
-  color: var(--text-dim);
-  padding: 4rem 1rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
+.assistant-training-wrapper .course-view-container {
+  height: 100%;
 }

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { adminService, KBFile } from '../../../services/adminService';
 import { useUI } from '../../../context/UIContext';
+import { useNotification } from '../../../context/NotificationContext';
 import '../../../styles/IntelligenceHub.css';
 
 /* ─────────────────────────────────────────────────────────────────
@@ -142,9 +143,8 @@ export const KnowledgeManagement: React.FC = () => {
     const [kbLoading, setKbLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [dragActive, setDragActive] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
     const [kbExpanded, setKbExpanded] = useState(false);
+    const { showNotification } = useNotification();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     /* ── Fetchers ── */
@@ -176,9 +176,9 @@ export const KnowledgeManagement: React.FC = () => {
     const fetchFiles = useCallback(async () => {
         setKbLoading(true);
         try { setFiles(await adminService.getKBFiles()); }
-        catch { setError('Failed to load knowledge base files.'); }
+        catch { showNotification('Failed to load knowledge base files.', 'error'); }
         finally { setKbLoading(false); }
-    }, []);
+    }, [showNotification]);
 
     useEffect(() => { fetchStats(); }, [fetchStats]);
     useEffect(() => { fetchLogs(); }, [fetchLogs]);
@@ -198,13 +198,13 @@ export const KnowledgeManagement: React.FC = () => {
 
     const handleUpload = async (filesToUpload: File[]) => {
         const valid = filesToUpload.filter(f => f.name.endsWith('.xlsx') || f.name.endsWith('.csv') || f.name.endsWith('.py'));
-        if (!valid.length) { setError('Only .xlsx, .csv, and .py files are supported.'); return; }
-        setUploading(true); setError(null); setSuccess(null);
+        if (!valid.length) { showNotification('Only .xlsx, .csv, and .py files are supported.', 'warning'); return; }
+        setUploading(true);
         try {
             await adminService.uploadKBFiles(valid);
-            setSuccess(`Uploaded ${valid.length} file(s)`);
+            showNotification(`Uploaded ${valid.length} file(s) successfully`, 'success');
             fetchFiles();
-        } catch { setError('Upload failed. Please try again.'); }
+        } catch { showNotification('Upload failed. Please try again.', 'error'); }
         finally { setUploading(false); if (fileInputRef.current) fileInputRef.current.value = ''; }
     };
 
@@ -214,16 +214,19 @@ export const KnowledgeManagement: React.FC = () => {
         try {
             await adminService.deleteKBFile(filename);
             setFiles(prev => prev.filter(f => f.name !== filename));
-            setSuccess(`Deleted ${filename}`);
-        } catch { setError(`Failed to delete ${filename}`); }
+            showNotification(`Deleted ${filename} successfully`, 'success');
+        } catch { showNotification(`Failed to delete ${filename}`, 'error'); }
     };
 
     const handleReindex = async () => {
         const confirmed = await requestConfirmation({ title: 'Re-index Intelligence', message: 'Trigger full re-indexing? This may take a moment.', confirmText: 'Re-index', type: 'confirm' });
         if (!confirmed) return;
         setKbLoading(true);
-        try { await adminService.triggerReindex(); setSuccess('Re-indexing complete.'); }
-        catch { setError('Re-indexing failed.'); }
+        try { 
+            await adminService.triggerReindex(); 
+            showNotification('Re-indexing complete!', 'success'); 
+        }
+        catch { showNotification('Re-indexing failed.', 'error'); }
         finally { setKbLoading(false); }
     };
 
@@ -483,24 +486,26 @@ export const KnowledgeManagement: React.FC = () => {
 
             {/* ── Knowledge Base (collapsible) ── */}
             <div className="ih-kb-section">
-                <button className="ih-kb-toggle" onClick={() => setKbExpanded(e => !e)}>
-                    <div className="ih-kb-toggle-left">
-                        <Database size={14} />
-                        <span>Knowledge Base</span>
-                        <span className="ih-badge-count">{files.length} files</span>
-                    </div>
-                    <div className="ih-kb-toggle-right">
-                        <button
-                            className="ih-reindex-btn"
-                            onClick={e => { e.stopPropagation(); handleReindex(); }}
-                            disabled={kbLoading}
-                        >
-                            <RefreshCw size={12} className={kbLoading ? 'spinning' : ''} />
-                            Re-index
-                        </button>
-                        {kbExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                    </div>
-                </button>
+                <div className="ih-kb-toggle">
+                    <button className="ih-kb-toggle-btn" onClick={() => setKbExpanded(e => !e)}>
+                        <div className="ih-kb-toggle-left">
+                            <Database size={14} />
+                            <span>Knowledge Base</span>
+                            <span className="ih-badge-count">{files.length} files</span>
+                        </div>
+                        <div className="ih-kb-toggle-chevron">
+                            {kbExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                        </div>
+                    </button>
+                    <button
+                        className="ih-reindex-btn"
+                        onClick={handleReindex}
+                        disabled={kbLoading}
+                    >
+                        <RefreshCw size={12} className={kbLoading ? 'spinning' : ''} />
+                        Re-index
+                    </button>
+                </div>
 
                 {kbExpanded && (
                     <div className="ih-kb-body">
@@ -539,14 +544,6 @@ export const KnowledgeManagement: React.FC = () => {
                 )}
             </div>
 
-            {/* ── Status banner ── */}
-            {(error || success) && (
-                <div className={`ih-toast ${error ? 'error' : 'success'}`}>
-                    {error ? <AlertCircle size={15} /> : <CheckCircle2 size={15} />}
-                    <span>{error || success}</span>
-                    <button onClick={() => { setError(null); setSuccess(null); }}><X size={14} /></button>
-                </div>
-            )}
         </div>
     );
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Shield, Activity, Users, BarChart3, Brain, MessageSquare } from 'lucide-react';
 import { User } from '../../../services/authService';
-import { AdminTab } from '../AdminMode';
 
 interface AdminSidebarProps {
     currentUser: User | null;
@@ -12,6 +11,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const activeTab = location.pathname.split('/').pop();
+
     return (
         <aside className="admin-sidebar">
             <div className="sidebar-header">
@@ -34,24 +34,15 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
                         key={item.id}
                         className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
                         onClick={() => navigate(`/admin/${item.id}`)}
+                        title={item.label}
                     >
-                        <item.icon size={18} />
+                        <div className="nav-icon">
+                            <item.icon size={18} />
+                        </div>
                         <span>{item.label}</span>
                     </button>
                 ))}
             </nav>
-
-            <div className="sidebar-footer">
-                <div className="admin-info">
-                    <div className="avatar">
-                        {currentUser?.username?.[0].toUpperCase() || 'A'}
-                    </div>
-                    <div className="info">
-                        <span className="name">{currentUser?.full_name || 'Administrator'}</span>
-                        <span className="role">System Administrator</span>
-                    </div>
-                </div>
-            </div>
         </aside>
     );
 };

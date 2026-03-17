@@ -9,7 +9,11 @@ export const BroadcastCenter: React.FC = () => {
     const [level, setLevel] = useState<'info' | 'warning' | 'critical'>('info');
     const [isSending, setIsSending] = useState(false);
     const [status, setStatus] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const dragStartRef = useRef({ x: 0, y: 0 });
+    const hasMovedRef = useRef(false);
 
     // Global click listener for "Click Outside to Collapse"
     useEffect(() => {
@@ -27,6 +31,47 @@ export const BroadcastCenter: React.FC = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isExpanded]);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (isExpanded) return; // Only draggable when collapsed
+        setIsDragging(true);
+        dragStartRef.current = { x: e.clientX, y: e.clientY };
+        hasMovedRef.current = false;
+    };
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isDragging) return;
+            
+            const dx = e.clientX - dragStartRef.current.x;
+            const dy = e.clientY - dragStartRef.current.y;
+            
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                hasMovedRef.current = true;
+            }
+            
+            setPosition(prev => ({
+                x: prev.x + dx,
+                y: prev.y + dy
+            }));
+            
+            dragStartRef.current = { x: e.clientX, y: e.clientY };
+        };
+
+        const handleMouseUp = () => {
+            setIsDragging(false);
+        };
+
+        if (isDragging) {
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', handleMouseUp);
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging]);
 
     const handleSend = async () => {
         if (!message.trim()) return;
@@ -47,11 +92,21 @@ export const BroadcastCenter: React.FC = () => {
 
     if (!isExpanded) {
         return (
-            <div className="broadcast-center-floating" ref={containerRef}>
+            <div 
+                className={`broadcast-center-floating ${isDragging ? 'dragging' : ''}`} 
+                ref={containerRef}
+                style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+            >
                 <button 
                     className="chatbox-bubble"
-                    onClick={() => setIsExpanded(true)}
+                    onMouseDown={handleMouseDown}
+                    onClick={() => {
+                        if (!hasMovedRef.current) {
+                            setIsExpanded(true);
+                        }
+                    }}
                     aria-label="Open Broadcast Center"
+                    style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
                 >
                     <Megaphone size={22} strokeWidth={2.5} />
                     <span className="bubble-label">BROADCAST</span>
@@ -61,7 +116,11 @@ export const BroadcastCenter: React.FC = () => {
     }
 
     return (
-        <div className="broadcast-center-floating" ref={containerRef}>
+        <div 
+            className="broadcast-center-floating" 
+            ref={containerRef}
+            style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+        >
             <div className="chatbox-expanded">
                 <div className="chatbox-header">
                     <h3>
