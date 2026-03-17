@@ -59,7 +59,7 @@ def search_knowledge_base(query: str, current_user: User = Depends(get_current_u
     return search_service.search_knowledge_base(query)
 
 @app.post("/chat", response_model=ChatResponse)
-def chat_with_intelligence_node(
+async def chat_with_intelligence_node(
     request: ChatRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -69,41 +69,56 @@ def chat_with_intelligence_node(
     and logs the interaction to chat_logs for admin monitoring.
     """
     t_start = time.time()
-    result = chat_service.chat(request.message, request.history)
+    result = await chat_service.chat(
+        request.message, 
+        request.history, 
+        request.session_id,
+        [{"data": img.data, "mime": img.mime} for img in request.images] if request.images else None,
+        request.language
+    )
     elapsed_ms = int((time.time() - t_start) * 1000)
 
     log_id: Optional[int] = None
+    is_cached = result.get("cached", False)
 
-    # Skip DB logging for cache hits — already logged on first call
-    if not result.get("cached", False):
-        sources = result.get("sources", [])
-        unique_sources = list({s["source"] for s in sources if "source" in s})
-        had_media = any(bool(s.get("media")) for s in sources)
-        tokens_est = (len(request.message) + len(result.get("answer", ""))) // 4
-        try:
-            log = ChatLog(
-                user_id=current_user.id,
-                username=current_user.username,
-                session_id=getattr(request, "session_id", None),
-                message=request.message[:2000],
-                answer=result.get("answer", "")[:8000],
-                sources_used=",".join(unique_sources)[:1000] if unique_sources else None,
-                source_count=len(sources),
-                tokens_estimated=tokens_est,
-                response_time_ms=elapsed_ms,
-                had_media=had_media,
-            )
-            db.add(log)
-            db.commit()
-            db.refresh(log)
-            log_id = log.id
-        except Exception as log_err:
-            db.rollback()
-            print(f"[ChatLog] Failed to write log: {log_err}")
+    sources = result.get("sources", [])
+    unique_sources = list({s["source"] for s in sources if "source" in s})
+    had_media = any(bool(s.get("media")) for s in sources)
+    tokens_est = (len(request.message) + len(result.get("answer", ""))) // 4
+    try:
+        log = ChatLog(
+            user_id=current_user.id,
+            username=current_user.username,
+            session_id=request.session_id,
+            message=request.message[:2000],
+            answer=result.get("answer", "")[:8000],
+            sources_used=",".join(unique_sources)[:1000] if unique_sources else None,
+            source_count=len(sources),
+            tokens_estimated=tokens_est,
+            response_time_ms=elapsed_ms,
+            had_media=had_media,
+            is_cached=is_cached,
+        )
+        db.add(log)
+        db.commit()
+        db.refresh(log)
+        log_id = log.id
+    except Exception as log_err:
+        db.rollback()
+        print(f"[ChatLog] Failed to write log: {log_err}")
 
     if isinstance(result, dict):
         result["log_id"] = log_id
     return result
+
+@app.post("/chat/name-session")
+def name_session(
+    request: ChatRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Generate a high-quality session title using AI."""
+    title = chat_service.summarize_session_title(request.message, request.history)
+    return {"title": title or "New Chat"}
 
 @app.post("/chat/feedback")
 def submit_chat_feedback(

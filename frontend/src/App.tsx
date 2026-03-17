@@ -53,7 +53,7 @@ function App() {
       {/* Header with User Info and Logout */}
       <div className="app-header">
         <div className="app-title">
-          KMTI Training Hub
+
         </div>
         <div className="user-info">
           <div className="user-meta">

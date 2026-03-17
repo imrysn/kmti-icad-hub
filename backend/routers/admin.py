@@ -528,8 +528,7 @@ def delete_kb_file(
     admin: User = Depends(require_role("admin"))
 ):
     """Delete a file from the knowledge base"""
-    kb_dir = "knowledge_base/"
-    file_path = os.path.join(kb_dir, filename)
+    file_path = os.path.join(KB_DIR, filename)
     
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")

@@ -28,6 +28,19 @@ function createWindow() {
     } else {
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
     }
+
+    // Handle permission requests (Microphone/Camera)
+    const { session } = require('electron');
+    session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
+        const url = webContents.getURL();
+        if (permission === 'media') {
+            // Allow media access for localhost (dev) or localized files
+            if (url.startsWith('http://localhost') || url.startsWith('file://')) {
+                return callback(true);
+            }
+        }
+        callback(false);
+    });
 }
 
 app.whenReady().then(createWindow);

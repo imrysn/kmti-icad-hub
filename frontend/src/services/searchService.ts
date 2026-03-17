@@ -56,9 +56,31 @@ export const feedbackService = {
     }
 };
 
+export interface ImagePayload {
+    data: string;
+    mime: string;
+}
+
 export const chatService = {
-    async send(message: string, history: ChatMessage[]): Promise<ChatResponse> {
-        const response = await api.post('/chat', { message, history });
+    async send(
+        message: string, 
+        history: ChatMessage[], 
+        sessionId?: string, 
+        images: ImagePayload[] = [], 
+        language: string = "en-US"
+    ): Promise<ChatResponse> {
+        const response = await api.post('/chat', { 
+            message, 
+            history, 
+            session_id: sessionId,
+            images,
+            language
+        });
         return response.data;
+    },
+
+    async generateTitle(message: string, history: ChatMessage[]): Promise<string> {
+        const response = await api.post('/chat/name-session', { message, history: history.slice(-4) });
+        return response.data.title;
     }
 };

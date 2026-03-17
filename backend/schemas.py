@@ -42,9 +42,16 @@ class ChatMessage(BaseModel):
     role: Literal["user", "assistant"]
     content: str
 
+class ImagePayload(BaseModel):
+    data: str  # Base64 string
+    mime: str = "image/jpeg"
+
 class ChatRequest(BaseModel):
     message: str
     history: Optional[List[ChatMessage]] = []
+    session_id: Optional[str] = None
+    images: Optional[List[ImagePayload]] = [] # Support up to 3 images
+    language: Optional[str] = "en-US"
 
 class ChatSource(BaseModel):
     id: str

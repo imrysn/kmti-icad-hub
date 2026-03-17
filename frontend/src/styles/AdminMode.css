@@ -105,7 +105,8 @@
   justify-content: flex-start;
   height: 48px;
   padding: 0;
-  border-radius: 0; /* Flat radius for collapsed look, will refine below */
+  border-radius: 0;
+  /* Flat radius for collapsed look, will refine below */
   border: none;
   background: transparent;
   color: var(--text-muted);
