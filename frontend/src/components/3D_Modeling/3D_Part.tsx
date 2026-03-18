@@ -91,7 +91,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
         <h3 className="section-title">{isPart1 ? 'CREATING 3D PART' : 'CHANGE 3D PART NAME'}</h3>
         <p className="p-flush">
           {isPart1
-            ? 'Tool use to name 3D parts and provide information.3D part name must always be set since it is a vital part for the 2D Design.'
+            ? 'Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Design.'
             : 'Tool use to Changes 3D part names, drawing names (of external 3D parts), and comments.'}
         </p>
         <div className="instruction-box">

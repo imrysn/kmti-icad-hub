@@ -90,7 +90,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
         <p className="p-flush">
           {isPart1
             ? 'Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.'
-            : 'Advanced options for exporting and editing B-Rep solids.'}
+            : ''}
 
         </p>
         {isPart1 && (
@@ -127,7 +127,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p1-2') ? 'completed' : ''}`}>
                     {completedSteps.has('p1-2') ? <CheckCircle2 size={16} /> : '2'}
                   </span>
-                  <span className="step-label">The Parasolid Link dialog box will appear. Browse for files to import.</span>
+                  <span className="step-label">The Parasolid Link dialog box will appear. User will be able to browse folders which contain parasolid files to be imported on ICAD.</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
@@ -141,10 +141,13 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p1-3') ? 'completed' : ''}`}>
                     {completedSteps.has('p1-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Press OK after selecting the file &gt; <strong className="text-highlight">GO</strong>. In the Name Change dialog, pick <strong className="text-highlight">Cancel</strong>.</span>
+                  <span className="step-label">Press OK after selecting the parasolid file &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> </span>
+
                 </div>
+                <p className="p-flush" style={{ marginLeft: '2.5rem' }}>The Name change dialog box will appear &gt; Pick Cancel</p>
+                <p className="p-flush" style={{ marginLeft: '2.5rem' }}>All Part names of purchase parts must be release on the tree view.</p>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush" style={{ marginTop: '0.5rem' }}>All Part names of purchase parts must be release on the tree view.</p>
+
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
                   </div>
@@ -165,7 +168,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                  <div className="image-wrapper-flush" style={{ marginBottom: '1rem' }}>
                     <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" />
                   </div>
                 </div>
@@ -193,7 +196,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Select the purchase part &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush" style={{ marginTop: '0.5rem' }}>Check the message pane to confirm success.</p>
+                  <p className="p-flush" style={{ marginTop: '0.5rem' }}>Check the message pane to see if the process is successful</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.5rem' }}>
                     <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" />
                   </div>
@@ -201,26 +204,43 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
               </div>
 
               <div className="section-divider"></div>
-              <h3 className="section-title">5.) SAVE THE PART</h3>
-              <p className="p-flush">Go to <strong>File &gt; Save As &gt; Use the Purchase part code as File name.</strong></p>
-
-              <div className="section-divider"></div>
-              <h3 className="section-title">6.) SET IMPORTANT INFORMATION</h3>
-              <p className="p-flush">Add metadata and comments to the Part.</p>
-
-              <div className="instruction-step" style={{ marginTop: '1rem', paddingLeft: '2.5rem' }}>
-                <div className="interaction-list--plain">
-                  <p className="p-flush"><strong>1.)</strong> Right-click the Top 3D Part on the tree view</p>
-                  <p className="p-flush"><strong>2.)</strong> Select Properties. The Property dialog box will appear.</p>
-                  <p className="p-flush"><strong>3.)</strong> Enter the comment for the specific part &gt; Press OK</p>
+              <div className={getStepClass('p2-4')} onClick={() => toggleStep('p2-4')} style={{ marginBottom: '2.5rem' }}>
+                <div className="step-header">
+                  <span className={`step-number ${completedSteps.has('p2-4') ? 'completed' : ''}`}>
+                    {completedSteps.has('p2-4') ? <CheckCircle2 size={16} /> : '5'}
+                  </span>
+                  <span className="step-label">Save the part</span>
                 </div>
-                <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-                  <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
-                </div>
-                <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-                  <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" />
+                <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                  <p className="p-flush">Go to <strong>File &gt; Save As &gt; Use the Purchase part code as File name.</strong></p>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
+
+              <div className={getStepClass('p2-5')} onClick={() => toggleStep('p2-5')}>
+                <div className="step-header">
+                  <span className={`step-number ${completedSteps.has('p2-5') ? 'completed' : ''}`}>
+                    {completedSteps.has('p2-5') ? <CheckCircle2 size={16} /> : '6'}
+                  </span>
+                  <span className="step-label">Set all important information of the part</span>
+                </div>
+                <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                  <p className="p-flush">Other way to add comment to the Part</p>
+                  <div className="interaction-list--plain" style={{ marginTop: '1rem' }}>
+                    <p className="p-flush"><strong>1.)</strong> Right-click the Top 3D Part on the tree view</p>
+                    <p className="p-flush"><strong>2.)</strong> Select Properties. The Property dialog box will appear.</p>
+                    <p className="p-flush"><strong>3.)</strong> Enter the comment for the specific part &gt; Press OK</p>
+                  </div>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                    <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
+                  </div>
+                  <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" />
+                  </div>
+                </div>
+              </div>
+
 
             </div>
           )}

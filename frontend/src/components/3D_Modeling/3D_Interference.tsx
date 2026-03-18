@@ -68,14 +68,14 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
-          <AlertCircle size={28} className="lesson-intro-icon" /> 
+          <AlertCircle size={28} className="lesson-intro-icon" />
           INTERFERENCE CHECK
         </h3>
         <p className="p-flush">Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling.</p>
@@ -89,7 +89,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="card-header"><h4>Interference Check Tool</h4></div>
-          
+
           <div className={getStepClass('i1')} onClick={() => toggleStep('i1')}>
             <div className="step-header">
               <span className={`step-number ${completedSteps.has('i1') ? 'completed' : ''}`}>
@@ -132,7 +132,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               </div>
               <div className="info-box" style={{ marginTop: '1.5rem', border: 'none', background: 'transparent', padding: 0 }}>
                 <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0, marginBottom: '0.5rem' }}>
-                   <span className="step-label"><strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.</span>
+                  <span className="step-label"><strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.</span>
                 </div>
               </div>
             </div>
@@ -143,13 +143,16 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className={`step-number ${completedSteps.has('i4') ? 'completed' : ''}`}>
                 {completedSteps.has('i4') ? <CheckCircle2 size={16} /> : '4'}
               </span>
-              <span className="step-label">Analyze possible countermeasures. To remove the red CGS solid, use <strong className="text-highlight">Undo</strong> (Ctrl+Z).</span>
+              <span className="step-label">Analyze possible countermeasures to remove the interference on the parts. To remove the red CGS solid, use Undo or Ctrl+Z</span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
           </div>
 
           <div className="section-divider"></div>
-          <div className="card-header"><h4>List All Detected Interferences</h4></div>
+          <p className="p-flush"><strong>Tool use to display the list of all detected interferences.</strong></p>
+          <div className="image-wrapper-flush">
+            <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
+          </div>
 
           <div className={getStepClass('li1')} onClick={() => toggleStep('li1')}>
             <div className="step-header">
@@ -159,9 +162,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-              <div className="image-wrapper-flush">
-                <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
-              </div>
+
             </div>
           </div>
 

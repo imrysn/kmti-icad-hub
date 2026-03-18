@@ -1244,6 +1244,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
                 </div>
               </div>
 
+              <div className="card-header"><h4>HIDE UNSELECTED ENTITY</h4></div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="flex-row" style={{ gap: '1.5rem' }}>
                   <div className="flex-1">

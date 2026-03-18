@@ -12,6 +12,7 @@ import partsPlacement from '../../assets/3D_Image_File/hole_details_parts_placem
 import listTools from '../../assets/3D_Image_File/hole_details_list_tools.jpg';
 import holeResult from '../../assets/3D_Image_File/hole_details_hole.jpg';
 import tappedHoles from '../../assets/3D_Image_File/hole_details_tapped_holes.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 
 
 
@@ -133,7 +134,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   <span className={`step-number ${completedSteps.has('hole-4') ? 'completed' : ''}`}>
                     {completedSteps.has('hole-4') ? <CheckCircle2 size={16} /> : '4'}
                   </span>
-                  <span className="step-label">Click the location of the hole on the solid entity to create the cut.</span>
+                  <span className="step-label">Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> to create the cut.</span>
                 </div>
                 <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>

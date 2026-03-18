@@ -86,11 +86,12 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           <Layers size={28} className="lesson-intro-icon" />
           {isMaterial1 ? 'MATERIAL SETTING' : 'MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST'}
         </h3>
-        <p className="p-flush">On iCAD, <strong className="text-highlight">S35C</strong> is not included on the material list. In this case, we can use <strong className="text-highlight">S45C</strong> as material on 3D.</p>
-        <p className="p-flush">In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is use as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same.</p>
+
+
 
         {isMaterial1 && (
           <div className="instruction-box" style={{ marginTop: '1.5rem', border: 'none', background: 'transparent' }}>
+            <p className="p-flush" style={{ marginBottom: '1.5rem' }}>Setting material is important in order to measure the weigth of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part.</p>
             <div className="image-wrapper-flush" style={{ margin: '0 auto' }}>
               <img src={materialSettingImg} alt="Material Setting" className="software-screenshot screenshot-small" />
             </div>
@@ -108,7 +109,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-1') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select <strong className="text-highlight">Set Material</strong> from the menu.</span>
+                    <span className="step-label">Select <strong className="text-highlight">Set Material</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
@@ -189,7 +190,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 </div>
 
 
-
+                <p className="p-flush" style={{ marginBottom: '1.5rem', marginTop: '1.5rem' }}>On iCAD, <strong className="text-highlight">S35C</strong> is not included on the material list in this case, we can use <strong className="text-highlight">S45C</strong> as material on 3D in case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is use as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same</p>
                 <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
                   <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
                 </div>

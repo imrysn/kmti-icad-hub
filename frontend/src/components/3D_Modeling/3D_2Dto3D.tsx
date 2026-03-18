@@ -100,42 +100,30 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
       <div className="lesson-grid single-card">
         {activeTab === 'workPlane' && (
           <div className="lesson-card tab-content">
-            <div className="card-header"><h4>WORK PLANE</h4></div>
+            <div className="card-header"><h4>2D &gt; 3D</h4></div>
 
-            <p className="p-flush">3D modeling can be done by sketching on 2D sketch using a plane on the 3D dimension.</p>
+            <p className="p-flush" style={{ marginTop: '-1.5rem' }}>3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension.</p>
+            <p className="text-caption" style={{ marginTop: '-1rem' }}>To create 2D plane on the 3D Dimension, use <strong className="text-highlight">Open Work Plane</strong> from the toolbar.</p>
 
             <div className="tool-block">
               <div className="image-wrapper-flush">
                 <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" />
               </div>
-            </div>
-
-
-            <div className={getStepClass('2d1-1')} onClick={() => toggleStep('2d1-1')}>
-              <div className="step-header">
-                <span className={`step-number ${completedSteps.has('2d1-1') ? 'completed' : ''}`}>
-                  {completedSteps.has('2d1-1') ? <CheckCircle2 size={16} /> : '1'}
-                </span>
-                <span className="step-label">Select <strong className="text-highlight">Open Work Plane</strong> from the toolbar.</span>
+              <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" />
               </div>
-              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                  <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" />
+              <div className={getStepClass('2d1-2')} onClick={() => toggleStep('2d1-2')} style={{ marginTop: '1.5rem' }}>
+                <div className="step-header">
+                  <span className={`step-number ${completedSteps.has('2d1-2') ? 'completed' : ''}`}>
+                    {completedSteps.has('2d1-2') ? <CheckCircle2 size={16} /> : '2'}
+                  </span>
+                  <span className="step-label">Use to rotate the work plane to X-Y Plane, X-Y Plane or Y-Z Plane.</span>
                 </div>
-              </div>
-            </div>
-
-            <div className={getStepClass('2d1-2')} onClick={() => toggleStep('2d1-2')} style={{ marginTop: '1.5rem' }}>
-              <div className="step-header">
-                <span className={`step-number ${completedSteps.has('2d1-2') ? 'completed' : ''}`}>
-                  {completedSteps.has('2d1-2') ? <CheckCircle2 size={16} /> : '2'}
-                </span>
-                <span className="step-label">Rotate the work plane to <strong className="text-highlight">X-Y Plane, X-Z Plane</strong> or <strong className="text-highlight">Y-Z Plane</strong>.</span>
-              </div>
-              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <div className="flex-row-center" style={{ gap: '2rem' }}>
-                  <div className="image-wrapper-flush">
-                    <img src={openWorkPlaneImg2} alt="Open Work Plane" className="software-screenshot screenshot-small" />
+                <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                  <div className="flex-row-center" style={{ gap: '2rem' }}>
+                    <div className="image-wrapper-flush">
+                      <img src={openWorkPlaneImg2} alt="Open Work Plane" className="software-screenshot screenshot-small" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -148,7 +136,7 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
@@ -201,10 +189,10 @@ const TwoDTo3D2: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
           <div className="lesson-card tab-content">
             <div className="card-header"><h4>COMMAND MENU</h4></div>
 
-            <p>Most tools used for sketching on the work plane can be found on the command menu.</p>
+            <p style={{ marginTop: '-1.5rem' }}>Most tools used for sketching on the work plane can be found on the command menu.</p>
 
             <div className="tool-block">
-              <div className="image-wrapper-flush">
+              <div className="image-wrapper-flush">These are the tools used for extruding 2D sketches to 3D solid Entities.
                 <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide" />
               </div>
             </div>
@@ -293,15 +281,15 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
       <div className="lesson-grid single-card">
         {activeTab === 'extrude' && (
           <div className="lesson-card tab-content">
-            <div className="instruction-box">
-              <p className="p-flush">These are the tools used for extruding 2D sketches to 3D solid Entities.</p>
-            </div>
+
+            <p className="p-flush">These are the tools used for extruding 2D sketches to 3D solid Entities.</p>
+            <p className="p-flush" style={{ marginTop: '-1rem' }}>Most commonly used tools are the following:</p>
 
             <div className="tool-block">
               <div className="image-wrapper-flush">
-                <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-medium" />
+                <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-small" />
               </div>
-              <p className="p-flush" style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
+
             </div>
 
 
@@ -327,12 +315,12 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3e-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3e-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong></span>
+                <span className="step-label">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                   <div className="image-wrapper-flush">
-                    <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-medium" />
+                    <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
               </div>
@@ -352,11 +340,11 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
 
             <div className="instruction-box instruction-box--warning">
               <p className="p-flush">A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select <strong className="text-highlight">OK</strong> to delete the work plane.</p>
-              <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', marginTop: '0.5rem' }}>Note: Deleting the work plane will delete all the sketch made on the plane. This process cannot be undone.</p>
-              <p className="p-flush" style={{ marginTop: '0.5rem' }}>Select <strong className="text-highlight">Cancel</strong> to keep the work plane together with all the 2D sketches.</p>
+              <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', marginTop: '0.5rem' }}><strong className="text-highlight">Note: Deleting the work plane will delete all the sketch made on the plane. This process cannot be undone.</strong> </p>
+              <p className="p-flush" style={{ marginTop: '0.5rem' }}>Select Cancel to keep the work plane together with all the 2D sketches.</p>
             </div>
 
-            <div className="flex-row-center--wrap" style={{ marginTop: '1.5rem', gap: '1.5rem' }}>
+            <div className="flex-row-center--wrap" style={{ marginTop: '-1rem', gap: '1.5rem' }}>
               <div className="image-wrapper-flush">
                 <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot screenshot-medium" />
               </div>
@@ -376,20 +364,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
 
         {activeTab === 'revolve' && (
           <div className="lesson-card tab-content">
-            <div className="instruction-box">
-              <p className="p-flush">These are the tools used for revolving 2D sketches to 3D solid Entities.</p>
-            </div>
 
-            <div className="tool-block">
-              <div className="image-wrapper-flush">
-                <img src={commandMenu2} alt="Revolve Tools" className="software-screenshot screenshot-medium" />
-              </div>
-              <p className="p-flush" style={{ marginTop: '0.75rem' }}>Most commonly used tools are the following:</p>
-            </div>
-
-            <div className="section-divider"></div>
             <div className="card-header card-sub-header"><h4>REVOLVE</h4></div>
-            <p className="p-flush-bottom">Creates a solid entity from a section from created on a work plane or 2D drawing, by performing rotation projection.</p>
+            <p className="p-flush-bottom" style={{ marginTop: '-1rem' }}>Creates a solid entity from a section from created on a work plane or 2D drawing, by performing rotation projection.</p>
 
             <div className={getStepClass('2d3r-1')} onClick={() => toggleStep('2d3r-1')}>
               <div className="step-header">
@@ -399,7 +376,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className="step-label">Select <strong className="text-highlight">Revolve</strong> from the icon menu.</span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
+                <div className="image-wrapper-flush" style={{ marginTop: '-0.5rem' }}>
                   <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
                 </div>
               </div>
@@ -412,6 +389,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 </span>
                 <span className="step-label">Pick the cross section to be revolved &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
               </div>
+              <p className="p-flush-bottom" style={{ marginTop: '-1rem', marginLeft: '2.5rem' }}>A hatch will appear to show that the sketch is an enclosed figure</p>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
 
@@ -425,9 +403,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
 
-            <div className="section-divider"></div>
             <div className="tool-block">
-              <h4 className="section-title">STEPS</h4>
               <div className="image-wrapper-flush">
                 <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot screenshot-wide" />
               </div>
@@ -442,19 +418,16 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
 
         {activeTab === 'spiral' && (
           <div className="lesson-card tab-content">
-            <div className="instruction-box">
-              <p className="p-flush">These are the tools used for spiraling 22D sketches to 3D solid Entities.</p>
-            </div>
 
             <div className="card-header card-sub-header"><h4>SPIRAL FORM</h4></div>
-            <p className="p-flush-bottom">Creates a 3D spiral form from a section form created on a 2D sketch.</p>
+            <p className="p-flush-bottom" style={{ marginTop: '-1rem' }}>Creates a 3D spiral form from a section form created on a 2D sketch.</p>
 
             <div className={getStepClass('2d3s-1')} onClick={() => toggleStep('2d3s-1')}>
               <div className="step-header">
                 <span className={`step-number ${completedSteps.has('2d3s-1') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-1') ? <CheckCircle2 size={16} /> : '1'}
                 </span>
-                <span className="step-label">Create Sketch</span>
+                <span className="step-label">First do the sketch.</span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="image-wrapper-flush">
@@ -468,12 +441,13 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3s-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Select <strong className="text-highlight">Spiral Form</strong> from the icon menu &gt; Pick the cross section &gt; <strong className="text-highlight">GO</strong></span>
+                <span className="step-label">Select <strong className="text-highlight">Spiral Form</strong> from the icon menu</span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                   <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" />
                 </div>
+                <p className="text-caption" style={{ marginTop: '0.5rem', marginLeft: '-2rem' }}>Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO</p>
               </div>
             </div>
 
@@ -482,7 +456,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3s-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Specify the pitch of the spiral on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong></span>
+                <span className="step-label">Specify the pitch of the spiral on the item entry &gt; Press  &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Pitch must be greater than Thickness</p>
@@ -502,7 +476,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3s-4') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-4') ? <CheckCircle2 size={16} /> : '4'}
                 </span>
-                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then <strong className="text-highlight">GO</strong></span>
+                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="image-wrapper-flush">

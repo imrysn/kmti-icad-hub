@@ -256,15 +256,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('shell-2') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select the two endfaces of the solid entity &gt; <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the two endfaces of the solid entity &gt; GO<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description">
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                       <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" />
                     </div>
-                  </div>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                    <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
 
@@ -277,11 +274,6 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   </div>
                   <div className="step-description">
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                      <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-large" />
-                    </div>
-                  </div>
-                  <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1rem' }}>
-                    <div className="image-wrapper-flush">
                       <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-large" />
                     </div>
                   </div>

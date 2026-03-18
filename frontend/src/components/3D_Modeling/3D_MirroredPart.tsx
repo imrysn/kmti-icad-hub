@@ -212,9 +212,12 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = '
                     <span className="step-label">Identify the proper location of origin of the part.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                      <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" />
+                    <div className="image-wrapper-flush">
+                      <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" />
                     </div>
+
+
+
                   </div>
                 </div>
 
@@ -269,8 +272,8 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = '
                       <p className="p-flush" style={{ marginTop: '0.5rem' }}>
                         After doing the command, this will be the outcome as Part B.
                       </p>
-                      <div className="image-wrapper-flush">
-                        <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" />
+                      <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                        <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" />
                       </div>
                       <p className="p-flush" style={{ marginTop: '0.5rem' }}>
                         <strong>Note:</strong> The <strong style={{ textDecoration: 'underline' }}>Origin Part B</strong> must be the <strong style={{ textDecoration: 'underline' }}>same location as in Part A.</strong>

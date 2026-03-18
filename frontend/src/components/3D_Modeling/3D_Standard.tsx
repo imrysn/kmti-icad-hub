@@ -168,14 +168,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   <div className="flex-row--top" style={{ gap: '2rem', paddingLeft: '2.5rem' }}>
                     <div style={{ flex: 1 }}>
                       <div className="image-wrapper-flush">
-                        <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-medium" />
+                        <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
                     <div style={{ flex: 1 }}>
                       <div className="image-wrapper-flush">
                         <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-medium" />
                       </div>
-                    </div>
+                    </div>``
                   </div>
                 </div>
 
@@ -188,12 +188,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                       {completedSteps.has('s1-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
                     <p className="p-flush" style={{ margin: 0, fontWeight: 700 }}>
-                      V-Groove Pointer Standard
+                      Another type of <strong className="text-highlight">Scale Pointer</strong> is by putting <strong className="text-highlight">V-groove</strong>. We must also apply this on 3D and 2D.
                     </p>
                   </div>
-                  <p className="p" style={{ marginBottom: '1.5rem' }}>
-                    Another type of <strong className="text-highlight">Scale Pointer</strong> is by putting <strong className="text-highlight">V-groove</strong>. We must also apply this on 3D and 2D.
-                  </p>
+
 
                   <div className="flex-row--top" style={{ gap: '2rem', paddingLeft: '2.5rem' }}>
                     <div style={{ flex: 1.5 }}>
@@ -291,7 +289,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                     </div>
                     <div style={{ flex: 1 }}>
                       <div className="image-wrapper-flush">
-                        <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-medium" />
+                        <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
                   </div>
@@ -346,7 +344,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                   </div>
 
 
-                  <div className="info-box" style={{ marginTop: '2rem', marginLeft: '2.5rem', borderLeft: '4px solid var(--primary-red)', background: 'rgba(231, 76, 60, 0.05)' }}>
+                  <div className="info-box" style={{ marginTop: '2rem', marginLeft: '2.5rem' }}>
                     <p className="p-flush"><strong>Note</strong>: 1. Location of keyway always indicated on special notes.</p>
                     <p className="p-flush" style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>キー溝は歯山部中心に合わせ加工すること</p>
                     <p className="p-flush" style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>(Key groove should be machined at the center of the tooth)</p>
@@ -515,7 +513,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
                     <h4 className="section-title" style={{ margin: 0, border: 'none' }}>SLOTTED HOLE</h4>
                   </div>
                   <p className="p-flush" style={{ paddingLeft: '2.5rem' }}>For Parts that need adjustments</p>
-                  <div className="info-box" style={{ background: 'rgba(231, 76, 60, 0.05)', borderLeft: '3px solid var(--primary-red)', marginTop: '1rem', marginLeft: '2.5rem' }}>
+                  <div className="info-box" style={{ marginTop: '1rem', marginLeft: '2.5rem' }}>
                     <p className="p-flush"><strong>Note</strong>: Slotted holes need <strong className="text-highlight">Flat washer (FW)</strong>. For normal bolting, Spring Washer (SW) is enough.</p>
                   </div>
 
