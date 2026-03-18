@@ -24,9 +24,10 @@ import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 interface ParasolidLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'parasolid-1', onNextLesson }) => {
+const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'parasolid-1', onNextLesson, onPrevLesson }) => {
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -112,10 +113,9 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p1-1') ? 'completed' : ''}`}>
                     {completedSteps.has('p1-1') ? <CheckCircle2 size={16} /> : '1'}
                   </span>
-                  <span className="step-label">Select Import</span>
+                  <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">Select <strong className="text-highlight">Import</strong> from the icon menu.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" />
                   </div>
@@ -127,11 +127,9 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p1-2') ? 'completed' : ''}`}>
                     {completedSteps.has('p1-2') ? <CheckCircle2 size={16} /> : '2'}
                   </span>
-                  <span className="step-label">Browse Files</span>
+                  <span className="step-label">The Parasolid Link dialog box will appear. Browse for files to import.</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">The Parasolid Link dialog box will appear.</p>
-                  <p className="p-flush">User will be able to browse folders which contain parasolid files to be imported on iCAD</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
                   </div>
@@ -143,12 +141,10 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p1-3') ? 'completed' : ''}`}>
                     {completedSteps.has('p1-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Handle Name Change</span>
+                  <span className="step-label">Press OK after selecting the file &gt; <strong className="text-highlight">GO</strong>. In the Name Change dialog, pick <strong className="text-highlight">Cancel</strong>.</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">Press OK after selecting the parasolid file &gt; GO</p>
-                  <p className="p-flush">The Name Change dialog box will appear &gt; Pick Cancel</p>
-                  <p className="p-flush">All Part names of purchase parts must be release on the tree view.</p>
+                  <p className="p-flush" style={{ marginTop: '0.5rem' }}>All Part names of purchase parts must be release on the tree view.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
                   </div>
@@ -166,10 +162,9 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p2-1') ? 'completed' : ''}`}>
                     {completedSteps.has('p2-1') ? <CheckCircle2 size={16} /> : '1'}
                   </span>
-                  <span className="step-label">Select Lighten Tool</span>
+                  <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" />
                   </div>
@@ -181,10 +176,9 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p2-2') ? 'completed' : ''}`}>
                     {completedSteps.has('p2-2') ? <CheckCircle2 size={16} /> : '2'}
                   </span>
-                  <span className="step-label">Set Form Mode</span>
+                  <span className="step-label">A dialog box will appear. Select No form changes &gt; <strong className="text-highlight">OK</strong></span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">A dialog box will appear. Select No form changes &gt; OK</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                     <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
                   </div>
@@ -196,14 +190,10 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p2-3') ? 'completed' : ''}`}>
                     {completedSteps.has('p2-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Process Confirmation</span>
+                  <span className="step-label">Select the purchase part &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
-                  <div className="flex-row-center" style={{ gap: '1rem' }}>
-                    <p className="p-flush">Select the purchase part &gt; GO</p>
-                    <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
-                  </div>
-                  <p className="p-flush" style={{ marginTop: '1rem' }}>Check the message pane to confirm success.</p>
+                  <p className="p-flush" style={{ marginTop: '0.5rem' }}>Check the message pane to confirm success.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.5rem' }}>
                     <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" />
                   </div>
@@ -236,11 +226,11 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled={isPart1} onClick={() => { }}>
+            <button className="nav-button" onClick={onPrevLesson}>
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {isPart1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} />
+              Next Lesson <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -30,7 +30,7 @@ import spiralRotation from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axi
 import spiralRotation2 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation2.jpg';
 
 /* ── 2D > 3D (1) ── */
-const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
+const TwoDTo3D1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void }> = ({ onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'workPlane'>('workPlane');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -116,10 +116,9 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d1-1') ? 'completed' : ''}`}>
                   {completedSteps.has('2d1-1') ? <CheckCircle2 size={16} /> : '1'}
                 </span>
-                <span className="step-label">Open Work Plane</span>
+                <span className="step-label">Select <strong className="text-highlight">Open Work Plane</strong> from the toolbar.</span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">To create 2D plane on the 3D Dimension, use <strong className="text-highlight">Open Work Plane</strong> from the toolbar.</p>
                 <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                   <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" />
                 </div>
@@ -131,23 +130,20 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d1-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d1-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Rotate View</span>
+                <span className="step-label">Rotate the work plane to <strong className="text-highlight">X-Y Plane, X-Z Plane</strong> or <strong className="text-highlight">Y-Z Plane</strong>.</span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="flex-row-center" style={{ gap: '2rem' }}>
                   <div className="image-wrapper-flush">
                     <img src={openWorkPlaneImg2} alt="Open Work Plane" className="software-screenshot screenshot-small" />
                   </div>
-                  <div className="flex-1">
-                    <p className="p-flush">Use to rotate the work plane to <strong className="text-highlight">X-Y Plane, X-Z Plane</strong> or <strong className="text-highlight">Y-Z Plane</strong>.</p>
-                  </div>
                 </div>
               </div>
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -157,7 +153,7 @@ const TwoDTo3D1: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 };
 
 /* ── 2D > 3D (2) ── */
-const TwoDTo3D2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
+const TwoDTo3D2: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void }> = ({ onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'commandMenu'>('commandMenu');
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -215,8 +211,8 @@ const TwoDTo3D2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
 
             <div className="lesson-navigation">
-              <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -226,7 +222,7 @@ const TwoDTo3D2: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 };
 
 /* ── 2D > 3D (3) ── */
-const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) => {
+const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void }> = ({ onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'extrude' | 'revolve' | 'spiral'>('extrude');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -282,6 +278,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
   const handlePrev = () => {
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); scrollToTop(); }
+    else if (onPrevLesson) onPrevLesson();
   };
   return (
     <div className="course-lesson-container">
@@ -316,10 +313,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3e-1') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3e-1') ? <CheckCircle2 size={16} /> : '1'}
                 </span>
-                <span className="step-label">Select Tool</span>
+                <span className="step-label">Select <strong className="text-highlight">Extrude</strong> from the icon menu.</span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Select <strong className="text-highlight">Extrude</strong> from the icon menu.</p>
                 <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                   <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" />
                 </div>
@@ -331,10 +327,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3e-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3e-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Pick Cross-Section</span>
+                <span className="step-label">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong></p>
                 <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                   <div className="image-wrapper-flush">
                     <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-medium" />
@@ -348,11 +343,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3e-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3e-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Set Height</span>
+                <span className="step-label">Specify the height of extrusion on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong></span>
               </div>
-              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Specify the height of extrusion on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong></p>
-              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
 
 
@@ -375,7 +368,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
 
             <div className="lesson-navigation">
-              <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -403,10 +396,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3r-1') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3r-1') ? <CheckCircle2 size={16} /> : '1'}
                 </span>
-                <span className="step-label">Select Tool</span>
+                <span className="step-label">Select <strong className="text-highlight">Revolve</strong> from the icon menu.</span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Select <strong className="text-highlight">Revolve</strong> from the icon menu.</p>
                 <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                   <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
                 </div>
@@ -418,11 +410,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3r-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3r-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Pick Cross Section</span>
+                <span className="step-label">Pick the cross section to be revolved &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
               </div>
-              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Pick the cross section to be revolved &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
-              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
 
             <div className={getStepClass('2d3r-3')} onClick={() => toggleStep('2d3r-3')}>
@@ -430,11 +420,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3r-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3r-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Select Axis</span>
+                <span className="step-label">Select the axis of rotation &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
               </div>
-              <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Select the axis of rotation &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
-              </div>
+              <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
 
             <div className="section-divider"></div>
@@ -480,11 +468,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3s-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Select Spiral Form</span>
+                <span className="step-label">Select <strong className="text-highlight">Spiral Form</strong> from the icon menu &gt; Pick the cross section &gt; <strong className="text-highlight">GO</strong></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Select <strong className="text-highlight">Spiral Form</strong> from the icon menu.</p>
-                <p className="p-flush" style={{ marginTop: '0.5rem' }}>Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong></p>
                 <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                   <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" />
                 </div>
@@ -496,13 +482,11 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3s-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Set Pitch</span>
+                <span className="step-label">Specify the pitch of the spiral on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Specify the pitch of the spiral on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong></p>
                 <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Pitch must be greater than Thickness</p>
                 <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
-
                   <div className="image-wrapper-flush">
                     <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-large" />
                   </div>
@@ -518,10 +502,9 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
                 <span className={`step-number ${completedSteps.has('2d3s-4') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-4') ? <CheckCircle2 size={16} /> : '4'}
                 </span>
-                <span className="step-label">Define Length</span>
+                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then <strong className="text-highlight">GO</strong></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                <p className="p-flush">Select the ends of the length of the spiral along the axis of rotation. Then <strong className="text-highlight">GO</strong></p>
                 <div className="image-wrapper-flush">
                   <img src={spiralRotation1} alt="Spiral Axis 1" className="software-screenshot screenshot-medium" />
                 </div>
@@ -547,7 +530,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -556,13 +539,13 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void }> = ({ onNextLesson }) =>
   );
 };
 
-interface TwoDTo3DLessonProps { subLessonId: string; onNextLesson?: () => void; }
-const TwoDTo3DLesson: React.FC<TwoDTo3DLessonProps> = ({ subLessonId, onNextLesson }) => {
+interface TwoDTo3DLessonProps { subLessonId: string; onNextLesson?: () => void; onPrevLesson?: () => void; }
+const TwoDTo3DLesson: React.FC<TwoDTo3DLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
   switch (subLessonId) {
-    case '2d-3d-1': return <TwoDTo3D1 onNextLesson={onNextLesson} />;
-    case '2d-3d-2': return <TwoDTo3D2 onNextLesson={onNextLesson} />;
-    case '2d-3d-3': return <TwoDTo3D3 onNextLesson={onNextLesson} />;
-    default: return <TwoDTo3D1 onNextLesson={onNextLesson} />;
+    case '2d-3d-1': return <TwoDTo3D1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />;
+    case '2d-3d-2': return <TwoDTo3D2 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />;
+    case '2d-3d-3': return <TwoDTo3D3 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />;
+    default: return <TwoDTo3D1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />;
   }
 };
 export default TwoDTo3DLesson;

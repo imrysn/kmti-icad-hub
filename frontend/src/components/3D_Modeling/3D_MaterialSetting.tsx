@@ -23,9 +23,10 @@ import materialsListImg from '../../assets/3D_Image_File/material_list.jpg';
 interface MaterialSettingLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLessonId = 'material-1', onNextLesson }) => {
+const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLessonId = 'material-1', onNextLesson, onPrevLesson }) => {
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -107,10 +108,9 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-1') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Set Material</strong> from the menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Set Material</strong> from the menu.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                       <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot screenshot-small" />
                     </div>
@@ -122,15 +122,9 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-2') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Entity</span>
+                    <span className="step-label">Select the entity/entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <div className="flex-row-center" style={{ gap: '1rem' }}>
-                      <p className="p-flush">Select the entity/entities &gt; <strong className="text-highlight">GO</strong></p>
-                      <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                      </div>
-                    </div>
                   </div>
                 </div>
 
@@ -139,11 +133,10 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-3') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Choose Material</span>
+                    <span className="step-label">The Material Setting Window will appear. Select the material from the list &gt; Press <strong className="text-highlight">OK</strong></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">The Material Setting Window will appear. Select the material from the list &gt; Press OK </p>
-                    <p className="p-flush">The list consists of the materials and their corresponding Notation, Specific Gravity and Color.</p>
+                    <p className="p-flush" style={{ marginTop: '0.5rem' }}>The list consists of the materials and their corresponding Notation, Specific Gravity and Color.</p>
                     <p className="p-flush">However, we follow the color base on the <strong className="text-highlight">color codes.</strong> Materials that don't have a color code must be machine color <strong className="text-highlight">(WHITE).</strong> </p>
 
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
@@ -157,11 +150,10 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-4') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-4') ? <CheckCircle2 size={16} /> : '4'}
                     </span>
-                    <span className="step-label">Confirm Dialog</span>
+                    <span className="step-label">After setting the material, a dialog box will appear &gt; Select <strong className="text-highlight">OK</strong>.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">After setting the material, a dialog box will appear &gt; Select OK.</p>
-                    <p className="p-flush">Parts that already have material set will be highlighted to show distinction with parts that does not have yet.</p>
+                    <p className="p-flush" style={{ marginTop: '0.5rem' }}>Parts that already have material set will be highlighted to show distinction with parts that does not have yet.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                       <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide" />
                     </div>
@@ -173,15 +165,16 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-5') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-5') ? <CheckCircle2 size={16} /> : '5'}
                     </span>
-                    <span className="step-label">Change Material</span>
+                    <span className="step-label">In case there are changes in the material, select <strong className="text-highlight">Set Material</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">In case there are changes in the material, select <strong className="text-highlight">Set Material</strong> from the icon menu.</p>
-                    <p className="p-flush">A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.</p>
+                    <p className="p-flush" style={{ marginTop: '0.5rem' }}>A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                       <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" />
                     </div>
-                    <p className="p-flush">Select <strong className="text-highlight">OK</strong> &gt; Material Setting window will appear &gt; Reselect new material for the part</p>
+                    <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0, marginTop: '0.8rem', marginBottom: '0.5rem' }}>
+                      <span className="step-label">Select <strong className="text-highlight">OK</strong> &gt; Material Setting window will appear &gt; Reselect new material for the part</span>
+                    </div>
                     <p className="p-flush"><strong className="text-highlight">OR</strong></p>
                     <p className="p-flush">Select Cancel &gt; No changes will be made.</p>
 
@@ -214,8 +207,8 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>{isMaterial1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

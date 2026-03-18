@@ -17,9 +17,10 @@ import interferenceCheckImg from '../../assets/3D_Image_File/interference_check.
 
 interface InterferenceLessonProps {
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson }) => {
+const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, onPrevLesson }) => {
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,13 +95,12 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
               <span className={`step-number ${completedSteps.has('i1') ? 'completed' : ''}`}>
                 {completedSteps.has('i1') ? <CheckCircle2 size={16} /> : '1'}
               </span>
-              <span className="step-label">Select Tool</span>
+              <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-              <p className="p-flush">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</p>
-            </div>
-            <div className="image-wrapper-flush" style={{ paddingLeft: '2.5rem' }}>
-              <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" />
+              <div className="image-wrapper-flush">
+                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" />
+              </div>
             </div>
           </div>
 
@@ -109,13 +109,12 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
               <span className={`step-number ${completedSteps.has('i2') ? 'completed' : ''}`}>
                 {completedSteps.has('i2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Unselect Filter</span>
+              <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-              <p className="p-flush">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</p>
-            </div>
-            <div className="image-wrapper-flush" style={{ paddingLeft: '2.5rem' }}>
-              <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" />
+              <div className="image-wrapper-flush">
+                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" />
+              </div>
             </div>
           </div>
 
@@ -124,22 +123,18 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
               <span className={`step-number ${completedSteps.has('i3') ? 'completed' : ''}`}>
                 {completedSteps.has('i3') ? <CheckCircle2 size={16} /> : '3'}
               </span>
-              <span className="step-label">Select Entities</span>
+              <span className="step-label">Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-              <div className="flex-row-center" style={{ gap: '1rem' }}>
-                <p className="p-flush">Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong></p>
-                <div className="image-wrapper-flush">
-                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
+              <p className="p-flush" style={{ color: 'var(--text-muted)' }}>A dialog box will appear showing the number of detected interferences.</p>
+              <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
+              </div>
+              <div className="info-box" style={{ marginTop: '1.5rem', border: 'none', background: 'transparent', padding: 0 }}>
+                <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0, marginBottom: '0.5rem' }}>
+                   <span className="step-label"><strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.</span>
                 </div>
               </div>
-              <p className="p-flush" style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>A dialog box will appear showing the number of detected interferences.</p>
-            </div>
-            <div className="image-wrapper-flush" style={{ marginTop: '1rem', paddingLeft: '2.5rem' }}>
-              <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
-            </div>
-            <div className="info-box" style={{ marginTop: '1rem', marginLeft: '2.5rem' }}>
-              <p className="p-flush"><strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.</p>
             </div>
           </div>
 
@@ -148,11 +143,9 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
               <span className={`step-number ${completedSteps.has('i4') ? 'completed' : ''}`}>
                 {completedSteps.has('i4') ? <CheckCircle2 size={16} /> : '4'}
               </span>
-              <span className="step-label">Analyze and Fix</span>
+              <span className="step-label">Analyze possible countermeasures. To remove the red CGS solid, use <strong className="text-highlight">Undo</strong> (Ctrl+Z).</span>
             </div>
-            <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-              <p className="p-flush">Analyze possible countermeasures. To remove the red CGS solid, use <strong className="text-highlight">Undo</strong> (Ctrl+Z).</p>
-            </div>
+            <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
           </div>
 
           <div className="section-divider"></div>
@@ -163,18 +156,12 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
               <span className={`step-number ${completedSteps.has('li1') ? 'completed' : ''}`}>
                 {completedSteps.has('li1') ? <CheckCircle2 size={16} /> : '1'}
               </span>
-              <span className="step-label">Select Tool</span>
+              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-              <div className="flex-row-center" style={{ gap: '1rem' }}>
-                <p className="p-flush">Select the tool on the icon menu &gt; <strong className="text-highlight">GO</strong></p>
-                <div className="image-wrapper-flush">
-                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                </div>
+              <div className="image-wrapper-flush">
+                <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
               </div>
-            </div>
-            <div className="image-wrapper-flush" style={{ paddingLeft: '2.5rem' }}>
-              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
             </div>
           </div>
 
@@ -183,19 +170,18 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson })
               <span className={`step-number ${completedSteps.has('li2') ? 'completed' : ''}`}>
                 {completedSteps.has('li2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Review List</span>
+              <span className="step-label">The List Display window will appear showing all interfering parts.</span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-              <p className="p-flush">The List Display window will appear showing all interfering parts.</p>
-            </div>
-            <div className="image-wrapper-flush" style={{ marginTop: '1rem', paddingLeft: '2.5rem' }}>
-              <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
+              <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
+              </div>
             </div>
           </div>
 
-<div className="lesson-navigation">
-            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
+          <div className="lesson-navigation">
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

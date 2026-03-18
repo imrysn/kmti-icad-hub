@@ -50,9 +50,10 @@ import sgpPipesYellow from '../../assets/3D_Image_File/standard(8)_SGP_pipes_yel
 interface StandardLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard-1', onNextLesson }) => {
+const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard-1', onNextLesson, onPrevLesson }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
@@ -644,11 +645,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = 'standard
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled={isStandard1}>
+            <button className="nav-button" onClick={onPrevLesson}>
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {subLessonId === 'standard-8' ? 'Finish' : 'Next Lesson'} <ChevronRight size={18} />
+              Next Lesson <ChevronRight size={18} />
             </button>
           </div>
         </div>

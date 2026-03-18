@@ -9,7 +9,7 @@
  * InteractiveImageMap.tsx.
  */
 import React, { useState, useEffect, useRef } from 'react';
-import { Info, Monitor, Zap } from 'lucide-react';
+import { Info, Monitor, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import InteractiveImageMap from './InteractiveImageMap';
 import icadWindowStructure from '../../assets/3D_Image_File/icad_window_structure.jpg'; // cspell:disable-line
 import '../../styles/3D_Modeling/CourseLesson.css';
@@ -18,7 +18,12 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 // Lesson-item ID: 'interface'
 // No sub-lessons – single interactive map view of the iCAD 3D window.
 
-const IcadInterfaceLesson: React.FC = () => {
+interface IcadInterfaceLessonProps {
+  onNextLesson?: () => void;
+  onPrevLesson?: () => void;
+}
+
+const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -71,6 +76,10 @@ const IcadInterfaceLesson: React.FC = () => {
             <div className="image-zoom-container">
               <InteractiveImageMap imageSrc={icadWindowStructure} />
             </div>
+          </div>
+          <div className="lesson-navigation">
+            <button className="nav-button" onClick={onPrevLesson} disabled={!onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson} disabled={!onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

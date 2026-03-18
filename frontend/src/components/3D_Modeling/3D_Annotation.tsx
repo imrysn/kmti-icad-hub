@@ -32,9 +32,10 @@ import annotation2Img from '../../assets/3D_Image_File/angular_dimension1.jpg';
 interface AnnotationLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'annotation-1', onNextLesson }) => {
+const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'annotation-1', onNextLesson, onPrevLesson }) => {
   const isAnnotation1 = subLessonId === 'annotation-1';
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -84,7 +85,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
   };
 
   const handlePrev = () => {
-    // Navigation inside annotation if needed
+    if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -128,14 +129,15 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                         <span className={`step-number ${completedSteps.has('anno1-1') ? 'completed' : ''}`}>
                           {completedSteps.has('anno1-1') ? <CheckCircle2 size={16} /> : '1'}
                         </span>
-                        <span className="step-label">Creates linear dimension</span>
+                        <span className="step-label">Select edges to be measured.</span>
                       </div>
                       <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                         <div className="image-wrapper-flush" style={{ display: 'inline-block', marginBottom: '1rem' }}>
                           <img src={linearDimensionImg} alt="Linear Dimension" className="software-screenshot screenshot-small" />
                         </div>
-                        <p className="p-flush">1.) Select edges to be measured.</p>
-                        <p className="p-flush">2.) Left-click on the 3D Space to position the linear dimension.</p>
+                      </div>
+                      <div className="step-header">
+                        <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to position the linear dimension.</span>
                       </div>
                     </div>
 
@@ -145,14 +147,15 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                         <span className={`step-number ${completedSteps.has('anno1-2') ? 'completed' : ''}`}>
                           {completedSteps.has('anno1-2') ? <CheckCircle2 size={16} /> : '2'}
                         </span>
-                        <span className="step-label">Creates diameter dimension</span>
+                        <span className="step-label">Select the edge of the circle up to be measured.</span>
                       </div>
                       <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                         <div className="image-wrapper-flush" style={{ display: 'inline-block', marginBottom: '1rem' }}>
                           <img src={diameterDimensionImg} alt="Diameter Dimension" className="software-screenshot screenshot-small" />
                         </div>
-                        <p className="p-flush">1.) Select the edge of the circle to be measured.</p>
-                        <p className="p-flush">2.) Left-click on the 3D Space to position the circular dimension.</p>
+                      </div>
+                      <div className="step-header">
+                        <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to position the circular dimension.</span>
                       </div>
                     </div>
 
@@ -162,14 +165,15 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                         <span className={`step-number ${completedSteps.has('anno1-3') ? 'completed' : ''}`}>
                           {completedSteps.has('anno1-3') ? <CheckCircle2 size={16} /> : '3'}
                         </span>
-                        <span className="step-label">Creates angular dimension</span>
+                        <span className="step-label">Select edges of the angle to be measured.</span>
                       </div>
                       <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                         <div className="image-wrapper-flush" style={{ display: 'inline-block', marginBottom: '1rem' }}>
                           <img src={angularDimensionImg} alt="Angular Dimension" className="software-screenshot screenshot-small" />
                         </div>
-                        <p className="p-flush">1.) Select edges to be measured.</p>
-                        <p className="p-flush">2.) Left-click on the 3D Space to position the angular dimension.</p>
+                      </div>
+                      <div className="step-header">
+                        <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to position the angular dimension.</span>
                       </div>
                     </div>
 
@@ -186,30 +190,26 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                       <span className={`step-number ${completedSteps.has('anno1-4') ? 'completed' : ''}`}>
                         {completedSteps.has('anno1-4') ? <CheckCircle2 size={16} /> : '4'}
                       </span>
-                      <span className="step-label">Creates notes with leader lines.</span>
+                      <span className="step-label">Pick any edge of the entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
                     </div>
                     <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                       <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
                         <img src={notesLeaderLinesImg} alt="Notes with Leader Lines" className="software-screenshot" style={{ width: '190px', padding: '0.2rem' }} />
                       </div>
-                      <div className="pl-2">
-                        <p className="p-flush mb-1 flex items-center gap-2">
-                          1.) Pick any edge of the entity &gt; GO
-                          <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
-                        </p>
-                        <p className="p-flush mb-1">
-                          2.) Left-click to show the <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Note String Entry window</strong>.
-                        </p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '300px' }}>
+                    </div>
+                    <div className="step-header">
+                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click to show the <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Note String Entry window</strong>.</span>
+                    </div>
+                    <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                       <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '300px' }}>
                           <img src={noteStringEntryImg} alt="Note String Entry Window" className="software-screenshot screenshot-wide" />
                         </div>
-                        <p className="p-flush mb-1">
-                          3.) Enter the note &gt; Press OK
-                        </p>
-                        <p className="p-flush mb-0">
-                          4.) Left-click on the 3D Space to place the note.
-                        </p>
-                      </div>
+                    </div>
+                    <div className="step-header">
+                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Enter the note &gt; Press OK</span>
+                    </div>
+                    <div className="step-header">
+                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to place the note.</span>
                     </div>
                   </div>
 
@@ -219,26 +219,21 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                       <span className={`step-number ${completedSteps.has('anno1-5') ? 'completed' : ''}`}>
                         {completedSteps.has('anno1-5') ? <CheckCircle2 size={16} /> : '5'}
                       </span>
-                      <span className="step-label">Creates character strings.</span>
+                      <span className="step-label">Left-click on the 3D Space show the <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Text Entry window</strong>.</span>
                     </div>
                     <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                       <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
                         <img src={characterStringsImg} alt="Character Strings" className="software-screenshot" style={{ width: '190px', padding: '0.2rem' }} />
                       </div>
-                      <div className="pl-2">
-                        <p className="p-flush mb-1">
-                          1.) Left-click on the 3D Space show the <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Text Entry window</strong>.
-                        </p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '300px' }}>
+                       <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '300px' }}>
                           <img src={textEntryImg} alt="Text Entry Window" className="software-screenshot screenshot-wide" />
                         </div>
-                        <p className="p-flush mb-1">
-                          2.) Enter the note &gt; Press OK
-                        </p>
-                        <p className="p-flush mb-0">
-                          3.) Left-click on the 3D Space to place the note.
-                        </p>
-                      </div>
+                    </div>
+                    <div className="step-header">
+                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Enter the note &gt; Press OK</span>
+                    </div>
+                    <div className="step-header">
+                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to place the note.</span>
                     </div>
                   </div>
                 </div>
@@ -258,21 +253,14 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                           <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
                             {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
                           </span>
-                          <span className="step-label">Creates dimensions for 3D entities collectively.</span>
+                          <span className="step-label">Select entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
                         </div>
                         <div className="image-wrapper-flush" style={{ marginBottom: '1rem', marginLeft: '2.5rem' }}>
                           <img src={annotation2Img} alt="Collective Dimension Result" className="software-screenshot screenshot-medium" />
                         </div>
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                          <p className="p-flush flex items-center gap-2">
-                            1.) Select entity &gt; GO
-                            <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
-                          </p>
                           <p className="p-flush" style={{ fontWeight: 'bold', marginTop: '1rem' }}>
-                            *Dimensions will generate automatically.
-                          </p>
-                          <p className="p-flush">
-                            Such as length, width, height, hole details, hole pitches
+                            *Dimensions will generate automatically (length, width, height, hole details, hole pitches).
                           </p>
                         </div>
                       </div>
@@ -286,25 +274,22 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                   <div className={getStepClass('anno2-2')} onClick={() => toggleStep('anno2-2')} style={{ marginBottom: '2.5rem' }}>
                     <div className="flex-row-wrap" style={{ gap: '2rem' }}>
                       <div className="flex-1">
-                        <div className="step-header" style={{ marginBottom: '1rem' }}>
+                         <div className="step-header" style={{ marginBottom: '1rem' }}>
                           <span className={`step-number ${completedSteps.has('anno2-2') ? 'completed' : ''}`}>
                             {completedSteps.has('anno2-2') ? <CheckCircle2 size={16} /> : '2'}
                           </span>
-                          <span className="step-label">Edits drafting entity characters</span>
+                          <span className="step-label">Select drafting entity &gt; GO</span>
                         </div>
                         <div className="image-wrapper-flush" style={{ marginBottom: '0.5rem', display: 'inline-block', marginLeft: '2.5rem' }}>
                           <img src={changesDraftingEntityImg} alt="Edits Drafting Entity Characters" className="software-screenshot screenshot-small" />
                         </div>
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                          <p className="p-flush flex items-center gap-2">
-                            1.) Select drafting entity &gt; GO
-                          </p>
-                          <p className="p-flush mt-2">
-                            2.) <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Edit Dimension Characters window</strong> will appear.
-                          </p>
-                          <p className="p-flush mt-2">
-                            3.) After editing the dimension characters, Press OK.
-                          </p>
+                          <div className="step-header" style={{ marginBottom: '1rem', border: 'none', background: 'transparent', padding: 0 }}>
+                            <span className="step-label"><strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Edit Dimension Characters window</strong> will appear.</span>
+                          </div>
+                          <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0 }}>
+                            <span className="step-label">After editing the dimension characters, Press OK.</span>
+                          </div>
                         </div>
                       </div>
                       <div className="image-wrapper-flush" style={{ display: 'flex', alignItems: 'center' }}>
@@ -321,21 +306,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                           <span className={`step-number ${completedSteps.has('anno2-3') ? 'completed' : ''}`}>
                             {completedSteps.has('anno2-3') ? <CheckCircle2 size={16} /> : '3'}
                           </span>
-                          <span className="step-label">Changes the attributes of a drafting entity</span>
+                          <span className="step-label">Select drafting entity &gt; GO</span>
                         </div>
                         <div className="image-wrapper-flush" style={{ marginBottom: '0.5rem', display: 'inline-block', marginLeft: '2.5rem' }}>
                           <img src={changesDraftingEntityImg} alt="Changes Draft Entity Attribute" className="software-screenshot screenshot-small" />
                         </div>
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                          <p className="p-flush flex items-center gap-2">
-                            1.) Select drafting entity &gt; GO
-                          </p>
-                          <p className="p-flush mt-2">
-                            2.) <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Change Properties window</strong> will appear.
-                          </p>
-                          <p className="p-flush mt-2">
-                            3.) After changing the properties, Press OK
-                          </p>
+                          <div className="step-header" style={{ marginBottom: '1rem', border: 'none', background: 'transparent', padding: 0 }}>
+                            <span className="step-label"><strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Change Properties window</strong> will appear.</span>
+                          </div>
+                          <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0 }}>
+                            <span className="step-label">After changing the properties, Press OK</span>
+                          </div>
                         </div>
                       </div>
                       <div className="image-wrapper-flush" style={{ display: 'flex', alignItems: 'center' }}>
@@ -368,15 +350,9 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
           </div>
 
           <div className="lesson-navigation">
-            <button
-              className="nav-button"
-              onClick={handlePrev}
-              disabled={isAnnotation1}
-            >
-              <ChevronLeft size={18} /> Previous
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
             <button className="nav-button next" onClick={handleNext}>
-              {isAnnotation1 ? 'Annotation (2)' : 'Finish'} <ChevronRight size={18} />
+              {isAnnotation1 ? 'Next' : 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

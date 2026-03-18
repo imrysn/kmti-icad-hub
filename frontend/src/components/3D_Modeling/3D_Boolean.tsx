@@ -30,12 +30,13 @@ import componentSeparated from '../../assets/3D_Image_File/boolean(2)_component_
 interface BooleanLessonProps {
   subLessonId: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
 // Sub-components Boolean1 and Boolean2 were integrated into the main BooleanLesson component for better structure.
 
 
-const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson }) => {
+const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
   const [activeTab1, setActiveTab1] = useState<'union' | 'subtract'>('union');
   const [activeTab2, setActiveTab2] = useState<'intersect' | 'separate'>('intersect');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -98,6 +99,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
   const handlePrev1 = () => {
     if (activeTab1 === 'subtract') setActiveTab1('union');
+    else if (onPrevLesson) onPrevLesson();
   };
 
   const handleNext2 = () => {
@@ -107,6 +109,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
   const handlePrev2 = () => {
     if (activeTab2 === 'separate') setActiveTab2('intersect');
+    else if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -147,10 +150,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1u-1') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1u-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Union Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Union</strong> from the menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Union</strong> from the menu.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                       <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" />
                     </div>
@@ -162,10 +164,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1u-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1u-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Entities</span>
+                    <span className="step-label">Select all entities you want to join &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select all entities you want to join &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
+                    {/* Select Entities content moved to label */}
                     <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
                         <img src={select3D} alt="Select 3D entities" className="software-screenshot screenshot-medium" />
@@ -175,7 +177,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
 
                 <div className="lesson-navigation">
-                  <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+                  <button className="nav-button" onClick={handlePrev1}><ChevronLeft size={18} /> Previous</button>
                   <button className="nav-button next" onClick={handleNext1}>Next <ChevronRight size={18} /></button>
                 </div>
               </div>
@@ -192,10 +194,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1s-1') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1s-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Subtract Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Subtract</strong> from the menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Subtract</strong> from the menu.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                       <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot screenshot-small" />
                     </div>
@@ -229,11 +230,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1s-3') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1s-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Perform Subtraction</span>
+                    <span className="step-label">Select the tool entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select the tool entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
-                    <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
+                  <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
                         <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot screenshot-large" />
                       </div>
@@ -258,7 +258,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
                 <div className="lesson-navigation">
                   <button className="nav-button" onClick={handlePrev1}><ChevronLeft size={18} /> Previous</button>
-                  <button className="nav-button next" onClick={handleNext1}>Finish <ChevronRight size={18} /></button>
+                  <button className="nav-button next" onClick={handleNext1}>Next Lesson <ChevronRight size={18} /></button>
                 </div>
               </div>
             )}
@@ -283,10 +283,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl2i-1') ? 'completed' : ''}`}>
                       {completedSteps.has('bl2i-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Intersect</span>
+                    <span className="step-label">Select <strong className="text-highlight">Intersect</strong> from the menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Intersect</strong> from the menu.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                       <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot screenshot-small" />
                     </div>
@@ -298,10 +297,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl2i-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl2i-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Entities</span>
+                    <span className="step-label">Select the intersecting solids &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select the intersecting solids &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
                         <img src={intersectingEntities} alt="Intersecting Entities" className="software-screenshot screenshot-large" />
@@ -312,7 +310,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
 
                 <div className="lesson-navigation">
-                  <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+                  <button className="nav-button" onClick={handlePrev2}><ChevronLeft size={18} /> Previous</button>
                   <button className="nav-button next" onClick={handleNext2}>Next <ChevronRight size={18} /></button>
                 </div>
               </div>
@@ -334,16 +332,13 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </div>
                   <div className="step-description" style={{ paddingLeft: '0.5rem' }}>
                     <div className="flex-col" style={{ gap: '1rem' }}>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">1</span>
-                        <p className="p-flush">Select specific components to separate &gt; <strong className="text-highlight">GO</strong></p>
-                        <div className="image-wrapper-flush">
-                          <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                        </div>
+                      <div className="step-header">
+                        <span className="step-number">1</span>
+                        <span className="step-label">Select specific components to separate &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
                       </div>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">2</span>
-                        <p className="p-flush">Separated components will appear. Select <strong className="text-highlight">OK</strong>.</p>
+                      <div className="step-header" style={{ marginTop: '1rem' }}>
+                        <span className="step-number">2</span>
+                        <span className="step-label">Separated components will appear. Select <strong className="text-highlight">OK</strong>.</span>
                       </div>
                     </div>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1.5rem', gap: '1.5rem' }}>
@@ -368,16 +363,13 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </div>
                   <div className="step-description" style={{ paddingLeft: '0.5rem' }}>
                     <div className="flex-col" style={{ gap: '1rem' }}>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">1</span>
-                        <p className="p-flush">Select the entire solid entity &gt; <strong className="text-highlight">GO</strong></p>
-                        <div className="image-wrapper-flush">
-                          <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                        </div>
+                      <div className="step-header">
+                        <span className="step-number">1</span>
+                        <span className="step-label">Select the entire solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
                       </div>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">2</span>
-                        <p className="p-flush">All components will be separated at once. Select <strong className="text-highlight">OK</strong>.</p>
+                      <div className="step-header" style={{ marginTop: '1rem' }}>
+                        <span className="step-number">2</span>
+                        <span className="step-label">All components will be separated at once. Select <strong className="text-highlight">OK</strong>.</span>
                       </div>
                     </div>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1.5rem', gap: '1.5rem' }}>

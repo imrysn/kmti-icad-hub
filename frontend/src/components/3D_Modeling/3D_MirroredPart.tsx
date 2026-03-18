@@ -24,9 +24,10 @@ import pick3PointsPartA from '../../assets/3D_Image_File/mirrored_part(2)_pick3_
 interface MirroredPartLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = 'mirrored-1', onNextLesson }) => {
+const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = 'mirrored-1', onNextLesson, onPrevLesson }) => {
   const isMirrored1 = subLessonId === 'mirrored-1';
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -170,14 +171,11 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = '
                     <span className={`step-number ${completedSteps.has('mp1-3') ? 'completed' : ''}`}>
                       {completedSteps.has('mp1-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">To check if a part is normal or mirror part:</span>
+                    <span className="step-label">Use Mirror copy tool on the icon menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <div style={{ marginBottom: '1.5rem' }}>
-                      <p className="p-flush">Use Mirror copy tool on the icon menu.</p>
-                      <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                        <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" style={{ border: '1px solid var(--primary-red)' }} />
-                      </div>
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" style={{ border: '1px solid var(--primary-red)' }} />
                     </div>
 
                     <div className="info-box" style={{ background: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: '8px', borderLeft: '4px solid var(--primary-red)' }}>
@@ -286,11 +284,11 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = '
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled={isMirrored1}>
+            <button className="nav-button" onClick={onPrevLesson}>
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {isMirrored1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} />
+              Next Lesson <ChevronRight size={18} />
             </button>
           </div>
         </div>
