@@ -16,7 +16,13 @@ function createWindow() {
 
     // Load the local URL for development or the local file for production
     if (process.env.NODE_ENV === 'development') {
-        mainWindow.loadURL('http://localhost:5173');
+        const devUrl = 'http://localhost:5173';
+        if (mainWindow) {
+            mainWindow.loadURL(devUrl).catch(() => {
+                console.log('Failed to load 5173, trying 5174...');
+                if (mainWindow) mainWindow.loadURL('http://localhost:5174');
+            });
+        }
     } else {
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
     }

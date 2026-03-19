@@ -12,9 +12,10 @@ import uploadingFlowchart from '../../assets/3D_Image_File/3d_purchase.jpg';
 interface PurchasePartsLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId = 'purchase-parts-1', onNextLesson }) => {
+const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId = 'purchase-parts-1', onNextLesson, onPrevLesson }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -82,8 +83,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled={isPart1} onClick={() => { }}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>{isPart1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

@@ -30,12 +30,13 @@ import componentSeparated from '../../assets/3D_Image_File/boolean(2)_component_
 interface BooleanLessonProps {
   subLessonId: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
 // Sub-components Boolean1 and Boolean2 were integrated into the main BooleanLesson component for better structure.
 
 
-const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson }) => {
+const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
   const [activeTab1, setActiveTab1] = useState<'union' | 'subtract'>('union');
   const [activeTab2, setActiveTab2] = useState<'intersect' | 'separate'>('intersect');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -98,6 +99,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
   const handlePrev1 = () => {
     if (activeTab1 === 'subtract') setActiveTab1('union');
+    else if (onPrevLesson) onPrevLesson();
   };
 
   const handleNext2 = () => {
@@ -107,6 +109,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
   const handlePrev2 = () => {
     if (activeTab2 === 'separate') setActiveTab2('intersect');
+    else if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -141,16 +144,15 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             {activeTab1 === 'union' && (
               <div className="lesson-card tab-content">
                 <div className="card-header"><h4>UNION</h4></div>
-                <p>Tool for joining 3D entities into a single entity.</p>
+                <p style={{ marginTop: '-1rem' }}>Tool for joining 3D entities into a single entity.</p>
                 <div className={getStepClass('bl1u-1')} onClick={() => toggleStep('bl1u-1')}>
                   <div className="step-header">
                     <span className={`step-number ${completedSteps.has('bl1u-1') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1u-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Union Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Union</strong> from the menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Union</strong> from the menu.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                       <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" />
                     </div>
@@ -162,20 +164,20 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1u-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1u-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Entities</span>
+                    <span className="step-label">Select all 3D entities for joining &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select all entities you want to join &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
-                    <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
+                    {/* Select Entities content moved to label */}
+                    <div className="flex-row-center--wrap" style={{ gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
-                        <img src={select3D} alt="Select 3D entities" className="software-screenshot screenshot-medium" />
+                        <img src={select3D} alt="Select 3D entities" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="lesson-navigation">
-                  <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+                  <button className="nav-button" onClick={handlePrev1}><ChevronLeft size={18} /> Previous</button>
                   <button className="nav-button next" onClick={handleNext1}>Next <ChevronRight size={18} /></button>
                 </div>
               </div>
@@ -183,19 +185,17 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             {activeTab1 === 'subtract' && (
               <div className="lesson-card tab-content">
                 <div className="card-header"><h4>SUBTRACT</h4></div>
-                <div className="instruction-box instruction-box--tight">
-                  <p className="p-flush">Tool for creating cutout on 3D entities.</p>
-                </div>
+                <p className="p-flush" style={{ marginTop: '-1rem' }}>Tool for creating cutout on 3D entities.</p>
+
 
                 <div className={getStepClass('bl1s-1')} onClick={() => toggleStep('bl1s-1')}>
                   <div className="step-header">
                     <span className={`step-number ${completedSteps.has('bl1s-1') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1s-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Subtract Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Subtract</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Subtract</strong> from the menu.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                       <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot screenshot-small" />
                     </div>
@@ -207,7 +207,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1s-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1s-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Target</span>
+                    <span className="step-label">First, select the Target entity</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <div className="flex-row-wrap" style={{ gap: '2rem' }}>
@@ -217,7 +217,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                           <p className="p-flush" style={{ marginTop: '0.5rem' }}><strong className="text-highlight">Tool Entity:</strong> Entities to be subtracted on the target entity.</p>
                         </div>
                       </div>
-                      <div className="image-wrapper-flush" style={{ marginBottom: '-1rem' }}>
+                      <div className="image-wrapper-flush" style={{ marginTop: '-3rem' }}>
                         <img src={subtractEntity} alt="Target and Tool Entity" className="software-screenshot screenshot-medium" />
                       </div>
                     </div>
@@ -229,10 +229,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1s-3') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1s-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Perform Subtraction</span>
+                    <span className="step-label">Select the tool entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
+                  <p className="p-flush" style={{ marginTop: '-0.5rem', marginLeft: '2.5rem' }}>Tool entities will disappear and become components after subtraction.</p>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select the tool entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
                         <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot screenshot-large" />
@@ -258,7 +258,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
                 <div className="lesson-navigation">
                   <button className="nav-button" onClick={handlePrev1}><ChevronLeft size={18} /> Previous</button>
-                  <button className="nav-button next" onClick={handleNext1}>Finish <ChevronRight size={18} /></button>
+                  <button className="nav-button next" onClick={handleNext1}>Next Lesson <ChevronRight size={18} /></button>
                 </div>
               </div>
             )}
@@ -275,7 +275,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             {activeTab2 === 'intersect' && (
               <div className="lesson-card tab-content">
                 <div className="card-header"><h4>INTERSECT</h4></div>
-                <p>Tool that creates entity of the product of two intersecting entities.</p>
+                <p style={{ marginTop: '-1rem' }}>Tool that creates entity of the product of two intersecting entities.</p>
 
 
                 <div className={getStepClass('bl2i-1')} onClick={() => toggleStep('bl2i-1')}>
@@ -283,10 +283,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl2i-1') ? 'completed' : ''}`}>
                       {completedSteps.has('bl2i-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Intersect</span>
+                    <span className="step-label">Select <strong className="text-highlight">Intersect</strong> from the menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Intersect</strong> from the menu.</p>
                     <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                       <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot screenshot-small" />
                     </div>
@@ -298,10 +297,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl2i-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl2i-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Entities</span>
+                    <span className="step-label">Select the intersecting entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
+                  <p className="p-flush" style={{ marginTop: '-0.5rem', marginLeft: '2.5rem' }}>Intersecting entities will not disappear after the process</p>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select the intersecting solids &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
                         <img src={intersectingEntities} alt="Intersecting Entities" className="software-screenshot screenshot-large" />
@@ -312,7 +311,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
 
                 <div className="lesson-navigation">
-                  <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
+                  <button className="nav-button" onClick={handlePrev2}><ChevronLeft size={18} /> Previous</button>
                   <button className="nav-button next" onClick={handleNext2}>Next <ChevronRight size={18} /></button>
                 </div>
               </div>
@@ -320,81 +319,73 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             {activeTab2 === 'separate' && (
               <div className="lesson-card tab-content">
                 <div className="card-header"><h4>SEPARATE ENTITY</h4></div>
-                <div className="instruction-box instruction-box--tight">
-                  <p className="p-flush">Tool use to reverse the boolean operations by creating CSG solid.</p>
+                <p className="p-flush" style={{ marginTop: '-1rem' }}>Tool use to reverse the boolean operations by creating CSG solid.</p>
+                <p className="p-flush"><strong className="text-highlight">Component</strong></p>
+                <p className="p-flush" style={{ marginTop: '-0.5rem' }}>By-product of boolean operations (entities joined by union, cutout, holes)</p>
+                <div className="image-wrapper-flush" style={{ marginTop: '-1rem' }}>
+                  <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" />
                 </div>
+                <p className="p-flush" style={{ marginTop: '-1rem' }}><strong>This tool is use to separate specified entities from the solid entity.</strong></p>
 
-                <div className="tool-block" style={{ padding: '1rem', background: 'rgba(52, 152, 219, 0.05)', borderRadius: '8px', marginBottom: '1.5rem' }}>
-                  <p className="p-flush"><strong className="text-highlight">What is a Component?</strong> It's any byproduct of boolean operations (joined parts, cutouts, or holes) that still exists within the solid's history.</p>
-                </div>
+
 
                 <div className={getStepClass('bl2s-1')} onClick={() => toggleStep('bl2s-1')}>
-                  <div className="step-header">
-                    <span className="step-label step-label-primary">METHOD A: SEPARATE SPECIFIED ENTITIES</span>
-                  </div>
                   <div className="step-description" style={{ paddingLeft: '0.5rem' }}>
                     <div className="flex-col" style={{ gap: '1rem' }}>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">1</span>
-                        <p className="p-flush">Select specific components to separate &gt; <strong className="text-highlight">GO</strong></p>
-                        <div className="image-wrapper-flush">
-                          <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                        </div>
+                      <div className="step-header">
+                        <span className="step-number">1</span>
+                        <span className="step-label">Select the desired components to be separate from the solid entity &gt; GO<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                       </div>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">2</span>
-                        <p className="p-flush">Separated components will appear. Select <strong className="text-highlight">OK</strong>.</p>
+                      <div className="step-header" style={{ marginTop: '1rem' }}>
+                        <span className="step-number">2</span>
+                        <span className="step-label">Separated components will be displayed in a form of CSG solid. Select OK</span>
                       </div>
                     </div>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1.5rem', gap: '1.5rem' }}>
-                      <div className="image-wrapper-flush">
-                        <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" />
+
+                      <div className="image-wrapper-flush" style={{ marginTop: '-5rem' }}>
+                        <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" />
                       </div>
-                      <div className="image-wrapper-flush">
-                        <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-small" />
-                      </div>
-                      <div className="image-wrapper-flush">
+
+                      <div className="image-wrapper-flush" style={{ marginLeft: '10rem' }}>
                         <img src={componentSeparated} alt="Separated Result" className="software-screenshot screenshot-medium" />
                       </div>
                     </div>
+                    <div className="image-wrapper-flush" style={{ marginLeft: '4rem', marginTop: '-5rem' }}>
+                      <img src={componentSeparate} alt="Separate All Components Icon" className="software-screenshot screenshot-small" />
+                    </div>
                   </div>
+
                 </div>
 
                 <div className="section-divider"></div>
 
                 <div className={getStepClass('bl2s-2')} onClick={() => toggleStep('bl2s-2')}>
-                  <div className="step-header">
-                    <span className="step-label step-label-primary">METHOD B: SEPARATE ALL COMPONENTS</span>
-                  </div>
+                  <p className="p-flush" style={{ marginTop: '-1rem' }}><strong>This tool is use to separate all components from the solid entity.</strong></p>
                   <div className="step-description" style={{ paddingLeft: '0.5rem' }}>
                     <div className="flex-col" style={{ gap: '1rem' }}>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">1</span>
-                        <p className="p-flush">Select the entire solid entity &gt; <strong className="text-highlight">GO</strong></p>
-                        <div className="image-wrapper-flush">
-                          <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                        </div>
+                      <div className="step-header">
+                        <span className="step-number">1</span>
+                        <span className="step-label" style={{ marginTop: '-1rem' }}>Select the entire solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
                       </div>
-                      <div className="flex-row-center" style={{ gap: '1rem' }}>
-                        <span className="step-number-pill">2</span>
-                        <p className="p-flush">All components will be separated at once. Select <strong className="text-highlight">OK</strong>.</p>
+                      <div className="step-header" style={{ marginTop: '1rem' }}>
+                        <span className="step-number">2</span>
+                        <span className="step-label" style={{ marginTop: '0.5rem' }}>Separate components will be displayed in a form of CSG solid. Select OK</span>
                       </div>
                     </div>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1.5rem', gap: '1.5rem' }}>
+
                       <div className="image-wrapper-flush">
-                        <img src={componentSeparate} alt="Separate All Components Icon" className="software-screenshot screenshot-small" />
+                        <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" />
                       </div>
-                      <div className="image-wrapper-flush">
-                        <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-small" />
-                      </div>
-                      <div className="image-wrapper-flush">
+                      <div className="image-wrapper-flush" style={{ marginLeft: '10rem' }}>
                         <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" />
                       </div>
                     </div>
                   </div>
                 </div>
 
-<div className="lesson-navigation">
+                <div className="lesson-navigation">
                   <button className="nav-button" onClick={handlePrev2}><ChevronLeft size={18} /> Previous</button>
                   <button className="nav-button next" onClick={handleNext2}>Finish <ChevronRight size={18} /></button>
                 </div>

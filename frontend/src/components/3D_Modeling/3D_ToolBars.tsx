@@ -26,7 +26,7 @@ import tbEntryControl from '../../assets/3D_Image_File/tool_bars_entry_control.j
 
 import {
   Save, Monitor, Layers, ZoomIn, Box, Compass, Edit2, Sun,
-  Scissors, Layout, Info, Cpu, MousePointer2
+  Scissors, Layout, Info, Cpu, MousePointer2, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
 const ICAD_TOOLBARS = [
@@ -45,7 +45,12 @@ const ICAD_TOOLBARS = [
   { id: 'entry-control', title: 'Entry Control', description: 'The method for entity selection and coordinate entry can be specified', features: ['Entity Selection', 'Coordinate Entry', 'AP/Magnet Tools'], imageSrc: tbEntryControl, icon: <MousePointer2 size={18} /> },
 ];
 
-const ToolBarsLesson: React.FC = () => {
+interface ToolBarsLessonProps {
+  onNextLesson?: () => void;
+  onPrevLesson?: () => void;
+}
+
+const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -96,6 +101,10 @@ const ToolBarsLesson: React.FC = () => {
         <div className="lesson-card">
           <div className="lesson-content">
             <ToolbarExplorer toolbars={ICAD_TOOLBARS} />
+          </div>
+          <div className="lesson-navigation">
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
