@@ -102,6 +102,8 @@ class ChatLog(Base):
     tokens_estimated = Column(Integer, default=0)               # Rough token count (chars / 4)
     response_time_ms = Column(Integer, default=0)               # End-to-end latency
     had_media = Column(Boolean, default=False)                  # Whether images were returned
+    is_cached = Column(Boolean, default=False)                  # Whether this was a cache hit
+    suggestions = Column(String(2000), nullable=True)           # PHASE 3: Store suggestions in log
     created_at = Column(DateTime, default=func.now(), index=True)
 
 

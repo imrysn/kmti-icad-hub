@@ -451,7 +451,7 @@ async def upload_kb_files(
 @router.get("/kb/files/{filename}/preview")
 def preview_kb_file(
     filename: str,
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """Return file contents as JSON rows for in-browser preview (CSV and XLSX only)."""
     # Sanitize — no path traversal
@@ -507,7 +507,7 @@ def preview_kb_file(
 @router.get("/kb/files/{filename}/download")
 def download_kb_file(
     filename: str,
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """Download a KB file directly."""
     if "/" in filename or "\\" in filename or ".." in filename:
@@ -528,8 +528,7 @@ def delete_kb_file(
     admin: User = Depends(require_role("admin"))
 ):
     """Delete a file from the knowledge base"""
-    kb_dir = "knowledge_base/"
-    file_path = os.path.join(kb_dir, filename)
+    file_path = os.path.join(KB_DIR, filename)
     
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")

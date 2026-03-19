@@ -5,6 +5,16 @@
     z-index: 4000;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: auto;
+    touch-action: none; /* Prevent scrolling during drag */
+}
+
+.broadcast-center-floating.dragging {
+    transition: none !important;
+}
+
+.broadcast-center-floating.dragging .chatbox-bubble {
+    transition: none !important;
+    transform: none !important; /* Prevent hover translateY while dragging */
 }
 
 .chatbox-bubble {

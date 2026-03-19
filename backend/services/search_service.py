@@ -9,10 +9,10 @@ load_dotenv(dotenv_path=_env_path)
 import hashlib
 import json
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 
 from ..rag_engine import rag_engine
-from ..schemas import SearchResponse, SearchResult, MediaAsset
+from ..schemas import SearchResponse, SearchResult, MediaAsset, ChatMessage
 from ..models import MediaMetadata, QueryCache
 from ..database import SessionLocal
 from sqlalchemy import or_
@@ -73,14 +73,22 @@ class SearchService:
 search_service = SearchService(rag_engine)
 
 
+from .ai_service import ai_service
+
 class ChatService:
     def __init__(self, search: SearchService):
         self.search = search
 
-    def _make_cache_key(self, message: str) -> str:
-        """SHA-256 of lowercased, stripped message. History is intentionally excluded
-        so conversational follow-ups don't pollute the cache."""
-        normalized = message.strip().lower()
+    def _make_cache_key(self, message: str, language: str, images: List[dict] = None) -> str:
+        """SHA-256 of lowercased, stripped message + language code + image hashes."""
+        img_hashes = ""
+        if images:
+            for img in images:
+                # Hash the base64 data to ensure unique keys for different images
+                img_hash = hashlib.md5(img["data"].encode('utf-8')).hexdigest()
+                img_hashes += f":img{img_hash}"
+        
+        normalized = f"{language.lower()}:{message.strip().lower()}{img_hashes}"
         return hashlib.sha256(normalized.encode('utf-8')).hexdigest()
 
     def _get_cache(self, query_hash: str) -> Optional[dict]:
@@ -96,7 +104,12 @@ class ChatService:
                     entry.hit_count += 1
                     db.commit()
                     sources = json.loads(entry.sources_json) if entry.sources_json else []
-                    return {"answer": entry.answer, "sources": sources, "cached": True}
+                    return {
+                        "answer": entry.answer,
+                        "sources": sources,
+                        "cached": True,
+                        "suggestions": []  # PHASE 3: Cached responses don't include suggestions (performance)
+                    }
         except Exception as e:
             print(f"[Cache] Read error: {e}")
         return None
@@ -125,19 +138,14 @@ class ChatService:
         except Exception as e:
             print(f"[Cache] Write error: {e}")
 
-    def chat(self, message: str, history: list) -> dict:
-        """
-        RAG-grounded chat.
-        1. Check query cache — return instantly if hit.
-        2. Retrieve relevant context from ChromaDB.
-        3. Call Gemini, cache result, return.
-        """
-        # Step 1: Cache check (only for standalone queries, not mid-conversation)
-        query_hash = self._make_cache_key(message)
-        if not history:  # Only cache first-turn queries
+    async def chat(self, message: str, history: List[ChatMessage] = None, session_id: str = None, 
+                   images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False) -> dict:
+        """RAG-grounded chat using AIService."""
+        # Step 1: Cache check
+        query_hash = self._make_cache_key(message, language, images)
+        if not history and not is_regeneration:
             cached = self._get_cache(query_hash)
             if cached:
-                print(f"[Cache] HIT for: {message[:60]}")
                 return cached
 
         # Step 2: Retrieve context
@@ -146,122 +154,126 @@ class ChatService:
 
         if not sources:
             return {
-                "answer": "I couldn't find any relevant information in the knowledge base for your question. Try re-indexing or uploading related files.",
-                "sources": []
+                "answer": "I couldn't find any relevant information in the knowledge base for your question.",
+                "sources": [],
+                "cached": False,
+                "suggestions": []
             }
 
-        # Step 2: Build context block
-        context_chunks = []
-        for i, s in enumerate(sources[:8]):
-            context_chunks.append(f"[{i+1}] Source: {s.source}\n{s.content}")
-        context_text = "\n\n".join(context_chunks)
+        # Step 3: Build Prompt
+        system_prompt, user_prompt, context_text = self._build_prompts(message, history, sources, language, is_regeneration)
 
-        # Step 3: Build conversation history string (last 10 turns = 5 exchanges)
-        history_text = ""
-        for turn in history[-10:]:
-            role_label = "User" if turn.role == "user" else "Assistant"
-            history_text += f"{role_label}: {turn.content}\n"
-
-        # Step 4: Full prompt
-        system_prompt = (
-            "You are the iCAD Intelligence Node — an expert AI training assistant for the KMTI iCAD system. "
-            "Your role is not just to answer questions, but to actively guide the user's understanding. "
-            "When a user asks something, do the following:\n"
-            "1. ANSWER their question directly and accurately using only the provided context.\n"
-            "2. EXPAND on the answer — explain the 'why' or how it connects to other iCAD concepts if the context supports it.\n"
-            "3. SUGGEST related topics — after your answer, identify 1-3 related concepts or follow-up areas "
-            "from the context that the user would likely benefit from knowing. Present these as natural suggestions, "
-            "not a bullet list — weave them into your closing sentence (e.g., 'You might also want to explore X, "
-            "which relates to Y in iCAD').\n"
-            "4. If the question is vague or broad, briefly clarify what aspect you're addressing and mention other "
-            "angles the user could explore.\n"
-            "Keep responses clear and technically accurate. Never fabricate information outside the provided context. "
-            "If the context is insufficient, say so and suggest the user re-index or upload more relevant files."
-        )
-
-        user_prompt = (
-            f"Context from knowledge base:\n{context_text}\n\n"
-            f"{history_text}"
-            f"User: {message}\n\nAssistant:"
-        )
-
-        # Step 5: Call Gemini, fall back to extractive summary
-        answer = self._call_gemini(system_prompt, user_prompt)
+        # Step 4: Call AIService
+        answer = ai_service.generate_content(system_prompt, user_prompt, images)
         if answer is None:
             answer = self._fallback_summary(message, sources)
 
         serialized_sources = [s.model_dump() for s in sources[:5]]
 
-        # Step 6: Write to cache (only standalone queries without history)
-        if not history and answer:
+        if not history and not is_regeneration and answer:
             self._set_cache(query_hash, message, answer, serialized_sources)
+
+        suggestions = self._generate_suggestions(message, answer, context_text) if answer else []
 
         return {
             "answer": answer,
             "sources": serialized_sources,
-            "cached": False
+            "cached": False,
+            "suggestions": suggestions
         }
 
-    def _call_gemini(self, system_prompt: str, user_prompt: str) -> Optional[str]:
-        """Call Google Gemini API with retry on 429. Returns None if key is missing or all retries fail."""
-        import time, re
-        api_key = os.getenv("GOOGLE_API_KEY", "")
-        if not api_key or api_key == "your_api_key_here":
-            return None
-        try:
-            from google import genai
-            from google.genai import types
-            client = genai.Client(api_key=api_key)
-            model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-        except Exception as e:
-            print(f"[Gemini] Init error: {e}")
-            return None
+    async def chat_stream(self, message: str, history: List[ChatMessage] = None, 
+                           images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False):
+        """Streaming version of chat using AIService."""
+        search_response = self.search.search_knowledge_base(message)
+        sources = search_response.results
+        serialized_sources = [s.model_dump() for s in sources[:5]]
 
-        max_retries = 3
-        backoff = 10
-        for attempt in range(max_retries):
-            try:
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=user_prompt,
-                    config=types.GenerateContentConfig(
-                        system_instruction=system_prompt,
-                        temperature=0.3,
-                    )
-                )
-                return response.text.strip()
-            except Exception as e:
-                err_str = str(e)
-                if "429" in err_str:
-                    retry_after = backoff * (2 ** attempt)
-                    match = re.search(r'retry_delay\s*\{\s*seconds:\s*(\d+)', err_str)
-                    if match:
-                        retry_after = int(match.group(1)) + 2
-                    print(f"[Gemini] Rate limited. Retrying in {retry_after}s (attempt {attempt + 1}/{max_retries})...")
-                    time.sleep(retry_after)
-                else:
-                    print(f"[Gemini] Error: {e}")
-                    return None
-        print("[Gemini] All retries exhausted.")
+        if not sources:
+            yield {"type": "content", "delta": "I couldn't find any relevant information in the knowledge base."}
+            yield {"type": "end", "sources": [], "suggestions": []}
+            return
+
+        system_prompt, user_prompt, context_text = self._build_prompts(message, history, sources, language, is_regeneration)
+
+        full_answer = ""
+        async for chunk in ai_service.generate_content_stream(system_prompt, user_prompt, images):
+            full_answer += chunk
+            yield {"type": "content", "delta": chunk}
+
+        suggestions = self._generate_suggestions(message, full_answer, context_text) if full_answer else []
+        yield {
+            "type": "end", 
+            "full_answer": full_answer,
+            "sources": serialized_sources, 
+            "suggestions": suggestions
+        }
+
+    def _build_prompts(self, message: str, history: List[ChatMessage], sources: list, language: str, is_regeneration: bool):
+        """Helper to construct system and user prompts uniformly."""
+        pruned_history = self._prune_history(history or [])
+        context_text = "\n\n".join([f"[{idx+1}] Source: {s.source}\nContent: {s.content}" for idx, s in enumerate(sources[:5])])
+        
+        history_text = ""
+        if pruned_history:
+            history_text = "Recent conversation flow:\n"
+            for turn in pruned_history:
+                role_label = "User" if turn.role == "user" else "Assistant"
+                history_text += f"{role_label}: {turn.content}\n"
+
+        lang_map = {"en-US": "ENGLISH", "ja-JP": "JAPANESE", "fil-PH": "FILIPINO (TAGALOG)"}
+        target_lang = lang_map.get(language, "ENGLISH")
+
+        reg_text = "\n\nCRITICAL: This is a REGENERATION request. Provide a DIFFERENT approach/explanation." if is_regeneration else ""
+
+        system_prompt = (
+            "You are the iCAD Technical Instructor. Answer comprehensively using the provided context as your foundation.\n\n"
+            "STRICT GUIDELINES:\n"
+            "1. GROUNDED & HELPFUL: Use the provided context to explain concepts. If a direct answer isn't present, synthesize a helpful explanation based on related info in the context. Only state you don't know if the context is entirely irrelevant.\n"
+            "2. CITATIONS: Use [1], [2], etc. immediately after sentences that use info from a source. Match the indices from the context.\n"
+            "3. STRUCTURE: Use Markdown. Bold key terms for clarity.\n"
+            "4. ENGAGEMENT: End your response by asking if the explanation was helpful or if the user needs further clarification.\n"
+            f"5. LANGUAGE: Respond in {target_lang}."
+            f"{reg_text}"
+        )
+
+        user_prompt = f"Context:\n{context_text}\n\n{history_text}User: {message}\n\nAssistant:"
+        return system_prompt, user_prompt, context_text
+
+    def _prune_history(self, history: List[ChatMessage], limit: int = 10) -> List[ChatMessage]:
+        if not history: return []
+        return history[-limit:]
+
+    def _generate_suggestions(self, query: str, answer: str, context: str) -> List[str]:
+        system_prompt = (
+            "You are a learning assistant for iCAD technical training. "
+            "Suggest 3 natural follow-up questions (8-15 words). Return ONLY the questions, one per line."
+        )
+        user_prompt = f"User asked: {query}\n\nAnswer learned: {answer[:400]}\n\nContext available: {context[:300]}"
+        
+        response = ai_service.generate_content(system_prompt, user_prompt, temperature=0.7)
+        if response:
+            lines = [line.strip().strip('-•123456789.') for line in response.strip().split('\n')]
+            return [line for line in lines if line and len(line) > 10][:3]
+        return []
+
+    def summarize_session_title(self, message: str, history: list) -> Optional[str]:
+        system_prompt = "You are a session titler. Summarize the user's intent in exactly 3-5 words. No punctuation."
+        user_history = "\n".join([f"{h.role}: {h.content[:100]}" for h in history[-4:]])
+        user_prompt = f"History:\n{user_history}\nCurrent: {message}\n\nTitle:"
+        
+        title = ai_service.generate_content(system_prompt, user_prompt)
+        if title:
+            return title.strip().replace('"', '').replace('.', '')
         return None
 
     def _fallback_summary(self, query: str, sources) -> str:
-        """Extractive fallback when Gemini API key is not configured."""
         top = sources[0]
-        lines = [
-            f"Based on the knowledge base, here is what I found regarding '{query}':",
-            "",
-            top.content,
-        ]
-        if len(sources) > 1:
-            lines.append(
-                f"\nAdditional context found in {len(sources) - 1} other source(s). See the Sources panel below."
-            )
-        lines.append(
-            "\n⚠️ Gemini unavailable (no key configured, quota exceeded, or retries exhausted). "
-            "Generate a new key at https://aistudio.google.com/apikey and update GOOGLE_API_KEY in .env"
+        return (
+            f"Based on the knowledge base, here is what I found regarding '{query}':\n\n"
+            f"{top.content}\n\n"
+            "⚠️ Gemini unavailable (check AI service logs or API key)."
         )
-        return "\n".join(lines)
 
 
 chat_service = ChatService(search_service)

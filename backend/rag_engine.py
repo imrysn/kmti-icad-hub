@@ -28,7 +28,7 @@ class RAGEngine:
             self.persist_directory = persist_directory
         
         # Use PersistentClient (replaces the removed chromadb.Client(Settings(...)))
-        self.client = chromadb.PersistentClient(path=persist_directory)
+        self.client = chromadb.PersistentClient(path=self.persist_directory)
         
         # Use default embedding function (all-MiniLM-L6-v2)
         self.embedding_function = chromadb.utils.embedding_functions.DefaultEmbeddingFunction()
