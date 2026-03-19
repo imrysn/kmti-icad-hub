@@ -14,19 +14,6 @@ import InteractiveImageMap from './InteractiveImageMap';
 import icadWindowStructure from '../../assets/3D_Image_File/icad_window_structure.jpg'; // cspell:disable-line
 import '../../styles/3D_Modeling/CourseLesson.css';
 
-// Reusable ProTip Component
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 // ── iCAD Interface Lesson ──────────────────────────────────────────────────
 // Lesson-item ID: 'interface'
 // No sub-lessons – single interactive map view of the iCAD 3D window.

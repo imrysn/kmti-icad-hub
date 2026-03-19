@@ -35,18 +35,6 @@ interface BooleanLessonProps {
 // Sub-components Boolean1 and Boolean2 were integrated into the main BooleanLesson component for better structure.
 
 
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson }) => {
   const [activeTab1, setActiveTab1] = useState<'union' | 'subtract'>('union');
   const [activeTab2, setActiveTab2] = useState<'intersect' | 'separate'>('intersect');
@@ -244,29 +232,25 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Perform Subtraction</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select the tool entities &gt; <strong className="text-highlight">GO</strong></p>
+                    <p className="p-flush">Select the tool entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
-                      </div>
-                      <div className="image-wrapper-flush">
-                        <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot screenshot-medium" />
+                        <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="section-divider"></div>
+
 
                 <div className="tool-block">
-                  <h4 className="section-title">ADVANCED: RETAIN TOOL ENTITIES</h4>
-                  <p className="p-flush">Normally, 'tools' disappear after subtraction. Use the <strong className="text-highlight">Retain Tool</strong> version if you need to keep the original cutting solids active.</p>
+                  <p className="p-flush">This subtract tool will retain the tool entities after subtraction.</p>
                   <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                     <div className="image-wrapper-flush">
                       <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot screenshot-small" />
                     </div>
                     <div className="image-wrapper-flush">
-                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-medium" />
+                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
@@ -291,9 +275,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             {activeTab2 === 'intersect' && (
               <div className="lesson-card tab-content">
                 <div className="card-header"><h4>INTERSECT</h4></div>
-                <div className="instruction-box instruction-box--tight">
-                  <p className="p-flush">The 'Overlap' operation: Only keep the volume where two or more solids occupy the same space.</p>
-                </div>
+                <p>Tool that creates entity of the product of two intersecting entities.</p>
+
 
                 <div className={getStepClass('bl2i-1')} onClick={() => toggleStep('bl2i-1')}>
                   <div className="step-header">
@@ -318,21 +301,15 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select Entities</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select the intersecting solids &gt; <strong className="text-highlight">GO</strong></p>
+                    <p className="p-flush">Select the intersecting solids &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
                     <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
                       <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click" />
-                      </div>
-                      <div className="image-wrapper-flush">
-                        <img src={intersectingEntities} alt="Intersecting Entities" className="software-screenshot screenshot-medium" />
+                        <img src={intersectingEntities} alt="Intersecting Entities" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Complex Profiles">
-                  Intersection is incredibly powerful for creating complex curved profiles. By intersecting two extruded silhouettes from different planes, you can easily create shapes that would be difficult to sketch!
-                </ProTip>
 
                 <div className="lesson-navigation">
                   <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
@@ -344,7 +321,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               <div className="lesson-card tab-content">
                 <div className="card-header"><h4>SEPARATE ENTITY</h4></div>
                 <div className="instruction-box instruction-box--tight">
-                  <p className="p-flush">The 'Undo' operation: Break a combined solid back into its original component parts.</p>
+                  <p className="p-flush">Tool use to reverse the boolean operations by creating CSG solid.</p>
                 </div>
 
                 <div className="tool-block" style={{ padding: '1rem', background: 'rgba(52, 152, 219, 0.05)', borderRadius: '8px', marginBottom: '1.5rem' }}>
@@ -417,11 +394,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </div>
                 </div>
 
-                <ProTip title="Pro Tip: Reverting Changes">
-                  'Separate Entity' is your safety net. If you realize a hole was placed in the wrong spot after a subtraction, you don't need to 'Undo' everything—just separate that specific hole component and move it!
-                </ProTip>
-
-                <div className="lesson-navigation">
+<div className="lesson-navigation">
                   <button className="nav-button" onClick={handlePrev2}><ChevronLeft size={18} /> Previous</button>
                   <button className="nav-button next" onClick={handleNext2}>Finish <ChevronRight size={18} /></button>
                 </div>
@@ -429,8 +402,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             )}
           </div>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

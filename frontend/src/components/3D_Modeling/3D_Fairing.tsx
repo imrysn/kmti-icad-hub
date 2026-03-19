@@ -25,18 +25,6 @@ interface FairingLessonProps {
   onNextLesson?: () => void;
 }
 
-const ProTip: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="pro-tip-card">
-    <div className="pro-tip-icon-wrapper">
-      <Zap size={20} fill="currentColor" />
-    </div>
-    <div className="pro-tip-content">
-      <h5>{title}</h5>
-      <p>{children}</p>
-    </div>
-  </div>
-);
-
 const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
   const [activeTab, setActiveTab] = useState<'chamfer' | 'fillet' | 'shell'>('chamfer');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -97,8 +85,8 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div 
-          className="lesson-progress-bar" 
+        <div
+          className="lesson-progress-bar"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -124,9 +112,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
             {activeTab === 'chamfer' && (
               <div className="tab-pane fade-in">
                 <div className="card-header"><h4>CHAMFER</h4></div>
-                <div className="instruction-box">
-                  <p className="p-flush">Use for creating chamfer dimensions.</p>
-                </div>
+                <p style={{ margin: '1rem' }}>Use for creating chamfer dimensions.</p>
 
                 <div className={getStepClass('chamfer-1')} onClick={() => toggleStep('chamfer-1')}>
                   <div className="step-header">
@@ -139,7 +125,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <p className="p-flush">Select <strong className="text-highlight">Chamfer edge</strong> from the icon menu.</p>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={chamferIcon} alt="Chamfer Icon" className="software-screenshot screenshot-small" />
+                    <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
 
@@ -154,8 +140,9 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <p className="p-flush">Specify chamfer length on the item entry.</p>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot screenshot-medium" />
+                    <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-large" />
                   </div>
+
                 </div>
 
                 <div className={getStepClass('chamfer-3')} onClick={() => toggleStep('chamfer-3')} style={{ marginTop: '1.5rem' }}>
@@ -174,30 +161,27 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     </div>
                     <p className="p-flush" style={{ marginTop: '0.5rem', color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be chamfered all at once.</p>
                   </div>
-                  <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1rem' }}>
+                </div>
+
+                <div className="section-divider"></div>
+
+                <div className="tool-block">
+                  <h4 className="section-title">RESULT</h4>
+                  <div className="flex-row-center--wrap" style={{ gap: '1rem' }}>
                     <div className="image-wrapper-flush">
-                      <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-medium" />
-                    </div>
-                    <div className="image-wrapper-flush">
-                      <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-medium" />
+                      <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
 
-                <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Chain Selection">
-                    You can click multiple edges sequentially before hitting GO to chamfer them all simultaneously with the same length, saving valuable design time!
-                  </ProTip>
-                </div>
+                <div style={{ marginTop: '2rem' }}></div>
               </div>
             )}
 
             {activeTab === 'fillet' && (
               <div className="tab-pane fade-in">
                 <div className="card-header"><h4>FILLET</h4></div>
-                <div className="instruction-box">
-                  <p className="p-flush">Use for rounding specified corners.</p>
-                </div>
+                <p style={{ marginBottom: '1rem' }}>Use for rounding specified corners.</p>
 
                 <div className={getStepClass('fillet-1')} onClick={() => toggleStep('fillet-1')}>
                   <div className="step-header">
@@ -225,7 +209,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <p className="p-flush">Specify fillet radius on the item entry.</p>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot screenshot-medium" />
+                    <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
 
@@ -245,25 +229,27 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     </div>
                     <p className="p-flush" style={{ marginTop: '0.5rem', color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be fillet all at once.</p>
                   </div>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                    <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" />
+                </div>
+
+                <div className="section-divider"></div>
+
+                <div className="tool-block">
+                  <h4 className="section-title">RESULT</h4>
+                  <div className="flex-row-center--wrap" style={{ gap: '1rem' }}>
+                    <div className="image-wrapper-flush">
+                      <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" />
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Safety and Aesthetics">
-                    Fillets are not only aesthetically pleasing but are critical for making manufactured parts safe to handle by removing sharp edges (deburring) in the final product.
-                  </ProTip>
-                </div>
+                <div style={{ marginTop: '2rem' }}></div>
               </div>
             )}
 
             {activeTab === 'shell' && (
               <div className="tab-pane fade-in">
                 <div className="card-header"><h4>SHELL</h4></div>
-                <div className="instruction-box">
-                  <p className="p-flush">Use for hollowing solid entities using the specified wall thickness.</p>
-                </div>
+                <p style={{ marginBottom: '1rem' }}>Use for hollowing solid entities using the specified wall thickness.</p>
 
                 <div className={getStepClass('shell-1')} onClick={() => toggleStep('shell-1')}>
                   <div className="step-header">
@@ -317,19 +303,23 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                   </div>
                   <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1rem' }}>
                     <div className="image-wrapper-flush">
-                      <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-medium" />
+                      <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-large" />
                     </div>
+                  </div>
+                </div>
+
+                <div className="section-divider"></div>
+
+                <div className="tool-block">
+                  <h4 className="section-title">RESULT</h4>
+                  <div className="flex-row-center--wrap" style={{ gap: '1rem' }}>
                     <div className="image-wrapper-flush">
                       <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
                 </div>
 
-                <div style={{ marginTop: '2rem' }}>
-                  <ProTip title="Pro Tip: Open vs Closed Shell">
-                    If you don't select any faces to remove, shell will hollow out the inside leaving a completely closed solid. Selecting a face basically "removes" it to create the opening!
-                  </ProTip>
-                </div>
+                <div style={{ marginTop: '2rem' }}></div>
               </div>
             )}
           </div>
