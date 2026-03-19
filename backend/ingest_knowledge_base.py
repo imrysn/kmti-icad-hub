@@ -59,7 +59,12 @@ def ingest_excel_file(excel_path: str, text_columns: list = None):
                 'source': filename,
                 'row': idx,
                 'excel_path': excel_path,
-                'original_id': str(concept_id) if pd.notna(concept_id) else None
+                'original_id': str(concept_id) if pd.notna(concept_id) else None,
+                # Structured fields for better fallback formatting
+                'main_topic': str(row.get('Main_Topic', '')) if pd.notna(row.get('Main_Topic')) else '',
+                'sub_topic': str(row.get('Sub_Topic', '')) if pd.notna(row.get('Sub_Topic')) else '',
+                'instruction': str(row.get('Instruction', '')) if pd.notna(row.get('Instruction')) else '',
+                'tab_name': str(row.get('Tab_Name', '')) if pd.notna(row.get('Tab_Name')) else ''
             }
         }
         
@@ -135,14 +140,17 @@ def ingest_directory(directory: str):
             print(f"❌ Error processing {filepath}: {e}")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage:")
-        print("  Single Excel:  python ingest_knowledge_base.py knowledge_base/manual.xlsx")
-        print("  Mappings CSV:  python ingest_knowledge_base.py knowledge_base/media_mappings.csv")
-        print("  Directory:    python ingest_knowledge_base.py knowledge_base/")
-        sys.exit(1)
+    import argparse
+    parser = argparse.ArgumentParser(description="Ingest Excel/CSV files into iCAD Hub Knowledge Base")
+    parser.add_argument("path", help="Path to file or directory to ingest")
+    parser.add_argument("--clear", action="store_true", help="Clear the collection before ingestion")
     
-    path = sys.argv[1]
+    args = parser.parse_args()
+    path = args.path
+    
+    if args.clear:
+        print("🧹 Clearing knowledge base collection...")
+        rag_engine.clear_collection()
     
     if not Path(path).exists():
         print(f"❌ Error: Path not found: {path}")

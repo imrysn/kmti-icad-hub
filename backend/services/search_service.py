@@ -3,7 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Walk up from this file to find the project root .env
-_env_path = Path(__file__).resolve().parents[3] / ".env"
+_env_path = Path(__file__).resolve().parents[2] / ".env"
 load_dotenv(dotenv_path=_env_path)
 
 import hashlib
@@ -197,11 +197,22 @@ class ChatService:
         system_prompt, user_prompt, context_text = self._build_prompts(message, history, sources, language, is_regeneration)
 
         full_answer = ""
-        async for chunk in ai_service.generate_content_stream(system_prompt, user_prompt, images):
-            full_answer += chunk
-            yield {"type": "content", "delta": chunk}
+        try:
+            async for chunk in ai_service.generate_content_stream(system_prompt, user_prompt, images):
+                if chunk == "(Gemini API Key missing or invalid)":
+                    # If we get the 'missing key' message, trigger fallback
+                    full_answer = self._fallback_summary(message, sources)
+                    yield {"type": "content", "delta": full_answer}
+                    break
+                full_answer += chunk
+                yield {"type": "content", "delta": chunk}
+        except Exception as e:
+            print(f"[Chat] Stream error: {e}")
+            if not full_answer:
+                full_answer = self._fallback_summary(message, sources)
+                yield {"type": "content", "delta": full_answer}
 
-        suggestions = self._generate_suggestions(message, full_answer, context_text) if full_answer else []
+        suggestions = self._generate_suggestions(message, full_answer, context_text) if full_answer and "Gemini API is currently disabled" not in full_answer else []
         yield {
             "type": "end", 
             "full_answer": full_answer,
@@ -268,12 +279,109 @@ class ChatService:
         return None
 
     def _fallback_summary(self, query: str, sources) -> str:
-        top = sources[0]
-        return (
-            f"Based on the knowledge base, here is what I found regarding '{query}':\n\n"
-            f"{top.content}\n\n"
-            "⚠️ Gemini unavailable (check AI service logs or API key)."
-        )
+        """Provide a structured, casual summary using 'THE AUTHENTIC COLLABORATOR' persona."""
+        if not sources:
+            return (
+                "### I'D LOVE TO DIG INTO THAT...\n\n"
+                "But honestly? It's not in my current records. 😅 \n\n"
+                "> **Note:** Since my Gemini connection is a bit shaky right now, I'm relying purely on what's indexed.\n\n"
+                "---\n\n"
+                "**Next Step:** Try checking the standard operating procedures or rephrasing your query to be more general!"
+            )
+            
+        # --- Small Talk / Self-Awareness Layer ---
+        small_talk_patterns = {
+            "name": "I'm the **iCAD Technical Instructor's assistant!** 🎓 My main AI brain is taking a quick rest (Gemini API is unavailable), but I've got the manual right here in front of me.",
+            "how are you": "I'm doing great! Just keeping an eye on the technical documentation while the main AI system is resting.",
+            "who are you": "I'm the **iCAD Technical Instructor!** At least, the offline version of him. I'm here to help you find what you need in our knowledge base.",
+            "hello": "Hello! 👋 Glad to see you here. How can I help you with your iCAD training today?",
+            "hi": "Hi there! 👋 How can I assist you with your project while the main AI is offline?",
+            "help": "I'm here to help! My high-level AI brain is currently offline, but I can still search through all the technical tips and routines in our system."
+        }
+        
+        lower_query = query.lower().strip()
+        for key, response in small_talk_patterns.items():
+            if key in lower_query:
+                return f"### HEY THERE!\n\n{response}\n\n---\n\n**Try asking:** Anything about 2D Drawing, 3D Modeling, or BOM management!"
+
+        # Persona logic: Wit + Empathy-Candor + Instruction-style rephrasing
+        summary = "### ALRIGHT, I'VE DUG AROUND FOR YOU...\n\n"
+        summary += f"My standard AI personality is currently taking a coffee break (Gemini API is unavailable), but I've found some specific records for **'{query}'** that should keep you moving. 🚀\n\n"
+        
+        summary += "> **Instructor Note:** I'm pulling these details directly from the source. No AI fluff, just the facts you need to know.\n\n"
+        summary += "----\n\n"
+        
+        # Assertive instructor lead-ins
+        lead_ins = [
+            "For **{topic}**, remember that {info}",
+            "Keep in mind for **{topic}**: {info}",
+            "Pro Tip for **{topic}**: {info}",
+            "Heads up regarding **{topic}**: {info}"
+        ]
+        
+        # Filter sources by score threshold to avoid irrelevant noise
+        # RRF scores with k=60 start around 0.016. 
+        # A threshold of 0.015 ensures it was at least a top result in one search.
+        relevant_sources = [s for s in sources if getattr(s, 'score', 0) > 0.015]
+        
+        if not relevant_sources:
+            return (
+                "### I'D LOVE TO DIG INTO THAT...\n\n"
+                f"I've searched the logs for **'{query}'**, but I couldn't find a direct match in my current records. 😅 \n\n"
+                "> **Note:** Since my Gemini connection is a bit shaky right now, I'm being extra cautious not to give you unrelated advice.\n\n"
+                "---\n\n"
+                "**Next Step:** Try rephrasing your query with more specific technical terms, or check the help menus directly!"
+            )
+
+        last_topic = None
+        for i, source in enumerate(relevant_sources[:3]):
+            content = source.content if hasattr(source, 'content') else ""
+            meta = source.metadata or {}
+            
+            # --- Heuristic Data Analyzer ---
+            # Split pipe-separated string and clean parts
+            parts = [p.strip() for p in content.split('|') if p.strip()]
+            
+            # 1. Identify Main Topic
+            main_topic = meta.get('main_topic') or (parts[0] if parts else 'Technical Detail')
+            # Clean up topic (remove parenthetical numbers like (4) if repetitive)
+            clean_topic = main_topic.split('(')[0].strip()
+            
+            # 2. Identify Instructional Content
+            # We favor the 'instruction' metadata, or the longest part of the pipe-separated string
+            primary_info = meta.get('instruction') or ''
+            if len(primary_info) < 15 and parts:
+                primary_info = max(parts, key=lambda p: len(p.split()))
+            
+            # 3. Format as Casual Conversation with Topic Grouping
+            if primary_info and len(primary_info) > 15:
+                # Auto-format lists/notes if detected
+                if "Notes:" in primary_info:
+                    primary_info = primary_info.replace("Notes:", "\n**Notes:**\n")
+                
+                # Grouping Logic: Only show header if topic changed
+                if clean_topic != last_topic:
+                    if last_topic is not None:
+                        summary += "---\n\n" # Separator between DIFFERENT topics
+                    summary += f"## {clean_topic}\n\n"
+                
+                # Use assertive instructor lead-in
+                lead_in = lead_ins[i % len(lead_ins)].format(topic=clean_topic, info=primary_info)
+                summary += f"{lead_in}\n\n"
+                last_topic = clean_topic
+            else:
+                if clean_topic != last_topic:
+                    if last_topic is not None:
+                        summary += "---\n\n"
+                    summary += f"## {clean_topic}\n\n"
+                summary += f"{content}\n\n"
+                last_topic = clean_topic
+                
+        summary += "---\n\n"
+        summary += "### NEXT STEP\n"
+        summary += "Scan those points to see if they address your needs. If not, try checking back in a few minutes when I'm 'fully conscious' again!"
+        
+        return summary
 
 
 chat_service = ChatService(search_service)

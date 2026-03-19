@@ -15,6 +15,7 @@ class SearchResult(BaseModel):
     content: str
     source: str
     score: Optional[float] = None
+    metadata: Optional[dict] = None
     media: Optional[List[MediaAsset]] = None  # Linked multimedia assets
 
 class SearchResponse(BaseModel):
