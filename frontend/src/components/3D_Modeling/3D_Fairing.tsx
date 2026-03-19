@@ -23,9 +23,10 @@ import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 
 interface FairingLessonProps {
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
+const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'chamfer' | 'fillet' | 'shell'>('chamfer');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -79,6 +80,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
   const handlePrev = () => {
     if (activeTab === 'fillet') setActiveTab('chamfer');
     else if (activeTab === 'shell') setActiveTab('fillet');
+    else if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -119,13 +121,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('chamfer-1') ? 'completed' : ''}`}>
                       {completedSteps.has('chamfer-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Chamfer edge</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">Select <strong className="text-highlight">Chamfer edge</strong> from the icon menu.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot screenshot-medium" />
+                    <div className="image-wrapper-flush">
+                      <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot screenshot-medium" />
+                    </div>
                   </div>
                 </div>
 
@@ -134,13 +135,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('chamfer-2') ? 'completed' : ''}`}>
                       {completedSteps.has('chamfer-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Specify Length</span>
+                    <span className="step-label">Specify chamfer length on the item entry.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">Specify chamfer length on the item entry.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-large" />
+                    <div className="image-wrapper-flush">
+                      <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-large" />
+                    </div>
                   </div>
 
                 </div>
@@ -150,16 +150,10 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('chamfer-3') ? 'completed' : ''}`}>
                       {completedSteps.has('chamfer-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select Edge</span>
+                    <span className="step-label">Select the edge of the entity to be chamfered &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
-                  <div className="step-description">
-                    <div className="flex-row-center" style={{ gap: '1rem' }}>
-                      <p className="p-flush">Select the edge of the entity to be chamfered &gt; <strong className="text-highlight">GO</strong></p>
-                      <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                      </div>
-                    </div>
-                    <p className="p-flush" style={{ marginTop: '0.5rem', color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be chamfered all at once.</p>
+                  <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                    <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be chamfered all at once.</p>
                   </div>
                 </div>
 
@@ -188,13 +182,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('fillet-1') ? 'completed' : ''}`}>
                       {completedSteps.has('fillet-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Fillet edge</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">Select <strong className="text-highlight">Fillet edge</strong> from the icon menu.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={filletIcon} alt="Fillet Icon" className="software-screenshot screenshot-small" />
+                    <div className="image-wrapper-flush">
+                      <img src={filletIcon} alt="Fillet Icon" className="software-screenshot screenshot-small" />
+                    </div>
                   </div>
                 </div>
 
@@ -203,13 +196,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('fillet-2') ? 'completed' : ''}`}>
                       {completedSteps.has('fillet-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Specify Radius</span>
+                    <span className="step-label">Specify fillet radius on the item entry.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">Specify fillet radius on the item entry.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot screenshot-large" />
+                    <div className="image-wrapper-flush">
+                      <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot screenshot-large" />
+                    </div>
                   </div>
                 </div>
 
@@ -218,16 +210,10 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('fillet-3') ? 'completed' : ''}`}>
                       {completedSteps.has('fillet-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select Edge</span>
+                    <span className="step-label">Select the edge of the entity to be fillet &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
-                  <div className="step-description">
-                    <div className="flex-row-center" style={{ gap: '1rem' }}>
-                      <p className="p-flush">Select the edge of the entity to be fillet &gt; <strong className="text-highlight">GO</strong></p>
-                      <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                      </div>
-                    </div>
-                    <p className="p-flush" style={{ marginTop: '0.5rem', color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be fillet all at once.</p>
+                  <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                    <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be fillet all at once.</p>
                   </div>
                 </div>
 
@@ -256,13 +242,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('shell-1') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Shell</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">Select <strong className="text-highlight">Shell</strong> from the icon menu.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={shellIcon} alt="Shell Icon" className="software-screenshot screenshot-small" />
+                    <div className="image-wrapper-flush">
+                      <img src={shellIcon} alt="Shell Icon" className="software-screenshot screenshot-small" />
+                    </div>
                   </div>
                 </div>
 
@@ -271,18 +256,12 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('shell-2') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Faces</span>
+                    <span className="step-label">Select the two endfaces of the solid entity &gt; GO<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description">
-                    <div className="flex-row-center" style={{ gap: '1rem' }}>
-                      <p className="p-flush">Select the two endfaces of the solid entity &gt; </p>
-                      <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                      </div>
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" />
                     </div>
-                  </div>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                    <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
 
@@ -291,18 +270,10 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
                     <span className={`step-number ${completedSteps.has('shell-3') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Set Thickness</span>
+                    <span className="step-label">Specify thickness on item entry &gt; double <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
                   <div className="step-description">
-                    <div className="flex-row-center" style={{ gap: '1rem' }}>
-                      <p className="p-flush">Specify thickness on item entry &gt; double <strong className="text-highlight">GO</strong></p>
-                      <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1rem' }}>
-                    <div className="image-wrapper-flush">
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
                       <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
@@ -325,8 +296,8 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson }) => {
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev} disabled={activeTab === 'chamfer'}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={handleNext}>{activeTab === 'shell' ? 'Finish' : 'Next'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>{activeTab === 'shell' ? 'Next Lesson' : 'Next'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

@@ -12,14 +12,16 @@ import partsPlacement from '../../assets/3D_Image_File/hole_details_parts_placem
 import listTools from '../../assets/3D_Image_File/hole_details_list_tools.jpg';
 import holeResult from '../../assets/3D_Image_File/hole_details_hole.jpg';
 import tappedHoles from '../../assets/3D_Image_File/hole_details_tapped_holes.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 
 
 
 interface HoleDetailsLessonProps {
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) => {
+const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'holeDetails'>('holeDetails');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -42,7 +44,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
     if (currentContainer) {
       currentContainer.addEventListener('scroll', handleScroll);
       handleScroll();
-    }
+    };
     return () => {
       if (currentContainer) currentContainer.removeEventListener('scroll', handleScroll);
     };
@@ -94,10 +96,9 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
                   <span className={`step-number ${completedSteps.has('hole-1') ? 'completed' : ''}`}>
                     {completedSteps.has('hole-1') ? <CheckCircle2 size={16} /> : '1'}
                   </span>
-                  <span className="step-label">Select Tool</span>
+                  <span className="step-label">Select <strong className="text-highlight">Arrange Machine Part</strong> from the icon menu.</span>
                 </div>
                 <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">Select <strong className="text-highlight">Arrange Machine Part</strong> from the icon menu.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                     <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" />
                   </div>
@@ -109,10 +110,9 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
                   <span className={`step-number ${completedSteps.has('hole-2') ? 'completed' : ''}`}>
                     {completedSteps.has('hole-2') ? <CheckCircle2 size={16} /> : '2'}
                   </span>
-                  <span className="step-label">Tool List</span>
+                  <span className="step-label">A window will appear showing the list of tools available.</span>
                 </div>
                 <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">A window will appear showing the list of tools available.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                     <img src={listTools} alt="List of available tools" className="software-screenshot screenshot-wide" />
                   </div>
@@ -124,11 +124,9 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
                   <span className={`step-number ${completedSteps.has('hole-3') ? 'completed' : ''}`}>
                     {completedSteps.has('hole-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Specifications</span>
+                  <span className="step-label">After setting the specifications, click <strong className="text-highlight">OK</strong>.</span>
                 </div>
-                <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">After setting the specifications, click <strong className="text-highlight">OK</strong>.</p>
-                </div>
+                <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
               </div>
 
               <div className={getStepClass('hole-4')} onClick={() => toggleStep('hole-4')}>
@@ -136,10 +134,9 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
                   <span className={`step-number ${completedSteps.has('hole-4') ? 'completed' : ''}`}>
                     {completedSteps.has('hole-4') ? <CheckCircle2 size={16} /> : '4'}
                   </span>
-                  <span className="step-label">Create Cut</span>
+                  <span className="step-label">Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> to create the cut.</span>
                 </div>
                 <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                  <p className="p-flush">Click the location of the hole on the solid entity to create the cut.</p>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>
                     <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-wide" />
                   </div>
@@ -157,8 +154,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson }) =
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>Finish <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

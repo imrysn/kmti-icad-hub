@@ -10,7 +10,12 @@ import originOverview from '../../assets/3D_Image_File/origin.jpg';
 import toolSelection from '../../assets/3D_Image_File/origin_change_3d_part_layout.jpg';
 import interactionSteps from '../../assets/3D_Image_File/origin_change_3d_part_layout_2345.jpg';
 
-const OriginLesson: React.FC = () => {
+interface OriginLessonProps {
+  onNextLesson?: () => void;
+  onPrevLesson?: () => void;
+}
+
+const OriginLesson: React.FC<OriginLessonProps> = ({ onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'projections' | 'layout'>('projections');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -59,8 +64,14 @@ const OriginLesson: React.FC = () => {
     { id: 'projections', label: 'Standard Projections' },
     { id: 'layout', label: 'Change 3D Part Layout' }
   ];
-  const handleNext = () => { if (activeTab === 'projections') setActiveTab('layout'); };
-  const handlePrev = () => { if (activeTab === 'layout') setActiveTab('projections'); };
+  const handleNext = () => {
+    if (activeTab === 'projections') setActiveTab('layout');
+    else if (onNextLesson) onNextLesson();
+  };
+  const handlePrev = () => {
+    if (activeTab === 'layout') setActiveTab('projections');
+    else if (onPrevLesson) onPrevLesson();
+  };
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -111,10 +122,9 @@ const OriginLesson: React.FC = () => {
                     <span className={`step-number ${completedSteps.has('o-1') ? 'completed' : ''}`}>
                       {completedSteps.has('o-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Change 3D Part Layout</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                    <p className="p-flush">Select <strong className="text-highlight">Change 3D Part Layout</strong> from the icon menu.</p>
                     <div className="image-wrapper-flush image-zoom-container" style={{ marginTop: '0.8rem' }}>
                       <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-medium" />
                     </div>
@@ -169,8 +179,8 @@ const OriginLesson: React.FC = () => {
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev} disabled={activeTab === 'projections'}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={handleNext} disabled={activeTab === 'layout'}>{activeTab === 'layout' ? 'Finish' : 'Next'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>{activeTab === 'layout' ? 'Next Lesson' : 'Next'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

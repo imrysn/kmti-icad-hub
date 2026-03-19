@@ -79,6 +79,23 @@ const MentorMode: React.FC = () => {
         }
     };
 
+    const goToPrevLesson = () => {
+        if (currentLessonIndex > 0) {
+            const prevId = allLessonIds[currentLessonIndex - 1];
+            setActiveLessonId(prevId);
+
+            setExpandedIds(prev => {
+                const nextSet = new Set(prev);
+                (is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS).forEach(l => {
+                    if (l.children?.some(c => c.id === prevId)) {
+                        nextSet.add(l.id);
+                    }
+                });
+                return nextSet;
+            });
+        }
+    };
+
     const getActiveLessonTitle = (lessons: Lesson[], id: string): string => {
         for (const lesson of lessons) {
             if (lesson.id === id) return lesson.title;
@@ -123,6 +140,7 @@ const MentorMode: React.FC = () => {
                     currentLessonIndex={currentLessonIndex}
                     allLessonIdsLength={allLessonIds.length}
                     goToNextLesson={goToNextLesson}
+                    goToPrevLesson={goToPrevLesson}
                     sidebarOpen={sidebarOpen}
                     setSidebarOpen={setSidebarOpen}
                     setSelectedCourse={setSelectedCourse}

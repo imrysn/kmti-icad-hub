@@ -38,9 +38,10 @@ import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_
 interface PropertiesLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'properties-1', onNextLesson }) => {
+const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'properties-1', onNextLesson, onPrevLesson }) => {
   const isProperties1 = subLessonId === 'properties-1';
   const [activeTab, setActiveTab] = useState<'color' | 'layer'>('color');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
@@ -96,8 +97,11 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
   };
 
   const handlePrev = () => {
-    if (isProperties1 && activeTab === 'layer') {
-      setActiveTab('color');
+    if (isProperties1) {
+      if (activeTab === 'layer') setActiveTab('color');
+      else if (onPrevLesson) onPrevLesson();
+    } else {
+      if (onPrevLesson) onPrevLesson();
     }
   };
 
@@ -174,9 +178,11 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         <div className="flex-row-wrap" style={{ gap: '2rem' }}>
                           <div className="flex-1">
                             <h4 className="section-title">Entity</h4>
+                            <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0, marginBottom: '0.5rem' }}>
+                              <span className="step-label">Pick a color &gt; Select the solid entity</span>
+                            </div>
                             <div className="step-description">
-                              <p className="p-flush">The entire solid entity will change its color.</p>
-                              <p className="p-flush" style={{ marginTop: '0.5rem' }}>Pick a color &gt; Select the solid entity</p>
+                              <p className="p-flush" style={{ color: 'var(--text-muted)' }}>The entire solid entity will change its color.</p>
                             </div>
                           </div>
                           <div className="flex-1">
@@ -189,9 +195,11 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         <div className="flex-row-wrap" style={{ marginTop: '2.5rem', gap: '2rem' }}>
                           <div className="flex-1">
                             <h4 className="section-title">Face</h4>
+                            <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0, marginBottom: '0.5rem' }}>
+                              <span className="step-label">Pick a color &gt; Select surface to be changed &gt; GO</span>
+                            </div>
                             <div className="step-description">
-                              <p className="p-flush">Only selected faces/surfaces will change its color.</p>
-                              <p className="p-flush" style={{ marginTop: '0.5rem' }}>Pick a color &gt; Select surface to be changed &gt; GO</p>
+                              <p className="p-flush" style={{ color: 'var(--text-muted)' }}>Only selected faces/surfaces will change its color.</p>
                             </div>
                           </div>
                           <div className="flex-1">
@@ -346,125 +354,104 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                 <div className="tool-block" style={{ padding: '0', background: 'transparent' }}>
                   <div className="flex-row-wrap" style={{ gap: '2rem' }}>
 
+                  <div className="flex-column" style={{ gap: '1.5rem' }}>
+
                     {/* Item 1 */}
-                    <div className={getStepClass('info-1')} onClick={() => toggleStep('info-1')} style={{ flex: '1', minWidth: '400px', cursor: 'pointer' }}>
-                      <div className="flex-row-wrap" style={{ gap: '1rem', alignItems: 'flex-start' }}>
-                        <div style={{ position: 'relative' }}>
-                          <img src={information1} alt="Coordinates" className="software-screenshot" style={{ width: '48px', height: '48px' }} />
-                          {completedSteps.has('info-1') && (
-                            <div style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'var(--bg-card)', borderRadius: '50%' }}>
-                              <CheckCircle2 size={16} className="text-success" />
-                            </div>
-                          )}
+                    <div className={getStepClass('info-1')} onClick={() => toggleStep('info-1')}>
+                      <div className="step-header">
+                        <span className={`step-number ${completedSteps.has('info-1') ? 'completed' : ''}`}>
+                          {completedSteps.has('info-1') ? <CheckCircle2 size={16} /> : '1'}
+                        </span>
+                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                          <img src={information1} alt="Coordinates" style={{ width: '24px', height: '24px' }} />
+                          <span className="step-label">Pick a point to display coordinates from the origin.</span>
                         </div>
-                        <div className="flex-1">
-                          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>1. Coordinates</h5>
-                          <p className="p-flush">Displays coordinates of a point from the origin</p>
-                          <div className="step-description" style={{ paddingLeft: '0', marginTop: '0.8rem' }}>
-                            <p className="p-flush">&gt; Pick a point</p>
-                            <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                              <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" />
-                            </div>
-                          </div>
+                      </div>
+                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                        <p className="p-flush">Displays coordinates of a point from the origin</p>
+                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                          <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" />
                         </div>
                       </div>
                     </div>
 
                     {/* Item 2 */}
-                    <div className={getStepClass('info-2')} onClick={() => toggleStep('info-2')} style={{ flex: '1', minWidth: '400px', cursor: 'pointer' }}>
-                      <div className="flex-row-wrap" style={{ gap: '1rem', alignItems: 'flex-start' }}>
-                        <div style={{ position: 'relative' }}>
-                          <img src={information2} alt="Length" className="software-screenshot" style={{ width: '48px', height: '48px' }} />
-                          {completedSteps.has('info-2') && (
-                            <div style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'var(--bg-card)', borderRadius: '50%' }}>
-                              <CheckCircle2 size={16} className="text-success" />
-                            </div>
-                          )}
+                    <div className={getStepClass('info-2')} onClick={() => toggleStep('info-2')}>
+                      <div className="step-header">
+                        <span className={`step-number ${completedSteps.has('info-2') ? 'completed' : ''}`}>
+                          {completedSteps.has('info-2') ? <CheckCircle2 size={16} /> : '2'}
+                        </span>
+                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                          <img src={information2} alt="Length" style={{ width: '24px', height: '24px' }} />
+                          <span className="step-label">Pick an edge &gt; <strong className="text-highlight">GO</strong> to measure length.</span>
                         </div>
-                        <div className="flex-1">
-                          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>2. Length</h5>
-                          <p className="p-flush">Measures the length of an edge</p>
-                          <div className="step-description" style={{ paddingLeft: '0', marginTop: '0.8rem' }}>
-                            <p className="p-flush">&gt; Pick an edge &gt; GO</p>
-                            <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                              <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" />
-                            </div>
-                          </div>
+                      </div>
+                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                        <p className="p-flush">Measures the length of an edge</p>
+                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                          <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" />
                         </div>
                       </div>
                     </div>
 
                     {/* Item 3 */}
-                    <div className={getStepClass('info-3')} onClick={() => toggleStep('info-3')} style={{ flex: '1', minWidth: '400px', cursor: 'pointer' }}>
-                      <div className="flex-row-wrap" style={{ gap: '1rem', alignItems: 'flex-start' }}>
-                        <div style={{ position: 'relative' }}>
-                          <img src={information3} alt="Distance" className="software-screenshot" style={{ width: '48px', height: '48px' }} />
-                          {completedSteps.has('info-3') && (
-                            <div style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'var(--bg-card)', borderRadius: '50%' }}>
-                              <CheckCircle2 size={16} className="text-success" />
-                            </div>
-                          )}
+                    <div className={getStepClass('info-3')} onClick={() => toggleStep('info-3')}>
+                      <div className="step-header">
+                        <span className={`step-number ${completedSteps.has('info-3') ? 'completed' : ''}`}>
+                          {completedSteps.has('info-3') ? <CheckCircle2 size={16} /> : '3'}
+                        </span>
+                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                          <img src={information3} alt="Distance" style={{ width: '24px', height: '24px' }} />
+                          <span className="step-label">Pick first point/edge &gt; Pick second point/edge to measure distance.</span>
                         </div>
-                        <div className="flex-1">
-                          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>3. Distance</h5>
-                          <p className="p-flush">Measures the distance between two points or edges</p>
-                          <div className="step-description" style={{ paddingLeft: '0', marginTop: '0.8rem' }}>
-                            <p className="p-flush">&gt; Pick first point/edge &gt; Pick second point/edge</p>
-                            <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                              <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" />
-                            </div>
-                          </div>
+                      </div>
+                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                        <p className="p-flush">Measures the distance between two points or edges</p>
+                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                          <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" />
                         </div>
                       </div>
                     </div>
 
                     {/* Item 4 */}
-                    <div className={getStepClass('info-4')} onClick={() => toggleStep('info-4')} style={{ flex: '1', minWidth: '400px', cursor: 'pointer' }}>
-                      <div className="flex-row-wrap" style={{ gap: '1rem', alignItems: 'flex-start' }}>
-                        <div style={{ position: 'relative' }}>
-                          <img src={information4} alt="Angle" className="software-screenshot" style={{ width: '48px', height: '48px' }} />
-                          {completedSteps.has('info-4') && (
-                            <div style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'var(--bg-card)', borderRadius: '50%' }}>
-                              <CheckCircle2 size={16} className="text-success" />
-                            </div>
-                          )}
+                    <div className={getStepClass('info-4')} onClick={() => toggleStep('info-4')}>
+                      <div className="step-header">
+                        <span className={`step-number ${completedSteps.has('info-4') ? 'completed' : ''}`}>
+                          {completedSteps.has('info-4') ? <CheckCircle2 size={16} /> : '4'}
+                        </span>
+                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                          <img src={information4} alt="Angle" style={{ width: '24px', height: '24px' }} />
+                          <span className="step-label">Pick 2 edges OR 3 points to measure angle.</span>
                         </div>
-                        <div className="flex-1">
-                          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>4. Angle</h5>
-                          <p className="p-flush">Measures the angle between two edges or three points</p>
-                          <div className="step-description" style={{ paddingLeft: '0', marginTop: '0.8rem' }}>
-                            <p className="p-flush">&gt; Pick 2 edges <br /> &gt; Pick 3 points</p>
-                            <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                              <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" />
-                            </div>
-                          </div>
+                      </div>
+                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                        <p className="p-flush">Measures the angle between two edges or three points</p>
+                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                          <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" />
                         </div>
                       </div>
                     </div>
 
                     {/* Item 5 */}
-                    <div className={getStepClass('info-5')} onClick={() => toggleStep('info-5')} style={{ flex: '1', minWidth: '400px', cursor: 'pointer' }}>
-                      <div className="flex-row-wrap" style={{ gap: '1rem', alignItems: 'flex-start' }}>
-                        <div style={{ position: 'relative' }}>
-                          <img src={information5} alt="Entity Info" className="software-screenshot" style={{ width: '48px', height: '48px' }} />
-                          {completedSteps.has('info-5') && (
-                            <div style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'var(--bg-card)', borderRadius: '50%' }}>
-                              <CheckCircle2 size={16} className="text-success" />
-                            </div>
-                          )}
+                    <div className={getStepClass('info-5')} onClick={() => toggleStep('info-5')}>
+                      <div className="step-header">
+                        <span className={`step-number ${completedSteps.has('info-5') ? 'completed' : ''}`}>
+                          {completedSteps.has('info-5') ? <CheckCircle2 size={16} /> : '5'}
+                        </span>
+                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                          <img src={information5} alt="Entity Info" style={{ width: '24px', height: '24px' }} />
+                          <span className="step-label">Pick the solid entity &gt; <strong className="text-highlight">GO</strong> to display information.</span>
                         </div>
-                        <div className="flex-1">
-                          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>5. Entity Information</h5>
-                          <p className="p-flush">Displays the informations about the selected entity</p>
-                          <div className="step-description" style={{ paddingLeft: '0', marginTop: '0.8rem' }}>
-                            <p className="p-flush">&gt; Pick the solid entity &gt; GO</p>
-                            <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                              <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" />
-                            </div>
-                          </div>
+                      </div>
+                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                        <p className="p-flush">Displays the informations about the selected entity</p>
+                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                          <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" />
                         </div>
                       </div>
                     </div>
+
+                  </div>
 
                   </div>
                 </div>
@@ -477,15 +464,9 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
           </div>
 
           <div className="lesson-navigation">
-            <button
-              className="nav-button"
-              onClick={handlePrev}
-              disabled={isProperties1 && activeTab === 'color'}
-            >
-              <ChevronLeft size={18} /> Previous
-            </button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
             <button className="nav-button next" onClick={handleNext}>
-              {isProperties1 && activeTab === 'color' ? 'Change Layer' : (isProperties1 ? 'Next Lesson' : 'Finish')} <ChevronRight size={18} />
+              {isProperties1 && activeTab === 'color' ? 'Next' : 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

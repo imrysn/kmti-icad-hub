@@ -24,9 +24,10 @@ import leftClick from '../../assets/3D_Image_File/left_click.jpg';
 interface PartLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
+  onPrevLesson?: () => void;
 }
 
-const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNextLesson }) => {
+const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNextLesson, onPrevLesson }) => {
   const isPart1 = subLessonId === '3d-part-1';
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -90,7 +91,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
         <h3 className="section-title">{isPart1 ? 'CREATING 3D PART' : 'CHANGE 3D PART NAME'}</h3>
         <p className="p-flush">
           {isPart1
-            ? 'Tool use to name 3D parts and provide information.3D part name must always be set since it is a vital part for the 2D Design.'
+            ? 'Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Design.'
             : 'Tool use to Changes 3D part names, drawing names (of external 3D parts), and comments.'}
         </p>
         <div className="instruction-box">
@@ -110,13 +111,12 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('create-1') ? 'completed' : ''}`}>
                       {completedSteps.has('create-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Create 3D Part</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">Select <strong className="text-highlight">Create 3D Part</strong> from the icon menu.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" />
+                    <div className="image-wrapper-flush">
+                      <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" />
+                    </div>
                   </div>
                 </div>
 
@@ -125,16 +125,9 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('create-2') ? 'completed' : ''}`}>
                       {completedSteps.has('create-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Entity</span>
+                    <span className="step-label">Select a single entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
                   </div>
-                  <div className="step-description">
-                    <div className="flex-row-center" style={{ gap: '1rem' }}>
-                      <p className="p-flush">Select a single entity &gt; <strong className="text-highlight">GO</strong></p>
-                      <div className="image-wrapper-flush">
-                        <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                      </div>
-                    </div>
-                  </div>
+                  <div className="step-description"></div>
                 </div>
 
                 <div className={getStepClass('create-3')} onClick={() => toggleStep('create-3')} style={{ marginTop: '1.5rem' }}>
@@ -142,13 +135,12 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('create-3') ? 'completed' : ''}`}>
                       {completedSteps.has('create-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Part Information</span>
+                    <span className="step-label">A window will appear showing the informations to fill-up.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">A window will appear showing the informations to fill-up.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" />
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
                 </div>
 
@@ -157,13 +149,12 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('create-4') ? 'completed' : ''}`}>
                       {completedSteps.has('create-4') ? <CheckCircle2 size={16} /> : '4'}
                     </span>
-                    <span className="step-label">Tree View</span>
+                    <span className="step-label">All created 3D Part will appear on the tree view.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">All created 3D Part will appear on the tree view.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" />
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" />
+                    </div>
                   </div>
                 </div>
 
@@ -176,8 +167,10 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     </span>
                     <span className="step-label">Material Description</span>
                   </div>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                    <img src={materialDescriptionImg} alt="Material Description and Plate Thickness" className="software-screenshot screenshot-wide" />
+                  <div className="step-description">
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={materialDescriptionImg} alt="Material Description and Plate Thickness" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
                 </div>
 
@@ -192,13 +185,12 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('change-1') ? 'completed' : ''}`}>
                       {completedSteps.has('change-1') ? <CheckCircle2 size={16} /> : '1'}
                     </span>
-                    <span className="step-label">Select Tool</span>
+                    <span className="step-label">Select <strong className="text-highlight">Change 3D Part Name</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">Select <strong className="text-highlight">Change 3D Part Name</strong> from the icon menu.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" />
+                    <div className="image-wrapper-flush">
+                      <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" />
+                    </div>
                   </div>
                 </div>
 
@@ -207,11 +199,9 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('change-2') ? 'completed' : ''}`}>
                       {completedSteps.has('change-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select Entity</span>
+                    <span className="step-label">Select an entity or Right-click on the 3D Space.</span>
                   </div>
-                  <div className="step-description">
-                    <p className="p-flush">Select an entity or Right-click on the 3D Space.</p>
-                  </div>
+                  <div className="step-description"></div>
                 </div>
 
                 <div className={getStepClass('change-3')} onClick={() => toggleStep('change-3')} style={{ marginTop: '1.5rem' }}>
@@ -219,13 +209,12 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('change-3') ? 'completed' : ''}`}>
                       {completedSteps.has('change-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Update Information</span>
+                    <span className="step-label">A window will appear showing the informations to fill-up.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">A window will appear showing the informations to fill-up.</p>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" />
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
                 </div>
 
@@ -234,13 +223,12 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('change-4') ? 'completed' : ''}`}>
                       {completedSteps.has('change-4') ? <CheckCircle2 size={16} /> : '4'}
                     </span>
-                    <span className="step-label">Sync with 2D</span>
+                    <span className="step-label">A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name &gt; Select <strong className="text-highlight">Yes</strong>.</span>
                   </div>
                   <div className="step-description">
-                    <p className="p-flush">A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name &gt; Select <strong className="text-highlight">Yes</strong>.</p>
-                  </div>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                    <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
+                    <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
+                      <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
                 </div>
 
@@ -252,8 +240,8 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>{isPart1 ? 'Next Lesson' : 'Finish'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
