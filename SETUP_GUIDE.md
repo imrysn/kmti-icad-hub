@@ -62,6 +62,7 @@ You can log in with any of these test accounts:
 
 - **"Node.js not found"**: Ensure you installed Node.js from [nodejs.org](https://nodejs.org/).
 - **"npm is not recognized"**: Restart your computer after installing Node.js.
+- **npm/PowerShell Error**: If you see "running scripts is disabled on this system", open a PowerShell window and run: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force`.
 - **Backend Error**: Ensure you ran `setup_project.bat` successfully before starting.
 
 ---

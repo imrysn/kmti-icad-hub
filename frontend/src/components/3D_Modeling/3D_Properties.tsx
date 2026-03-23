@@ -29,6 +29,8 @@ import information2 from '../../assets/3D_Image_File/information2.jpg';
 import information3 from '../../assets/3D_Image_File/information3.jpg';
 import information4 from '../../assets/3D_Image_File/information4.jpg';
 import information5 from '../../assets/3D_Image_File/information5.jpg';
+
+// Properties (2) Assets      dito pa ako
 import infoPointImg from '../../assets/3D_Image_File/properties(2)_information_point.jpg';
 import infoEdgeImg from '../../assets/3D_Image_File/properties(2)_information_edge.jpg';
 import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.jpg';
