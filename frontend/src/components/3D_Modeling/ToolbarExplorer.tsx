@@ -52,17 +52,17 @@ const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({ toolbars }) => {
             {toolbars.map((toolbar) => (
               <div
                 key={toolbar.id}
-                className={`nav-item ${selectedId === toolbar.id ? 'active' : ''}`}
+                className={`toolbar-item ${selectedId === toolbar.id ? 'active' : ''}`}
                 onClick={() => setSelectedId(toolbar.id)}
               >
-                <div className="nav-item-icon">
+                <div className="toolbar-item-icon">
                   {toolbar.icon}
                 </div>
-                <div className="nav-item-content">
-                  <span className="nav-item-title">{toolbar.title}</span>
-                  <span className="nav-item-subtitle">{toolbar.features[0]}...</span>
+                <div className="toolbar-item-content">
+                  <span className="toolbar-item-title">{toolbar.title}</span>
+                  <span className="toolbar-item-subtitle">{toolbar.features[0]}...</span>
                 </div>
-                <ChevronRight className="nav-item-arrow" size={14} />
+                <ChevronRight className="toolbar-item-arrow" size={14} />
               </div>
             ))}
           </div>
