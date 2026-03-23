@@ -188,7 +188,7 @@
 
 .step-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.75rem;
 }
 
@@ -204,7 +204,6 @@
   font-size: 0.85rem;
   border-radius: 50%;
   flex-shrink: 0;
-  margin-top: 2px; /* Fine-tune alignment with first line of text */
 }
 
 .step-label {
@@ -404,6 +403,7 @@
 
 .lesson-navigation {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   border-top: 1px solid var(--border-color);
   padding-top: 1.5rem;
@@ -413,6 +413,7 @@
 .nav-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;

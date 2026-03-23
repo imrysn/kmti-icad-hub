@@ -56,7 +56,7 @@
   gap: 4px;
 }
 
-.nav-item {
+.toolbar-item {
   padding: 0.85rem 1rem;
   border-radius: 10px;
   cursor: pointer;
@@ -67,18 +67,18 @@
   border: 1px solid transparent;
 }
 
-.nav-item:hover {
+.toolbar-item:hover {
   background: #f8fafc;
   transform: translateX(4px);
 }
 
-.nav-item.active {
+.toolbar-item.active {
   background: #eff6ff;
   border-color: var(--primary);
   color: var(--primary);
 }
 
-.nav-item-icon {
+.toolbar-item-icon {
   width: 36px;
   height: 36px;
   background: #f1f5f9;
@@ -90,39 +90,39 @@
   transition: all 0.2s;
 }
 
-.nav-item.active .nav-item-icon {
+.toolbar-item.active .toolbar-item-icon {
   background: var(--primary);
   color: white;
 }
 
-.nav-item-content {
+.toolbar-item-content {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-.nav-item-title {
+.toolbar-item-title {
   font-size: 0.9rem;
   font-weight: 600;
 }
 
-.nav-item-subtitle {
+.toolbar-item-subtitle {
   font-size: 0.7rem;
   color: #94a3b8;
 }
 
-.nav-item.active .nav-item-subtitle {
+.toolbar-item.active .toolbar-item-subtitle {
   color: var(--primary);
   opacity: 0.7;
 }
 
-.nav-item-arrow {
+.toolbar-item-arrow {
   opacity: 0;
   transition: all 0.2s;
 }
 
-.nav-item:hover .nav-item-arrow,
-.nav-item.active .nav-item-arrow {
+.toolbar-item:hover .toolbar-item-arrow,
+.toolbar-item.active .toolbar-item-arrow {
   opacity: 1;
 }
 
