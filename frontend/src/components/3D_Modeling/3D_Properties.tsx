@@ -7,35 +7,35 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Properties (1) Assets
 import changeColorIcon from '../../assets/3D_Image_File/change_color.jpg';
-import changePropertiesWindow from '../../assets/3D_Image_File/change_properties_window.jpg';
-import changeColorEntity from '../../assets/3D_Image_File/change_color_entity.jpg';
-import changeColorFace from '../../assets/3D_Image_File/change_color_face.jpg';
+import changePropertiesWindow from '../../assets/3D_Image_File/change_properties_window.png';
+import changeColorEntity from '../../assets/3D_Image_File/change_color_entity.png';
+import changeColorFace from '../../assets/3D_Image_File/change_color_face.png';
 
-import changeLayerIcon from '../../assets/3D_Image_File/change_layer.jpg';
-import itemEntryChangeLayer from '../../assets/3D_Image_File/item_entry_changelayer.jpg';
-import propertiesColorImg from '../../assets/3D_Image_File/properties_color.jpg';
+import changeLayerIcon from '../../assets/3D_Image_File/change_layer.png';
+import itemEntryChangeLayer from '../../assets/3D_Image_File/item_entry_changelayer.png';
+import propertiesColorImg from '../../assets/3D_Image_File/properties_color.png';
 
-import layer1Img from '../../assets/3D_Image_File/layer1.jpg';
-import layer2Img from '../../assets/3D_Image_File/layer2.jpg';
-import layer3Img from '../../assets/3D_Image_File/layer3.jpg';
-import acrylicPointerImg from '../../assets/3D_Image_File/acrylic_pointer.jpg';
-import propertiesMaterialImg from '../../assets/3D_Image_File/properties_material.jpg';
-import isoniteManganeseImg from '../../assets/3D_Image_File/isonite_manganese.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import layer1Img from '../../assets/3D_Image_File/layer1.png';
+import layer2Img from '../../assets/3D_Image_File/layer2.png';
+import layer3Img from '../../assets/3D_Image_File/layer3.png';
+import acrylicPointerImg from '../../assets/3D_Image_File/acrylic_pointer.png';
+import propertiesMaterialImg from '../../assets/3D_Image_File/properties_material.png';
+import isoniteManganeseImg from '../../assets/3D_Image_File/isonite_manganese.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Properties (2) Assets
-import information1 from '../../assets/3D_Image_File/information1.jpg';
-import information2 from '../../assets/3D_Image_File/information2.jpg';
-import information3 from '../../assets/3D_Image_File/information3.jpg';
-import information4 from '../../assets/3D_Image_File/information4.jpg';
-import information5 from '../../assets/3D_Image_File/information5.jpg';
+import information1 from '../../assets/3D_Image_File/information1.png';
+import information2 from '../../assets/3D_Image_File/information2.png';
+import information3 from '../../assets/3D_Image_File/information3.png';
+import information4 from '../../assets/3D_Image_File/information4.png';
+import information5 from '../../assets/3D_Image_File/information5.png';
 
 // Properties (2) Assets      dito pa ako
-import infoPointImg from '../../assets/3D_Image_File/properties(2)_information_point.jpg';
-import infoEdgeImg from '../../assets/3D_Image_File/properties(2)_information_edge.jpg';
-import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.jpg';
-import infoAngleImg from '../../assets/3D_Image_File/properties(2)_information_angle.jpg';
-import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_entity.jpg';
+import infoPointImg from '../../assets/3D_Image_File/properties(2)_information_point.png';
+import infoEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.png';
+import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.png';
+import infoAngleImg from '../../assets/3D_Image_File/properties(2)_information_angle.png';
+import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_entity.png';
 
 interface PropertiesLessonProps {
   subLessonId?: string;

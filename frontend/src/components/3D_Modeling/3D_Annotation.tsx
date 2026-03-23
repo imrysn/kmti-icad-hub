@@ -8,27 +8,27 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Annotation (1) Assets
-import annotationImg from '../../assets/3D_Image_File/annotation.jpg';
-import linearDimensionImg from '../../assets/3D_Image_File/linear_dimension.jpg';
-import diameterDimensionImg from '../../assets/3D_Image_File/diameter_dimension.jpg';
-import angularDimensionImg from '../../assets/3D_Image_File/angular_dimension.jpg';
-import notesLeaderLinesImg from '../../assets/3D_Image_File/notes_leader_lines.jpg';
-import characterStringsImg from '../../assets/3D_Image_File/character_strings.jpg';
+import annotationImg from '../../assets/3D_Image_File/annotation.png';
+import linearDimensionImg from '../../assets/3D_Image_File/linear_dimension.png';
+import diameterDimensionImg from '../../assets/3D_Image_File/diameter_dimension.png';
+import angularDimensionImg from '../../assets/3D_Image_File/angular_dimension.png';
+import notesLeaderLinesImg from '../../assets/3D_Image_File/notes_leader_lines.png';
+import characterStringsImg from '../../assets/3D_Image_File/character_strings.png';
 
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Note Entry Images
-import noteStringEntryImg from '../../assets/3D_Image_File/note_string_entry_window.jpg';
-import textEntryImg from '../../assets/3D_Image_File/text_entry_window.jpg';
+import noteStringEntryImg from '../../assets/3D_Image_File/note_string_entry_window.png';
+import textEntryImg from '../../assets/3D_Image_File/text_entry_window.png';
 
 // Annotation (2) Assets
-import editDimensionImg from '../../assets/3D_Image_File/edit_dimension_characters_window.jpg';
-import changePropertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.jpg';
-import changesDraftingEntityImg from '../../assets/3D_Image_File/annotation(2)_edits_drafting.jpg';
-import changesPositionDraftingEntitiesImg from '../../assets/3D_Image_File/changes_position_drafting_entities.jpg';
-import collectiveDimensionImg from '../../assets/3D_Image_File/annotation(2)_dimension.jpg';
-import annotation2Img from '../../assets/3D_Image_File/angular_dimension1.jpg';
-import changesDraftingEntity2Img from '../../assets/3D_Image_File/annotation11.jpg';
+import editDimensionImg from '../../assets/3D_Image_File/edit_dimension_characters_window.png';
+import changePropertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.png';
+import changesDraftingEntityImg from '../../assets/3D_Image_File/annotation(2)_edits_drafting.png';
+import changesPositionDraftingEntitiesImg from '../../assets/3D_Image_File/changes_position_drafting_entities.png';
+import collectiveDimensionImg from '../../assets/3D_Image_File/annotation(2)_dimension.png';
+import annotation2Img from '../../assets/3D_Image_File/angular_dimension1.png';
+import changesDraftingEntity2Img from '../../assets/3D_Image_File/annotation11.png';
 
 interface AnnotationLessonProps {
   subLessonId?: string;

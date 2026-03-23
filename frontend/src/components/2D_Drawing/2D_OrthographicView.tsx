@@ -130,9 +130,6 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({ subLess
                   </div>
                 </div>
 
-
-
-
                 {/* Section b: Scale */}
                 <div className={getStepClass('ov1-b')} onClick={() => toggleStep('ov1-b')}>
                   <div className="step-header">
@@ -148,19 +145,13 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({ subLess
                       <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide" />
                     </div>
 
-                    <div className="info-box" style={{ marginTop: '1.5rem', background: 'var(--bg-secondary)', borderLeft: '4px solid var(--primary)' }}>
-                      <p className="p-flush">
-                        <ScanLine size={18} style={{ verticalAlign: 'middle', marginRight: '0.5rem', color: 'var(--primary)' }} />
-                        When changing the scale of a standard view, other standard views also change the scale.
+                    <div className="info-box" style={{ marginTop: '1.5rem', background: 'var(--bg-secondary)' }}>
+                      <p className="p-flush" style={{ color: 'red' }}>
+                        Note: When changing the scale of a standard view, other standard views also change the scale. Cross section view and detail view need to chnage the scale separately.
                       </p>
-                      <p className="p-flush" style={{ marginTop: '0.75rem' }}>
-                        <Scale size={18} style={{ verticalAlign: 'middle', marginRight: '0.5rem', color: 'var(--primary)' }} />
-                        Cross section view and detail view need to change the scale separately.
-                      </p>
+
                     </div>
-                    <p className="note-red" style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                      Do not change the scale on the tool bar because the dimensions and notes will not update according to the set scale.
-                    </p>
+
                   </div>
                 </div>
               </>

@@ -6,9 +6,9 @@ import { MousePointer2, Info, ChevronLeft, ChevronRight, Compass, CheckCircle2, 
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Asset Imports
-import originOverview from '../../assets/3D_Image_File/origin.jpg';
-import toolSelection from '../../assets/3D_Image_File/origin_change_3d_part_layout.jpg';
-import interactionSteps from '../../assets/3D_Image_File/origin_change_3d_part_layout_2345.jpg';
+import originOverview from '../../assets/3D_Image_File/origin.png';
+import toolSelection from '../../assets/3D_Image_File/origin_change_3d_part_layout.png';
+import interactionSteps from '../../assets/3D_Image_File/origin_change_3d_part_layout_2345.png';
 
 interface OriginLessonProps {
   onNextLesson?: () => void;
@@ -61,16 +61,31 @@ const OriginLesson: React.FC<OriginLessonProps> = ({ onNextLesson, onPrevLesson 
   };
 
   const tabs = [
-    { id: 'projections', label: 'Standard Projections' },
+    { id: 'projections', label: 'Origin' },
     { id: 'layout', label: 'Change 3D Part Layout' }
   ];
-  const handleNext = () => {
-    if (activeTab === 'projections') setActiveTab('layout');
-    else if (onNextLesson) onNextLesson();
+  const scrollToTabs = () => {
+    setTimeout(() => {
+      document.querySelector('.lesson-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 10);
   };
+
+  const handleNext = () => {
+    if (activeTab === 'projections') {
+      setActiveTab('layout');
+      scrollToTabs();
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+  };
+
   const handlePrev = () => {
-    if (activeTab === 'layout') setActiveTab('projections');
-    else if (onPrevLesson) onPrevLesson();
+    if (activeTab === 'layout') {
+      setActiveTab('projections');
+      scrollToTabs();
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
   };
 
   return (
@@ -88,10 +103,6 @@ const OriginLesson: React.FC<OriginLessonProps> = ({ onNextLesson, onPrevLesson 
           <Compass size={28} className="lesson-intro-icon" />
           ORIGIN
         </h3>
-        <p className="p-flush">A point where the coordinates of the X, Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on  the shape/structure of the part.</p>
-        <div className="info-box" style={{ marginTop: '1rem' }}>
-          <p className="p-flush">※ The origin must be in the same position in 3D and 2D.</p>
-        </div>
       </section>
 
       <div className="lesson-grid single-card">
@@ -105,12 +116,16 @@ const OriginLesson: React.FC<OriginLessonProps> = ({ onNextLesson, onPrevLesson 
           <div className="tab-content-area">
             {activeTab === 'projections' && (
               <div className="tab-pane">
-                <div className="card-header"><h4>Standard Projections</h4></div>
-                <div className="image-wrapper-flush image-zoom-container" style={{ marginTop: '1rem' }}>
+
+                <p className="p-flush" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: '1.7', marginTop: '-1.5rem' }}>
+                  A point where the coordinates of the X, Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.
+                </p>
+                <p style={{ marginTop: '0.5rem' }}>※ The origin must be in the same position in 3D and 2D.</p>
+                <div className="image-wrapper-flush image-zoom-container" style={{ marginTop: '5rem', display: 'flex', justifyContent: 'center' }}>
                   <img src={originOverview} alt="Origin Overview and Views" className="software-screenshot screenshot-large" />
                 </div>
 
-</div>
+              </div>
             )}
             {activeTab === 'layout' && (
               <div className="tab-pane">
@@ -163,11 +178,11 @@ const OriginLesson: React.FC<OriginLessonProps> = ({ onNextLesson, onPrevLesson 
                     <span className={`step-number ${completedSteps.has('o-5') ? 'completed' : ''}`}>
                       {completedSteps.has('o-5') ? <CheckCircle2 size={16} /> : '5'}
                     </span>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <span className="step-label" style={{ marginTop: '0.25rem' }}>Left-click on a 3rd point to set the Y-axis.</span>
-                      <p className="p-flush-small" style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>The XY-plane will be the front view.</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
+                      <span className="step-label">Left-click on a 3rd point to set the Y-axis.</span>
                     </div>
                   </div>
+                  <p style={{ margin: 0, marginTop: '0rem', color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'left' }}>The XY-plane will be the front view.</p>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <div className="image-wrapper-flush image-zoom-container" style={{ marginTop: '0.5rem' }}>
                       <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-large" />

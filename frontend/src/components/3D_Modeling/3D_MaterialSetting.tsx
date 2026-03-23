@@ -7,18 +7,18 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Material Setting (1) Assets
-import setMaterialIcon from '../../assets/3D_Image_File/material_setting(1)_set_material.jpg';
-import materialListImg from '../../assets/3D_Image_File/material_setting(1)_material_list.jpg';
-import step4ResultImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_4.jpg';
-import step5DialogImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_5.jpg';
-import materialSettingImg from '../../assets/3D_Image_File/material_setting(1)_material_setting.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import setMaterialIcon from '../../assets/3D_Image_File/material_setting(1)_set_material.png';
+import materialListImg from '../../assets/3D_Image_File/material_setting(1)_material_list.png';
+import step4ResultImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_4.png';
+import step5DialogImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_5.png';
+import materialSettingImg from '../../assets/3D_Image_File/material_setting(1)_material_setting.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 
 // Material Setting (2) Assets
-import mat2RefImg from '../../assets/3D_Image_File/material_setting(2)_material.jpg';
-import mat2VerifyImg from '../../assets/3D_Image_File/material_setting(2)_material_not_included.jpg';
-import materialsListImg from '../../assets/3D_Image_File/material_list.jpg';
+import mat2RefImg from '../../assets/3D_Image_File/material_setting(2)_material.png';
+import mat2VerifyImg from '../../assets/3D_Image_File/material_setting(2)_material_not_included.png';
+import materialsListImg from '../../assets/3D_Image_File/material_list.png';
 
 interface MaterialSettingLessonProps {
   subLessonId?: string;

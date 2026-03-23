@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { ChevronRight, Menu, BookOpen, Video } from 'lucide-react';
 import { Course } from '../../../types';
 import { useUI } from '../../../context/UIContext';
@@ -79,6 +80,24 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     ICAD_3D_LESSONS
 }) => {
     const { requestConfirmation } = useUI();
+
+    useEffect(() => {
+        // Wait a tick for the new lesson component DOM to mount
+        setTimeout(() => {
+            const tabsEl = document.querySelector('.lesson-tabs');
+            if (tabsEl) {
+                tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                const introEl = document.querySelector('.lesson-intro');
+                if (introEl) {
+                    introEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    const scrollContainer = document.querySelector('.main-content-viewer');
+                    if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        }, 50);
+    }, [activeLessonId]);
 
     const handleExitCourse = async () => {
         const confirmed = await requestConfirmation({
