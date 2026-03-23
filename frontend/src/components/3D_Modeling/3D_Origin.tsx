@@ -159,7 +159,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({ onNextLesson, onPrevLesson 
                 </div>
 
                 <div className={getStepClass('o-5')} onClick={() => toggleStep('o-5')}>
-                  <div className="step-header" style={{ alignItems: 'flex-start' }}>
+                  <div className="step-header">
                     <span className={`step-number ${completedSteps.has('o-5') ? 'completed' : ''}`}>
                       {completedSteps.has('o-5') ? <CheckCircle2 size={16} /> : '5'}
                     </span>

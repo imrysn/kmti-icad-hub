@@ -5,18 +5,19 @@ Reads Excel files from knowledge_base/ directory and ingests them into ChromaDB.
 Each row becomes a searchable document in the vector store.
 
 Usage:
-    python ingest_knowledge_base.py knowledge_base/your_manual.xlsx
+    python -m backend.ingest_knowledge_base backend/knowledge_base/your_manual.xlsx
 """
 
 import sys
+from typing import Optional, List
 import pandas as pd
 from datetime import datetime
 from pathlib import Path
-from .rag_engine import rag_engine
-from .database import SessionLocal
-from .models import MediaMetadata
+from backend.rag_engine import rag_engine
+from backend.database import SessionLocal
+from backend.models import MediaMetadata
 
-def ingest_excel_file(excel_path: str, text_columns: list = None):
+def ingest_excel_file(excel_path: str, text_columns: Optional[List[str]] = None):
     """
     Read Excel file and ingest into ChromaDB.
     
@@ -36,9 +37,11 @@ def ingest_excel_file(excel_path: str, text_columns: list = None):
     documents = []
     
     for idx, row in df.iterrows():
-        # Combine specified columns or all columns into text
-        if text_columns:
-            text_parts = [str(row[col]) for col in text_columns if col in df.columns]
+        text_parts = []
+        if text_columns is not None:
+            for col in text_columns:
+                if col in df.columns:
+                    text_parts.append(str(row[col]))
         else:
             text_parts = [str(val) for val in row.values if pd.notna(val)]
         
@@ -59,7 +62,7 @@ def ingest_excel_file(excel_path: str, text_columns: list = None):
                 'source': filename,
                 'row': idx,
                 'excel_path': excel_path,
-                'original_id': str(concept_id) if pd.notna(concept_id) else None
+                'original_id': str(concept_id) if pd.notna(concept_id) else ""
             }
         }
         
