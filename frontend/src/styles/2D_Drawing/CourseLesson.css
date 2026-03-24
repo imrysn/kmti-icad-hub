@@ -157,6 +157,34 @@
   max-width: 520px;
   width: 100%;
   height: auto;
-  background: transparent;
   mix-blend-mode: multiply;
 }
+
+/* --- Layout Utilities --- */
+.flex-row--top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.p-flush {
+  margin: 0;
+  padding: 0;
+}
+
+.section-divider-sm {
+  border-top: 1px solid var(--border-color);
+  margin: 1.5rem 0;
+}
+
+.screenshot-wide {
+  max-width: 100% !important;
+}
+
+.screenshot-small {
+  max-width: 240px !important;
+}

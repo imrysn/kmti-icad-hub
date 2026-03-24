@@ -141,7 +141,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p1-3') ? 'completed' : ''}`}>
                     {completedSteps.has('p1-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Press OK after selecting the parasolid file &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> </span>
+                  <span className="step-label">Press OK after selecting the parasolid file &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
 
                 </div>
                 <p className="p-flush" style={{ marginLeft: '2.5rem' }}>The Name change dialog box will appear &gt; Pick Cancel</p>
@@ -193,7 +193,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p2-3') ? 'completed' : ''}`}>
                     {completedSteps.has('p2-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Select the purchase part &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                  <span className="step-label">Select the purchase part &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
                   <p className="p-flush" style={{ marginTop: '0.5rem' }}>Check the message pane to see if the process is successful</p>

@@ -164,7 +164,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1u-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1u-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select all 3D entities for joining &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select all 3D entities for joining &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     {/* Select Entities content moved to label */}
@@ -229,7 +229,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1s-3') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1s-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select the tool entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the tool entities &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <p className="p-flush" style={{ marginTop: '-0.5rem', marginLeft: '2.5rem' }}>Tool entities will disappear and become components after subtraction.</p>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -297,7 +297,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl2i-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl2i-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select the intersecting entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the intersecting entities &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <p className="p-flush" style={{ marginTop: '-0.5rem', marginLeft: '2.5rem' }}>Intersecting entities will not disappear after the process</p>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -334,7 +334,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <div className="flex-col" style={{ gap: '1rem' }}>
                       <div className="step-header">
                         <span className="step-number">1</span>
-                        <span className="step-label">Select the desired components to be separate from the solid entity &gt; GO<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                        <span className="step-label">Select the desired components to be separate from the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                       </div>
                       <div className="step-header" style={{ marginTop: '1rem' }}>
                         <span className="step-number">2</span>
@@ -366,7 +366,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <div className="flex-col" style={{ gap: '1rem' }}>
                       <div className="step-header">
                         <span className="step-number">1</span>
-                        <span className="step-label" style={{ marginTop: '-1rem' }}>Select the entire solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
+                        <span className="step-label" style={{ marginTop: '-1rem' }}>Select the entire solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                       </div>
                       <div className="step-header" style={{ marginTop: '1rem' }}>
                         <span className="step-number">2</span>

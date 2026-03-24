@@ -315,7 +315,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3e-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3e-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
@@ -387,7 +387,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3r-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3r-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Pick the cross section to be revolved &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Pick the cross-section to be revolved. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <p className="p-flush-bottom" style={{ marginTop: '-1rem', marginLeft: '2.5rem' }}>A hatch will appear to show that the sketch is an enclosed figure</p>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
@@ -398,7 +398,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3r-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3r-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Select the axis of rotation &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Select the axis of rotation &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
@@ -456,7 +456,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3s-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Specify the pitch of the spiral on the item entry &gt; Press  &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Specify the pitch of the spiral on the item entry &gt; Press  &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Pitch must be greater than Thickness</p>
@@ -476,7 +476,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3s-4') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-4') ? <CheckCircle2 size={16} /> : '4'}
                 </span>
-                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="image-wrapper-flush">

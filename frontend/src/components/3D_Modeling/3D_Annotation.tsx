@@ -182,7 +182,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                       <span className={`step-number ${completedSteps.has('anno1-4') ? 'completed' : ''}`}>
                         {completedSteps.has('anno1-4') ? <CheckCircle2 size={16} /> : '4'}
                       </span>
-                      <span className="step-label">Pick any edge of the entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
+                      <span className="step-label">Pick any edge of the entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                     </div>
                     <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                       <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
@@ -250,7 +250,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                             {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
                           </span>
 
-                          <span className="step-label" style={{ marginTop: '-1rem' }}>Select entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
+                          <span className="step-label" style={{ marginTop: '-1rem' }}>Select entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                         </div>
 
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -277,7 +277,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                           <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
                             {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
                           </span>
-                          <span className="step-label">Select drafting entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                          <span className="step-label">Select drafting entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                         </div>
 
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -307,7 +307,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                           <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
                             {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
                           </span>
-                          <span className="step-label">Select drafting entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                          <span className="step-label">Select drafting entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                         </div>
 
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>

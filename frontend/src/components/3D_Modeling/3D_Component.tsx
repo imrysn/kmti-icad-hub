@@ -96,7 +96,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('move-2') ? 'completed' : ''}`}>
                 {completedSteps.has('move-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be move &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be move &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
           </div>
@@ -162,7 +162,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('copy-2') ? 'completed' : ''}`}>
                 {completedSteps.has('copy-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be copy &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be copy &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
 
@@ -228,7 +228,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('mirror-2') ? 'completed' : ''}`}>
                 {completedSteps.has('mirror-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the components to be mirror &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the components to be mirror &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
 
@@ -278,7 +278,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('rotate-2') ? 'completed' : ''}`}>
                 {completedSteps.has('rotate-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be rotate &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be rotate &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
 
@@ -413,7 +413,7 @@ const Component2: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('repeat-2') ? 'completed' : ''}`}>
                 {completedSteps.has('repeat-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be copied &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be copied &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
 
             <div className="image-wrapper-flush" style={{ marginLeft: '2.5rem' }}>
@@ -456,7 +456,7 @@ const Component2: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('rotateCopy-2') ? 'completed' : ''}`}>
                 {completedSteps.has('rotateCopy-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component/s to be rotated &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component/s to be rotated &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
           </div>

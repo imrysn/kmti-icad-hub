@@ -134,7 +134,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   <span className={`step-number ${completedSteps.has('hole-4') ? 'completed' : ''}`}>
                     {completedSteps.has('hole-4') ? <CheckCircle2 size={16} /> : '4'}
                   </span>
-                  <span className="step-label">Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> to create the cut.</span>
+                  <span className="step-label">Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /> to create the cut.</span>
                 </div>
                 <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>

@@ -150,7 +150,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('chamfer-3') ? 'completed' : ''}`}>
                       {completedSteps.has('chamfer-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select the edge of the entity to be chamfered &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the edge of the entity to be chamfered &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be chamfered all at once.</p>
@@ -210,7 +210,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('fillet-3') ? 'completed' : ''}`}>
                       {completedSteps.has('fillet-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select the edge of the entity to be fillet &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the edge of the entity to be fillet &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be fillet all at once.</p>
@@ -256,7 +256,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('shell-2') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select the two endfaces of the solid entity &gt; GO<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the two endfaces of the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description">
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
@@ -270,7 +270,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('shell-3') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Specify thickness on item entry &gt; double <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Specify thickness on item entry &gt; double <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description">
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>

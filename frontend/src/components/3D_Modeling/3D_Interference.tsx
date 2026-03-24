@@ -123,7 +123,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className={`step-number ${completedSteps.has('i3') ? 'completed' : ''}`}>
                 {completedSteps.has('i3') ? <CheckCircle2 size={16} /> : '3'}
               </span>
-              <span className="step-label">Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
               <p className="p-flush" style={{ color: 'var(--text-muted)' }}>A dialog box will appear showing the number of detected interferences.</p>
@@ -159,7 +159,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className={`step-number ${completedSteps.has('li1') ? 'completed' : ''}`}>
                 {completedSteps.has('li1') ? <CheckCircle2 size={16} /> : '1'}
               </span>
-              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
 

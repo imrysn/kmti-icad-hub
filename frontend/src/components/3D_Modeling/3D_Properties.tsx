@@ -198,7 +198,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                           <div className="flex-1">
                             <h4 className="section-title">Face</h4>
                             <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0, marginBottom: '0.5rem' }}>
-                              <span className="step-label">Pick a color &gt; Select surface to be changed &gt; GO</span>
+                              <span className="step-label">Pick a color &gt; Select surface to be changed &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                             </div>
                             <div className="step-description">
                               <p className="p-flush" style={{ color: 'var(--text-muted)' }}>Only selected faces/surfaces will change its color.</p>
@@ -385,7 +385,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         </span>
                         <div className="flex-row-center" style={{ gap: '0.8rem' }}>
                           <img src={information2} alt="Length" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick an edge &gt; <strong className="text-highlight">GO</strong> to measure length.</span>
+                          <span className="step-label">Pick an edge &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /> to measure length.</span>
                         </div>
                       </div>
                       <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -442,7 +442,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         </span>
                         <div className="flex-row-center" style={{ gap: '0.8rem' }}>
                           <img src={information5} alt="Entity Info" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick the solid entity &gt; <strong className="text-highlight">GO</strong> to display information.</span>
+                          <span className="step-label">Pick the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /> to display information.</span>
                         </div>
                       </div>
                       <div className="step-description" style={{ paddingLeft: '2.5rem' }}>

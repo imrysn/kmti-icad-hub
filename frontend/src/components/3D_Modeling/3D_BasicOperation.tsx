@@ -37,7 +37,7 @@ import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_e
 // Tabs: Move | Rotate | Mirror | Copy | Rotate Copy | Mirror Copy | Delete
 // ══════════════════════════════════════════════════════════════════════════
 import operationsMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.png';
-import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.png';
+import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.jpg';
 import itemEntryMove from '../../assets/3D_Image_File/basic_operation(2)_item_entry_box.png';
 import moveResult from '../../assets/3D_Image_File/basic_operation(2)_move_3.png';
 import rotateIcon from '../../assets/3D_Image_File/basic_operation(3)_rotate.png';
@@ -639,9 +639,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
                 <span className={`step-number ${completedSteps.has('b2m-2') ? 'completed' : ''}`}>
                   {completedSteps.has('b2m-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">
-                  Left-click on the entity to be move &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                </span>
+                <span className="step-label">Left-click on the entity to be move &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
@@ -699,9 +697,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
                 <span className={`step-number ${completedSteps.has('b2r-2') ? 'completed' : ''}`}>
                   {completedSteps.has('b2r-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">
-                  Left-click on the entity to be rotate &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                </span>
+                <span className="step-label">Left-click on the entity to be rotate &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
@@ -764,9 +760,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
                 <span className={`step-number ${completedSteps.has('b2mir-2') ? 'completed' : ''}`}>
                   {completedSteps.has('b2mir-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">
-                  Left-click on the entity to be mirror &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                </span>
+                <span className="step-label">Left-click on the entity to be mirror &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
@@ -817,9 +811,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
                 <span className={`step-number ${completedSteps.has('b2c-2') ? 'completed' : ''}`}>
                   {completedSteps.has('b2c-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">
-                  Left-click on the entity to be copy &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" />
-                </span>
+                <span className="step-label">Left-click on the entity to be copy &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
@@ -1331,7 +1323,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
                 <span className={`step-number ${completedSteps.has('b3st-2') ? 'completed' : ''}`}>
                   {completedSteps.has('b3st-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Select the face to be stretch &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Select the face to be stretch &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
               </div>
@@ -1366,7 +1358,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
               <h4 className="section-title">OR</h4>
               <div className="instruction-step" style={{ border: 'none', background: 'transparent', paddingLeft: 0 }}>
                 <div className="step-header" style={{ border: 'none', background: 'transparent', marginBottom: '0.5rem' }}>
-                  <span className="step-label">Select face &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> &gt; Left-click on the 3D Space.</span>
+                  <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /> &gt; Left-click on the 3D Space.</span>
                 </div>
                 <div className="step-header" style={{ border: 'none', background: 'transparent', marginBottom: '0.5rem' }}>
                   <span className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
@@ -1406,7 +1398,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
                 <span className={`step-number ${completedSteps.has('b3rez-2') ? 'completed' : ''}`}>
                   {completedSteps.has('b3rez-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Select the entity for resizing &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Select the entity for resizing &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
 

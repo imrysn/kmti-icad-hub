@@ -245,7 +245,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                           <p className="p-flush">Click on the center <img src={centerTool} alt="Center Tool" className="software-screenshot screenshot-click--inline" /></p>
                         </div>
                         <div className="flex-row-center" style={{ gap: '1rem', marginTop: '0.5rem' }}>
-                          <p className="p-flush">Left-click on the selected point &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click--inline" /></p>
+                          <p className="p-flush">Left-click on the selected point &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                         </div>
                       </div>
                       <div className="image-wrapper-flush">
@@ -330,7 +330,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                           <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" />
                         </div>
                         <p className="p-flush">Set Radius = <strong className="text-highlight"> 7mm</strong></p>
-                        <p className="p-flush">Pick all the edges to be filleted &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> </p>
+                        <p className="p-flush">Pick all the edges to be filleted &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                       </div>
                       <div className="image-wrapper-flush">
                         <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" />
@@ -376,7 +376,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                           <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" />
                         </div>
                         <p className="p-flush">Set Chamfer Length = <strong className="text-highlight">20mm</strong></p>
-                        <p className="p-flush">Select all edges to be chamfered &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
+                        <p className="p-flush">Select all edges to be chamfered &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                       </div>
                       <div className="image-wrapper-flush">
                         <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-small" />
@@ -399,7 +399,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                         <div className="image-wrapper-flush" style={{ marginBottom: '1rem', marginTop: '1rem' }}>
                           <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" />
                         </div>
-                        <p className='p-flush'>Select the entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
+                        <p className='p-flush'>Select the entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                         <p className='p-flush'>Enter the 3D Part Name</p>
                       </div>
                       <div className="image-wrapper-flush">

@@ -123,7 +123,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-2') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select the entity/entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the entity/entities &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                   </div>

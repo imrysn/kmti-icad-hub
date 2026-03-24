@@ -125,7 +125,7 @@ const PartLesson: React.FC<PartLessonProps> = ({ subLessonId = '3d-part-1', onNe
                     <span className={`step-number ${completedSteps.has('create-2') ? 'completed' : ''}`}>
                       {completedSteps.has('create-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select a single entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select a single entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description"></div>
                 </div>
