@@ -7,25 +7,25 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Boolean (1) Assets
-import booleanOpMenu from '../../assets/3D_Image_File/boolean(1)_boolean_operation.jpg';
-import unionIcon from '../../assets/3D_Image_File/boolean(1)_union.jpg';
-import select3D from '../../assets/3D_Image_File/boolean(1)_select3d.jpg';
-import subtractIcon from '../../assets/3D_Image_File/boolean(1)_subtract.jpg';
-import subtractEntity from '../../assets/3D_Image_File/boolean(1)_subtract_entity.jpg';
-import subtractAfter from '../../assets/3D_Image_File/boolean(1)_subtract_after_subtraction.jpg';
-import subtractRetain from '../../assets/3D_Image_File/boolean(1)_subtract_retain_entities.jpg';
-import booleanSubtract from '../../assets/3D_Image_File/boolean(1)_boolean_subtract.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import booleanOpMenu from '../../assets/3D_Image_File/boolean(1)_boolean_operation.png';
+import unionIcon from '../../assets/3D_Image_File/boolean(1)_union.png';
+import select3D from '../../assets/3D_Image_File/boolean(1)_select3d.png';
+import subtractIcon from '../../assets/3D_Image_File/boolean(1)_subtract.png';
+import subtractEntity from '../../assets/3D_Image_File/boolean(1)_subtract_entity.png';
+import subtractAfter from '../../assets/3D_Image_File/boolean(1)_subtract_after_subtraction.png';
+import subtractRetain from '../../assets/3D_Image_File/boolean(1)_subtract_retain_entities.png';
+import booleanSubtract from '../../assets/3D_Image_File/boolean(1)_boolean_subtract.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Boolean (2) Assets
-import intersectIcon from '../../assets/3D_Image_File/boolean(2)_intersect.jpg';
-import intersectingEntities from '../../assets/3D_Image_File/boolean(2)_intersecting_entities.jpg';
-import selectEntity from '../../assets/3D_Image_File/boolean(2)_select_entity.jpg';
-import selectOk from '../../assets/3D_Image_File/boolean(2)_select_ok.jpg';
-import componentIcon from '../../assets/3D_Image_File/boolean(2)_component.jpg';
-import componentSeparate from '../../assets/3D_Image_File/boolean(2)_component_separate_all_components.jpg';
-import componentOk from '../../assets/3D_Image_File/boolean(2)_component_select_ok.jpg';
-import componentSeparated from '../../assets/3D_Image_File/boolean(2)_component_separated.jpg';
+import intersectIcon from '../../assets/3D_Image_File/boolean(2)_intersect.png';
+import intersectingEntities from '../../assets/3D_Image_File/boolean(2)_intersecting_entities.png';
+import selectEntity from '../../assets/3D_Image_File/boolean(2)_select_entity.png';
+import selectOk from '../../assets/3D_Image_File/boolean(2)_select_ok.png';
+import componentIcon from '../../assets/3D_Image_File/boolean(2)_component.png';
+import componentSeparate from '../../assets/3D_Image_File/boolean(2)_component_separate_all_components.png';
+import componentOk from '../../assets/3D_Image_File/boolean(2)_component_select_ok.png';
+import componentSeparated from '../../assets/3D_Image_File/boolean(2)_component_separated.png';
 
 interface BooleanLessonProps {
   subLessonId: string;

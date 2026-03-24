@@ -172,7 +172,7 @@
 }
 
 .display-image-section {
-  background: white;
+  background: #fcfcfc;
   padding: 2rem;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
@@ -191,6 +191,7 @@
   max-width: 100%;
   height: auto;
   display: block;
+  mix-blend-mode: multiply;
 }
 
 .display-features {

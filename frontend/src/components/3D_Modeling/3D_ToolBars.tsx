@@ -10,19 +10,19 @@ import '../../styles/3D_Modeling/ToolbarExplorer.css';
 import { Zap } from 'lucide-react';
 
 // Toolbar image imports
-import tbFile from '../../assets/3D_Image_File/tool_bars_file.jpg';
-import tb2dView from '../../assets/3D_Image_File/tool_bars_2d_view.jpg';
-import tbSwitchDisplay from '../../assets/3D_Image_File/tool_bars_switch_display.jpg';
-import tbScreenOps from '../../assets/3D_Image_File/tool_bars_screen_operations.jpg';
-import tb3dView from '../../assets/3D_Image_File/tool_bars_3d_view.jpg';
-import tbUserViews from '../../assets/3D_Image_File/tool_bars_user_views.jpg';
-import tbEdit from '../../assets/3D_Image_File/tool_bars_edit.jpg';
-import tbShading from '../../assets/3D_Image_File/tool_bars_shading.jpg';
-import tbSectionDisplay from '../../assets/3D_Image_File/tool_bars_section_display.jpg';
-import tb2dStandard from '../../assets/3D_Image_File/tool_bars_2d_standard_screen.jpg';
-import tbSysInfo from '../../assets/3D_Image_File/tool_bars_system_information.jpg';
-import tbScreenMem from '../../assets/3D_Image_File/tool_bars_screen_memory.jpg';
-import tbEntryControl from '../../assets/3D_Image_File/tool_bars_entry_control.jpg';
+import tbFile from '../../assets/3D_Image_File/tool_bars_file (3).png';
+import tb2dView from '../../assets/3D_Image_File/tool_bars_2d_view.png';
+import tbSwitchDisplay from '../../assets/3D_Image_File/tool_bars_switch_display.png';
+import tbScreenOps from '../../assets/3D_Image_File/tool_bars_screen_operations.png';
+import tb3dView from '../../assets/3D_Image_File/tool_bars_3d_view.png';
+import tbUserViews from '../../assets/3D_Image_File/tool_bars_user_views.png';
+import tbEdit from '../../assets/3D_Image_File/tool_bars_edit.png';
+import tbShading from '../../assets/3D_Image_File/tool_bars_shading.png';
+import tbSectionDisplay from '../../assets/3D_Image_File/tool_bars_section_display.png';
+import tb2dStandard from '../../assets/3D_Image_File/tool_bars_2d_standard_screen.png';
+import tbSysInfo from '../../assets/3D_Image_File/tool_bars_system_information.png';
+import tbScreenMem from '../../assets/3D_Image_File/tool_bars_screen_memory.png';
+import tbEntryControl from '../../assets/3D_Image_File/tool_bars_entry_control.png';
 
 import {
   Save, Monitor, Layers, ZoomIn, Box, Compass, Edit2, Sun,

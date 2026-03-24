@@ -7,13 +7,13 @@ import { ChevronLeft, ChevronRight, AlertCircle, CheckCircle2, Info } from 'luci
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Assets
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
-import interfCheckIcon from '../../assets/3D_Image_File/interf_check.jpg';
-import interfCommandMenu from '../../assets/3D_Image_File/interf_command_menu.jpg';
-import interferenceResult from '../../assets/3D_Image_File/interference.jpg';
-import listInterfIcon from '../../assets/3D_Image_File/list_all_detected_interf.jpg';
-import listDisplayWindow from '../../assets/3D_Image_File/list_display_window.jpg';
-import interferenceCheckImg from '../../assets/3D_Image_File/interference_check.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
+import interfCheckIcon from '../../assets/3D_Image_File/interf_check.png';
+import interfCommandMenu from '../../assets/3D_Image_File/interf_command_menu.png';
+import interferenceResult from '../../assets/3D_Image_File/interference.png';
+import listInterfIcon from '../../assets/3D_Image_File/list_all_detected_interf.png';
+import listDisplayWindow from '../../assets/3D_Image_File/list_display_window.png';
+import interferenceCheckImg from '../../assets/3D_Image_File/interference_check.png';
 
 interface InterferenceLessonProps {
   onNextLesson?: () => void;

@@ -5,93 +5,94 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 
 
 // ── Shared Asset Imports ──────────────────────────────────────────────────
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // ══════════════════════════════════════════════════════════════════════════
 // Basic Operation (1) — CREATING BASIC SHAPES
 // Lesson-item child ID: 'basic-op-1'
 // Tabs: Cylinder | Box | Polygon | Cone | Torus
 // ══════════════════════════════════════════════════════════════════════════
-import cmdMenu from '../../assets/3D_Image_File/basic_operation(1)_command_menu.jpg';
-import threeDView from '../../assets/3D_Image_File/basic_operation(1)_3d_view.jpg';
-import arrangeCylinder from '../../assets/3D_Image_File/basic_operation(1)_arrange_cylinder.jpg';
-import cylinderResult from '../../assets/3D_Image_File/basic_operation(1)_cylinder.jpg';
-import itemEntry from '../../assets/3D_Image_File/basic_operation(1)_item_entry.jpg';
-import keyEntry from '../../assets/3D_Image_File/basic_operation(1)_key_entry_area.jpg';
-import arrangeBox from '../../assets/3D_Image_File/basic_operation(1)_arrange_box.jpg';
-import boxResult from '../../assets/3D_Image_File/box.jpg';
-import arrangePolygon from '../../assets/3D_Image_File/basic_operation(1)_arrange_polygon_prism.jpg';
-import polygonResult from '../../assets/3D_Image_File/polygon.jpg';
-import itemEntryPolygon from '../../assets/3D_Image_File/item_entry_polygon.jpg';
-import arrangeCone from '../../assets/3D_Image_File/basic_operation(2)_arrange_cone.jpg';
-import itemEntryCone from '../../assets/3D_Image_File/basic_operation(2)_item_entry_cone.jpg';
-import coneResult from '../../assets/3D_Image_File/cone.jpg';
-import arrangeTorus from '../../assets/3D_Image_File/basic_operation(2)_arrange_torus.jpg';
-import torusResult from '../../assets/3D_Image_File/torus.jpg';
-import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(1)_item_entry.jpg'; // Placeholder for Torus
+import cmdMenu from '../../assets/3D_Image_File/basic_operation(1)_command_menu.png';
+import threeDView from '../../assets/3D_Image_File/basic_operation(1)_3d_view.png';
+import arrangeCylinder from '../../assets/3D_Image_File/basic_operation(1)_arrange_cylinder.png';
+import cylinderResult from '../../assets/3D_Image_File/basic_operation(1)_cylinder.png';
+import itemEntry from '../../assets/3D_Image_File/basic_operation(1)_item_entry.png';
+import keyEntry from '../../assets/3D_Image_File/basic_operation(1)_key_entry_area.png';
+import arrangeBox from '../../assets/3D_Image_File/basic_operation(1)_arrange_box.png';
+import boxResult from '../../assets/3D_Image_File/box.png';
+import arrangePolygon from '../../assets/3D_Image_File/basic_operation(1)_arrange_polygon_prism.png';
+import polygonResult from '../../assets/3D_Image_File/polygon.png';
+import itemEntryPolygon from '../../assets/3D_Image_File/item_entry_polygon.png';
+import arrangeCone from '../../assets/3D_Image_File/basic_operation(2)_arrange_cone.png';
+import itemEntryCone from '../../assets/3D_Image_File/basic_operation(2)_item_entry_cone.png';
+import coneResult from '../../assets/3D_Image_File/cone.png';
+import arrangeTorus from '../../assets/3D_Image_File/basic_operation(2)_arrange_torus.png';
+import torusResult from '../../assets/3D_Image_File/torus.png';
+import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(1)_item_entry.png'; // Placeholder for Torus
 
 // ══════════════════════════════════════════════════════════════════════════
 // Basic Operation (2) — MOVE, ROTATE, COPY, MIRROR, DELETE
 // Lesson-item child ID: 'basic-op-2'
 // Tabs: Move | Rotate | Mirror | Copy | Rotate Copy | Mirror Copy | Delete
 // ══════════════════════════════════════════════════════════════════════════
-import operationsMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.jpg';
-import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.jpg';
-import itemEntryMove from '../../assets/3D_Image_File/basic_operation(2)_item_entry_box.jpg';
-import moveResult from '../../assets/3D_Image_File/basic_operation(2)_move_3.jpg';
-import rotateIcon from '../../assets/3D_Image_File/basic_operation(3)_rotate.jpg';
-import rotateAxis from '../../assets/3D_Image_File/basic_operation(3)_rotate_axis_rotation.jpg';
-import rotateEntry from '../../assets/3D_Image_File/basic_operation(3)_rotate_item_entry.jpg';
-import mirrorIcon from '../../assets/3D_Image_File/basic_operation(3)_mirror.jpg';
-import mirrorResult from '../../assets/3D_Image_File/basic_operation(3)_mirrored.jpg';
-import copyIcon from '../../assets/3D_Image_File/basic_operation(3)_copy.jpg';
-import copyDistance from '../../assets/3D_Image_File/basic_operation(3)_copy_distance.jpg';
-import copyResult from '../../assets/3D_Image_File/basic_operation(3)_copy_3.jpg';
-import rotateCopyIcon from '../../assets/3D_Image_File/basic_operation(3)_rotatecopy.jpg';
-import rotateCopyAxis from '../../assets/3D_Image_File/basic_operation(3)_rotate_copy.jpg';
-import mirrorCopyIcon from '../../assets/3D_Image_File/basic_operation(3)_mirror_copy.jpg';
-import mirrorCopyResult from '../../assets/3D_Image_File/basic_operation(3)_mirrorcopy.jpg';
-import deleteIcon from '../../assets/3D_Image_File/basic_operation(3)_delete.jpg';
+
+import operationsMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.png';
+import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.png';
+import itemEntryMove from '../../assets/3D_Image_File/basic_operation(2)_item_entry_box.png';
+import moveResult from '../../assets/3D_Image_File/basic_operation(2)_move_3.png';
+import rotateIcon from '../../assets/3D_Image_File/basic_operation(3)_rotate.png';
+import rotateAxis from '../../assets/3D_Image_File/basic_operation(3)_rotate_axis_rotation.png';
+import rotateEntry from '../../assets/3D_Image_File/basic_operation(3)_rotate_item_entry.png';
+import mirrorIcon from '../../assets/3D_Image_File/basic_operation(3)_mirror.png';
+import mirrorResult from '../../assets/3D_Image_File/basic_operation(3)_mirrored.png';
+import copyIcon from '../../assets/3D_Image_File/basic_operation(3)_copy.png';
+import copyDistance from '../../assets/3D_Image_File/basic_operation(3)_copy_distance.png';
+import copyResult from '../../assets/3D_Image_File/basic_operation(3)_copy_3.png';
+import rotateCopyIcon from '../../assets/3D_Image_File/basic_operation(3)_rotatecopy.png';
+import rotateCopyAxis from '../../assets/3D_Image_File/basic_operation(3)_rotate_copy.png';
+import mirrorCopyIcon from '../../assets/3D_Image_File/basic_operation(3)_mirror_copy.png';
+import mirrorCopyResult from '../../assets/3D_Image_File/basic_operation(3)_mirrorcopy.png';
+import deleteIcon from '../../assets/3D_Image_File/basic_operation(3)_delete.png';
 
 // ══════════════════════════════════════════════════════════════════════════
 // Basic Operation (3) — SKETCH / EXTRUDE / REVOLVE / SHOW-HIDE / STRETCH / RESIZE
 // Lesson-item child ID: 'basic-op-3'
 // Tabs: Sketch/Extrude/Revolve | Show/Hide | Stretch | Resize
 // ══════════════════════════════════════════════════════════════════════════
-import sketchIcon from '../../assets/3D_Image_File/basic_operation(4)_sketch.jpg';
-import sketch1 from '../../assets/3D_Image_File/basic_operation(4)_1sketch.jpg';
-import extrudeRevolveMenu from '../../assets/3D_Image_File/basic_operation(4)_extrude_revolve.jpg';
-import extrudeOneSide from '../../assets/3D_Image_File/basic_operation(4)_extrusion_oneside.jpg'; // cspell:disable-line
-import extrudeBothSide from '../../assets/3D_Image_File/basic_operation(4)_extrusion_bothside.jpg'; // cspell:disable-line
-import revolveIcon from '../../assets/3D_Image_File/basic_operation(4)_revolve.jpg';
+import sketchIcon from '../../assets/3D_Image_File/basic_operation(4)_sketch.png';
+import sketch1 from '../../assets/3D_Image_File/basic_operation(4)_sketch.png'; // Placeholder: 1sketch missing from assets
+import extrudeRevolveMenu from '../../assets/3D_Image_File/basic_operation(4)_extrude_revolve.png';
+import extrudeOneSide from '../../assets/3D_Image_File/basic_operation(4)_extrusion_oneside.png'; // cspell:disable-line
+import extrudeBothSide from '../../assets/3D_Image_File/basic_operation(4)_extrusion_bothside.png'; // cspell:disable-line
+import revolveIcon from '../../assets/3D_Image_File/basic_operation(4)_revolve.png';
 import revolveP1 from '../../assets/3D_Image_File/basic_operation(4)_revolve_p1.png';
-import showHideMenu from '../../assets/3D_Image_File/basic_operation(4)_show_hide.jpg';
-import showHideEntity from '../../assets/3D_Image_File/basic_operation(4)_show_hide_entity.jpg';
-import showHideDraftingEntity from '../../assets/3D_Image_File/basic_operation(4)_showhide_drafting_entity.jpg'; // cspell:disable-line
-import hideUnselectedEntity from '../../assets/3D_Image_File/basic_operation(4)_hide_unselected_entity.jpg';
-import hideUnselectedEntity1 from '../../assets/3D_Image_File/basic_operation(4)_hide_unselected_entity_1.jpg';
-import draftingEntitiesTable from '../../assets/3D_Image_File/basic_operation(4)_drafting_entities.jpg';
-import stretchIcon from '../../assets/3D_Image_File/basic_operation(5)_stretch.jpg';
-import stretchItemEntry from '../../assets/3D_Image_File/basic_operation(5)_item_entry_stretch.jpg';
-import stretchImg1 from '../../assets/3D_Image_File/basic_operation(5)_stretch1.jpg';
-import stretchImg2 from '../../assets/3D_Image_File/basic_operation(5)_stretch2.jpg';
-import resizeIcon from '../../assets/3D_Image_File/basic_operation(5)_resize.jpg';
-import resizeItemEntry from '../../assets/3D_Image_File/basic_operation(5)_item_entry_resize.jpg';
-import resize3_2 from '../../assets/3D_Image_File/basic_operation(5)_resize3_2.jpg';
+import showHideMenu from '../../assets/3D_Image_File/basic_operation(4)_show_hide.png';
+import showHideEntity from '../../assets/3D_Image_File/basic_operation(4)_show_hide_entity.png';
+import showHideDraftingEntity from '../../assets/3D_Image_File/basic_operation(4)_showhide_drafting_entity.png'; // cspell:disable-line
+import hideUnselectedEntity from '../../assets/3D_Image_File/basic_operation(4)_hide_unselected_entity.png';
+import hideUnselectedEntity1 from '../../assets/3D_Image_File/basic_operation(4)_hide_unselected_entity_1.png';
+import draftingEntitiesTable from '../../assets/3D_Image_File/basic_operation(4)_drafting_entities.png';
+import stretchIcon from '../../assets/3D_Image_File/basic_operation(5)_stretch.png';
+import stretchItemEntry from '../../assets/3D_Image_File/basic_operation(5)_item_entry_stretch.png';
+import stretchImg1 from '../../assets/3D_Image_File/basic_operation(5)_stretch1.png';
+import stretchImg2 from '../../assets/3D_Image_File/basic_operation(5)_stretch2.png';
+import resizeIcon from '../../assets/3D_Image_File/basic_operation(5)_resize.png';
+import resizeItemEntry from '../../assets/3D_Image_File/basic_operation(5)_item_entry_resize.png';
+import resize3_2 from '../../assets/3D_Image_File/basic_operation(5)_resize3_2.png';
 
 // ══════════════════════════════════════════════════════════════════════════
 // Basic Operation (4) — ARRANGE MACHINE PART / SHAPE STEELS
 // Lesson-item child ID: 'basic-op-4'
 // Tabs: Shape Steels
 // ══════════════════════════════════════════════════════════════════════════
-import arrangeMachinePartMenu from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part.jpg';
+import arrangeMachinePartMenu from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part.png';
 
-// dito nako haha
-import arrangeMachinePartWindow from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part_window.jpg';
-import shapeSteelsTypes from '../../assets/3D_Image_File/basic_operation(6)_shape_steels.jpg';
-import shapeSteels1 from '../../assets/3D_Image_File/basic_operation(6)_shape_steels1.jpg';
-import shapeSteels2 from '../../assets/3D_Image_File/basic_operation(6)_shape_steels2.jpg';
-import keyEntryArea from '../../assets/3D_Image_File/basic_operation(1)_key_entry_area.jpg';
+//kk
+import arrangeMachinePartWindow from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part_window.png';
+import shapeSteelsTypes from '../../assets/3D_Image_File/basic_operation(6)_shape_steels.png';
+import shapeSteels1 from '../../assets/3D_Image_File/basic_operation(6)_shape_steels1.png';
+import shapeSteels2 from '../../assets/3D_Image_File/basic_operation(6)_shape_steels2.png';
+import keyEntryArea from '../../assets/3D_Image_File/basic_operation(1)_key_entry_area.png';
 
 // ──────────────────────────────────────────────────────────────────────────
 // Sub-lesson components

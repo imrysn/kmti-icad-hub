@@ -6,36 +6,36 @@ import { ChevronLeft, ChevronRight, Sliders, CheckCircle2, Zap } from 'lucide-re
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Properties (1) Assets
-import changeColorIcon from '../../assets/3D_Image_File/change_color.jpg';
-import changePropertiesWindow from '../../assets/3D_Image_File/change_properties_window.jpg';
-import changeColorEntity from '../../assets/3D_Image_File/change_color_entity.jpg';
-import changeColorFace from '../../assets/3D_Image_File/change_color_face.jpg';
+import changeColorIcon from '../../assets/3D_Image_File/change_color.png';
+import changePropertiesWindow from '../../assets/3D_Image_File/change_properties_window.png';
+import changeColorEntity from '../../assets/3D_Image_File/change_color_entity.png';
+import changeColorFace from '../../assets/3D_Image_File/change_color_face.png';
 
-import changeLayerIcon from '../../assets/3D_Image_File/change_layer.jpg';
-import itemEntryChangeLayer from '../../assets/3D_Image_File/item_entry_changelayer.jpg';
-import propertiesColorImg from '../../assets/3D_Image_File/properties_color.jpg';
+import changeLayerIcon from '../../assets/3D_Image_File/change_layer.png';
+import itemEntryChangeLayer from '../../assets/3D_Image_File/item_entry_changelayer.png';
+import propertiesColorImg from '../../assets/3D_Image_File/properties_color.png';
 
-import layer1Img from '../../assets/3D_Image_File/layer1.jpg';
-import layer2Img from '../../assets/3D_Image_File/layer2.jpg';
-import layer3Img from '../../assets/3D_Image_File/layer3.jpg';
-import acrylicPointerImg from '../../assets/3D_Image_File/acrylic_pointer.jpg';
-import propertiesMaterialImg from '../../assets/3D_Image_File/properties_material.jpg';
-import isoniteManganeseImg from '../../assets/3D_Image_File/isonite_manganese.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import layer1Img from '../../assets/3D_Image_File/layer1.png';
+import layer2Img from '../../assets/3D_Image_File/layer2.png';
+import layer3Img from '../../assets/3D_Image_File/layer3.png';
+import acrylicPointerImg from '../../assets/3D_Image_File/acrylic_pointer.png';
+import propertiesMaterialImg from '../../assets/3D_Image_File/properties_material.png';
+import isoniteManganeseImg from '../../assets/3D_Image_File/isonite_manganese.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Properties (2) Assets
-import information1 from '../../assets/3D_Image_File/information1.jpg';
-import information2 from '../../assets/3D_Image_File/information2.jpg';
-import information3 from '../../assets/3D_Image_File/information3.jpg';
-import information4 from '../../assets/3D_Image_File/information4.jpg';
-import information5 from '../../assets/3D_Image_File/information5.jpg';
+import information1 from '../../assets/3D_Image_File/information1.png';
+import information2 from '../../assets/3D_Image_File/information2.png';
+import information3 from '../../assets/3D_Image_File/information3.png';
+import information4 from '../../assets/3D_Image_File/information4.png';
+import information5 from '../../assets/3D_Image_File/information5.png';
 
 // Properties (2) Assets      dito pa ako
-import infoPointImg from '../../assets/3D_Image_File/properties(2)_information_point.jpg';
-import infoEdgeImg from '../../assets/3D_Image_File/properties(2)_information_edge.jpg';
-import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.jpg';
-import infoAngleImg from '../../assets/3D_Image_File/properties(2)_information_angle.jpg';
-import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_entity.jpg';
+import infoPointImg from '../../assets/3D_Image_File/properties(2)_information_point.png';
+import infoEdgeImg from '../../assets/3D_Image_File/properties(2)_information_edge.png';
+import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_information_edge.png'; // Placeholder: point_edge missing from assets
+import infoAngleImg from '../../assets/3D_Image_File/properties(2)_information_angle.png';
+import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_entity.png';
 
 interface PropertiesLessonProps {
   subLessonId?: string;
@@ -356,104 +356,104 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                 <div className="tool-block" style={{ padding: '0', background: 'transparent' }}>
                   <div className="flex-row-wrap" style={{ gap: '2rem' }}>
 
-                  <div className="flex-column" style={{ gap: '1.5rem' }}>
+                    <div className="flex-column" style={{ gap: '1.5rem' }}>
 
-                    {/* Item 1 */}
-                    <div className={getStepClass('info-1')} onClick={() => toggleStep('info-1')}>
-                      <div className="step-header">
-                        <span className={`step-number ${completedSteps.has('info-1') ? 'completed' : ''}`}>
-                          {completedSteps.has('info-1') ? <CheckCircle2 size={16} /> : '1'}
-                        </span>
-                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
-                          <img src={information1} alt="Coordinates" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick a point to display coordinates from the origin.</span>
+                      {/* Item 1 */}
+                      <div className={getStepClass('info-1')} onClick={() => toggleStep('info-1')}>
+                        <div className="step-header">
+                          <span className={`step-number ${completedSteps.has('info-1') ? 'completed' : ''}`}>
+                            {completedSteps.has('info-1') ? <CheckCircle2 size={16} /> : '1'}
+                          </span>
+                          <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                            <img src={information1} alt="Coordinates" style={{ width: '24px', height: '24px' }} />
+                            <span className="step-label">Pick a point to display coordinates from the origin.</span>
+                          </div>
+                        </div>
+                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                          <p className="p-flush">Displays coordinates of a point from the origin</p>
+                          <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                            <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" />
+                          </div>
                         </div>
                       </div>
-                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                        <p className="p-flush">Displays coordinates of a point from the origin</p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                          <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" />
+
+                      {/* Item 2 */}
+                      <div className={getStepClass('info-2')} onClick={() => toggleStep('info-2')}>
+                        <div className="step-header">
+                          <span className={`step-number ${completedSteps.has('info-2') ? 'completed' : ''}`}>
+                            {completedSteps.has('info-2') ? <CheckCircle2 size={16} /> : '2'}
+                          </span>
+                          <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                            <img src={information2} alt="Length" style={{ width: '24px', height: '24px' }} />
+                            <span className="step-label">Pick an edge &gt; <strong className="text-highlight">GO</strong> to measure length.</span>
+                          </div>
+                        </div>
+                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                          <p className="p-flush">Measures the length of an edge</p>
+                          <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                            <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" />
+                          </div>
                         </div>
                       </div>
+
+                      {/* Item 3 */}
+                      <div className={getStepClass('info-3')} onClick={() => toggleStep('info-3')}>
+                        <div className="step-header">
+                          <span className={`step-number ${completedSteps.has('info-3') ? 'completed' : ''}`}>
+                            {completedSteps.has('info-3') ? <CheckCircle2 size={16} /> : '3'}
+                          </span>
+                          <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                            <img src={information3} alt="Distance" style={{ width: '24px', height: '24px' }} />
+                            <span className="step-label">Pick first point/edge &gt; Pick second point/edge to measure distance.</span>
+                          </div>
+                        </div>
+                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                          <p className="p-flush">Measures the distance between two points or edges</p>
+                          <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                            <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Item 4 */}
+                      <div className={getStepClass('info-4')} onClick={() => toggleStep('info-4')}>
+                        <div className="step-header">
+                          <span className={`step-number ${completedSteps.has('info-4') ? 'completed' : ''}`}>
+                            {completedSteps.has('info-4') ? <CheckCircle2 size={16} /> : '4'}
+                          </span>
+                          <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                            <img src={information4} alt="Angle" style={{ width: '24px', height: '24px' }} />
+                            <span className="step-label">Pick 2 edges OR 3 points to measure angle.</span>
+                          </div>
+                        </div>
+                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                          <p className="p-flush">Measures the angle between two edges or three points</p>
+                          <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                            <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Item 5 */}
+                      <div className={getStepClass('info-5')} onClick={() => toggleStep('info-5')}>
+                        <div className="step-header">
+                          <span className={`step-number ${completedSteps.has('info-5') ? 'completed' : ''}`}>
+                            {completedSteps.has('info-5') ? <CheckCircle2 size={16} /> : '5'}
+                          </span>
+                          <div className="flex-row-center" style={{ gap: '0.8rem' }}>
+                            <img src={information5} alt="Entity Info" style={{ width: '24px', height: '24px' }} />
+                            <span className="step-label">Pick the solid entity &gt; <strong className="text-highlight">GO</strong> to display information.</span>
+                          </div>
+                        </div>
+                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
+                          <p className="p-flush">Displays the informations about the selected entity</p>
+                          <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
+                            <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" />
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
-
-                    {/* Item 2 */}
-                    <div className={getStepClass('info-2')} onClick={() => toggleStep('info-2')}>
-                      <div className="step-header">
-                        <span className={`step-number ${completedSteps.has('info-2') ? 'completed' : ''}`}>
-                          {completedSteps.has('info-2') ? <CheckCircle2 size={16} /> : '2'}
-                        </span>
-                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
-                          <img src={information2} alt="Length" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick an edge &gt; <strong className="text-highlight">GO</strong> to measure length.</span>
-                        </div>
-                      </div>
-                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                        <p className="p-flush">Measures the length of an edge</p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                          <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 3 */}
-                    <div className={getStepClass('info-3')} onClick={() => toggleStep('info-3')}>
-                      <div className="step-header">
-                        <span className={`step-number ${completedSteps.has('info-3') ? 'completed' : ''}`}>
-                          {completedSteps.has('info-3') ? <CheckCircle2 size={16} /> : '3'}
-                        </span>
-                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
-                          <img src={information3} alt="Distance" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick first point/edge &gt; Pick second point/edge to measure distance.</span>
-                        </div>
-                      </div>
-                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                        <p className="p-flush">Measures the distance between two points or edges</p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                          <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 4 */}
-                    <div className={getStepClass('info-4')} onClick={() => toggleStep('info-4')}>
-                      <div className="step-header">
-                        <span className={`step-number ${completedSteps.has('info-4') ? 'completed' : ''}`}>
-                          {completedSteps.has('info-4') ? <CheckCircle2 size={16} /> : '4'}
-                        </span>
-                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
-                          <img src={information4} alt="Angle" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick 2 edges OR 3 points to measure angle.</span>
-                        </div>
-                      </div>
-                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                        <p className="p-flush">Measures the angle between two edges or three points</p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                          <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 5 */}
-                    <div className={getStepClass('info-5')} onClick={() => toggleStep('info-5')}>
-                      <div className="step-header">
-                        <span className={`step-number ${completedSteps.has('info-5') ? 'completed' : ''}`}>
-                          {completedSteps.has('info-5') ? <CheckCircle2 size={16} /> : '5'}
-                        </span>
-                        <div className="flex-row-center" style={{ gap: '0.8rem' }}>
-                          <img src={information5} alt="Entity Info" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick the solid entity &gt; <strong className="text-highlight">GO</strong> to display information.</span>
-                        </div>
-                      </div>
-                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                        <p className="p-flush">Displays the informations about the selected entity</p>
-                        <div className="image-wrapper-flush" style={{ marginTop: '0.75rem' }}>
-                          <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" />
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
 
                   </div>
                 </div>

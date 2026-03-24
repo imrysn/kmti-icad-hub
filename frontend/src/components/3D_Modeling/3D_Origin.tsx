@@ -6,9 +6,9 @@ import { MousePointer2, Info, ChevronLeft, ChevronRight, Compass, CheckCircle2, 
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Asset Imports
-import originOverview from '../../assets/3D_Image_File/origin.jpg';
-import toolSelection from '../../assets/3D_Image_File/origin_change_3d_part_layout.jpg';
-import interactionSteps from '../../assets/3D_Image_File/origin_change_3d_part_layout_2345.jpg';
+import originOverview from '../../assets/3D_Image_File/origin.png';
+import toolSelection from '../../assets/3D_Image_File/origin_change_3d_part_layout.png';
+import interactionSteps from '../../assets/3D_Image_File/origin_change_3d_part_layout_2345.png';
 
 interface OriginLessonProps {
   onNextLesson?: () => void;
@@ -110,7 +110,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({ onNextLesson, onPrevLesson 
                   <img src={originOverview} alt="Origin Overview and Views" className="software-screenshot screenshot-large" />
                 </div>
 
-</div>
+              </div>
             )}
             {activeTab === 'layout' && (
               <div className="tab-pane">

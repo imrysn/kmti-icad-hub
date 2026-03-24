@@ -7,19 +7,19 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // 3D Part (1) Assets
-import partMenu1 from '../../assets/3D_Image_File/3d_part(1)_3d_part.jpg';
-import createPartIcon from '../../assets/3D_Image_File/3d_part(1)_create_3d_part.jpg';
-import modalInfo1 from '../../assets/3D_Image_File/3d_part(1)_creating_3d_part_3.jpg';
-import treeViewInfo1 from '../../assets/3D_Image_File/3d_part(1)_creating_3d_part_4.jpg';
-import materialDescriptionImg from '../../assets/3D_Image_File/3d_part(1)_material_description.jpg';
+import partMenu1 from '../../assets/3D_Image_File/3d_part(1)_3d_part.png';
+import createPartIcon from '../../assets/3D_Image_File/3d_part(1)_create_3d_part.png';
+import modalInfo1 from '../../assets/3D_Image_File/3d_part(1)_creating_3d_part_3.png';
+import treeViewInfo1 from '../../assets/3D_Image_File/3d_part(1)_creating_3d_part_4.png';
+import materialDescriptionImg from '../../assets/3D_Image_File/3d_part(1)_material_description.png';
 
 // 3D Part (2) Assets
-import partMenu2 from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name.jpg';
-import changePartIcon from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name_1.jpg';
-import modalInfo2 from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name_3.jpg';
-import treeViewInfo2 from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name_4.jpg';
+import partMenu2 from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name.png';
+import changePartIcon from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name_1.png';
+import modalInfo2 from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name_3.png';
+import treeViewInfo2 from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_name_4.png';
 
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 interface PartLessonProps {
   subLessonId?: string;

@@ -1,5 +1,5 @@
 /**
- * 3D_iCadInterface.tsx  —  iCAD Interface lesson
+ * 3D_iCadInterface.tsx   E iCAD Interface lesson
  *
  * Lesson-item ID: 'interface'
  * No sub-lessons.
@@ -16,7 +16,7 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 
 // ── iCAD Interface Lesson ──────────────────────────────────────────────────
 // Lesson-item ID: 'interface'
-// No sub-lessons – single interactive map view of the iCAD 3D window.
+// No sub-lessons  Esingle interactive map view of the iCAD 3D window.
 
 interface IcadInterfaceLessonProps {
   onNextLesson?: () => void;

@@ -1,5 +1,5 @@
 /**
- * 3D_Fairing.tsx  —  Fairing operations lessons (Chamfer, Fillet, Shell)
+ * 3D_Fairing.tsx   E Fairing operations lessons (Chamfer, Fillet, Shell)
  */
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Box as BoxIcon, CheckCircle2, Zap } from 'lucide-react';
@@ -7,19 +7,19 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Fairing Assets
-import fairingMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.jpg'; // This is the general menu, I'll check if there's a specific one or use a general one.
-import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.jpg';
-import chamferEntry from '../../assets/3D_Image_File/fairing_chamfer_1.jpg';
-import chamferResult from '../../assets/3D_Image_File/fairing_chamfer_2.jpg';
-import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.jpg';
-import filletIcon from '../../assets/3D_Image_File/fairing_fillet_1.jpg';
-import filletEntry from '../../assets/3D_Image_File/fairing_fillet_2.jpg';
-import filletResult from '../../assets/3D_Image_File/fairing_fillet_3.jpg';
-import shellIcon from '../../assets/3D_Image_File/fairing_shell_1.jpg';
-import shellFaces from '../../assets/3D_Image_File/fairing_shell_2.jpg';
-import shellEntry from '../../assets/3D_Image_File/fairing_shell_3.jpg';
-import shellResult from '../../assets/3D_Image_File/fairing_shell_3.1.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import fairingMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.png';  // This is the general
+import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.png';
+import chamferEntry from '../../assets/3D_Image_File/fairing_chamfer_1.png';
+import chamferResult from '../../assets/3D_Image_File/fairing_chamfer_2.png';
+import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.png';
+import filletIcon from '../../assets/3D_Image_File/fairing_fillet_1.png';
+import filletEntry from '../../assets/3D_Image_File/fairing_fillet_2.png';
+import filletResult from '../../assets/3D_Image_File/fairing_fillet_3.png';
+import shellIcon from '../../assets/3D_Image_File/fairing_shell_1.png';
+import shellFaces from '../../assets/3D_Image_File/fairing_shell_2.png';
+import shellEntry from '../../assets/3D_Image_File/fairing_shell_3.png';
+import shellResult from '../../assets/3D_Image_File/fairing_shell_3.1.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 interface FairingLessonProps {
   onNextLesson?: () => void;
