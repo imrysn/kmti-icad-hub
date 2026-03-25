@@ -158,10 +158,10 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                             '2d-command-menu': (id) => <CommandMenuLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
                             '2d-line-props': (id) => <LinePropertiesLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
                             '2d-dimensioning': (id) => <DimensioningLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
-                            '2d-standard-part': () => <StandardPartLesson />,
-                            '2d-surface-app': () => <SurfaceApplicationLesson />,
-                            '2d-retaining-ring': () => <RetainingRingLesson />,
-                            '2d-geometric-tol': () => <GeometricToleranceLesson />,
+                            '2d-standard-part': (id) => <StandardPartLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
+                            '2d-surface-app': (id) => <SurfaceApplicationLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
+                            '2d-retaining-ring': (id) => <RetainingRingLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
+                            '2d-geometric-tol': (id) => <GeometricToleranceLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
                             '2d-heat-treatment': () => <HeatTreatmentLesson />,
                             '2d-bom': () => <BillOfMaterialLesson />,
                             '2d-additional-view': () => <AdditionalViewLesson />,
@@ -177,7 +177,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
                         if (is2DDrawingCourse) {
                             switch (activeLessonId) {
-                                case '2d-keyway': return <KeywayLesson />;
+                                case '2d-keyway': return <KeywayLesson onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />;
                                 case '2d-part-note': return <PartNoteLesson />;
                                 case '2d-machining-symbol': return <MachiningSymbolLesson />;
                                 case '2d-welding-symbol': return <WeldingSymbolLesson />;
