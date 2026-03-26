@@ -12,7 +12,7 @@ import geoTolStepCImg from '../../assets/2D_Image_File/2D_geometric_tolerance(1)
 import geoTolStepDImg from '../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png';
 import geoTolStepEImg from '../../assets/2D_Image_File/2D_geometric_tolerance(2)_5.jpg';
 import geoTolStepFImg from '../../assets/2D_Image_File/2D_geometric_tolerance(2)_6.jpg';
-import datumSelectionImg from '../../assets/2D_Image_File/2D_geometric_tolerance(2)_datum_1.png';
+import datumSelectionImg from '../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png';
 import datumOperationImg from '../../assets/2D_Image_File/2D_geometric_tolerance(2)_datum_2.png';
 
 interface GeometricToleranceLessonProps {
@@ -91,19 +91,15 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 <div className="flex-col" style={{ gap: '2.5rem' }}>
                   {/* Step D */}
                   <div className="flex-row" style={{ gap: '2rem', alignItems: 'flex-start' }}>
-                    <div className="info-box" style={{ border: '2px solid red', borderRadius: '4px', padding: '1.5rem', flex: '0 0 250px', marginTop: '1rem' }}>
-                      <p style={{ margin: 0, fontSize: '0.95rem' }}>
-                        <strong>d. To add geometric tolerance, apply the selected commands shown in the picture then click P3.</strong>
-                      </p>
-                    </div>
+
                     <div className="image-wrapper-flush" style={{ flex: 1 }}>
-                      <img src={geoTolStepDImg} alt="Adding geometric tolerance (P3)" className="software-screenshot" style={{ width: '100%', height: 'auto' }} />
+                      <img src={geoTolStepDImg} alt="Adding geometric tolerance (P3)" className="software-screenshot screenshot-wide" style={{ width: '100%', height: 'auto', marginBottom: '3rem' }} />
                     </div>
                   </div>
 
                   {/* Step E */}
                   <div className="flex-row" style={{ gap: '2rem', alignItems: 'flex-start' }}>
-                    <div className="info-box" style={{ border: '2px solid red', borderRadius: '4px', padding: '1.5rem', flex: '0 0 250px', marginTop: '1.5rem' }}>
+                    <div className="info-box" style={{ border: '2px solid red', borderRadius: '4px', padding: '1rem', flex: '0 0 250px', marginTop: '0.5rem' }}>
                       <p style={{ margin: 0, fontSize: '0.92rem' }}>
                         <strong>e. "Geometric Tolerance" dialog box appear. Complete the required details, then click "OK".</strong>
                       </p>
@@ -115,13 +111,13 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
 
                   {/* Step F */}
                   <div className="flex-row" style={{ gap: '2rem', alignItems: 'flex-start' }}>
-                    <div className="info-box" style={{ border: '2px solid red', borderRadius: '4px', padding: '1.5rem', flex: '0 0 280px', marginTop: '1rem' }}>
+                    <div className="info-box" style={{ border: '2px solid red', borderRadius: '4px', padding: '1rem', flex: '0 0 250px', marginTop: '3rem' }}>
                       <p style={{ margin: 0, fontSize: '0.95rem' }}>
                         <strong>f. Required geometric tolerance based on the sample drawing.</strong>
                       </p>
                     </div>
                     <div className="image-wrapper-flush" style={{ flex: 0.6 }}>
-                      <img src={geoTolStepFImg} alt="Resulting Control Frame" className="software-screenshot" style={{ width: '100%', height: 'auto' }} />
+                      <img src={geoTolStepFImg} alt="Resulting Control Frame" className="software-screenshot" style={{ width: '100%', height: 'auto', marginTop: '2.5rem' }} />
                     </div>
                   </div>
 
@@ -134,21 +130,21 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                     </h4>
 
                     <div className="flex-row" style={{ gap: '3rem', alignItems: 'flex-start' }}>
-                       <div className="image-wrapper-flush" style={{ flex: 0.7 }}>
-                         <img src={datumSelectionImg} alt="Datum Selection Menu" className="software-screenshot" style={{ width: '100%' }} />
-                       </div>
-                       <div className="flex-col" style={{ flex: 1, gap: '1.5rem' }}>
-                         <div className="info-box" style={{ border: '2px solid red', borderRadius: '12px', padding: '1.5rem', background: 'white' }}>
-                           <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.8' }}>
-                             1. Apply the selected commands shown above.<br />
-                             2. Click L1, then enter datum character in item entry box.<br />
-                             3. Click P2 to position the datum, then "GO" to end the command.
-                           </p>
-                         </div>
-                         <div className="image-wrapper-flush">
-                           <img src={datumOperationImg} alt="Datum Placement Procedure" className="software-screenshot screenshot-wide" style={{ width: '100%' }} />
-                         </div>
-                       </div>
+                      <div className="image-wrapper-flush" style={{ flex: 0.7 }}>
+                        <img src={datumSelectionImg} alt="Datum Selection Menu" className="software-screenshot screenshot-wide" style={{ width: '100%', marginBottom: '2rem' }} />
+                      </div>
+                    </div>
+                    <div className="flex-row" style={{ flex: 2, gap: '2rem', alignItems: 'flex-start' }}>
+                      <div className="info-box" style={{ border: '2px solid red', borderRadius: '12px', padding: '1.5rem', background: 'white', flex: '0 0 230px', marginTop: '1rem' }}>
+                        <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.8' }}>
+                          1. Apply the selected commands shown above.<br />
+                          2. Click L1, then enter datum character in item entry box.<br />
+                          3. Click P2 to position the datum, then "GO" to end the command.
+                        </p>
+                      </div>
+                      <div className="image-wrapper-flush" style={{ flex: 1 }}>
+                        <img src={datumOperationImg} alt="Datum Placement Procedure" className="software-screenshot screenshot-wide" style={{ width: '100%' }} />
+                      </div>
                     </div>
                   </div>
                 </div>
