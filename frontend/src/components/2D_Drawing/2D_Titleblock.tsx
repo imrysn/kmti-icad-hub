@@ -16,7 +16,7 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
   return (
     <div className="course-lesson-container">
       <div className="lesson-scroll-container">
-        <section className="lesson-intro" style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+        <section className="lesson-intro" style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column' }}>
           <h3 className="section-title-main" style={{ color: 'red' }}>
             <ArrowLeft size={28} className="lesson-intro-icon" />
             19. Title Block
