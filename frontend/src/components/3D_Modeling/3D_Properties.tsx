@@ -7,35 +7,35 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Properties (1) Assets
 import changeColorIcon from '../../assets/3D_Image_File/change_color.jpg';
-import changePropertiesWindow from '../../assets/3D_Image_File/change_properties_window.jpg';
-import changeColorEntity from '../../assets/3D_Image_File/change_color_entity.jpg';
-import changeColorFace from '../../assets/3D_Image_File/change_color_face.jpg';
+import changePropertiesWindow from '../../assets/3D_Image_File/change_properties_window.png';
+import changeColorEntity from '../../assets/3D_Image_File/change_color_entity.png';
+import changeColorFace from '../../assets/3D_Image_File/change_color_face.png';
 
-import changeLayerIcon from '../../assets/3D_Image_File/change_layer.jpg';
-import itemEntryChangeLayer from '../../assets/3D_Image_File/item_entry_changelayer.jpg';
-import propertiesColorImg from '../../assets/3D_Image_File/properties_color.jpg';
+import changeLayerIcon from '../../assets/3D_Image_File/change_layer.png';
+import itemEntryChangeLayer from '../../assets/3D_Image_File/item_entry_changelayer.png';
+import propertiesColorImg from '../../assets/3D_Image_File/properties_color.png';
 
-import layer1Img from '../../assets/3D_Image_File/layer1.jpg';
-import layer2Img from '../../assets/3D_Image_File/layer2.jpg';
-import layer3Img from '../../assets/3D_Image_File/layer3.jpg';
-import acrylicPointerImg from '../../assets/3D_Image_File/acrylic_pointer.jpg';
-import propertiesMaterialImg from '../../assets/3D_Image_File/properties_material.jpg';
-import isoniteManganeseImg from '../../assets/3D_Image_File/isonite_manganese.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import layer1Img from '../../assets/3D_Image_File/layer1.png';
+import layer2Img from '../../assets/3D_Image_File/layer2.png';
+import layer3Img from '../../assets/3D_Image_File/layer3.png';
+import acrylicPointerImg from '../../assets/3D_Image_File/acrylic_pointer.png';
+import propertiesMaterialImg from '../../assets/3D_Image_File/properties_material.png';
+import isoniteManganeseImg from '../../assets/3D_Image_File/isonite_manganese.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Properties (2) Assets
-import information1 from '../../assets/3D_Image_File/information1.jpg';
-import information2 from '../../assets/3D_Image_File/information2.jpg';
-import information3 from '../../assets/3D_Image_File/information3.jpg';
-import information4 from '../../assets/3D_Image_File/information4.jpg';
-import information5 from '../../assets/3D_Image_File/information5.jpg';
+import information1 from '../../assets/3D_Image_File/information1.png';
+import information2 from '../../assets/3D_Image_File/information2.png';
+import information3 from '../../assets/3D_Image_File/information3.png';
+import information4 from '../../assets/3D_Image_File/information4.png';
+import information5 from '../../assets/3D_Image_File/information5.png';
 
 // Properties (2) Assets      dito pa ako
-import infoPointImg from '../../assets/3D_Image_File/properties(2)_information_point.jpg';
-import infoEdgeImg from '../../assets/3D_Image_File/properties(2)_information_edge.jpg';
-import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.jpg';
-import infoAngleImg from '../../assets/3D_Image_File/properties(2)_information_angle.jpg';
-import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_entity.jpg';
+import infoPointImg from '../../assets/3D_Image_File/properties(2)_information_point.png';
+import infoEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.png';
+import infoPointEdgeImg from '../../assets/3D_Image_File/properties(2)_information_point_edge.png';
+import infoAngleImg from '../../assets/3D_Image_File/properties(2)_information_angle.png';
+import infoEntityImg from '../../assets/3D_Image_File/properties(2)_information_entity.png';
 
 interface PropertiesLessonProps {
   subLessonId?: string;
@@ -198,7 +198,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                           <div className="flex-1">
                             <h4 className="section-title">Face</h4>
                             <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0, marginBottom: '0.5rem' }}>
-                              <span className="step-label">Pick a color &gt; Select surface to be changed &gt; GO</span>
+                              <span className="step-label">Pick a color &gt; Select surface to be changed &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                             </div>
                             <div className="step-description">
                               <p className="p-flush" style={{ color: 'var(--text-muted)' }}>Only selected faces/surfaces will change its color.</p>
@@ -385,7 +385,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         </span>
                         <div className="flex-row-center" style={{ gap: '0.8rem' }}>
                           <img src={information2} alt="Length" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick an edge &gt; <strong className="text-highlight">GO</strong> to measure length.</span>
+                          <span className="step-label">Pick an edge &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /> to measure length.</span>
                         </div>
                       </div>
                       <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -442,7 +442,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = 'prop
                         </span>
                         <div className="flex-row-center" style={{ gap: '0.8rem' }}>
                           <img src={information5} alt="Entity Info" style={{ width: '24px', height: '24px' }} />
-                          <span className="step-label">Pick the solid entity &gt; <strong className="text-highlight">GO</strong> to display information.</span>
+                          <span className="step-label">Pick the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /> to display information.</span>
                         </div>
                       </div>
                       <div className="step-description" style={{ paddingLeft: '2.5rem' }}>

@@ -9,24 +9,24 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 // ══════════════════════════════════════════════════════════════════════════
 // 2D > 3D (1) — WORK PLANE / COMMAND MENU / EXTRUDE
 // ══════════════════════════════════════════════════════════════════════════
-import workPlaneImg from '../../assets/3D_Image_File/2d_3d_work_plane.jpg';
-import openWorkPlaneImg from '../../assets/3D_Image_File/2d_3d_open_work_plane1.jpg';
-import openWorkPlaneImg2 from '../../assets/3D_Image_File/2d_3d_open_work_plane.jpg';
-import extrudeIcon from '../../assets/3D_Image_File/2d_3d_(1)_extrude.jpg';
-import pickCrossSection from '../../assets/3D_Image_File/2d_3d_(1)_pick_cross_section.jpg';
+import workPlaneImg from '../../assets/3D_Image_File/2d_3d_work_plane.png';
+import openWorkPlaneImg from '../../assets/3D_Image_File/2d_3d_open_work_plane1.png';
+import openWorkPlaneImg2 from '../../assets/3D_Image_File/2d_3d_open_work_plane.png';
+import extrudeIcon from '../../assets/3D_Image_File/2d_3d_(1)_extrude.png';
+import pickCrossSection from '../../assets/3D_Image_File/2d_3d_(1)_pick_cross_section.png';
 import commandMenu from '../../assets/3D_Image_File/2d_3d(1)_1.png';
-import commandMenu2 from '../../assets/3D_Image_File/2d_3d_(1)_command_menu2.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
-import extrudeDialog from '../../assets/3D_Image_File/2d_3d(2)_extrude1.jpg';
-import extrudeResultFinal from '../../assets/3D_Image_File/2d_3d(2)_extrude2.jpg';
-import revolveIcon from '../../assets/3D_Image_File/2d_3d_(2)_revolve.jpg';
+import commandMenu2 from '../../assets/3D_Image_File/2d_3d_(1)_command_menu2.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
+import extrudeDialog from '../../assets/3D_Image_File/2d_3d(2)_extrude1.png';
+import extrudeResultFinal from '../../assets/3D_Image_File/2d_3d(2)_extrude2.png';
+import revolveIcon from '../../assets/3D_Image_File/2d_3d_(2)_revolve.png';
 import revolveSteps from '../../assets/3D_Image_File/2d_3d(2)spiral.png';
-import spiralSketch from '../../assets/3D_Image_File/2d_3d_(2)_revolve_spiral_form_sketch.jpg';
-import spiralIcon from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form.jpg';
-import spiralItemEntry from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_item_entry.jpg';
-import spiralPitch from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_pitch.jpg';
-import spiralRotation1 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation1.jpg';
-import spiralRotation from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation.jpg';
+import spiralSketch from '../../assets/3D_Image_File/2d_3d_(2)_revolve_spiral_form_sketch.png';
+import spiralIcon from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form.png';
+import spiralItemEntry from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_item_entry.png';
+import spiralPitch from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_pitch.png';
+import spiralRotation1 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation1.png';
+import spiralRotation from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation.png';
 import spiralRotation2 from '../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation2.jpg';
 
 /* ── 2D > 3D (1) ── */
@@ -315,7 +315,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3e-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3e-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="flex-row-center--wrap" style={{ marginTop: '1rem', gap: '1.5rem' }}>
@@ -387,7 +387,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3r-2') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3r-2') ? <CheckCircle2 size={16} /> : '2'}
                 </span>
-                <span className="step-label">Pick the cross section to be revolved &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Pick the cross-section to be revolved. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <p className="p-flush-bottom" style={{ marginTop: '-1rem', marginLeft: '2.5rem' }}>A hatch will appear to show that the sketch is an enclosed figure</p>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
@@ -398,7 +398,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3r-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3r-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Select the axis of rotation &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Select the axis of rotation &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}></div>
             </div>
@@ -456,7 +456,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3s-3') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-3') ? <CheckCircle2 size={16} /> : '3'}
                 </span>
-                <span className="step-label">Specify the pitch of the spiral on the item entry &gt; Press  &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Specify the pitch of the spiral on the item entry &gt; Press  &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Pitch must be greater than Thickness</p>
@@ -476,7 +476,7 @@ const TwoDTo3D3: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void
                 <span className={`step-number ${completedSteps.has('2d3s-4') ? 'completed' : ''}`}>
                   {completedSteps.has('2d3s-4') ? <CheckCircle2 size={16} /> : '4'}
                 </span>
-                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
               </div>
               <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                 <div className="image-wrapper-flush">

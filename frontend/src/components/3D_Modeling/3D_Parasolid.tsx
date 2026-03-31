@@ -6,20 +6,20 @@ import { ChevronLeft, ChevronRight, FileDown, Info, CheckCircle2 } from 'lucide-
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Assets
-import importIcon from '../../assets/3D_Image_File/parasolid_import.jpg';
-import linkDialogImg from '../../assets/3D_Image_File/parasolid_link_dialog.jpg';
-import nameChangeDialogImg from '../../assets/3D_Image_File/name_change_dialog.jpg';
-import savePartImg from '../../assets/3D_Image_File/save-the-part-parasolid.jpg';
-import otherInfoImg from '../../assets/3D_Image_File/other-info-parasolid.jpg';
-import loadingParasolidImg from '../../assets/3D_Image_File/loading_parasolid.jpg';
-import parasolid43Img from '../../assets/3D_Image_File/parasolid4.3.jpg';
-import lightenBrepIcon from '../../assets/3D_Image_File/lighten_brep_solid.jpg';
-import brepDialogImg from '../../assets/3D_Image_File/dialog_box_brep.jpg';
-import messagePaneImg from '../../assets/3D_Image_File/message_pane_brep.jpg';
-import treeViewNameImg from '../../assets/3D_Image_File/3d_part_name.jpg';
-import propertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.jpg';
-import materialSettingIcon from '../../assets/3D_Image_File/material_setting(1)_set_material.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import importIcon from '../../assets/3D_Image_File/parasolid_import.png';
+import linkDialogImg from '../../assets/3D_Image_File/parasolid_link_dialog.png';
+import nameChangeDialogImg from '../../assets/3D_Image_File/name_change_dialog.png';
+import savePartImg from '../../assets/3D_Image_File/save-the-part-parasolid.png';
+import otherInfoImg from '../../assets/3D_Image_File/other_info_parasolid.png';
+import loadingParasolidImg from '../../assets/3D_Image_File/loading_parasolid.png';
+import parasolid43Img from '../../assets/3D_Image_File/parasolid4.3.png';
+import lightenBrepIcon from '../../assets/3D_Image_File/lighten_brep_solid.png';
+import brepDialogImg from '../../assets/3D_Image_File/dialog_box_brep.png';
+import messagePaneImg from '../../assets/3D_Image_File/message_pane_brep.png';
+import treeViewNameImg from '../../assets/3D_Image_File/3d_part_name.png';
+import propertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.png';
+import materialSettingIcon from '../../assets/3D_Image_File/material_setting(1)_set_material.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 interface ParasolidLessonProps {
   subLessonId?: string;
@@ -141,7 +141,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p1-3') ? 'completed' : ''}`}>
                     {completedSteps.has('p1-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Press OK after selecting the parasolid file &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> </span>
+                  <span className="step-label">Press OK after selecting the parasolid file &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
 
                 </div>
                 <p className="p-flush" style={{ marginLeft: '2.5rem' }}>The Name change dialog box will appear &gt; Pick Cancel</p>
@@ -193,7 +193,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className={`step-number ${completedSteps.has('p2-3') ? 'completed' : ''}`}>
                     {completedSteps.has('p2-3') ? <CheckCircle2 size={16} /> : '3'}
                   </span>
-                  <span className="step-label">Select the purchase part &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                  <span className="step-label">Select the purchase part &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                 </div>
                 <div style={{ paddingLeft: '2.5rem' }}>
                   <p className="p-flush" style={{ marginTop: '0.5rem' }}>Check the message pane to see if the process is successful</p>

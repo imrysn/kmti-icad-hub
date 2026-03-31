@@ -7,13 +7,13 @@ import { ChevronLeft, ChevronRight, AlertCircle, CheckCircle2, Info } from 'luci
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Assets
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
-import interfCheckIcon from '../../assets/3D_Image_File/interf_check.jpg';
-import interfCommandMenu from '../../assets/3D_Image_File/interf_command_menu.jpg';
-import interferenceResult from '../../assets/3D_Image_File/interference.jpg';
-import listInterfIcon from '../../assets/3D_Image_File/list_all_detected_interf.jpg';
-import listDisplayWindow from '../../assets/3D_Image_File/list_display_window.jpg';
-import interferenceCheckImg from '../../assets/3D_Image_File/interference_check.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
+import interfCheckIcon from '../../assets/3D_Image_File/interf_check.png';
+import interfCommandMenu from '../../assets/3D_Image_File/interf_command_menu.png';
+import interferenceResult from '../../assets/3D_Image_File/interference.png';
+import listInterfIcon from '../../assets/3D_Image_File/list_all_detected_interf.png';
+import listDisplayWindow from '../../assets/3D_Image_File/list_display_window.png';
+import interferenceCheckImg from '../../assets/3D_Image_File/interference_check.png';
 
 interface InterferenceLessonProps {
   onNextLesson?: () => void;
@@ -123,7 +123,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className={`step-number ${completedSteps.has('i3') ? 'completed' : ''}`}>
                 {completedSteps.has('i3') ? <CheckCircle2 size={16} /> : '3'}
               </span>
-              <span className="step-label">Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
               <p className="p-flush" style={{ color: 'var(--text-muted)' }}>A dialog box will appear showing the number of detected interferences.</p>
@@ -159,7 +159,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className={`step-number ${completedSteps.has('li1') ? 'completed' : ''}`}>
                 {completedSteps.has('li1') ? <CheckCircle2 size={16} /> : '1'}
               </span>
-              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
 

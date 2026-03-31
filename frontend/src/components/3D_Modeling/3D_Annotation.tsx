@@ -8,27 +8,27 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Annotation (1) Assets
-import annotationImg from '../../assets/3D_Image_File/annotation.jpg';
-import linearDimensionImg from '../../assets/3D_Image_File/linear_dimension.jpg';
-import diameterDimensionImg from '../../assets/3D_Image_File/diameter_dimension.jpg';
-import angularDimensionImg from '../../assets/3D_Image_File/angular_dimension.jpg';
-import notesLeaderLinesImg from '../../assets/3D_Image_File/notes_leader_lines.jpg';
-import characterStringsImg from '../../assets/3D_Image_File/character_strings.jpg';
+import annotationImg from '../../assets/3D_Image_File/annotation.png';
+import linearDimensionImg from '../../assets/3D_Image_File/linear_dimension.png';
+import diameterDimensionImg from '../../assets/3D_Image_File/diameter_dimension.png';
+import angularDimensionImg from '../../assets/3D_Image_File/angular_dimension.png';
+import notesLeaderLinesImg from '../../assets/3D_Image_File/notes_leader_lines.png';
+import characterStringsImg from '../../assets/3D_Image_File/character_strings.png';
 
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Note Entry Images
-import noteStringEntryImg from '../../assets/3D_Image_File/note_string_entry_window.jpg';
-import textEntryImg from '../../assets/3D_Image_File/text_entry_window.jpg';
+import noteStringEntryImg from '../../assets/3D_Image_File/note_string_entry_window.png';
+import textEntryImg from '../../assets/3D_Image_File/text_entry_window.png';
 
 // Annotation (2) Assets
-import editDimensionImg from '../../assets/3D_Image_File/edit_dimension_characters_window.jpg';
-import changePropertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.jpg';
-import changesDraftingEntityImg from '../../assets/3D_Image_File/annotation(2)_edits_drafting.jpg';
-import changesPositionDraftingEntitiesImg from '../../assets/3D_Image_File/changes_position_drafting_entities.jpg';
-import collectiveDimensionImg from '../../assets/3D_Image_File/annotation(2)_dimension.jpg';
-import annotation2Img from '../../assets/3D_Image_File/angular_dimension1.jpg';
-import changesDraftingEntity2Img from '../../assets/3D_Image_File/annotation11.jpg';
+import editDimensionImg from '../../assets/3D_Image_File/edit_dimension_characters_window.png';
+import changePropertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.png';
+import changesDraftingEntityImg from '../../assets/3D_Image_File/annotation(2)_edits_drafting.png';
+import changesPositionDraftingEntitiesImg from '../../assets/3D_Image_File/changes_position_drafting_entities.png';
+import collectiveDimensionImg from '../../assets/3D_Image_File/annotation(2)_dimension.png';
+import annotation2Img from '../../assets/3D_Image_File/angular_dimension1.png';
+import changesDraftingEntity2Img from '../../assets/3D_Image_File/annotation11.png';
 
 interface AnnotationLessonProps {
   subLessonId?: string;
@@ -182,7 +182,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                       <span className={`step-number ${completedSteps.has('anno1-4') ? 'completed' : ''}`}>
                         {completedSteps.has('anno1-4') ? <CheckCircle2 size={16} /> : '4'}
                       </span>
-                      <span className="step-label">Pick any edge of the entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
+                      <span className="step-label">Pick any edge of the entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                     </div>
                     <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                       <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
@@ -250,7 +250,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                             {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
                           </span>
 
-                          <span className="step-label" style={{ marginTop: '-1rem' }}>Select entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
+                          <span className="step-label" style={{ marginTop: '-1rem' }}>Select entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                         </div>
 
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -277,7 +277,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                           <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
                             {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
                           </span>
-                          <span className="step-label">Select drafting entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                          <span className="step-label">Select drafting entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                         </div>
 
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -307,7 +307,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
                           <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
                             {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
                           </span>
-                          <span className="step-label">Select drafting entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                          <span className="step-label">Select drafting entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                         </div>
 
                         <div className="step-description" style={{ paddingLeft: '2.5rem' }}>

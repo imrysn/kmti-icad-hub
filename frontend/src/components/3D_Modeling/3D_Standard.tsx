@@ -6,45 +6,46 @@ import { ChevronLeft, ChevronRight, Info, Play, Pipette, CheckCircle2, Zap } fro
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Standard (1) Assets
-import pointerColor from '../../assets/3D_Image_File/standard(1)_pointer_color.jpg';
-import pointerColorVGroove from '../../assets/3D_Image_File/standard(1)_pointer_color_vgroove.jpg';
-import scale2D from '../../assets/3D_Image_File/standard(1)_scale_2d.jpg';
-import scale3D from '../../assets/3D_Image_File/standard(1)_scale_3d.jpg';
-import scalePointer from '../../assets/3D_Image_File/standard(1)_scale_pointer.jpg';
-import scalePointerVGroove from '../../assets/3D_Image_File/standard(1)_scale_pointer_vgroove.jpg';
+import pointerColor from '../../assets/3D_Image_File/standard(1)pointer_color.png';
+import pointerColorVGroove from '../../assets/3D_Image_File/standard(1)_pointer_color_vgroove.png';
+import scale2D from '../../assets/3D_Image_File/standard(1)_scale_2d.png';
+import scale3D from '../../assets/3D_Image_File/standard(1)_scale_3d.png';
+import scalePointer from '../../assets/3D_Image_File/standard(1)_scale_pointer.png';
+import scalePointerVGroove from '../../assets/3D_Image_File/standard(1)_scale_pointer_vgroove.png';
 
 // Standard (2) Assets
-import gasDischarge from '../../assets/3D_Image_File/standard(2)_gas_discharge.jpg';
-import oilGroove from '../../assets/3D_Image_File/standard(2)_oil_groove.jpg';
-import sprocketNote from '../../assets/3D_Image_File/standard(2)_sprocket.jpg';
+import gasDischarge from '../../assets/3D_Image_File/standard(2)_gas_discharge.png';
+import oilGroove from '../../assets/3D_Image_File/standard(2)_oil_groove.png';
+import sprocketNote from '../../assets/3D_Image_File/standard(2)_sprocket.png';
 
 // Standard (3) Assets
-import sprocketColoring from '../../assets/3D_Image_File/standard(3)_sprocket_3d.jpg';
-import sprocketKeywayLoc from '../../assets/3D_Image_File/standard(3)_location_of_sprocket_keyway.jpg';
+import sprocketColoring from '../../assets/3D_Image_File/standard(3)_sprocket_3d.png';
+import sprocketKeywayLoc from '../../assets/3D_Image_File/standard(3)_location_of_sprocket_keyway.png';
 
 // Standard (4) Assets
-import screwStandard1 from '../../assets/3D_Image_File/standard(4)_screw_1.jpg';
-import screwStandard2 from '../../assets/3D_Image_File/standard(4)_screw_2.jpg';
+import screwStandard1 from '../../assets/3D_Image_File/standard(4)_screw_1.png';
+import screwStandard2 from '../../assets/3D_Image_File/standard(4)_screw_2.png';
 
 // Standard (5) Assets
-import hardwareSymbolStandard from '../../assets/3D_Image_File/standard(5)_screw_1.jpg';
-import boltHoleStandard from '../../assets/3D_Image_File/standard(5)_screw_2.jpg';
+import hardwareSymbolStandard from '../../assets/3D_Image_File/standard(5)_screw_1.png';
+import boltHoleStandard from '../../assets/3D_Image_File/standard(5)_screw_2.png';
 
 // Standard (6) Assets
-import boltLengthCalc from '../../assets/3D_Image_File/standard(6)_bolt_length.jpg';
-import pillowBlock1 from '../../assets/3D_Image_File/standard(6)_pillow_block_1.jpg';
-import pillowBlock2 from '../../assets/3D_Image_File/standard(6)_pillow_block_2.jpg';
-import pillowBlock3 from '../../assets/3D_Image_File/standard(6)_pillow_block_3.jpg';
+import boltLengthCalc from '../../assets/3D_Image_File/standard(6)_bolt_length.png';
+import pillowBlock1 from '../../assets/3D_Image_File/standard(6)_pillow_block_1.png';
+import pillowBlock2 from '../../assets/3D_Image_File/standard(6)_pillow_block_2.png';
+import pillowBlock3 from '../../assets/3D_Image_File/standard(6)_pillow_block_3.png';
 
 // Standard (7) Assets
-import slottedThreaded from '../../assets/3D_Image_File/standard(7)_case1.jpg';
-import slottedDrill from '../../assets/3D_Image_File/standard(7)_case2.jpg';
-import connectionCChannel from '../../assets/3D_Image_File/standard(7)_connections_case1.jpg';
-import connectionBothDrill from '../../assets/3D_Image_File/standard(7)_connections_case2.jpg';
+import slottedThreaded from '../../assets/3D_Image_File/standard(7)_case1.png';
+import slottedDrill from '../../assets/3D_Image_File/standard(7)_case2.png';
+import connectionCChannel from '../../assets/3D_Image_File/standard(7)_connections_case1.png';
+import connectionBothDrill from '../../assets/3D_Image_File/standard(7)_connections_case2.png';
 
 // Standard (8) Assets
-import sgpPipesRed from '../../assets/3D_Image_File/standard(8)_SGP_pipes_red.jpg';
-import sgpPipesYellow from '../../assets/3D_Image_File/standard(8)_SGP_pipes_yellow.jpg';
+import sgpPipesRed from '../../assets/3D_Image_File/standard(8)_SGP_pipes_red.png';
+import sgpPipesYellow from '../../assets/3D_Image_File/standard(8)_SGP_pipes_red.png';
+
 
 // Helper component for Pro-Tips
 interface StandardLessonProps {

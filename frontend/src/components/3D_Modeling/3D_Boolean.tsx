@@ -7,25 +7,25 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Boolean (1) Assets
-import booleanOpMenu from '../../assets/3D_Image_File/boolean(1)_boolean_operation.jpg';
-import unionIcon from '../../assets/3D_Image_File/boolean(1)_union.jpg';
-import select3D from '../../assets/3D_Image_File/boolean(1)_select3d.jpg';
-import subtractIcon from '../../assets/3D_Image_File/boolean(1)_subtract.jpg';
-import subtractEntity from '../../assets/3D_Image_File/boolean(1)_subtract_entity.jpg';
-import subtractAfter from '../../assets/3D_Image_File/boolean(1)_subtract_after_subtraction.jpg';
-import subtractRetain from '../../assets/3D_Image_File/boolean(1)_subtract_retain_entities.jpg';
-import booleanSubtract from '../../assets/3D_Image_File/boolean(1)_boolean_subtract.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import booleanOpMenu from '../../assets/3D_Image_File/boolean(1)_boolean_operation.png';
+import unionIcon from '../../assets/3D_Image_File/boolean(1)_union.png';
+import select3D from '../../assets/3D_Image_File/boolean(1)_select3d.png';
+import subtractIcon from '../../assets/3D_Image_File/boolean(1)_subtract.png';
+import subtractEntity from '../../assets/3D_Image_File/boolean(1)_subtract_entity.png';
+import subtractAfter from '../../assets/3D_Image_File/boolean(1)_subtract_after_subtraction.png';
+import subtractRetain from '../../assets/3D_Image_File/boolean(1)_subtract_retain_entities.png';
+import booleanSubtract from '../../assets/3D_Image_File/boolean(1)_boolean_subtract.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Boolean (2) Assets
-import intersectIcon from '../../assets/3D_Image_File/boolean(2)_intersect.jpg';
-import intersectingEntities from '../../assets/3D_Image_File/boolean(2)_intersecting_entities.jpg';
-import selectEntity from '../../assets/3D_Image_File/boolean(2)_select_entity.jpg';
-import selectOk from '../../assets/3D_Image_File/boolean(2)_select_ok.jpg';
-import componentIcon from '../../assets/3D_Image_File/boolean(2)_component.jpg';
-import componentSeparate from '../../assets/3D_Image_File/boolean(2)_component_separate_all_components.jpg';
-import componentOk from '../../assets/3D_Image_File/boolean(2)_component_select_ok.jpg';
-import componentSeparated from '../../assets/3D_Image_File/boolean(2)_component_separated.jpg';
+import intersectIcon from '../../assets/3D_Image_File/boolean(2)_intersect.png';
+import intersectingEntities from '../../assets/3D_Image_File/boolean(2)_intersecting_entities.png';
+import selectEntity from '../../assets/3D_Image_File/boolean(2)_select_entity.png';
+import selectOk from '../../assets/3D_Image_File/boolean(2)_select_ok.png';
+import componentIcon from '../../assets/3D_Image_File/boolean(2)_component.png';
+import componentSeparate from '../../assets/3D_Image_File/boolean(2)_component_separate_all_components.png';
+import componentOk from '../../assets/3D_Image_File/boolean(2)_component_select_ok.png';
+import componentSeparated from '../../assets/3D_Image_File/boolean(2)_component_separated.png';
 
 interface BooleanLessonProps {
   subLessonId: string;
@@ -164,7 +164,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1u-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1u-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select all 3D entities for joining &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select all 3D entities for joining &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     {/* Select Entities content moved to label */}
@@ -229,7 +229,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl1s-3') ? 'completed' : ''}`}>
                       {completedSteps.has('bl1s-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select the tool entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the tool entities &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <p className="p-flush" style={{ marginTop: '-0.5rem', marginLeft: '2.5rem' }}>Tool entities will disappear and become components after subtraction.</p>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -297,7 +297,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className={`step-number ${completedSteps.has('bl2i-2') ? 'completed' : ''}`}>
                       {completedSteps.has('bl2i-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select the intersecting entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the intersecting entities &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <p className="p-flush" style={{ marginTop: '-0.5rem', marginLeft: '2.5rem' }}>Intersecting entities will not disappear after the process</p>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
@@ -334,7 +334,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <div className="flex-col" style={{ gap: '1rem' }}>
                       <div className="step-header">
                         <span className="step-number">1</span>
-                        <span className="step-label">Select the desired components to be separate from the solid entity &gt; GO<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                        <span className="step-label">Select the desired components to be separate from the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                       </div>
                       <div className="step-header" style={{ marginTop: '1rem' }}>
                         <span className="step-number">2</span>
@@ -366,7 +366,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <div className="flex-col" style={{ gap: '1rem' }}>
                       <div className="step-header">
                         <span className="step-number">1</span>
-                        <span className="step-label" style={{ marginTop: '-1rem' }}>Select the entire solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
+                        <span className="step-label" style={{ marginTop: '-1rem' }}>Select the entire solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                       </div>
                       <div className="step-header" style={{ marginTop: '1rem' }}>
                         <span className="step-number">2</span>

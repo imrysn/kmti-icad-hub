@@ -7,18 +7,18 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Material Setting (1) Assets
-import setMaterialIcon from '../../assets/3D_Image_File/material_setting(1)_set_material.jpg';
-import materialListImg from '../../assets/3D_Image_File/material_setting(1)_material_list.jpg';
-import step4ResultImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_4.jpg';
-import step5DialogImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_5.jpg';
-import materialSettingImg from '../../assets/3D_Image_File/material_setting(1)_material_setting.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import setMaterialIcon from '../../assets/3D_Image_File/material_setting(1)_set_material.png';
+import materialListImg from '../../assets/3D_Image_File/material_setting(1)_material_list.png';
+import step4ResultImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_4.png';
+import step5DialogImg from '../../assets/3D_Image_File/material_setting(1)_material_setting_5.png';
+import materialSettingImg from '../../assets/3D_Image_File/material_setting(1)_material_setting.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 
 // Material Setting (2) Assets
-import mat2RefImg from '../../assets/3D_Image_File/material_setting(2)_material.jpg';
-import mat2VerifyImg from '../../assets/3D_Image_File/material_setting(2)_material_not_included.jpg';
-import materialsListImg from '../../assets/3D_Image_File/material_list.jpg';
+import mat2RefImg from '../../assets/3D_Image_File/material_setting(2)_material.png';
+import mat2VerifyImg from '../../assets/3D_Image_File/material_setting(2)_material_not_included.png';
+import materialsListImg from '../../assets/3D_Image_File/material_list.png';
 
 interface MaterialSettingLessonProps {
   subLessonId?: string;
@@ -123,7 +123,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     <span className={`step-number ${completedSteps.has('ms-2') ? 'completed' : ''}`}>
                       {completedSteps.has('ms-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select the entity/entities &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the entity/entities &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                   </div>

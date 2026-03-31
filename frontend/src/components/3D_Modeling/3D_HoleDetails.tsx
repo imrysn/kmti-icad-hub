@@ -7,12 +7,12 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Asset Imports
-import arrangeMachinePart from '../../assets/3D_Image_File/hole_details_arrange_machine_part.jpg';
-import partsPlacement from '../../assets/3D_Image_File/hole_details_parts_placement.jpg';
-import listTools from '../../assets/3D_Image_File/hole_details_list_tools.jpg';
-import holeResult from '../../assets/3D_Image_File/hole_details_hole.jpg';
-import tappedHoles from '../../assets/3D_Image_File/hole_details_tapped_holes.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import arrangeMachinePart from '../../assets/3D_Image_File/hole_details_arrange_machine_part.png';
+import partsPlacement from '../../assets/3D_Image_File/hole_details_parts_placement.png';
+import listTools from '../../assets/3D_Image_File/hole_details_list_tools.png';
+import holeResult from '../../assets/3D_Image_File/hole_details_hole.png';
+import tappedHoles from '../../assets/3D_Image_File/hole_details_tapped_holes.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 
 
@@ -134,7 +134,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   <span className={`step-number ${completedSteps.has('hole-4') ? 'completed' : ''}`}>
                     {completedSteps.has('hole-4') ? <CheckCircle2 size={16} /> : '4'}
                   </span>
-                  <span className="step-label">Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> to create the cut.</span>
+                  <span className="step-label">Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /> to create the cut.</span>
                 </div>
                 <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                   <div className="image-wrapper-flush" style={{ marginTop: '0.8rem' }}>

@@ -10,6 +10,9 @@
   gap: 3.5rem;
   animation: fadeInSlideUp 0.6s ease-out forwards;
   padding-bottom: 2rem;
+  max-width: 800px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 @keyframes fadeInSlideUp {
@@ -122,7 +125,7 @@
 }
 
 .lesson-grid.single-card .lesson-card {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -265,26 +268,32 @@
 }
 
 .software-screenshot {
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
   display: block;
-  max-width: 520px;
+  max-width: 620px;
   width: 100%;
   height: auto;
-  background: var(--bg-dark);
+  background: transparent;
+  mix-blend-mode: multiply;
 }
 
-.screenshot-large {
-  max-width: 600px;
+img.software-screenshot.screenshot-wide {
+  max-width: 1200px !important;
+  width: 100% !important;
 }
 
-.screenshot-medium {
-  max-width: 320px;
+img.software-screenshot.screenshot-large {
+  max-width: 800px !important;
+  width: 100% !important;
 }
 
-.screenshot-small {
-  max-width: 180px;
+img.software-screenshot.screenshot-medium {
+  max-width: 320px !important;
+  width: 100% !important;
+}
+
+img.software-screenshot.screenshot-small {
+  max-width: 180px !important;
+  width: 100% !important;
 }
 
 .screenshot-icon {
@@ -565,7 +574,8 @@
   border: none;
   box-shadow: none;
   display: inline-block;
-  vertical-align: -2px; /* More precise baseline alignment */
+  vertical-align: -2px;
+  /* More precise baseline alignment */
   margin: 0 0.5rem;
   background: transparent;
 }

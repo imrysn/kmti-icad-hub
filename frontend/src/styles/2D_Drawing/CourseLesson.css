@@ -3,7 +3,7 @@
 
 .course-lesson-container {
   padding: 2rem;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -151,3 +151,40 @@
 }
 
 /* Add more shared styles as needed */
+
+.software-screenshot {
+  display: block;
+  max-width: 520px;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+
+/* --- Layout Utilities --- */
+.flex-row--top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.p-flush {
+  margin: 0;
+  padding: 0;
+}
+
+.section-divider-sm {
+  border-top: 1px solid var(--border-color);
+  margin: 1.5rem 0;
+}
+
+.screenshot-wide {
+  max-width: 100% !important;
+}
+
+.screenshot-small {
+  max-width: 240px !important;
+}

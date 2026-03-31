@@ -7,19 +7,19 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Fairing Assets
-import fairingMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.jpg'; // This is the general menu, I'll check if there's a specific one or use a general one.
-import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.jpg';
-import chamferEntry from '../../assets/3D_Image_File/fairing_chamfer_1.jpg';
-import chamferResult from '../../assets/3D_Image_File/fairing_chamfer_2.jpg';
-import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.jpg';
-import filletIcon from '../../assets/3D_Image_File/fairing_fillet_1.jpg';
-import filletEntry from '../../assets/3D_Image_File/fairing_fillet_2.jpg';
-import filletResult from '../../assets/3D_Image_File/fairing_fillet_3.jpg';
-import shellIcon from '../../assets/3D_Image_File/fairing_shell_1.jpg';
-import shellFaces from '../../assets/3D_Image_File/fairing_shell_2.jpg';
-import shellEntry from '../../assets/3D_Image_File/fairing_shell_3.jpg';
-import shellResult from '../../assets/3D_Image_File/fairing_shell_3.1.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import fairingMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.png'; // This is the general menu, I'll check if there's a specific one or use a general one.
+import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.png';
+import chamferEntry from '../../assets/3D_Image_File/fairing_chamfer_1.png';
+import chamferResult from '../../assets/3D_Image_File/fairing_chamfer_2.png';
+import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.png';
+import filletIcon from '../../assets/3D_Image_File/fairing_fillet_1.png';
+import filletEntry from '../../assets/3D_Image_File/fairing_fillet_2.png';
+import filletResult from '../../assets/3D_Image_File/fairing_fillet_3.png';
+import shellIcon from '../../assets/3D_Image_File/fairing_shell_1.png';
+import shellFaces from '../../assets/3D_Image_File/fairing_shell_2.png';
+import shellEntry from '../../assets/3D_Image_File/fairing_shell_3.png';
+import shellResult from '../../assets/3D_Image_File/fairing_shell_3.1.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 interface FairingLessonProps {
   onNextLesson?: () => void;
@@ -150,7 +150,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('chamfer-3') ? 'completed' : ''}`}>
                       {completedSteps.has('chamfer-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select the edge of the entity to be chamfered &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the edge of the entity to be chamfered &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be chamfered all at once.</p>
@@ -210,7 +210,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('fillet-3') ? 'completed' : ''}`}>
                       {completedSteps.has('fillet-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Select the edge of the entity to be fillet &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the edge of the entity to be fillet &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
                     <p className="p-flush" style={{ color: 'var(--primary-red)', fontWeight: 'bold', fontSize: '0.85rem' }}>*Note: Several edges can be fillet all at once.</p>
@@ -256,7 +256,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('shell-2') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-2') ? <CheckCircle2 size={16} /> : '2'}
                     </span>
-                    <span className="step-label">Select the two endfaces of the solid entity &gt; GO<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Select the two endfaces of the solid entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description">
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
@@ -270,7 +270,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className={`step-number ${completedSteps.has('shell-3') ? 'completed' : ''}`}>
                       {completedSteps.has('shell-3') ? <CheckCircle2 size={16} /> : '3'}
                     </span>
-                    <span className="step-label">Specify thickness on item entry &gt; double <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+                    <span className="step-label">Specify thickness on item entry &gt; double <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
                   </div>
                   <div className="step-description">
                     <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>

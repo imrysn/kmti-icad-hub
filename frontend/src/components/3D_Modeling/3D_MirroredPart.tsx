@@ -6,20 +6,20 @@ import { ChevronLeft, ChevronRight, Info, Play, Move, CheckCircle2, Zap } from '
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Shared Assets
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Mirrored Part (1) Assets
-import mirrorCopyTool from '../../assets/3D_Image_File/mirrored_part(1)_mirror_copy_tool.jpg';
-import mirrorImageText from '../../assets/3D_Image_File/mirrored_part(1)_mirror_image.jpg';
-import mirrorPartA from '../../assets/3D_Image_File/mirrored_part(1)_mirror_part.jpg';
-import normalPartA from '../../assets/3D_Image_File/mirrored_part(1)_normal_part.jpg';
-import mirrorNotes from '../../assets/3D_Image_File/mirrored_notes.jpg';
+import mirrorCopyTool from '../../assets/3D_Image_File/mirrored_part(1)_mirror_copy_tool.png';
+import mirrorImageText from '../../assets/3D_Image_File/mirrored_part(1)_mirror_image.png';
+import mirrorPartA from '../../assets/3D_Image_File/mirrored_part(1)_mirror_part.png';
+import normalPartA from '../../assets/3D_Image_File/mirrored_part(1)_normal_part.png';
+import mirrorNotes from '../../assets/3D_Image_File/mirrored_notes.png';
 
 // Mirrored Part (2) Assets
-import originLocation from '../../assets/3D_Image_File/mirrored_part(2)_location_of_origin.jpg';
-import mirrorTool from '../../assets/3D_Image_File/mirrored_part(2)_mirror.jpg';
-import pick3Points from '../../assets/3D_Image_File/mirrored_part(2)_pick3_points.jpg';
-import pick3PointsPartA from '../../assets/3D_Image_File/mirrored_part(2)_pick3_points_part_a.jpg';
+import originLocation from '../../assets/3D_Image_File/mirrored_part(2)_location_of_origin.png';
+import mirrorTool from '../../assets/3D_Image_File/mirrored_part(2)_mirror.png';
+import pick3Points from '../../assets/3D_Image_File/mirrored_part(2)_pick3_points.png';
+import pick3PointsPartA from '../../assets/3D_Image_File/mirrored_part(2)_pick3_points_part_a.png';
 
 interface MirroredPartLessonProps {
   subLessonId?: string;

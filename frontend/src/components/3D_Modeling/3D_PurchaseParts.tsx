@@ -6,8 +6,8 @@ import { ChevronLeft, ChevronRight, Package, Info } from 'lucide-react';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Assets
-import purchasePartsFlowchart from '../../assets/3D_Image_File/3d_purchase_parts.jpg';
-import uploadingFlowchart from '../../assets/3D_Image_File/3d_purchase.jpg';
+import purchasePartsFlowchart from '../../assets/3D_Image_File/3d_purchase_parts.png';
+import uploadingFlowchart from '../../assets/3D_Image_File/3d_purchase.png';
 
 interface PurchasePartsLessonProps {
   subLessonId?: string;

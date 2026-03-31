@@ -6,69 +6,69 @@ import { ChevronLeft, ChevronRight, Play, Box as BoxIcon, Info, CheckCircle2 } f
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Shared Assets
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
-import centerTool from '../../assets/3D_Image_File/center_tool.jpg';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
+import centerTool from '../../assets/3D_Image_File/center_tool.png';
 
 // Operation Sample (1) Assets
-import mainDrawing from '../../assets/3D_Image_File/sample_3d_modeling_parts.jpg';
-import arrangeBoxTool from '../../assets/3D_Image_File/arrange_box_operation_sample1.jpg';
+import mainDrawing from '../../assets/3D_Image_File/sample_3d_modeling_parts.png';
+import arrangeBoxTool from '../../assets/3D_Image_File/arrange_box_operation_sample1.png';
 import machinePartTool from '../../assets/3D_Image_File/select_and_arrange_machine_part.png';
-import moveTool from '../../assets/3D_Image_File/component(1)_move.jpg';
-import opSample1 from '../../assets/3D_Image_File/operation_sample(1).jpg';
-import opSample1Move from '../../assets/3D_Image_File/operation_sample(1)1.jpg';
+import moveTool from '../../assets/3D_Image_File/component(1)_move.png';
+import opSample1 from '../../assets/3D_Image_File/operation_sample(1).png';
+import opSample1Move from '../../assets/3D_Image_File/operation_sample(1)1.png';
 
 // Step 6 Assets
-import subtractTool from '../../assets/3D_Image_File/boolean(1)_boolean_subtract.jpg';
+import subtractTool from '../../assets/3D_Image_File/boolean(1)_boolean_subtract.png';
 import subtractResult from '../../assets/3D_Image_File/subtract_operation_sample2.png';
 
 // Step 7 Assets
-import filletTool from '../../assets/3D_Image_File/fillet_edge.jpg';
+import filletTool from '../../assets/3D_Image_File/fillet_edge.png';
 import filletResult from '../../assets/3D_Image_File/filleted.png';
 
 // Step 8 Assets
-import copyTool from '../../assets/3D_Image_File/component(1)_copy.jpg';
+import copyTool from '../../assets/3D_Image_File/component(1)_copy.png';
 import copyResult from '../../assets/3D_Image_File/copy_component.png';
 
 // Step 9 Assets
-import chamferTool from '../../assets/3D_Image_File/chamfer_edge.jpg';
-import chamferResult from '../../assets/3D_Image_File/chamfered.jpg';
+import chamferTool from '../../assets/3D_Image_File/chamfer_edge.png';
+import chamferResult from '../../assets/3D_Image_File/chamfered.png';
 
 // Step 10 Assets
-import createPartTool from '../../assets/3D_Image_File/3d_part(1)_create_3d_part.jpg';
-import enterPartName from '../../assets/3D_Image_File/enter_3d_part_name.jpg';
+import createPartTool from '../../assets/3D_Image_File/3d_part(1)_create_3d_part.png';
+import enterPartName from '../../assets/3D_Image_File/enter_3d_part_name.png';
 
 // Step 11 Assets
-import propertiesWindow from '../../assets/3D_Image_File/3d_properties.jpg';
+import propertiesWindow from '../../assets/3D_Image_File/3d_properties.png';
 
 // Step 12 Assets
-import materialSettings from '../../assets/3D_Image_File/material_setting(1)_material_setting.jpg';
-import layerInfo from '../../assets/3D_Image_File/materials._layer.png';
+import materialSettings from '../../assets/3D_Image_File/material_setting(1)_material_setting.png';
+import layerInfo from '../../assets/3D_Image_File/materials_layer.png';
 
 // Step 13 Assets
-import fileMenu from '../../assets/3D_Image_File/tool_bars_file.jpg';
+import fileMenu from '../../assets/3D_Image_File/tool_bars_file.png';
 
 // Operation Sample (3) Assets
-import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.jpg';
+import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.png';
 import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.jpg';
 import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segmet_a.jpg';
 import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segmet_b.jpg';
-import unionTool from '../../assets/3D_Image_File/boolean(1)_union.jpg';
+import unionTool from '../../assets/3D_Image_File/boolean(1)_union.png';
 
 // Operation Sample (4) Assets
-import mainDrawing4 from '../../assets/3D_Image_File/operation_sample(3).jpg';
-import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.jpg';
-import sketchImg from '../../assets/3D_Image_File/operation_sample4_revolving.jpg';
-import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.jpg';
-import segmentDResult from '../../assets/3D_Image_File/operation_sample4_segment_d.jpg';
-import segmentEResult from '../../assets/3D_Image_File/operation_sample4_segment_e.jpg';
-import keyGrooveBox from '../../assets/3D_Image_File/operation_sample4_4.jpg';
-import keyGroovePos from '../../assets/3D_Image_File/operation_sample4_4_position_tool_entity.jpg';
-import arrangeBoxIcon from '../../assets/3D_Image_File/basic_operation(1)_arrange_box.jpg';
+import mainDrawing4 from '../../assets/3D_Image_File/operation_sample(3).png';
+import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.png';
+import sketchImg from '../../assets/3D_Image_File/operation_sample4_revolving.png';
+import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.png';
+import segmentDResult from '../../assets/3D_Image_File/operation_sample4_segment_d.png';
+import segmentEResult from '../../assets/3D_Image_File/operation_sample4_segment_e.png';
+import keyGrooveBox from '../../assets/3D_Image_File/operation_sample4_4.png';
+import keyGroovePos from '../../assets/3D_Image_File/operation_sample4_4_position_tool_entity.png';
+import arrangeBoxIcon from '../../assets/3D_Image_File/basic_operation(1)_arrange_box.png';
 
 // Operation Sample (5) Assets
-import keyGrooveSubtractResult from '../../assets/3D_Image_File/operation_sample5_4_subtract_tool.jpg';
+import keyGrooveSubtractResult from '../../assets/3D_Image_File/operation_sample5_4_subtract_tool.png';
 import keyGrooveFilletResult from '../../assets/3D_Image_File/operation_sample5_4_add_fillet_radius.png';
-import finalPartFairing from '../../assets/3D_Image_File/operation_sample5_6.jpg';
+import finalPartFairing from '../../assets/3D_Image_File/operation_sample5_6.png';
 
 interface OperationSampleLessonProps {
   subLessonId?: string;
@@ -245,7 +245,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                           <p className="p-flush">Click on the center <img src={centerTool} alt="Center Tool" className="software-screenshot screenshot-click--inline" /></p>
                         </div>
                         <div className="flex-row-center" style={{ gap: '1rem', marginTop: '0.5rem' }}>
-                          <p className="p-flush">Left-click on the selected point &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click--inline" /></p>
+                          <p className="p-flush">Left-click on the selected point &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                         </div>
                       </div>
                       <div className="image-wrapper-flush">
@@ -330,7 +330,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                           <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" />
                         </div>
                         <p className="p-flush">Set Radius = <strong className="text-highlight"> 7mm</strong></p>
-                        <p className="p-flush">Pick all the edges to be filleted &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /> </p>
+                        <p className="p-flush">Pick all the edges to be filleted &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                       </div>
                       <div className="image-wrapper-flush">
                         <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" />
@@ -376,7 +376,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                           <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" />
                         </div>
                         <p className="p-flush">Set Chamfer Length = <strong className="text-highlight">20mm</strong></p>
-                        <p className="p-flush">Select all edges to be chamfered &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
+                        <p className="p-flush">Select all edges to be chamfered &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                       </div>
                       <div className="image-wrapper-flush">
                         <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-small" />
@@ -399,7 +399,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                         <div className="image-wrapper-flush" style={{ marginBottom: '1rem', marginTop: '1rem' }}>
                           <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" />
                         </div>
-                        <p className='p-flush'>Select the entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></p>
+                        <p className='p-flush'>Select the entity &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></p>
                         <p className='p-flush'>Enter the 3D Part Name</p>
                       </div>
                       <div className="image-wrapper-flush">

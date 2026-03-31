@@ -7,19 +7,19 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // Component (1) Assets
-import componentMenu from '../../assets/3D_Image_File/component(1)_move_copy_delete.jpg';
-import moveIcon from '../../assets/3D_Image_File/component(1)_move.jpg';
-import moveResult from '../../assets/3D_Image_File/component(1)_move_2.jpg';
-import moveEntry from '../../assets/3D_Image_File/component(1)_move_entry.jpg';
-import copyIcon from '../../assets/3D_Image_File/component(1)_copy.jpg';
-import copyDistance from '../../assets/3D_Image_File/component(1)_copy_2.jpg';
-import copyFinal from '../../assets/3D_Image_File/component(1)_copy_3.jpg';
-import mirrorIcon from '../../assets/3D_Image_File/component(1)_mirror.jpg';
-import mirrorResult from '../../assets/3D_Image_File/component(1)_mirror_3.jpg';
-import rotateIcon from '../../assets/3D_Image_File/component(1)_rotate.jpg';
-import rotateResult from '../../assets/3D_Image_File/component(1)_rotate_3.jpg';
-import rotateEntry from '../../assets/3D_Image_File/component(1)_rotate_4.jpg';
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
+import componentMenu from '../../assets/3D_Image_File/component(1)_move_copy_delete.png';
+import moveIcon from '../../assets/3D_Image_File/component(1)_move.png';
+import moveResult from '../../assets/3D_Image_File/component(1)_move_2.png';
+import moveEntry from '../../assets/3D_Image_File/component(1)_move_entry.png';
+import copyIcon from '../../assets/3D_Image_File/component(1)_copy.png';
+import copyDistance from '../../assets/3D_Image_File/component(1)_copy_2.png';
+import copyFinal from '../../assets/3D_Image_File/component(1)_copy_3.png';
+import mirrorIcon from '../../assets/3D_Image_File/component(1)_mirror.png';
+import mirrorResult from '../../assets/3D_Image_File/component(1)_mirror_3.png';
+import rotateIcon from '../../assets/3D_Image_File/component(1)_rotate.png';
+import rotateResult from '../../assets/3D_Image_File/component(1)_rotate_3.png';
+import rotateEntry from '../../assets/3D_Image_File/component(1)_rotate_4.png';
+import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 interface ComponentLessonProps {
   subLessonId: string;
@@ -96,7 +96,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('move-2') ? 'completed' : ''}`}>
                 {completedSteps.has('move-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be move &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be move &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
           </div>
@@ -162,7 +162,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('copy-2') ? 'completed' : ''}`}>
                 {completedSteps.has('copy-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be copy &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be copy &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
 
@@ -228,7 +228,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('mirror-2') ? 'completed' : ''}`}>
                 {completedSteps.has('mirror-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the components to be mirror &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the components to be mirror &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
 
@@ -278,7 +278,7 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('rotate-2') ? 'completed' : ''}`}>
                 {completedSteps.has('rotate-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be rotate &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be rotate &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
 
@@ -336,14 +336,14 @@ const Component1: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
 };
 
 // Component (2) Assets
-import repeatCopyIcon from '../../assets/3D_Image_File/component(2)_repeat_copy.jpg';
-import repeatCopyResult from '../../assets/3D_Image_File/component(2)_repeat_copy2.jpg';
-import rotateCopyIcon from '../../assets/3D_Image_File/component(2)_rotate_copy.jpg';
-import rotateCopyPoints from '../../assets/3D_Image_File/component(2)_rotate_copy_3.jpg';
-import rotateCopyEntry from '../../assets/3D_Image_File/component(2)_rotate_copy_4.jpg';
-import mirrorCopyIcon from '../../assets/3D_Image_File/component(2)_mirror_copy.jpg';
-import mirrorCopyResult from '../../assets/3D_Image_File/component(2)_mirror_copy_2.jpg';
-import deleteIcon from '../../assets/3D_Image_File/component(2)_delete.jpg';
+import repeatCopyIcon from '../../assets/3D_Image_File/component(2)_repeat_copy.png';
+import repeatCopyResult from '../../assets/3D_Image_File/component(2)_repeat_copy2.png';
+import rotateCopyIcon from '../../assets/3D_Image_File/component(2)_rotate_copy.png';
+import rotateCopyPoints from '../../assets/3D_Image_File/component(2)_rotate_copy_3.png';
+import rotateCopyEntry from '../../assets/3D_Image_File/component(2)_rotate_copy_4.png';
+import mirrorCopyIcon from '../../assets/3D_Image_File/component(2)_mirror_copy.png';
+import mirrorCopyResult from '../../assets/3D_Image_File/component(2)_mirror_copy_2.png';
+import deleteIcon from '../../assets/3D_Image_File/component(2)_delete.png';
 
 const Component2: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => void }> = ({ onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'repeat' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('repeat');
@@ -413,7 +413,7 @@ const Component2: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('repeat-2') ? 'completed' : ''}`}>
                 {completedSteps.has('repeat-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component to be copied &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component to be copied &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
 
             <div className="image-wrapper-flush" style={{ marginLeft: '2.5rem' }}>
@@ -456,7 +456,7 @@ const Component2: React.FC<{ onNextLesson?: () => void; onPrevLesson?: () => voi
               <span className={`step-number ${completedSteps.has('rotateCopy-2') ? 'completed' : ''}`}>
                 {completedSteps.has('rotateCopy-2') ? <CheckCircle2 size={16} /> : '2'}
               </span>
-              <span className="step-label">Select the component/s to be rotated &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
+              <span className="step-label">Select the component/s to be rotated &gt; <strong className="text-highlight">GO</strong><img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '2rem', display: 'inline-block', verticalAlign: 'middle', margin: '0 0.25rem' }} /></span>
             </div>
             <div className="step-description"></div>
           </div>
