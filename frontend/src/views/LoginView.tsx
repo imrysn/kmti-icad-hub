@@ -120,27 +120,30 @@ export const LoginView: React.FC = () => {
     return (
         <div className="unified-login-container">
             <LightPillar />
+            <div className="ambient-particles"></div>
             <div className="main-login-card">
-                {/* Left Side - Welcome Section */}
+                {/* Left Side — Branding / Hero Area */}
                 <div className="welcome-section">
                     <div className="welcome-content">
-                        <div className="logo-container">
-                            <img src={kmtiLogo} alt="KMTI Logo" className="login-logo" />
-                        </div>
+                        <img src={kmtiLogo} alt="KMTI Logo" className="login-logo" />
                         <div className="system-name">
-                            <p>iCAD Manual Hub</p>
+                            <p>iCAD</p>
+                            <p>Manual Hub</p>
+                        </div>
+                        <div className="system-tagline">
+                            High-Precision Engineering Excellence
                         </div>
                     </div>
                 </div>
 
-                {/* Right Side - Login Form */}
+                {/* Right Side — Login Glass Pane */}
                 <div className="login-section">
                     <div className="login-form-container">
                         <div className="login-header">
                             <h2>Sign in</h2>
+                            <p className="login-header-desc">Enter your credentials to access the manual</p>
                         </div>
 
-                        {/* Toggle Switch */}
                         <div className="login-toggle">
                             <button
                                 type="button"
@@ -195,7 +198,6 @@ export const LoginView: React.FC = () => {
                                         checked={rememberMe}
                                         onChange={(e) => setRememberMe(e.target.checked)}
                                     />
-                                    <span className="checkmark"></span>
                                     Remember me
                                 </label>
                                 <button
@@ -218,14 +220,7 @@ export const LoginView: React.FC = () => {
                                 className={`login-button ${loginType}`}
                                 disabled={isLoggingIn}
                             >
-                                {isLoggingIn ? (
-                                    <>
-                                        <span className="loading-spinner"></span>
-                                        <span>Signing in...</span>
-                                    </>
-                                ) : (
-                                    'Sign in'
-                                )}
+                                {isLoggingIn ? 'Signing in...' : 'Sign in'}
                             </button>
                         </form>
                     </div>

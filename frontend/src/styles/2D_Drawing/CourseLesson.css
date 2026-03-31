@@ -1,97 +1,111 @@
-/* Copy of CourseLesson.css for 2D Drawing */
-@import '../MentorMode.css';
+/* ==========================================================================
+   CourseLesson.css - Midnight Aurora Edition
+   Provides a high-energy, engaging, and premium "Study Mode" aesthetic.
+   ========================================================================== */
 
 .course-lesson-container {
-  padding: 2rem;
-  max-width: 1600px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  animation: fadeInSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  padding-bottom: 8rem;
+  max-width: 1000px;
+  width: 95%;
+  margin: 3rem auto 0;
 }
+
+@keyframes fadeInSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Lesson Header & Intro --- */
 
 .lesson-intro {
-  margin-bottom: 2rem;
+  text-align: left;
+  padding: 1.5rem 0;
+  border-left: 4px solid var(--primary);
+  padding-left: 2rem;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
 }
 
-.lesson-intro h3 {
+.lesson-intro h3.section-title {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-white);
+  margin-bottom: 1rem;
+  letter-spacing: -0.04em;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 1.75rem;
-  color: var(--text-main);
-  margin: 0 0 1rem 0;
+  gap: 1rem;
+  border: none; /* Reset standard section-title border */
+  padding: 0;
+  text-transform: none;
 }
 
 .lesson-intro-icon {
   color: var(--primary);
+  filter: drop-shadow(0 0 10px var(--color-primary-glow));
 }
 
-.lesson-grid {
-  display: grid;
-  gap: 1.5rem;
+/* --- Standardized Headers & Spacing --- */
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.single-card {
-  grid-template-columns: 1fr;
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: var(--secondary);
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--color-secondary-glow);
 }
+
+.tool-block {
+  margin-bottom: 5rem;
+}
+
+/* --- Lesson Cards --- */
 
 .lesson-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.tab-button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-weight: 600;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-
-.tab-button.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
-}
-
-.lesson-navigation {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 3rem;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+  flex-direction: column;
+  gap: 2.5rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
-.nav-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.2s;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-}
-
-.nav-button:hover:not(:disabled) {
-  background: var(--bg-hover);
-}
-
-.nav-button.next {
-  background: var(--primary);
-  color: white;
+.lesson-card:hover {
+  transform: translateY(-10px);
   border-color: var(--primary);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 20px var(--color-primary-glow);
 }
 
-.nav-button.next:hover {
-  background: var(--primary-dark);
+.card-header h4 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 /* --- Steps & Instructions --- */
@@ -99,92 +113,149 @@
 .instruction-step {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.instruction-step:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border);
+  transform: translateX(5px);
 }
 
 .step-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .step-number {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: var(--primary-soft);
-  color: var(--primary);
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  color: white;
   font-weight: 800;
-  font-size: 0.85rem;
-  border-radius: 50%;
+  font-size: 0.9rem;
+  border-radius: 10px;
   flex-shrink: 0;
+  box-shadow: 0 4px 10px var(--color-primary-glow);
 }
 
 .step-label {
-  flex: 1;
-  font-size: 0.95rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.4;
+  color: var(--text-white);
 }
 
-.instruction-step.interactive {
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+/* --- Image Formatting --- */
+
+.image-wrapper {
+  background: rgba(0, 0, 0, 0.2);
   padding: 1rem;
-  margin: -1rem;
   border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: inline-block;
+  overflow: hidden;
 }
-
-.instruction-step.interactive:hover {
-  background: var(--bg-surface);
-  transform: translateX(4px);
-}
-
-.step-number.completed {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 0 0 4px var(--primary-soft);
-}
-
-/* Add more shared styles as needed */
 
 .software-screenshot {
   display: block;
-  max-width: 520px;
-  width: 100%;
+  max-width: 100%;
   height: auto;
-  mix-blend-mode: multiply;
+  border-radius: 8px;
+  transition: transform 0.5s ease;
 }
 
-/* --- Layout Utilities --- */
-.flex-row--top {
+.instruction-step:hover .software-screenshot {
+  transform: scale(1.02);
+}
+
+/* --- UX Enhancement: Progress Bar --- */
+
+.lesson-progress-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--bg-dark);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.lesson-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+  box-shadow: 0 0 15px var(--color-primary-glow);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes shine {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* --- Navigation --- */
+
+.lesson-navigation {
   display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
+  justify-content: space-between;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 3rem;
+  margin-top: 2rem;
 }
 
-.flex-1 {
-  flex: 1;
+.nav-button {
+  background: var(--glass-bg);
+  color: var(--text-white);
+  border: 1px solid var(--glass-border);
+  padding: 1rem 2rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
 }
 
-.p-flush {
-  margin: 0;
-  padding: 0;
+.nav-button:hover:not(:disabled) {
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px var(--color-primary-glow);
 }
 
-.section-divider-sm {
-  border-top: 1px solid var(--border-color);
-  margin: 1.5rem 0;
+.nav-button.next {
+  background: var(--primary);
+  border: none;
 }
 
-.screenshot-wide {
-  max-width: 100% !important;
+/* --- Instruction Box & Alerts --- */
+
+.instruction-box, .alert-box {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid var(--color-primary-glow);
+  border-left: 5px solid var(--primary);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  color: var(--text-white);
 }
 
-.screenshot-small {
-  max-width: 240px !important;
-}
+.alert-box.warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+  border-left-color: var(--warning);
+}
+
+/* Hide multipliers from screenshots in dark mode for cleaner look */
+.software-screenshot {
+  filter: brightness(1.1) contrast(1.05);
+}
