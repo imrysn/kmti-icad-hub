@@ -1,197 +1,232 @@
-/* ============================================================
-   Login View — Phoenix Cinema Edition
-   Asymmetric Layout & High-Precision Glassmorphism
-   ============================================================ */
+/* Reset and Professional Design System */
+:root {
+  --bg-deep-navy: #0a0a1a;
+  --bg-glass: rgba(15, 15, 35, 0.65);
+  --electric-violet: #8b5cf6;
+  --dark-violet: #6d28d9;
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --font-header: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
 
 .unified-login-container {
   display: flex;
-  min-height: 100vh;
-  width: 100vw;
-  background: var(--bg-dark);
-  overflow: hidden;
-  position: relative;
-}
-
-/* ── Split Layout ────────────────────────────────────────────── */
-
-.main-login-card {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  overflow: hidden;
-  animation: none;
-}
-
-/* Left Section: Hero/Branding */
-.welcome-section {
-  flex: 1.4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-}
-
-.welcome-content {
-  z-index: 10;
-  text-align: left;
-  max-width: 500px;
-  animation: slideInFromLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes slideInFromLeft {
-  from { opacity: 0; transform: translateX(-50px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.login-logo {
-  width: 240px;
-  height: auto;
-  margin-bottom: 3rem;
-  filter: drop-shadow(0 0 50px rgba(99, 102, 241, 0.3));
-}
-
-.system-name p {
-  font-family: var(--font-heading);
-  font-size: 4.5rem;
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  background: linear-gradient(135deg, #fff 0%, #94a3b8 50%, #6366f1 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-}
-
-.system-tagline {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  margin-top: 1.5rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-weight: 500;
-  opacity: 0.8;
-}
-
-/* Right Section: Form */
-.login-section {
-  flex: 1;
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(40px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem;
-  position: relative;
-  border-left: 1px solid var(--glass-border);
-  box-shadow: -20px 0 50px rgba(0, 0, 0, 0.3);
-  z-index: 20;
-}
-
-.login-form-container {
-  width: 100%;
-  max-width: 380px;
-  animation: fadeInRotate 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeInRotate {
-  from { opacity: 0; transform: translateY(20px) rotateX(10deg); }
-  to { opacity: 1; transform: translateY(0) rotateX(0); }
-}
-
-.login-header h2 {
-  font-size: 2.5rem;
-  text-align: left;
-  margin-bottom: 1rem;
-}
-
-.login-header-desc {
-  color: var(--text-muted);
-  margin-bottom: 3rem;
-  font-size: 1rem;
-}
-
-/* ── Form Controls ───────────────────────────────────────────── */
-
-.login-form {
-  display: flex;
   flex-direction: column;
-  gap: 1.75rem;
-}
-
-.form-group input {
-  height: 60px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0 1.5rem;
-  font-size: 1.05rem;
-  border-radius: 16px;
-}
-
-.form-group input:focus {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 1px var(--primary), 0 0 30px var(--color-primary-glow);
-}
-
-.login-button {
-  height: 64px;
-  border-radius: 18px;
-  font-size: 1.1rem;
-  margin-top: 1rem;
-  background: linear-gradient(135deg, var(--primary), #4338ca);
-}
-
-/* ── Social/Options ─────────────────────────────────────────── */
-
-.form-options {
-  display: flex;
-  justify-content: space-between;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-deep-navy);
+  font-family: var(--font-body);
+  overflow: hidden;
+  position: relative;
   align-items: center;
-  margin-top: 0.5rem;
+  justify-content: center;
+  padding: 1.5rem 2rem;
 }
 
-.remember-me {
+/* Background Animation Layer - Controlled by LightPillar.tsx */
+.app-drag-region {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  -webkit-app-region: drag;
+  z-index: 100;
+}
+
+/* Luxury Glass Branding Section */
+.login-brand-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  margin-top: -3.5rem;
+  z-index: 10;
+}
+
+.login-logo-text {
+  font-family: var(--font-header);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(to bottom, #fff, #b794f4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.2rem;
+  display: block;
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
+  text-transform: uppercase;
+}
+
+.brand-title {
+  font-family: var(--font-header);
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1.6;
 }
 
-.forgot-password {
-  color: var(--primary);
-  font-size: 0.9rem;
+/* Sophisticated Login Form */
+.login-form-wrapper {
+  width: 100%;
+  max-width: 360px;
+  z-index: 10;
+}
+
+.glass-form {
+  background: var(--bg-glass);
+  backdrop-filter: blur(25px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.75rem;
   font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.input-group input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--electric-violet);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* Password Toggle Refining */
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
+  color: var(--text-muted);
   cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
 }
 
-/* ── Particle Background Overlay ─────────────────────────────── */
+.password-toggle-icon:hover {
+  color: #fff;
+}
 
+/* Premium Primary Button with Shine Effect */
+.glass-login-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--electric-violet) 0%, var(--dark-violet) 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-header);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4);
+}
+
+.glass-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(109, 40, 217, 0.6);
+}
+
+.glass-login-btn:active {
+  transform: translateY(0);
+}
+
+/* Shine Animation */
+.glass-login-btn::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  transition: none;
+}
+
+.glass-login-btn:hover::after {
+  left: 120%;
+  transition: left 0.7s ease-in-out;
+}
+
+.glass-login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Background Gradients */
 .ambient-particles {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background: radial-gradient(circle at 15% 15%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+              radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
   pointer-events: none;
-  background-image: 
-    radial-gradient(1px 1px at 10% 20%, #fff 100%, transparent),
-    radial-gradient(1px 1px at 30% 50%, #fff 100%, transparent),
-    radial-gradient(2px 2px at 60% 80%, var(--primary) 100%, transparent),
-    radial-gradient(1px 1px at 80% 30%, var(--secondary) 100%, transparent);
-  background-size: 400px 400px;
-  animation: floatParticles 60s linear infinite;
-  opacity: 0.3;
+  z-index: 1;
 }
 
-@keyframes floatParticles {
-  from { background-position: 0 0; }
-  to { background-position: 400px 800px; }
+/* Smooth Transitions for Login Error */
+.local-error-msg {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid #ef4444;
+  color: #fca5a5;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

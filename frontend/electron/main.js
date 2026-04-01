@@ -1,10 +1,19 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
+const Menu = electron.Menu;
 const path = require('path');
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 1200,
-        height: 800,
+        width: 440,
+        height: 550,
+        frame: true,
+        transparent: false,
+        backgroundColor: '#0f172a',
+        resizable: false,
+        autoHideMenuBar: true,
         webPreferences: {
             // SECURITY: nodeIntegration MUST be false to prevent renderer-process code
             // from having full Node.js access. Any XSS in the renderer would otherwise
@@ -18,6 +27,8 @@ function createWindow() {
             sandbox: true,
         },
     });
+
+    mainWindow.removeMenu();
 
     // Load from Vite dev server in development, built files in production.
     // Use app.isPackaged as the reliable production signal instead of NODE_ENV,
@@ -48,7 +59,10 @@ function createWindow() {
     });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+    Menu.setApplicationMenu(null);
+    createWindow();
+});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -67,9 +81,19 @@ ipcMain.on('flash-window', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender);
     if (win && !win.isFocused()) {
         win.flashFrame(true);
-        // Automatically stop flashing when window is focused
         win.once('focus', () => {
             win.flashFrame(false);
         });
+    }
+});
+
+ipcMain.on('set-window-size', (event, { width, height, resizable }) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    if (win) {
+        win.setSize(width, height);
+        win.setResizable(resizable);
+        if (!resizable) {
+            win.center();
+        }
     }
 });

@@ -92,8 +92,16 @@ function App() {
             <span className="user-name">{user?.full_name}</span>
             <span className="user-role">{user?.role}</span>
           </div>
-          
-          <button onClick={logout} className="logout-btn">
+
+          <button
+            onClick={() => {
+              if (window.electronAPI) {
+                window.electronAPI.setWindowSize(440, 550, false);
+              }
+              logout();
+            }}
+            className="logout-btn"
+          >
             Logout
           </button>
         </div>
