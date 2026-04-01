@@ -97,9 +97,8 @@ const LightPillar: React.FC = () => {
         const animate = () => {
             if (!ctx) return;
 
-            // 1. Draw Background (No Rotation)
-            ctx.fillStyle = '#090014';
-            ctx.fillRect(0, 0, width, height);
+            // 1. Clear Canvas (Transparent)
+            ctx.clearRect(0, 0, width, height);
 
             time += speed;
 

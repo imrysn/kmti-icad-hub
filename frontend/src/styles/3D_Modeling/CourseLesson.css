@@ -1,184 +1,111 @@
 /* ==========================================================================
-   CourseLesson.css - Global Stylesheet for 3D Modeling Lessons
-   Provides a unified, premium "online course" aesthetic across all modules.
-   UX Enhanced Version 1.0
+   CourseLesson.css - Midnight Aurora Edition
+   Provides a high-energy, engaging, and premium "Study Mode" aesthetic.
    ========================================================================== */
 
 .course-lesson-container {
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
-  animation: fadeInSlideUp 0.6s ease-out forwards;
-  padding-bottom: 2rem;
-  max-width: 800px;
-  width: 80%;
-  margin: 0 auto;
+  gap: 5rem;
+  animation: fadeInSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  padding-bottom: 8rem;
+  max-width: 1000px;
+  width: 95%;
+  margin: 3rem auto 0;
 }
 
 @keyframes fadeInSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- Lesson Header & Intro --- */
 
 .lesson-intro {
   text-align: left;
-  max-width: 850px;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
+  border-left: 4px solid var(--primary);
+  padding-left: 2rem;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
 }
 
-.lesson-intro h3 {
-  font-size: 1.875rem;
+.lesson-intro h3.section-title {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
   font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 1.25rem;
-  letter-spacing: -0.03em;
-  display: inline-flex;
+  color: var(--text-white);
+  margin-bottom: 1rem;
+  letter-spacing: -0.04em;
+  display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
+  border: none; /* Reset standard section-title border */
+  padding: 0;
+  text-transform: none;
 }
 
 .lesson-intro-icon {
   color: var(--primary);
-}
-
-.lesson-intro p {
-  color: var(--text-muted);
-  line-height: 1.7;
-  font-size: 1.05rem;
+  filter: drop-shadow(0 0 10px var(--color-primary-glow));
 }
 
 /* --- Standardized Headers & Spacing --- */
 
 .section-title {
-  font-size: 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
   font-weight: 800;
-  color: var(--primary-dark);
+  color: var(--secondary);
   text-transform: uppercase;
-  letter-spacing: 0.025em;
-  margin-bottom: 1.5rem;
-  border-bottom: 2.5px solid var(--bg-surface);
-  padding-bottom: 0.75rem;
-  display: block;
+  letter-spacing: 0.1em;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: var(--secondary);
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--color-secondary-glow);
 }
 
 .tool-block {
-  margin-bottom: 4rem;
-  /* Master spacing between major tool sections */
-}
-
-.instruction-text {
-  font-size: 1rem;
-  color: var(--text-main);
-  line-height: 1.6;
-  margin-bottom: 0.75rem;
-}
-
-.text-highlight {
-  color: var(--secondary);
-  font-weight: 700;
-}
-
-/* --- Instruction / Alert Boxes --- */
-
-.instruction-box,
-.alert-box {
-  background: var(--bg-surface);
-  border-radius: 12px;
-  padding: 1.5rem 1.75rem;
-  margin-top: 1.5rem;
-  border-left: 4px solid var(--primary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-}
-
-.alert-box.warning {
-  border-left-color: var(--warning);
-  background: #fffbeb;
-}
-
-.instruction-box p,
-.alert-box p {
-  margin: 0;
-  font-weight: 600;
-  color: var(--text-main);
-  line-height: 1.6;
-}
-
-/* --- Grid Layouts --- */
-
-.lesson-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 2.5rem;
-}
-
-.lesson-grid.single-card {
-  display: block;
-}
-
-.lesson-grid.single-card .lesson-card {
-  max-width: 1200px;
-  margin: 0 auto;
+  margin-bottom: 5rem;
 }
 
 /* --- Lesson Cards --- */
 
 .lesson-card {
-  background: var(--bg-dark);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 2.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 2.5rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: visible;
-  /* Changed to visible for floating tips */
-}
-
-.lesson-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary), var(--info));
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .lesson-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  border-color: var(--border-hover);
-}
-
-.lesson-card:hover::before {
-  opacity: 1;
+  transform: translateY(-10px);
+  border-color: var(--primary);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 20px var(--color-primary-glow);
 }
 
 .card-header h4 {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: var(--text-main);
-  letter-spacing: 0.02em;
-  padding-bottom: 1.25rem;
-  border-bottom: 2px solid var(--bg-surface);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-white);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 /* --- Steps & Instructions --- */
@@ -186,499 +113,149 @@
 .instruction-step {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.instruction-step:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border);
+  transform: translateX(5px);
 }
 
 .step-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .step-number {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: var(--primary-soft);
-  color: var(--primary);
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  color: white;
   font-weight: 800;
-  font-size: 0.85rem;
-  border-radius: 50%;
+  font-size: 0.9rem;
+  border-radius: 10px;
   flex-shrink: 0;
+  box-shadow: 0 4px 10px var(--color-primary-glow);
 }
 
 .step-label {
-  flex: 1;
-  font-size: 0.95rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.4;
-}
-
-.instruction-step p:not(.instruction-text) {
-  font-size: 1rem;
-  color: var(--text-main);
-  line-height: 1.6;
-  margin: 0;
-  padding-left: 2.5rem;
-}
-
-/* Sub-steps lists */
-.interaction-list {
-  list-style: none;
-  padding: 0 0 0 2.5rem;
-  margin: 0.5rem 0 1rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.interaction-list li {
-  font-size: 0.95rem;
-  color: var(--text-main);
-  line-height: 1.5;
-  position: relative;
-  padding-left: 1rem;
-}
-
-.interaction-list li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.5rem;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--text-dim);
+  color: var(--text-white);
 }
 
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  margin-top: 0.5rem;
-  padding-left: 2.5rem;
-}
-
-.image-wrapper-flush {
-  margin-top: 0.5rem;
-  padding-left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: inline-block;
+  overflow: hidden;
 }
 
 .software-screenshot {
   display: block;
-  max-width: 620px;
-  width: 100%;
-  height: auto;
-  background: transparent;
-  mix-blend-mode: multiply;
-}
-
-img.software-screenshot.screenshot-wide {
-  max-width: 1200px !important;
-  width: 100% !important;
-}
-
-img.software-screenshot.screenshot-large {
-  max-width: 800px !important;
-  width: 100% !important;
-}
-
-img.software-screenshot.screenshot-medium {
-  max-width: 320px !important;
-  width: 100% !important;
-}
-
-img.software-screenshot.screenshot-small {
-  max-width: 180px !important;
-  width: 100% !important;
-}
-
-.screenshot-icon {
-  max-width: 200px;
-  border: none;
-  box-shadow: none;
-  margin-left: 2.5rem;
-}
-
-.screenshot-click {
-  max-width: 60px;
-  border: none;
-  box-shadow: none;
-  margin-left: 2.5rem;
-}
-
-.screenshot-wide {
   max-width: 100%;
-}
-
-.screenshot-plain {
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  border-radius: 0 !important;
-}
-
-.tool-screenshot-icon {
-  max-width: 140px;
   height: auto;
   border-radius: 8px;
-  border: 1px solid var(--border-color);
+  transition: transform 0.5s ease;
 }
 
-/* --- Result Previews --- */
-
-.result-preview {
-  margin-top: auto;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.preview-label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: var(--primary);
-  background: var(--primary-soft);
-  align-self: flex-start;
-  padding: 4px 12px;
-  border-radius: 6px;
-  letter-spacing: 0.05em;
-}
-
-.preview-img {
-  width: 100%;
-  border-radius: 12px;
-  border: 2px solid var(--bg-surface);
-  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
-}
-
-/* --- Interactive Tabs Navigation --- */
-
-.lesson-tabs {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 0.5rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.lesson-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.tab-button {
-  background: transparent;
-  border: none;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  position: relative;
-}
-
-.tab-button:hover {
-  color: var(--primary);
-  background: var(--bg-surface);
-}
-
-.tab-button.active {
-  color: var(--primary);
-  background: var(--primary-soft);
-}
-
-.tab-button.active::after {
-  content: '';
-  position: absolute;
-  bottom: -0.5rem;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: var(--primary);
-  border-radius: 3px 3px 0 0;
-}
-
-/* --- Card Navigation (Prev/Next) --- */
-
-.lesson-navigation {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid var(--border-color);
-  padding-top: 1.5rem;
-  margin-top: 2rem;
-}
-
-.nav-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid var(--border-strong);
-  background: var(--bg-dark);
-  color: var(--text-muted);
-}
-
-.nav-button:hover:not(:disabled) {
-  background: var(--bg-surface);
-  border-color: var(--border-strong);
-  color: var(--text-main);
-}
-
-.nav-button.next {
-  background: var(--primary);
-  color: var(--text-white);
-  border-color: var(--primary);
-  margin-left: auto;
-}
-
-.nav-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* --- Animations --- */
-
-.tab-content {
-  animation: fadeInSlideRight 0.4s ease-out forwards;
-}
-
-@keyframes fadeInSlideRight {
-  from {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* --- Shared Layout Utilities --- */
-
-.flex-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-}
-
-.flex-row--top {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-}
-
-.flex-row-center {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.flex-row-center--wrap {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.flex-row-wrap {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.flex-col-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-.flex-no-shrink {
-  flex-shrink: 0;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.img-caption {
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-top: 0.5rem;
-  color: var(--text-main);
-  text-align: center;
-}
-
-.section-divider {
-  border-top: 2px solid var(--bg-surface);
-  padding-top: 1.5rem;
-  margin-top: 0.5rem;
-}
-
-.section-divider-sm {
-  border-top: 1px solid var(--bg-surface);
-  padding-top: 1.5rem;
-  margin-top: 1rem;
-}
-
-.code-inline {
-  font-family: monospace;
-  background: #f1f5f9;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-/* Compatibility/Legacy Shorthands */
-.p-flush {
-  padding-left: 0 !important;
-}
-
-.p-flush-bottom {
-  padding-left: 0 !important;
-  margin-bottom: 0.5rem;
-}
-
-.screenshot-wide {
-  max-width: 100%;
-}
-
-.screenshot-click--indent {
-  margin-left: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.screenshot-click--inline {
-  max-width: 40px;
-  border: none;
-  box-shadow: none;
-  display: inline-block;
-  vertical-align: -2px;
-  /* More precise baseline alignment */
-  margin: 0 0.5rem;
-  background: transparent;
+.instruction-step:hover .software-screenshot {
+  transform: scale(1.02);
 }
 
 /* --- UX Enhancement: Progress Bar --- */
+
 .lesson-progress-container {
   position: sticky;
   top: 0;
   left: 0;
   width: 100%;
-  height: 6px;
-  background: var(--bg-surface);
-  z-index: 100;
-  margin-bottom: -6px;
+  height: 8px;
+  background: var(--bg-dark);
+  z-index: 1000;
   overflow: hidden;
 }
 
 .lesson-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+  box-shadow: 0 0 15px var(--color-primary-glow);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- UX Enhancement: Interactive Steps --- */
-.instruction-step.interactive {
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
-  padding: 1rem;
-  margin: -1rem;
-  border-radius: 12px;
+@keyframes shine {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
-.instruction-step.interactive:hover {
-  background: var(--bg-surface);
-  transform: translateX(4px);
-}
+/* --- Navigation --- */
 
-.step-number.completed {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 0 0 4px var(--primary-soft);
-  animation: popScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes popScale {
-  0% {
-    transform: scale(0.8);
-  }
-
-  70% {
-    transform: scale(1.1);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* --- UX Enhancement: Pro-Tip Cards (Glassmorphism) --- */
-.pro-tip-card {
-  position: relative;
-  margin: 2.5rem 0;
-  padding: 1.5rem;
-  background: rgba(var(--primary-rgb), 0.03);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(var(--primary-rgb), 0.1);
-  border-radius: 16px;
+.lesson-navigation {
   display: flex;
-  gap: 1.25rem;
-  align-items: flex-start;
+  justify-content: space-between;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 3rem;
+  margin-top: 2rem;
+}
+
+.nav-button {
+  background: var(--glass-bg);
+  color: var(--text-white);
+  border: 1px solid var(--glass-border);
+  padding: 1rem 2rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   transition: all 0.3s ease;
 }
 
-.pro-tip-card:hover {
-  background: rgba(var(--primary-rgb), 0.05);
-  transform: translateY(-2px);
-  border-color: rgba(var(--primary-rgb), 0.2);
-}
-
-.pro-tip-icon-wrapper {
+.nav-button:hover:not(:disabled) {
   background: var(--primary);
-  color: white;
-  padding: 0.75rem;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 123px rgba(var(--primary-rgb), 0.3);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px var(--color-primary-glow);
 }
 
-.pro-tip-content h5 {
-  margin: 0 0 0.5rem 0;
-  color: var(--primary);
-  font-size: 1rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.nav-button.next {
+  background: var(--primary);
+  border: none;
 }
 
-.pro-tip-content p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--text-main);
-  line-height: 1.6;
+/* --- Instruction Box & Alerts --- */
+
+.instruction-box, .alert-box {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid var(--color-primary-glow);
+  border-left: 5px solid var(--primary);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  color: var(--text-white);
+}
+
+.alert-box.warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+  border-left-color: var(--warning);
+}
+
+/* Hide multipliers from screenshots in dark mode for cleaner look */
+.software-screenshot {
+  filter: brightness(1.1) contrast(1.05);
 }

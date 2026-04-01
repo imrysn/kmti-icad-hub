@@ -48,55 +48,59 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Background Aurora Elements */}
+      <div className="aurora-bg">
+        <div className="aurora-blob aurora-1"></div>
+        <div className="aurora-blob aurora-2"></div>
+      </div>
+
       <BroadcastBanner />
       <NotificationSystem />
-      {/* Header with User Info and Logout */}
-      <div className="app-header">
-        <div className="app-title">
 
+      {/* Header with User Info and Logout */}
+      <header className="app-header animate-fade-in">
+        <div className="app-title">
+          KMTI iCAD Hub
         </div>
+
         <div className="user-info">
+          {/* Mode Switcher - Only show for Admin */}
+          {user?.role === 'admin' && (
+            <nav className="mode-switcher">
+              <button
+                className={`mode-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`}
+                onClick={() => navigate('/mentor')}
+              >
+                Mentor
+              </button>
+              <button
+                className={`mode-btn ${location.pathname.startsWith('/assistant') ? 'active' : ''}`}
+                onClick={() => navigate('/assistant')}
+              >
+                Assistant
+              </button>
+              <button
+                className={`mode-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
+                onClick={() => navigate('/admin')}
+              >
+                Admin
+              </button>
+            </nav>
+          )}
+
           <div className="user-meta">
             <span className="user-name">{user?.full_name}</span>
-            <span className="user-role">
-              {user?.role}
-            </span>
+            <span className="user-role">{user?.role}</span>
           </div>
-          <button
-            onClick={logout}
-            className="logout-btn"
-          >
+          
+          <button onClick={logout} className="logout-btn">
             Logout
           </button>
         </div>
-      </div>
-
-      {/* Mode Switcher - Only show for Admin */}
-      {user?.role === 'admin' && (
-        <div className="mode-switcher">
-          <button
-            className={`mode-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`}
-            onClick={() => navigate('/mentor')}
-          >
-            <span>Mentor</span>
-          </button>
-          <button
-            className={`mode-btn ${location.pathname.startsWith('/assistant') ? 'active' : ''}`}
-            onClick={() => navigate('/assistant')}
-          >
-            <span>Assistant</span>
-          </button>
-          <button
-            className={`mode-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
-            onClick={() => navigate('/admin')}
-          >
-            <span>Admin</span>
-          </button>
-        </div>
-      )}
+      </header>
 
       {/* Render Selected Mode via Routes */}
-      <div className="app-content">
+      <main className="app-content">
         <ErrorBoundary>
           <Routes>
             <Route path="/mentor" element={<MentorMode />} />
@@ -106,7 +110,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </ErrorBoundary>
-      </div>
+      </main>
     </div>
   );
 }

@@ -165,8 +165,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
               '2d-heat-treatment': (id) => <HeatTreatmentLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
               '2d-bom': (id) => <BillOfMaterialLesson subLessonId={id.split('-').pop()} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
               '2d-additional-view': (id) => <AdditionalViewLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
-              '2d-operal-view': () => <OperalViewLesson />,
-              '2d-normal-mirror': () => <NormalMirrorPartsLesson />,
+              '2d-operal-view': (id) => <OperalViewLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
+              '2d-normal-mirror': (id) => <NormalMirrorPartsLesson subLessonId={id} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
               '2d-balloon': () => <BalloonLesson onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
               '2d-titleblock': () => <TitleBlockLesson onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} />,
             };
@@ -193,7 +193,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   return (
                     <div className="content-2d-placeholder">
                       <BookOpen size={48} strokeWidth={1.5} />
-                      <h3 className="content-2d-placeholder__title">iCAC Operation Manual 2D Drawing</h3>
+                      <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
                       <p className="content-2d-placeholder__text">Content will be available soon.</p>
                     </div>
                   );
