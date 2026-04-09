@@ -3,7 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import json
 
-_env_path = Path(__file__).resolve().parents[2] / ".env"
+_env_path = Path(__file__).resolve().parent / ".env"
 load_dotenv(dotenv_path=_env_path)
 from typing import Optional
 from fastapi import FastAPI, Depends, HTTPException

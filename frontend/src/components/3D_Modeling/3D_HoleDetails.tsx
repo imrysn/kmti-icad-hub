@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { MousePointer2, ChevronLeft, ChevronRight, Info, Zap, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/CourseLesson.css"; /* Asset Imports */ import arrangeMachinePart from "../../assets/3D_Image_File/hole_details_arrange_machine_part.png"; import partsPlacement from "../../assets/3D_Image_File/hole_details_parts_placement.png"; import listTools from "../../assets/3D_Image_File/hole_details_list_tools.png"; import holeResult from "../../assets/3D_Image_File/hole_details_hole.png"; import tappedHoles from "../../assets/3D_Image_File/hole_details_tapped_holes.png"; import leftClick from "../../assets/3D_Image_File/left_click.png"; 
+import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/CourseLesson.css"; /* Asset Imports */ import arrangeMachinePart from "../../assets/3D_Image_File/hole_details_arrange_machine_part.png"; import partsPlacement from "../../assets/3D_Image_File/hole_details_parts_placement.png"; import listTools from "../../assets/3D_Image_File/hole_details_list_tools.png"; import holeResult from "../../assets/3D_Image_File/hole_details_hole.png"; import tappedHoles from "../../assets/3D_Image_File/hole_details_tapped_holes.png"; import leftClick from "../../assets/3D_Image_File/left_click.png";
 
 interface HoleDetailsLessonProps {
   onNextLesson?: () => void;
@@ -128,7 +128,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
                   <span className="step-number">4</span>
                   <span className="step-label">
                     Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" /> to create the cut.
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> to create the cut.
                   </span>
                 </div>
                 <div className="step-description">

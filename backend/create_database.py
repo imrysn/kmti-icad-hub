@@ -6,11 +6,11 @@ Run this before running the connection test.
 """
 
 import os
-import pymysql
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+load_dotenv(dotenv_path=env_path)
 
 def create_database():
     """Create the database if it doesn't exist"""
