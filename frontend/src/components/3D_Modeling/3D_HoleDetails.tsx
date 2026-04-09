@@ -128,7 +128,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
                   <span className="step-number">4</span>
                   <span className="step-label">
                     Click the location of the hole on the solid entity &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" /> to create the cut.
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> to create the cut.
                   </span>
                 </div>
                 <div className="step-description">
