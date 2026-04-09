@@ -12,7 +12,7 @@ from jose import JWTError, jwt
 from dotenv import load_dotenv
 
 # Load environment variables
-env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
+env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), ".env")
 load_dotenv(dotenv_path=env_path)
 # JWT configuration
 # SECRET_KEY MUST be set in the environment. Never use a hardcoded fallback.
