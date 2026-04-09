@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import balloonPartMenuImg from "../../assets/2D_Image_File/2D_balloon_part_drawing.png";
 
@@ -11,17 +12,23 @@ import balloonPartInputImg from "../../assets/2D_Image_File/2D_balloon_part_draw
 import balloonAssemblyMenuImg from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png";
 
 interface BalloonLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const BalloonLesson: React.FC<BalloonLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+
+  const balloonSteps = [
+    "Part Drawing: Select the part balloon command. Click L1 on the part, then P1 to locate the balloon. Note that balloons should not overlap with lines or dimensions.",
+    "Assembly Drawing: Select the add balloon command from the icon menu to annotate your assembly drawings."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,31 +62,27 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3>
+        <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> 18. Balloon
+          18. Balloon
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(balloonSteps)}
+            onStop={stop}
+          />
         </h3>
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           {" "}
           {/* a. Part drawing Section */}
-          <div className="lesson-section">
+          <div className={`lesson-section ${currentIndex === 0 ? "reading-active" : ""}`}>
             {" "}
             <h4> a. Part drawing </h4>
             <div className="flex-col">
               <div className="image-wrapper-flush">
-                <img
-                  src={balloonPartMenuImg}
-                  alt="Part Balloon Menu Selection"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={balloonPartMenuImg} alt="Part Balloon Menu Selection" className="software-screenshot screenshot-wide" />
               </div>
             </div>
             <div className="flex-row">
@@ -94,17 +97,10 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                 </div>
 
                 <div className="image-wrapper-flush">
-                  <img
-                    src={balloonPartDiagramImg}
-                    alt="Part Balloon Landmark Diagram (P1, L1)"
-                    className="software-screenshot screenshot-wide"
-                  />{" "}
+                  <img src={balloonPartDiagramImg} alt="Part Balloon Landmark Diagram (P1, L1)" className="software-screenshot screenshot-wide" />{" "}
                   {/* Part Balloon Input Box Overlay */}
                   <div>
-                    <img
-                      src={balloonPartInputImg}
-                      alt="Part Balloon Input Box"
-                    />
+                    <img src={balloonPartInputImg} alt="Part Balloon Input Box" />
                   </div>
                 </div>
               </div>
@@ -132,16 +128,12 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
             </div>
           </div>{" "}
           {/* b. Assembly drawing Section */}
-          <div className="lesson-section">
+          <div className={`lesson-section ${currentIndex === 1 ? "reading-active" : ""}`}>
             {" "}
             <h4> b. Assembly drawing </h4>
             <div className="flex-col">
               <div className="image-wrapper-flush">
-                <img
-                  src={balloonAssemblyMenuImg}
-                  alt="Add Balloon Menu Selection"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={balloonAssemblyMenuImg} alt="Add Balloon Menu Selection" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           </div>{" "}
@@ -154,7 +146,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -164,3 +156,6 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
 };
 
 export default BalloonLesson;
+
+
+

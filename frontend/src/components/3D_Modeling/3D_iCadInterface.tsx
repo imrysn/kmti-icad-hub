@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Info, Monitor, Zap, ChevronLeft, ChevronRight } from "lucide-react";
+import { Info, Monitor, Zap, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import InteractiveImageMap from "./InteractiveImageMap";
 
@@ -12,15 +13,22 @@ import "../../styles/3D_Modeling/CourseLesson.css";
 interface IcadInterfaceLessonProps {
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
+  nextLabel?: string;
 }
 
 const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({
   onNextLesson,
   onPrevLesson,
+  nextLabel,
 }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
-
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const interfaceSteps = [
+    "iCAD Window Structure: The workspace is divided into several key functional areas designed for maximum modeling efficiency.",
+    "Navigation and Commands: Use the pulsing hotspots on the diagram to explore the specific purpose of the command menus, the hierarchical tree view, and the primary 3D viewport where your designs come to life."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,45 +63,34 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
+
       <section className="lesson-intro">
         <h3 className="section-title">
-          {" "}
-          <Monitor size={28} className="lesson-intro-icon" /> iCAD WINDOW
-          INTERFACE
+          <span>iCAD Window Interface</span>
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps)}
+            onStop={stop}
+          />
         </h3>
+        <p className="section-description">
+          Explore the core workspace of iCAD. Select a pulsing hotspot on the interface diagram to learn about its specific functions.
+        </p>
       </section>
-      <div className="lesson-grid single-card">
-        <div className="lesson-card">
-          <div className="image-zoom-container">
-            {" "}
-            <InteractiveImageMap imageSrc={icadWindowStructure} />
-          </div>
 
-          <div className="lesson-navigation">
-            {" "}
-            <button
-              className="nav-button"
-              onClick={onPrevLesson}
-              disabled={!onPrevLesson}
-            >
-              <ChevronLeft size={18} /> Previous
-            </button>{" "}
-            <button
-              className="nav-button next"
-              onClick={onNextLesson}
-              disabled={!onNextLesson}
-            >
-              Next Lesson <ChevronRight size={18} />
-            </button>
-          </div>
+      <div className="lesson-content-main animate-in">
+        <InteractiveImageMap imageSrc={icadWindowStructure} />
+        
+        <div className="lesson-navigation">
+          <button className="nav-button" onClick={onPrevLesson} disabled={!onPrevLesson}>
+            <ChevronLeft size={18} /> Previous Lesson
+          </button>
+
+          <button className="nav-button next" onClick={onNextLesson} disabled={!onNextLesson}>
+            {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+          </button>
         </div>
       </div>
     </div>
@@ -101,3 +98,4 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({
 };
 
 export default IcadInterfaceLesson;
+

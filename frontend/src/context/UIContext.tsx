@@ -33,9 +33,7 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         <UIContext.Provider value={{ requestConfirmation }}>
             {children}
             {modalState && (
-                <ConfirmationModal 
-                    {...modalState}
-                />
+                <ConfirmationModal {...modalState} />
             )}
         </UIContext.Provider>
     );

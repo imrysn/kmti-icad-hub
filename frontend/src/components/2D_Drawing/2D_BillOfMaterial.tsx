@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Bill of Material */
@@ -28,6 +29,7 @@ import bomEditAttr2Img from "../../assets/2D_Image_File/2D_bill_of_material_(4)_
 import bomEditAttr3Img from "../../assets/2D_Image_File/2D_bill_of_material_(4)_edit_attribute_3.png";
 
 interface BillOfMaterialLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -36,11 +38,29 @@ interface BillOfMaterialLessonProps {
 const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
   subLessonId = "1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const bom1Steps = [
+    "Part Drawing BOM: Displays material, specifications, and weights at the upper right of the template. Follow the template selection workflow and generate the BOM via the Excel interface as shown."
+  ];
+
+  const bom2Steps = [
+    "Excel Operations: Ensure material and finish weights use 2 decimal places. For Assembly BOMs, group items into Fabricated parts, Purchase parts, and Hardware. Use the delete abbreviation and sum parts buttons for cleanup.",
+    "BOM Grouping: Arrange parts by drawing number, followed by purchase parts with English maker names, and finally hardware in decreasing size order."
+  ];
+
+  const bom3Steps = [
+    "Standard Grouping: Maintain a clear gap of 20 numbers between the three BOM groups for assembly detail. Refer to the table for standard numbering conventions.",
+    "Additional Information: Use the green columns in Excel for data that cannot be changed, ensuring consistency with KEMCO standards."
+  ];
+
+  const bom4Steps = [
+    "Post-Insertion: Review the BOM after it's placed in iCAD. If text overflows, use the Edit Attribute command, select the affected row, and adjust the width and interval ratio in the dialog box."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,16 +94,21 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3>
+        <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> 16. Bill Of
+          16. Bill Of
           Material (BOM)
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "1") speak(bom1Steps);
+              else if (subLessonId === "2") speak(bom2Steps);
+              else if (subLessonId === "3") speak(bom3Steps);
+              else if (subLessonId === "4") speak(bom4Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -105,11 +130,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 <h4> a. Part drawing </h4>
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomPartDrawingImg}
-                      alt="BOM Part Drawing Entry with Technical Callouts"
-                      className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                    />
+                    <img src={bomPartDrawingImg} alt="BOM Part Drawing Entry with Technical Callouts" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
               </div>{" "}
@@ -117,11 +138,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="lesson-section">
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomPartDrawingBImg}
-                      alt="BOM Template Selection and Command Procedure"
-                      className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                    />
+                    <img src={bomPartDrawingBImg} alt="BOM Template Selection and Command Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
               </div>
@@ -134,11 +151,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
 
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomPartDrawingCImg}
-                      alt="Excel BOM Generation Procedure"
-                      className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                    />
+                    <img src={bomPartDrawingCImg} alt="Excel BOM Generation Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
               </div>
@@ -155,11 +168,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
 
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomPartDrawingDImg}
-                      alt="Detailed Excel Operations for Parts and Single Part Configuration"
-                      className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                    />
+                    <img src={bomPartDrawingDImg} alt="Detailed Excel Operations for Parts and Single Part Configuration" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
 
                   <div className="flex-row">
@@ -192,11 +201,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 </div>
                 <div className="flex-row">
                   <div className="flex-col">
-                    <img
-                      src={bomAssemblyDrawingImg}
-                      alt="Assembly BOM Excel with Grouping Callouts"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={bomAssemblyDrawingImg} alt="Assembly BOM Excel with Grouping Callouts" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <div className="info-box">
@@ -238,11 +243,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="lesson-section">
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomAssemblyDrawing2Img}
-                      alt="Standard Assembly BOM Grouping and Numbering Gaps"
-                      className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                    />
+                    <img src={bomAssemblyDrawing2Img} alt="Standard Assembly BOM Grouping and Numbering Gaps" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
               </div>
@@ -254,11 +255,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 <div className="flex-row">
                   <div className="flex-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={bomAdditionalInfoImg}
-                        alt="Additional Information Excel and Menu Configuration"
-                        className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                      />
+                      <img src={bomAdditionalInfoImg} alt="Additional Information Excel and Menu Configuration" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                     </div>
 
                     <div className="info-box">
@@ -278,11 +275,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 <h4> Bill of Material after inserting on ICAD data </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomAfterInsertImg}
-                      alt="BOM Entry with Text Overflow Case"
-                      className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                    />
+                    <img src={bomAfterInsertImg} alt="BOM Entry with Text Overflow Case" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
               </div>{" "}
@@ -292,11 +285,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 <h4> Edit Attribute </h4>
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomEditAttrImg}
-                      alt="Edit Attribute Command Selection"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={bomEditAttrImg} alt="Edit Attribute Command Selection" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>{" "}
                 {/* Step-by-step editing process */}
@@ -310,20 +299,12 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                   </div>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomEditAttr2Img}
-                      alt="Selecting Text Row to Edit (P1)"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={bomEditAttr2Img} alt="Selecting Text Row to Edit (P1)" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={bomEditAttr3Img}
-                      alt="Change Attribute Dialog and Final Result"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={bomEditAttr3Img} alt="Change Attribute Dialog and Final Result" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <div className="info-box">
@@ -359,7 +340,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -369,3 +350,6 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
 };
 
 export default BillOfMaterialLesson;
+
+
+

@@ -1,16 +1,9 @@
-/** * 3D_MirroredPart.tsx — Lessons on Normal vs Mirrored Parts */
+/** * 3D_MirroredPart.tsx  ELessons on Normal vs Mirrored Parts */
 
 import React, { useState, useEffect, useRef } from "react";
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  Info,
-  Play,
-  Move,
-  CheckCircle2,
-  Zap,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Info, Play, Move, Zap, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/3D_Modeling/CourseLesson.css";
 /* Shared Assets */
@@ -38,6 +31,7 @@ import pick3Points from "../../assets/3D_Image_File/mirrored_part(2)_pick3_point
 import pick3PointsPartA from "../../assets/3D_Image_File/mirrored_part(2)_pick3_points_part_a.png";
 
 interface MirroredPartLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -46,15 +40,28 @@ interface MirroredPartLessonProps {
 const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
   subLessonId = "mirrored-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const isMirrored1 = subLessonId === "mirrored-1";
 
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+
+  const mirrored1Steps = [
+    "Normal Parts: These are exactly the same as the original after mirroring. They use the suffix N in the drawing number.",
+    "Mirror Parts: These are symmetrically opposite, labeled A for the original and B for the mirror copy. B cannot exist without A.",
+    "Identification: Use the Mirror Copy tool. If the copy is identical to the original, it's a Normal Part. If hole locations or features change, it's a Mirror Part."
+  ];
+
+  const mirrored2Steps = [
+    "Step 1: Identify the proper location of the part's origin.",
+    "Step 2: Complete the 3D model of the original part and save it as Part A.",
+    "Step 3: Save a copy of Part A as Part B before performing the mirror operation.",
+    "Step 4: Use the Mirror tool. Pick 3 points consecutively starting from the origin to create the Part B outcome. Ensure the origin remains in the same relative location."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,36 +94,23 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
     };
   }, [subLessonId]);
 
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
+  
 
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-
-      return next;
-    });
-  };
-
-  const getStepClass = (stepId: string) => {
-    return `instruction-step interactive ${completedSteps.has(stepId) ? "completed" : ""}`;
-  };
-
+  const getStepClass = (stepId: string) => "instruction-step";
   return (
     <div className="course-lesson-container" ref={containerRef}>
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <Play size={28} className="lesson-intro-icon" />{" "}
           {isMirrored1 ? "MIRRORED PARTS (1)" : "3D MODELING OF MIRROR PARTS"}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isMirrored1 ? mirrored1Steps : mirrored2Steps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="p-flush">
@@ -131,28 +125,17 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
             <div className="tab-pane">
               {" "}
               {/* NORMAL PARTS */}
-              <div
-                className={getStepClass("mp1-1")}
-                onClick={() => toggleStep("mp1-1")}
-              >
+                <div className={`${getStepClass("mp1-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("mp1-1") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("mp1-1") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "1"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    1
                   </span>{" "}
                   <span className="step-label">NORMAL PARTS</span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <p className="p-flush">
                     Parts that are exactly the same as the original part if you
                     create a mirror copy of it. No changes will be recognized.
@@ -174,39 +157,24 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
 
                   <div className="flex-row-center">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={normalPartA}
-                        alt="Normal Part Example"
-                        className="software-screenshot screenshot-medium"
-                      />
+                      <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
                 </div>
               </div>
               <div className="section-divider"></div>
               {/* MIRROR PARTS */}
-              <div
-                className={getStepClass("mp1-2")}
-                onClick={() => toggleStep("mp1-2")}
-              >
+                <div className={`${getStepClass("mp1-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("mp1-2") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("mp1-2") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "2"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    2
                   </span>{" "}
                   <span className="step-label">MIRROR PARTS</span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <p className="p-flush">
                     Parts that are symmetrically the same.
                   </p>
@@ -251,11 +219,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
                   <div className="flex-row--top">
                     <div>
                       <div className="image-wrapper-flush">
-                        <img
-                          src={mirrorPartA}
-                          alt="Mirror Part A and B"
-                          className="software-screenshot screenshot-large"
-                        />
+                        <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
                   </div>
@@ -263,36 +227,21 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
               </div>
               <div className="section-divider"></div>
               {/* IDENTIFICATION */}
-              <div
-                className={getStepClass("mp1-3")}
-                onClick={() => toggleStep("mp1-3")}
-              >
+                <div className={`${getStepClass("mp1-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("mp1-3") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("mp1-3") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "3"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    3
                   </span>{" "}
                   <span className="step-label">
                     Use Mirror copy tool on the icon menu.
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={mirrorCopyTool}
-                      alt="Mirror Copy Tool"
-                      className="software-screenshot screenshot-medium"
-                    />
+                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" />
                   </div>
 
                   <div className="info-box">
@@ -325,11 +274,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
                   </div>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={mirrorNotes}
-                      alt="Mirror Image Notes"
-                      className="software-screenshot screenshot-small"
-                    />
+                    <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot screenshot-small" />
                   </div>
                 </div>
               </div>
@@ -339,56 +284,30 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
             <div className="tab-pane">
               {" "}
               <h4 className="section-title">MIRRORING PROCEDURE</h4>
-              <div
-                className={getStepClass("mp2-1")}
-                onClick={() => toggleStep("mp2-1")}
-              >
+                <div className={`${getStepClass("mp2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("mp2-1") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("mp2-1") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "1"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    1
                   </span>{" "}
                   <span className="step-label">
                     Identify the proper location of origin of the part.
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={originLocation}
-                      alt="Location of Origin"
-                      className="software-screenshot screenshot-large"
-                    />
+                    <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
               </div>
-              <div
-                className={getStepClass("mp2-2")}
-                onClick={() =>
-                  toggleStep("mp2-2")
-                } /* sanitized: marginTop: '1.5rem' */
-              >
+                <div className={`${getStepClass("mp2-2")} ${currentIndex === 1 ? "reading-active" : ""}`} /* sanitized: marginTop: '1.5rem' */>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("mp2-2") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("mp2-2") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "2"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    2
                   </span>{" "}
                   <span className="step-label">
                     After doing 3D modeling of the part, Save it as{" "}
@@ -396,29 +315,18 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <div className="flex-row--top">
                     <div /* sanitized: flex: 1 */></div>
                   </div>
                 </div>
               </div>
-              <div
-                className={getStepClass("mp2-3")}
-                onClick={() => toggleStep("mp2-3")}
-              >
+                <div className={`${getStepClass("mp2-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("mp2-3") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("mp2-3") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "3"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    3
                   </span>{" "}
                   <span className="step-label">
                     In doing the 3D model of the mirror part, Part A must be
@@ -426,43 +334,26 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <div className="flex-row--top"></div>
                 </div>
               </div>{" "}
               {/* STEP 4 */}
-              <div
-                className={getStepClass("mp2-4")}
-                onClick={() => toggleStep("mp2-4")}
-              >
+                <div className={`${getStepClass("mp2-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("mp2-4") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("mp2-4") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "4"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    4
                   </span>{" "}
                   <span className="step-label">
                     Use mirror to convert the 3D Model of Part A to Part B.
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={mirrorTool}
-                      alt="Mirror Tool"
-                      className="software-screenshot screenshot-small"
-                    />
+                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" />
                   </div>
 
                   <div>
@@ -473,11 +364,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
                     </p>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={pick3Points}
-                        alt="Mirror Plane Visualization"
-                        className="software-screenshot screenshot-medium"
-                      />
+                      <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot screenshot-medium" />
                     </div>
 
                     <p className="p-flush">
@@ -487,11 +374,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
                     </p>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={pick3PointsPartA}
-                        alt="Picking Points on Part A"
-                        className="software-screenshot screenshot-large"
-                      />
+                      <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" />
                     </div>
 
                     <p className="p-flush">
@@ -512,7 +395,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -522,3 +405,5 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({
 };
 
 export default MirroredPartLesson;
+
+

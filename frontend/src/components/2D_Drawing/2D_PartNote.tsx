@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets */
@@ -12,17 +13,24 @@ import partNoteImg2 from "../../assets/2D_Image_File/2D_part_note_2.png";
 import textNoteImg from "../../assets/2D_Image_File/2D_part_note_text.png";
 
 interface PartNoteLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const noteSteps = [
+    "Part Notes: Notes are essential for providing additional technical instructions. Use them to specify process requirements that aren't captured by standard dimensions or symbols.",
+    "Assembly Applications: The note command is flexible and can be applied based on the specific purpose and manufacturing requirements of your part or assembly.",
+    "Text Command: Use the Text tool for general annotations and labels. This allows you to place custom technical references anywhere on the drawing template."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,15 +64,15 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Part Note / Text
+          Part Note / Text
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(noteSteps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -90,11 +98,7 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
               <div className="lesson-section">
                 <div className="flex-row">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={partNoteImg1}
-                      alt="Part Note Process Drawing"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={partNoteImg1} alt="Part Note Process Drawing" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -103,14 +107,8 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
             {/* 2. Part Note - Assemblies Section */}
             <div className="lesson-section">
               <div className="flex-col">
-                <div
-                  className="image-wrapper-flush" /* sanitized: width: '100%' */
-                >
-                  <img
-                    src={partNoteImg2}
-                    alt="Part Note Assembly Reference"
-                    className="software-screenshot screenshot-wide"
-                  />
+                <div className="image-wrapper-flush" /* sanitized: width: '100%' */>
+                  <img src={partNoteImg2} alt="Part Note Assembly Reference" className="software-screenshot screenshot-wide" />
                 </div>
 
                 <div>
@@ -132,11 +130,7 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
               {" "}
               <h4> 11. Text </h4>
               <div className="image-wrapper-flush">
-                <img
-                  src={textNoteImg}
-                  alt="Text Command and Configuration"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={textNoteImg} alt="Text Command and Configuration" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           </div>{" "}
@@ -149,7 +143,7 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -159,3 +153,6 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
 };
 
 export default PartNoteLesson;
+
+
+

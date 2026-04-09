@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import {
-  ArrowRight,
-  ArrowBigRight,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-} from "lucide-react";
+import { ArrowRight, ArrowBigRight, ChevronLeft, ChevronRight, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Dimensioning (1) */
@@ -62,6 +57,7 @@ import breakViewDialogImg from "../../assets/2D_Image_File/2D_dimensioning(5)_c_
 import breakViewIsoImg from "../../assets/2D_Image_File/2D_dimensioning(5)_c_dimensions_for_breakviews_3.png";
 
 interface DimensioningLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -70,11 +66,37 @@ interface DimensioningLessonProps {
 const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
   subLessonId,
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+
+  const dim1Steps = [
+    "Standard Dimension: This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
+    "Series Dimension: Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain."
+  ];
+
+  const dim2Steps = [
+    "Edit Characters: To add symbols like the diameter mark, select the edit characters command, click the dimension, and choose the symbol from the Mark dropdown.",
+    "Tolerance: If fitting tolerance is required, use the convert tool to display the appropriate JIC standard values.",
+    "Chamfer and Radius: These marks are generated automatically if your 3D model features were created correctly, so manual input is usually unnecessary."
+  ];
+
+  const dim3Steps = [
+    "Polished Material: Grinded materials like S45C-D and SS400-D have specific tolerance levels (like h9 or h7) and surface roughness requirements based on the grinding process.",
+    "Part Note: Use this tool for automatic hole detailing and quantity callouts. Select the command and click the features to place the leader notes."
+  ];
+
+  const dim4Steps = [
+    "Arrange Spacing: Ensure dimensions have enough space between them. Use the change position command, click the dimension, and pick its new location.",
+    "Align Dimensions: For professional drawings, align dimensions across different views. Select multiple dimensions and move them parallelly to match a reference point."
+  ];
+
+  const dim5Steps = [
+    "Break Views: For long parts like shafts, use break views to fit the drawing on the template while maintaining scale for details. Remember to underline fake length dimensions.",
+    "Isometric Break: You can also apply break views to isometric representations. Use reference lines to maintain the correct cutting angle."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -103,40 +125,30 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
     return () => currentContainer?.removeEventListener("scroll", handleScroll);
   }, [subLessonId]);
 
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  
 
-  const [activeStep, setActiveStep] = useState<string | null>(null);
-
-  const toggleStep = (stepId: string) => {
-    setActiveStep(activeStep === stepId ? null : stepId);
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
-
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-
-      return next;
-    });
-  };
-
-  const getStepClass = (stepId: string) =>
-    `step-card interactive ${activeStep === stepId ? "active" : ""} ${completedSteps.has(stepId) ? "completed" : ""}`;
-
+  const getStepClass = (stepId: string) => "instruction-step";
   return (
     <div className="course-lesson-container" ref={containerRef}>
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowRight size={28} className="lesson-intro-icon" /> Dimensioning (
+          Dimensioning (
           {subLessonId?.split("-").pop() || "1"})
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-dimensioning-1") speak(dim1Steps);
+              else if (subLessonId === "2d-dimensioning-2") speak(dim2Steps);
+              else if (subLessonId === "2d-dimensioning-3") speak(dim3Steps);
+              else if (subLessonId === "2d-dimensioning-4") speak(dim4Steps);
+              else if (subLessonId === "2d-dimensioning-5") speak(dim5Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -157,11 +169,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 </div>
 
                 <div className="image-wrapper-flush">
-                  <img
-                    src={diimensioningImg}
-                    alt="Dimensioning Comparison"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={diimensioningImg} alt="Dimensioning Comparison" className="software-screenshot screenshot-wide" />
                 </div>
 
                 <div className="info-box">
@@ -178,248 +186,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <h4>a. Adding dimensions</h4>
               </div>{" "}
               {/* a.1) Standard dimension */}
-              <div
-                className={getStepClass("dim1-a1")}
-                onClick={() => toggleStep("dim1-a1")}
-              >
+              <div className={`${getStepClass("dim1-a1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("dim1-a1") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("dim1-a1") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "a.1"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">Standard dimension</span>
-                </div>
-
-                <div className="step-description">
-                  <div className="flex-row--top">
-                    <div className="flex-col">
-                      <img
-                        src={standardDimMenuImg}
-                        alt="Standard Dimension Menu"
-                        className="software-screenshot screenshot-wide"
-                      />
-
-                      <div>
-                        {" "}
-                        <ArrowBigRight
-                          size={100}
-                          color="red"
-                          fill="red"
-                          className="process-flow-arrow"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex-col">
-                      <div className="info-box">
-                        <p className="p-flush">
-                          Standard dimension is the basic command inputting
-                          dimension one by one.
-                        </p>
-                      </div>
-
-                      <div className="flex-col">
-                        <div className="image-wrapper-flush">
-                          <img
-                            src={standardDimProcessImg}
-                            alt="Standard Dimension Process"
-                            className="software-screenshot screenshot-wide"
-                          />
-                        </div>
-
-                        <div className="info-box">
-                          <p className="p-flush">
-                            Pick Line1 and Line2. Place it to desire location to
-                            display actual dimension.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="section-divider-sm"></div>{" "}
-              {/* a.2) Series dimension */}
-              <div
-                className={getStepClass("dim1-a2")}
-                onClick={() => toggleStep("dim1-a2")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("dim1-a2") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("dim1-a2") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "a.2"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">Series dimension</span>
-                </div>
-
-                <div className="step-description">
-                  <div className="flex-row--top">
-                    <div className="flex-col">
-                      <img
-                        src={seriesDimMenuImg}
-                        alt="Series Dimension Menu"
-                        className="software-screenshot screenshot-wide"
-                      />
-
-                      <div>
-                        {" "}
-                        <ArrowBigRight
-                          size={100}
-                          color="red"
-                          fill="red"
-                          className="process-flow-arrow"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex-col">
-                      <div className="info-box">
-                        <p className="p-flush">
-                          Series dimension displays continuous linear
-                          dimensions.
-                        </p>
-                      </div>
-
-                      <div className="flex-row--top">
-                        <div className="info-box">
-                          <p className="p-flush">
-                            Pick L1, L2, L3 and L4 then 'GO'. Place it to desire
-                            location to display continuous linear dimension.
-                          </p>
-                        </div>
-
-                        <div
-                          className="image-wrapper-flush" /* sanitized: flex: 1 */
-                        >
-                          <img
-                            src={seriesDimProcessImg}
-                            alt="Series Dimension Process"
-                            className="software-screenshot screenshot-wide"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>{" "}
-            </>
-          ) : subLessonId === "2d-dimensioning-2" ? (
-            <>
-              {" "}
-              {/* Section b: Editing Dimension */}
-              <div className="sub-section-header">
-                {" "}
-                <h4>b. Editing Dimension</h4>
-              </div>{" "}
-              {/* b.1) Edit Dimension Characters */}
-              <div
-                className={getStepClass("dim2-b1")}
-                onClick={() => toggleStep("dim2-b1")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("dim2-b1") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("dim2-b1") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "b.1"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">Edit Dimension Characters</span>
-                </div>
-
-                <div className="step-description">
-                  <div className="flex-col">
-                    <div className="flex-row--top">
-                      <div
-                        className="image-wrapper-flush" /* sanitized: flex: 1 */
-                      >
-                        <img
-                          src={editDimDrawingImg}
-                          alt="Circular Dimension Required"
-                          className="software-screenshot screenshot-large"
-                        />
-                      </div>
-
-                      <div className="flex-col">
-                        <img
-                          src={editDimMenuImg}
-                          alt="Edit Characters Menu"
-                          className="software-screenshot"
-                        />
-
-                        <div>
-                          {" "}
-                          <ArrowBigRight size={60} color="red" fill="red" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex-row--top">
-                      <div className="info-box">
-                        {" "}
-                        <ul>
-                          {" "}
-                          <li>
-                            Select the command set up for changing character
-                            dimension then click the dimension you need to edit.
-                          </li>{" "}
-                          <li>
-                            Edit dimension characters dialog box display. Under
-                            "Mark" drop down option, select "φ" then click OK.
-                          </li>{" "}
-                        </ul>
-                      </div>
-
-                      <div className="image-wrapper-flush">
-                        <img
-                          src={editDimDialogImg}
-                          alt="Edit Dimension Characters Dialog"
-                          className="software-screenshot screenshot-wide"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="section-divider"></div>
-              {/* Tolerance Section */}
-              <div className="sub-section-header">
-                {" "}
-                <h4>Tolerance</h4>
-              </div>
-              <div
-                className={getStepClass("dim2-tolerance")}
-                onClick={() => toggleStep("dim2-tolerance")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("dim2-tolerance") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("dim2-tolerance") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "2"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    2
                   </span>{" "}
                   <span className="step-label">Tolerance Fitting</span>
                 </div>
@@ -427,11 +199,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={toleranceImg}
-                        alt="Tolerance Settings"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={toleranceImg} alt="Tolerance Settings" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="info-box">
@@ -449,21 +217,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 {" "}
                 <h4>Chamfer / Radius</h4>
               </div>
-              <div
-                className={getStepClass("dim2-chamfer")}
-                onClick={() => toggleStep("dim2-chamfer")}
-              >
+              <div className={`${getStepClass("dim2-chamfer")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("dim2-chamfer") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("dim2-chamfer") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "3"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    3
                   </span>{" "}
                   <span className="step-label">Chamfer and Radius Marks</span>
                 </div>
@@ -471,11 +230,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={chamferRadiusImg}
-                        alt="Chamfer and Radius"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={chamferRadiusImg} alt="Chamfer and Radius" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="info-box">
@@ -496,21 +251,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 {" "}
                 <h4>b.2) Polished Material</h4>
               </div>
-              <div
-                className={getStepClass("dim3-b2")}
-                onClick={() => toggleStep("dim3-b2")}
-              >
+              <div className={`${getStepClass("dim3-b2")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("dim3-b2") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("dim3-b2") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "b.2"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    b.2
                   </span>{" "}
                   <span className="step-label">
                     Polished Material Fitting Tolerance
@@ -520,14 +266,8 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-col">
                     <div className="flex-row--top">
-                      <div
-                        className="image-wrapper-flush" /* sanitized: flex: 1.5 */
-                      >
-                        <img
-                          src={polishedMaterialImg}
-                          alt="Polished Material Dialog"
-                          className="software-screenshot screenshot-wide"
-                        />
+                      <div className="image-wrapper-flush" /* sanitized: flex: 1.5 */>
+                        <img src={polishedMaterialImg} alt="Polished Material Dialog" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>{" "}
                     {/* Tolerance Table */}
@@ -586,44 +326,28 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 {" "}
                 <h4>11. Part note</h4>
               </div>
-              <div>
+              <div className={currentIndex === 1 ? "reading-active" : ""}>
                 <div className="flex-col">
                   <div className="flex-row--top">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={partNoteMenuImg}
-                        alt="Part Note Menu"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={partNoteMenuImg} alt="Part Note Menu" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={partNoteP1P2P3Img}
-                        alt="Part Note Process"
-                        className="software-screenshot screenshot-large"
-                      />
+                      <img src={partNoteP1P2P3Img} alt="Part Note Process" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
 
                   <div className="flex-row--top">
                     <div className="flex-col">
                       <div className="image-wrapper-flush">
-                        <img
-                          src={partNoteHoleDetailImg}
-                          alt="Hole Detail Result"
-                          className="software-screenshot screenshot-wide"
-                        />
+                        <img src={partNoteHoleDetailImg} alt="Hole Detail Result" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
 
                     <div className="flex-col">
                       <div className="image-wrapper-flush">
-                        <img
-                          src={partNoteHoleQuantityImg}
-                          alt="Hole Quantity Result"
-                          className="software-screenshot screenshot-wide"
-                        />
+                        <img src={partNoteHoleQuantityImg} alt="Hole Quantity Result" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
                   </div>
@@ -634,17 +358,13 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
             <>
               {" "}
               {/* b.4) Change Position Overview */}
-              <div className="sub-section-header">
+              <div className={`sub-section-header ${currentIndex === 0 ? "reading-active" : ""}`}>
                 {" "}
                 <h4>b.4) Change Position</h4>
               </div>
               <div className="flex-row--top">
                 <div className="image-wrapper-flush" /* sanitized: flex: 1.5 */>
-                  <img
-                    src={changePosition1Img}
-                    alt="Change Position Overview"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={changePosition1Img} alt="Change Position Overview" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
               <div className="section-divider"></div>{" "}
@@ -654,11 +374,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="flex-row--top">
                   <div className="flex-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={changePosition2Img}
-                        alt="Change Position Toolbar"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={changePosition2Img} alt="Change Position Toolbar" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="info-box">
@@ -683,36 +399,25 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                   </div>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={changePosition3Img}
-                      alt="Arranging Dimensions Process"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={changePosition3Img} alt="Arranging Dimensions Process" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
-                <div className="section-divider"></div>{" "}
-                {/* b. Align dimensions */} <h4>b. Align dimensions</h4>
+              </div>
+              <div className="section-divider"></div>{" "}
+              {/* b. Align dimensions */}{" "}
+              <div className={currentIndex === 1 ? "reading-active" : ""}>
+                <h4>b. Align dimensions</h4>
                 <div className="flex-col">
                   <div className="flex-row--top">
-                    <div
-                      className="image-wrapper-flush" /* sanitized: flex: 1.5 */
-                    >
-                      <img
-                        src={changePosition4Img}
-                        alt="Align Dimensions Drawing"
-                        className="software-screenshot screenshot-wide"
-                      />
+                    <div className="image-wrapper-flush" /* sanitized: flex: 1.5 */>
+                      <img src={changePosition4Img} alt="Align Dimensions Drawing" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
                 <div className="flex-col">
                   <div className="flex-row--top">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={changePosition4altImg}
-                        alt="Alignment Commands"
-                        className="software-screenshot screenshot-wide"
-                      />{" "}
+                      <img src={changePosition4altImg} alt="Alignment Commands" className="software-screenshot screenshot-wide" />{" "}
                       {/* Absolutely Positioned Overlay Box */}
                       <div className="info-box">
                         {" "}
@@ -767,13 +472,9 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                   </p>
                 </div>
               </div>
-              <div className="flex-col">
+              <div className={`flex-col ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={breakViewWorkflowImg}
-                    alt="Break View Workflow"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={breakViewWorkflowImg} alt="Break View Workflow" className="software-screenshot screenshot-wide" />
                 </div>
                 <div className="flex-row">
                   <div className="info-box">
@@ -799,14 +500,8 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 </div>
                 <div className="section-divider"></div>
                 <div className="flex-row--top">
-                  <div
-                    className="image-wrapper-flush" /* sanitized: flex: 1.5 */
-                  >
-                    <img
-                      src={breakViewDialogImg}
-                      alt="Break View Dimension Settings"
-                      className="software-screenshot screenshot-wide"
-                    />
+                  <div className="image-wrapper-flush" /* sanitized: flex: 1.5 */>
+                    <img src={breakViewDialogImg} alt="Break View Dimension Settings" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <div className="flex-col">
@@ -827,7 +522,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 </div>
                 <div className="section-divider"></div>{" "}
                 {/* Isometric View Sub-section */}
-                <div>
+                <div className={currentIndex === 1 ? "reading-active" : ""}>
                   <div className="flex-row--top">
                     <div className="flex-col">
                       <div className="info-box">
@@ -848,11 +543,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                     </div>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={breakViewIsoImg}
-                        alt="Isometric Break View"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={breakViewIsoImg} alt="Isometric Break View" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
@@ -872,7 +563,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -882,3 +573,6 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 };
 
 export default DimensioningLesson;
+
+
+

@@ -10,8 +10,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User, SystemLog
-from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest
+from ..models import User, SystemLog, QuizScore, UserProgress
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
 
@@ -82,10 +82,17 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
     # Find user by username
     user = db.query(User).filter(User.username == login_data.username).first()
     
-    if not user or not verify_password(login_data.password, user.hashed_password):
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Account with this email not found.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    if not verify_password(login_data.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect password. Please try again.",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
@@ -104,11 +111,9 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
                     detail="This account is not authorized for Administrator access."
                 )
         elif login_data.required_role == "user":
-            if user.role == "admin":
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Administrators must login using the Admin portal."
-                )
+            # PHASE 1 REMOVAL: Allow Administrators to log in through the main portal
+            # This allows a unified login experience as requested.
+            pass
         elif user.role != login_data.required_role:
              raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -140,7 +145,7 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
     db.add(log_entry)
     db.commit()
     
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "user": user}
     
 @router.post("/forgot-password")
 async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
@@ -231,3 +236,65 @@ def toggle_user_status(
     db.commit()
     db.refresh(user)
     return {"id": user.id, "username": user.username, "is_active": user.is_active}
+@router.get("/progress/{course_id}", response_model=List[LessonProgress])
+def get_course_progress(
+    course_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Get all completed lessons and scores for a specific course for the current user.
+    """
+    scores = db.query(QuizScore).filter(
+        QuizScore.user_id == str(current_user.id),
+        QuizScore.course_id == course_id
+    ).all()
+    
+    return [
+        LessonProgress(
+            lesson_id=score.lesson_id,
+            course_id=score.course_id,
+            is_completed=score.score >= 80.0,
+            score=score.score,
+            completed_at=score.completed_at
+        ) for score in scores
+    ]
+
+@router.post("/submit-quiz")
+def submit_quiz_score(
+    submission: QuizSubmission,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Submit a quiz score for a lesson.
+    If score >= 80%, the lesson is effectively marked as passed.
+    """
+    # Check if a score already exists for this lesson
+    existing_score = db.query(QuizScore).filter(
+        QuizScore.user_id == str(current_user.id),
+        QuizScore.course_id == submission.course_id,
+        QuizScore.lesson_id == submission.lesson_id
+    ).first()
+    
+    if existing_score:
+        # Update score only if the new one is higher
+        if submission.score > existing_score.score:
+            existing_score.score = submission.score
+            existing_score.completed_at = datetime.now(timezone.utc)
+    else:
+        new_score = QuizScore(
+            user_id=str(current_user.id),
+            course_id=submission.course_id,
+            lesson_id=submission.lesson_id,
+            score=submission.score,
+            completed_at=datetime.now(timezone.utc)
+        )
+        db.add(new_score)
+    
+    db.commit()
+    
+    # Optional: Update overall UserProgress percentage
+    # (Implementation omitted for now, could calculate based on total lessons)
+    
+    return {"message": "Score submitted successfully", "score": submission.score, "passed": submission.score >= 80.0}

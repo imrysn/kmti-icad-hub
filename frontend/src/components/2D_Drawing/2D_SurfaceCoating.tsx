@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Surface Coating */
@@ -12,17 +13,24 @@ import specialNotesImg from "../../assets/2D_Image_File/2D_surface_coating_speci
 import copyMoveImg from "../../assets/2D_Image_File/2D_surface_coating_copy_move.png";
 
 interface SurfaceCoatingLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const coatingSteps = [
+    "Coating Specifications: Review the technical table for surface finishing processes. Ensure the chosen coating matches the material requirements for durability and corrosion resistance.",
+    "Special Notes: Use special notes for heat treatments, welding instructions, or specific part requirements. If multiple notes are needed, arrange them chronologically by the manufacturing sequence, ensuring text properties match standard drafting notes.",
+    "Copy and Move: These commands help organize your drawing. Copy multiplies entities, while move simply changes their location. Use reference points P1 and P2 to precisely reposition your technical details."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,15 +64,15 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Surface Coating
+          Surface Coating
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(coatingSteps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -81,11 +89,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             {/* Surface Coating Table Section */}
             <div className="lesson-section">
               <div className="image-wrapper-flush">
-                <img
-                  src={surfaceCoatingTableImg}
-                  alt="Surface Coating Specification Table"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={surfaceCoatingTableImg} alt="Surface Coating Specification Table" className="software-screenshot screenshot-wide" />
               </div>
             </div>
             <div className="section-divider"></div>{" "}
@@ -95,11 +99,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
               <h4> b. Special Notes </h4>
               <div className="flex-row">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={specialNotesImg}
-                    alt="Special Notes location in Drawing Template"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={specialNotesImg} alt="Special Notes location in Drawing Template" className="software-screenshot screenshot-wide" />
                 </div>
 
                 <div className="info-box">
@@ -135,11 +135,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
               <h4> c. Copy / Move </h4>
               <div className="flex-row">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={copyMoveImg}
-                    alt="Copy and Move Command Configuration"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={copyMoveImg} alt="Copy and Move Command Configuration" className="software-screenshot screenshot-wide" />
                 </div>
 
                 <div className="info-box">
@@ -169,7 +165,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -179,3 +175,6 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
 };
 
 export default SurfaceCoatingLesson;
+
+
+

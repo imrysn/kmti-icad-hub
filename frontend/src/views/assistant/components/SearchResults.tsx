@@ -1,6 +1,5 @@
 import React from 'react';
-import { Zap, Video, Image, FileText } from 'lucide-react';
-import { SearchResult, MediaAsset } from '../../../types';
+import { Zap, Video, Image, FileText } from 'lucide-react'; import { SearchResult, MediaAsset } from '../../../types';
 
 interface SearchResultsProps {
     results: SearchResult[];
@@ -35,10 +34,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results, query, lo
                         <div className="media-attachments">
                             <div className="media-label">Related Media:</div>
                             {result.media.map((media: MediaAsset, mIdx: number) => (
-                                <button
-                                    key={mIdx}
-                                    className="media-chip"
-                                    onClick={() => setSelectedMedia(media)}
+                                <button key={mIdx} className="media-chip" onClick={() => setSelectedMedia(media)}
                                 >
                                     {renderMediaIcon(media.media_type)}
                                     <span>{media.description}</span>

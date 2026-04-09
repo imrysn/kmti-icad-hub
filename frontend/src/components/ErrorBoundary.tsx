@@ -56,10 +56,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                             {this.state.error.message}
                         </pre>
                     )}
-                    <button
-                        className="error-boundary__retry-btn"
-                        onClick={this.handleReset}
-                    >
+                    <button className="error-boundary__retry-btn" onClick={this.handleReset}>
                         Try again
                     </button>
                 </div>

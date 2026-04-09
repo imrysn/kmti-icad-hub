@@ -34,6 +34,7 @@ export interface User {
 export interface TokenResponse {
     access_token: string;
     token_type: string;
+    user: User;
 }
 
 // Shared Axios instance — reuses the same interceptors as api.ts so that
@@ -64,9 +65,13 @@ authApi.interceptors.response.use(
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
+            console.warn('Authentication failure - clearing session and redirecting');
             localStorage.removeItem('access_token');
             localStorage.removeItem('user');
-            window.location.href = '/';
+            
+            if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
+                window.location.href = '/';
+            }
         }
         return Promise.reject(error);
     }
@@ -79,6 +84,7 @@ export const authService = {
     async login(credentials: LoginCredentials): Promise<TokenResponse> {
         const response = await authApi.post<TokenResponse>('/auth/login', credentials);
         localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         return response.data;
     },
 
@@ -126,11 +132,28 @@ export const authService = {
     },
 
     /**
-     * Logout - clear stored credentials
+     * Get lesson progress for a specific course
      */
-    logout(): void {
+    async getLessonProgress(course_id: string): Promise<any[]> {
+        const response = await authApi.get<any[]>(`/auth/progress/${course_id}`);
+        return response.data;
+    },
+
+    /**
+     * Submit a quiz score for a specific lesson
+     */
+    async submitQuiz(data: { course_id: string, lesson_id: string, score: number }): Promise<any> {
+        const response = await authApi.post<any>('/auth/submit-quiz', data);
+        return response.data;
+    },
+
+    /**
+     * Logout and clear local storage
+     */
+    logout() {
         localStorage.removeItem('access_token');
         localStorage.removeItem('user');
+        window.location.href = '/login';
     },
 
     /**
@@ -141,17 +164,10 @@ export const authService = {
     },
 
     /**
-     * Get stored user from localStorage
+     * Get stored user information
      */
     getStoredUser(): User | null {
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-            try {
-                return JSON.parse(userStr);
-            } catch {
-                return null;
-            }
-        }
-        return null;
-    },
+        const user = localStorage.getItem('user');
+        return user ? JSON.parse(user) : null;
+    }
 };

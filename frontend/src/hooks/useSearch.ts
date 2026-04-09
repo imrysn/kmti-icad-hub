@@ -1,11 +1,8 @@
-import { useState } from 'react';
-import { searchKnowledgeBase } from '../services/api';
+import { useState } from 'react'; import { searchKnowledgeBase } from '../services/api';
 import { SearchResult } from '../types';
 
 export const useSearch = () => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState(''); const [results, setResults] = useState<SearchResult[]>([]); const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const performSearch = async () => {

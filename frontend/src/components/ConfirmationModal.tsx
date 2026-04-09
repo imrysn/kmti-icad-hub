@@ -62,10 +62,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                     <button className="hybrid-btn-secondary" onClick={onCancel}>
                         {cancelText}
                     </button>
-                    <button 
-                        className={`hybrid-btn-primary ${type}`} 
-                        onClick={onConfirm}
-                    >
+                    <button className={`hybrid-btn-primary ${type}`} onClick={onConfirm}>
                         {confirmText}
                     </button>
                 </div>

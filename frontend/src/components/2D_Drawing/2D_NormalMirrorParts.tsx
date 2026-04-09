@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Import images */
@@ -20,6 +21,7 @@ import imgA1 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(2)_a_1.
 import imgA2 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(2)_a_2.png";
 
 interface NormalMirrorPartsLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -28,11 +30,20 @@ interface NormalMirrorPartsLessonProps {
 const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
   subLessonId = "2d-normal-mirror-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const mirror1Steps = [
+    "Definitions: Normal parts use an 'N' designation, while mirror parts are symmetrical, designated with 'A' and 'B' numbers. First, finalize the 'A' drawing completely.",
+    "Drafting Rules: Save a copy as the 'B' designation. Mirror the part in 3D, then update the 2D views. Change the right side view to a left side view, update the isometric view, and ensure the title block reflects the new drawing number."
+  ];
+
+  const mirror2Steps = [
+    "Mirror Command: Use the dedicated mirror command for rapid 2D detailing. Select the entities and define the mirror axis to create symmetrical representations instantly."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,17 +77,20 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>{" "}
       {/* Intro Banner */}
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> 22. Normal and
+          22. Normal and
           Mirror parts
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-normal-mirror-1") speak(mirror1Steps);
+              else speak(mirror2Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
       </section>
       <div className="lesson-grid single-card">
@@ -134,11 +148,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                 <div className="mirror-row flex-top">
                   <div className="mirror-col left-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={img4}
-                        alt="Detailing 1"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={img4} alt="Detailing 1" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="red-box">
@@ -153,21 +163,13 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                     </div>
 
                     <div className="image-wrapper-bordered">
-                      <img
-                        src={img3}
-                        alt="Isometric 2"
-                        className="software-screenshot screenshot-small"
-                      />
+                      <img src={img3} alt="Isometric 2" className="software-screenshot screenshot-small" />
                     </div>
                   </div>
 
                   <div className="mirror-col right-col">
                     <div className="image-wrapper-bordered">
-                      <img
-                        src={img1}
-                        alt="Isometric 1"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={img1} alt="Isometric 1" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="flex-row">
@@ -192,11 +194,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                       </div>
 
                       <div className="image-wrapper-flush toolbar-img-wrapper">
-                        <img
-                          src={img2}
-                          alt="Toolbar"
-                          className="software-screenshot toolbar"
-                        />
+                        <img src={img2} alt="Toolbar" className="software-screenshot toolbar" />
                       </div>
                     </div>
                   </div>
@@ -232,11 +230,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
 
                   <div className="mirror-col right-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={img5}
-                        alt="Detailing 2"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={img5} alt="Detailing 2" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
@@ -251,11 +245,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
 
               <div className="flex-row">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={imgA1}
-                    alt="Mirror Command Menu"
-                    className="software-screenshot"
-                  />
+                  <img src={imgA1} alt="Mirror Command Menu" className="software-screenshot" />
                 </div>
               </div>
 
@@ -280,7 +270,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -290,3 +280,6 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
 };
 
 export default NormalMirrorPartsLesson;
+
+
+

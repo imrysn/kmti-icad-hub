@@ -20,6 +20,7 @@ class QuizScore(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(String(100), index=True)
     course_id = Column(String(100), index=True)
+    lesson_id = Column(String(100), index=True)
     score = Column(Float)
     completed_at = Column(DateTime, nullable=True)
 

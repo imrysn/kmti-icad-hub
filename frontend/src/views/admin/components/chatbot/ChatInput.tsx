@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
-import { MessageSquare, RefreshCw, XCircle } from 'lucide-react';
-import { ImagePayload } from '../../../../services/searchService';
+import { MessageSquare, RefreshCw, XCircle } from 'lucide-react'; import { ImagePayload } from '../../../../services/searchService';
 
 interface ChatInputProps {
     input: string;
@@ -36,9 +35,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                             <div key={idx} className="selected-image-preview" role="listitem">
                                 <div className="preview-container">
                                     <img src={`data:${img.mime};base64,${img.data}`} alt={`Selected image ${idx + 1}`} />
-                                    <button
-                                        className="remove-image-btn"
-                                        onClick={() => removeImage(idx)}
+                                    <button className="remove-image-btn" onClick={() => removeImage(idx)}
                                         aria-label={`Remove image ${idx + 1}`}
                                     >
                                         <XCircle size={14} />
@@ -52,11 +49,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             <form className="chat-input-box" onSubmit={onSubmit}>
                 <div className="voice-lang-wrapper">
                     <label htmlFor="language-select" className="sr-only">Select response language</label>
-                    <select
-                        id="language-select"
-                        className="voice-lang-select"
-                        value={forcedLanguage}
-                        onChange={(e) => setForcedLanguage(e.target.value as any)}
+                    <select id="language-select" className="voice-lang-select" value={forcedLanguage} onChange={(e) => setForcedLanguage(e.target.value as any)}
                         aria-label="Set AI Response Language"
                     >
                         <option value="en-US">EN</option>
@@ -66,12 +59,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 </div>
 
                 <label htmlFor="chat-input" className="sr-only">Chat message input</label>
-                <input
-                    id="chat-input"
-                    ref={inputRef}
-                    type="text"
-                    className="chat-input"
-                    placeholder={selectedImages.length > 0 ? "Describe these image/s...." : "What's on your mind?"}
+                <input id="chat-input" ref={inputRef} type="text" className="chat-input" placeholder={selectedImages.length> 0 ? "Describe these image/s...." : "What's on your mind?"}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onPaste={onPaste}
@@ -79,12 +67,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                     autoFocus
                     aria-label="Type your message"
                 />
-                <button
-                    className="chat-send-btn"
-                    type="submit"
-                    disabled={isThinking || (!input.trim() && selectedImages.length === 0)}
-                    aria-label={isThinking ? 'Sending message...' : 'Send message'}
-                >
+                <button className="chat-send-btn" type="submit" disabled={isThinking || (!input.trim() && selectedImages.length === 0)} aria-label={isThinking ? 'Sending message...' : 'Send message'}>
                     {isThinking
                         ? <RefreshCw size={15} className="spinning" aria-hidden="true" />
                         : <MessageSquare size={15} aria-hidden="true" />

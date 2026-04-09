@@ -1,0 +1,129 @@
+.window-controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 32px;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 10000;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Draggable Region */
+.window-drag-region {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  -webkit-app-region: drag; /* This makes the area draggable */
+}
+
+.window-title-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.window-mini-logo {
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+}
+
+.window-title-content span {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Control Buttons Group */
+.window-buttons-group {
+  display: flex;
+  height: 100%;
+  -webkit-app-region: no-drag; /* Buttons must NOT be draggable to receive clicks */
+}
+
+.win-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+/* Minimize & Maximize Hover */
+.win-btn:hover:not(.win-close) {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-white);
+}
+
+.win-btn.win-minimize:hover {
+  border-bottom: 2px solid var(--secondary);
+}
+
+.win-btn.win-maximize:hover {
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Close Button Special Styling */
+.win-btn.win-close:hover {
+  background: var(--error);
+  color: white;
+}
+
+.win-btn:active {
+  opacity: 0.7;
+}
+
+/* Animation on entry */
+@keyframes windowControlIn {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* Integrated View (into app-header) */
+.window-buttons-group.integrated {
+  height: auto;
+  gap: 4px;
+}
+
+.window-buttons-group.integrated .win-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+}
+
+.window-buttons-group.integrated .win-btn:hover:not(.win-close) {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-white);
+  border-color: var(--primary);
+  border-bottom: 1px solid var(--primary); /* Override title-bar-style border-bottom */
+}
+
+.window-buttons-group.integrated .win-btn.win-close:hover {
+  background: var(--error);
+  color: white;
+  border-color: var(--error);
+}
+
+.window-controls-container {
+  animation: windowControlIn 0.5s ease-out forwards;
+}

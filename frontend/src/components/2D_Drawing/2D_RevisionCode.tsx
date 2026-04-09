@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Import images */
@@ -16,17 +17,24 @@ import imgA3 from "../../assets/2D_Image_File/2D_revision_code_a3.png";
 import imgB from "../../assets/2D_Image_File/2D_revision_code_b.png";
 
 interface RevisionCodeLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const revisionSteps = [
+    "Revision Awareness: Revisions occur when approved drawings need modifications due to fabrication discrepancies. It's critical to track these changes for engineering history.",
+    "Revised Detail: Use the 'create delta' command to mark changes. Enter the delta character and place it near the modified feature. Remember to activate the specific local view where the change belongs.",
+    "Revision Code: Update the revision history block to provide a clear record of what was changed, by whom, and when."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,14 +68,16 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>{" "}
       {/* Scrollable Content Container */}
       <section className="lesson-intro">
-        <h3 className="section-title">23. Revision Code and History</h3>
+        <h3 className="section-title">
+          23. Revision Code and History
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(revisionSteps)}
+            onStop={stop}
+          />
+        </h3>
 
         <p className="lesson-description">
           {" "}
@@ -80,28 +90,16 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
           {" "}
           {/* Main Top Image */}
           <div className="flex-row">
-            <img
-              src={img1}
-              alt="Revision Code and History"
-              className="software-screenshot"
-            />
+            <img src={img1} alt="Revision Code and History" className="software-screenshot" />
           </div>{" "}
           {/* Sub-section A */} <h4>a. Revised detail</h4>
           <div className="flex-row">
             <div className="image-wrapper-flush">
-              <img
-                src={imgA1}
-                alt="Revised Detail Menu"
-                className="software-screenshot"
-              />
+              <img src={imgA1} alt="Revised Detail Menu" className="software-screenshot" />
             </div>
 
             <div className="flex-col">
-              <img
-                src={imgA2}
-                alt="Delta input"
-                className="software-screenshot"
-              />
+              <img src={imgA2} alt="Delta input" className="software-screenshot" />
             </div>
           </div>{" "}
           {/* Sub-section A - Bottom Row */}
@@ -122,21 +120,13 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
             </div>
 
             <div className="image-wrapper-flush">
-              <img
-                src={imgA3}
-                alt="Delta symbol placement"
-                className="software-screenshot"
-              />
+              <img src={imgA3} alt="Delta symbol placement" className="software-screenshot" />
             </div>
           </div>{" "}
           {/* Sub-section B */} <h4>b. Revision Code</h4>
           <div className="flex-row">
             <div className="image-wrapper-flush">
-              <img
-                src={imgB}
-                alt="Revision Code Bottom"
-                className="software-screenshot"
-              />
+              <img src={imgB} alt="Revision Code Bottom" className="software-screenshot" />
             </div>
           </div>
         </div>
@@ -149,7 +139,7 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
         </button>{" "}
         <button className="nav-button next" onClick={onNextLesson}>
           {" "}
-          Next Lesson <ChevronRight size={18} />{" "}
+          {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
         </button>
       </div>
     </div>
@@ -157,3 +147,5 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
 };
 
 export default RevisionCodeLesson;
+
+

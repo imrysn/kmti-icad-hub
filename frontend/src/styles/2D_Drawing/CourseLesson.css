@@ -19,14 +19,35 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Lesson Header & Intro --- */
+/* --- Lesson Header & Intro Overhaul --- */
 
 .lesson-intro {
   text-align: left;
-  padding: 1.5rem 0;
-  border-left: 4px solid var(--primary);
-  padding-left: 2rem;
-  background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
+  padding: 3rem 4rem;
+  margin-bottom: 4rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-left: 8px solid var(--primary); /* Thick accent line */
+  border-radius: 0 24px 24px 0;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.4s ease;
+}
+
+/* Inner glow effect for premium feel */
+.lesson-intro::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent);
 }
 
 .lesson-intro h3.section-title {
@@ -34,20 +55,32 @@
   font-size: 2.25rem;
   font-weight: 800;
   color: var(--text-white);
-  margin-bottom: 1rem;
+  margin: 0;
   letter-spacing: -0.04em;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  border: none; /* Reset standard section-title border */
+  gap: 1.5rem;
+  border: none;
   padding: 0;
   text-transform: none;
 }
 
-.lesson-intro-icon {
-  color: var(--primary);
-  filter: drop-shadow(0 0 10px var(--color-primary-glow));
+
+.lesson-intro .p-flush {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 850px;
+  line-height: 1.75;
+  margin: 0;
 }
+
+/* Light mode specific refinements */
+[data-theme='light'] .lesson-intro {
+  background: rgba(255, 255, 255, 0.85);
+  border-left-width: 10px;
+  box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.12);
+}
+
 
 /* --- Standardized Headers & Spacing --- */
 
@@ -80,7 +113,7 @@
 /* --- Lesson Cards --- */
 
 .lesson-card {
-  background: var(--bg-card);
+  background: #ffffff; /* Page-style background for maximum document readability */
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: 3rem;
@@ -90,19 +123,15 @@
   box-shadow: var(--shadow-card);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  color: #1e293b; /* Dark text for light card */
 }
 
-.lesson-card:hover {
-  transform: translateY(-10px);
-  border-color: var(--primary);
-  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 20px var(--color-primary-glow);
-}
 
 .card-header h4 {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-white);
+  color: #1e293b;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -114,17 +143,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  background: rgba(255, 255, 255, 0.02);
-  padding: 1.5rem;
-  border-radius: 16px;
-  border: 1px solid transparent;
+  background: transparent;
+  padding: 1.5rem 0;
+  border: none;
   transition: all 0.3s ease;
-}
-
-.instruction-step:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--glass-border);
-  transform: translateX(5px);
 }
 
 .step-header {
@@ -152,18 +174,19 @@
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-white);
+  color: #1e293b;
 }
 
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  background: rgba(0, 0, 0, 0.2);
-  padding: 1rem;
+  background: #ffffff; /* Use white background to ensure black text screenshots are readable */
+  padding: 1.25rem;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
   display: inline-block;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .software-screenshot {
@@ -172,10 +195,6 @@
   height: auto;
   border-radius: 8px;
   transition: transform 0.5s ease;
-}
-
-.instruction-step:hover .software-screenshot {
-  transform: scale(1.02);
 }
 
 /* --- UX Enhancement: Progress Bar --- */
@@ -231,22 +250,24 @@
   background: var(--primary);
   border-color: var(--primary);
   box-shadow: 0 0 20px var(--color-primary-glow);
+  color: #ffffff;
 }
 
 .nav-button.next {
   background: var(--primary);
+  color: #ffffff;
   border: none;
 }
 
 /* --- Instruction Box & Alerts --- */
 
 .instruction-box, .alert-box {
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid var(--color-primary-glow);
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.2);
   border-left: 5px solid var(--primary);
   border-radius: 16px;
   padding: 1.5rem 2rem;
-  color: var(--text-white);
+  color: #475569;
 }
 
 .alert-box.warning {
@@ -258,4 +279,70 @@
 /* Hide multipliers from screenshots in dark mode for cleaner look */
 .software-screenshot {
   filter: brightness(1.1) contrast(1.05);
+}
+
+/* --- Lesson Tabs & Navigation Pill --- */
+
+.lesson-tabs {
+  display: flex;
+  justify-content: center; /* Center the tabs */
+  gap: 0.5rem;
+  padding: 0.6rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  width: fit-content;
+  margin: 0 auto 3.5rem; /* Center horizontally and add bottom spacing */
+  backdrop-filter: blur(var(--glass-blur));
+  position: sticky;
+  top: 1rem; /* Stick to top with some breathing room */
+  z-index: 100;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tab-button {
+  padding: 0.5rem 1.75rem;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab-button:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-white);
+  transform: translateY(-1px);
+}
+
+.tab-button.active {
+  background: var(--primary);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px var(--color-primary-glow);
+  transform: scale(1.05);
+}
+
+[data-theme='light'] .lesson-tabs {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(99, 102, 241, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1);
+}
+
+[data-theme='light'] .tab-button:hover:not(.active) {
+  background: rgba(99, 102, 241, 0.05);
+  color: var(--primary);
 }

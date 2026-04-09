@@ -1,6 +1,5 @@
 import React from 'react';
-import { Users, CheckCircle2, Database, Activity, HelpCircle } from 'lucide-react';
-import { SystemStats } from '../../../services/adminService';
+import { Users, CheckCircle2, Database, Activity, HelpCircle } from 'lucide-react'; import { SystemStats } from '../../../services/adminService';
 
 interface SystemAnalyticsProps {
     stats: SystemStats;
@@ -110,12 +109,7 @@ export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
                     </div>
                     <div className="heatmap-grid">
                         {heatmap.map((item, idx) => (
-                            <div 
-                                key={idx} 
-                                className="heatmap-cell"
-                                style={{ backgroundColor: getHeatmapColor(item.count) }}
-                                title={`Course: ${item.course_id} - ${item.count} active users`}
-                            >
+                            <div key={idx} className="heatmap-cell" style={{ backgroundColor: getHeatmapColor(item.count) }} title={`Course: ${item.course_id} - ${item.count} active users`}>
                                 {item.course_id.toUpperCase()}
                             </div>
                         ))}

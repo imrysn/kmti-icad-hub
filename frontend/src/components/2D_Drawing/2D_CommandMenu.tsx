@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import {
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-  Layout,
-  MousePointer2,
-  List,
-} from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Layout, MousePointer2, List, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Command Menu (1) */
@@ -33,6 +26,7 @@ import componentHighlighted2Img from "../../assets/2D_Image_File/2D_command_menu
 /* Section 4 - Part 2 */
 
 interface CommandMenuLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -41,13 +35,24 @@ interface CommandMenuLessonProps {
 const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
   subLessonId = "2d-command-menu-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  onPrevLesson, nextLabel }) => {
+  
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+
+  const commandMenu1Steps = [
+    "Line Properties: All line type, weight, and color are selectable at startup. Click entities to select or unselect properties; selectable entities are highlighted in blue.",
+    "Essential Tools: Familiarize yourself with the Trim command for cutting overlapping lines and the Offset command for creating precise parallel geometry.",
+    "Efficiency: During 2D detailing, the command menu is significantly more effective than the icon menu for rapid tool access."
+  ];
+
+  const commandMenu2Steps = [
+    "Active View: Each view is local. The highlighted view is activated, meaning changes only apply to that specific view. Unactivated views cannot be edited.",
+    "Chamfer Removal: Chamfer lines appearing too close to object lines can cause dimensioning errors and printing issues. Remove these per orthographic view using the properties menu."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,45 +85,29 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     };
   }, [subLessonId]);
 
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
+  
 
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-
-      return next;
-    });
-  };
-
-  const getStepClass = (stepId: string) => {
-    return `instruction-step interactive ${completedSteps.has(stepId) ? "completed" : ""}`;
-  };
-
+  const getStepClass = (stepId: string) => "instruction-step";
   return (
-    <div
-      className="course-lesson-container command-menu-lesson"
-      ref={containerRef}
-    >
+    <div className="course-lesson-container command-menu-lesson" ref={containerRef}>
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <Layout
-            size={28}
-            strokeWidth={2.5}
-            className="lesson-intro-icon"
-          />{" "}
+          
           {subLessonId === "2d-command-menu-1"
             ? "COMMAND MENU (1)"
             : "COMMAND MENU (2)"}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-command-menu-1") speak(commandMenu1Steps);
+              else speak(commandMenu2Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="p-flush">
@@ -133,21 +122,12 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
             <>
               {" "}
               {/* Section 2: Selectable and Unselectable Line Properties */}
-              <div
-                className={getStepClass("cm1-2")}
-                onClick={() => toggleStep("cm1-2")}
-              >
+              <div className={`${getStepClass("cm1-2")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("cm1-2") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("cm1-2") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "2"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    2
                   </span>{" "}
                   <span className="step-label">
                     Selectable and Unselectable Line Properties
@@ -157,11 +137,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={selectableLineImg}
-                        alt="Selectable Line Properties"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={selectableLineImg} alt="Selectable Line Properties" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="info-box">
@@ -182,27 +158,41 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                   </div>
                 </div>
               </div>
-              <div className="section-divider"></div>{" "}
-              {/* Section 3: Command Menu */}
-              <div
-                className={getStepClass("cm1-3")}
-                onClick={() => toggleStep("cm1-3")}
-              >
+              <div className="section-divider-sm"></div>{" "}
+              {/* Section 2b: Essential Tools */}
+              <div className={`${getStepClass("cm1-2b")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("cm1-3") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("cm1-3") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "3"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    b
+                  </span>{" "}
+                  <span className="step-label">ESSENTIAL TOOLS (TRIM & OFFSET)</span>
+                </div>
+                <div className="step-description">
+                  <div className="info-box">
+                    <p className="p-flush">
+                      The 2D Command Menu provides rapid access to critical editing tools:
+                    </p>
+                    <ul>
+                      <li><strong>Trim:</strong> Used to cut or delete overlapping segments of lines at their intersections.</li>
+                      <li><strong>Offset:</strong> Creates a parallel copy of a line, arc, or circle at a specified distance.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="section-divider"></div>{" "}
+              {/* Section 3: Command Menu */}
+              <div className={`${getStepClass("cm1-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+                <div className="step-header">
+                  {" "}
+                  <span className="step-number">
+                    
+                    3
                   </span>{" "}
                   <span className="step-label">
                     {" "}
-                    <strong>Command Menu</strong> ← During 2D detailing, command
+                    <strong>Command Menu</strong> ↁEDuring 2D detailing, command
                     menu is more effective to use rather than icon menu.{" "}
                   </span>
                 </div>
@@ -210,19 +200,11 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-col">
                     <div className="image-wrapper-flush">
-                      <img
-                        src={commandMenu1Img}
-                        alt="Command Menu - Basic Tools"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={commandMenu1Img} alt="Command Menu - Basic Tools" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={commandMenu2Img}
-                        alt="Command Menu - Advanced Tools"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={commandMenu2Img} alt="Command Menu - Advanced Tools" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
@@ -232,21 +214,12 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
             <>
               {" "}
               {/* Section 3: Active View */}
-              <div
-                className={getStepClass("cm2-3")}
-                onClick={() => toggleStep("cm2-3")}
-              >
+              <div className={`${getStepClass("cm2-3")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("cm2-3") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("cm2-3") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "3"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    3
                   </span>{" "}
                   <span className="step-label">Active View</span>
                 </div>
@@ -262,31 +235,18 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                     </p>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={activeViewImg}
-                        alt="Active View and Local View"
-                        className="software-screenshot screenshot-large"
-                      />
+                      <img src={activeViewImg} alt="Active View and Local View" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
               </div>{" "}
               {/* Section 4: Component highlighted / unhighlighted */}
-              <div
-                className={getStepClass("cm2-4")}
-                onClick={() => toggleStep("cm2-4")}
-              >
+              <div className={`${getStepClass("cm2-4")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("cm2-4") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("cm2-4") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "4"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    4
                   </span>{" "}
                   <span className="step-label">
                     Component highlighted / unhighlighted
@@ -297,11 +257,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                   <div className="flex-row--top">
                     <div className="flex-1">
                       <div className="image-wrapper-flush">
-                        <img
-                          src={componentHighlighted1Img}
-                          alt="Chamfer line appearing too close"
-                          className="software-screenshot screenshot-large"
-                        />
+                        <img src={componentHighlighted1Img} alt="Chamfer line appearing too close" className="software-screenshot screenshot-large" />
                       </div>
 
                       <div className="info-box">
@@ -333,11 +289,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                       </div>
 
                       <div className="image-wrapper-flush">
-                        <img
-                          src={componentHighlighted2Img}
-                          alt="Properties for removing chamfer"
-                          className="software-screenshot screenshot-wide"
-                        />
+                        <img src={componentHighlighted2Img} alt="Properties for removing chamfer" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
                   </div>
@@ -358,7 +310,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -368,3 +320,6 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 };
 
 export default CommandMenuLesson;
+
+
+

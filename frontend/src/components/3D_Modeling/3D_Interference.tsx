@@ -2,175 +2,25 @@
 
 import React, { useState, useEffect, useRef } from "react";
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  AlertCircle,
-  CheckCircle2,
-  Info,
-} from "lucide-react";
-
-import "../../styles/3D_Modeling/CourseLesson.css";
-/* Assets */
-
-import leftClick from "../../assets/3D_Image_File/left_click.png";
-
-import interfCheckIcon from "../../assets/3D_Image_File/interf_check.png";
-
-import interfCommandMenu from "../../assets/3D_Image_File/interf_command_menu.png";
-
-import interferenceResult from "../../assets/3D_Image_File/interference.png";
-
-import listInterfIcon from "../../assets/3D_Image_File/list_all_detected_interf.png";
-
-import listDisplayWindow from "../../assets/3D_Image_File/list_display_window.png";
-
-import interferenceCheckImg from "../../assets/3D_Image_File/interference_check.png";
-
-interface InterferenceLessonProps {
-  onNextLesson?: () => void;
-  onPrevLesson?: () => void;
-}
-
-const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
-  onNextLesson,
-  onPrevLesson,
-}) => {
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
-
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => {
-      if (currentContainer) {
-        currentContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
-
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-
-      return next;
-    });
-  };
-
-  const getStepClass = (stepId: string) => {
-    return `instruction-step interactive ${completedSteps.has(stepId) ? "completed" : ""}`;
-  };
-
-  return (
-    <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
-      <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          <AlertCircle size={28} className="lesson-intro-icon" /> INTERFERENCE
-          CHECK
-        </h3>
-
-        <p className="p-flush">
-          Interferences are overlapping areas of 3D entities. These are problems
-          that must be fixed on the 3D Modeling.
-        </p>
-
-        <div className="instruction-box">
-          <div className="image-wrapper-flush">
-            <img
-              src={interferenceResult}
-              alt="Interference Results"
-              className="software-screenshot screenshot-small"
-            />
-          </div>
-        </div>
-      </section>
-      <div className="lesson-grid single-card">
-        <div className="lesson-card">
-          <div className="card-header">
-            <h4>Interference Check Tool</h4>
-          </div>
-
-          <div className={getStepClass("i1")} onClick={() => toggleStep("i1")}>
-            <div className="step-header">
-              {" "}
-              <span
-                className={`step-number ${completedSteps.has("i1") ? "completed" : ""}`}
-              >
-                {" "}
-                {completedSteps.has("i1") ? (
-                  <CheckCircle2 size={16} />
-                ) : (
-                  "1"
-                )}{" "}
-              </span>{" "}
-              <span className="step-label">
-                Select{" "}
-                <strong className="text-highlight">Interference Check</strong>{" "}
-                from the icon menu.
+import { ChevronLeft, ChevronRight, AlertCircle, Info, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/CourseLesson.css"; /* Assets */ import leftClick from "../../assets/3D_Image_File/left_click.png"; import interfCheckIcon from "../../assets/3D_Image_File/interf_check.png"; import interfCommandMenu from "../../assets/3D_Image_File/interf_command_menu.png"; import interferenceResult from "../../assets/3D_Image_File/interference.png"; import listInterfIcon from "../../assets/3D_Image_File/list_all_detected_interf.png"; import listDisplayWindow from "../../assets/3D_Image_File/list_display_window.png"; import interferenceCheckImg from "../../assets/3D_Image_File/interference_check.png"; interface InterferenceLessonProps {
+  nextLabel?: string; onNextLesson?: () => void; onPrevLesson?: () => void; } const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => { const [scrollProgress, setScrollProgress] = useState(0); const containerRef = useRef<HTMLDivElement>(null); const { speak, stop, isSpeaking, currentIndex } = useTTS(); const interferenceSteps = [ "Step 1: Select Interference Check from the icon menu.", "Step 2: On the command menu, unselect High-speed detection for a thorough check.", "Step 3: Select specific entities and click GO. A dialog will show the number of detected interferences. Alternatively, right-click the 3D space to check the entire drawing.", "Step 4: Analyze countermeasures to fix the parts. Use Undo or Ctrl Z to remove the red CGS solid highlighting the interference.", "Step 5 (List Tool): Select the list tool from the icon menu and click GO.", "Step 6 (Display): The List Display window will appear, showing all interfering parts for your review." ]; useEffect(() => { const handleScroll = () => { if (!containerRef.current) return; const element = containerRef.current; const totalHeight = element.scrollHeight - element.clientHeight; if (totalHeight === 0) { setScrollProgress(100); return; } const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress); }; const currentContainer = containerRef.current; if (currentContainer) { currentContainer.addEventListener("scroll", handleScroll); handleScroll(); } return () => { if (currentContainer) { currentContainer.removeEventListener("scroll", handleScroll); } }; }, []); const getStepClass = (stepId: string) => "instruction-step"; return ( <div className="course-lesson-container" ref={containerRef}> {" "} {/* Sticky Progress Bar */} <div className="lesson-progress-container"> <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} /> </div> <section className="lesson-intro"> <h3 className="section-title"> {" "} INTERFERENCE CHECK <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} /> </h3> <p className="p-flush"> Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling. </p> <div className="instruction-box"> <div className="image-wrapper-flush"> <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" /> </div> </div> </section> <div className="lesson-grid single-card"> <div className="lesson-card"> <div className="card-header"> <h4>Interference Check Tool</h4> </div> <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`} > <div className="step-header"> {" "} <span className="step-number"> 1 </span>{" "} <span className="step-label"> Select{" "} <strong className="text-highlight">Interference Check</strong>{" "} from the icon menu.
               </span>
             </div>
 
-            <div
-              className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-            >
+            <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
               <div className="image-wrapper-flush">
-                <img
-                  src={interfCommandMenu}
-                  alt="Interference Command Menu"
-                  className="software-screenshot screenshot-medium"
-                />
+                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" />
               </div>
             </div>
           </div>
 
-          <div className={getStepClass("i2")} onClick={() => toggleStep("i2")}>
+          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`} >
             <div className="step-header">
               {" "}
-              <span
-                className={`step-number ${completedSteps.has("i2") ? "completed" : ""}`}
-              >
-                {" "}
-                {completedSteps.has("i2") ? (
-                  <CheckCircle2 size={16} />
-                ) : (
-                  "2"
-                )}{" "}
+              <span className="step-number">
+                
+                2
               </span>{" "}
               <span className="step-label">
                 On the command menu, unselect{" "}
@@ -179,57 +29,35 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
               </span>
             </div>
 
-            <div
-              className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-            >
+            <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
               <div className="image-wrapper-flush">
-                <img
-                  src={interfCheckIcon}
-                  alt="Interference Check Icon"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           </div>
 
-          <div className={getStepClass("i3")} onClick={() => toggleStep("i3")}>
+          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`} >
             <div className="step-header">
               {" "}
-              <span
-                className={`step-number ${completedSteps.has("i3") ? "completed" : ""}`}
-              >
-                {" "}
-                {completedSteps.has("i3") ? (
-                  <CheckCircle2 size={16} />
-                ) : (
-                  "3"
-                )}{" "}
+              <span className="step-number">
+                
+                3
               </span>{" "}
               <span className="step-label">
                 Select specific entities to check interferences &gt;{" "}
                 <strong className="text-highlight">GO</strong>
-                <img
-                  src={leftClick}
-                  alt="Left click"
-                  className="screenshot-click--inline"
-                />
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
               </span>
             </div>
 
-            <div
-              className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-            >
+            <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
               <p className="p-flush">
                 A dialog box will appear showing the number of detected
                 interferences.
               </p>
 
               <div className="image-wrapper-flush">
-                <img
-                  src={interferenceCheckImg}
-                  alt="Interference Check Dialog"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
               </div>
 
               <div className="info-box">
@@ -244,18 +72,12 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
             </div>
           </div>
 
-          <div className={getStepClass("i4")} onClick={() => toggleStep("i4")}>
+          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`} >
             <div className="step-header">
               {" "}
-              <span
-                className={`step-number ${completedSteps.has("i4") ? "completed" : ""}`}
-              >
-                {" "}
-                {completedSteps.has("i4") ? (
-                  <CheckCircle2 size={16} />
-                ) : (
-                  "4"
-                )}{" "}
+              <span className="step-number">
+                
+                4
               </span>{" "}
               <span className="step-label">
                 Analyze possible countermeasures to remove the interference on
@@ -263,9 +85,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
               </span>
             </div>
 
-            <div
-              className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-            ></div>
+            <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */></div>
           </div>
 
           <div className="section-divider"></div>
@@ -277,60 +97,32 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
           </p>
 
           <div className="image-wrapper-flush">
-            <img
-              src={listInterfIcon}
-              alt="Display List Tool Icon"
-              className="software-screenshot screenshot-small"
-            />
+            <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
           </div>
 
-          <div
-            className={getStepClass("li1")}
-            onClick={() => toggleStep("li1")}
-          >
+          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`}>
             <div className="step-header">
               {" "}
-              <span
-                className={`step-number ${completedSteps.has("li1") ? "completed" : ""}`}
-              >
-                {" "}
-                {completedSteps.has("li1") ? (
-                  <CheckCircle2 size={16} />
-                ) : (
-                  "1"
-                )}{" "}
+              <span className="step-number">
+                
+                1
               </span>{" "}
               <span className="step-label">
                 Select the list tool on the icon menu &gt;{" "}
                 <strong className="text-highlight">GO</strong>
-                <img
-                  src={leftClick}
-                  alt="Left click"
-                  className="screenshot-click--inline"
-                />
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
               </span>
             </div>
 
-            <div
-              className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-            ></div>
+            <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */></div>
           </div>
 
-          <div
-            className={getStepClass("li2")}
-            onClick={() => toggleStep("li2")}
-          >
+          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`}>
             <div className="step-header">
               {" "}
-              <span
-                className={`step-number ${completedSteps.has("li2") ? "completed" : ""}`}
-              >
-                {" "}
-                {completedSteps.has("li2") ? (
-                  <CheckCircle2 size={16} />
-                ) : (
-                  "2"
-                )}{" "}
+              <span className="step-number">
+                
+                2
               </span>{" "}
               <span className="step-label">
                 The List Display window will appear showing all interfering
@@ -338,15 +130,9 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
               </span>
             </div>
 
-            <div
-              className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-            >
+            <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
               <div className="image-wrapper-flush">
-                <img
-                  src={listDisplayWindow}
-                  alt="List Display Window"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           </div>
@@ -357,7 +143,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
-              Next Lesson <ChevronRight size={18} />
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -367,3 +153,6 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({
 };
 
 export default InterferenceLesson;
+
+
+

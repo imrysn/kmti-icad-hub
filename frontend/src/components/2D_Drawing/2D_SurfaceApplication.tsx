@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Application of Surface (1) */
@@ -15,6 +16,7 @@ import machiningImg from "../../assets/2D_Image_File/2D_application_surface((2)_
 import machining2Img from "../../assets/2D_Image_File/2D_application_surface((2)_machining_2.png";
 
 interface SurfaceApplicationLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -23,11 +25,20 @@ interface SurfaceApplicationLessonProps {
 const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
   subLessonId = "2d-surface-app-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const surface1Steps = [
+    "Surface Preparation: Before coating, the material's black skin must be removed. Shotblasting is a primary method used to smooth or roughen surfaces and remove contaminants.",
+    "Shotblasting Classifications: It's commonly used for stress relief after welding and to increase fatigue resistance. For parts prone to corrosion from friction, shotblasting provides a critical protective surface."
+  ];
+
+  const surface2Steps = [
+    "Machining for Finish: When shotblasting isn't required, machining all sides removes the black skin to achieve desired dimensions. For polished materials where black skin isn't present, these removal processes can some times be skipped entirely."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,21 +72,24 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Application of
+          Application of
           Surface{" "}
           {subLessonId === "2d-surface-app-1"
             ? "(1)"
             : subLessonId === "2d-surface-app-2"
               ? "(2)"
               : ""}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-surface-app-1") speak(surface1Steps);
+              else speak(surface2Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -143,11 +157,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                   </ul>
                   <p>Example:</p>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={shotblast1Img}
-                      alt="Shotblasting Example 1 - Welding Stress"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={shotblast1Img} alt="Shotblasting Example 1 - Welding Stress" className="software-screenshot screenshot-wide" />
                   </div>
                   <p>
                     {" "}
@@ -175,11 +185,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                   </ul>
                   <p>Example:</p>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={shotblast2Img}
-                      alt="Shotblasting Example 2 - Black Skin Removal"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={shotblast2Img} alt="Shotblasting Example 2 - Black Skin Removal" className="software-screenshot screenshot-wide" />
                   </div>
                   <p>
                     {" "}
@@ -209,11 +215,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                   <p>Example:</p>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={machiningImg}
-                      alt="Machining Example 1 - Mounting Bracket"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={machiningImg} alt="Machining Example 1 - Mounting Bracket" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <p>
@@ -233,11 +235,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                   <p>Example:</p>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={machining2Img}
-                      alt="Machining Example 2 - Polished Material"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={machining2Img} alt="Machining Example 2 - Polished Material" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <p>
@@ -267,7 +265,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -277,3 +275,6 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
 };
 
 export default SurfaceApplicationLesson;
+
+
+

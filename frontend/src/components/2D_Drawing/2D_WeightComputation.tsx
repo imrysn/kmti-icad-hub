@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Weight Computation */
@@ -18,17 +19,26 @@ import shapeSteelEx2Img from "../../assets/2D_Image_File/2D_material_weight_comp
 import pipeExImg from "../../assets/2D_Image_File/2D_material_weight_computation_square_rectangular_pipe.jpg";
 
 interface WeightComputationLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const weightSteps = [
+    "Material Weight Computation: Calculating part mass is critical for shipping and logistics. Use the specific gravity table as your primary reference for material densities.",
+    "Plate Computation: For plates, multiply Length by Width, Height, and Specific Gravity. Always convert millimeter dimensions to meters before your final calculation.",
+    "Cylinder Computation: Use the sectional area formula with pi. Remember to convert the radius or diameter into meters and use the standard density in kilograms per cubic meter.",
+    "Sectional Steel: For C-channels and angles, refer to the Japan Industrial Standard for cross-sectional areas. A quick tip for converting square centimeters to square meters is to move the decimal four places to the left.",
+    "Piping: For square and rectangular pipes, the same cross-sectional area principle applies. Follow the standard KEMCO formulas to ensure accurate weight estimation."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,16 +72,16 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> 15. Material
+          15. Material
           Weight Computation
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(weightSteps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -87,25 +97,18 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             {/* Specific Gravity Table */}
             <div className="lesson-section">
               <div className="image-wrapper-flush">
-                <img
-                  src={gravityTableImg}
-                  alt="Material Specific Gravity Reference Table"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={gravityTableImg} alt="Material Specific Gravity Reference Table" className="software-screenshot screenshot-wide" />
               </div>
             </div>{" "}
             {/* a. Plate Section */}
             <div className="lesson-section">
               {" "}
-              <h4> a. Plate (L × W × H × SG) </h4>
+              <h4> a. Plate (L ÁEW ÁEH ÁESG) </h4>
               <div className="flex-row">
                 <div className="flex-col">
                   <p>example:</p>
 
-                  <img
-                    src={plateExImg}
-                    alt="Plate Weight Computation Example"
-                  />
+                  <img src={plateExImg} alt="Plate Weight Computation Example" />
                 </div>
 
                 <div className="info-box">
@@ -126,17 +129,14 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               {" "}
               <h4>
                 {" "}
-                b. Cylinder ( π × r² × L × SG) or [ ( π × d² × L × SG) / 4
+                b. Cylinder ( π ÁEr² ÁEL ÁESG) or [ ( π ÁEd² ÁEL ÁESG) / 4
                 ]{" "}
               </h4>
               <div className="flex-row">
                 <div className="flex-col">
                   <p>example:</p>
 
-                  <img
-                    src={cylinderExImg}
-                    alt="Cylinder Weight Computation Example"
-                  />
+                  <img src={cylinderExImg} alt="Cylinder Weight Computation Example" />
                 </div>
 
                 <div className="info-box">
@@ -156,25 +156,19 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             {/* c. Shape Steel Section */}
             <div className="lesson-section">
               {" "}
-              <h4> c. Shape Steel ( Cross Sectional Area × L × SG ) </h4>
+              <h4> c. Shape Steel ( Cross Sectional Area ÁEL ÁESG ) </h4>
               <div className="flex-row">
                 <div className="flex-col">
                   <div className="flex-col">
                     <p>example:</p>
 
-                    <img
-                      src={shapeSteelEx1Img}
-                      alt="Shape Steel C-Channel Example"
-                    />
+                    <img src={shapeSteelEx1Img} alt="Shape Steel C-Channel Example" />
                   </div>
 
                   <div className="flex-col">
                     <p>example:</p>
 
-                    <img
-                      src={shapeSteelEx2Img}
-                      alt="Shape Steel Angle Bar Example"
-                    />
+                    <img src={shapeSteelEx2Img} alt="Shape Steel Angle Bar Example" />
                   </div>
                 </div>
 
@@ -201,7 +195,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               {" "}
               <h4>
                 {" "}
-                d. Square / Rectangular Pipe ( Cross Sectional Area × L × SG
+                d. Square / Rectangular Pipe ( Cross Sectional Area ÁEL ÁESG
                 ){" "}
               </h4>
               <div className="flex-row">
@@ -227,7 +221,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -237,3 +231,6 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
 };
 
 export default WeightComputationLesson;
+
+
+

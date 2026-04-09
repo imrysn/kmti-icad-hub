@@ -7,15 +7,15 @@ useState,
 
 useEffect, useRef } from 'react';
 
-import
- { MousePointer2, Keyboard, Box as BoxIcon, Circle, ChevronLeft, ChevronRight, ArrowDown, ArrowRight, Info, CheckCircle2, Zap } from 'lucide-react';
+import { MousePointer2, Keyboard, Box as BoxIcon, Circle, ChevronLeft, ChevronRight, ArrowDown, ArrowRight, Info, Zap } from 'lucide-react'; import { ReadAloudButton } from '../ReadAloudButton';
+import { useTTS } from '../../hooks/useTTS';
 
 import '../../styles/3D_Modeling/CourseLesson.css';
  /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
 import leftClick from '../../assets/3D_Image_File/left_click.png';
  /* ══════════════════════════════════════════════════════════════════════════ */
- /* Basic Operation (1) — CREATING BASIC SHAPES */
+ /* Basic Operation (1)  ECREATING BASIC SHAPES */
  /* Lesson-item child ID: 'basic-op-1' */
  /* Tabs: Cylinder | Box | Polygon | Cone | Torus */
  /* ══════════════════════════════════════════════════════════════════════════ */
@@ -56,7 +56,7 @@ import torusResult from '../../assets/3D_Image_File/torus.png';
 
 import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_entry_torus.jpg';
  /* ══════════════════════════════════════════════════════════════════════════ */
- /* Basic Operation (2) — MOVE, ROTATE, COPY, MIRROR, DELETE */
+ /* Basic Operation (2)  EMOVE, ROTATE, COPY, MIRROR, DELETE */
  /* Lesson-item child ID: 'basic-op-2' */
  /* Tabs: Move | Rotate | Mirror | Copy | Rotate Copy | Mirror Copy | Delete */
  /* ══════════════════════════════════════════════════════════════════════════ */
@@ -95,7 +95,7 @@ import mirrorCopyResult from '../../assets/3D_Image_File/basic_operation(3)_mirr
 
 import deleteIcon from '../../assets/3D_Image_File/basic_operation(3)_delete.png';
  /* ══════════════════════════════════════════════════════════════════════════ */
- /* Basic Operation (3) — SKETCH / EXTRUDE / REVOLVE / SHOW-HIDE / STRETCH / RESIZE */
+ /* Basic Operation (3)  ESKETCH / EXTRUDE / REVOLVE / SHOW-HIDE / STRETCH / RESIZE */
  /* Lesson-item child ID: 'basic-op-3' */
  /* Tabs: Sketch/Extrude/Revolve | Show/Hide | Stretch | Resize */
  /* ══════════════════════════════════════════════════════════════════════════ */
@@ -143,7 +143,7 @@ import resizeItemEntry from '../../assets/3D_Image_File/basic_operation(5)_item_
 
 import resize3_2 from '../../assets/3D_Image_File/basic_operation(5)_resize3_2.png';
  /* ══════════════════════════════════════════════════════════════════════════ */
- /* Basic Operation (4) — ARRANGE MACHINE PART / SHAPE STEELS */
+ /* Basic Operation (4)  EARRANGE MACHINE PART / SHAPE STEELS */
  /* Lesson-item child ID: 'basic-op-4' */
  /* Tabs: Shape Steels */
  /* ══════════════════════════════════════════════════════════════════════════ */
@@ -166,23 +166,13 @@ import keyEntryArea from '../../assets/3D_Image_File/basic_operation(1)_key_entr
   /* ── Basic Operation (1): Creating Basic Shapes ── */
 
 interface SubLessonProps
- { onNextLesson?: () => void; onPrevLesson?: () => void; }
+ { onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
 
-const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
+const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel 
 }) =>
  {
 
-const [activeTab, setActiveTab] =
-
-useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>('cylinder');
-
-const [completedSteps, setCompletedSteps] =
-
-useState<Set<string>>(new Set());
-
-const [scrollProgress, setScrollProgress] =
-
-useState(0);
+const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>('cylinder'); const [scrollProgress, setScrollProgress] = useState(0);
 
 const containerRef = useRef<HTMLDivElement>(null);
 
@@ -216,25 +206,40 @@ if (currentContainer)
  { currentContainer.removeEventListener('scroll', handleScroll); } 
 }; }, [activeTab]);
 
-const toggleStep = (stepId: string) =>
- { setCompletedSteps(prev =>
- {
+const { speak, stop, isSpeaking, currentIndex } = useTTS();
 
-const next = new Set(prev);
+const cylinderSteps = [
+  "Step 1: Select Arrange Cylinder from the icon menu.",
+  "Step 2: On the bottom left corner, the item entry can be located. Specify the diameter and height of cylinder on the item entry.",
+  "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+];
 
-if (next.has(stepId)) next.delete(stepId); else next.add(stepId);
+const boxSteps = [
+  "Step 1: Select Arrange Box from the icon menu.",
+  "Step 2: Specify the depth, width and height of the box on the item entry.",
+  "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+];
 
-return next; 
-}); 
-};
+const polygonSteps = [
+  "Step 1: Select Arrange Polygonal Prism from the icon menu.",
+  "Step 2: Specify the number of sides, diameter and height of the polygon on the item entry.",
+  "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+];
 
-const getStepClass = (stepId: string) =>
- {
+const coneSteps = [
+  "Step 1: Select Arrange Cone from the icon menu.",
+  "Step 2: Specify the number of sides, base diameter, top face diameter and height on the item entry.",
+  "Step 3: On the Key Entry Area, enter the coordinates for the position (origin)."
+];
 
-return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`; 
-};
+const torusSteps = [
+  "Step 1: Select Arrange Torus from the icon menu.",
+  "Step 2: Specify the section diameter, path radius, and turn angle.",
+  "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+];
 
-const tabs = [
+const getStepClass = (stepId: string) => "instruction-step";
+  const tabs = [
  { id: 'cylinder', label: 'Cylinder' },
  { id: 'box', label: 'Box' },
  { id: 'polygon', label: 'Polygon' },
@@ -276,65 +281,39 @@ if (onPrevLesson) onPrevLesson();
 
 return (
 
-<div
-
-className="course-lesson-container"
-
-ref={containerRef}>
+<div className="course-lesson-container" ref={containerRef}>
  {/* Sticky Progress Bar */}
 
-<div
+<div className="lesson-progress-container">
 
-className="lesson-progress-container">
-
-<div
-
-className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+<div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
 </div>
 
-<section
+<section className="lesson-intro">
 
-className="lesson-intro">
-
-<h3
-
-className="section-title"><BoxIcon size={28}
-
-className="lesson-intro-icon" /> CREATING BASIC SHAPES
+<h3 className="section-title">CREATING BASIC SHAPES
 </h3>
 
 <p>When creating a 3D model, always start with the <strong>Front View</strong>.
 </p>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush">
-
-<img src={threeDView} alt="3D View"
-
-className="software-screenshot screenshot-medium" />
+<img src={threeDView} alt="3D View" className="software-screenshot screenshot-medium" />
 
 </div>
 
-<div
-
-className="instruction-box">
+<div className="instruction-box">
 
 <p>On the command menu: <strong>[Arrange Solid]</strong> &gt; <strong>[Select Y Orientation]</strong>
 </p>
 
-<div
+<div className="flex-row-center--wrap">
 
-className="flex-row-center--wrap" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush">
-
-<img src={cmdMenu} alt="Command Menu"
-
-className="software-screenshot screenshot-small" />
+<img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -344,63 +323,38 @@ className="software-screenshot screenshot-small" />
 
 </section>
 
-<div
-
-className="lesson-tabs">
- {tabs.map(tab => ( <button key={tab.id}
-
-className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-
-onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+<div className="lesson-tabs">
+ {tabs.map(tab => ( <button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
  ))}
 
 </div>
 
-<div
-
-className="lesson-grid single-card">
+<div className="lesson-grid single-card">
  {/* CYLINDER */}
  {activeTab === 'cylinder' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>CYLINDER</h4>
+className="card-header">
+  <h4>CYLINDER</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(cylinderSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1-1')}
-
-onClick={() => toggleStep('b1-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1-1') ? 'completed' : ''}`}>
- {completedSteps.has('b1-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Arrange Cylinder</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Cylinder</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={arrangeCylinder} alt="Arrange Cylinder icon"
-
-className="software-screenshot screenshot-medium" />
+<img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot screenshot-medium" />
 
 </div>
 
@@ -408,78 +362,40 @@ className="software-screenshot screenshot-medium" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1-2')}
-
-onClick={() => toggleStep('b1-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1-2') ? 'completed' : ''}`}>
- {completedSteps.has('b1-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">On the bottom left corner, the <strong
-
-className="text-highlight">item entry</strong> can be located.</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">On the bottom left corner, the <strong className="text-highlight">item entry</strong> can be located.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={itemEntry} alt="Item Entry Cylinder"
-
-className="software-screenshot screenshot-wide" />
+<img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot screenshot-wide" />
 
 </div>
 
-<p
-
-className="text-caption" >Specify the diameter and heigth of cylinder on the item entry.
+<p className="text-caption">Specify the diameter and heigth of cylinder on the item entry.
 </p>
 
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1-3')}
-
-onClick={() => toggleStep('b1-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1-3') ? 'completed' : ''}`}>
- {completedSteps.has('b1-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">In the <strong
-
-className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={keyEntry} alt="Key Entry"
-
-className="software-screenshot screenshot-small" />
+<img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -489,34 +405,18 @@ className="software-screenshot screenshot-small" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>PREVIEW</h4>
+<div className="card-header"><h4>PREVIEW</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={cylinderResult} alt="Cylinder Preview"
-
-className="software-screenshot screenshot-large" />
+<img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
 
 </div>
 
@@ -525,45 +425,28 @@ onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
  {/* BOX */}
  {activeTab === 'box' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>BOX</h4>
+className="card-header">
+  <h4>BOX</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boxSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b1b-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1b-1')}
-
-onClick={() => toggleStep('b1b-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1b-1') ? 'completed' : ''}`}>
- {completedSteps.has('b1b-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Arrange Box</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Box</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={arrangeBox} alt="Arrange Box icon"
-
-className="software-screenshot screenshot-medium" />
+<img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" />
 
 </div>
 
@@ -571,36 +454,18 @@ className="software-screenshot screenshot-medium" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1b-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1b-2')}
-
-onClick={() => toggleStep('b1b-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1b-2') ? 'completed' : ''}`}>
- {completedSteps.has('b1b-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Specify the <strong
-
-className="text-highlight">depth, width and height</strong> of the box on the item entry.</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Specify the <strong className="text-highlight">depth, width and height</strong> of the box on the item entry.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={itemEntryBox} alt="Item Entry Box"
-
-className="software-screenshot screenshot-wide" />
+<img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot screenshot-wide" />
 
 </div>
 
@@ -608,36 +473,18 @@ className="software-screenshot screenshot-wide" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1b-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1b-3')}
-
-onClick={() => toggleStep('b1b-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1b-3') ? 'completed' : ''}`}>
- {completedSteps.has('b1b-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">In the <strong
-
-className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={keyEntry} alt="Key Entry Box"
-
-className="software-screenshot screenshot-small" />
+<img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -647,34 +494,18 @@ className="software-screenshot screenshot-small" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>PREVIEW</h4>
+<div className="card-header"><h4>PREVIEW</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={boxResult} alt="Box Preview"
-
-className="software-screenshot screenshot-large" />
+<img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -683,45 +514,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* POLYGON */}
  {activeTab === 'polygon' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>POLYGON</h4>
+className="card-header">
+  <h4>POLYGON</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(polygonSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b1p-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1p-1')}
-
-onClick={() => toggleStep('b1p-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1p-1') ? 'completed' : ''}`}>
- {completedSteps.has('b1p-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Arrange Polygonal Prism</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Polygonal Prism</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={arrangePolygon} alt="Arrange Polygon icon"
-
-className="software-screenshot screenshot-medium" />
+<img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot screenshot-medium" />
 
 </div>
 
@@ -729,34 +543,18 @@ className="software-screenshot screenshot-medium" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1p-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1p-2')}
-
-onClick={() => toggleStep('b1p-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1p-2') ? 'completed' : ''}`}>
- {completedSteps.has('b1p-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={itemEntryPolygon} alt="Item Entry Polygon"
-
-className="software-screenshot screenshot-wide" />
+<img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot screenshot-wide" />
 
 </div>
 
@@ -764,36 +562,18 @@ className="software-screenshot screenshot-wide" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1p-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1p-3')}
-
-onClick={() => toggleStep('b1p-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1p-3') ? 'completed' : ''}`}>
- {completedSteps.has('b1p-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">In the <strong
-
-className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={keyEntry} alt="Key Entry Polygon"
-
-className="software-screenshot screenshot-small" />
+<img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -803,34 +583,18 @@ className="software-screenshot screenshot-small" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>PREVIEW</h4>
+<div className="card-header"><h4>PREVIEW</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={polygonResult} alt="Polygon Preview"
-
-className="software-screenshot screenshot-large" />
+<img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -839,45 +603,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* CONE */}
  {activeTab === 'cone' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>CONE</h4>
+className="card-header">
+  <h4>CONE</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(coneSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b1c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1c-1')}
-
-onClick={() => toggleStep('b1c-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1c-1') ? 'completed' : ''}`}>
- {completedSteps.has('b1c-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Arrange Cone</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Cone</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={arrangeCone} alt="Arrange Cone icon"
-
-className="software-screenshot screenshot-medium" />
+<img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" />
 
 </div>
 
@@ -885,34 +632,18 @@ className="software-screenshot screenshot-medium" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1c-2')}
-
-onClick={() => toggleStep('b1c-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1c-2') ? 'completed' : ''}`}>
- {completedSteps.has('b1c-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry.</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={itemEntryCone} alt="Item Entry Cone"
-
-className="software-screenshot screenshot-wide" />
+<img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot screenshot-wide" />
 
 </div>
 
@@ -920,36 +651,18 @@ className="software-screenshot screenshot-wide" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1c-3')}
-
-onClick={() => toggleStep('b1c-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1c-3') ? 'completed' : ''}`}>
- {completedSteps.has('b1c-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">On the <strong
-
-className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">On the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={keyEntry} alt="Key Entry"
-
-className="software-screenshot screenshot-small" />
+<img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -959,34 +672,18 @@ className="software-screenshot screenshot-small" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>PREVIEW</h4>
+<div className="card-header"><h4>PREVIEW</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={coneResult} alt="Cone Preview"
-
-className="software-screenshot screenshot-large" />
+<img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -995,45 +692,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* TORUS */}
  {activeTab === 'torus' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>TORUS</h4>
+className="card-header">
+  <h4>TORUS</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(torusSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b1t-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1t-1')}
-
-onClick={() => toggleStep('b1t-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1t-1') ? 'completed' : ''}`}>
- {completedSteps.has('b1t-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Arrange Torus</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Torus</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={arrangeTorus} alt="Arrange Torus icon"
-
-className="software-screenshot screenshot-medium" />
+<img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" />
 
 </div>
 
@@ -1041,34 +721,18 @@ className="software-screenshot screenshot-medium" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1t-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1t-2')}
-
-onClick={() => toggleStep('b1t-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1t-2') ? 'completed' : ''}`}>
- {completedSteps.has('b1t-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Specify the section diameter, path radius, and turn angle.</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Specify the section diameter, path radius, and turn angle.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={itemEntryTorus} alt="Item Entry Torus"
-
-className="software-screenshot screenshot-wide" />
+<img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot screenshot-wide" />
 
 </div>
 
@@ -1076,36 +740,18 @@ className="software-screenshot screenshot-wide" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b1t-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b1t-3')}
-
-onClick={() => toggleStep('b1t-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b1t-2') ? 'completed' : ''}`}>
- {completedSteps.has('b1t-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">In the <strong
-
-className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={keyEntry} alt="Key Entry Torus"
-
-className="software-screenshot screenshot-small" />
+<img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -1115,34 +761,18 @@ className="software-screenshot screenshot-small" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>PREVIEW</h4>
+<div className="card-header"><h4>PREVIEW</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={torusResult} alt="Torus Preview"
-
-className="software-screenshot screenshot-large" />
+<img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
 
 </div>
 
@@ -1155,21 +785,11 @@ onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
  ); 
 }; /* ── Basic Operation (2): Move, Rotate, Copy, Mirror, Delete ── */
 
-const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
+const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel 
 }) =>
  {
 
-const [activeTab, setActiveTab] =
-
-useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('move');
-
-const [completedSteps, setCompletedSteps] =
-
-useState<Set<string>>(new Set());
-
-const [scrollProgress, setScrollProgress] =
-
-useState(0);
+const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('move'); const [scrollProgress, setScrollProgress] = useState(0);
 
 const containerRef = useRef<HTMLDivElement>(null);
 
@@ -1203,24 +823,47 @@ if (currentContainer)
  { currentContainer.removeEventListener('scroll', handleScroll); } 
 }; }, [activeTab]);
 
-const toggleStep = (stepId: string) =>
- { setCompletedSteps(prev =>
- {
+const { speak, stop, isSpeaking, currentIndex } = useTTS();
 
-const next = new Set(prev);
+const moveSteps = [
+  "Step 1: Select Move from the icon menu.",
+  "Step 2: Left-click on the entity to be moved and click GO.",
+  "Step 3: Specify the movement distance on the X, Y, and Z-axis on the item entry. Press Enter."
+];
 
-if (next.has(stepId)) next.delete(stepId); else next.add(stepId);
+const rotateSteps = [
+  "Step 1: Select Rotate from the icon menu.",
+  "Step 2: Left-click on the entity to be rotated and click GO.",
+  "Step 3: Select 2-points to set the axis of rotation.",
+  "Step 4: Specify the desired angle of rotation on the item entry and press Enter."
+];
 
-return next; 
-}); 
-};
+const mirrorSteps = [
+  "Step 1: Select Mirror from the icon menu.",
+  "Step 2: Left-click on the entity to be mirrored and click GO.",
+  "Step 3: Select 3-points to set the mirror plane or left-click on a face where the entity will be mirrored."
+];
 
-const getStepClass = (stepId: string) =>
- {
+const copySteps = [
+  "Step 1: Select Copy from the icon menu.",
+  "Step 2: Left-click on the entity to be copied and click GO.",
+  "Step 3: Specify the distance on the X, Y and Z-axis and the number of copies needed then press Enter."
+];
 
-return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`; 
-};
+const rotateCopySteps = [
+  "Step 1: Same as rotate tool but makes a rotated duplicate of the entity."
+];
 
+const mirrorCopySteps = [
+  "Step 1: Same as mirror tool but makes a mirror duplicate of the entity."
+];
+
+const deleteSteps = [
+  "Step 1: Select Delete from the icon menu.",
+  "Step 2: Left-click on the entity to delete."
+];
+
+const getStepClass = (stepId: string) => "instruction-step";
 const tabs = [
  { id: 'move', label: 'Move' },
  { id: 'rotate', label: 'Rotate' },
@@ -1265,41 +908,25 @@ if (onPrevLesson) onPrevLesson();
 
 return (
 
-<div
-
-className="course-lesson-container"
-
-ref={containerRef}>
+<div className="course-lesson-container" ref={containerRef}>
  {/* Sticky Progress Bar */}
 
-<div
+<div className="lesson-progress-container">
 
-className="lesson-progress-container">
-
-<div
-
-className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+<div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
 </div>
 
-<section
-
-className="lesson-intro">
+<section className="lesson-intro">
 
 <h3>MOVE, ROTATE, COPY, MIRROR, DELETE
 </h3>
 
-<div
+<div className="instruction-box">
 
-className="instruction-box">
+<div className="image-wrapper">
 
-<div
-
-className="image-wrapper">
-
-<img src={operationsMenu} alt="Operations Menu"
-
-className="software-screenshot screenshot-small" />
+<img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -1307,63 +934,38 @@ className="software-screenshot screenshot-small" />
 
 </section>
 
-<div
-
-className="lesson-tabs">
- {tabs.map(tab => ( <button key={tab.id}
-
-className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-
-onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+<div className="lesson-tabs">
+ {tabs.map(tab => ( <button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
  ))}
 
 </div>
 
-<div
-
-className="lesson-grid single-card">
+<div className="lesson-grid single-card">
  {/* MOVE */}
  {activeTab === 'move' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>MOVE</h4>
+className="card-header">
+  <h4>MOVE</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(moveSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b2m-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2m-1')}
-
-onClick={() => toggleStep('b2m-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2m-1') ? 'completed' : ''}`}>
- {completedSteps.has('b2m-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Move</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Move</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={moveMenu} alt="Move menu icon"
-
-className="software-screenshot screenshot-small" />
+<img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -1371,71 +973,35 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b2m-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2m-2')}
-
-onClick={() => toggleStep('b2m-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2m-2') ? 'completed' : ''}`}>
- {completedSteps.has('b2m-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Left-click on the entity to be move &gt; <strong
-
-className="text-highlight">GO</strong>
-<img src={leftClick} alt="Left click"
-
-className="screenshot-click--inline" /></span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Left-click on the entity to be move &gt; <strong className="text-highlight">GO</strong>
+<img src={leftClick} alt="Left click" className="screenshot-click--inline" /></span>
 
 </div>
 
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b2m-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2m-3')}
-
-onClick={() => toggleStep('b2m-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2m-3') ? 'completed' : ''}`}>
- {completedSteps.has('b2m-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Specify the movement distance on the <strong
-
-className="text-highlight">X, Y, and Z-axis</strong> on the item entry. Press Enter.</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Specify the movement distance on the <strong className="text-highlight">X, Y, and Z-axis</strong> on the item entry. Press Enter.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={itemEntryMove} alt="Item Entry Move"
-
-className="software-screenshot screenshot-wide" />
+<img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot screenshot-wide" />
 
 </div>
 
-<p
-
-className="text-caption" >Or after step 2, select a point on the entity then left-click on the desired location.
+<p className="text-caption">Or after step 2, select a point on the entity then left-click on the desired location.
 </p>
 
 </div>
@@ -1444,34 +1010,18 @@ className="text-caption" >Or after step 2, select a point on the entity then lef
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>RESULT</h4>
+<div className="card-header"><h4>RESULT</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={moveResult} alt="Move Preview"
-
-className="software-screenshot screenshot-large" />
+<img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -1480,45 +1030,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* ROTATE */}
  {activeTab === 'rotate' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>ROTATE</h4>
+className="card-header">
+  <h4>ROTATE</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b2r-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2r-1')}
-
-onClick={() => toggleStep('b2r-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2r-1') ? 'completed' : ''}`}>
- {completedSteps.has('b2r-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Rotate</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Rotate</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={rotateIcon} alt="Rotate icon"
-
-className="software-screenshot screenshot-small" />
+<img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -1526,63 +1059,31 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b2r-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2r-2')}
-
-onClick={() => toggleStep('b2r-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2r-2') ? 'completed' : ''}`}>
- {completedSteps.has('b2r-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Left-click on the entity to be rotate &gt; <strong
-
-className="text-highlight">GO</strong>
-<img src={leftClick} alt="Left click"
-
-className="screenshot-click--inline" /></span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Left-click on the entity to be rotate &gt; <strong className="text-highlight">GO</strong>
+<img src={leftClick} alt="Left click" className="screenshot-click--inline" /></span>
 
 </div>
 
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b2r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2r-3')}
-
-onClick={() => toggleStep('b2r-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2r-3') ? 'completed' : ''}`}>
- {completedSteps.has('b2r-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Select 2-points to set the axis of rotation.</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Select 2-points to set the axis of rotation.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={rotateAxis} alt="Axis of Rotation"
-
-className="software-screenshot screenshot-medium" />
+<img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot screenshot-medium" />
 
 </div>
 
@@ -1590,34 +1091,18 @@ className="software-screenshot screenshot-medium" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b2r-4')} ${currentIndex === 3 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2r-4')}
-
-onClick={() => toggleStep('b2r-4')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2r-4') ? 'completed' : ''}`}>
- {completedSteps.has('b2r-4') ? <CheckCircle2 size={16} /> : '4'} </span> <span
-
-className="step-label">Specify the desired angle of rotation on the item entry &gt; Press Enter</span>
+<div className="step-header"> <span className="step-number">
+ 4 </span> <span className="step-label">Specify the desired angle of rotation on the item entry &gt; Press Enter</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={rotateEntry} alt="Rotate Item Entry"
-
-className="software-screenshot screenshot-large" />
+<img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-large" />
 
 </div>
 
@@ -1625,17 +1110,7 @@ className="software-screenshot screenshot-large" />
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -1644,45 +1119,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* MIRROR */}
  {activeTab === 'mirror' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>MIRROR</h4>
+className="card-header">
+  <h4>MIRROR</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b2mir-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2mir-1')}
-
-onClick={() => toggleStep('b2mir-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2mir-1') ? 'completed' : ''}`}>
- {completedSteps.has('b2mir-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Mirror</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Mirror</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={mirrorIcon} alt="Mirror icon"
-
-className="software-screenshot screenshot-small" />
+<img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -1690,49 +1148,23 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b2mir-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2mir-2')}
-
-onClick={() => toggleStep('b2mir-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2mir-2') ? 'completed' : ''}`}>
- {completedSteps.has('b2mir-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Left-click on the entity to be mirror &gt; <strong
-
-className="text-highlight">GO</strong>
-<img src={leftClick} alt="Left click"
-
-className="screenshot-click--inline" /></span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Left-click on the entity to be mirror &gt; <strong className="text-highlight">GO</strong>
+<img src={leftClick} alt="Left click" className="screenshot-click--inline" /></span>
 
 </div>
 
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b2mir-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2mir-3')}
-
-onClick={() => toggleStep('b2mir-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2mir-3') ? 'completed' : ''}`}>
- {completedSteps.has('b2mir-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
 
 </div>
 
@@ -1740,34 +1172,18 @@ className="step-label">Select 3-points to set the plane where the entity will be
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>RESULT</h4>
+<div className="card-header"><h4>RESULT</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={mirrorResult} alt="Mirror Result"
-
-className="software-screenshot screenshot-large" />
+<img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -1776,45 +1192,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* COPY */}
  {activeTab === 'copy' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>COPY COMPONENT</h4>
+className="card-header">
+  <h4>COPY COMPONENT</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(copySteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b2c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2c-1')}
-
-onClick={() => toggleStep('b2c-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2c-1') ? 'completed' : ''}`}>
- {completedSteps.has('b2c-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Copy</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Copy</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={copyIcon} alt="Copy icon"
-
-className="software-screenshot screenshot-small" />
+<img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -1822,67 +1221,31 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b2c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2c-2')}
-
-onClick={() => toggleStep('b2c-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2c-2') ? 'completed' : ''}`}>
- {completedSteps.has('b2c-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Left-click on the entity to be copy &gt; <strong
-
-className="text-highlight">GO</strong>
-<img src={leftClick} alt="Left click"
-
-className="screenshot-click--inline" /></span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Left-click on the entity to be copy &gt; <strong className="text-highlight">GO</strong>
+<img src={leftClick} alt="Left click" className="screenshot-click--inline" /></span>
 
 </div>
 
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b2c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2c-3')}
-
-onClick={() => toggleStep('b2c-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2c-3') ? 'completed' : ''}`}>
- {completedSteps.has('b2c-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Specify the distance on the <strong
-
-className="text-highlight">X, Y and Z-axis</strong> and the <strong
-
-className="text-highlight">number of copies</strong> needed &gt; Press Enter.</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Specify the distance on the <strong className="text-highlight">X, Y and Z-axis</strong> and the <strong className="text-highlight">number of copies</strong> needed &gt; Press Enter.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={copyDistance} alt="Copy Distance"
-
-className="software-screenshot screenshot-wide" />
+<img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" />
 
 </div>
 
@@ -1892,34 +1255,18 @@ className="software-screenshot screenshot-wide" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>RESULT</h4>
+<div className="card-header"><h4>RESULT</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={copyResult} alt="Copy Result"
-
-className="software-screenshot screenshot-large" />
+<img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -1928,44 +1275,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* ROTATE COPY */}
  {activeTab === 'rotateCopy' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
+className="card-header">
+  <h4>ROTATE COPY</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)}
+    onStop={stop}
+  />
+</div>
 
-className="card-header"> <h4>ROTATE COPY</h4>
+<div className={`${getStepClass('b2rc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Same as rotate tool but makes a rotated duplicate of the entity.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className={getStepClass('b2rc-1')}
+<div className="image-wrapper-flush">
 
-onClick={() => toggleStep('b2rc-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2rc-1') ? 'completed' : ''}`}>
- {completedSteps.has('b2rc-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Same as rotate tool but makes a rotated duplicate of the entity.</span>
-
-</div>
-
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-<div
-
-className="image-wrapper-flush" >
-
-<img src={rotateCopyIcon} alt="Rotate Copy icon"
-
-className="software-screenshot screenshot-small" />
+<img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -1975,34 +1306,18 @@ className="software-screenshot screenshot-small" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>RESULT</h4>
+<div className="card-header"><h4>RESULT</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={rotateCopyAxis} alt="Rotate Copy Result"
-
-className="software-screenshot screenshot-large" />
+<img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -2011,44 +1326,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* MIRROR COPY */}
  {activeTab === 'mirrorCopy' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
+className="card-header">
+  <h4>MIRROR COPY</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)}
+    onStop={stop}
+  />
+</div>
 
-className="card-header"> <h4>MIRROR COPY</h4>
+<div className={`${getStepClass('b2mc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Same as mirror tool but makes a mirror duplicate of the entity.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className={getStepClass('b2mc-1')}
+<div className="image-wrapper-flush">
 
-onClick={() => toggleStep('b2mc-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2mc-1') ? 'completed' : ''}`}>
- {completedSteps.has('b2mc-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Same as mirror tool but makes a mirror duplicate of the entity.</span>
-
-</div>
-
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-<div
-
-className="image-wrapper-flush" >
-
-<img src={mirrorCopyIcon} alt="Mirror Copy icon"
-
-className="software-screenshot screenshot-small" />
+<img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -2058,34 +1357,18 @@ className="software-screenshot screenshot-small" />
 
 <div /* sanitized: marginTop: '1.5rem' */>
 
-<div
-
-className="card-header"><h4>RESULT</h4>
+<div className="card-header"><h4>RESULT</h4>
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={mirrorCopyResult} alt="Mirror Copy Preview"
-
-className="software-screenshot screenshot-large" />
+<img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large" />
 
 </div>
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -2094,62 +1377,35 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* DELETE */}
  {activeTab === 'delete' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>DELETE</h4>
+className="card-header">
+  <h4>DELETE</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(deleteSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={`${getStepClass('b2d-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2d-1')}
-
-onClick={() => toggleStep('b2d-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2d-1') ? 'completed' : ''}`}>
- {completedSteps.has('b2d-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Delete</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Delete</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className={`${getStepClass('b2d-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b2d-2')}
-
-onClick={() => toggleStep('b2d-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b2d-2') ? 'completed' : ''}`}>
- {completedSteps.has('b2d-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Left-click on the entity to delete.</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Left-click on the entity to delete.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={deleteIcon} alt="Delete icon"
-
-className="software-screenshot screenshot-small" />
+<img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -2159,17 +1415,7 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
 
 </div>
 
@@ -2182,21 +1428,11 @@ onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
  ); 
 }; /* ── Basic Operation (3): Sketch / Extrude / Revolve / Show-Hide / Stretch / Resize ── */
 
-const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
+const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel 
 }) =>
  {
 
-const [activeTab, setActiveTab] =
-
-useState<'sketchExtrude' | 'showHide' | 'stretch' | 'resize'>('sketchExtrude');
-
-const [completedSteps, setCompletedSteps] =
-
-useState<Set<string>>(new Set());
-
-const [scrollProgress, setScrollProgress] =
-
-useState(0);
+const [activeTab, setActiveTab] = useState<'sketchExtrude' | 'showHide' | 'stretch' | 'resize'>('sketchExtrude'); const [scrollProgress, setScrollProgress] = useState(0);
 
 const containerRef = useRef<HTMLDivElement>(null);
 
@@ -2230,24 +1466,33 @@ if (currentContainer)
  { currentContainer.removeEventListener('scroll', handleScroll); } 
 }; }, [activeTab]);
 
-const toggleStep = (stepId: string) =>
- { setCompletedSteps(prev =>
- {
+const { speak, stop, isSpeaking, currentIndex } = useTTS();
 
-const next = new Set(prev);
+const sketchSteps = [
+  "Step 1: Sketch tools allow you to create lines, circles, and arcs in 3D space to form the base sections for your models.",
+  "Step 2: After sketching, use Extrude to create solids by specifying the height and perimeter.",
+  "Step 3: Revolve allows you to create solids by rotating a sketch around a specified axis."
+];
 
-if (next.has(stepId)) next.delete(stepId); else next.add(stepId);
+const showHideSteps = [
+  "Step 1: Select Show/Hide from the icon menu.",
+  "Step 2: Select the specific entities you wish to display or hide and click GO.",
+  "Step 3: You can also use 'Show/Hide Drafting Entity' to quickly toggle all dimensions and annotations."
+];
 
-return next; 
-}); 
-};
+const stretchSteps = [
+  "Step 1: Select Stretch from the menu.",
+  "Step 2: Select the face you want to stretch and click GO.",
+  "Step 3: Specify the desired additional length on the item entry or use the linear scale in 3D space."
+];
 
-const getStepClass = (stepId: string) =>
- {
+const resizeSteps = [
+  "Step 1: Select Resize from the menu.",
+  "Step 2: Select the entity you wish to resize and click GO.",
+  "Step 3: Specify the scale factor on the item entry to scale the solid entity up or down."
+];
 
-return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`; 
-};
-
+const getStepClass = (stepId: string) => "instruction-step";
 const tabs = [
  { id: 'sketchExtrude', label: 'Sketch / Extrude / Revolve' },
  { id: 'showHide', label: 'Show/Hide' },
@@ -2289,68 +1534,47 @@ if (onPrevLesson) onPrevLesson();
 
 return (
 
-<div
-
-className="course-lesson-container"
-
-ref={containerRef}>
+<div className="course-lesson-container" ref={containerRef}>
  {/* Sticky Progress Bar */}
 
-<div
+<div className="lesson-progress-container">
 
-className="lesson-progress-container">
-
-<div
-
-className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+<div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
 </div>
 
-<section
-
-className="lesson-intro">
+<section className="lesson-intro">
 
 <h3>SKETCH / EXTRUDE / REVOLVE / SHOW-HIDE / STRETCH / RESIZE
 </h3>
 
 </section>
 
-<div
-
-className="lesson-tabs">
- {tabs.map(tab => ( <button key={tab.id}
-
-className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-
-onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+<div className="lesson-tabs">
+ {tabs.map(tab => ( <button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
  ))}
 
 </div>
  {activeTab === 'showHide' && (
 
-<div
-
-className="instruction-box" >
+<div className="instruction-box">
 
 <div
-
-className="card-header"><h4>SHOW / HIDE</h4>
+className="card-header">
+  <h4>SHOW / HIDE</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(showHideSteps)}
+    onStop={stop}
+  />
 </div>
 
 <p>Tools use to switch between displaying and hiding entities.
 </p>
 
-<div
+<div className="flex-row-center--wrap">
 
-className="flex-row-center--wrap" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush">
-
-<img src={showHideMenu} alt="Show/Hide Menu"
-
-className="software-screenshot screenshot-small" />
+<img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -2359,75 +1583,48 @@ className="software-screenshot screenshot-small" />
 </div>
  )}
 
-<div
-
-className="lesson-grid single-card">
+<div className="lesson-grid single-card">
  {/* SKETCH / EXTRUDE / REVOLVE */}
  {activeTab === 'sketchExtrude' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>SKETCH</h4>
+className="card-header">
+  <h4>SKETCH / EXTRUDE / REVOLVE</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sketchSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={sketch1} alt="Sketch Overview"
-
-className="software-screenshot screenshot-small" />
+<img src={sketch1} alt="Sketch Overview" className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b3s-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b3s-1')}
-
-onClick={() => toggleStep('b3s-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3s-1') ? 'completed' : ''}`}>
- {completedSteps.has('b3s-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="flex-row-wrap">
 
-<div
+<div className="flex-row">
 
-className="flex-row-wrap" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="flex-row" >
-
-<div
-
-className="image-wrapper-flush">
-
-<img src={sketchIcon} alt="Sketch Tool"
-
-className="software-screenshot screenshot-small" />
+<img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" />
 
 </div>
 
 </div>
 
-<div
-
-className="flex-col-right">
+<div className="flex-col-right">
 
 <div > <ArrowDown size={32} color="var(--primary-red)" strokeWidth={2.5} />
 
@@ -2441,90 +1638,52 @@ className="flex-col-right">
 
 </div>
 
-<div
-
-className="card-header card-sub-header"><h4>EXTRUDE/REVOLVE</h4>
+<div className="card-header card-sub-header"><h4>EXTRUDE/REVOLVE</h4>
 </div>
 
 <p > Tools use to create solids from sketch in the 3D space.
 </p>
 
-<div
+<div className="instruction-step">
 
-className="instruction-step" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush">
-
-<img src={extrudeRevolveMenu} alt="Extrude Revolve Menu"
-
-className="software-screenshot screenshot-small" />
+<img src={extrudeRevolveMenu} alt="Extrude Revolve Menu" className="software-screenshot screenshot-small" />
 
 </div>
 
 </div>
  {/* EXTRUDE */}
 
-<div
+<div className="section-divider">
 
-className="section-divider">
+<div className="flex-row extrude-section-layout">
 
-<div
+<div className="flex-1">
 
-className="flex-row extrude-section-layout" >
-
-<div
-
-className="flex-1">
-
-<div
-
-className="card-header card-sub-header" ><h4>EXTRUDE</h4>
+<div className="card-header card-sub-header"><h4>EXTRUDE</h4>
 </div>
 
-<div
+<div className={`${getStepClass('b3e-1')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b3e-1')}
-
-onClick={() => toggleStep('b3e-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3e-1') ? 'completed' : ''}`}>
- {completedSteps.has('b3e-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select Extrude from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select Extrude from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="flex-row">
 
-<div
+<div className="image-wrapper-flush">
 
-className="flex-row" >
-
-<div
-
-className="image-wrapper-flush">
-
-<img src={extrudeOneSide} alt="Extrusion One Side"
-
-className="software-screenshot screenshot-small" />
+<img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush">
-
-<img src={extrudeBothSide} alt="Extrude Both Side"
-
-className="software-screenshot screenshot-small" />
+<img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -2534,71 +1693,35 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b3e-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b3e-2')}
-
-onClick={() => toggleStep('b3e-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3e-2') ? 'completed' : ''}`}>
- {completedSteps.has('b3e-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Select the perimeter of the sketch to be extrude &gt; GO</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Select the perimeter of the sketch to be extrude &gt; GO</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-<p
-
-className="p-flush" >* A hatch will appear indicating the specified area to be extruded.
+<p className="p-flush">* A hatch will appear indicating the specified area to be extruded.
 </p>
 
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b3e-3')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b3e-3')}
-
-onClick={() => toggleStep('b3e-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3e-3') ? 'completed' : ''}`}>
- {completedSteps.has('b3e-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Specify the height of extrusion. Can also be set on the item entry.</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Specify the height of extrusion. Can also be set on the item entry.</span>
 
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b3e-4')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b3e-4')}
-
-onClick={() => toggleStep('b3e-4')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3e-4') ? 'completed' : ''}`}>
- {completedSteps.has('b3e-4') ? <CheckCircle2 size={16} /> : '4'} </span> <span
-
-className="step-label">Press <strong
-
-className="text-highlight">ENTER</strong>.</span>
+<div className="step-header"> <span className="step-number">
+ 4 </span> <span className="step-label">Press <strong className="text-highlight">ENTER</strong>.</span>
 
 </div>
 
@@ -2606,13 +1729,9 @@ className="text-highlight">ENTER</strong>.</span>
 
 </div>
 
-<div
+<div className="flex-col-start result-preview-box">
 
-className="flex-col-start result-preview-box" >
-
-<div
-
-className="flex-col-center">
+<div className="flex-col-center">
 
 <div > <ArrowDown size={32} color="var(--primary-red)" strokeWidth={2.5} />
 
@@ -2626,53 +1745,27 @@ className="flex-col-center">
 
 </div>
 
-<div
+<div className="section-divider">
 
-className="section-divider">
-
-<div
-
-className="card-header card-sub-header" ><h4>REVOLVE</h4>
+<div className="card-header card-sub-header"><h4>REVOLVE</h4>
 </div>
 
-<div
+<div className="flex-row revolve-section-layout">
 
-className="flex-row revolve-section-layout" >
+<div className="flex-1">
 
-<div
+<div className={`${getStepClass('b3r-1')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className="flex-1">
-
-<div
-
-className={getStepClass('b3r-1')}
-
-onClick={() => toggleStep('b3r-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3r-1') ? 'completed' : ''}`}>
- {completedSteps.has('b3r-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Revolve</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Revolve</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={revolveIcon} alt="Revolve Icon"
-
-className="software-screenshot screenshot-small" />
+<img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -2680,55 +1773,29 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b3r-2')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b3r-2')}
-
-onClick={() => toggleStep('b3r-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3r-2') ? 'completed' : ''}`}>
- {completedSteps.has('b3r-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Select the perimeter of the sketch to be revolve &gt; GO</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Select the perimeter of the sketch to be revolve &gt; GO</span>
 
 </div>
 
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
 </div>
 
 </div>
 
-<div
+<div className={`${getStepClass('b3r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b3r-3')}
-
-onClick={() => toggleStep('b3r-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3r-3') ? 'completed' : ''}`}>
- {completedSteps.has('b3r-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Select the axis of rotation (pick points or edge) &gt; GO</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Select the axis of rotation (pick points or edge) &gt; GO</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-<p
-
-className="p-flush" >A hatch will appear indicating the specified area to be revolve.
+<p className="p-flush">A hatch will appear indicating the specified area to be revolve.
 </p>
 
 </div>
@@ -2737,17 +1804,11 @@ className="p-flush" >A hatch will appear indicating the specified area to be rev
 
 </div>
 
-<div
+<div className="flex-col-start result-preview-box">
 
-className="flex-col-start result-preview-box" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush">
-
-<img src={revolveP1} alt="Revolve P1"
-
-className="software-screenshot screenshot-mmedium" />
+<img src={revolveP1} alt="Revolve P1" className="software-screenshot screenshot-mmedium" />
 
 </div>
 
@@ -2757,17 +1818,7 @@ className="software-screenshot screenshot-mmedium" />
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -2776,45 +1827,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* SHOW / HIDE */}
  {activeTab === 'showHide' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>SHOW / HIDE ENTITY</h4>
+className="card-header">
+  <h4>SHOW / HIDE ENTITY</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(showHideSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={getStepClass('b3sh-1')}>
 
-className={getStepClass('b3sh-1')}
-
-onClick={() => toggleStep('b3sh-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3sh-1') ? 'completed' : ''}`}>
- {completedSteps.has('b3sh-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Show/Hide</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Show/Hide</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={showHideEntity} alt="Show/Hide Entity Icon"
-
-className="software-screenshot screenshot-icon--flush screenshot-small" />
+<img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" />
 
 </div>
 
@@ -2822,91 +1856,45 @@ className="software-screenshot screenshot-icon--flush screenshot-small" />
 
 </div>
 
-<div
+<div className={getStepClass('b3sh-2')}>
 
-className={getStepClass('b3sh-2')}
-
-onClick={() => toggleStep('b3sh-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3sh-2') ? 'completed' : ''}`}>
- {completedSteps.has('b3sh-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Select the entities for showing/hiding &gt; GO</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Select the entities for showing/hiding &gt; GO</span>
 
 </div>
 
-<div
-
-className="card-header"><h4>SHOW/HIDE DRAFTING ENTITY</h4>
+<div className="card-header"><h4>SHOW/HIDE DRAFTING ENTITY</h4>
 
 </div>
-<div
+<div className={getStepClass('b3sh13')}>
 
-className={getStepClass('b3sh13')}
-
-onClick={() => toggleStep('b3sh-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3sh-1') ? 'completed' : ''}`}>
- {completedSteps.has('b3sh-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Show/Hide Drafting Entity</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Show/Hide Drafting Entity</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon"
-
-className="software-screenshot screenshot-icon--flush screenshot-small" />
+<img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" />
 
 </div>
 
 </div>
-<div
+<div className={getStepClass('b3sh12')}>
 
-className={getStepClass('b3sh12')}
-
-onClick={() => toggleStep('b3sh-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3sh-2') ? 'completed' : ''}`}>
- {completedSteps.has('b3sh-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Right-click to show/hide all drafting entities.</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Right-click to show/hide all drafting entities.</span>
 
 </div>
 
-<p
-
-className="text-caption" >Drafting Entities includes:
+<p className="text-caption">Drafting Entities includes:
 </p>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={draftingEntitiesTable} alt="Drafting Entities Diagram"
-
-className="software-screenshot screenshot-large img-mt-sm" />
+<img src={draftingEntitiesTable} alt="Drafting Entities Diagram" className="software-screenshot screenshot-large img-mt-sm" />
 
 </div>
 
@@ -2914,52 +1902,32 @@ className="software-screenshot screenshot-large img-mt-sm" />
 
 </div>
 
-<div
-
-className="card-header"><h4>HIDE UNSELECTED ENTITY</h4>
+<div className="card-header"><h4>HIDE UNSELECTED ENTITY</h4>
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="flex-row">
 
-<div
+<div className="flex-1">
 
-className="flex-row" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="flex-1">
-
-<div
-
-className="image-wrapper-flush" >
-
-<img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon"
-
-className="software-screenshot screenshot-icon--flush" />
+<img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" />
 
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={leftClick} alt="Left click"
-
-className="software-screenshot screenshot-click screenshot-click--flush" />
+<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click screenshot-click--flush" />
 
 </div>
 
 </div>
 
-<div
+<div className="image-wrapper-flush flex-no-shrink">
 
-className="image-wrapper-flush flex-no-shrink">
-
-<img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example"
-
-className="software-screenshot screenshot-medium flex-no-shrink" />
+<img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium flex-no-shrink" />
 
 </div>
 
@@ -2969,17 +1937,7 @@ className="software-screenshot screenshot-medium flex-no-shrink" />
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -2988,45 +1946,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* STRETCH */}
  {activeTab === 'stretch' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>STRETCH/SHAPE/CUT</h4>
+className="card-header">
+  <h4>STRETCH/SHAPE/CUT</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(stretchSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={getStepClass('b3st-1')}>
 
-className={getStepClass('b3st-1')}
-
-onClick={() => toggleStep('b3st-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3st-1') ? 'completed' : ''}`}>
- {completedSteps.has('b3st-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Stretch</strong> from the menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Stretch</strong> from the menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={stretchIcon} alt="Stretch Icon"
-
-className="software-screenshot screenshot-small" />
+<img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -3034,77 +1975,39 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={getStepClass('b3st-2')}>
 
-className={getStepClass('b3st-2')}
-
-onClick={() => toggleStep('b3st-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3st-2') ? 'completed' : ''}`}>
- {completedSteps.has('b3st-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Select the face to be stretch &gt; <strong
-
-className="text-highlight">GO</strong>
-<img src={leftClick} alt="Left click"
-
-className="software-screenshot screenshot-click--inline" /></span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Select the face to be stretch &gt; <strong className="text-highlight">GO</strong>
+<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
 
 </div>
 
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
 </div>
 
 </div>
 
-<div
+<div className={getStepClass('b3st-3')}>
 
-className={getStepClass('b3st-3')}
-
-onClick={() => toggleStep('b3st-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3st-3') ? 'completed' : ''}`}>
- {completedSteps.has('b3st-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Specify the desired length of the solid entity on the item entry.</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Specify the desired length of the solid entity on the item entry.</span>
 
 </div>
 
-<p
-
-className="text-caption" >Also works for circular surfaces.
+<p className="text-caption">Also works for circular surfaces.
 </p>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="flex-row">
 
-<div
+<div className="flex-1">
 
-className="flex-row" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="flex-1">
-
-<div
-
-className="image-wrapper-flush" >
-
-<img src={stretchItemEntry} alt="Stretch Item Entry"
-
-className="software-screenshot screenshot-wide" />
+<img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" />
 
 </div>
 
@@ -3112,13 +2015,9 @@ className="software-screenshot screenshot-wide" />
 
 </div>
 
-<div
+<div className="image-wrapper-flush flex-no-shrink">
 
-className="image-wrapper-flush flex-no-shrink">
-
-<img src={stretchImg1} alt="Stretch Drag Example"
-
-className="software-screenshot screenshot-large" />
+<img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" />
 
 </div>
 
@@ -3126,49 +2025,25 @@ className="software-screenshot screenshot-large" />
 
 </div>
 
-<div
-
-className="section-divider">
+<div className="section-divider">
 </div>
 
-<div
+<div className="tool-block"> <h4 className="section-title">OR</h4>
 
-className="tool-block"> <h4
+<div className="instruction-step">
 
-className="section-title">OR</h4>
-
-<div
-
-className="instruction-step" >
-
-<div
-
-className="step-header" > <span
-
-className="step-label">Select face &gt; <strong
-
-className="text-highlight">GO</strong>
-<img src={leftClick} alt="Left click"
-
-className="software-screenshot screenshot-click--inline" /> &gt; Left-click on the 3D Space.</span>
+<div className="step-header"> <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong>
+<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /> &gt; Left-click on the 3D Space.</span>
 
 </div>
 
-<div
-
-className="step-header" > <span
-
-className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
+<div className="step-header"> <span className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
 
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={stretchImg2} alt="Stretch Scale Example"
-
-className="software-screenshot screenshot-large" />
+<img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" />
 
 </div>
 
@@ -3176,17 +2051,7 @@ className="software-screenshot screenshot-large" />
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
 
 </div>
 
@@ -3195,45 +2060,28 @@ onClick={handleNext}>Next <ChevronRight size={18} /></button>
  {/* RESIZE */}
  {activeTab === 'resize' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>RESIZE</h4>
+className="card-header">
+  <h4>RESIZE</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(resizeSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className={getStepClass('b3rez-1')}>
 
-className={getStepClass('b3rez-1')}
-
-onClick={() => toggleStep('b3rez-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3rez-1') ? 'completed' : ''}`}>
- {completedSteps.has('b3rez-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select <strong
-
-className="text-highlight">Resize</strong> from the menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select <strong className="text-highlight">Resize</strong> from the menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={resizeIcon} alt="Resize Icon"
-
-className="software-screenshot screenshot-small" />
+<img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -3241,83 +2089,43 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={getStepClass('b3rez-2')}>
 
-className={getStepClass('b3rez-2')}
-
-onClick={() => toggleStep('b3rez-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3rez-2') ? 'completed' : ''}`}>
- {completedSteps.has('b3rez-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">Select the entity for resizing &gt; <strong
-
-className="text-highlight">GO</strong>
-<img src={leftClick} alt="Left click"
-
-className="software-screenshot screenshot-click--inline" /></span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">Select the entity for resizing &gt; <strong className="text-highlight">GO</strong>
+<img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
 
 </div>
 
-<div
-
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
 </div>
 
 </div>
 
-<div
+<div className={getStepClass('b3rez-3')}>
 
-className={getStepClass('b3rez-3')}
-
-onClick={() => toggleStep('b3rez-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b3rez-3') ? 'completed' : ''}`}>
- {completedSteps.has('b3rez-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">Using resize allows the user to scale up or scale down the size of the solid entity.</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">Using resize allows the user to scale up or scale down the size of the solid entity.</span>
 
 </div>
 
-<p
-
-className="text-caption" >Specify the scale on the item entry &gt; Left-click on the 3D Space
+<p className="text-caption">Specify the scale on the item entry &gt; Left-click on the 3D Space
 </p>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="flex-row-center--wide">
 
-<div
+<div className="image-wrapper-flush">
 
-className="flex-row-center--wide" >
-
-<div
-
-className="image-wrapper-flush">
-
-<img src={resizeItemEntry} alt="Resize Item Entry"
-
-className="software-screenshot screenshot-small" />
+<img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush">
-
-<img src={resize3_2} alt="Resize Scale Result"
-
-className="software-screenshot screenshot-large" />
+<img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" />
 
 </div>
 
@@ -3327,17 +2135,7 @@ className="software-screenshot screenshot-large" />
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
 
 </div>
 
@@ -3350,21 +2148,11 @@ onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
  ); 
 }; /* ── Basic Operation (4): Arrange Machine Part / Shape Steels ── */
 
-const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson 
+const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel 
 }) =>
  {
 
-const [activeTab, setActiveTab] =
-
-useState<'shapeSteels'>('shapeSteels');
-
-const [completedSteps, setCompletedSteps] =
-
-useState<Set<string>>(new Set());
-
-const [scrollProgress, setScrollProgress] =
-
-useState(0);
+const [activeTab, setActiveTab] = useState<'shapeSteels'>('shapeSteels'); const [scrollProgress, setScrollProgress] = useState(0);
 
 const containerRef = useRef<HTMLDivElement>(null);
 
@@ -3398,139 +2186,81 @@ if (currentContainer)
  { currentContainer.removeEventListener('scroll', handleScroll); } 
 }; }, [activeTab]);
 
-const toggleStep = (stepId: string) =>
- { setCompletedSteps(prev =>
- {
+const { speak, stop, isSpeaking, currentIndex } = useTTS();
 
-const next = new Set(prev);
+const shapeSteelsSteps = [
+  "Step 1: Select Arrange Machine Part from the icon menu.",
+  "Step 2: In the window that appears, select the machine part or steel type and specify the dimensions, then click OK.",
+  "Step 3: In the Key Entry Area, enter the coordinates for the position point or origin point."
+];
 
-if (next.has(stepId)) next.delete(stepId); else next.add(stepId);
-
-return next; 
-}); 
-};
-
-const getStepClass = (stepId: string) =>
- {
-
-return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`; 
-};
-
+const getStepClass = (stepId: string) => "instruction-step";
 const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
 
 return (
 
-<div
-
-className="course-lesson-container"
-
-ref={containerRef}>
+<div className="course-lesson-container" ref={containerRef}>
  {/* Sticky Progress Bar */}
 
-<div
+<div className="lesson-progress-container">
 
-className="lesson-progress-container">
-
-<div
-
-className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+<div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
 </div>
 
-<div
-
-className="lesson-tabs">
- {tabs.map(tab => ( <button key={tab.id}
-
-className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-
-onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+<div className="lesson-tabs">
+ {tabs.map(tab => ( <button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
  ))}
 
 </div>
 
-<div
-
-className="lesson-grid single-card">
+<div className="lesson-grid single-card">
  {activeTab === 'shapeSteels' && (
 
-<div
-
-className="lesson-card tab-content">
+<div className="lesson-card tab-content">
 
 <div
-
-className="card-header"><h4>CREATING SHAPE STEELS</h4>
+className="card-header">
+  <h4>CREATING SHAPE STEELS</h4>
+  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(shapeSteelsSteps)}
+    onStop={stop}
+  />
 </div>
 
-<div
+<div className="instruction-step">
 
-className="instruction-step" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={shapeSteels1} alt="Shape Steels Overview"
-
-className="software-screenshot screenshot-medium" />
+<img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot screenshot-medium" />
 
 </div>
 
-<p
-
-className="p-flush" ><strong
-
-className="text-highlight">Shape Steels includes:</strong>
+<p className="p-flush"><strong className="text-highlight">Shape Steels includes:</strong>
 </p>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush">
-
-<img src={shapeSteelsTypes} alt="Shape Steels Options"
-
-className="software-screenshot screenshot-wide" />
+<img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot screenshot-wide" />
 
 </div>
 
 </div>
 
-<div
-
-className="section-divider">
+<div className="section-divider">
 </div>
 
-<div
+<div className={`${getStepClass('b4ss-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b4ss-1')}
-
-onClick={() => toggleStep('b4ss-1')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b4ss-1') ? 'completed' : ''}`}>
- {completedSteps.has('b4ss-1') ? <CheckCircle2 size={16} /> : '1'} </span> <span
-
-className="step-label">Select the <strong
-
-className="text-highlight">Arrange Machine Part</strong> from the icon menu.</span>
+<div className="step-header"> <span className="step-number">
+ 1 </span> <span className="step-label">Select the <strong className="text-highlight">Arrange Machine Part</strong> from the icon menu.</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu"
-
-className="software-screenshot screenshot-small" />
+<img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -3538,34 +2268,18 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b4ss-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b4ss-2')}
-
-onClick={() => toggleStep('b4ss-2')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b4ss-2') ? 'completed' : ''}`}>
- {completedSteps.has('b4ss-2') ? <CheckCircle2 size={16} /> : '2'} </span> <span
-
-className="step-label">The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK</span>
+<div className="step-header"> <span className="step-number">
+ 2 </span> <span className="step-label">The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="image-wrapper-flush">
 
-<div
-
-className="image-wrapper-flush" >
-
-<img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window"
-
-className="software-screenshot screenshot-wide" />
+<img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window" className="software-screenshot screenshot-wide" />
 
 </div>
 
@@ -3573,42 +2287,22 @@ className="software-screenshot screenshot-wide" />
 
 </div>
 
-<div
+<div className={`${getStepClass('b4ss-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
 
-className={getStepClass('b4ss-3')}
-
-onClick={() => toggleStep('b4ss-3')}>
-
-<div
-
-className="step-header"> <span
-
-className={`step-number ${completedSteps.has('b4ss-3') ? 'completed' : ''}`}>
- {completedSteps.has('b4ss-3') ? <CheckCircle2 size={16} /> : '3'} </span> <span
-
-className="step-label">in the Key Entry Area, enter the coordinates for the position (origin point)</span>
+<div className="step-header"> <span className="step-number">
+ 3 </span> <span className="step-label">in the Key Entry Area, enter the coordinates for the position (origin point)</span>
 
 </div>
 
-<div
+<div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+<div className="flex-row-center--wrap">
 
-<div
+<div className="flex-1">
 
-className="flex-row-center--wrap" >
+<div className="image-wrapper-flush">
 
-<div
-
-className="flex-1">
-
-<div
-
-className="image-wrapper-flush" >
-
-<img src={keyEntryArea} alt="Key Entry Area"
-
-className="software-screenshot screenshot-small" />
+<img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" />
 
 </div>
 
@@ -3616,13 +2310,9 @@ className="software-screenshot screenshot-small" />
 
 </div>
 
-<div
+<div className="image-wrapper-flush">
 
-className="image-wrapper-flush" >
-
-<img src={shapeSteels2} alt="Shape Steels Result"
-
-className="software-screenshot screenshot-large" />
+<img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" />
 
 </div>
 
@@ -3630,17 +2320,7 @@ className="software-screenshot screenshot-large" />
 
 </div>
 
-<div
-
-className="lesson-navigation" > <button
-
-className="nav-button"
-
-onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button> <button
-
-className="nav-button next"
-
-onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
+<div className="lesson-navigation"> <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
 
 </div>
 
@@ -3652,25 +2332,25 @@ onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
 </div>
  ); 
 };
-  /* Main export — renders the correct sub-lesson based on subLessonId prop */
+  /* Main export  Erenders the correct sub-lesson based on subLessonId prop */
 
 interface BasicOperationLessonProps
- { subLessonId: string; onNextLesson?: () => void; onPrevLesson?: () => void; }
+ { subLessonId: string; onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
 
-const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson 
+const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel 
 }) =>
  { switch (subLessonId)
  { case 'basic-op-1':
 
-return <BasicOperation1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />; case 'basic-op-2':
+return <BasicOperation1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; case 'basic-op-2':
 
-return <BasicOperation2 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />; case 'basic-op-3':
+return <BasicOperation2 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; case 'basic-op-3':
 
-return <BasicOperation3 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />; case 'basic-op-4':
+return <BasicOperation3 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; case 'basic-op-4':
 
-return <BasicOperation4 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />; default:
+return <BasicOperation4 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; default:
 
-return <BasicOperation1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} />; } 
+return <BasicOperation1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; } 
 };
 
 export default BasicOperationLesson; 

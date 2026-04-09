@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import {
-  ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
-  ArrowBigDown,
-} from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, ArrowBigDown, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import titleBlock1Img from "../../assets/2D_Image_File/2D_title_block_1.png";
 
@@ -14,17 +10,24 @@ import titleBlock2Img from "../../assets/2D_Image_File/2D_title_block_2.png";
 import titleBlock3Img from "../../assets/2D_Image_File/2D_title_block_3.png";
 
 interface TitleBlockLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const titleBlockSteps = [
+    "Title Block Overview: The title block displays critical part information including Job Order, Drawing Number, and designer names. Ensure all fields are filled accurately for project tracking.",
+    "Data Entry Procedure: Follow the systematic approach to reflect technical data. Input the required information into the dialog and check that it appears correctly in the designated template fields.",
+    "Placement Landmarks: Position the completed title block using landmarks P1 and P2 to ensure it aligns perfectly with the standard KEMCO drawing frame."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,15 +61,15 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> 19. Title Block
+          19. Title Block
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(titleBlockSteps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -84,11 +87,7 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
             <div className="lesson-section">
               <div className="flex-col">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={titleBlock1Img}
-                    alt="Title Block Field Definitions and Creation Procedure"
-                    className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                  />
+                  <img src={titleBlock1Img} alt="Title Block Field Definitions and Creation Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                 </div>
               </div>
             </div>
@@ -100,11 +99,7 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
             <div className="lesson-section" /* sanitized: width: '100%' */>
               <div className="flex-col">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={titleBlock2Img}
-                    alt="Title Block Data Reflection and Technical Notes"
-                    className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                  />
+                  <img src={titleBlock2Img} alt="Title Block Data Reflection and Technical Notes" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                 </div>
               </div>
             </div>
@@ -116,11 +111,7 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
             <div className="lesson-section">
               <div className="flex-col">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={titleBlock3Img}
-                    alt="Title Block Placement Landmarks (P1, P2)"
-                    className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                  />
+                  <img src={titleBlock3Img} alt="Title Block Placement Landmarks (P1, P2)" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                 </div>
               </div>
             </div>
@@ -134,7 +125,7 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -144,3 +135,6 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
 };
 
 export default TitleBlockLesson;
+
+
+

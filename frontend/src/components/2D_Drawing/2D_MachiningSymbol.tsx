@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Machining Symbol */
@@ -12,17 +13,23 @@ import machiningSymbolNoteImg from "../../assets/2D_Image_File/2D_machining_symb
 import machiningSurfaceCondImg from "../../assets/2D_Image_File/2D_machining_symbol_machining_surface_condiiton.jpg";
 
 interface MachiningSymbolLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const machiningSteps = [
+    "Machining Symbols: Select the required machining symbol from the menu. Note that symbols in parentheses indicate the part must be machined before welding, as post-weld machining would be impossible.",
+    "Surface Condition: Refer to the Machining Surface Condition table for specific roughness values and finish requirements standard for KEMCO parts."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,15 +63,15 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Machining Symbol
+          Machining Symbol
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(machiningSteps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -83,11 +90,7 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
               <h4> 12. Machining Symbols </h4>
               <div className="flex-row">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={machiningSymbolMainImg}
-                    alt="Machining Symbol Selection"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={machiningSymbolMainImg} alt="Machining Symbol Selection" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>{" "}
@@ -99,11 +102,7 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
               </div>
 
               <div className="image-wrapper-flush">
-                <img
-                  src={machiningSymbolNoteImg}
-                  alt="Machining Symbol Implementation Sample"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={machiningSymbolNoteImg} alt="Machining Symbol Implementation Sample" className="software-screenshot screenshot-wide" />
               </div>
 
               <div>
@@ -121,11 +120,7 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
               {" "}
               <h4> a. Machining Surface Condition </h4>
               <div className="image-wrapper-flush">
-                <img
-                  src={machiningSurfaceCondImg}
-                  alt="Machining Surface Condition Reference Table"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={machiningSurfaceCondImg} alt="Machining Surface Condition Reference Table" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           </div>{" "}
@@ -138,7 +133,7 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -148,3 +143,6 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
 };
 
 export default MachiningSymbolLesson;
+
+
+

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { adminService } from '../services/adminService';
-import { X, AlertCircle, Info, Megaphone } from 'lucide-react';
+import { adminService } from '../services/adminService'; import { X, AlertCircle, Info, Megaphone } from 'lucide-react';
 import '../styles/BroadcastBanner.css';
 
 interface Broadcast {
@@ -17,8 +16,7 @@ const BannerCard: React.FC<{
     index: number;
     onDismiss: (id: number) => void;
 }> = ({ broadcast, index, onDismiss }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [canExpand, setCanExpand] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false); const [canExpand, setCanExpand] = useState(false);
     const messageRef = useRef<HTMLParagraphElement>(null);
 
     const checkTruncation = () => {
@@ -54,13 +52,13 @@ const BannerCard: React.FC<{
     const zIndex = 100 - index;
 
     return (
-        <div
-            className={`broadcast-banner ${broadcast.level} ${isExpanded ? 'expanded' : ''}`}
-            style={{
-                transform: `translateY(${offset}px) scale(${scale})`,
-                opacity: opacity,
-                zIndex: zIndex,
-                pointerEvents: index === 0 ? 'auto' : 'none' // Only top card is interactive
+        <div 
+            className={`broadcast-banner ${broadcast.level} ${isExpanded ? 'expanded' : ''}`} 
+            style={{ 
+                transform: `translateY(${offset}px) scale(${scale})`, 
+                opacity: opacity, 
+                zIndex: zIndex, 
+                pointerEvents: index === 0 ? 'auto' : 'none' 
             }}
         >
             <div className="banner-island">
@@ -180,12 +178,7 @@ export const BroadcastBanner: React.FC = () => {
     return (
         <div className="broadcast-banner-container">
             {activeBroadcasts.slice(0, 3).map((b, idx) => (
-                <BannerCard
-                    key={b.id}
-                    broadcast={b}
-                    index={idx}
-                    onDismiss={dismiss}
-                />
+                <BannerCard key={b.id} broadcast={b} index={idx} onDismiss={dismiss} />
             ))}
         </div>
     );

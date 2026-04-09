@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-    MessageSquare, Users, Zap, Clock, TrendingUp,
-    Search, Trash2, RefreshCw, ChevronLeft, ChevronRight,
-    Brain, FileText, ChevronDown, ChevronUp,
-    ThumbsUp, ThumbsDown, Database, X
-} from 'lucide-react';
+import { MessageSquare, Users, Zap, Clock, TrendingUp, Search, Trash2, RefreshCw, ChevronLeft, ChevronRight, Brain, FileText, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, Database, X } from 'lucide-react';
 import { adminService } from '../../../services/adminService';
 import '../../../styles/ChatAnalytics.css';
 
@@ -49,88 +44,17 @@ const PAGE_SIZE = 20;
 // Inline bar for relative values
 const MiniBar: React.FC<{ value: number; max: number; color?: string }> = ({ value, max, color = '#6366f1' }) => (
     <div className="ca-mini-bar-track">
-        <div
-            className="ca-mini-bar-fill"
-            style={{ width: `${max > 0 ? (value / max) * 100 : 0}%`, background: color }}
+        <div className="ca-mini-bar-fill" style={{ width: `${max> 0 ? (value / max) * 100 : 0}%`, background: color }}
         />
     </div>
 );
 
 // Expandable log row
 const LogRow: React.FC<{ log: ChatLogEntry; onDelete: (id: number) => void }> = ({ log, onDelete }) => {
-    const [expanded, setExpanded] = useState(false);
-    const time = new Date(log.created_at).toLocaleString();
-    const sources = log.sources_used ? log.sources_used.split(',').filter(Boolean) : [];
-
-    return (
-        <>
-            <tr className={`ca-log-row ${expanded ? 'expanded' : ''}`} onClick={() => setExpanded(e => !e)}>
-                <td className="ca-log-time">{time}</td>
-                <td><span className="ca-username">{log.username}</span></td>
-                <td className="ca-log-message">{log.message}</td>
-                <td className="ca-center">{log.source_count}</td>
-                <td className="ca-center">{log.tokens_estimated}</td>
-                <td className="ca-center">{log.response_time_ms}ms</td>
-                <td className="ca-center">
-                    {log.had_media
-                        ? <span className="ca-badge ca-badge-media">media</span>
-                        : <span className="ca-badge ca-badge-text">text</span>}
-                </td>
-                <td className="ca-center">
-                    <div className="ca-row-actions">
-                        {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-                        <button
-                            className="ca-delete-btn"
-                            onClick={(e) => { e.stopPropagation(); onDelete(log.id); }}
-                            title="Delete log"
-                        >
-                            <Trash2 size={13} />
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            {expanded && (
-                <tr className="ca-log-detail-row">
-                    <td colSpan={8}>
-                        <div className="ca-log-detail">
-                            <div className="ca-detail-section">
-                                <p className="ca-detail-label"><MessageSquare size={12} /> User Question</p>
-                                <p className="ca-detail-text">{log.message}</p>
-                            </div>
-                            <div className="ca-detail-section">
-                                <p className="ca-detail-label"><Brain size={12} /> AI Answer</p>
-                                <p className="ca-detail-text">{log.answer}</p>
-                            </div>
-                            {sources.length > 0 && (
-                                <div className="ca-detail-section">
-                                    <p className="ca-detail-label"><FileText size={12} /> Sources Used</p>
-                                    <div className="ca-source-chips">
-                                        {sources.map((s, i) => (
-                                            <span key={i} className="ca-source-chip">{s}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </td>
-                </tr>
-            )}
-        </>
-    );
-};
-
-export const ChatAnalytics: React.FC = () => {
-    const [stats, setStats] = useState<Stats | null>(null);
-    const [logs, setLogs] = useState<ChatLogEntry[]>([]);
-    const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(0);
-    const [search, setSearch] = useState('');
-    const [searchInput, setSearchInput] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [statsLoading, setStatsLoading] = useState(true);
-    const [feedbackStats, setFeedbackStats] = useState<FeedbackStats | null>(null);
-    const [cacheStats, setCacheStats] = useState<CacheStats | null>(null);
-    const [clearingCache, setClearingCache] = useState(false);
+    const [expanded, setExpanded] = useState(false); const time = new Date(log.created_at).toLocaleString(); const sources = log.sources_used ? log.sources_used.split(',').filter(Boolean) : []; return ( <> <tr className={`ca-log-row ${expanded ? 'expanded' : ''}`} onClick={() => setExpanded(e => !e)}> <td className="ca-log-time">{time}</td> <td><span className="ca-username">{log.username}</span></td> <td className="ca-log-message">{log.message}</td> <td className="ca-center">{log.source_count}</td> <td className="ca-center">{log.tokens_estimated}</td> <td className="ca-center">{log.response_time_ms}ms</td> <td className="ca-center"> {log.had_media ? <span className="ca-badge ca-badge-media">media</span> : <span className="ca-badge ca-badge-text">text</span>} </td> <td className="ca-center"> <div className="ca-row-actions"> {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />} <button className="ca-delete-btn" onClick={(e) => { e.stopPropagation(); onDelete(log.id); }} title="Delete log" > <Trash2 size={13} /> </button> </div> </td> </tr> {expanded && ( <tr className="ca-log-detail-row"> <td colSpan={8}> <div className="ca-log-detail"> <div className="ca-detail-section"> <p className="ca-detail-label"><MessageSquare size={12} /> User Question</p> <p className="ca-detail-text">{log.message}</p> </div> <div className="ca-detail-section"> <p className="ca-detail-label"><Brain size={12} /> AI Answer</p> <p className="ca-detail-text">{log.answer}</p> </div> {sources.length > 0 && ( <div className="ca-detail-section"> <p className="ca-detail-label"><FileText size={12} /> Sources Used</p> <div className="ca-source-chips"> {sources.map((s, i) => ( <span key={i} className="ca-source-chip">{s}</span> ))} </div> </div> )} </div> </td> </tr> )} </> ); }; export const ChatAnalytics: React.FC = () => { const [stats, setStats] = useState<Stats | null>(null); const [logs, setLogs] = useState<ChatLogEntry[]>([]); const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(0); const [search, setSearch] = useState('');
+    const [searchInput, setSearchInput] = useState(''); const [loading, setLoading] = useState(true);
+    const [statsLoading, setStatsLoading] = useState(true); const [feedbackStats, setFeedbackStats] = useState<FeedbackStats | null>(null); const [cacheStats, setCacheStats] = useState<CacheStats | null>(null); const [clearingCache, setClearingCache] = useState(false);
 
     const fetchStats = useCallback(async () => {
         setStatsLoading(true);
@@ -250,10 +174,7 @@ export const ChatAnalytics: React.FC = () => {
                         <div className="ca-bar-chart">
                             {stats.queries_per_day.map((d, i) => (
                                 <div key={i} className="ca-bar-col" title={`${d.day}: ${d.count} queries`}>
-                                    <div
-                                        className="ca-bar"
-                                        style={{ height: `${(d.count / maxDayCount) * 100}%` }}
-                                    />
+                                    <div className="ca-bar" style={{ height: `${(d.count / maxDayCount) * 100}%` }} />
                                     <span className="ca-bar-label">
                                         {new Date(d.day).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })}
                                     </span>
@@ -419,11 +340,7 @@ export const ChatAnalytics: React.FC = () => {
                     <div className="ca-log-controls">
                         <form className="ca-search-form" onSubmit={handleSearch}>
                             <Search size={13} />
-                            <input
-                                type="text"
-                                placeholder="Filter by username..."
-                                value={searchInput}
-                                onChange={e => setSearchInput(e.target.value)}
+                            <input type="text" placeholder="Filter by username..." value={searchInput} onChange={e => setSearchInput(e.target.value)}
                                 className="ca-search-input"
                             />
                         </form>
@@ -475,9 +392,7 @@ export const ChatAnalytics: React.FC = () => {
                 {/* Pagination */}
                 {totalPages > 1 && (
                     <div className="ca-pagination">
-                        <button
-                            className="ca-page-btn"
-                            onClick={() => setPage(p => Math.max(0, p - 1))}
+                        <button className="ca-page-btn" onClick={() => setPage(p => Math.max(0, p - 1))}
                             disabled={page === 0}
                         >
                             <ChevronLeft size={14} />
@@ -485,9 +400,7 @@ export const ChatAnalytics: React.FC = () => {
                         <span className="ca-page-info">
                             Page {page + 1} of {totalPages}
                         </span>
-                        <button
-                            className="ca-page-btn"
-                            onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                        <button className="ca-page-btn" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                             disabled={page >= totalPages - 1}
                         >
                             <ChevronRight size={14} />

@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import {
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-  Layout,
-  MousePointer2,
-} from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Layout, MousePointer2, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Line Properties (1) */
@@ -53,6 +47,7 @@ import hierarchicalDialogImg from "../../assets/2D_Image_File/2D_line_properties
 import hierarchicalResultsImg from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_3.png";
 
 interface LinePropertiesLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -61,13 +56,31 @@ interface LinePropertiesLessonProps {
 const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
   subLessonId = "2d-line-props-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  onPrevLesson, nextLabel }) => {
+  
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+
+  const lineProp1Steps = [
+    "Line Specifications: KEMCO uses uniform specifications for line types and weights. Review the properties table to ensure your drafting meets these standard requirements."
+  ];
+
+  const lineProp2Steps = [
+    "Changing Colors: Select the required color from the dialog, then pick the lines you wish to change. Remember that green is the standard for hidden lines, and avoiding deletions prevents unexpected reappearances on drawing updates.",
+    "Splines: Use the spline command for complex curves, often replacing lines in partial sections. Adjust the number of waves and curve distance in the item entry box as needed."
+  ];
+
+  const lineProp3Steps = [
+    "Center Lines: While often automatic for machine holes, you can manually add center lines. Set the offset value, then click Line 1 and Line 2; the center is always calculated from Line 1.",
+    "Piping Center Lines: For piping assembly drawings, ensure the center line option is checked in the orthographic view insertion properties."
+  ];
+
+  const lineProp4Steps = [
+    "Hierarchical Representation: Change the line properties of specific parts within an assembly context. Select the parts from the list and apply the desired hierarchical attributes."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,45 +113,31 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
     };
   }, [subLessonId]);
 
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
+  
 
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-
-      return next;
-    });
-  };
-
-  const getStepClass = (stepId: string) => {
-    return `instruction-step interactive ${completedSteps.has(stepId) ? "completed" : ""}`;
-  };
-
+  const getStepClass = (stepId: string) => "instruction-step";
   return (
-    <div
-      className="course-lesson-container line-properties-lesson"
-      ref={containerRef}
-    >
+    <div className="course-lesson-container line-properties-lesson" ref={containerRef}>
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <Layout
-            size={28}
-            strokeWidth={2.5}
-            className="lesson-intro-icon"
-          />{" "}
+          
           {subLessonId === "2d-line-props-1"
             ? "LINE PROPERTIES (1)"
             : "LINE PROPERTIES"}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-line-props-1") speak(lineProp1Steps);
+              else if (subLessonId === "2d-line-props-2") speak(lineProp2Steps);
+              else if (subLessonId === "2d-line-props-3") speak(lineProp3Steps);
+              else if (subLessonId === "2d-line-props-4") speak(lineProp4Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="p-flush">
@@ -153,21 +152,12 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
             <>
               {" "}
               {/* Section 5: Line Properties */}
-              <div
-                className={getStepClass("lp1-5")}
-                onClick={() => toggleStep("lp1-5")}
-              >
+              <div className={`${getStepClass("lp1-5")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("lp1-5") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("lp1-5") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "5"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    5
                   </span>{" "}
                   <span className="step-label">Line Properties</span>
                 </div>
@@ -176,21 +166,13 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                   <div className="flex-row--top">
                     <div className="flex-1">
                       <div className="image-wrapper-flush">
-                        <img
-                          src={linePropertiesImg}
-                          alt="Line Properties Interface and Notes"
-                          className="software-screenshot screenshot-wide"
-                        />
+                        <img src={linePropertiesImg} alt="Line Properties Interface and Notes" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
                   </div>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={linePropertiesTableImg}
-                      alt="Uniform Line Specifications"
-                      className="software-screenshot"
-                    />
+                    <img src={linePropertiesTableImg} alt="Uniform Line Specifications" className="software-screenshot" />
                   </div>
                 </div>
               </div>{" "}
@@ -199,21 +181,12 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
             <>
               {" "}
               {/* Section 6: Changing line properties */}
-              <div
-                className={getStepClass("lp2-6")}
-                onClick={() => toggleStep("lp2-6")}
-              >
+              <div className={`${getStepClass("lp2-6")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("lp2-6") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("lp2-6") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "6"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    6
                   </span>{" "}
                   <span className="step-label">Changing line properties</span>
                 </div>
@@ -226,11 +199,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                   <div className="flex-col">
                     <div className="flex-row--top">
                       <div>
-                        <img
-                          src={colorDialogImg}
-                          alt="Color Dialog"
-                          className="software-screenshot"
-                        />
+                        <img src={colorDialogImg} alt="Color Dialog" className="software-screenshot" />
                       </div>
 
                       <div className="flex-col">
@@ -265,11 +234,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         </div>
 
                         <div className="image-wrapper-flush">
-                          <img
-                            src={colorComparisonImg}
-                            alt="Color Comparison"
-                            className="software-screenshot screenshot-wide"
-                          />
+                          <img src={colorComparisonImg} alt="Color Comparison" className="software-screenshot screenshot-wide" />
                         </div>
                       </div>
                     </div>
@@ -277,21 +242,12 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 </div>
               </div>{" "}
               {/* Section 7: Additional Lines */}
-              <div
-                className={getStepClass("lp2-7")}
-                onClick={() => toggleStep("lp2-7")}
-              >
+              <div className={`${getStepClass("lp2-7")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("lp2-7") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("lp2-7") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "7"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    7
                   </span>{" "}
                   <span className="step-label">Additional Lines</span>
                 </div>
@@ -304,11 +260,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                     <div className="flex-row--top">
                       <div>
-                        <img
-                          src={splineMenuImg}
-                          alt="Spline Menu Navigation"
-                          className="software-screenshot screenshot-wide"
-                        />
+                        <img src={splineMenuImg} alt="Spline Menu Navigation" className="software-screenshot screenshot-wide" />
                       </div>
 
                       <div className="flex-1">
@@ -328,11 +280,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         </div>
 
                         <div className="image-wrapper-flush">
-                          <img
-                            src={splineControlImg}
-                            alt="Spline Control"
-                            className="software-screenshot screenshot-wide"
-                          />
+                          <img src={splineControlImg} alt="Spline Control" className="software-screenshot screenshot-wide" />
                         </div>
                       </div>
                     </div>
@@ -343,14 +291,8 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         done on the drawing.
                       </p>
 
-                      <div
-                        className="image-wrapper-flush" /* sanitized: marginTop: '1.5rem' */
-                      >
-                        <img
-                          src={splineResultImg}
-                          alt="Spline Result"
-                          className="software-screenshot screenshot-wide"
-                        />
+                      <div className="image-wrapper-flush" /* sanitized: marginTop: '1.5rem' */>
+                        <img src={splineResultImg} alt="Spline Result" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
                   </div>
@@ -361,21 +303,12 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
             <>
               {" "}
               {/* Section b: Center Line */}
-              <div
-                className={getStepClass("lp3-b")}
-                onClick={() => toggleStep("lp3-b")}
-              >
+              <div className={`${getStepClass("lp3-b")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("lp3-b") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("lp3-b") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "b"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    b
                   </span>{" "}
                   <span className="step-label">Center Line</span>
                 </div>
@@ -390,11 +323,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                     <div className="flex-row--top">
                       <div>
-                        <img
-                          src={splineMenuImg}
-                          alt="Center Line Menu"
-                          className="software-screenshot screenshot-wide"
-                        />
+                        <img src={splineMenuImg} alt="Center Line Menu" className="software-screenshot screenshot-wide" />
                       </div>
 
                       <div className="flex-col">
@@ -413,11 +342,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                             </p>
                           </div>
 
-                          <img
-                            src={centerLineOffsetControlImg}
-                            alt="Offset Control"
-                            className="software-screenshot screenshot-medium"
-                          />
+                          <img src={centerLineOffsetControlImg} alt="Offset Control" className="software-screenshot screenshot-medium" />
                         </div>
                       </div>
                     </div>
@@ -430,11 +355,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     </div>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={centerLineL1L2Img}
-                        alt="L1 L2 Center Line Process"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={centerLineL1L2Img} alt="L1 L2 Center Line Process" className="software-screenshot screenshot-wide" />
                     </div>
 
                     <div className="flex-col">
@@ -462,11 +383,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       </div>
 
                       <div className="image-wrapper-flush">
-                        <img
-                          src={holeOffsetDialogImg}
-                          alt="Hole Offset Dialog"
-                          className="software-screenshot screenshot-large"
-                        />
+                        <img src={holeOffsetDialogImg} alt="Hole Offset Dialog" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
                   </div>
@@ -474,21 +391,12 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
               </div>
               <div className="section-divider-sm"></div>{" "}
               {/* Section c: Piping Center Line */}
-              <div
-                className={getStepClass("lp3-c")}
-                onClick={() => toggleStep("lp3-c")}
-              >
+              <div className={`${getStepClass("lp3-c")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("lp3-c") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("lp3-c") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "c"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    c
                   </span>{" "}
                   <span className="step-label">Piping Center Line</span>
                 </div>
@@ -502,11 +410,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     </p>
 
                     <div className="flex-row--top">
-                      <img
-                        src={pipingDialogImg}
-                        alt="Piping Center Line Dialog"
-                        className="software-screenshot screenshot-small"
-                      />
+                      <img src={pipingDialogImg} alt="Piping Center Line Dialog" className="software-screenshot screenshot-small" />
 
                       <div className="info-box">
                         <p className="p-flush">
@@ -518,11 +422,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     </div>
 
                     <div className="image-wrapper-flush">
-                      <img
-                        src={pipingComparisonImg}
-                        alt="Piping Center Line Comparison"
-                        className="software-screenshot screenshot-medium"
-                      />
+                      <img src={pipingComparisonImg} alt="Piping Center Line Comparison" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
                 </div>
@@ -532,21 +432,12 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
             <>
               {" "}
               {/* Section d: Change the representation of parts hierarchically */}
-              <div
-                className={getStepClass("lp4-d")}
-                onClick={() => toggleStep("lp4-d")}
-              >
+              <div className={`${getStepClass("lp4-d")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("lp4-d") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("lp4-d") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "d"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    d
                   </span>{" "}
                   <span className="step-label">
                     Change the representation of parts hierarchically
@@ -564,11 +455,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     <div className="flex-row--top">
                       <div className="flex-1">
                         <div className="image-wrapper-flush">
-                          <img
-                            src={hierarchicalPartsImg}
-                            alt="Hierarchical Parts Selection"
-                            className="software-screenshot screenshot-wide"
-                          />
+                          <img src={hierarchicalPartsImg} alt="Hierarchical Parts Selection" className="software-screenshot screenshot-wide" />
                         </div>
                       </div>
 
@@ -587,11 +474,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                           </p>
                         </div>
 
-                        <img
-                          src={hierarchicalDialogImg}
-                          alt="Hierarchical Parts Selection Detail"
-                          className="software-screenshot screenshot-medium"
-                        />
+                        <img src={hierarchicalDialogImg} alt="Hierarchical Parts Selection Detail" className="software-screenshot screenshot-medium" />
                       </div>
                     </div>
 
@@ -604,11 +487,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       </div>
 
                       <div className="image-wrapper-flush">
-                        <img
-                          src={hierarchicalResultsImg}
-                          alt="Hierarchical Results and Icons"
-                          className="software-screenshot screenshot-wide"
-                        />
+                        <img src={hierarchicalResultsImg} alt="Hierarchical Results and Icons" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
                   </div>
@@ -629,7 +508,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -639,3 +518,6 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 };
 
 export default LinePropertiesLesson;
+
+
+

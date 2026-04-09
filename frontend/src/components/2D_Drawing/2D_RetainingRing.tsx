@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Retaining Ring */
@@ -10,6 +11,7 @@ import retaining1Img from "../../assets/2D_Image_File/2D_retaining_ring_(1).jpg"
 import retaining2Img from "../../assets/2D_Image_File/2D_retaining_ring_(2).jpg";
 
 interface RetainingRingLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -18,11 +20,19 @@ interface RetainingRingLessonProps {
 const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
   subLessonId = "2d-retaining-ring-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const externalSteps = [
+    "External Retaining Rings: Review the dimensional specifications for C-type external rings. Ensure the groove diameter and width match the shaft standards for secure axial retention."
+  ];
+
+  const internalSteps = [
+    "Internal Retaining Rings: These standards focus on rings fitted inside bores. Verify the housing diameter and groove dimensions to ensure the C-type internal ring seats correctly during assembly."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,16 +66,19 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Retaining Ring{" "}
+          Retaining Ring{" "}
           {subLessonId === "2d-retaining-ring-1" ? "(1)" : "(2)"}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-retaining-ring-1") speak(externalSteps);
+              else speak(internalSteps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -81,21 +94,13 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
           {subLessonId === "2d-retaining-ring-1" ? (
             <div className="flex-col">
               <div className="image-wrapper-flush">
-                <img
-                  src={retaining1Img}
-                  alt="Retaining Rings-C Type-External Standards"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={retaining1Img} alt="Retaining Rings-C Type-External Standards" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           ) : (
             <div className="flex-col">
               <div className="image-wrapper-flush">
-                <img
-                  src={retaining2Img}
-                  alt="Retaining Rings-C Type-Internal Standards"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={retaining2Img} alt="Retaining Rings-C Type-Internal Standards" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           )}
@@ -107,7 +112,7 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -117,3 +122,6 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
 };
 
 export default RetainingRingLesson;
+
+
+

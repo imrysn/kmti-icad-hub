@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Operate View (1) */
@@ -14,6 +15,7 @@ import operateView1ImgB2 from "../../assets/2D_Image_File/2D_operate_view(1)_b2.
 import operateView1ImgB2_2 from "../../assets/2D_Image_File/2D_operate_view(1)_b2_2.png";
 
 interface OperalViewLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -22,11 +24,15 @@ interface OperalViewLessonProps {
 const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
   subLessonId = "2d-operate-view-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const operateSteps = [
+    "Move View: Use this command to reposition your technical views on the template. For Isometric views, you can move them freely. For Orthographic views, use the alignment tools to ensure they remain parallel and correctly projected from one another."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,15 +66,15 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> 21. Operate View
+          21. Operate View
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(operateSteps)}
+            onStop={stop}
+          />
         </h3>
       </section>
       <div className="lesson-grid single-card">
@@ -83,11 +89,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                 <h4> a. Move view </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={operateView1ImgA}
-                      alt="Move View"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={operateView1ImgA} alt="Move View" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>{" "}
@@ -97,11 +99,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                 <h4> a.1) Isometric view </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={operateView1ImgA1}
-                      alt="Isometric View Move"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={operateView1ImgA1} alt="Isometric View Move" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>{" "}
@@ -111,19 +109,11 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                 <h4> b.2) Orthographic view </h4>
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={operateView1ImgB2}
-                      alt="Orthographic View Move"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={operateView1ImgB2} alt="Orthographic View Move" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={operateView1ImgB2_2}
-                      alt="Orthographic View Align"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={operateView1ImgB2_2} alt="Orthographic View Align" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -145,7 +135,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -155,3 +145,6 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
 };
 
 export default OperalViewLesson;
+
+
+

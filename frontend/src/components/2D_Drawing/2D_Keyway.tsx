@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Keyway */
@@ -8,17 +9,22 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 import keywayImg from "../../assets/2D_Image_File/2D_keyway.jpg";
 
 interface KeywayLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const KeywayLesson: React.FC<KeywayLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const keywaySteps = [
+    "Keyway Standards: Review the Parallel Keyway table for shafts and hubs. Ensure you apply the correct dimensions and tolerances based on the shaft diameter to maintain KEMCO engineering standards."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,15 +58,15 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Keyway Standards
+          Keyway Standards
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(keywaySteps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -73,11 +79,7 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
         <div className="lesson-card">
           <div className="flex-col">
             <div className="image-wrapper-flush">
-              <img
-                src={keywayImg}
-                alt="Parallel Keyway Standards Table"
-                className="software-screenshot screenshot-wide"
-              />
+              <img src={keywayImg} alt="Parallel Keyway Standards Table" className="software-screenshot screenshot-wide" />
             </div>
           </div>
 
@@ -89,7 +91,7 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -99,3 +101,6 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
 };
 
 export default KeywayLesson;
+
+
+

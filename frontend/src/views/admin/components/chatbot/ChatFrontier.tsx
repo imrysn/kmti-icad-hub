@@ -65,10 +65,7 @@ export const ChatFrontier: React.FC<ChatFrontierProps> = ({ onSuggestionClick })
                 
                 <div className="frontier-suggestions-grid">
                     {suggestions.map((prompt, i) => (
-                        <button
-                            key={i}
-                            className="frontier-prompt-card"
-                            onClick={() => onSuggestionClick(prompt)}
+                        <button key={i} className="frontier-prompt-card" onClick={() => onSuggestionClick(prompt)}
                             style={{ animationDelay: `${i * 0.1}s` }}
                         >
                             <div className="prompt-card-content">

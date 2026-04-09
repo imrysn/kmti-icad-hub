@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Standard Part Detail (1) */
@@ -47,16 +48,50 @@ interface StandardPartLessonProps {
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
+  nextLabel?: string;
 }
 
 const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
   subLessonId,
   onNextLesson,
   onPrevLesson,
+  nextLabel,
 }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const standard1Steps = [
+    "Pitch Center Diameter: PCD is no longer used in KEMCO drawings to prevent fabrication errors. Instead, provide individual coordinates or dimensions.",
+    "Tapered Threads: For technical threads like Rc, ensure you apply the specific 2D detailing patterns shown in the template.",
+    "Data Input: On standard part templates, only modify the boxed portions. All other template details should remain unchanged."
+  ];
+
+  const standard2Steps = [
+    "Oil Grooves: These grooves distribute lubrication from oil holes. For flat surfaces, depth should be 1.5mm, and the groove must be wider than the accompanying drill hole. For circular portions, ensure a smooth finish designated by R to ensure proper oil flow."
+  ];
+
+  const standard3Steps = [
+    "Shaft and Key Plates: Follow the dimension table for shaft and key plate thickness. Ensure all cut shapes are free from burrs and use specified flat bar materials with correct width tolerances."
+  ];
+
+  const standard4Steps = [
+    "Collars: Collars are fitted on shafts to prevent sliding and serve as mechanical stoppers. Review the tolerance standards for correct fitment on your shaft designs."
+  ];
+
+  const standard5Steps = [
+    "Advanced Collars: The OST-2 collar is used with urethane rubber stoppers. This design prevents over-tightening which could distort the urethane material. Follow the provided detailing reference for OST-2 parts."
+  ];
+
+  const standard6Steps = [
+    "Scale: Adhere to JIS Z 8314 standard scales. While assembly drawings allow some flexibility, parts drawings must always use the standard KEMCO scale.",
+    "Relief Process: Used at shaft shoulders to provide tool clearance and prevent damage. This is required for shafts with surface grinding and must be clearly shown in 2D detailing."
+  ];
+
+  const standard7Steps = [
+    "Relief Workflow: To show specialized relief details, use the part library to load the Relief Process template. Place this detail within the global view of your drawing template."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,15 +125,12 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Standard Part
+          Standard Part
           Detail{" "}
           {subLessonId === "2d-standard-part-1"
             ? "(1)"
@@ -115,6 +147,17 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       : subLessonId === "2d-standard-part-7"
                         ? "(7)"
                         : ""}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-standard-part-1") speak(standard1Steps);
+              else if (subLessonId === "2d-standard-part-2") speak(standard2Steps);
+              else if (subLessonId === "2d-standard-part-3") speak(standard3Steps);
+              else if (subLessonId === "2d-standard-part-4") speak(standard4Steps);
+              else if (subLessonId === "2d-standard-part-5") speak(standard5Steps);
+              else if (subLessonId === "2d-standard-part-6") speak(standard6Steps);
+              else if (subLessonId === "2d-standard-part-7") speak(standard7Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -152,11 +195,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   fabrication.{" "}
                 </h4>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={pcdImg}
-                    alt="PCD Dimension Comparison"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={pcdImg} alt="PCD Dimension Comparison" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
               <div className="section-divider"></div>{" "}
@@ -168,11 +207,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   Based on the drawing, we must apply it on 2D detailing
                 </p>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={taperedThreadImg}
-                    alt="Tapered Thread 2D Detailing"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={taperedThreadImg} alt="Tapered Thread 2D Detailing" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
               <div className="section-divider"></div>{" "}
@@ -185,11 +220,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   input, other than that no detail will be change.
                 </p>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={standardPartDetailImg}
-                    alt="Standard Parts Template details"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={standardPartDetailImg} alt="Standard Parts Template details" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>
@@ -212,26 +243,22 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   {" "}
                   <h5>1. For Flat Surface</h5>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={oilGroove1Img}
-                      alt="Oil Groove - Flat Surface Detail and Example"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={oilGroove1Img} alt="Oil Groove - Flat Surface Detail and Example" className="software-screenshot screenshot-wide" />
                   </div>{" "}
                   <ul className="list-flush">
                     {" "}
                     <li>
                       {" "}
-                      <span>●</span> Follow the standard detail of KEMCO for
+                      <span>✔</span> Follow the standard detail of KEMCO for
                       flat surface <span>(Figure 1)</span>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span> Depth of grease line should be 1.5mm{" "}
+                      <span>✔</span> Depth of grease line should be 1.5mm{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span> In case of drill hole and tap hole, the
+                      <span>✔</span> In case of drill hole and tap hole, the
                       diameter of the hole must be smaller than width of
                       groove.{" "}
                     </li>{" "}
@@ -246,34 +273,30 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     <span>New Revised: 07/01/19</span>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={oilGroove2Img}
-                      alt="Oil Groove - Circular Portion Detail and Example"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={oilGroove2Img} alt="Oil Groove - Circular Portion Detail and Example" className="software-screenshot screenshot-wide" />
                   </div>{" "}
                   <ul className="list-flush">
                     {" "}
                     <li>
                       {" "}
-                      <span>●</span> Follow the standard detail of KEMCO for
+                      <span>✔</span> Follow the standard detail of KEMCO for
                       circular portion <span>(Figure 2)</span>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span> Compared to grooving of flat surfaces,
+                      <span>✔</span> Compared to grooving of flat surfaces,
                       radius 2 cannot achieve on actual.
                       <br />
                       But the surface should be smooth finish{" "}
-                      <span>R (滑らかに仕上)</span>.{" "}
+                      <span>R (滑らかに仕上げ</span>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span> Depth of grease line should be 1.5mm{" "}
+                      <span>✔</span> Depth of grease line should be 1.5mm{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span> In case of drill hole and tap hole, the
+                      <span>✔</span> In case of drill hole and tap hole, the
                       diameter of the hole must be smaller than width of
                       groove.{" "}
                     </li>{" "}
@@ -293,11 +316,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   <h5>※ Dimension of Shaft and Key Plate</h5>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={shaftKeyPlate1Img}
-                    alt="Shaft and Key Plate Dimensions Table"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={shaftKeyPlate1Img} alt="Shaft and Key Plate Dimensions Table" className="software-screenshot screenshot-wide" />
                 </div>
                 <div className="info-box-note">
                   <p>Note:</p>{" "}
@@ -305,21 +324,18 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     {" "}
                     <li>
                       {" "}
-                      <span>●</span> The shape after cutting must be free from
+                      <span>✔</span> The shape after cutting must be free from
                       burrs{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span> Use flat bar material{" "}
+                      <span>✔</span> Use flat bar material{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span>{" "}
+                      <span>✔</span>{" "}
                       <span>The tolerance of the width groove must be</span>
-                      <img
-                        src={shaftKeyPlate2Img}
-                        alt="Tolerance callout"
-                      />{" "}
+                      <img src={shaftKeyPlate2Img} alt="Tolerance callout" />{" "}
                     </li>{" "}
                   </ul>
                 </div>
@@ -330,17 +346,13 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   <h5>※ Sample Drawing</h5>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={shaftKeyPlate3Img}
-                    alt="Sample Drawing and Isometric View"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={shaftKeyPlate3Img} alt="Sample Drawing and Isometric View" className="software-screenshot screenshot-wide" />
                 </div>{" "}
                 <ul className="list-flush">
                   {" "}
                   <li>
                     {" "}
-                    <span>●</span>
+                    <span>✔</span>
                     <div>
                       {" "}
                       As much as possible, follow the way of detailing in this
@@ -375,11 +387,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 <h5>※ Tolerances for collar</h5>
               </div>
               <div className="image-wrapper-flush">
-                <img
-                  src={collarImg}
-                  alt="Tolerances for Collar - Example 1 and 2"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={collarImg} alt="Tolerances for Collar - Example 1 and 2" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           ) : subLessonId === "2d-standard-part-5" ? (
@@ -388,11 +396,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {/* Example 3 Header */} <h4>Example 3.</h4>{" "}
               {/* Top Diagram: Sectional View of OST-2 */}
               <div className="image-wrapper-flush">
-                <img
-                  src={collar1Img}
-                  alt="OST-2 Sectional View"
-                  className="software-screenshot"
-                />
+                <img src={collar1Img} alt="OST-2 Sectional View" className="software-screenshot" />
               </div>
               <div className="info-box">
                 {" "}
@@ -400,14 +404,14 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   {" "}
                   <li>
                     {" "}
-                    <span>●</span>{" "}
+                    <span>✔</span>{" "}
                     <span>
                       Can used to hold urethane rubber and serve as stopper.
                     </span>{" "}
                   </li>{" "}
                   <li>
                     {" "}
-                    <span>●</span>{" "}
+                    <span>✔</span>{" "}
                     <span>
                       To avoid over press of the material during tightening that
                       causes the urethane to distort.
@@ -429,7 +433,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 {" "}
                 <li>
                   {" "}
-                  <span>●</span>{" "}
+                  <span>✔</span>{" "}
                   <span>
                     As much as possible, follow the way of detailing in this
                     reference.
@@ -445,29 +449,25 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 {" "}
                 <h4>g. Scale</h4>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={scaleImg}
-                    alt="Standard Scale Table JIS Z 8314"
-                    className="software-screenshot screenshot-large"
-                  />
+                  <img src={scaleImg} alt="Standard Scale Table JIS Z 8314" className="software-screenshot screenshot-large" />
                 </div>{" "}
                 <ul className="list-flush">
                   {" "}
                   <li>
                     {" "}
-                    <span>●</span>{" "}
+                    <span>✔</span>{" "}
                     <span>Follow the standard scale given by KEMCO.</span>{" "}
                   </li>{" "}
                   <li>
                     {" "}
-                    <span>●</span>{" "}
+                    <span>✔</span>{" "}
                     <span>
                       On parts drawing, standard scale must be always used.
                     </span>{" "}
                   </li>{" "}
                   <li>
                     {" "}
-                    <span>●</span>{" "}
+                    <span>✔</span>{" "}
                     <span>
                       On assembly drawing, standard scale should be used, but
                       non-standard scale can be used as a second option.
@@ -490,17 +490,13 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 </div>
                 <p>In 2D</p>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={reliefProcess1Img}
-                    alt="Relief Process Diagram in 2D"
-                    className="software-screenshot screenshot-large"
-                  />
+                  <img src={reliefProcess1Img} alt="Relief Process Diagram in 2D" className="software-screenshot screenshot-large" />
                 </div>{" "}
                 <ul className="list-flush">
                   {" "}
                   <li>
                     {" "}
-                    <span>●</span>{" "}
+                    <span>✔</span>{" "}
                     <span>
                       Relief process detail should be{" "}
                       <strong>used on shaft parts</strong> with three (3)
@@ -510,7 +506,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   </li>{" "}
                   <li>
                     {" "}
-                    <span>●</span>{" "}
+                    <span>✔</span>{" "}
                     <span>
                       Relief process should be{" "}
                       <strong>shown on 2D detailing.</strong>
@@ -523,7 +519,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     {" "}
                     <li>
                       {" "}
-                      <span>●</span>{" "}
+                      <span>✔</span>{" "}
                       <span>
                         All corners of the shaft cannot be straight by using
                         grinding or any machining equipment.
@@ -531,7 +527,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>●</span>{" "}
+                      <span>✔</span>{" "}
                       <span>
                         Sliding portion needs to be supplied with oil.
                       </span>{" "}
@@ -552,11 +548,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               </div>{" "}
               {/* Workflow Image */}
               <div className="image-wrapper-flush">
-                <img
-                  src={reliefWorkflowImg}
-                  alt="Relief process loading workflow"
-                  className="software-screenshot"
-                />
+                <img src={reliefWorkflowImg} alt="Relief process loading workflow" className="software-screenshot" />
               </div>{" "}
               {/* Template Selection Info */}
               <div className="info-box">
@@ -568,17 +560,13 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   {" "}
                   <li>
                     {" "}
-                    <span>●</span> <span>Click OK</span>{" "}
+                    <span>✔</span> <span>Click OK</span>{" "}
                   </li>{" "}
                 </ul>
               </div>{" "}
               {/* Dialog Image */}
               <div className="image-wrapper-flush">
-                <img
-                  src={reliefDialogImg}
-                  alt="Template selection dialogue"
-                  className="software-screenshot screenshot-large"
-                />
+                <img src={reliefDialogImg} alt="Template selection dialogue" className="software-screenshot screenshot-large" />
               </div>{" "}
               {/* Footer Note */}
               <div className="sub-section-header">
@@ -597,14 +585,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
             </p>
           )}
           <div className="lesson-navigation">
-            {" "}
             <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
+              <ChevronLeft size={18} /> Previous
+            </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -614,3 +599,4 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 };
 
 export default StandardPartLesson;
+

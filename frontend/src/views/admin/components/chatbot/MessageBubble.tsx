@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Brain, Zap, RefreshCw, ThumbsUp, ThumbsDown, Volume2, VolumeX, Copy, Check, GitBranch, Sparkles } from 'lucide-react';
-import { ChatEntry } from './types';
-import { ChatSource, MediaAsset } from '../../../../services/searchService';
-import { MediaCard } from './SourcesPanel';
+import { Brain, Zap, RefreshCw, ThumbsUp, ThumbsDown, Volume2, VolumeX, Copy, Check, GitBranch, Sparkles } from 'lucide-react'; import { ChatEntry } from './types';
+import { ChatSource, MediaAsset } from '../../../../services/searchService'; import { MediaCard } from './SourcesPanel';
 
 // Collects media ONLY from sources that are actually cited in the content string
 function collectMedia(sources: ChatSource[], content: string): { asset: MediaAsset; source: string }[] {
@@ -76,11 +74,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
                 const sourceIdx = parseInt(match[1]) - 1;
                 const source = msg.sources?.[sourceIdx];
                 return (
-                    <sup
-                        key={i}
-                        className="citation-marker"
-                        title={source ? `Source: ${source.source}` : 'Reference'}
-                    >
+                    <sup key={i} className="citation-marker" title={source ? `Source: ${source.source}` : 'Reference'}>
                         {match[1]}
                     </sup>
                 );
@@ -111,10 +105,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
 
                 {!isRegenerating && (
                     <>
-                        <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
-                            components={{
-                                // Use code component for citations or just post-process the text
+                        <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]} 
+                            components={{ 
+                                // Use code component for citations or just post-process the text 
                                 p: ({ children }) => <p>{renderContent(children as any)}</p>
                             }}
                         >
@@ -128,9 +122,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
 
                         {/* Retry button for error messages */}
                         {msg.isError && msg.retryPayload && onRetry && (
-                            <button
-                                className="retry-btn"
-                                onClick={() => onRetry(msg.retryPayload)}
+                            <button className="retry-btn" onClick={() => onRetry(msg.retryPayload)}
                                 aria-label="Retry failed request"
                             >
                                 <RefreshCw size={14} /> Retry
@@ -140,10 +132,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
                         {msg.user_images && msg.user_images.length > 0 && (
                             <div className="user-uploaded-images-grid">
                                 {msg.user_images.map((img, i) => (
-                                    <div
-                                        key={i}
-                                        className="user-uploaded-image"
-                                        onClick={() => onOpenLightbox(img, `Attachment ${i + 1}`, 'User')}
+                                    <div key={i} className="user-uploaded-image" onClick={() => onOpenLightbox(img, `Attachment ${i + 1}`, 'User')}
                                         role="button"
                                         tabIndex={0}
                                         aria-label={`View attachment ${i + 1}`}
@@ -170,10 +159,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
                                 </div>
                                 <div className="suggestions-grid">
                                     {msg.suggestions.map((suggestion, sIdx) => (
-                                        <button
-                                            key={sIdx}
-                                            className="suggestion-chip"
-                                            onClick={() => onSuggestionClick(suggestion)}
+                                        <button key={sIdx} className="suggestion-chip" onClick={() => onSuggestionClick(suggestion)}
                                             aria-label={`Ask: ${suggestion}`}
                                         >
                                             {suggestion}
@@ -188,9 +174,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
                             <div className="bubble-feedback">
                                 {/* Regenerate button */}
                                 {msg.userPrompt && onRegenerate && sessionId && (
-                                    <button
-                                        className="feedback-btn regenerate-btn"
-                                        onClick={() => onRegenerate(sessionId, idx)}
+                                    <button className="feedback-btn regenerate-btn" onClick={() => onRegenerate(sessionId, idx)}
                                         aria-label="Regenerate response"
                                         title="Try again with a different response"
                                     >
@@ -198,41 +182,31 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
                                     </button>
                                 )}
                                 {onBranch && (
-                                    <button
-                                        className="feedback-btn branch-btn"
-                                        onClick={() => onBranch(idx)}
+                                    <button className="feedback-btn branch-btn" onClick={() => onBranch(idx)}
                                         aria-label="Branch conversation"
                                         title="Start a new chat from this point"
                                     >
                                         <GitBranch size={13} />
                                     </button>
                                 )}
-                                <button
-                                    className={`feedback-btn speak-btn ${currentlyReadingIdx === idx ? 'speaking' : ''}`}
-                                    onClick={() => onSpeak(msg.content, idx)}
+                                <button className={`feedback-btn speak-btn ${currentlyReadingIdx === idx ? 'speaking' : ''}`} onClick={() => onSpeak(msg.content, idx)}
                                     aria-label={currentlyReadingIdx === idx ? 'Stop reading aloud' : 'Read aloud'}
                                     aria-pressed={currentlyReadingIdx === idx}
                                 >
                                     {currentlyReadingIdx === idx ? <VolumeX size={13} /> : <Volume2 size={13} />}
                                 </button>
-                                <button
-                                    className={`feedback-btn copy-btn ${copiedIdx === idx ? 'copied' : ''}`}
-                                    onClick={() => onCopy(msg.content, idx)}
+                                <button className={`feedback-btn copy-btn ${copiedIdx === idx ? 'copied' : ''}`} onClick={() => onCopy(msg.content, idx)}
                                     aria-label="Copy to clipboard"
                                 >
                                     {copiedIdx === idx ? <Check size={13} className="text-green-500" /> : <Copy size={13} />}
                                 </button>
-                                <button
-                                    className={`feedback-btn ${msg.feedback === 'up' ? 'active-up' : ''}`}
-                                    onClick={() => sessionId && onFeedback(sessionId, idx, 'up')}
+                                <button className={`feedback-btn ${msg.feedback === 'up' ? 'active-up' : ''}`} onClick={() => sessionId && onFeedback(sessionId, idx, 'up')}
                                     aria-label={msg.log_id ? 'Mark as helpful' : 'Mark as helpful (not logged)'}
                                     disabled={!msg.log_id && msg.feedback !== 'up'}
                                 >
                                     <ThumbsUp size={13} />
                                 </button>
-                                <button
-                                    className={`feedback-btn ${msg.feedback === 'down' ? 'active-down' : ''}`}
-                                    onClick={() => sessionId && onFeedback(sessionId, idx, 'down')}
+                                <button className={`feedback-btn ${msg.feedback === 'down' ? 'active-down' : ''}`} onClick={() => sessionId && onFeedback(sessionId, idx, 'down')}
                                     aria-label={msg.log_id ? 'Mark as not helpful' : 'Mark as not helpful (not logged)'}
                                     disabled={!msg.log_id && msg.feedback !== 'down'}
                                 >
