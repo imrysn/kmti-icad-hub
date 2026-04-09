@@ -1,6 +1,5 @@
 import React from 'react';
-import { RefreshCw } from 'lucide-react';
-import { SystemStats, TraineeProgress } from '../../../services/adminService';
+import { RefreshCw } from 'lucide-react'; import { SystemStats, TraineeProgress } from '../../../services/adminService';
 import { AdminTab } from '../AdminMode';
 
 interface AdminHeaderProps {

@@ -1,6 +1,5 @@
 import React from 'react';
-import { BookOpen, PlayCircle } from 'lucide-react';
-import { Course } from '../../../types';
+import { BookOpen, PlayCircle } from 'lucide-react'; import { Course } from '../../../types';
 import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
 
 interface CourseSelectorProps {
@@ -34,19 +33,16 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({ courses, loading
     }
 
     return (
-        <div className="mentor-mode animate-fade-in">
+        <div className="mentor-mode course-selector-view animate-fade-in">
             <div className="mentor-header">
-                <BookOpen size={48} className="lesson-intro-icon" />
+                <BookOpen size={48} className="lesson-intro-icon course-welcome-icon" />
                 <h1>Welcome to iCAD Hub</h1>
                 <p>Select your learning path to begin the deep dive</p>
             </div>
             <div className="course-selection">
                 <div className="course-grid">
                     {courses.map((course) => (
-                        <div
-                            key={course.id}
-                            className="course-card"
-                            onClick={() => setSelectedCourse(course)}
+                        <div key={course.id} className="course-card" onClick={() => setSelectedCourse(course)}
                         >
                             <div className="card-header">
                                 <h3>{course.title}</h3>

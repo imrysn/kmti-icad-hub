@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {
-    MessageSquare, Users, Zap, Clock, TrendingUp, Search, Trash2,
-    RefreshCw, ChevronLeft, ChevronRight, Brain, FileText,
-    ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, Database, X,
-    FileUp, AlertCircle, CheckCircle2, Upload
-} from 'lucide-react';
-import { adminService, KBFile } from '../../../services/adminService';
-import { useUI } from '../../../context/UIContext';
+import { MessageSquare, Users, Zap, Clock, TrendingUp, Search, Trash2, RefreshCw, ChevronLeft, ChevronRight, Brain, FileText, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, Database, X, FileUp, AlertCircle, CheckCircle2, Upload } from 'lucide-react';
+import { adminService, KBFile } from '../../../services/adminService'; import { useUI } from '../../../context/UIContext';
 import { useNotification } from '../../../context/NotificationContext';
 import '../../../styles/IntelligenceHub.css';
 
@@ -77,9 +71,7 @@ const LogRow: React.FC<{ log: ChatLogEntry; onDelete: (id: number) => void }> = 
                 <td className="ih-center">{log.tokens_estimated}</td>
                 <td className="ih-center">{log.response_time_ms}ms</td>
                 <td className="ih-center">
-                    {log.had_media
-                        ? <span className="ih-badge ih-badge-media">media</span>
-                        : <span className="ih-badge ih-badge-text">text</span>}
+                    {log.had_media ? <span className="ih-badge ih-badge-media">media</span> : <span className="ih-badge ih-badge-text">text</span>}
                 </td>
                 <td className="ih-center">
                     <div className="ih-row-actions">
@@ -121,30 +113,30 @@ const LogRow: React.FC<{ log: ChatLogEntry; onDelete: (id: number) => void }> = 
 /* ─────────────────────────────────────────────────────────────────
    MAIN COMPONENT
 ───────────────────────────────────────────────────────────────── */
-
 export const KnowledgeManagement: React.FC = () => {
     const { requestConfirmation } = useUI();
-
+    const { showNotification } = useNotification();
+    
     // ── Analytics state ──
     const [stats, setStats] = useState<Stats | null>(null);
     const [feedbackStats, setFeedbackStats] = useState<FeedbackStats | null>(null);
     const [cacheStats, setCacheStats] = useState<CacheStats | null>(null);
     const [logs, setLogs] = useState<ChatLogEntry[]>([]);
     const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(0); 
     const [search, setSearch] = useState('');
-    const [searchInput, setSearchInput] = useState('');
+    const [searchInput, setSearchInput] = useState(''); 
     const [statsLoading, setStatsLoading] = useState(true);
-    const [logsLoading, setLogsLoading] = useState(true);
+    const [logsLoading, setLogsLoading] = useState(true); 
     const [clearingCache, setClearingCache] = useState(false);
 
     // ── KB state ──
-    const [files, setFiles] = useState<KBFile[]>([]);
+    const [files, setFiles] = useState<KBFile[]>([]); 
     const [kbLoading, setKbLoading] = useState(true);
-    const [uploading, setUploading] = useState(false);
+    const [uploading, setUploading] = useState(false); 
     const [dragActive, setDragActive] = useState(false);
     const [kbExpanded, setKbExpanded] = useState(false);
-    const { showNotification } = useNotification();
+    
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     /* ── Fetchers ── */
@@ -434,11 +426,7 @@ export const KnowledgeManagement: React.FC = () => {
                     <div className="ih-logs-controls">
                         <form className="ih-search" onSubmit={handleSearch}>
                             <Search size={12} />
-                            <input
-                                type="text"
-                                placeholder="Filter by username..."
-                                value={searchInput}
-                                onChange={e => setSearchInput(e.target.value)}
+                            <input type="text" placeholder="Filter by username..." value={searchInput} onChange={e => setSearchInput(e.target.value)}
                                 className="ih-search-input"
                             />
                         </form>
@@ -497,11 +485,7 @@ export const KnowledgeManagement: React.FC = () => {
                             {kbExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                         </div>
                     </button>
-                    <button
-                        className="ih-reindex-btn"
-                        onClick={handleReindex}
-                        disabled={kbLoading}
-                    >
+                    <button className="ih-reindex-btn" onClick={handleReindex} disabled={kbLoading}>
                         <RefreshCw size={12} className={kbLoading ? 'spinning' : ''} />
                         Re-index
                     </button>
@@ -510,10 +494,7 @@ export const KnowledgeManagement: React.FC = () => {
                 {kbExpanded && (
                     <div className="ih-kb-body">
                         {/* Upload zone */}
-                        <div
-                            className={`ih-upload-zone ${dragActive ? 'drag-active' : ''} ${uploading ? 'uploading' : ''}`}
-                            onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}
-                            onClick={() => fileInputRef.current?.click()}
+                        <div className={`ih-upload-zone ${dragActive ? 'drag-active' : ''} ${uploading ? 'uploading' : ''}`} onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop} onClick={() => fileInputRef.current?.click()}
                         >
                             <input ref={fileInputRef} type="file" multiple accept=".xlsx,.csv,.py" className="ih-hidden-input" onChange={e => e.target.files && handleUpload(Array.from(e.target.files))} />
                             {uploading ? (

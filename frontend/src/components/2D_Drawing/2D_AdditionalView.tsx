@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Additional View (1) */
@@ -23,6 +24,7 @@ import additionalView3ImgE from "../../assets/2D_Image_File/2D_additional_view(3
 import additionalView4ImgF from "../../assets/2D_Image_File/2D_additional_view(4)_f.png";
 
 interface AdditionalViewLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -31,11 +33,29 @@ interface AdditionalViewLessonProps {
 const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
   subLessonId = "2d-additional-view-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const additionalView1Steps = [
+    "Cross Section View: Follow steps 1 through 4 to create a basic cross section. Note that the text height of the section name must match the dimension text height."
+  ];
+
+  const additionalView2Steps = [
+    "Partial Section: Use this tool to create a cross-section of a specific part area. Select the view, define the boundary, and set the depth.",
+    "Detail Drawing: Use this to show a specific view area on a larger scale for better clarity."
+  ];
+
+  const additionalView3Steps = [
+    "Isometric View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
+    "Cross-sectional Depth: Set the depth to eliminate unnecessary background parts from your section view."
+  ];
+
+  const additionalView4Steps = [
+    "Trim: This is another way to eliminate unneeded parts from a view. Note that Trim cannot be applied to Detail Drawings."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,16 +89,21 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> 20. ADDITIONAL
+          20. ADDITIONAL
           VIEW
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            if (subLessonId === "2d-additional-view-1") speak(additionalView1Steps);
+            else if (subLessonId === "2d-additional-view-2") speak(additionalView2Steps);
+            else if (subLessonId === "2d-additional-view-3") speak(additionalView3Steps);
+            else if (subLessonId === "2d-additional-view-4") speak(additionalView4Steps);
+          }}
+            onStop={stop}
+          />
         </h3>
       </section>
       <div className="lesson-grid single-card">
@@ -94,21 +119,13 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 {/* Steps 1-4 */}
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={additionalView1Img1}
-                      alt="Cross Section View Steps 1-4"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={additionalView1Img1} alt="Cross Section View Steps 1-4" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>{" "}
                 {/* Step 6 and Dialog Box Content */}
                 <div className="flex-row">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={additionalView1Img2}
-                      alt="Cross Section View Dialog and Steps 5-6"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={additionalView1Img2} alt="Cross Section View Dialog and Steps 5-6" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>{" "}
@@ -136,11 +153,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={additionalView2ImgB}
-                      alt="Partial Section Operations"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={additionalView2ImgB} alt="Partial Section Operations" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>{" "}
@@ -157,11 +170,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={additionalView2ImgC}
-                      alt="Detail Drawing Procedure"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={additionalView2ImgC} alt="Detail Drawing Procedure" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -175,11 +184,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 <h4> d. Isometric View </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={additionalView3ImgD}
-                      alt="Isometric View Steps"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={additionalView3ImgD} alt="Isometric View Steps" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>{" "}
@@ -196,11 +201,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 </p>
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={additionalView3ImgE}
-                      alt="Cross-sectional depth Steps"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={additionalView3ImgE} alt="Cross-sectional depth Steps" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -221,11 +222,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={additionalView4ImgF}
-                      alt="Trim View Steps"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={additionalView4ImgF} alt="Trim View Steps" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -247,7 +244,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -257,3 +254,6 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
 };
 
 export default AdditionalViewLesson;
+
+
+

@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { getCourses } from '../services/api';
+import { useState, useEffect } from 'react'; import { getCourses } from '../services/api';
 import { Course } from '../types';
 
 export const useCourses = () => {

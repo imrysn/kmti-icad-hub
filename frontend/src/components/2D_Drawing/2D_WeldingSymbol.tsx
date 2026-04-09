@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Welding Symbol and Notes */
@@ -12,17 +13,23 @@ import weldingSymbolNotesImg from "../../assets/2D_Image_File/2D_welding_symbol_
 import standardNotesImg from "../../assets/2D_Image_File/2D_welding_symbol_standard_notes.jpg";
 
 interface WeldingSymbolLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const weldingSteps = [
+    "Welding Symbols: Before adding a symbol, apply welding hatches as a visual representation. The arrow line acts as your welding torch. Keep leg lengths at sixty percent of the thinner plate thickness unless the design specifies otherwise.",
+    "Standard Notes: These are located in the upper left corner. They cover mandatory requirements like chamfering holes, deburring corners, and ensuring parts are free from dust. While the tapping note can be removed if not needed, text properties must never be altered."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,16 +63,16 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Welding Symbol /
+          Welding Symbol /
           Notes
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(weldingSteps)}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -84,11 +91,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
               <h4> 13. Welding Symbol </h4>
               <div className="flex-col">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={weldingSymbolMainImg}
-                    alt="Welding Symbol Menu Selection"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={weldingSymbolMainImg} alt="Welding Symbol Menu Selection" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
               <div className="flex-row">
@@ -121,11 +124,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                 </div>
 
                 <div className="image-wrapper-flush">
-                  <img
-                    src={weldingSymbolNotesImg}
-                    alt="Welding Hatches and Symbol Sample Drawing"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={weldingSymbolNotesImg} alt="Welding Hatches and Symbol Sample Drawing" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>
@@ -137,7 +136,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                 {" "}
                 14. Notes{" "}
                 <span>
-                  —— Notes are always located in the upper left corner of the
+                  — ENotes are always located in the upper left corner of the
                   template.
                 </span>{" "}
               </h4>
@@ -146,11 +145,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                 <h5>a. Standard Notes</h5>
                 <div className="flex-row">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={standardNotesImg}
-                      alt="Standard Notes location in Title Block"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={standardNotesImg} alt="Standard Notes location in Title Block" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <div className="info-box">
@@ -193,7 +188,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -203,3 +198,6 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
 };
 
 export default WeldingSymbolLesson;
+
+
+

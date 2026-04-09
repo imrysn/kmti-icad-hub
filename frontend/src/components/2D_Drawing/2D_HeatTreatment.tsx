@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Heat Treatment */
@@ -16,6 +17,7 @@ import heatTreatmentProcessImg3 from "../../assets/2D_Image_File/2D_heat_treatme
 import heatTreatmentProcessImg4 from "../../assets/2D_Image_File/2D_heat_treatment_(4)_heat_treatment_process.jpg";
 
 interface HeatTreatmentLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -24,11 +26,28 @@ interface HeatTreatmentLessonProps {
 const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
   subLessonId = "2d-heat-treatment-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const heat1Steps = [
+    "Heat Treatment Specifications: Review the material and specification table to understand the required thermal processes for each part."
+  ];
+
+  const heat2Steps = [
+    "Revision Standards: Hardness expressions follow JIS standards. For nitriding, we use specific temps like 480 and 580 degrees to prevent warping.",
+    "Process Table: The Heat Treatment Process table details the sequence of operations required for hardening and refining."
+  ];
+
+  const heat3Steps = [
+    "Process Continuation: Follow the technical data in the process table to ensure correct tempering and quenching parameters."
+  ];
+
+  const heat4Steps = [
+    "Final Process: Verify the final hardness standards for materials like S50C and S55C, including induction hardening specifications."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,16 +81,21 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Heat Treatment (
+          Heat Treatment (
           {subLessonId.split("-").pop()})
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-heat-treatment-1") speak(heat1Steps);
+              else if (subLessonId === "2d-heat-treatment-2") speak(heat2Steps);
+              else if (subLessonId === "2d-heat-treatment-3") speak(heat3Steps);
+              else if (subLessonId === "2d-heat-treatment-4") speak(heat4Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -88,11 +112,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
             {subLessonId === "2d-heat-treatment-1" ? (
               <div className="lesson-section">
                 <div className="image-wrapper-flush">
-                  <img
-                    src={heatTreatmentImg1}
-                    alt="Heat Treatment Material and Specification Table"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={heatTreatmentImg1} alt="Heat Treatment Material and Specification Table" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             ) : subLessonId === "2d-heat-treatment-2" ? (
@@ -101,11 +121,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 {/* Part 2 - Material Table Continuation */}
                 <div className="lesson-section">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={heatTreatmentImg2}
-                      alt="Heat Treatment Material and Specification Table Continued"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={heatTreatmentImg2} alt="Heat Treatment Material and Specification Table Continued" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>{" "}
                 {/* Rev Notes Section */}
@@ -152,11 +168,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                   {" "}
                   <h4> Heat Treatment Process </h4>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={heatTreatmentProcessImg2}
-                      alt="Heat Treatment Process Table"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={heatTreatmentProcessImg2} alt="Heat Treatment Process Table" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -166,11 +178,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                   {" "}
                   <h4> Heat Treatment Process (Continued) </h4>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={heatTreatmentProcessImg3}
-                      alt="Heat Treatment Process Table Continued"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={heatTreatmentProcessImg3} alt="Heat Treatment Process Table Continued" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -180,11 +188,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                   {" "}
                   <h4> Heat Treatment Process (Final) </h4>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={heatTreatmentProcessImg4}
-                      alt="Heat Treatment Process Table Final"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={heatTreatmentProcessImg4} alt="Heat Treatment Process Table Final" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -208,7 +212,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -218,3 +222,6 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 };
 
 export default HeatTreatmentLesson;
+
+
+

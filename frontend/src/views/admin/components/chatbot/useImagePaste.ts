@@ -1,5 +1,4 @@
-import { useState, useCallback } from 'react';
-import { ImagePayload } from '../../../../services/searchService';
+import { useState, useCallback } from 'react'; import { ImagePayload } from '../../../../services/searchService';
 
 export const useImagePaste = (showModal: (title: string, message: string, type: 'confirm' | 'danger' | 'info') => void) => {
     const [selectedImages, setSelectedImages] = useState<ImagePayload[]>([]);

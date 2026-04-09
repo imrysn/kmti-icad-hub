@@ -21,8 +21,7 @@ interface LightboxProps {
 }
 
 export const ImageLightbox: React.FC<LightboxProps> = ({ images, initialIndex = 0, onClose }) => {
-    const [idx, setIdx] = useState(initialIndex);
-    const [scale, setScale] = useState(1);
+    const [idx, setIdx] = useState(initialIndex); const [scale, setScale] = useState(1);
     const current = images[idx];
 
     const prev = useCallback(() => { setIdx(i => (i - 1 + images.length) % images.length); setScale(1); }, [images.length]);
@@ -71,13 +70,7 @@ export const ImageLightbox: React.FC<LightboxProps> = ({ images, initialIndex = 
                         <button className="lightbox-nav prev" onClick={prev}><ChevronLeft size={22} /></button>
                     )}
                     <div className="lightbox-img-wrapper">
-                        <img
-                            src={current.url}
-                            alt={current.caption || 'image'}
-                            style={{ transform: `scale(${scale})` }}
-                            className="lightbox-img"
-                            draggable={false}
-                        />
+                        <img src={current.url} alt={current.caption || 'image'} style={{ transform: `scale(${scale})` }} className="lightbox-img" draggable={false} />
                     </div>
                     {images.length > 1 && (
                         <button className="lightbox-nav next" onClick={next}><ChevronRight size={22} /></button>
@@ -88,12 +81,7 @@ export const ImageLightbox: React.FC<LightboxProps> = ({ images, initialIndex = 
                 {images.length > 1 && (
                     <div className="lightbox-thumbs">
                         {images.map((img, i) => (
-                            <img
-                                key={i}
-                                src={img.url}
-                                alt={img.caption || ''}
-                                className={`lightbox-thumb ${i === idx ? 'active' : ''}`}
-                                onClick={() => { setIdx(i); setScale(1); }}
+                            <img key={i} src={img.url} alt={img.caption || ''} className={`lightbox-thumb ${i === idx ? 'active' : ''}`} onClick={() => { setIdx(i); setScale(1); }}
                             />
                         ))}
                     </div>
@@ -122,11 +110,8 @@ interface FilePreviewProps {
 }
 
 export const FilePreviewModal: React.FC<FilePreviewProps> = ({ filename, onClose, onDownload, onPreview }) => {
-    const [data, setData] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [activeSheet, setActiveSheet] = useState<string>('');
-    const [search, setSearch] = useState('');
+    const [data, setData] = useState<any>(null); const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null); const [activeSheet, setActiveSheet] = useState<string>(''); const [search, setSearch] = useState('');
 
     useEffect(() => {
         const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -191,10 +176,7 @@ export const FilePreviewModal: React.FC<FilePreviewProps> = ({ filename, onClose
                 {data?.type === 'xlsx' && data.sheets && (
                     <div className="fpm-tabs">
                         {Object.keys(data.sheets).map(sheet => (
-                            <button
-                                key={sheet}
-                                className={`fpm-tab ${activeSheet === sheet ? 'active' : ''}`}
-                                onClick={() => setActiveSheet(sheet)}
+                            <button key={sheet} className={`fpm-tab ${activeSheet === sheet ? 'active' : ''}`} onClick={() => setActiveSheet(sheet)}
                             >
                                 {sheet}
                             </button>
@@ -205,11 +187,7 @@ export const FilePreviewModal: React.FC<FilePreviewProps> = ({ filename, onClose
                 {/* Search */}
                 {isPreviewable && !loading && !error && rows.length > 0 && (
                     <div className="fpm-search-bar">
-                        <input
-                            type="text"
-                            placeholder="Search in file..."
-                            value={search}
-                            onChange={e => setSearch(e.target.value)}
+                        <input type="text" placeholder="Search in file..." value={search} onChange={e => setSearch(e.target.value)}
                             className="fpm-search"
                             autoFocus
                         />

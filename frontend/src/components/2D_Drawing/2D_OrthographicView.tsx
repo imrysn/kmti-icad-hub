@@ -1,469 +1,229 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import {
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-  Layout,
-  ScanLine,
-  Scale,
-  Info,
-  Play,
-} from "lucide-react";
-
+import React from "react";
+import { ChevronLeft, ChevronRight, Layout } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { useLessonCore } from "../../hooks/useLessonCore";
 import "../../styles/2D_Drawing/CourseLesson.css";
-/* Importing assets for Create Orthographic View (1) */
 
+// --- Assets ---
 import drawingTemplateImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_1.png";
-/* Section 1: Template */
-
 import createViewImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_a.png";
-/* Section a: Creation/Deletion */
-
 import scalingImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_b.png";
-/* Section b: Scale */
-/* Importing assets for Create Orthographic View (2) */
-
 import hiddenLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_c.2.jpg";
-/* Section c: Dialog */
-
 import hiddenLineResultImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_c.png";
-/* Section c: Result */
-
 import tangentLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_d.2.jpg";
-/* Section d: Dialog */
-
 import tangentLineResultImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_d.png";
-/* Section d: Result */
-/* Importing assets for Create Orthographic View (3) */
-
 import highPrecisionDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(3)_e1.jpg";
-/* Section e: Dialog */
-
 import highPrecisionResultImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(3)_e.png";
-/* Section e: Result */
 
 interface OrthographicViewLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
+/**
+ * OrthographicViewLesson component for 2D Drawing curriculum.
+ * Refactored to use useLessonCore hook for centralized logic.
+ */
 const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
   subLessonId = "2d-orthographic-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  onPrevLesson, nextLabel }) => {
+  const { 
+    scrollProgress, 
+    containerRef, 
+    speak, 
+    stop, 
+    isSpeaking, 
+    currentIndex 
+  } = useLessonCore(subLessonId);
 
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
+  // --- Content Mapping ---
+  const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
+    '2d-orthographic-1': {
+      title: 'CREATE ORTHOGRAPHIC VIEW (1)',
+      steps: [
+        "Drawing Template: Select and insert the standard KEMCO drawing template to begin your drafting process.",
+        "Projection Method: KEMCO follows the Third Angle Projection method (standard for JIS and ANSI). In this method, the Top view is above the Front view, and the Right Side view is to the right.",
+        "View Management: Use the tools to create standard orthographic views or delete unneeded ones from your project.",
+        "Scaling: Set the scale via Projection Properties. Never use the toolbar for scaling, as it won't update dimensions correctly. Note that standard views scale together, while cross-sections and detail views must be scaled individually."
+      ]
+    },
+    '2d-orthographic-2': {
+      title: 'CREATE ORTHOGRAPHIC VIEW (2)',
+      steps: [
+        "Hidden Lines: Hidden lines aren't shown by default. Check the hidden line box in Projection Properties for each view where they are required.",
+        "Tangent Lines: Use this to show or hide fillet lines. Like hidden lines, this must be enabled per view via the properties dialog."
+      ]
+    },
+    '2d-orthographic-3': {
+      title: 'CREATE ORTHOGRAPHIC VIEW (3)',
+      steps: [
+        "High Precision: Enable this for complex assemblies or small parts to prevent broken or missing lines. If one view requires it, it's best practice to apply it to all views for consistency."
+      ]
     }
-
-    return () => {
-      if (currentContainer) {
-        currentContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [subLessonId]);
-
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
-
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-
-      return next;
-    });
   };
 
-  const getStepClass = (stepId: string) => {
-    return `instruction-step interactive ${completedSteps.has(stepId) ? "completed" : ""}`;
-  };
+  const currentLesson = LESSON_DATA[subLessonId] || { title: 'ORTHOGRAPHIC VIEW', steps: [] };
 
   return (
-    <div
-      className="course-lesson-container orthographic-view-lesson"
-      ref={containerRef}
-    >
-      {" "}
-      {/* Sticky Progress Bar */}
+    <div className="course-lesson-container orthographic-view-lesson" ref={containerRef}>
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
+
       <section className="lesson-intro">
         <h3 className="section-title">
-          {" "}
-          <Layout
-            size={28}
-            strokeWidth={2.5}
-            className="lesson-intro-icon"
-          />{" "}
-          {subLessonId === "2d-orthographic-1"
-            ? "CREATE ORTHOGRAPHIC VIEW (1)"
-            : subLessonId === "2d-orthographic-2"
-              ? "CREATE ORTHOGRAPHIC VIEW (2)"
-              : "CREATE ORTHOGRAPHIC VIEW (3)"}
+          {currentLesson.title}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)}
+            onStop={stop}
+          />
         </h3>
-
-        <p className="p-flush">
-          {" "}
-          {subLessonId === "2d-orthographic-1" ? (
-            <> </>
-          ) : (
-            `No content currently available for this section.`
-          )}
-        </p>
+        {currentLesson.steps.length === 0 && (
+          <p className="p-flush">No content currently available for this section.</p>
+        )}
       </section>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {" "}
-          {subLessonId === "2d-orthographic-1" ? (
-            <>
-              {" "}
-              {/* Section 1: Inserting Drawing Template */}
-              <div
-                className={getStepClass("ov1-1")}
-                onClick={() => toggleStep("ov1-1")}
-              >
+          {subLessonId === "2d-orthographic-1" && (
+            <div className="tab-pane">
+              <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ov1-1") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ov1-1") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "1"
-                    )}{" "}
-                  </span>{" "}
+                  <span className="step-number">1</span>
                   <span className="step-label">INSERTING DRAWING TEMPLATE</span>
                 </div>
-
                 <div className="step-description">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={drawingTemplateImg}
-                      alt="Inserting Drawing Template"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={drawingTemplateImg} alt="Inserting Drawing Template" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
-              </div>{" "}
-              {/* Section a: Creating Orthographic View / Delete Views */}
-              <div
-                className={getStepClass("ov1-a")}
-                onClick={() => toggleStep("ov1-a")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ov1-a") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ov1-a") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "a"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">
-                    CREATING ORTHOGRAPHIC VIEW / DELETE VIEWS
-                  </span>
-                </div>
+              </div>
 
+              <div className="section-divider" />
+
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
+                <div className="step-header">
+                  <span className="step-number">2</span>
+                  <span className="step-label">PROJECTION METHOD</span>
+                </div>
+                <div className="step-description">
+                  <div className="info-box">
+                    <p className="p-flush">KEMCO Hub follows the <strong>Third Angle Projection</strong> method (JIS/ANSI standard).</p>
+                    <p className="p-flush">In this method, the <strong>Top View</strong> is placed directly above the <strong>Front View</strong>, and the <strong>Right View</strong> is placed to its right.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="section-divider" />
+
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
+                <div className="step-header">
+                  <span className="step-number">a</span>
+                  <span className="step-label">CREATING ORTHOGRAPHIC VIEW / DELETE VIEWS</span>
+                </div>
                 <div className="step-description">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={createViewImg}
-                      alt="Creating Orthographic Views"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={createViewImg} alt="Creating Orthographic Views" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
-              </div>{" "}
-              {/* Section b: Scale */}
-              <div
-                className={getStepClass("ov1-b")}
-                onClick={() => toggleStep("ov1-b")}
-              >
+              </div>
+
+              <div className="section-divider" />
+
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ov1-b") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ov1-b") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "b"
-                    )}{" "}
-                  </span>{" "}
+                  <span className="step-number">b</span>
                   <span className="step-label">SCALE</span>
                 </div>
-
                 <div className="step-description">
-                  <p className="p-flush">
-                    Set the scale of selected view. When changing the scale,
-                    take note to always use the Projection Properties.
-                  </p>
-
-                  <p className="p-flush">
-                    <i>
-                      Do not change the scale on the tool bar because the
-                      dimensions and notes will not update according to the set
-                      scale.
-                    </i>
-                  </p>
-
+                  <p className="p-flush">Set the scale of selected view. When changing the scale, take note to always use the Projection Properties.</p>
+                  <p className="p-flush"><em>Do not change the scale on the tool bar because the dimensions and notes will not update according to the set scale.</em></p>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={scalingImg}
-                      alt="Scaling and Projection Properties"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide" />
                   </div>
-
                   <div className="info-box">
-                    <p className="p-flush">
-                      {" "}
-                      Note: When changing the scale of a standard view, other
-                      standard views also change the scale. Cross section view
-                      and detail view need to chnage the scale separately.
-                    </p>
+                    <p className="p-flush">Note: Standard views scale together (Top, Front, Right). Other views like Cross sections must be scaled separately.</p>
                   </div>
                 </div>
-              </div>{" "}
-            </>
-          ) : subLessonId === "2d-orthographic-2" ? (
-            <>
-              {" "}
-              {/* Section c: Hidden Line */}
-              <div
-                className={getStepClass("ov2-c")}
-                onClick={() => toggleStep("ov2-c")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ov2-c") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ov2-c") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "c"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">
-                    {" "}
-                    <strong>Hidden Line</strong> - the hidden line is not
-                    automatically shown when orthographic view was inserted. It
-                    can be shown through the Projection Properties.{" "}
-                  </span>
-                </div>
+              </div>
+            </div>
+          )}
 
+          {subLessonId === "2d-orthographic-2" && (
+            <div className="tab-pane">
+              <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
+                <div className="step-header">
+                  <span className="step-number">c</span>
+                  <span className="step-label">Hidden Line Configuration</span>
+                </div>
                 <div className="step-description">
                   <div className="flex-row--top">
-                    <div>
-                      <div className="annotation-pointing-box">
-                        <p className="p-flush">
-                          The box for hidden lines must be checked in order for
-                          the hidden lines of a certain view to show.
-                        </p>
-
-                        <p className="p-flush">
-                          <i>
-                            Note: If the hidden lines must be shown in all
-                            views, then this process must be done in all views.
-                          </i>
-                        </p>
-                      </div>
+                    <div className="annotation-pointing-box">
+                      <p className="p-flush">Hidden lines are not automatically shown. Check the <strong>hidden lines</strong> box in Projection Properties.</p>
+                      <p className="p-flush"><em>Note: If required in multiple views, enable it for each view individually.</em></p>
                     </div>
-
-                    <img
-                      src={hiddenLineDialogImg}
-                      alt="Hidden Line Dialog"
-                      className="software-screenshot screenshot-small"
-                    />
-
+                    <img src={hiddenLineDialogImg} alt="Hidden Line Dialog" className="software-screenshot screenshot-small" />
                     <div className="flex-1">
-                      <img
-                        src={hiddenLineResultImg}
-                        alt="Hidden Line Result"
-                        className="software-screenshot screenshot-large"
-                      />
+                      <img src={hiddenLineResultImg} alt="Hidden Line Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="section-divider-sm"></div>{" "}
-              {/* Section d: Tangent Line */}
-              <div
-                className={getStepClass("ov2-d")}
-                onClick={() => toggleStep("ov2-d")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ov2-d") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ov2-d") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "d"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">
-                    {" "}
-                    <strong>Tangent Line</strong> - shows and hides lines from
-                    fillets of a view. The tangent lines from chamfers are shown
-                    automatically during insertion of orthographic view.{" "}
-                  </span>
-                </div>
 
+              <div className="section-divider-sm" />
+
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
+                <div className="step-header">
+                  <span className="step-number">d</span>
+                  <span className="step-label">Tangent Line Configuration</span>
+                </div>
                 <div className="step-description">
                   <div className="flex-row--top">
-                    <div>
-                      <div className="annotation-pointing-box">
-                        <p className="p-flush">
-                          The box for tangent line must be checked in order for
-                          the tangent lines of a certain view to show.
-                        </p>
-
-                        <p className="p-flush">
-                          <i>
-                            Note: If the tangent line must be shown in all
-                            views, then this process must be done in all views.
-                          </i>
-                        </p>
-                      </div>
+                    <div className="annotation-pointing-box">
+                      <p className="p-flush">Shows/hides lines from fillets. Chamfer lines are shown automatically.</p>
+                      <p className="p-flush"><em>Note: Enable via checkbox in Projection Properties per view.</em></p>
                     </div>
-
-                    <img
-                      src={tangentLineDialogImg}
-                      alt="Tangent Line Dialog"
-                      className="software-screenshot screenshot-small"
-                    />
-
+                    <img src={tangentLineDialogImg} alt="Tangent Line Dialog" className="software-screenshot screenshot-small" />
                     <div className="flex-1">
-                      <img
-                        src={tangentLineResultImg}
-                        alt="Tangent Line Result"
-                        className="software-screenshot screenshot-wide"
-                      />
+                      <img src={tangentLineResultImg} alt="Tangent Line Result" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
-              </div>{" "}
-            </>
-          ) : subLessonId === "2d-orthographic-3" ? (
-            <>
-              {" "}
-              {/* Section e: High Precision */}
-              <div
-                className={getStepClass("ov3-e")}
-                onClick={() => toggleStep("ov3-e")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ov3-e") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ov3-e") ? (
-                      <CheckCircle2 size={16} strokeWidth={3} />
-                    ) : (
-                      "e"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">
-                    {" "}
-                    <strong>High Precision</strong> - used for better projection
-                    of small components or parts on a part or assembly. When
-                    High precision is unchecked, some lines in the detail
-                    drawing are broken and some lines are missing. This is
-                    commonly used on assembly drawings but can also be used for
-                    parts, if necessary.{" "}
-                  </span>
-                </div>
+              </div>
+            </div>
+          )}
 
+          {subLessonId === "2d-orthographic-3" && (
+            <div className="tab-pane">
+              <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
+                <div className="step-header">
+                  <span className="step-number">e</span>
+                  <span className="step-label">High Precision Projection</span>
+                </div>
                 <div className="step-description">
                   <div className="flex-row--top">
-                    <div>
-                      <div className="annotation-pointing-box">
-                        <p className="p-flush">
-                          The box for high precision must be checked if there
-                          are broken lines and details missing on the assembly.
-                        </p>
-
-                        <p className="p-flush">
-                          <i>
-                            Note: If this scenario are shown in all views, then
-                            this process must be done in all views.
-                          </i>
-                        </p>
-                      </div>
+                    <div className="annotation-pointing-box">
+                      <p className="p-flush">Used for better projection of small components. Prevents broken or missing lines in detailed drawings.</p>
+                      <p className="p-flush"><em>Note: Commonly used on assembly drawings to ensure all fine details are visible.</em></p>
                     </div>
-
-                    <img
-                      src={highPrecisionDialogImg}
-                      alt="High Precision Dialog"
-                      className="software-screenshot screenshot-small"
-                    />
-
+                    <img src={highPrecisionDialogImg} alt="High Precision Dialog" className="software-screenshot screenshot-small" />
                     <div className="flex-1">
-                      <img
-                        src={highPrecisionResultImg}
-                        alt="High Precision Result"
-                        className="software-screenshot screenshot-large"
-                      />
+                      <img src={highPrecisionResultImg} alt="High Precision Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
-              </div>{" "}
-            </>
-          ) : null}
+              </div>
+            </div>
+          )}
+
           <div className="lesson-navigation">
-            {" "}
             <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
+              <ChevronLeft size={18} /> Previous
+            </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -473,3 +233,6 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 };
 
 export default OrthographicViewLesson;
+
+
+

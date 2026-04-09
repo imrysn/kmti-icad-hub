@@ -41,8 +41,9 @@ const LightPillar: React.FC = () => {
                 this.speed = Math.random() * 0.02 + 0.005;
                 this.alpha = Math.random() * 0.3 + 0.1;
 
-                const hue = 250 + Math.random() * 60; // Violet/Pink
-                this.color = `hsla(${hue}, 80%, 65%, ${this.alpha})`;
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                const hue = isLight ? (180 + Math.random() * 40) : (250 + Math.random() * 60); // Cyan/Blue vs Violet/Pink
+                this.color = `hsla(${hue}, 80%, ${isLight ? '45%' : '65%'}, ${this.alpha})`;
             }
 
             draw() {
@@ -69,9 +70,10 @@ const LightPillar: React.FC = () => {
                     else ctx.lineTo(finalX, y);
                 }
 
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
                 ctx.lineWidth = this.width;
                 ctx.strokeStyle = this.color;
-                ctx.globalCompositeOperation = 'lighter';
+                ctx.globalCompositeOperation = isLight ? 'source-over' : 'lighter';
                 ctx.stroke();
                 ctx.globalCompositeOperation = 'source-over';
             }
@@ -105,10 +107,10 @@ const LightPillar: React.FC = () => {
             ctx.translate(width / 2, height / 2); // Move to center
             ctx.rotate(Math.PI / 4); // Rotate 45deg
 
-            // 3. Draw Center Glow
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
             const gradient = ctx.createLinearGradient(-300, 0, 300, 0);
             gradient.addColorStop(0, 'rgba(0,0,0,0)');
-            gradient.addColorStop(0.5, 'rgba(139, 92, 246, 0.1)'); // Core Violet
+            gradient.addColorStop(0.5, isLight ? 'rgba(99, 102, 241, 0.05)' : 'rgba(139, 92, 246, 0.1)'); 
             gradient.addColorStop(1, 'rgba(0,0,0,0)');
 
             ctx.fillStyle = gradient;
@@ -133,20 +135,7 @@ const LightPillar: React.FC = () => {
     }, []);
 
     return (
-        <canvas
-            ref={canvasRef}
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                zIndex: 0,
-                width: '100%',
-                height: '100%',
-                pointerEvents: 'none',
-                filter: 'blur(8px)',
-                transform: 'scale(0.95)'
-            }}
-        />
+        <canvas ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', height: '100%', pointerEvents: 'none', filter: 'blur(8px)', transform: 'scale(0.95)' }} />
     );
 };
 

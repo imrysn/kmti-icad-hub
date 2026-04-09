@@ -12,11 +12,7 @@ export const MediaModal: React.FC<MediaModalProps> = ({ selectedMedia, setSelect
             <div className="media-modal-content" onClick={(e) => e.stopPropagation()}>
                 <h3>{selectedMedia.description}</h3>
                 {selectedMedia.media_type === 'video' ? (
-                    <video
-                        controls
-                        autoPlay
-                        src={`${selectedMedia.media_url}#t=${selectedMedia.timestamp_start || 0}`}
-                    >
+                    <video controls autoPlay src={`${selectedMedia.media_url}#t=${selectedMedia.timestamp_start || 0}`}>
                         Your browser does not support video.
                     </video>
                 ) : (

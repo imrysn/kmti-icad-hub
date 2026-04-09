@@ -3,54 +3,83 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
+const globalShortcut = electron.globalShortcut;
 const path = require('path');
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 440,
-        height: 550,
-        frame: true,
+        width: 1200,
+        height: 800,
+        frame: false, // Make the window frameless
         transparent: false,
-        backgroundColor: '#0f172a',
-        resizable: false,
+        backgroundColor: '#020617',
+        resizable: true,
         autoHideMenuBar: true,
         webPreferences: {
-            // SECURITY: nodeIntegration MUST be false to prevent renderer-process code
-            // from having full Node.js access. Any XSS in the renderer would otherwise
-            // give an attacker complete system access.
             nodeIntegration: false,
-            // SECURITY: contextIsolation MUST be true — isolates the preload script
-            // world from the renderer's JavaScript world.
             contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
-            // Disable remote module (deprecated and insecure)
             sandbox: true,
         },
     });
 
-    mainWindow.removeMenu();
-
-    // Load from Vite dev server in development, built files in production.
-    // Use app.isPackaged as the reliable production signal instead of NODE_ENV,
-    // which leaks DevTools in a packaged build if NODE_ENV=production isn't set.
+    // Handle development shortcuts and DevTools
     if (!app.isPackaged) {
-        // Try to load from port 5173, but fallback to 5174 if Vite shifted
         const devUrl = 'http://localhost:5173';
         mainWindow.loadURL(devUrl).catch(() => {
             console.log('Failed to load 5173, trying 5174...');
             mainWindow.loadURL('http://localhost:5174');
         });
+        
+        // Open DevTools by default in dev
         mainWindow.webContents.openDevTools();
+
+        // Register shortcuts for development
+        app.on('browser-window-focus', () => {
+            globalShortcut.register('CommandOrControl+Shift+I', () => {
+                mainWindow.webContents.toggleDevTools();
+            });
+            globalShortcut.register('CommandOrControl+R', () => {
+                mainWindow.webContents.reload();
+            });
+            globalShortcut.register('F12', () => {
+                mainWindow.webContents.toggleDevTools();
+            });
+        });
+
+        app.on('browser-window-blur', () => {
+            globalShortcut.unregister('CommandOrControl+Shift+I');
+            globalShortcut.unregister('CommandOrControl+R');
+            globalShortcut.unregister('F12');
+        });
     } else {
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+        mainWindow.removeMenu();
+        Menu.setApplicationMenu(null);
     }
 
-    // Handle permission requests (Microphone/Camera)
+    // Handle Window Management IPC
+    ipcMain.on('window-minimize', () => {
+        mainWindow.minimize();
+    });
+
+    ipcMain.on('window-maximize', () => {
+        if (mainWindow.isMaximized()) {
+            mainWindow.unmaximize();
+        } else {
+            mainWindow.maximize();
+        }
+    });
+
+    ipcMain.on('window-close', () => {
+        mainWindow.close();
+    });
+
+    // Handle permission requests
     const { session } = require('electron');
     session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
         const url = webContents.getURL();
         if (permission === 'media') {
-            // Allow media access for localhost (dev) or localized files
             if (url.startsWith('http://localhost') || url.startsWith('file://')) {
                 return callback(true);
             }
@@ -59,10 +88,7 @@ function createWindow() {
     });
 }
 
-app.whenReady().then(() => {
-    Menu.setApplicationMenu(null);
-    createWindow();
-});
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -76,24 +102,24 @@ app.on('activate', () => {
     }
 });
 
-// Handle IPC signals from renderer
+// App-level IPC signals
 ipcMain.on('flash-window', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender);
     if (win && !win.isFocused()) {
         win.flashFrame(true);
-        win.once('focus', () => {
-            win.flashFrame(false);
-        });
+        win.once('focus', () => win.flashFrame(false));
     }
 });
 
 ipcMain.on('set-window-size', (event, { width, height, resizable }) => {
     const win = BrowserWindow.fromWebContents(event.sender);
     if (win) {
+        if (win.isMaximized()) {
+            win.unmaximize();
+        }
+        win.setResizable(true); // Temporarily allow resizable to change size
         win.setSize(width, height);
         win.setResizable(resizable);
-        if (!resizable) {
-            win.center();
-        }
+        if (!resizable) win.center();
     }
 });

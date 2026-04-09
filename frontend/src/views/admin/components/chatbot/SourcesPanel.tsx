@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ChevronDown, ChevronUp, FileSpreadsheet, FileText, Image as ImageIcon, Video } from 'lucide-react';
-import { ChatSource, MediaAsset } from '../../../../services/searchService';
+import { Search, ChevronDown, ChevronUp, FileSpreadsheet, FileText, Image as ImageIcon, Video } from 'lucide-react'; import { ChatSource, MediaAsset } from '../../../../services/searchService';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -13,13 +12,7 @@ export const MediaCard: React.FC<{
     const url = `${API_BASE}/src/${asset.media_url}`;
     return (
         <div className="bubble-media-card" onClick={() => onOpen(url, asset.description || '', source)}>
-            <img
-                src={url}
-                alt={asset.description || 'Reference image'}
-                className="bubble-media-img"
-                loading="lazy"
-                title="Click to open"
-            />
+            <img src={url} alt={asset.description || 'Reference image'} className="bubble-media-img" loading="lazy" title="Click to open" />
             {asset.description && (
                 <p className="bubble-media-caption">{asset.description}</p>
             )}

@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, AlertTriangle, Info, Megaphone, MessageSquare, ChevronDown } from 'lucide-react';
-import { adminService } from '../../../services/adminService';
+import { Send, AlertTriangle, Info, Megaphone, MessageSquare, ChevronDown } from 'lucide-react'; import { adminService } from '../../../services/adminService';
 import '../../../styles/BroadcastCenter.css';
 
 export const BroadcastCenter: React.FC = () => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [message, setMessage] = useState('');
-    const [level, setLevel] = useState<'info' | 'warning' | 'critical'>('info');
-    const [isSending, setIsSending] = useState(false);
-    const [status, setStatus] = useState<{ type: 'success' | 'error', text: string } | null>(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isExpanded, setIsExpanded] = useState(false); const [message, setMessage] = useState('');
+    const [level, setLevel] = useState<'info' | 'warning' | 'critical'>('info'); const [isSending, setIsSending] = useState(false);
+    const [status, setStatus] = useState<{ type: 'success' | 'error', text: string } | null>(null); const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const dragStartRef = useRef({ x: 0, y: 0 });
@@ -92,15 +88,8 @@ export const BroadcastCenter: React.FC = () => {
 
     if (!isExpanded) {
         return (
-            <div 
-                className={`broadcast-center-floating ${isDragging ? 'dragging' : ''}`} 
-                ref={containerRef}
-                style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-            >
-                <button 
-                    className="chatbox-bubble"
-                    onMouseDown={handleMouseDown}
-                    onClick={() => {
+            <div className={`broadcast-center-floating ${isDragging ? 'dragging' : ''}`} ref={containerRef} style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
+                <button className="chatbox-bubble" onMouseDown={handleMouseDown} onClick={() => {
                         if (!hasMovedRef.current) {
                             setIsExpanded(true);
                         }
@@ -116,20 +105,14 @@ export const BroadcastCenter: React.FC = () => {
     }
 
     return (
-        <div 
-            className="broadcast-center-floating" 
-            ref={containerRef}
-            style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-        >
+        <div className="broadcast-center-floating" ref={containerRef} style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
             <div className="chatbox-expanded">
                 <div className="chatbox-header">
                     <h3>
                         <MessageSquare size={18} />
                         Broadcast Center
                     </h3>
-                    <button 
-                        className="minimize-btn" 
-                        onClick={() => setIsExpanded(false)}
+                    <button className="minimize-btn" onClick={() => setIsExpanded(false)}
                         aria-label="Minimize"
                     >
                         <ChevronDown size={20} />
@@ -137,10 +120,7 @@ export const BroadcastCenter: React.FC = () => {
                 </div>
 
                 <div className="chatbox-form">
-                    <textarea
-                        placeholder="Broadcast message to all users..."
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                    <textarea placeholder="Broadcast message to all users..." value={message} onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault();
@@ -153,31 +133,21 @@ export const BroadcastCenter: React.FC = () => {
 
                     <div className="chatbox-controls">
                         <div className="level-picker">
-                            <button 
-                                className={`lvl-chip ${level === 'info' ? 'active info' : ''}`}
-                                onClick={() => setLevel('info')}
+                            <button className={`lvl-chip ${level === 'info' ? 'active info' : ''}`} onClick={() => setLevel('info')}
                             >
                                 <Info size={14} /> Info
                             </button>
-                            <button 
-                                className={`lvl-chip ${level === 'warning' ? 'active warning' : ''}`}
-                                onClick={() => setLevel('warning')}
+                            <button className={`lvl-chip ${level === 'warning' ? 'active warning' : ''}`} onClick={() => setLevel('warning')}
                             >
                                 <AlertTriangle size={14} /> Alert
                             </button>
-                            <button 
-                                className={`lvl-chip ${level === 'critical' ? 'active critical' : ''}`}
-                                onClick={() => setLevel('critical')}
+                            <button className={`lvl-chip ${level === 'critical' ? 'active critical' : ''}`} onClick={() => setLevel('critical')}
                             >
                                 <Megaphone size={14} /> URGENT
                             </button>
                         </div>
 
-                        <button 
-                            className="send-action"
-                            onClick={handleSend}
-                            disabled={isSending || !message.trim()}
-                        >
+                        <button className="send-action" onClick={handleSend} disabled={isSending || !message.trim()}>
                             {isSending ? 'Sending...' : 'Send Now'}
                             <Send size={16} />
                         </button>

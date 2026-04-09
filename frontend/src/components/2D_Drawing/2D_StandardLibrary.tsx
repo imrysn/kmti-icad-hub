@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Import images */
@@ -14,17 +15,23 @@ import imgRevHistory1 from "../../assets/2D_Image_File/2D_standard_part_library_
 import imgRevHistory2 from "../../assets/2D_Image_File/2D_standard_part_library_revision_history_2.png";
 
 interface StandardLibraryLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const librarySteps = [
+    "Safety Color: Use the part library to insert safety color notes for rotating or moving parts. Activate the global view, choose the safety color template, and place it on the lower right of your drawing. Note that standard machine colors don't require specific notes.",
+    "Revision History: To track changes, select the revision history template from the part library while in global view. Place it in its designated location and edit the details based on the reference instructions."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,13 +65,15 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3 className="section-title">24. Standard Part Library</h3>
+        <h3 className="section-title">
+          24. Standard Part Library
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(librarySteps)}
+            onStop={stop}
+          />
+        </h3>
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
@@ -72,11 +81,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
           {/* Header section with Toolbar */}
           <div>
             <div className="image-wrapper-flush">
-              <img
-                src={imgToolbar}
-                alt="Toolbar Menu"
-                className="software-screenshot"
-              />
+              <img src={imgToolbar} alt="Toolbar Menu" className="software-screenshot" />
             </div>{" "}
             {/* customizable position via top/left/right/bottom values */}
             <div>
@@ -114,11 +119,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
             </div>
 
             <div className="image-wrapper-flush">
-              <img
-                src={imgSafetyColor}
-                alt="Safety color selection"
-                className="software-screenshot"
-              />
+              <img src={imgSafetyColor} alt="Safety color selection" className="software-screenshot" />
             </div>
           </div>{" "}
           {/* Note for Safety Color */}
@@ -158,20 +159,12 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
             </div>
 
             <div className="image-wrapper-flush">
-              <img
-                src={imgRevHistory1}
-                alt="Revision history selection"
-                className="software-screenshot"
-              />
+              <img src={imgRevHistory1} alt="Revision history selection" className="software-screenshot" />
             </div>
           </div>
           <div className="flex-row">
             <div className="image-wrapper-flush">
-              <img
-                src={imgRevHistory2}
-                alt="Revision history template"
-                className="software-screenshot"
-              />
+              <img src={imgRevHistory2} alt="Revision history template" className="software-screenshot" />
             </div>
           </div>
         </div>
@@ -184,7 +177,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
         </button>{" "}
         <button className="nav-button next" onClick={onNextLesson}>
           {" "}
-          Next Lesson <ChevronRight size={18} />{" "}
+          {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
         </button>
       </div>
     </div>
@@ -192,3 +185,5 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
 };
 
 export default StandardLibraryLesson;
+
+

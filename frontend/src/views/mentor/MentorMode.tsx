@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useCourses } from '../../hooks/useCourses';
-import { Course } from '../../types';
-import { Lesson, ICAD_2D_LESSONS, ICAD_3D_LESSONS } from './mentorConstants';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
+import { Lesson, ICAD_2D_LESSONS, ICAD_3D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
 
 // Extracted Components
-import { CourseSelector } from './components/CourseSelector';
-import { MentorSidebar } from './components/MentorSidebar';
+import { CourseSelector } from './components/CourseSelector'; import { MentorSidebar } from './components/MentorSidebar';
 import { LessonViewer } from './components/LessonViewer';
 
 import '../../styles/MentorMode.css';
@@ -20,16 +18,68 @@ const MentorMode: React.FC = () => {
     const { courses, loading, error } = useCourses();
 
     // Global State
-    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-    const is2DDrawingCourse = selectedCourse?.id === '2';
-
-    // UI/Interaction State
-    const [activeLessonId, setActiveLessonId] = useState<string>(is2DDrawingCourse ? '2d-orthographic-1' : 'interface');
-    const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null); 
+    const is2DDrawingCourse = selectedCourse?.id === '2'; 
+    
+    // UI/Interaction State 
+    const [activeLessonId, setActiveLessonId] = useState<string>(''); 
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set()); 
+    const [completedLessons, setCompletedLessons] = useState<string[]>([]); 
+    const [isLoadingProgress, setIsLoadingProgress] = useState(true);
+
+    // Derived stable state
+    const currentLessons = useMemo(() => is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS, [is2DDrawingCourse]);
+    const allLessonIds = useMemo(() => currentLessons.flatMap((l: Lesson) =>
+        l.children ? l.children.map((c: { id: string }) => c.id) : [l.id]
+    ), [currentLessons]);
+
+    const currentLessonIndex = allLessonIds.indexOf(activeLessonId);
+
+    // Fetch Progress from Backend
+    const fetchProgress = useCallback(async (newCompletedId?: string) => {
+        if (!selectedCourse) return;
+
+        // Optimistic UI: Update local state immediately if a new ID is provided
+        if (newCompletedId) {
+            setCompletedLessons(prev => {
+                if (prev.includes(newCompletedId)) return prev;
+                return [...prev, newCompletedId];
+            });
+        }
+
+        setIsLoadingProgress(true);
+        try {
+            const progress = await authService.getLessonProgress(selectedCourse.id);
+            // Only count as completed if score is >= 80
+            const ids = progress.filter((p: any) => p.is_completed).map((p: any) => p.lesson_id);
+            
+            // Re-merge the newCompletedId just in case the backend hasn't updated yet
+            if (newCompletedId && !ids.includes(newCompletedId)) {
+                ids.push(newCompletedId);
+            }
+            
+            setCompletedLessons(ids);
+            console.log('Progress fetched:', { count: ids.length, ids });
+        } catch (err) {
+            console.error('Failed to fetch progress:', err);
+        } finally {
+            setIsLoadingProgress(false);
+        }
+    }, [selectedCourse]);
+
+    useEffect(() => {
+        console.log('Current Active Lesson:', activeLessonId);
+    }, [activeLessonId]);
 
     // Side Effects
     useEffect(() => {
+        fetchProgress();
+    }, [fetchProgress]);
+
+    useEffect(() => {
+        if (!selectedCourse) return;
+        
         if (is2DDrawingCourse) {
             setActiveLessonId('2d-orthographic-1');
             setExpandedIds(new Set(['2d-orthographic']));
@@ -44,57 +94,62 @@ const MentorMode: React.FC = () => {
         if (viewer) viewer.scrollTo(0, 0);
     }, [activeLessonId]);
 
-
     // Handlers and Helpers
-    const toggleExpand = (id: string) => {
-        const newExpanded = new Set(expandedIds);
-        if (newExpanded.has(id)) {
-            newExpanded.delete(id);
-        } else {
-            newExpanded.add(id);
-        }
-        setExpandedIds(newExpanded);
-    };
+    const toggleExpand = useCallback((id: string) => {
+        setExpandedIds(prev => {
+            const newExpanded = new Set(prev);
+            if (newExpanded.has(id)) {
+                newExpanded.delete(id);
+            } else {
+                newExpanded.add(id);
+            }
+            return newExpanded;
+        });
+    }, []);
 
-    const allLessonIds = (is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS).flatMap(l =>
-        l.children ? l.children.map(c => c.id) : [l.id]
-    );
-
-    const currentLessonIndex = allLessonIds.indexOf(activeLessonId);
-
-    const goToNextLesson = () => {
+    const goToNextLesson = useCallback(() => {
         if (currentLessonIndex < allLessonIds.length - 1) {
             const nextId = allLessonIds[currentLessonIndex + 1];
+            console.log('Navigating to next lesson:', { 
+                currentId: activeLessonId, 
+                nextId: nextId, 
+                currentIndex: currentLessonIndex,
+                total: allLessonIds.length 
+            });
+            
             setActiveLessonId(nextId);
 
+            // Automatically expand the section if the next lesson is inside a group
             setExpandedIds(prev => {
                 const nextSet = new Set(prev);
-                (is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS).forEach(l => {
-                    if (l.children?.some(c => c.id === nextId)) {
+                currentLessons.forEach((l: Lesson) => {
+                    if (l.children?.some((c: { id: string }) => c.id === nextId)) {
                         nextSet.add(l.id);
                     }
                 });
                 return nextSet;
             });
+        } else {
+            console.warn('Cannot go to next lesson: already at the end of the course.');
         }
-    };
+    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons]);
 
-    const goToPrevLesson = () => {
+    const goToPrevLesson = useCallback(() => {
         if (currentLessonIndex > 0) {
             const prevId = allLessonIds[currentLessonIndex - 1];
             setActiveLessonId(prevId);
-
+            
             setExpandedIds(prev => {
                 const nextSet = new Set(prev);
-                (is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS).forEach(l => {
-                    if (l.children?.some(c => c.id === prevId)) {
+                currentLessons.forEach((l: Lesson) => {
+                    if (l.children?.some((c: { id: string }) => c.id === prevId)) {
                         nextSet.add(l.id);
                     }
                 });
                 return nextSet;
             });
         }
-    };
+    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons]);
 
     const getActiveLessonTitle = (lessons: Lesson[], id: string): string => {
         for (const lesson of lessons) {
@@ -107,47 +162,19 @@ const MentorMode: React.FC = () => {
         return 'Select a Lesson';
     };
 
-
     // Render Composition
     if (loading || error || !selectedCourse) {
         return (
-            <CourseSelector 
-                courses={courses} 
-                loading={loading} 
-                error={error} 
-                setSelectedCourse={setSelectedCourse} 
-            />
+            <CourseSelector courses={courses} loading={loading} error={error} setSelectedCourse={setSelectedCourse} />
         );
     }
 
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
-                <MentorSidebar 
-                    selectedCourse={selectedCourse}
-                    is2DDrawingCourse={is2DDrawingCourse}
-                    sidebarOpen={sidebarOpen}
-                    activeLessonId={activeLessonId}
-                    setActiveLessonId={setActiveLessonId}
-                    expandedIds={expandedIds}
-                    toggleExpand={toggleExpand}
-                    setSelectedCourse={setSelectedCourse}
-                />
+                <MentorSidebar selectedCourse={selectedCourse} is2DDrawingCourse={is2DDrawingCourse} sidebarOpen={sidebarOpen} activeLessonId={activeLessonId} setActiveLessonId={setActiveLessonId} expandedIds={expandedIds} toggleExpand={toggleExpand} setSelectedCourse={setSelectedCourse} completedLessons={completedLessons} isLoadingProgress={isLoadingProgress} />
 
-                <LessonViewer 
-                    is2DDrawingCourse={is2DDrawingCourse}
-                    activeLessonId={activeLessonId}
-                    currentLessonIndex={currentLessonIndex}
-                    allLessonIdsLength={allLessonIds.length}
-                    goToNextLesson={goToNextLesson}
-                    goToPrevLesson={goToPrevLesson}
-                    sidebarOpen={sidebarOpen}
-                    setSidebarOpen={setSidebarOpen}
-                    setSelectedCourse={setSelectedCourse}
-                    getActiveLessonTitle={getActiveLessonTitle}
-                    ICAD_2D_LESSONS={ICAD_2D_LESSONS}
-                    ICAD_3D_LESSONS={ICAD_3D_LESSONS}
-                />
+                <LessonViewer is2DDrawingCourse={is2DDrawingCourse} activeLessonId={activeLessonId} currentLessonIndex={currentLessonIndex} allLessonIdsLength={allLessonIds.length} goToNextLesson={goToNextLesson} goToPrevLesson={goToPrevLesson} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} setSelectedCourse={setSelectedCourse} getActiveLessonTitle={getActiveLessonTitle} ICAD_2D_LESSONS={ICAD_2D_LESSONS} ICAD_3D_LESSONS={ICAD_3D_LESSONS} completedLessons={completedLessons} onLessonComplete={fetchProgress} />
             </div>
         </div>
     );

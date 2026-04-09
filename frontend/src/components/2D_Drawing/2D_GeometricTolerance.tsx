@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Geometric Tolerance (1) */
@@ -25,6 +26,7 @@ import datumSelectionImg from "../../assets/2D_Image_File/D_geometric_tolerance(
 import datumOperationImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_datum_2.png";
 
 interface GeometricToleranceLessonProps {
+  nextLabel?: string;
   subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -33,11 +35,20 @@ interface GeometricToleranceLessonProps {
 const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
   subLessonId = "2d-geometric-tol-1",
   onNextLesson,
-  onPrevLesson,
-}) => {
+  onPrevLesson, nextLabel }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const geoTol1Steps = [
+    "Geometric Tolerance: This system defines the degree of accuracy required for a part. Pick the line, complete the required details in the dialog box, and click OK. Finally, set the position by clicking P2 and click GO to end the command."
+  ];
+
+  const geoTol2Steps = [
+    "Tolerance Application: Follow the same process to add specific tolerances like perpendicularity. Complete the dialog and place the control frame as needed.",
+    "Datum: A datum is a fixed reference point. Select the datum command, click the reference line, and enter the datum character. Click P2 to position the indicator and GO to finish."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,17 +82,20 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          <ArrowLeft size={28} className="lesson-intro-icon" /> Geometric
+          Geometric
           Tolerance
           {subLessonId === "2d-geometric-tol-1" ? "(1)" : "(2)"}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              if (subLessonId === "2d-geometric-tol-1") speak(geoTol1Steps);
+              else speak(geoTol2Steps);
+            }}
+            onStop={stop}
+          />
         </h3>
 
         <p className="lesson-subtitle">
@@ -112,19 +126,11 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {/* Top Images Row */}
               <div className="flex-row-center">
                 <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                  <img
-                    src={geoTolMainImg}
-                    alt="Geometric Tolerance Sample Drawing and Menu Selection"
-                    className="software-screenshot"
-                  />
+                  <img src={geoTolMainImg} alt="Geometric Tolerance Sample Drawing and Menu Selection" className="software-screenshot" />
                 </div>
 
                 <div className="image-wrapper-flush">
-                  <img
-                    src={geoTolStepAImg}
-                    alt="Picking line for Geometric Tolerance (P1)"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={geoTolStepAImg} alt="Picking line for Geometric Tolerance (P1)" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
               {/* Step B Section */}
@@ -140,11 +146,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 </div>
 
                 <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                  <img
-                    src={geoTolStepBImg}
-                    alt="Geometric Tolerance Dialog Box Configuration"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={geoTolStepBImg} alt="Geometric Tolerance Dialog Box Configuration" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
               {/* Step C Section */}
@@ -160,11 +162,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 </div>
 
                 <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                  <img
-                    src={geoTolStepCImg}
-                    alt="Setting Geometric Tolerance Position (P2)"
-                    className="software-screenshot"
-                  />
+                  <img src={geoTolStepCImg} alt="Setting Geometric Tolerance Position (P2)" className="software-screenshot" />
                 </div>
               </div>
             </div>
@@ -174,11 +172,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {/* Step D */}
               <div className="flex-row">
                 <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                  <img
-                    src={geoTolStepDImg}
-                    alt="Adding geometric tolerance (P3)"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={geoTolStepDImg} alt="Adding geometric tolerance (P3)" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
               {/* Step E */}
@@ -194,11 +188,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 </div>
 
                 <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                  <img
-                    src={geoTolStepEImg}
-                    alt="Geometric Tolerance Dialog - Perpendicular"
-                    className="software-screenshot"
-                  />
+                  <img src={geoTolStepEImg} alt="Geometric Tolerance Dialog - Perpendicular" className="software-screenshot" />
                 </div>
               </div>{" "}
               {/* Step F */}
@@ -214,11 +204,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 </div>
 
                 <div className="image-wrapper-flush">
-                  <img
-                    src={geoTolStepFImg}
-                    alt="Resulting Control Frame"
-                    className="software-screenshot"
-                  />
+                  <img src={geoTolStepFImg} alt="Resulting Control Frame" className="software-screenshot" />
                 </div>
               </div>
               <div className="section-divider"></div>
@@ -235,11 +221,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush">
-                    <img
-                      src={datumSelectionImg}
-                      alt="Datum Selection Menu"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={datumSelectionImg} alt="Datum Selection Menu" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
                 <div className="flex-row">
@@ -255,11 +237,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                   </div>
 
                   <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img
-                      src={datumOperationImg}
-                      alt="Datum Placement Procedure"
-                      className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */
-                    />
+                    <img src={datumOperationImg} alt="Datum Placement Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
               </div>
@@ -273,7 +251,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
               {" "}
-              Next Lesson <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
             </button>
           </div>
         </div>
@@ -283,3 +261,6 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
 };
 
 export default GeometricToleranceLesson;
+
+
+

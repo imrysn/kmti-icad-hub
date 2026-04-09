@@ -1,6 +1,5 @@
 import React from 'react';
-import { useNotification, Notification } from '../context/NotificationContext';
-import { CheckCircle2, AlertCircle, Info, Megaphone, X } from 'lucide-react';
+import { useNotification, Notification } from '../context/NotificationContext'; import { CheckCircle2, AlertCircle, Info, Megaphone, X } from 'lucide-react';
 import '../styles/NotificationSystem.css';
 
 const NotificationItem: React.FC<{ notification: Notification }> = ({ notification }) => {
@@ -21,18 +20,13 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
             <div className="notification-message">
                 {notification.message}
             </div>
-            <button 
-                className="notification-close" 
-                onClick={() => dismissNotification(notification.id)}
+            <button className="notification-close" onClick={() => dismissNotification(notification.id)}
                 aria-label="Close"
             >
                 <X size={16} />
             </button>
             {notification.duration && notification.duration > 0 && (
-                <div 
-                    className="notification-progress" 
-                    style={{ animationDuration: `${notification.duration}ms` }} 
-                />
+                <div className="notification-progress" style={{ animationDuration: `${notification.duration}ms` }} />
             )}
         </div>
     );

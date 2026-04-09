@@ -1,6 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Activity, Users, BarChart3, Brain, MessageSquare } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom'; import { Shield, Activity, Users, BarChart3, Brain, MessageSquare } from 'lucide-react';
 import { User } from '../../../services/authService';
 
 interface AdminSidebarProps {
@@ -30,10 +29,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
                     { id: 'chatbot', icon: MessageSquare, label: 'AI Chatbot' },
                     { id: 'logs', icon: Shield, label: 'Audit Logs' }
                 ].map((item) => (
-                    <button 
-                        key={item.id}
-                        className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-                        onClick={() => navigate(`/admin/${item.id}`)}
+                    <button key={item.id} className={`nav-item ${activeTab === item.id ? 'active' : ''}`} onClick={() => navigate(`/admin/${item.id}`)}
                         title={item.label}
                     >
                         <div className="nav-icon">

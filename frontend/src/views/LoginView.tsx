@@ -1,46 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { authService } from '../services/authService';
+import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth'; import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti_logo.png';
 import LightPillar from '../components/LightPillar';
 
-declare global {
-    interface Window {
-        electronAPI: {
-            flashWindow: () => void;
-            setWindowSize: (width: number, height: number, resizable: boolean) => void;
-        };
-    }
-}
-
 export const LoginView: React.FC = () => {
     const { login, isLoggingIn, error } = useAuth();
     const navigate = useNavigate();
-    const [loginType, setLoginType] = useState<'user' | 'admin'>('user');
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
-    const [localError, setLocalError] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
+    const [formData, setFormData] = useState({ username: '', password: '' }); const [localError, setLocalError] = useState('');
+    const [showPassword, setShowPassword] = useState(false); const [rememberMe, setRememberMe] = useState(false);
 
     // Forgot Password State
-    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
-    const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
-    const [forgotPasswordMessage, setForgotPasswordMessage] = useState('');
-    const [isForgotPasswordSubmitting, setIsForgotPasswordSubmitting] = useState(false);
+    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false); const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+    const [forgotPasswordMessage, setForgotPasswordMessage] = useState(''); const [isForgotPasswordSubmitting, setIsForgotPasswordSubmitting] = useState(false);
 
     // Load remembered username on mount and set window size
     useEffect(() => {
-        // Set small fixed size for login
-        if (window.electronAPI) {
-            window.electronAPI.setWindowSize(440, 550, false);
-        }
-
         const rememberedUser = localStorage.getItem('remembered_username');
         if (rememberedUser) {
             setFormData(prev => ({ ...prev, username: rememberedUser }));
@@ -57,23 +33,12 @@ export const LoginView: React.FC = () => {
         if (localError) setLocalError('');
     };
 
-    const handleToggle = () => {
-        setLoginType(prev => prev === 'user' ? 'admin' : 'user');
-        // Pre-fill username if toggle changes but remember me was active
-        const rememberedUser = localStorage.getItem('remembered_username');
-        setFormData({
-            username: rememberedUser || '',
-            password: ''
-        });
-        setLocalError('');
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLocalError('');
 
         if (!formData.username || !formData.password) {
-            setLocalError('Please enter both username and password');
+            setLocalError('PLEASE ENTER BOTH USER NAME AND PASSWORD');
             return;
         }
 
@@ -85,15 +50,10 @@ export const LoginView: React.FC = () => {
                 localStorage.removeItem('remembered_username');
             }
 
-            // Pass required_role to enforce toggle logic on the backend
-            // Admin toggle requires 'admin' role
-            // User toggle requires NO 'admin' role (handled by 'user' check in backend)
-            const required_role = loginType === 'admin' ? 'admin' : 'user';
             await login({
                 username: formData.username,
                 password: formData.password,
-                remember_me: rememberMe,
-                required_role
+                remember_me: rememberMe
             });
             // Explicitly navigate to home to trigger role-based redirect in App.tsx
             if (window.electronAPI) {
@@ -101,7 +61,7 @@ export const LoginView: React.FC = () => {
             }
             navigate('/');
         } catch (err: any) {
-            setLocalError(err.message || 'Login failed');
+            setLocalError('LOGIN FAILED. CHECK YOUR CREDENTIALS.');
         }
     };
 
@@ -150,44 +110,25 @@ export const LoginView: React.FC = () => {
 
                 <form onSubmit={handleSubmit} className="glass-form">
                     <div className="input-group">
-                        <label>Email address</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                            disabled={isLoggingIn}
-                            placeholder="Enter your email"
-                        />
+                        <label>USERNAME</label>
+                        <input type="text" name="username" value={formData.username} onChange={handleInputChange} disabled={isLoggingIn} placeholder="Enter your user name" />
                     </div>
 
                     <div className="input-group">
                         <label>Password</label>
                         <div className="password-wrapper">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                disabled={isLoggingIn}
-                                placeholder="Enter your password"
-                            />
-                            <button
-                                type="button"
-                                className="password-toggle-icon"
-                                onClick={() => setShowPassword(!showPassword)}
+                            <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleInputChange} disabled={isLoggingIn} placeholder="Enter your password" />
+                            <button type="button" className="password-toggle-icon" onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
                         </div>
                     </div>
 
-                    <button
-                        type="submit"
-                        className="glass-login-btn"
-                        disabled={isLoggingIn}
-                    >
-                        {isLoggingIn ? 'Logging in...' : 'Login'}
+                    {localError && <div className="local-error-msg">{localError}</div>}
+
+                    <button type="submit" className="glass-login-btn" disabled={isLoggingIn}>
+                        {isLoggingIn ? 'Logging...' : 'Login'}
                     </button>
                 </form>
             </div>
@@ -200,27 +141,15 @@ export const LoginView: React.FC = () => {
                             <p className="modal-success-msg">{forgotPasswordMessage}</p>
                         )}
                         <label htmlFor="forgot-email" className="modal-field-label">Email or Username</label>
-                        <input
-                            id="forgot-email"
-                            type="text"
-                            value={forgotPasswordEmail}
-                            onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                        <input id="forgot-email" type="text" value={forgotPasswordEmail} onChange={(e) => setForgotPasswordEmail(e.target.value)}
                             placeholder="Email or Username"
                             disabled={isForgotPasswordSubmitting}
                         />
                         <div className="modal-buttons">
-                            <button
-                                onClick={handleForgotPasswordCancel}
-                                className="cancel-button"
-                                disabled={isForgotPasswordSubmitting}
-                            >
+                            <button onClick={handleForgotPasswordCancel} className="cancel-button" disabled={isForgotPasswordSubmitting}>
                                 Cancel
                             </button>
-                            <button
-                                onClick={handleForgotPasswordSubmit}
-                                className="submit-button"
-                                disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}
-                            >
+                            <button onClick={handleForgotPasswordSubmit} className="submit-button" disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}>
                                 {isForgotPasswordSubmitting ? 'Sending...' : 'Send Reset Link'}
                             </button>
                         </div>

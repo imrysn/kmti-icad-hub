@@ -6,52 +6,8 @@ import ToolbarExplorer from "./ToolbarExplorer";
 
 import "../../styles/3D_Modeling/CourseLesson.css";
 
-import { Zap } from "lucide-react";
-/* Toolbar image imports */
-
-import tbFile from "../../assets/3D_Image_File/tool_bars_file.png";
-
-import tb2dView from "../../assets/3D_Image_File/tool_bars_2d_view.png";
-
-import tbSwitchDisplay from "../../assets/3D_Image_File/tool_bars_switch_display.png";
-
-import tbScreenOps from "../../assets/3D_Image_File/tool_bars_screen_operations.png";
-
-import tb3dView from "../../assets/3D_Image_File/tool_bars_3d_view.png";
-
-import tbUserViews from "../../assets/3D_Image_File/tool_bars_user_views.png";
-
-import tbEdit from "../../assets/3D_Image_File/tool_bars_edit.png";
-
-import tbShading from "../../assets/3D_Image_File/tool_bars_shading.png";
-
-import tbSectionDisplay from "../../assets/3D_Image_File/tool_bars_section_display.png";
-
-import tb2dStandard from "../../assets/3D_Image_File/tool_bars_2d_standard_screen.png";
-
-import tbSysInfo from "../../assets/3D_Image_File/tool_bars_system_information.png";
-
-import tbScreenMem from "../../assets/3D_Image_File/tool_bars_screen_memory.png";
-
-import tbEntryControl from "../../assets/3D_Image_File/tool_bars_entry_control.png";
-
-import {
-  Save,
-  Monitor,
-  Layers,
-  ZoomIn,
-  Box,
-  Compass,
-  Edit2,
-  Sun,
-  Scissors,
-  Layout,
-  Info,
-  Cpu,
-  MousePointer2,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Zap } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS"; /* Toolbar image imports */ import tbFile from "../../assets/3D_Image_File/tool_bars_file.png"; import tb2dView from "../../assets/3D_Image_File/tool_bars_2d_view.png"; import tbSwitchDisplay from "../../assets/3D_Image_File/tool_bars_switch_display.png"; import tbScreenOps from "../../assets/3D_Image_File/tool_bars_screen_operations.png"; import tb3dView from "../../assets/3D_Image_File/tool_bars_3d_view.png"; import tbUserViews from "../../assets/3D_Image_File/tool_bars_user_views.png"; import tbEdit from "../../assets/3D_Image_File/tool_bars_edit.png"; import tbShading from "../../assets/3D_Image_File/tool_bars_shading.png"; import tbSectionDisplay from "../../assets/3D_Image_File/tool_bars_section_display.png"; import tb2dStandard from "../../assets/3D_Image_File/tool_bars_2d_standard_screen.png"; import tbSysInfo from "../../assets/3D_Image_File/tool_bars_system_information.png"; import tbScreenMem from "../../assets/3D_Image_File/tool_bars_screen_memory.png"; import tbEntryControl from "../../assets/3D_Image_File/tool_bars_entry_control.png"; import { Save, Monitor, Layers, ZoomIn, Box, Compass, Edit2, Sun, Scissors, Layout, Info, Cpu, MousePointer2, ChevronLeft, ChevronRight, } from 'lucide-react';
 
 const ICAD_TOOLBARS = [
   {
@@ -180,15 +136,24 @@ const ICAD_TOOLBARS = [
 interface ToolBarsLessonProps {
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
+  nextLabel?: string;
 }
 
 const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({
   onNextLesson,
   onPrevLesson,
+  nextLabel,
 }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const { speak, stop, isSpeaking } = useTTS();
+
+  const toolbarNarration = [
+    "iCAD Toolbars: Explore the various toolbars available in iCAD. Each toolbar provides quick access to specific functional groups.",
+    "Functional Areas: From File management and 2D/3D View controls to Shading, System Information, and Entry Control, these toolbars form the core of your modeling workflow.",
+    "Navigation: Use the explorer below to click through each toolbar category and see its specific features and tools."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -226,28 +191,30 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
-          {" "}
-          <Layout size={28} className="lesson-intro-icon" /> ICAD TOOLBARS
+          <span>iCAD Toolbars</span>
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration)}
+            onStop={stop}
+          />
         </h3>
+        <p className="section-description">
+          Explore the various toolbars available in iCAD. Each toolbar provides quick access to specific sets of functions and tools.
+        </p>
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           {" "}
           <ToolbarExplorer toolbars={ICAD_TOOLBARS} />
           <div className="lesson-navigation">
-            {" "}
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
-            </button>{" "}
-            <button className="nav-button next" onClick={onNextLesson}>
-              Next Lesson <ChevronRight size={18} />
+            <button className="nav-button" onClick={onPrevLesson} disabled={!onPrevLesson}>
+              <ChevronLeft size={18} /> Previous Lesson
+            </button>
+
+            <button className="nav-button next" onClick={onNextLesson} disabled={!onNextLesson}>
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

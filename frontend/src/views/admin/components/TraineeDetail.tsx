@@ -1,6 +1,5 @@
 import React from 'react';
-import { FileText, CheckCircle2, BarChart3 } from 'lucide-react';
-import { TraineeProgress } from '../../../services/adminService';
+import { FileText, CheckCircle2, BarChart3 } from 'lucide-react'; import { TraineeProgress } from '../../../services/adminService';
 
 interface TraineeDetailProps {
     selectedTrainee: TraineeProgress;
@@ -30,9 +29,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             <span className="lab">Global Mastery</span>
                         </div>
 
-                        <button 
-                            className="btn-secondary export-detail-btn" 
-                            onClick={() => onExport(selectedTrainee.id)}
+                        <button className="btn-secondary export-detail-btn" onClick={() => onExport(selectedTrainee.id)}
                             style={{ marginTop: '1.5rem', width: '100%', gap: '0.5rem' }}
                         >
                             <FileText size={16} /> Export Progress Report

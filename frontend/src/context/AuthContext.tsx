@@ -15,8 +15,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null); const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,9 +49,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setError(null);
 
     try {
-      await authService.login(credentials);
-      const userData = await authService.getCurrentUser();
-      setUser(userData);
+      const loginResponse = await authService.login(credentials);
+      setUser(loginResponse.user);
     } catch (err: any) {
       let errorMessage = 'Login failed. Please try again.';
 

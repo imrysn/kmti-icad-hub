@@ -33,9 +33,14 @@ api.interceptors.response.use(
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
+            console.warn('Authentication failure - clearing session and redirecting');
             localStorage.removeItem('access_token');
             localStorage.removeItem('user');
-            window.location.href = '/'; // Redirect to login
+            
+            // Avoid redundant reloads if already redirecting
+            if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
+                window.location.href = '/'; 
+            }
         }
         return Promise.reject(error);
     }

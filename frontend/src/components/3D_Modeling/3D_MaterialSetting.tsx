@@ -1,229 +1,43 @@
-/** * 3D_MaterialSetting.tsx — Material Setting lessons */
+/** * 3D_MaterialSetting.tsx  EMaterial Setting lessons */
 
 import React, { useState, useEffect, useRef } from "react";
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  Layers,
-  CheckCircle2,
-  Zap,
-  Info,
-} from "lucide-react";
-
-import "../../styles/3D_Modeling/CourseLesson.css";
-
-import "../../styles/3D_Modeling/CourseLesson.css";
-/* Material Setting (1) Assets */
-
-import setMaterialIcon from "../../assets/3D_Image_File/material_setting(1)_set_material.png";
-
-import materialListImg from "../../assets/3D_Image_File/material_setting(1)_material_list.png";
-
-import step4ResultImg from "../../assets/3D_Image_File/material_setting(1)_material_setting_4.png";
-
-import step5DialogImg from "../../assets/3D_Image_File/material_setting(1)_material_setting_5.png";
-
-import materialSettingImg from "../../assets/3D_Image_File/material_setting(1)_material_setting.png";
-
-import leftClick from "../../assets/3D_Image_File/left_click.png";
-/* Material Setting (2) Assets */
-
-import mat2RefImg from "../../assets/3D_Image_File/material_setting(2)_material.png";
-
-import mat2VerifyImg from "../../assets/3D_Image_File/material_setting(2)_material_not_included.png";
-
-import materialsListImg from "../../assets/3D_Image_File/material_list.png";
-
-interface MaterialSettingLessonProps {
-  subLessonId?: string;
-  onNextLesson?: () => void;
-  onPrevLesson?: () => void;
-}
-
-const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
-  subLessonId = "material-1",
-  onNextLesson,
-  onPrevLesson,
-}) => {
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
-
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const isMaterial1 = subLessonId === "material-1";
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => {
-      if (currentContainer) {
-        currentContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [subLessonId]);
-
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
-
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-
-      return next;
-    });
-  };
-
-  const getStepClass = (stepId: string) => {
-    return `instruction-step interactive ${completedSteps.has(stepId) ? "completed" : ""}`;
-  };
-
-  return (
-    <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
-      <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          <Layers size={28} className="lesson-intro-icon" />{" "}
-          {isMaterial1
-            ? "MATERIAL SETTING"
-            : "MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST"}
-        </h3>{" "}
-        {isMaterial1 && (
-          <div className="instruction-box">
-            <p className="p-flush">
-              Setting material is important in order to measure the weigth of
-              the part based on the material's specific gravity and it is a
-              factor to consider in adding layer and color to the part.
-            </p>
-
-            <div className="image-wrapper-flush">
-              <img
-                src={materialSettingImg}
-                alt="Material Setting"
-                className="software-screenshot screenshot-small"
-              />
-            </div>
-          </div>
-        )}
-      </section>
-      <div className="lesson-grid single-card">
-        <div className="lesson-card">
-          {" "}
-          {isMaterial1 ? (
-            <div className="tab-pane">
-              <div
-                className={getStepClass("ms-1")}
-                onClick={() => toggleStep("ms-1")}
-              >
-                <div className="step-header">
-                  {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ms-1") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ms-1") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "1"
-                    )}{" "}
-                  </span>{" "}
-                  <span className="step-label">
-                    Select{" "}
-                    <strong className="text-highlight">Set Material</strong>{" "}
-                    from the icon menu.
+import { ChevronLeft, ChevronRight, Layers, Zap, Info, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/CourseLesson.css"; import "../../styles/3D_Modeling/CourseLesson.css"; /* Material Setting (1) Assets */ import setMaterialIcon from "../../assets/3D_Image_File/material_setting(1)_set_material.png"; import materialListImg from "../../assets/3D_Image_File/material_setting(1)_material_list.png"; import step4ResultImg from "../../assets/3D_Image_File/material_setting(1)_material_setting_4.png"; import step5DialogImg from "../../assets/3D_Image_File/material_setting(1)_material_setting_5.png"; import materialSettingImg from "../../assets/3D_Image_File/material_setting(1)_material_setting.png"; import leftClick from "../../assets/3D_Image_File/left_click.png"; /* Material Setting (2) Assets */ import mat2RefImg from "../../assets/3D_Image_File/material_setting(2)_material.png"; import mat2VerifyImg from "../../assets/3D_Image_File/material_setting(2)_material_not_included.png"; import materialsListImg from "../../assets/3D_Image_File/material_list.png"; interface MaterialSettingLessonProps {
+  nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void; } const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLessonId = "material-1", onNextLesson, onPrevLesson, nextLabel }) => { const [scrollProgress, setScrollProgress] = useState(0); const containerRef = useRef<HTMLDivElement>(null); const { speak, stop, isSpeaking, currentIndex } = useTTS(); const isMaterial1 = subLessonId === "material-1"; const material1Steps = [ "Step 1: Select Set Material from the icon menu.", "Step 2: Select the entity or entities you want to assign and click GO.", "Step 3: Choose a material from the list to assign notation, specific gravity, and color.", "Step 4: After confirming, a dialog appears and the entities will be highlighted to show they have been set.", "Step 5: To change a material, re-select Set Material and choose OK in the overwrite dialog." ]; const material2Steps = [ "Important Note: If a specific material like S35C is not in the list, you can use a similar one like S45C for weight calculations.", "Ensure you correctly specify the actual material name in the Bill of Materials manually during detailing." ]; useEffect(() => { const handleScroll = () => { if (!containerRef.current) return; const element = containerRef.current; const totalHeight = element.scrollHeight - element.clientHeight; if (totalHeight === 0) { setScrollProgress(100); return; } const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress); }; const currentContainer = containerRef.current; if (currentContainer) { currentContainer.addEventListener("scroll", handleScroll); handleScroll(); } return () => { if (currentContainer) { currentContainer.removeEventListener("scroll", handleScroll); } }; }, [subLessonId]); const getStepClass = (stepId: string) => "instruction-step"; return ( <div className="course-lesson-container" ref={containerRef}> {" "} {/* Sticky Progress Bar */} <div className="lesson-progress-container"> <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} /> </div> <section className="lesson-intro"> <h3 className="section-title">  {isMaterial1 ? "MATERIAL SETTING" : "MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST"} <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isMaterial1 ? material1Steps : material2Steps)} onStop={stop} /> </h3> {" "} {isMaterial1 && ( <div className="instruction-box"> <p className="p-flush"> Setting material is important in order to measure the weigth of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part. </p> <div className="image-wrapper-flush"> <img src={materialSettingImg} alt="Material Setting" className="software-screenshot screenshot-small" /> </div> </div> )} </section> <div className="lesson-grid single-card"> <div className="lesson-card"> {" "} {isMaterial1 ? ( <div className="tab-pane"> <div className={`${getStepClass("ms-1")} ${currentIndex === 0 ? "reading-active" : ""}`}> <div className="step-header"> {" "} <span className="step-number"> 1 </span>{" "} <span className="step-label"> Select{" "} <strong className="text-highlight">Set Material</strong>{" "} from the icon menu.
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <div className="image-wrapper-flush">
-                    <img
-                      src={setMaterialIcon}
-                      alt="Set Material Icon"
-                      className="software-screenshot screenshot-small"
-                    />
+                    <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot screenshot-small" />
                   </div>
                 </div>
               </div>
 
-              <div
-                className={getStepClass("ms-2")}
-                onClick={() => toggleStep("ms-2")}
-              >
+              <div className={`${getStepClass("ms-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ms-2") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ms-2") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "2"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    2
                   </span>{" "}
                   <span className="step-label">
                     Select the entity/entities &gt;{" "}
                     <strong className="text-highlight">GO</strong>
-                    <img
-                      src={leftClick}
-                      alt="Left click"
-                      className="screenshot-click--inline"
-                    />
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                ></div>
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */></div>
               </div>
 
-              <div
-                className={getStepClass("ms-3")}
-                onClick={() => toggleStep("ms-3")}
-              >
+              <div className={`${getStepClass("ms-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ms-3") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ms-3") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "3"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    3
                   </span>{" "}
                   <span className="step-label">
                     The Material Setting Window will appear. Select the material
@@ -232,9 +46,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <p className="p-flush">
                     The list consists of the materials and their corresponding
                     Notation, Specific Gravity and Color.
@@ -248,30 +60,17 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
                   </p>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={materialListImg}
-                      alt="Material Settings Window"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
 
-              <div
-                className={getStepClass("ms-4")}
-                onClick={() => toggleStep("ms-4")}
-              >
+              <div className={`${getStepClass("ms-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ms-4") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ms-4") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "4"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    4
                   </span>{" "}
                   <span className="step-label">
                     After setting the material, a dialog box will appear &gt;
@@ -279,39 +78,24 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <p className="p-flush">
                     Parts that already have material set will be highlighted to
                     show distinction with parts that does not have yet.
                   </p>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={step4ResultImg}
-                      alt="Material Distinction result"
-                      className="software-screenshot screenshot-wide"
-                    />
+                    <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
 
-              <div
-                className={getStepClass("ms-5")}
-                onClick={() => toggleStep("ms-5")}
-              >
+              <div className={`${getStepClass("ms-5")} ${currentIndex === 4 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
-                  <span
-                    className={`step-number ${completedSteps.has("ms-5") ? "completed" : ""}`}
-                  >
-                    {" "}
-                    {completedSteps.has("ms-5") ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      "5"
-                    )}{" "}
+                  <span className="step-number">
+                    
+                    5
                   </span>{" "}
                   <span className="step-label">
                     In case there are changes in the material, select{" "}
@@ -320,9 +104,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
                   </span>
                 </div>
 
-                <div
-                  className="step-description" /* sanitized: paddingLeft: '2.5rem' */
-                >
+                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                   <p className="p-flush">
                     A dialog box will appear. It tells that the selected
                     entity's material info had already been set and asks whether
@@ -330,11 +112,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
                   </p>
 
                   <div className="image-wrapper-flush">
-                    <img
-                      src={step5DialogImg}
-                      alt="Material Overwrite Dialog"
-                      className="software-screenshot screenshot-medium"
-                    />
+                    <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" />
                   </div>
 
                   <div className="step-header">
@@ -359,14 +137,10 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
           ) : (
             <div className="tab-pane">
               <div className="image-wrapper-flush">
-                <img
-                  src={mat2VerifyImg}
-                  alt="2D Drawing Reference"
-                  className="software-screenshot screenshot-wide"
-                />
+                <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
               </div>
 
-              <p className="p-flush">
+              <p className={`${currentIndex === 0 ? "reading-active" : ""}`} style={{ borderRadius: '8px', padding: currentIndex === 0 ? '0.5rem' : '0' }}>
                 On iCAD, <strong className="text-highlight">S35C</strong> is not
                 included on the material list in this case, we can use{" "}
                 <strong className="text-highlight">S45C</strong> as material on
@@ -377,29 +151,19 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
                 specific gravity of the two materials are almost the same
               </p>
 
-              <div
-                className="image-wrapper-flush" /* sanitized: marginTop: '1.5rem' */
-              >
-                <img
-                  src={mat2RefImg}
-                  alt="3D Information Verification"
-                  className="software-screenshot screenshot-wide"
-                />
+              <div className="image-wrapper-flush" /* sanitized: marginTop: '1.5rem' */>
+                <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
               </div>
 
               <div className="section-divider"></div>
 
-              <div className="tool-block">
+              <div className={`tool-block ${currentIndex === 1 ? "reading-active" : ""}`}>
                 {" "}
                 <h4 className="section-title">
                   Other materials that are not on iCAD Material List includes:
                 </h4>
                 <div className="image-wrapper-flush">
-                  <img
-                    src={materialsListImg}
-                    alt="Materials List"
-                    className="software-screenshot screenshot-wide"
-                  />
+                  <img src={materialsListImg} alt="Materials List" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>
@@ -410,7 +174,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>{" "}
             <button className="nav-button next" onClick={onNextLesson}>
-              Next Lesson <ChevronRight size={18} />
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -420,3 +184,6 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({
 };
 
 export default MaterialSettingLesson;
+
+
+
