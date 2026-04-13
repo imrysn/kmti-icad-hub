@@ -17,31 +17,32 @@ import treeViewInfo2 from '../../assets/3D_Image_File/3d_part(2)_change_3d_part_
 import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 interface PartLessonProps {
-  nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void; }
+  nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void;
+}
 
 /**
  * PartLesson component for 3D Part management.
  * Refactored to use useLessonCore hook and data-driven mapping.
  */
-const PartLesson: React.FC<PartLessonProps> = ({ 
-  subLessonId = '3d-part-1', 
-  onNextLesson, 
-  onPrevLesson 
-, nextLabel }) => {
-  const { 
-    scrollProgress, 
-    containerRef, 
-    speak, 
-    stop, 
-    isSpeaking, 
-    currentIndex 
+const PartLesson: React.FC<PartLessonProps> = ({
+  subLessonId = '3d-part-1',
+  onNextLesson,
+  onPrevLesson
+  , nextLabel }) => {
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
   } = useLessonCore(subLessonId);
 
   // --- Content Mapping ---
   const LESSON_DATA: Record<string, { title: string; steps: string[]; description: string }> = {
     '3d-part-1': {
       title: 'CREATING 3D PART',
-      description: 'Used to name 3D parts and provide vital metadata for 2D detailing.',
+      description: 'Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Detailing.',
       steps: [
         "Step 1: Select Create 3D Part from the icon menu.",
         "Step 2: Select a single entity and click GO.",
@@ -73,8 +74,8 @@ const PartLesson: React.FC<PartLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {currentLesson.title}
-          <ReadAloudButton 
-            isSpeaking={isSpeaking} 
+          <ReadAloudButton
+            isSpeaking={isSpeaking}
             onStart={() => speak(currentLesson.steps)}
             onStop={stop}
           />
@@ -104,7 +105,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
-                  <span className="step-label">Select a single entity &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" /></span>
+                  <span className="step-label">Select a single entity &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
                 </div>
               </div>
 

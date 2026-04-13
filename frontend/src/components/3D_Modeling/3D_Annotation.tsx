@@ -237,7 +237,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                     <span className="step-label">
                       Pick any edge of the entity &gt;{" "}
                       <strong className="text-highlight">GO</strong>
-                      <img src={leftClick} alt="Left Click" className="screenshot-click--inline" />
+                      <img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                     </span>
                   </div>
 
@@ -346,7 +346,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                         <span className="step-label">
                           Select entity &gt;{" "}
                           <strong className="text-highlight">GO</strong>
-                          <img src={leftClick} alt="Left Click" className="screenshot-click--inline" />
+                          <img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                         </span>
                       </div>
 
@@ -384,7 +384,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                         <span className="step-label">
                           Select drafting entity &gt;{" "}
                           <strong className="text-highlight">GO</strong>
-                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
+                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                         </span>
                       </div>
 
@@ -433,7 +433,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                         <span className="step-label">
                           Select drafting entity &gt;{" "}
                           <strong className="text-highlight">GO</strong>
-                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
+                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                         </span>
                       </div>
 

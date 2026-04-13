@@ -32,24 +32,25 @@ import sgpPipesRed from '../../assets/3D_Image_File/standard(8)_SGP_pipes_red.pn
 import sgpPipesYellow from '../../assets/3D_Image_File/standard(8)_SGP_pipes_red.png';
 
 interface StandardLessonProps {
-  nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void; }
+  nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void;
+}
 
 /**
  * StandardLesson component for KEMCO Standard Lessons 1-8.
  * Refactored to use centralized useLessonCore hook for state and TTS.
  */
-const StandardLesson: React.FC<StandardLessonProps> = ({ 
-  subLessonId = 'standard-1', 
-  onNextLesson, 
-  onPrevLesson 
-, nextLabel }) => {
-  const { 
-    scrollProgress, 
-    containerRef, 
-    speak, 
-    stop, 
-    isSpeaking, 
-    currentIndex 
+const StandardLesson: React.FC<StandardLessonProps> = ({
+  subLessonId = 'standard-1',
+  onNextLesson,
+  onPrevLesson
+  , nextLabel }) => {
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
   } = useLessonCore(subLessonId);
 
   // --- Content Mapping ---
@@ -62,26 +63,34 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
         "Scale Specifications: On 3D models, text and graduations must be black. On 2D drawings, use yellow for text and skin color for linear graduations."
       ]
     },
-    'standard-2': { title: 'GAS DISCHARGE, OIL GROOVE & SPROCKET', steps: [
-      "Gas Discharge: To avoid deformation from heat during welding, add one ρE drill hole per square pipe for gas discharge.",
-      "Oil Groove: Manufacturing depth should be 1.5mm. Ensure drill and tap holes are smaller than the groove width to maintain oil flow.",
-      "Sprocket: When detailing sprockets in 2D, always include the standard safety color note as shown."
-    ]},
-    'standard-3': { title: 'SPROCKET COLORING & KEYWAY', steps: [
-      "Sprocket Coloring: In 3D modeling, teeth should remain unpainted to reflect actual manufacturing where the teeth have no paint.",
-      "Keyway Location: Always check special notes for keyway placement. The standard is to machine the key groove at the center of the tooth."
-    ]},
-    'standard-4': { title: 'KUSAKABE STANDARD CODE FOR SCREW', steps: ["Kusakabe Screw Codes: Follow these standard codes for screws, including specific designations for stainless steel parts."]},
-    'standard-5': { title: 'HARDWARE SYMBOLS & BOLT HOLES', steps: ["Hardware Symbols: Utilize these standard hardware symbols and refer to the bolt hole diameter table for precise modeling."]},
-    'standard-6': { title: 'BOLT LENGTH & BOLTING SETUP', steps: [
-      "Bolt Length: Calculate length using the formula: Bolt size times 1.5 plus the sum of material thicknesses. Round up to the nearest standard length.",
-      "Bolting Setup: Standard setup varies. For pillow blocks, use a hexagonal bolt, spring washer, and flat washer. Use capscrews for tight spaces."
-    ]},
-    'standard-7': { title: 'SLOTTED HOLE', steps: [
-      "Slotted Hole: Use these for parts requiring adjustment. Remember that slotted holes always require a flat washer for proper fastening.",
-      "Connections: For C-channel connections, use taper washers and hex nuts. For dual drill holes, hex socket head capscrews are preferred."
-    ]},
-    'standard-8': { title: 'SGP PIPES', steps: ["SGP Pipes: Distinguish between White SGP for fluids like oil and air, and Black SGP for structural parts. Use red for white pipes and yellow for black pipes in your models."]}
+    'standard-2': {
+      title: 'GAS DISCHARGE, OIL GROOVE & SPROCKET', steps: [
+        "Gas Discharge: To avoid deformation from heat during welding, add one ρE drill hole per square pipe for gas discharge.",
+        "Oil Groove: Manufacturing depth should be 1.5mm. Ensure drill and tap holes are smaller than the groove width to maintain oil flow.",
+        "Sprocket: When detailing sprockets in 2D, always include the standard safety color note as shown."
+      ]
+    },
+    'standard-3': {
+      title: 'SPROCKET COLORING & KEYWAY', steps: [
+        "Sprocket Coloring: In 3D modeling, teeth should remain unpainted to reflect actual manufacturing where the teeth have no paint.",
+        "Keyway Location: Always check special notes for keyway placement. The standard is to machine the key groove at the center of the tooth."
+      ]
+    },
+    'standard-4': { title: 'KUSAKABE STANDARD CODE FOR SCREW', steps: ["Kusakabe Screw Codes: Follow these standard codes for screws, including specific designations for stainless steel parts."] },
+    'standard-5': { title: 'HARDWARE SYMBOLS & BOLT HOLES', steps: ["Hardware Symbols: Utilize these standard hardware symbols and refer to the bolt hole diameter table for precise modeling."] },
+    'standard-6': {
+      title: 'BOLT LENGTH & BOLTING SETUP', steps: [
+        "Bolt Length: Calculate length using the formula: Bolt size times 1.5 plus the sum of material thicknesses. Round up to the nearest standard length.",
+        "Bolting Setup: Standard setup varies. For pillow blocks, use a hexagonal bolt, spring washer, and flat washer. Use capscrews for tight spaces."
+      ]
+    },
+    'standard-7': {
+      title: 'SLOTTED HOLE', steps: [
+        "Slotted Hole: Use these for parts requiring adjustment. Remember that slotted holes always require a flat washer for proper fastening.",
+        "Connections: For C-channel connections, use taper washers and hex nuts. For dual drill holes, hex socket head capscrews are preferred."
+      ]
+    },
+    'standard-8': { title: 'SGP PIPES', steps: ["SGP Pipes: Distinguish between White SGP for fluids like oil and air, and Black SGP for structural parts. Use red for white pipes and yellow for black pipes in your models."] }
   };
 
   const currentLesson = LESSON_DATA[subLessonId] || { title: `STANDARD (${subLessonId})`, steps: [] };
@@ -238,8 +247,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 </div>
                 <div className="info-box">
                   <p className="p-flush"><strong>Note</strong>: 1. Location of keyway always indicated on special notes.</p>
-                  <p className="p-flush">キー溝�E歯山部中忁E��合わせ加工すること (Key groove centered on tooth)</p>
-                  <p className="p-flush">2. 本図は市販品�E追加加工図である (Purchased part with additional process)</p>
+                  <p className="p-flush">キー溝�E歯山部中忁E��合わせ加工すること (Key groove centered on tooth)</p>
+                  <p className="p-flush">2. 本図は市販品�E追加加工図である (Purchased part with additional process)</p>
                 </div>
               </div>
             </div>
