@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom'; import { XCircle } from 'lucide-react';
 import { authService, User } from '../../services/authService'; import { adminService, SystemStats, TraineeProgress, SystemAuditLog } from '../../services/adminService';
-import { useUI } from '../../context/UIContext'; import '../../styles/AdminMode.css'; // Components import ErrorBoundary from '../../components/ErrorBoundary'; import { AdminSidebar } from './components/AdminSidebar';
+import { useUI } from '../../context/UIContext'; 
+import '../../styles/AdminMode.css'; 
+// Components 
+import ErrorBoundary from '../../components/ErrorBoundary'; 
+import { AdminSidebar } from './components/AdminSidebar';
 import { AdminHeader } from './components/AdminHeader'; import { SystemAnalytics } from './components/SystemAnalytics';
 import { UserManagement } from './components/UserManagement'; import { PerformanceDirectory } from './components/PerformanceDirectory';
 import { TraineeDetail } from './components/TraineeDetail'; import { AuditLogs } from './components/AuditLogs';
@@ -20,7 +24,10 @@ export const AdminMode: React.FC = () => {
     const activeTab = (pathParts[pathParts.length - 1] as AdminTab) || 'overview';
     const [stats, setStats] = useState<SystemStats | null>(null); const [users, setUsers] = useState<User[]>([]); const [progress, setProgress] = useState<TraineeProgress[]>([]); const [logs, setLogs] = useState<SystemAuditLog[]>([]); const [currentUser, setCurrentUser] = useState<User | null>(null); const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null); const [searchQuery, setSearchQuery] = useState('');
-    const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null); const [heatmap, setHeatmap] = useState<{course_id: string, count: number}[]>([]); // User CRUD state const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+    const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null); 
+    const [heatmap, setHeatmap] = useState<{course_id: string, count: number}[]>([]); 
+    // User CRUD state 
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const fetchData = async () => {

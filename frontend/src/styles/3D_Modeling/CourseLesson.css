@@ -76,7 +76,8 @@
 
 .lesson-intro .p-flush {
   font-size: 1.15rem;
-  color: var(--text-main); /* High contrast for intro text */
+  color: var(--text-main);
+  /* High contrast for intro text */
   max-width: 850px;
   line-height: 1.75;
   margin: 0;
@@ -90,7 +91,8 @@
 }
 
 [data-theme='dark'] .section-description {
-  color: var(--text-main); /* Ensure it's bright enough over glass backgrounds */
+  color: var(--text-main);
+  /* Ensure it's bright enough over glass backgrounds */
 }
 
 /* Light mode specific refinements */
@@ -211,11 +213,13 @@
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-main); /* Theme-aware fallback */
+  color: var(--text-main);
+  /* Theme-aware fallback */
 }
 
 .lesson-card .step-label {
-  color: #1e293b; /* Locked to dark for light cards */
+  color: #1e293b;
+  /* Locked to dark for light cards */
 }
 
 /* --- Image Formatting --- */
@@ -315,7 +319,8 @@
   border-left: 5px solid var(--primary);
   border-radius: 16px;
   padding: 1.5rem 2rem;
-  color: var(--text-main); /* Theme-aware text color */
+  color: var(--text-main);
+  /* Theme-aware text color */
 }
 
 .alert-box.warning {
