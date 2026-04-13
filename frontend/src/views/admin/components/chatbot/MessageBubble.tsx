@@ -56,7 +56,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
     onRetry, 
     onRegenerate, 
     onBranch, 
-    onSuggestionClick 
+    onSuggestionClick
 }) => {
     const media = msg.role === 'assistant' && msg.sources ? collectMedia(msg.sources, msg.content) : [];
     const isRegenerating = regeneratingIdx === idx;
@@ -189,6 +189,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
                                         <GitBranch size={13} />
                                     </button>
                                 )}
+
                                 <button className={`feedback-btn speak-btn ${currentlyReadingIdx === idx ? 'speaking' : ''}`} onClick={() => onSpeak(msg.content, idx)}
                                     aria-label={currentlyReadingIdx === idx ? 'Stop reading aloud' : 'Read aloud'}
                                     aria-pressed={currentlyReadingIdx === idx}

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { ChevronRight, ChevronLeft, Menu, BookOpen, Video } from 'lucide-react'; import { Course } from '../../../types';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain } from 'lucide-react'; import { Course } from '../../../types';
 import { useUI } from '../../../context/UIContext'; import { useAuth } from '../../../hooks/useAuth';
 import { Lesson, Quiz as QuizType } from '../mentorConstants'; import { QuizModal } from './QuizModal';
 import api from '../../../services/api';
+import { IntelligenceChatbot } from '../../admin/components/IntelligenceChatbot';
 
 // 3D Lesson Imports
 import IcadInterfaceLesson from '../../../components/3D_Modeling/3D_iCadInterface';
@@ -65,6 +66,7 @@ interface LessonViewerProps {
   ICAD_3D_LESSONS: Lesson[];
   completedLessons: string[];
   onLessonComplete: (id?: string) => void;
+  isEmployeeSide?: boolean;
 }
 
 export const LessonViewer: React.FC<LessonViewerProps> = ({
@@ -81,11 +83,51 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   ICAD_2D_LESSONS,
   ICAD_3D_LESSONS,
   completedLessons,
-  onLessonComplete
+  onLessonComplete,
+  isEmployeeSide = false
 }) => {
   const { requestConfirmation } = useUI();
   const { user } = useAuth();
   const [showQuiz, setShowQuiz] = useState(false);
+
+  // Chatbot Resizer & Toggle State
+  const [isChatbotOpen, setIsChatbotOpen] = useState(true);
+  const [chatbotWidth, setChatbotWidth] = useState(300);
+  const isDragging = useRef(false);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging.current) return;
+    const newWidth = document.body.clientWidth - e.clientX;
+    if (newWidth >= 300 && newWidth <= 800) {
+      setChatbotWidth(newWidth);
+    }
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    if (isDragging.current) {
+      isDragging.current = false;
+      document.body.style.cursor = 'default';
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.classList.remove('is-dragging');
+    }
+  }, [handleMouseMove]);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    isDragging.current = true;
+    document.body.style.cursor = 'col-resize';
+    document.body.classList.add('is-dragging');
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [handleMouseMove, handleMouseUp]);
+
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
     setShowQuiz(false);
@@ -107,9 +149,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   const handleExitCourse = async () => {
     const confirmed = await requestConfirmation({
-      title: 'Exit Course',
-      message: 'Are you sure you want to exit? Your progress in this session will be saved, but you will return to the selection screen.',
-      confirmText: 'Exit',
+      title: 'SUSPEND LEARNING SESSION',
+      message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
+      confirmText: 'Suspend Session',
       type: 'info'
     });
     if (confirmed) {
@@ -136,7 +178,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const parentResult = findParentAndQuiz();
   const hasQuiz = !!(parentResult?.parent?.quiz && parentResult.isLastSub);
   const isModuleCompleted = parentResult?.parent ? completedLessons.includes(parentResult.parent.id) : false;
-  const nextLabel = (hasQuiz && !isModuleCompleted) ? 'Continue' : 'Next Lesson';
+  const nextLabel = (hasQuiz && !isModuleCompleted && !isEmployeeSide) ? 'Continue' : 'Next Lesson';
 
   const handleQuizComplete = async (score: number) => {
     if (!parentResult?.parent) return;
@@ -169,7 +211,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   };
 
   const handleNextAction = () => {
-    if (hasQuiz && !isModuleCompleted) {
+    if (hasQuiz && !isModuleCompleted && !isEmployeeSide) {
       setShowQuiz(true);
     } else {
       goToNextLesson();
@@ -178,16 +220,23 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   return (
     <main className="main-content-viewer">
-      <div className="sticky-lesson-controls">
-        <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
-          <Menu size={20} />
+      <div className="sticky-lesson-controls" style={{ justifyContent: 'flex-end', gap: '0.75rem' }}>
+        <button 
+          className="exit-course-btn" 
+          style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-main)', display: 'flex', alignItems: 'center' }}
+          onClick={() => setIsChatbotOpen(!isChatbotOpen)}
+        >
+          <Brain size={16} style={{ marginRight: '0.5rem' }} />
+          {isChatbotOpen ? 'CLOSE AI' : 'ASSISTANT'}
         </button>
         <button className="exit-course-btn" onClick={handleExitCourse}>
           EXIT COURSE
         </button>
       </div>
 
-      <div className="lesson-header-banner">
+      <div className="lesson-split-layout">
+        <div className="lesson-scroll-area">
+          <div className="lesson-header-banner">
         <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIdsLength}</p>
         <h2 className="lesson-banner-title">
           {getActiveLessonTitle(lessons, activeLessonId)}
@@ -307,6 +356,21 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           />
         )}
       </div>
+      
+        </div> {/* End of lesson-scroll-area */}
+
+        {isChatbotOpen && (
+          <>
+            <div 
+              className="chatbot-resizer" 
+              onMouseDown={handleMouseDown}
+            />
+            <aside className="lesson-chatbot-sidebar" style={{ width: `${chatbotWidth}px` }}>
+              <IntelligenceChatbot />
+            </aside>
+          </>
+        )}
+      </div> {/* End of lesson-split-layout */}
     </main>
   );
 };

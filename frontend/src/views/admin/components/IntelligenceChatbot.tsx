@@ -250,6 +250,8 @@ export const IntelligenceChatbot: React.FC = () => {
             }));
         }
     }, [sessions, setSessions]);
+    
+
 
     const switchSession = useCallback((id: string) => {
         setActiveSessionId(id);
@@ -273,7 +275,7 @@ export const IntelligenceChatbot: React.FC = () => {
 
                 <SourcesPanel sources={latestSources} onOpenImage={openLightbox} onOpenFile={openFile} />
 
-                <ChatInput input={chatInput} setInput={setChatInput} selectedImages={selectedImages} removeImage={removeSelectedImage} onPaste={handlePaste} onSubmit={handleSubmit} isThinking={isThinking} forcedLanguage={forcedLanguage} setForcedLanguage={setForcedLanguage} />
+                <ChatInput input={chatInput} setInput={setChatInput} selectedImages={selectedImages} removeImage={removeSelectedImage} onPaste={handlePaste} onSubmit={handleSubmit} isThinking={isThinking} forcedLanguage={forcedLanguage} setForcedLanguage={setForcedLanguage} onClearAll={handleClearAll} />
             </div>
 
             {lightboxOpen && (

@@ -149,7 +149,7 @@ function App() {
           <main className="app-content">
             <ErrorBoundary>
               <Routes>
-                <Route path="/mentor" element={<MentorMode />} />
+                <Route path="/mentor" element={<MentorMode isEmployeeSide={user?.role?.toLowerCase() !== 'trainee'} />} />
                 <Route path="/assistant" element={<AssistantMode />} />
                 <Route path="/admin/*" element={<AdminMode />} />
                 <Route path="/" element={<Navigate to={user?.role === 'admin' ? "/admin" : (user?.role === 'employee' ? "/assistant" : "/mentor")} replace />} />

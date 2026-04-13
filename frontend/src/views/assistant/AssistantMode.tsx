@@ -23,7 +23,7 @@ const AssistantMode: React.FC = () => {
                 <button className={`assistant-tab-btn ${activeTab === 'training' ? 'active' : ''}`} onClick={() => setActiveTab('training')}
                 >
                     <GraduationCap size={18} />
-                    <span>Training Review</span>
+                    <span>iCAD Manuals and Standard</span>
                 </button>
             </nav>
 
@@ -32,7 +32,7 @@ const AssistantMode: React.FC = () => {
                     <IntelligenceChatbot />
                 ) : (
                     <div className="assistant-training-wrapper">
-                        <MentorMode />
+                        <MentorMode isEmployeeSide={true} />
                     </div>
                 )}
             </div>

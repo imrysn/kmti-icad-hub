@@ -31,7 +31,7 @@ export const ImageLightbox: React.FC<LightboxProps> = ({ images, initialIndex = 
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose();
-            if (e.key === 'ArrowLeft')  prev();
+            if (e.key === 'ArrowLeft') prev();
             if (e.key === 'ArrowRight') next();
         };
         window.addEventListener('keydown', handler);
@@ -129,7 +129,7 @@ export const FilePreviewModal: React.FC<FilePreviewProps> = ({ filename, onClose
                     setActiveSheet(Object.keys(d.sheets)[0] || '');
                 }
             })
-            .catch(() => setError('Failed to load file preview.'))
+            .catch((err) => setError(err.response?.data?.detail || 'Failed to load file preview.'))
             .finally(() => setLoading(false));
     }, [filename]);
 
@@ -164,7 +164,7 @@ export const FilePreviewModal: React.FC<FilePreviewProps> = ({ filename, onClose
                     </div>
                     <div className="fpm-actions">
                         <button className="fpm-btn" onClick={() => onDownload(filename)}>
-                            <Download size={14} /> Download
+                            <Download size={14} />
                         </button>
                         <button className="fpm-btn fpm-btn-close" onClick={onClose}>
                             <X size={14} />
@@ -206,7 +206,11 @@ export const FilePreviewModal: React.FC<FilePreviewProps> = ({ filename, onClose
                             <span>Loading preview...</span>
                         </div>
                     )}
-                    {error && <div className="fpm-state fpm-error">{error}</div>}
+                    {error && (
+                        <div className="fpm-state">
+                            <div className="fpm-error">{error}</div>
+                        </div>
+                    )}
                     {!loading && !error && !isPreviewable && (
                         <div className="fpm-state">
                             <span>.{ext} files cannot be previewed in browser.</span>

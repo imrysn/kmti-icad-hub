@@ -133,3 +133,16 @@ class QueryCache(Base):
     created_at = Column(DateTime, default=func.now(), index=True)
     expires_at = Column(DateTime, nullable=False, index=True)  # TTL expiry
 
+
+class SavedSnippet(Base):
+    """Personal notebook entries for trainees to save key insights"""
+    __tablename__ = "saved_snippets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True, nullable=False) # FK to users.id
+    content = Column(String(8000), nullable=False)        # The clipped text
+    source = Column(String(200), nullable=True)           # E.g. "AI Response", "2D Keyway Lesson"
+    tags = Column(String(500), nullable=True)             # Optional tags for categorization
+    created_at = Column(DateTime, default=func.now(), index=True)
+
+

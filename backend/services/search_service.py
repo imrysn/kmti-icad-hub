@@ -270,9 +270,8 @@ class ChatService:
     def _fallback_summary(self, query: str, sources) -> str:
         top = sources[0]
         return (
-            f"Based on the knowledge base, here is what I found regarding '{query}':\n\n"
             f"{top.content}\n\n"
-            "⚠️ Gemini unavailable (check AI service logs or API key)."
+            "⚠️ Note: AI analysis is currently unavailable. Displaying raw data from the manual above."
         )
 
 
