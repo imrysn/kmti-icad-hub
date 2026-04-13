@@ -387,7 +387,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" />
+                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
 
                 </div>
 
@@ -476,7 +476,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" />
+                  <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
 
                 </div>
 
@@ -565,7 +565,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" />
+                  <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
 
                 </div>
 
@@ -654,7 +654,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" />
+                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
 
                 </div>
 
@@ -743,7 +743,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" />
+                  <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
 
                 </div>
 
