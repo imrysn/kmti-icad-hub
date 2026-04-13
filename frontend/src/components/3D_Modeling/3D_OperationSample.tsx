@@ -334,7 +334,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <div className="flex-row-center">
 
                         <p className="p-flush">Left-click on the selected point &gt; <strong className="text-highlight">GO</strong>
-                          <img src={leftClick} alt="Left Click" className="screenshot-click--inline" />
+                          <img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                         </p>
 
                       </div>
@@ -456,7 +456,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       </p>
 
                       <p className="p-flush">Pick all the edges to be filleted &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
+                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                       </p>
 
                     </div>
@@ -531,7 +531,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       </p>
 
                       <p className="p-flush">Select all edges to be chamfered &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
+                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                       </p>
 
                     </div>
@@ -569,7 +569,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       </div>
 
                       <p className='p-flush'>Select the entity &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
+                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                       </p>
 
                       <p className='p-flush'>Enter the 3D Part Name

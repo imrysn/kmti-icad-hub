@@ -31,8 +31,8 @@ function createWindow() {
             mainWindow.loadURL('http://localhost:5174');
         });
         
-        // Open DevTools by default in dev
-        mainWindow.webContents.openDevTools();
+        // DevTools auto-open disabled to prevent "Failed to fetch" console errors
+        // mainWindow.webContents.openDevTools();
 
         // Register shortcuts for development
         app.on('browser-window-focus', () => {
