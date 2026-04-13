@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { MessageSquare, RefreshCw, XCircle } from 'lucide-react'; import { ImagePayload } from '../../../../services/searchService';
+import { MessageSquare, RefreshCw, XCircle, Trash2 } from 'lucide-react'; import { ImagePayload } from '../../../../services/searchService';
 
 interface ChatInputProps {
     input: string;
@@ -11,6 +11,7 @@ interface ChatInputProps {
     isThinking: boolean;
     forcedLanguage: string;
     setForcedLanguage: (lang: any) => void;
+    onClearAll: () => void;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
@@ -22,7 +23,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     onSubmit,
     isThinking,
     forcedLanguage,
-    setForcedLanguage
+    setForcedLanguage,
+    onClearAll
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -57,6 +59,17 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                         <option value="fil-PH">PH</option>
                     </select>
                 </div>
+
+                <button 
+                    type="button" 
+                    className="chat-clear-btn" 
+                    onClick={onClearAll}
+                    title="Clear history"
+                    aria-label="Clear chat history"
+                    disabled={isThinking}
+                >
+                    <Trash2 size={15} />
+                </button>
 
                 <label htmlFor="chat-input" className="sr-only">Chat message input</label>
                 <input id="chat-input" ref={inputRef} type="text" className="chat-input" placeholder={selectedImages.length> 0 ? "Describe these image/s...." : "What's on your mind?"}

@@ -128,8 +128,9 @@
 /* ── Sidebar ─────────────────────────────────────────────────── */
 
 .course-sidebar {
-  width: 0;
-  opacity: 0;
+  width: 50px;
+  /* Slim dock when collapsed */
+  opacity: 1;
   flex-shrink: 0;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
@@ -139,27 +140,55 @@
   overflow: hidden;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
   z-index: 100;
-  pointer-events: none;
 }
 
 .course-sidebar.open {
   width: 320px;
-  opacity: 1;
   pointer-events: auto;
 }
 
+/* ── Hover Sidebar Overrides for Inner Content ── */
 .sidebar-inner-container {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  width: 320px;
+  /* Force width so content doesn't squeeze */
 }
+
+/* Fade out extraneous UI elements when sidebar is collapsed */
+.course-sidebar:not(.open) .sidebar-course-title,
+.course-sidebar:not(.open) .sidebar-progress-container,
+.course-sidebar:not(.open) .sidebar-search-input {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.course-sidebar.open .sidebar-course-title,
+.course-sidebar.open .sidebar-progress-container,
+.course-sidebar.open .sidebar-search-input {
+  opacity: 1;
+  transition: opacity 0.4s ease 0.1s;
+}
+
+/* Ensure icons remain centered and look like a dock when closed */
+.course-sidebar:not(.open) .lesson-item {
+  width: 48px;
+  /* Match width constraint to keep UI clean */
+  padding: 0.75rem 0.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* -- END HOVER SIDEBAR OVERRIDES -- */
 
 .sidebar-course-header {
   padding: 2.5rem 1.75rem;
-  background: linear-gradient(180deg, rgba(8, 10, 20, 0.4) 0%, transparent 100%), 
-              rgba(15, 23, 42, 0.2);
+  background: linear-gradient(180deg, rgba(8, 10, 20, 0.4) 0%, transparent 100%),
+    rgba(15, 23, 42, 0.2);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: var(--text-white);
@@ -260,33 +289,195 @@
   -webkit-text-fill-color: transparent;
 }
 
-.sidebar-progress-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* ── Analytics Card Dashboard ────────────────────────────────── */
+
+.sidebar-analytics-wrapper {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 
-.sidebar-progress-bar-bg {
-  height: 4px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--radius-full);
+.analytics-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.analytics-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(var(--primary-rgb), 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.analytics-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.analytics-icon-zap {
+  color: #fbbf24;
+}
+
+.analytics-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.analytics-badge.expert {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.analytics-badge.master {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.analytics-badge.pro {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.analytics-badge.learner {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.analytics-badge.novice {
+  background: rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.analytics-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.analytics-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.analytics-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.analytics-value {
+  font-size: 1rem;
+  font-weight: 800;
+  color: white;
+}
+
+.analytics-progress-bar-bg {
+  height: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 99px;
   overflow: hidden;
 }
 
-.sidebar-progress-bar-fill {
+.analytics-progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  box-shadow: 0 0 10px var(--color-primary-glow);
-  border-radius: var(--radius-full);
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  border-radius: 99px;
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.sidebar-progress-text {
+.analytics-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.analytics-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+.stat-icon-bg {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon-bg.trophy {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.stat-icon-bg.target {
+  background: rgba(34, 211, 238, 0.15);
+  color: #22d3ee;
+}
+
+.stat-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+}
+
+.stat-label {
   font-size: 0.65rem;
-  font-weight: 800;
   color: var(--text-muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+}
+
+[data-theme='light'] .analytics-card {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .analytics-value,
+[data-theme='light'] .stat-value {
+  color: #1e293b;
+}
+
+[data-theme='light'] .analytics-stat {
+  background: rgba(99, 102, 241, 0.05);
 }
 
 /* ── Lesson List ────────────────────────────────────────────── */
@@ -347,12 +538,14 @@
 }
 
 .lesson-icon--completed {
-  color: #10b981; /* Success Green */
+  color: #10b981;
+  /* Success Green */
   filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.4));
 }
 
 .lesson-lock-icon {
-  color: #f59e0b; /* Amber/Gold Lock */
+  color: #f59e0b;
+  /* Amber/Gold Lock */
   opacity: 0.8;
   filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.3));
 }
@@ -428,7 +621,8 @@
 }
 
 /* Disabled/Locked style */
-.lesson-item.locked, .sub-lesson-item.locked {
+.lesson-item.locked,
+.sub-lesson-item.locked {
   opacity: 0.6;
   cursor: not-allowed;
   filter: grayscale(0.5);
@@ -468,12 +662,64 @@
   border-color: var(--primary);
 }
 
-/* ── Main Content Viewer ─────────────────────────────────────── */
+/* ── Main Content Viewer & Split Layout ──────────────────────── */
 
 .main-content-viewer {
   flex: 1;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: transparent;
+}
+
+.lesson-split-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.lesson-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.lesson-chatbot-sidebar {
+  flex-shrink: 0;
+  background: rgba(8, 10, 20, 0.4);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatbot-resizer {
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+  flex-shrink: 0;
+  z-index: 100;
+  transition: background 0.15s ease;
+  position: relative;
+}
+
+.chatbot-resizer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  right: -2px;
+  cursor: col-resize;
+}
+
+.chatbot-resizer:hover,
+.chatbot-resizer.is-dragging {
+  background: var(--color-accent);
+}
+
+[data-theme='light'] .lesson-chatbot-sidebar {
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .lesson-header-banner {
@@ -562,4 +808,235 @@
   color: var(--primary);
   transform: scale(1.1);
   box-shadow: none !important;
+}
+
+/* ── Antigravity Chatbot Style Overrides (Mentor Mode Only) ── */
+
+.lesson-chatbot-sidebar .chatbot-layout {
+  height: 100%;
+  gap: 0;
+}
+
+/* Hide the sessions sidebar */
+.lesson-chatbot-sidebar .chatbot-sidebar {
+  display: none !important;
+}
+
+/* Flatten the main container */
+.lesson-chatbot-sidebar .chatbot-main {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* Maintain Current Background */
+.lesson-chatbot-sidebar .chat-messages {
+  background: transparent !important;
+  padding: 1.5rem 1rem !important;
+}
+
+/* User Message Bubble - Antigravity Style (Dark/Translucent) */
+.lesson-chatbot-sidebar .chat-bubble.user {
+  max-width: 90% !important;
+  align-self: flex-end;
+}
+
+.lesson-chatbot-sidebar .chat-bubble.user .bubble-avatar {
+  display: none !important;
+}
+
+.lesson-chatbot-sidebar .chat-bubble.user .bubble-content {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-white) !important;
+  border-radius: 12px !important;
+  padding: 0.8rem 1.2rem !important;
+  font-size: 0.9rem !important;
+  box-shadow: none !important;
+}
+
+[data-theme='light'] .lesson-chatbot-sidebar .chat-bubble.user .bubble-content {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: var(--text-main) !important;
+}
+
+/* Assistant Message - Antigravity Style (No Bubble, Text Only) */
+.lesson-chatbot-sidebar .chat-bubble.assistant {
+  max-width: 100% !important;
+}
+
+.lesson-chatbot-sidebar .chat-bubble.assistant .bubble-avatar {
+  display: none !important;
+}
+
+.lesson-chatbot-sidebar .chat-bubble.assistant .bubble-content {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.5rem 0 !important;
+  color: var(--text-white) !important;
+  border-radius: 0 !important;
+}
+
+[data-theme='light'] .lesson-chatbot-sidebar .chat-bubble.assistant .bubble-content {
+  color: var(--text-main) !important;
+}
+
+/* Pre/Code styling inside transparent bubbles */
+.lesson-chatbot-sidebar .chat-bubble.assistant .bubble-content pre {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme='light'] .lesson-chatbot-sidebar .chat-bubble.assistant .bubble-content pre {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: var(--text-main) !important;
+}
+
+/* Simple Input Bar */
+.lesson-chatbot-sidebar .chat-input-row {
+  background: transparent !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 0.75rem 0.5rem !important;
+  /* Reduced horizontal padding */
+}
+
+[data-theme='light'] .lesson-chatbot-sidebar .chat-input-row {
+  border-top-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.lesson-chatbot-sidebar .chat-input-box {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  overflow: hidden !important;
+  /* Contain everything */
+  gap: 0 !important;
+}
+
+.lesson-chatbot-sidebar .voice-lang-wrapper {
+  padding: 0 0.5rem !important;
+  margin: 0 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.lesson-chatbot-sidebar .chat-clear-btn {
+  width: 28px !important;
+  height: 28px !important;
+  color: var(--text-dim) !important;
+  opacity: 0.6 !important;
+  margin-right: 2px !important;
+}
+
+[data-theme='dark'] .lesson-chatbot-sidebar .chat-clear-btn {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+[data-theme='light'] .lesson-chatbot-sidebar .chat-clear-btn {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.lesson-chatbot-sidebar .chat-clear-btn:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+  opacity: 1 !important;
+}
+
+
+
+.lesson-chatbot-sidebar .chat-input {
+  flex: 1 !important;
+  min-width: 0 !important;
+  /* Critical for flexbox math */
+  padding: 0.5rem 0.75rem !important;
+  background: transparent !important;
+}
+
+.lesson-chatbot-sidebar .chat-send-btn {
+  width: 32px !important;
+  height: 32px !important;
+  margin: 2px !important;
+  flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  background: var(--color-accent) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+
+.lesson-chatbot-sidebar .chat-input {
+  color: var(--text-white) !important;
+}
+
+[data-theme='light'] .lesson-chatbot-sidebar .chat-input {
+  color: var(--text-main) !important;
+}
+
+/* Sources strip blend */
+.lesson-chatbot-sidebar .chat-sources {
+  background: transparent !important;
+  border-top: none !important;
+}
+
+/* Hide the new chat / clear chat headers inside the floating window */
+.lesson-chatbot-sidebar .chat-controls-top {
+  display: none !important;
+}
+
+/* ── UI Scale Down for Narrow (300px) Layout Compatibility ── */
+
+.lesson-chatbot-sidebar .chat-frontier-container {
+  padding: 1rem !important;
+}
+
+.lesson-chatbot-sidebar .chat-messages {
+  padding: 1rem 0.5rem !important;
+}
+
+.lesson-chatbot-sidebar .frontier-title {
+  font-size: 1.6rem !important;
+}
+
+.lesson-chatbot-sidebar .frontier-subtitle {
+  font-size: 0.8rem !important;
+  max-width: 100% !important;
+}
+
+.lesson-chatbot-sidebar .suggestions-category-row {
+  gap: 0.5rem !important;
+  margin-bottom: 1.2rem !important;
+  flex-wrap: wrap !important;
+}
+
+.lesson-chatbot-sidebar .suggestion-category-tag {
+  padding: 0.3rem 0.6rem !important;
+  font-size: 0.6rem !important;
+}
+
+.lesson-chatbot-sidebar .frontier-suggestions-grid {
+  gap: 0.6rem !important;
+}
+
+.lesson-chatbot-sidebar .frontier-prompt-card {
+  padding: 0.75rem !important;
+  border-radius: 8px !important;
+}
+
+.lesson-chatbot-sidebar .frontier-prompt-card .prompt-card-content {
+  gap: 0.5rem !important;
+}
+
+.lesson-chatbot-sidebar .frontier-prompt-card .prompt-icon {
+  display: none !important;
+}
+
+.lesson-chatbot-sidebar .frontier-prompt-card span {
+  line-height: 1.3 !important;
 }

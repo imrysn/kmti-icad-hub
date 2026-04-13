@@ -98,6 +98,11 @@
     color: #22c55e;
 }
 
+.hybrid-icon-wrapper.info {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
 .hybrid-text-wrapper {
     flex: 1;
 }
@@ -161,6 +166,11 @@
 .hybrid-btn-primary.danger {
     background: #ef4444;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.hybrid-btn-primary.info {
+    background: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
 }
 
 .hybrid-btn-primary:hover {

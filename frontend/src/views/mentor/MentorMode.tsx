@@ -13,7 +13,11 @@ import '../../styles/MentorMode.css';
  * Container component that manages fetching courses, tracking lesson state,
  * and rendering the core navigation and viewing components.
  */
-const MentorMode: React.FC = () => {
+interface MentorModeProps {
+    isEmployeeSide?: boolean;
+}
+
+const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Data Hook
     const { courses, loading, error } = useCourses();
 
@@ -23,9 +27,10 @@ const MentorMode: React.FC = () => {
     
     // UI/Interaction State 
     const [activeLessonId, setActiveLessonId] = useState<string>(''); 
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set()); 
     const [completedLessons, setCompletedLessons] = useState<string[]>([]); 
+    const [averageScore, setAverageScore] = useState(0);
     const [isLoadingProgress, setIsLoadingProgress] = useState(true);
 
     // Derived stable state
@@ -59,8 +64,19 @@ const MentorMode: React.FC = () => {
                 ids.push(newCompletedId);
             }
             
+            
             setCompletedLessons(ids);
-            console.log('Progress fetched:', { count: ids.length, ids });
+            
+            // Calculate average score
+            const quizLessons = progress.filter((p: any) => p.score > 0);
+            if (quizLessons.length > 0) {
+                const total = quizLessons.reduce((acc: number, p: any) => acc + p.score, 0);
+                setAverageScore(total / quizLessons.length);
+            } else {
+                setAverageScore(0);
+            }
+
+            console.log('Progress fetched:', { count: ids.length, ids, avgScore: averageScore });
         } catch (err) {
             console.error('Failed to fetch progress:', err);
         } finally {
@@ -172,9 +188,9 @@ const MentorMode: React.FC = () => {
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
-                <MentorSidebar selectedCourse={selectedCourse} is2DDrawingCourse={is2DDrawingCourse} sidebarOpen={sidebarOpen} activeLessonId={activeLessonId} setActiveLessonId={setActiveLessonId} expandedIds={expandedIds} toggleExpand={toggleExpand} setSelectedCourse={setSelectedCourse} completedLessons={completedLessons} isLoadingProgress={isLoadingProgress} />
+                <MentorSidebar selectedCourse={selectedCourse} is2DDrawingCourse={is2DDrawingCourse} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} activeLessonId={activeLessonId} setActiveLessonId={setActiveLessonId} expandedIds={expandedIds} toggleExpand={toggleExpand} setSelectedCourse={setSelectedCourse} completedLessons={completedLessons} isLoadingProgress={isLoadingProgress} isEmployeeSide={isEmployeeSide} totalLessons={allLessonIds.length} averageScore={averageScore} />
 
-                <LessonViewer is2DDrawingCourse={is2DDrawingCourse} activeLessonId={activeLessonId} currentLessonIndex={currentLessonIndex} allLessonIdsLength={allLessonIds.length} goToNextLesson={goToNextLesson} goToPrevLesson={goToPrevLesson} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} setSelectedCourse={setSelectedCourse} getActiveLessonTitle={getActiveLessonTitle} ICAD_2D_LESSONS={ICAD_2D_LESSONS} ICAD_3D_LESSONS={ICAD_3D_LESSONS} completedLessons={completedLessons} onLessonComplete={fetchProgress} />
+                <LessonViewer is2DDrawingCourse={is2DDrawingCourse} activeLessonId={activeLessonId} currentLessonIndex={currentLessonIndex} allLessonIdsLength={allLessonIds.length} goToNextLesson={goToNextLesson} goToPrevLesson={goToPrevLesson} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} setSelectedCourse={setSelectedCourse} getActiveLessonTitle={getActiveLessonTitle} ICAD_2D_LESSONS={ICAD_2D_LESSONS} ICAD_3D_LESSONS={ICAD_3D_LESSONS} completedLessons={completedLessons} onLessonComplete={fetchProgress} isEmployeeSide={isEmployeeSide} />
             </div>
         </div>
     );

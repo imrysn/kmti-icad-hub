@@ -199,7 +199,7 @@
 }
 
 .theme-toggle-btn:hover {
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.08) !important;
   color: var(--primary);
   transform: rotate(15deg) scale(1.1);
   filter: drop-shadow(0 0 10px var(--color-primary-glow));

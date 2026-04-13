@@ -479,19 +479,35 @@ def preview_kb_file(
                 import openpyxl
             except ImportError:
                 raise HTTPException(status_code=500, detail="openpyxl not installed")
+            
             wb = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
             sheets = {}
             for sheet_name in wb.sheetnames:
                 ws = wb[sheet_name]
                 rows_data = []
                 headers = []
+                # Determine max columns for headers
+                max_cols = ws.max_column or 0
+                
                 for i, row in enumerate(ws.iter_rows(values_only=True)):
                     if i == 0:
-                        headers = [str(c) if c is not None else "" for c in row]
+                        # Normalize headers
+                        headers = [str(c) if c is not None and str(c).strip() != "" else f"Column {idx+1}" for idx, c in enumerate(row)]
                     else:
-                        rows_data.append({headers[j]: (str(v) if v is not None else "") for j, v in enumerate(row)})
-                    if i > 500:
+                        # Safely map values to available headers
+                        row_dict = {}
+                        for j, value in enumerate(row):
+                            if j < len(headers):
+                                row_dict[headers[j]] = str(value) if value is not None else ""
+                            else:
+                                # New column not defined in header, skip or add to dynamic headers? 
+                                # Let's skip to keep table consistent
+                                pass
+                        rows_data.append(row_dict)
+                    
+                    if i >= 500: # Increase limit slightly or keep at 500
                         break
+                
                 sheets[sheet_name] = {"headers": headers, "rows": rows_data}
             wb.close()
             return {"filename": filename, "type": "xlsx", "sheets": sheets}
@@ -744,3 +760,4 @@ def clear_cache(
     deleted = db.query(QueryCache).delete()
     db.commit()
     return {"message": f"Cleared {deleted} cache entries"}
+
