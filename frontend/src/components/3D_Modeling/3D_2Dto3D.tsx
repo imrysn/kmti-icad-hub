@@ -1,9 +1,37 @@
-/** * 3D_2Dto3D.tsx — 2D > 3D lessons (1 through 3) */
+/** * 3D_2Dto3D.tsx  E2D > 3D lessons (1 through 3) */
 
 import React, { useState, useEffect, useRef } from "react";
 
-import { ChevronLeft, ChevronRight, ArrowRight, Zap, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/CourseLesson.css"; /* ══════════════════════════════════════════════════════════════════════════ */ /* 2D > 3D (1) — WORK PLANE / COMMAND MENU / EXTRUDE */ /* ══════════════════════════════════════════════════════════════════════════ */ import workPlaneImg from "../../assets/3D_Image_File/2d_3d_work_plane.png"; import openWorkPlaneImg from "../../assets/3D_Image_File/2d_3d_open_work_plane1.png"; import openWorkPlaneImg2 from "../../assets/3D_Image_File/2d_3d_open_work_plane.png"; import extrudeIcon from "../../assets/3D_Image_File/2d_3d_(1)_extrude.png"; import pickCrossSection from "../../assets/3D_Image_File/2d_3d_(1)_pick_cross_section.png"; import commandMenu from "../../assets/3D_Image_File/2d_3d(1)_1.png"; import commandMenu2 from "../../assets/3D_Image_File/2d_3d_(1)_command_menu2.png"; import leftClick from "../../assets/3D_Image_File/left_click.png"; import extrudeDialog from "../../assets/3D_Image_File/2d_3d(2)_extrude1.png"; import extrudeResultFinal from "../../assets/3D_Image_File/2d_3d(2)_extrude2.png"; import revolveIcon from "../../assets/3D_Image_File/2d_3d_(2)_revolve.png"; import revolveSteps from "../../assets/3D_Image_File/2d_3d(2)spiral.png"; import spiralSketch from "../../assets/3D_Image_File/2d_3d_(2)_revolve_spiral_form_sketch.png"; import spiralIcon from "../../assets/3D_Image_File/2d_3d_(2)_spiral_form.png"; import spiralItemEntry from "../../assets/3D_Image_File/2d_3d_(2)_spiral_form_item_entry.png"; import spiralPitch from "../../assets/3D_Image_File/2d_3d_(2)_spiral_form_pitch.png"; import spiralRotation1 from "../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation1.png"; import spiralRotation from "../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation.png"; import spiralRotation2 from "../../assets/3D_Image_File/2d_3d_(2)_spiral_form_axis_rotation2.jpg";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+  Zap
+} from 'lucide-react';
+import { useLessonCore } from "../../hooks/useLessonCore";
+import { ReadAloudButton } from "../ReadAloudButton";
+import "../../styles/3D_Modeling/CourseLesson.css";
+
+/* 2D > 3D (1) Assets */
+import workPlaneImg from "../../assets/3D_Image_File/2d_3d_work_plane.png";
+import openWorkPlaneImg from "../../assets/3D_Image_File/2d_3d_open_work_plane1.png";
+import openWorkPlaneImg2 from "../../assets/3D_Image_File/2d_3d_open_work_plane.png";
+import extrudeIcon from "../../assets/3D_Image_File/2d_3d_1_extrude.png";
+import pickCrossSection from "../../assets/3D_Image_File/2d_3d_1_pick_cross_section.png";
+import commandMenu from "../../assets/3D_Image_File/2d_3d1_1.png";
+import commandMenu2 from "../../assets/3D_Image_File/2d_3d_1_command_menu2.png";
+import leftClick from "../../assets/3D_Image_File/left_click.png";
+import extrudeDialog from "../../assets/3D_Image_File/2d_3d2_extrude1.png";
+import extrudeResultFinal from "../../assets/3D_Image_File/2d_3d2_extrude2.png";
+import revolveIcon from "../../assets/3D_Image_File/2d_3d_2_revolve.png";
+import revolveSteps from "../../assets/3D_Image_File/2d_3d2spiral.png";
+import spiralSketch from "../../assets/3D_Image_File/2d_3d_2_revolve_spiral_form_sketch.png";
+import spiralIcon from "../../assets/3D_Image_File/2d_3d_2_spiral_form.png";
+import spiralItemEntry from "../../assets/3D_Image_File/2d_3d_2_spiral_form_item_entry.png";
+import spiralPitch from "../../assets/3D_Image_File/2d_3d_2_spiral_form_pitch.png";
+import spiralRotation1 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation1.png";
+import spiralRotation from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation.png";
+import spiralRotation2 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation2.jpg";
 
 interface SubLessonProps {
   onNextLesson?: () => void;
@@ -14,22 +42,22 @@ interface SubLessonProps {
 /* ── 2D > 3D (1) ── */
 const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"workPlane">("workPlane");
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`2d-3d-1-${activeTab}`);
+
   const workPlaneSteps = [
     "Work Plane: 3D modeling can be done by sketching on a 2D sketch using a plane on the 3D dimension. Use Open Work Plane from the toolbar to start.",
     "Step 2: Use the tools shown to rotate the work plane to X-Y, X-Z, or Y-Z orientations."
   ];
 
-  useEffect(() => {
-    const handleScroll = () => { if (!containerRef.current) return; const element = containerRef.current; const totalHeight = element.scrollHeight - element.clientHeight; if (totalHeight === 0) { setScrollProgress(100); return; } const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress); };
-    const currentContainer = containerRef.current; if (currentContainer) { currentContainer.addEventListener("scroll", handleScroll); handleScroll(); }
-    return () => { if (currentContainer) currentContainer.removeEventListener("scroll", handleScroll); };
-  }, [activeTab]);
-
   const tabs = [{ id: "workPlane", label: "Work Plane" }];
-  const scrollToTop = () => { const viewer = document.querySelector(".main-content-viewer"); if (viewer) viewer.scrollTo(0, 0); };
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -40,7 +68,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <h3 className="section-title">2D &gt; 3D (1) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(workPlaneSteps)} onStop={stop} /> </h3>
       </section>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { setActiveTab(tab.id as any); scrollToTop(); }} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { setActiveTab(tab.id as any); if (containerRef.current) containerRef.current.scrollTop = 0; }} > {tab.label} </button>))}
       </div>
       <div className="lesson-grid single-card">
         {activeTab === "workPlane" && (
@@ -72,17 +100,16 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 /* ── 2D > 3D (2) ── */
 const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"commandMenu">("commandMenu");
-  const { speak, stop, isSpeaking } = useTTS();
+  
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking
+  } = useLessonCore(`2d-3d-2-${activeTab}`);
+
   const menuSteps = ["Command Menu: Most tools for sketching on the work plane, like those for extruding 2D sketches into 3D solid entities, can be found on this menu."];
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => { if (!containerRef.current) return; const element = containerRef.current; const totalHeight = element.scrollHeight - element.clientHeight; if (totalHeight === 0) { setScrollProgress(100); return; } const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress); };
-    const currentContainer = containerRef.current; if (currentContainer) { currentContainer.addEventListener("scroll", handleScroll); handleScroll(); }
-    return () => { if (currentContainer) currentContainer.removeEventListener("scroll", handleScroll); };
-  }, [activeTab]);
-
   const tabs = [{ id: "commandMenu", label: "Command Menu" }];
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -117,23 +144,23 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 /* ── 2D > 3D (3) ── */
 const TwoDTo3D3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"extrude" | "revolve" | "spiral">("extrude");
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`2d-3d-3-${activeTab}`);
+
   const extrudeSteps = ["Step 1: Select Extrude from the icon menu.", "Step 2: Pick the cross-section to be extruded. A hatch will appear to show it is an enclosed figure. Click GO.", "Step 3: Specify the height on the item entry, press Enter, then click GO.", "Instruction: A dialog box will appear asking to delete the work plane. OK deletes the plane and all sketches permanently. Cancel keeps them."];
   const revolveStepsTTS = ["Step 1: Select Revolve from the icon menu.", "Step 2: Pick the cross-section to be revolved. Ensure it is enclosed by checking for the hatch. Click GO.", "Step 3: Select the axis of rotation and click GO."];
   const spiralSteps = ["Step 1: First, create your 2D sketch for the spiral form.", "Step 2: Select Spiral Form from the menu. Pick the cross-section and click GO.", "Step 3: Specify the pitch in the item entry. Pitch must be greater than thickness. Click GO.", "Step 4: Select the ends of the rotational axis for the spiral length, then click GO."];
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => { if (!containerRef.current) return; const element = containerRef.current; const totalHeight = element.scrollHeight - element.clientHeight; if (totalHeight === 0) { setScrollProgress(100); return; } const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress); };
-    const currentContainer = containerRef.current; if (currentContainer) { currentContainer.addEventListener("scroll", handleScroll); handleScroll(); }
-    return () => { if (currentContainer) currentContainer.removeEventListener("scroll", handleScroll); };
-  }, [activeTab]);
 
   const tabs = [{ id: "extrude", label: "Extrude" }, { id: "revolve", label: "Revolve" }, { id: "spiral", label: "Spiral" },];
-  const scrollToTop = () => { const viewer = document.querySelector(".main-content-viewer"); if (viewer) viewer.scrollTo(0, 0); };
-  const handleNext = () => { const i = tabs.findIndex((t) => t.id === activeTab); if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); scrollToTop(); } else if (onNextLesson) onNextLesson(); };
-  const handlePrev = () => { const i = tabs.findIndex((t) => t.id === activeTab); if (i > 0) { setActiveTab(tabs[i - 1].id as any); scrollToTop(); } else if (onPrevLesson) onPrevLesson(); };
+  const handleNext = () => { const i = tabs.findIndex((t) => t.id === activeTab); if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson(); };
+  const handlePrev = () => { const i = tabs.findIndex((t) => t.id === activeTab); if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson(); };
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -141,7 +168,7 @@ const TwoDTo3D3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <h3 className="section-title">2D &gt; 3D (3) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (activeTab === "extrude") speak(extrudeSteps); else if (activeTab === "revolve") speak(revolveStepsTTS); else speak(spiralSteps); }} onStop={stop} /> </h3>
       </section>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { setActiveTab(tab.id as any); scrollToTop(); }} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { setActiveTab(tab.id as any); if (containerRef.current) containerRef.current.scrollTop = 0; }} > {tab.label} </button>))}
       </div>
       <div className="lesson-grid single-card">
         {activeTab === "extrude" && (

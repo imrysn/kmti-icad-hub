@@ -1,9 +1,9 @@
 /** * 3D_Fairing.tsx — Fairing operations lessons (Chamfer, Fillet, Shell) */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Box as BoxIcon, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import { useLessonCore } from '../../hooks/useLessonCore';
 import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 /* Fairing Assets */
@@ -26,15 +26,17 @@ interface FairingLessonProps {
   nextLabel?: string;
 }
 
-const FairingLesson: React.FC<FairingLessonProps> = ({
-  onNextLesson,
-  onPrevLesson,
-  nextLabel
-}) => {
+const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<'chamfer' | 'fillet' | 'shell'>('chamfer');
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+  
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`fairing-${activeTab}`);
 
   const chamferSteps = [
     "Step 1: Select Chamfer edge from the icon menu.",
@@ -53,29 +55,6 @@ const FairingLesson: React.FC<FairingLessonProps> = ({
     "Step 2: Select the two endfaces of the solid entity and click GO.",
     "Step 3: Specify the thickness on the item entry then click GO twice."
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const element = containerRef.current;
-      const totalHeight = element.scrollHeight - element.clientHeight;
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-    if (currentContainer) {
-      currentContainer.addEventListener('scroll', handleScroll);
-      handleScroll();
-    }
-    return () => {
-      if (currentContainer) currentContainer.removeEventListener('scroll', handleScroll);
-    };
-  }, [activeTab]);
 
   const getStepClass = (stepId: string) => "instruction-step";
 
@@ -99,7 +78,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          FAIRING
+          Fairing
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             if (activeTab === 'chamfer') speak(chamferSteps);
             else if (activeTab === 'fillet') speak(filletSteps);
@@ -166,7 +145,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({
 
                 <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title">RESULT</h4>
+                  <h4 className="section-title">Result</h4>
                   <div className="flex-row-center--wrap">
                     <div className="image-wrapper-flush">
                       <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-large" />
@@ -217,7 +196,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({
 
                 <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title">RESULT</h4>
+                  <h4 className="section-title">Result</h4>
                   <div className="flex-row-center--wrap">
                     <div className="image-wrapper-flush">
                       <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" />
@@ -271,7 +250,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({
 
                 <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title">RESULT</h4>
+                  <h4 className="section-title">Result</h4>
                   <div className="flex-row-center--wrap">
                     <div className="image-wrapper-flush">
                       <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" />

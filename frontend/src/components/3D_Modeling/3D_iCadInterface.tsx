@@ -1,13 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { Info, Monitor, Zap, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
-
+import React from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLessonCore } from "../../hooks/useLessonCore";
+import { ReadAloudButton } from "../ReadAloudButton";
 import InteractiveImageMap from "./InteractiveImageMap";
-
 import icadWindowStructure from "../../assets/3D_Image_File/icad_window_structure.png";
-/* cspell:disable-line */
-
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 interface IcadInterfaceLessonProps {
@@ -16,54 +12,22 @@ interface IcadInterfaceLessonProps {
   nextLabel?: string;
 }
 
-const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({
-  onNextLesson,
-  onPrevLesson,
-  nextLabel,
-}) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
+const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking
+  } = useLessonCore('interface');
 
   const interfaceSteps = [
     "iCAD Window Structure: The workspace is divided into several key functional areas designed for maximum modeling efficiency.",
     "Navigation and Commands: Use the pulsing hotspots on the diagram to explore the specific purpose of the command menus, the hierarchical tree view, and the primary 3D viewport where your designs come to life."
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => {
-      if (currentContainer) {
-        currentContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -71,9 +35,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           <span>iCAD Window Interface</span>
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps)}
-            onStop={stop}
-          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps)} onStop={stop} />
         </h3>
         <p className="section-description">
           Explore the core workspace of iCAD. Select a pulsing hotspot on the interface diagram to learn about its specific functions.
@@ -98,4 +60,3 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({
 };
 
 export default IcadInterfaceLesson;
-

@@ -32,6 +32,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
                     <button key={item.id} className={`nav-item ${activeTab === item.id ? 'active' : ''}`} onClick={() => navigate(`/admin/${item.id}`)}
                         title={item.label}
                     >
+                        <div className="nav-glow" />
                         <div className="nav-icon">
                             <item.icon size={18} />
                         </div>

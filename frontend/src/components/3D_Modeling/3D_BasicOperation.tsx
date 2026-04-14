@@ -8,9 +8,20 @@ import React,
   useEffect, useRef
 } from 'react';
 
-import { MousePointer2, Keyboard, Box as BoxIcon, Circle, ChevronLeft, ChevronRight, ArrowDown, ArrowRight, Info, Zap } from 'lucide-react'; import { ReadAloudButton } from '../ReadAloudButton';
-import { useTTS } from '../../hooks/useTTS';
-
+import {
+  MousePointer2,
+  Keyboard,
+  Box as BoxIcon,
+  Circle,
+  ChevronLeft,
+  ChevronRight,
+  ArrowDown,
+  ArrowRight,
+  Info,
+  Zap
+} from 'lucide-react';
+import { useLessonCore } from '../../hooks/useLessonCore';
+import { ReadAloudButton } from '../ReadAloudButton';
 import '../../styles/3D_Modeling/CourseLesson.css';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
@@ -21,33 +32,33 @@ import leftClick from '../../assets/3D_Image_File/left_click.png';
 /* Tabs: Cylinder | Box | Polygon | Cone | Torus */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import cmdMenu from '../../assets/3D_Image_File/basic_operation(1)_command_menu.png';
+import cmdMenu from '../../assets/3D_Image_File/basic_operation1_command_menu.png';
 
 import threeDView from '../../assets/3D_Image_File/basic_operation(1)_3d_view.png';
 
-import arrangeCylinder from '../../assets/3D_Image_File/basic_operation(1)_arrange_cylinder.png';
+import arrangeCylinder from '../../assets/3D_Image_File/basic_operation1_arrange_cylinder.png';
 
-import cylinderResult from '../../assets/3D_Image_File/basic_operation(1)_cylinder.png';
+import cylinderResult from '../../assets/3D_Image_File/basic_operation1_cylinder.png';
 
-import itemEntry from '../../assets/3D_Image_File/basic_operation(1)_item_entry.png';
+import itemEntry from '../../assets/3D_Image_File/basic_operation1_item_entry.png';
 
-import keyEntry from '../../assets/3D_Image_File/basic_operation(1)_key_entry_area.png';
+import keyEntry from '../../assets/3D_Image_File/basic_operation1_key_entry_area.png';
 
-import arrangeBox from '../../assets/3D_Image_File/basic_operation(1)_arrange_box.png';
+import arrangeBox from '../../assets/3D_Image_File/basic_operation1_arrange_box.png';
 
 import itemEntryBox from '../../assets/3D_Image_File/basic_operation(1)_item_entry_box.png';
 
 import boxResult from '../../assets/3D_Image_File/box.png';
 
-import arrangePolygon from '../../assets/3D_Image_File/basic_operation(1)_arrange_polygon_prism.png';
+import arrangePolygon from '../../assets/3D_Image_File/basic_operation1_arrange_polygon_prism.png';
 
 import polygonResult from '../../assets/3D_Image_File/polygon.png';
 
 import itemEntryPolygon from '../../assets/3D_Image_File/item_entry_polygon.png';
 
-import arrangeCone from '../../assets/3D_Image_File/basic_operation(2)_arrange_cone.png';
+import arrangeCone from '../../assets/3D_Image_File/basic_operation2_arrange_cone.png';
 
-import itemEntryCone from '../../assets/3D_Image_File/basic_operation(2)_item_entry_cone.png';
+import itemEntryCone from '../../assets/3D_Image_File/basic_operation2_item_entry_cone.png';
 
 import coneResult from '../../assets/3D_Image_File/cone.png';
 
@@ -62,105 +73,105 @@ import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_e
 /* Tabs: Move | Rotate | Mirror | Copy | Rotate Copy | Mirror Copy | Delete */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import operationsMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.png';
+import operationsMenu from '../../assets/3D_Image_File/basic_operation1_move_rotate_copy_mirror_delete.png';
 
 import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.png';
 
-import itemEntryMove from '../../assets/3D_Image_File/basic_operation(2)_item_entry_box.png';
+import itemEntryMove from '../../assets/3D_Image_File/basic_operation2_item_entry_box.png';
 
-import moveResult from '../../assets/3D_Image_File/basic_operation(2)_move_3.png';
+import moveResult from '../../assets/3D_Image_File/basic_operation2_move_3.png';
 
-import rotateIcon from '../../assets/3D_Image_File/basic_operation(3)_rotate.png';
+import rotateIcon from '../../assets/3D_Image_File/basic_operation3_rotate.png';
 
-import rotateAxis from '../../assets/3D_Image_File/basic_operation(3)_rotate_axis_rotation.png';
+import rotateAxis from '../../assets/3D_Image_File/basic_operation3_rotate_axis_rotation.png';
 
-import rotateEntry from '../../assets/3D_Image_File/basic_operation(3)_rotate_item_entry.png';
+import rotateEntry from '../../assets/3D_Image_File/basic_operation3_rotate_item_entry.png';
 
-import mirrorIcon from '../../assets/3D_Image_File/basic_operation(3)_mirror.png';
+import mirrorIcon from '../../assets/3D_Image_File/basic_operation3_mirror.png';
 
-import mirrorResult from '../../assets/3D_Image_File/basic_operation(3)_mirrored.png';
+import mirrorResult from '../../assets/3D_Image_File/basic_operation3_mirrored.png';
 
-import copyIcon from '../../assets/3D_Image_File/basic_operation(3)_copy.png';
+import copyIcon from '../../assets/3D_Image_File/basic_operation3_copy.png';
 
-import copyDistance from '../../assets/3D_Image_File/basic_operation(3)_copy_distance.png';
+import copyDistance from '../../assets/3D_Image_File/basic_operation3_copy_distance.png';
 
-import copyResult from '../../assets/3D_Image_File/basic_operation(3)_copy_3.png';
+import copyResult from '../../assets/3D_Image_File/basic_operation3_copy_3.png';
 
-import rotateCopyIcon from '../../assets/3D_Image_File/basic_operation(3)_rotatecopy.png';
+import rotateCopyIcon from '../../assets/3D_Image_File/basic_operation3_rotatecopy.png';
 
-import rotateCopyAxis from '../../assets/3D_Image_File/basic_operation(3)_rotate_copy.png';
+import rotateCopyAxis from '../../assets/3D_Image_File/basic_operation3_rotate_copy.png';
 
-import mirrorCopyIcon from '../../assets/3D_Image_File/basic_operation(3)_mirror_copy.png';
+import mirrorCopyIcon from '../../assets/3D_Image_File/basic_operation3_mirror_copy.png';
 
-import mirrorCopyResult from '../../assets/3D_Image_File/basic_operation(3)_mirrorcopy.png';
+import mirrorCopyResult from '../../assets/3D_Image_File/basic_operation3_mirrorcopy.png';
 
-import deleteIcon from '../../assets/3D_Image_File/basic_operation(3)_delete.png';
+import deleteIcon from '../../assets/3D_Image_File/basic_operation3_delete.png';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (3)  ESKETCH / EXTRUDE / REVOLVE / SHOW-HIDE / STRETCH / RESIZE */
 /* Lesson-item child ID: 'basic-op-3' */
 /* Tabs: Sketch/Extrude/Revolve | Show/Hide | Stretch | Resize */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import sketchIcon from '../../assets/3D_Image_File/basic_operation(4)_sketch.png';
+import sketchIcon from '../../assets/3D_Image_File/basic_operation4_sketch.png';
 
-import sketch1 from '../../assets/3D_Image_File/basic_operation(4)_sketch.png';
+import sketch1 from '../../assets/3D_Image_File/basic_operation4_sketch.png';
 
-import extrudeRevolveMenu from '../../assets/3D_Image_File/basic_operation(4)_extrude_revolve.png';
+import extrudeRevolveMenu from '../../assets/3D_Image_File/basic_operation4_extrude_revolve.png';
 
-import extrudeOneSide from '../../assets/3D_Image_File/basic_operation(4)_extrusion_oneside.png';
+import extrudeOneSide from '../../assets/3D_Image_File/basic_operation4_extrusion_oneside.png';
 /* cspell:disable-line */
 
-import extrudeBothSide from '../../assets/3D_Image_File/basic_operation(4)_extrusion_bothside.png';
+import extrudeBothSide from '../../assets/3D_Image_File/basic_operation4_extrusion_bothside.png';
 /* cspell:disable-line */
 
-import revolveIcon from '../../assets/3D_Image_File/basic_operation(4)_revolve.png';
+import revolveIcon from '../../assets/3D_Image_File/basic_operation4_revolve.png';
 
-import revolveP1 from '../../assets/3D_Image_File/basic_operation(4)_revolve_p1.png';
+import revolveP1 from '../../assets/3D_Image_File/basic_operation4_revolve_p1.png';
 
-import showHideMenu from '../../assets/3D_Image_File/basic_operation(4)_show_hide.png';
+import showHideMenu from '../../assets/3D_Image_File/basic_operation4_show_hide.png';
 
-import showHideEntity from '../../assets/3D_Image_File/basic_operation(4)_show_hide_entity.png';
+import showHideEntity from '../../assets/3D_Image_File/basic_operation4_show_hide_entity.png';
 
-import showHideDraftingEntity from '../../assets/3D_Image_File/basic_operation(4)_showhide_drafting_entity.png';
+import showHideDraftingEntity from '../../assets/3D_Image_File/basic_operation4_showhide_drafting_entity.png';
 /* cspell:disable-line */
 
-import hideUnselectedEntity from '../../assets/3D_Image_File/basic_operation(4)_hide_unselected_entity.png';
+import hideUnselectedEntity from '../../assets/3D_Image_File/basic_operation4_hide_unselected_entity.png';
 
-import hideUnselectedEntity1 from '../../assets/3D_Image_File/basic_operation(4)_hide_unselected_entity_1.png';
+import hideUnselectedEntity1 from '../../assets/3D_Image_File/basic_operation4_hide_unselected_entity_1.png';
 
-import draftingEntitiesTable from '../../assets/3D_Image_File/basic_operation(4)_drafting_entities.png';
+import draftingEntitiesTable from '../../assets/3D_Image_File/basic_operation4_drafting_entities.png';
 
-import stretchIcon from '../../assets/3D_Image_File/basic_operation(5)_stretch.png';
+import stretchIcon from '../../assets/3D_Image_File/basic_operation5_stretch.png';
 
-import stretchItemEntry from '../../assets/3D_Image_File/basic_operation(5)_item_entry_stretch.png';
+import stretchItemEntry from '../../assets/3D_Image_File/basic_operation5_item_entry_stretch.png';
 
-import stretchImg1 from '../../assets/3D_Image_File/basic_operation(5)_stretch1.png';
+import stretchImg1 from '../../assets/3D_Image_File/basic_operation5_stretch1.png';
 
-import stretchImg2 from '../../assets/3D_Image_File/basic_operation(5)_stretch2.png';
+import stretchImg2 from '../../assets/3D_Image_File/basic_operation5_stretch2.png';
 
-import resizeIcon from '../../assets/3D_Image_File/basic_operation(5)_resize.png';
+import resizeIcon from '../../assets/3D_Image_File/basic_operation5_resize.png';
 
-import resizeItemEntry from '../../assets/3D_Image_File/basic_operation(5)_item_entry_resize.png';
+import resizeItemEntry from '../../assets/3D_Image_File/basic_operation5_item_entry_resize.png';
 
-import resize3_2 from '../../assets/3D_Image_File/basic_operation(5)_resize3_2.png';
+import resize3_2 from '../../assets/3D_Image_File/basic_operation5_resize3_2.png';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (4)  EARRANGE MACHINE PART / SHAPE STEELS */
 /* Lesson-item child ID: 'basic-op-4' */
 /* Tabs: Shape Steels */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import arrangeMachinePartMenu from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part.png';
+import arrangeMachinePartMenu from '../../assets/3D_Image_File/basic_operation6_arrange_machine_part.png';
 /* dito nako haha */
 
-import arrangeMachinePartWindow from '../../assets/3D_Image_File/basic_operation(6)_arrange_machine_part_window.png';
+import arrangeMachinePartWindow from '../../assets/3D_Image_File/basic_operation6_arrange_machine_part_window.png';
 
-import shapeSteelsTypes from '../../assets/3D_Image_File/basic_operation(6)_shape_steels.png';
+import shapeSteelsTypes from '../../assets/3D_Image_File/basic_operation6_shape_steels.png';
 
-import shapeSteels1 from '../../assets/3D_Image_File/basic_operation(6)_shape_steels1.png';
+import shapeSteels1 from '../../assets/3D_Image_File/basic_operation6_shape_steels1.png';
 
-import shapeSteels2 from '../../assets/3D_Image_File/basic_operation(6)_shape_steels2.png';
+import shapeSteels2 from '../../assets/3D_Image_File/basic_operation6_shape_steels2.png';
 
-import keyEntryArea from '../../assets/3D_Image_File/basic_operation(1)_key_entry_area.png';
+import keyEntryArea from '../../assets/3D_Image_File/basic_operation1_key_entry_area.png';
 /* ────────────────────────────────────────────────────────────────────────── */
 /* Sub-lesson components */
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -168,39 +179,18 @@ import keyEntryArea from '../../assets/3D_Image_File/basic_operation(1)_key_entr
 
 interface SubLessonProps { onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
 
-const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel
-}) => {
-
-  const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>('cylinder'); const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-
-    const handleScroll = () => {
-
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) { setScrollProgress(100); return; }
-
-      const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) { currentContainer.addEventListener('scroll', handleScroll); handleScroll(); }
-
-    return () => {
-
-      if (currentContainer) { currentContainer.removeEventListener('scroll', handleScroll); }
-    };
-  }, [activeTab]);
-
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>('cylinder');
+  
+  // Use core hook for scroll tracking and TTS
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`basic-op-1-${activeTab}`);
 
   const cylinderSteps = [
     "Step 1: Select Arrange Cylinder from the icon menu.",
@@ -240,35 +230,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
     { id: 'cone', label: 'Cone' },
     { id: 'torus', label: 'Torus' }];
 
-  const scrollToTopOrTabs = () => {
-    setTimeout(() => {
-
-      const tabsEl = document.querySelector('.lesson-tabs');
-
-      if (tabsEl) tabsEl.scrollIntoView({
-        behavior: 'smooth', block: 'start'
-      }); else document.querySelector('.lesson-intro')?.scrollIntoView({
-        behavior: 'smooth', block: 'start'
-      });
-    }, 10);
-  };
-
   const handleNext = () => {
-
     const i = tabs.findIndex(t => t.id === activeTab);
-
-    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); scrollToTopOrTabs(); } else
-
-      if (onNextLesson) onNextLesson();
+    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
   };
 
   const handlePrev = () => {
-
     const i = tabs.findIndex(t => t.id === activeTab);
-
-    if (i > 0) { setActiveTab(tabs[i - 1].id as any); scrollToTopOrTabs(); } else
-
-      if (onPrevLesson) onPrevLesson();
+    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -283,9 +252,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
       </div>
 
       <section className="lesson-intro">
-
-        <h3 className="section-title">CREATING BASIC SHAPES
-        </h3>
+        <h3 className="section-title">Creating basic shapes</h3>
 
         <p>When creating a 3D model, always start with the <strong>Front View</strong>.
         </p>
@@ -777,39 +744,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
   );
 }; /* ── Basic Operation (2): Move, Rotate, Copy, Mirror, Delete ── */
 
-const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel
-}) => {
+const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('move');
 
-  const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('move'); const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-
-    const handleScroll = () => {
-
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) { setScrollProgress(100); return; }
-
-      const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) { currentContainer.addEventListener('scroll', handleScroll); handleScroll(); }
-
-    return () => {
-
-      if (currentContainer) { currentContainer.removeEventListener('scroll', handleScroll); }
-    };
-  }, [activeTab]);
-
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`basic-op-2-${activeTab}`);
 
   const moveSteps = [
     "Step 1: Select Move from the icon menu.",
@@ -859,35 +804,14 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
     { id: 'mirrorCopy', label: 'Mirror Copy' },
     { id: 'delete', label: 'Delete' }];
 
-  const scrollToTopOrTabs = () => {
-    setTimeout(() => {
-
-      const tabsEl = document.querySelector('.lesson-tabs');
-
-      if (tabsEl) tabsEl.scrollIntoView({
-        behavior: 'smooth', block: 'start'
-      }); else document.querySelector('.lesson-intro')?.scrollIntoView({
-        behavior: 'smooth', block: 'start'
-      });
-    }, 10);
-  };
-
   const handleNext = () => {
-
     const i = tabs.findIndex(t => t.id === activeTab);
-
-    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); scrollToTopOrTabs(); } else
-
-      if (onNextLesson) onNextLesson();
+    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
   };
 
   const handlePrev = () => {
-
     const i = tabs.findIndex(t => t.id === activeTab);
-
-    if (i > 0) { setActiveTab(tabs[i - 1].id as any); scrollToTopOrTabs(); } else
-
-      if (onPrevLesson) onPrevLesson();
+    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -1412,39 +1336,17 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
   );
 }; /* ── Basic Operation (3): Sketch / Extrude / Revolve / Show-Hide / Stretch / Resize ── */
 
-const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel
-}) => {
+const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'sketchExtrude' | 'showHide' | 'stretch' | 'resize'>('sketchExtrude');
 
-  const [activeTab, setActiveTab] = useState<'sketchExtrude' | 'showHide' | 'stretch' | 'resize'>('sketchExtrude'); const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-
-    const handleScroll = () => {
-
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) { setScrollProgress(100); return; }
-
-      const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) { currentContainer.addEventListener('scroll', handleScroll); handleScroll(); }
-
-    return () => {
-
-      if (currentContainer) { currentContainer.removeEventListener('scroll', handleScroll); }
-    };
-  }, [activeTab]);
-
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`basic-op-3-${activeTab}`);
 
   const sketchSteps = [
     "Step 1: Sketch tools allow you to create lines, circles, and arcs in 3D space to form the base sections for your models.",
@@ -1477,35 +1379,14 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
     { id: 'stretch', label: 'Stretch' },
     { id: 'resize', label: 'Resize' }];
 
-  const scrollToTopOrTabs = () => {
-    setTimeout(() => {
-
-      const tabsEl = document.querySelector('.lesson-tabs');
-
-      if (tabsEl) tabsEl.scrollIntoView({
-        behavior: 'smooth', block: 'start'
-      }); else document.querySelector('.lesson-intro')?.scrollIntoView({
-        behavior: 'smooth', block: 'start'
-      });
-    }, 10);
-  };
-
   const handleNext = () => {
-
     const i = tabs.findIndex(t => t.id === activeTab);
-
-    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); scrollToTopOrTabs(); } else
-
-      if (onNextLesson) onNextLesson();
+    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
   };
 
   const handlePrev = () => {
-
     const i = tabs.findIndex(t => t.id === activeTab);
-
-    if (i > 0) { setActiveTab(tabs[i - 1].id as any); scrollToTopOrTabs(); } else
-
-      if (onPrevLesson) onPrevLesson();
+    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -2014,7 +1895,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
             <div className="section-divider">
             </div>
 
-            <div className="tool-block"> <h4 className="section-title">OR</h4>
+            <div className="tool-block"> <h4 className="section-title">Or</h4>
 
               <div className="instruction-step">
 
@@ -2133,39 +2014,17 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
   );
 }; /* ── Basic Operation (4): Arrange Machine Part / Shape Steels ── */
 
-const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel
-}) => {
+const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'shapeSteels'>('shapeSteels');
 
-  const [activeTab, setActiveTab] = useState<'shapeSteels'>('shapeSteels'); const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-
-    const handleScroll = () => {
-
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) { setScrollProgress(100); return; }
-
-      const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) { currentContainer.addEventListener('scroll', handleScroll); handleScroll(); }
-
-    return () => {
-
-      if (currentContainer) { currentContainer.removeEventListener('scroll', handleScroll); }
-    };
-  }, [activeTab]);
-
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`basic-op-4-${activeTab}`);
 
   const shapeSteelsSteps = [
     "Step 1: Select Arrange Machine Part from the icon menu.",
