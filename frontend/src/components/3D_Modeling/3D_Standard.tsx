@@ -7,14 +7,14 @@ import { ReadAloudButton } from "../ReadAloudButton";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
-import oilHole from "../../assets/3D_Image_File/kemco_std_oilhole.png";
-import gasDischarge from "../../assets/3D_Image_File/kemco_std_gas_discharge.png";
-import oilGroove from "../../assets/3D_Image_File/kemco_std_oilgroove.png";
-import grooveDesign from "../../assets/3D_Image_File/oilgroove_design.png";
-import tapGageHole from "../../assets/3D_Image_File/kemco_std_tap-gage-hole.png";
-import greaseNipple1 from "../../assets/3D_Image_File/kemco_std_grease_nipple.png";
-import greaseNipple2 from "../../assets/3D_Image_File/grease_nipple_1.png";
-import greaseNipple3 from "../../assets/3D_Image_File/grease_nipple_2.png";
+import oilHole from "../../assets/3D_Image_File/standard2_oil_groove.png";
+import gasDischarge from "../../assets/3D_Image_File/standard2_gas_discharge.png";
+import oilGroove from "../../assets/3D_Image_File/standard2_oil_groove.png";
+import grooveDesign from "../../assets/3D_Image_File/standard2_oil_groove.png";
+import tapGageHole from "../../assets/3D_Image_File/hole_details_tapped_holes.png";
+import greaseNipple1 from "../../assets/3D_Image_File/hole_details_hole.png";
+import greaseNipple2 from "../../assets/3D_Image_File/hole_details_hole.png";
+import greaseNipple3 from "../../assets/3D_Image_File/hole_details_hole.png";
 
 interface StandardLessonProps {
   nextLabel?: string;

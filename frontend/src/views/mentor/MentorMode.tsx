@@ -22,8 +22,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const { courses, loading, error } = useCourses();
 
     // Global State
-    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null); 
-    const is2DDrawingCourse = selectedCourse?.id === '2'; 
+    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+    const is2DDrawingCourse = selectedCourse?.id === '2';
     
     // UI/Interaction State 
     const [activeLessonId, setActiveLessonId] = useState<string>(''); 
@@ -32,9 +32,51 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const [completedLessons, setCompletedLessons] = useState<string[]>([]); 
     const [averageScore, setAverageScore] = useState(0);
     const [isLoadingProgress, setIsLoadingProgress] = useState(true);
+    const [isRestored, setIsRestored] = useState(false);
 
     // Derived stable state
     const currentLessons = useMemo(() => is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS, [is2DDrawingCourse]);
+
+    // Initial Session Restoration (once courses are available)
+    useEffect(() => {
+        if (!loading && courses.length > 0 && !isRestored) {
+            const savedCourseId = localStorage.getItem('kmti_selectedCourseId');
+            const savedLessonId = localStorage.getItem('kmti_activeLessonId');
+            const savedExpanded = localStorage.getItem('kmti_expandedIds');
+            const savedSidebar = localStorage.getItem('kmti_sidebarOpen');
+
+            if (savedCourseId) {
+                const course = courses.find(c => c.id === savedCourseId);
+                if (course) {
+                    setSelectedCourse(course);
+                    if (savedLessonId) setActiveLessonId(savedLessonId);
+                    if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
+                    if (savedSidebar) setSidebarOpen(savedSidebar === 'true');
+                }
+            }
+            setIsRestored(true);
+        }
+    }, [courses, loading, isRestored]);
+
+    // Session Persistence Sync (Save to LocalStorage)
+    useEffect(() => {
+        if (isRestored) {
+            if (selectedCourse) {
+                localStorage.setItem('kmti_selectedCourseId', selectedCourse.id);
+                localStorage.setItem('kmti_activeLessonId', activeLessonId);
+                localStorage.setItem('kmti_expandedIds', JSON.stringify(Array.from(expandedIds)));
+                localStorage.setItem('kmti_sidebarOpen', sidebarOpen.toString());
+            } else {
+                // Clear persistence if we manually return to course selector
+                localStorage.removeItem('kmti_selectedCourseId');
+                localStorage.removeItem('kmti_activeLessonId');
+                localStorage.removeItem('kmti_expandedIds');
+                localStorage.removeItem('kmti_sidebarOpen');
+            }
+        }
+    }, [selectedCourse, activeLessonId, expandedIds, sidebarOpen, isRestored]);
+
+    // Derived stable state for lessons
     const allLessonIds = useMemo(() => currentLessons.flatMap((l: Lesson) =>
         l.children ? l.children.map((c: { id: string }) => c.id) : [l.id]
     ), [currentLessons]);
@@ -75,8 +117,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             } else {
                 setAverageScore(0);
             }
-
-            console.log('Progress fetched:', { count: ids.length, ids, avgScore: averageScore });
         } catch (err) {
             console.error('Failed to fetch progress:', err);
         } finally {
@@ -84,17 +124,14 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         }
     }, [selectedCourse]);
 
-    useEffect(() => {
-        console.log('Current Active Lesson:', activeLessonId);
-    }, [activeLessonId]);
-
     // Side Effects
     useEffect(() => {
-        fetchProgress();
-    }, [fetchProgress]);
+        if (selectedCourse) fetchProgress();
+    }, [selectedCourse, fetchProgress]);
 
+    // Standard initialization (if nothing was restored or lesson is empty)
     useEffect(() => {
-        if (!selectedCourse) return;
+        if (!selectedCourse || activeLessonId) return;
         
         if (is2DDrawingCourse) {
             setActiveLessonId('2d-orthographic-1');
@@ -103,7 +140,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             setActiveLessonId('interface');
             setExpandedIds(new Set());
         }
-    }, [selectedCourse?.id, is2DDrawingCourse]);
+    }, [selectedCourse?.id, is2DDrawingCourse, activeLessonId]);
 
     useEffect(() => {
         const viewer = document.querySelector('.main-content-viewer');

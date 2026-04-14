@@ -107,6 +107,22 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <div className="lesson-tabs">
+        {subLessonId === "boolean-1" ? (
+          tabs1.map((tab) => (
+            <button key={tab.id} className={`tab-button ${activeTab1 === tab.id ? "active" : ""}`} onClick={() => setActiveTab1(tab.id as any)}>
+              {tab.label}
+            </button>
+          ))
+        ) : (
+          tabs2.map((tab) => (
+            <button key={tab.id} className={`tab-button ${activeTab2 === tab.id ? "active" : ""}`} onClick={() => setActiveTab2(tab.id as any)}>
+              {tab.label}
+            </button>
+          ))
+        )}
+      </div>
+
       <section className="lesson-intro">
         <h3 className="section-title">Boolean operations</h3>
         <div className="instruction-box">
@@ -118,14 +134,6 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
       {subLessonId === "boolean-1" ? (
         <div className="fade-in">
-          <div className="lesson-tabs">
-            {tabs1.map((tab) => (
-              <button key={tab.id} className={`tab-button ${activeTab1 === tab.id ? "active" : ""}`} onClick={() => setActiveTab1(tab.id as any)}>
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
           <div className="lesson-grid single-card">
             {activeTab1 === "union" ? (
               <div className="lesson-card tab-content">
@@ -245,14 +253,6 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
         </div>
       ) : (
         <div className="fade-in">
-          <div className="lesson-tabs">
-            {tabs2.map((tab) => (
-              <button key={tab.id} className={`tab-button ${activeTab2 === tab.id ? "active" : ""}`} onClick={() => setActiveTab2(tab.id as any)}>
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
           <div className="lesson-grid single-card">
             {activeTab2 === "intersect" ? (
               <div className="lesson-card tab-content">

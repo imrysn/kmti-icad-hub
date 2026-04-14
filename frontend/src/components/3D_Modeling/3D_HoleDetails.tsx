@@ -46,6 +46,14 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <div className="lesson-tabs">
+        {tabs.map((tab) => (
+          <button key={tab.id} className={`tab-button active`}>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <section className="lesson-intro">
         <h3 className="section-title">
           Creating hole details on parts
@@ -63,13 +71,6 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content">
-          <div className="lesson-tabs">
-            {tabs.map((tab) => (
-              <button key={tab.id} className={`tab-button active`}>
-                {tab.label}
-              </button>
-            ))}
-          </div>
           <div className="tab-content-area">
             <div className="tab-pane">
               <div className={`${getStepClass("hole-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>

@@ -1,7 +1,46 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, ChevronDown, ChevronRight, Menu, CheckCircle2, X, Lock } from 'lucide-react'; import { Course } from '../../../types';
+import { Search, ChevronDown, ChevronRight, Menu, CheckCircle2, X, Lock, Zap } from 'lucide-react'; import { Course } from '../../../types';
 import { Lesson, ICAD_2D_LESSONS, ICAD_3D_LESSONS } from '../mentorConstants';
 import { AnalyticsCard } from './AnalyticsCard';
+
+const ProgressCircle: React.FC<{ percentage: number; size?: number; strokeWidth?: number; className?: string }> = ({ 
+    percentage, 
+    size = 24, 
+    strokeWidth = 2,
+    className = "" 
+}) => {
+    const radius = (size - strokeWidth) / 2;
+    const circumference = radius * 2 * Math.PI;
+    const offset = circumference - (percentage / 100) * circumference;
+
+    return (
+        <div className={`progress-circle-container ${className}`} style={{ width: size, height: size }}>
+            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="progress-circle">
+                <circle
+                    className="progress-circle-bg"
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    fill="transparent"
+                    r={radius}
+                    cx={size / 2}
+                    cy={size / 2}
+                />
+                <circle
+                    className="progress-circle-fill"
+                    stroke="var(--primary)"
+                    strokeWidth={strokeWidth}
+                    strokeDasharray={circumference}
+                    style={{ strokeDashoffset: offset }}
+                    strokeLinecap="round"
+                    fill="transparent"
+                    r={radius}
+                    cx={size / 2}
+                    cy={size / 2}
+                />
+            </svg>
+        </div>
+    );
+};
 
 interface MentorSidebarProps {
     selectedCourse: Course;
@@ -101,13 +140,19 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     return (
         <aside
             className={`course-sidebar ${sidebarOpen ? 'open' : ''}`}
-            onMouseEnter={() => setSidebarOpen(true)}
-            onMouseLeave={() => setSidebarOpen(false)}
         >
             <div className="sidebar-inner-container">
                 <div className="sidebar-course-header">
                     <div className="sidebar-course-meta">
-                        <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''}`}>
+                        <button 
+                            className="sidebar-toggle-btn"
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
+                            title={sidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
+                        >
+                            <Menu size={20} />
+                        </button>
+                        
+                        <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} ${sidebarOpen ? 'visible' : 'hidden'}`}>
                             {isSearchOpen && (
                                 <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
                                     onKeyDown={(e) => {
@@ -122,8 +167,25 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             </button>
                         </div>
                     </div>
-                    {!isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>}
-                    {!isLoadingProgress && !isEmployeeSide && (
+
+                    {!sidebarOpen ? (
+                        <div className="sidebar-collapsed-dashboard">
+                            <Zap size={14} className="collapsed-zap-icon" />
+                            <div className="collapsed-progress-track">
+                                <div 
+                                    className="collapsed-progress-fill" 
+                                    style={{ width: `${(completedLessons.length / totalLessons) * 100}%` }} 
+                                />
+                            </div>
+                            <div className="collapsed-stats-pill">
+                                {Math.round((completedLessons.length / totalLessons) * 100)}%
+                            </div>
+                        </div>
+                    ) : (
+                        !isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>
+                    )}
+                    
+                    {!isLoadingProgress && !isEmployeeSide && sidebarOpen && (
                         <div className="sidebar-analytics-wrapper">
                             <AnalyticsCard
                                 completionPercentage={Math.min(100, (completedLessons.length / totalLessons) * 100)}
@@ -159,9 +221,14 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
 
                             const moduleStatus = getLessonGateStatus(lesson);
                             const isActive = activeLessonId === lesson.id || (lesson.children?.some(c => c.id === activeLessonId));
+                            
+                            // Calculate progress percentage for children
+                            const subLessonProgress = lesson.children 
+                               ? (lesson.children.filter(c => completedLessons.includes(c.id)).length / lesson.children.length) * 100
+                               : (moduleStatus.isSelfCompleted ? 100 : 0);
 
                             return (
-                                <div key={lesson.id}>
+                                <div key={lesson.id} className="lesson-item-wrapper">
                                     <div className={`lesson-item ${isActive ? 'active' : ''} 
                                      ${moduleStatus.isSelfCompleted ? 'completed' : ''}
                                      ${moduleStatus.isLocked ? 'locked' : ''}
@@ -172,22 +239,31 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                             } else {
                                                 if (!moduleStatus.isLocked) {
                                                     setActiveLessonId(lesson.id);
-                                                } else {
-                                                    console.warn('Module Locked:', { id: lesson.id });
                                                 }
                                             }
                                         }}
+                                        title={!sidebarOpen ? lesson.title : ""}
                                     >
                                         <div className="lesson-item-title">
-                                            {lesson.children ? (
-                                                expandedIds.has(lesson.id) ? <ChevronDown size={16} /> : <ChevronRight size={16} />
-                                            ) : (
-                                                moduleStatus.isSelfCompleted ? (
-                                                    <CheckCircle2 size={16} className="lesson-icon--completed" />
-                                                ) : (
-                                                    <Menu size={16} className={`lesson-icon--dim ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
-                                                )
-                                            )}
+                                            <div className="lesson-icon-wrapper">
+                                                <ProgressCircle 
+                                                    percentage={subLessonProgress} 
+                                                    size={28} 
+                                                    strokeWidth={2.5}
+                                                    className="lesson-progress-static"
+                                                />
+                                                <div className="lesson-icon-inner">
+                                                    {lesson.children ? (
+                                                        expandedIds.has(lesson.id) ? <ChevronDown size={14} /> : <ChevronRight size={14} />
+                                                    ) : (
+                                                        moduleStatus.isSelfCompleted ? (
+                                                            <CheckCircle2 size={14} className="lesson-icon--completed" />
+                                                        ) : (
+                                                            <Menu size={14} className={`lesson-icon--dim ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
                                             <div className="lesson-title-text-group">
                                                 <span>{lesson.title}</span>
                                                 {searchTerms.length > 0 && 
@@ -203,41 +279,45 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                     </div>
 
                                     {lesson.children && expandedIds.has(lesson.id) && (
-                                        <div className="sub-lesson-list">
-                                            {lesson.children.map((child: Lesson) => (
-                                                <div className={`sub-lesson-item ${activeLessonId === child.id ? 'active' : ''} ${completedLessons.includes(child.id) ? 'completed' : ''} ${moduleStatus.isLocked ? 'locked' : ''} `} onClick={() => {
-                                                    if (!moduleStatus.isLocked) {
-                                                        console.log('Gating Check (Sub-lesson): OK', {
-                                                            id: child.id,
-                                                            parent: lesson.id,
-                                                            moduleStatus
-                                                        });
-                                                        setActiveLessonId(child.id);
-                                                    } else {
-                                                        console.warn('Gating Check (Sub-lesson): BLOCKED', {
-                                                            id: child.id,
-                                                            parent: lesson.id,
-                                                            moduleStatus
-                                                        });
-                                                    }
-                                                }}
+                                        <div className={`sub-lesson-list ${!sidebarOpen ? 'collapsed-dots' : ''}`}>
+                                            {lesson.children.map((child: Lesson, index: number) => (
+                                                <div 
+                                                    key={child.id}
+                                                    className={`sub-lesson-item 
+                                                        ${activeLessonId === child.id ? 'active' : ''} 
+                                                        ${completedLessons.includes(child.id) ? 'completed' : ''} 
+                                                        ${moduleStatus.isLocked ? 'locked' : ''}
+                                                        ${index === 0 ? 'is-first' : ''}
+                                                        ${index === lesson.children!.length - 1 ? 'is-last' : ''}
+                                                    `} 
+                                                    onClick={() => {
+                                                       if (!moduleStatus.isLocked) {
+                                                           setActiveLessonId(child.id);
+                                                       }
+                                                    }}
+                                                    title={!sidebarOpen ? child.title : ""}
                                                 >
-                                                    <div className="sub-lesson-title-group">
-                                                        {completedLessons.includes(child.id) ? (
-                                                            <CheckCircle2 size={14} className="sub-lesson-icon--completed" />
-                                                        ) : (
-                                                            <Menu size={14} className={`sub-lesson-icon ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
-                                                        )}
-                                                        <div className="lesson-title-text-group">
-                                                            <span>{child.title}</span>
-                                                            {searchTerms.length > 0 && 
-                                                             !searchTerms.every(t => child.title.toLowerCase().includes(t)) && 
-                                                             searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t))) && (
-                                                                <span className="search-match-badge sub">Found in Content</span>
+                                                    <div className="sub-lesson-connector" />
+                                                    {!sidebarOpen ? (
+                                                        <div className="sub-lesson-dot-indicator" />
+                                                    ) : (
+                                                        <div className="sub-lesson-title-group">
+                                                            {completedLessons.includes(child.id) ? (
+                                                                <CheckCircle2 size={14} className="sub-lesson-icon--completed" />
+                                                            ) : (
+                                                                <Menu size={14} className={`sub-lesson-icon ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                             )}
+                                                            <div className="lesson-title-text-group">
+                                                                <span>{child.title}</span>
+                                                                {searchTerms.length > 0 && 
+                                                                 !searchTerms.every(t => child.title.toLowerCase().includes(t)) && 
+                                                                 searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t))) && (
+                                                                    <span className="search-match-badge sub">Found in Content</span>
+                                                                 )}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    {moduleStatus.isLocked && (
+                                                    )}
+                                                    {sidebarOpen && moduleStatus.isLocked && (
                                                         <Lock size={12} className="sub-lesson-lock" />
                                                     )}
                                                 </div>
