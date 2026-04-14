@@ -71,6 +71,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
   ];
 
   const getStepClass = (stepId: string) => "instruction-step";
+  
   const tabs1 = [
     { id: "union", label: "Union" },
     { id: "subtract", label: "Subtract" },
