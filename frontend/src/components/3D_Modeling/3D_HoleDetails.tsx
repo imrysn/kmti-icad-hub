@@ -1,9 +1,18 @@
 /** * 3D_HoleDetails.tsx — "Creating Hole Details on Parts" Lesson */
 
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLessonCore } from "../../hooks/useLessonCore";
+import { ReadAloudButton } from "../ReadAloudButton";
+import "../../styles/3D_Modeling/CourseLesson.css";
 
-import { MousePointer2, ChevronLeft, ChevronRight, Info, Zap, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/CourseLesson.css"; /* Asset Imports */ import arrangeMachinePart from "../../assets/3D_Image_File/hole_details_arrange_machine_part.png"; import partsPlacement from "../../assets/3D_Image_File/hole_details_parts_placement.png"; import listTools from "../../assets/3D_Image_File/hole_details_list_tools.png"; import holeResult from "../../assets/3D_Image_File/hole_details_hole.png"; import tappedHoles from "../../assets/3D_Image_File/hole_details_tapped_holes.png"; import leftClick from "../../assets/3D_Image_File/left_click.png";
+/* Asset Imports */
+import arrangeMachinePart from "../../assets/3D_Image_File/hole_details_arrange_machine_part.png";
+import partsPlacement from "../../assets/3D_Image_File/hole_details_parts_placement.png";
+import listTools from "../../assets/3D_Image_File/hole_details_list_tools.png";
+import holeResult from "../../assets/3D_Image_File/hole_details_hole.png";
+import tappedHoles from "../../assets/3D_Image_File/hole_details_tapped_holes.png";
+import leftClick from "../../assets/3D_Image_File/left_click.png";
 
 interface HoleDetailsLessonProps {
   onNextLesson?: () => void;
@@ -11,15 +20,15 @@ interface HoleDetailsLessonProps {
   nextLabel?: string;
 }
 
-const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
-  onNextLesson,
-  onPrevLesson,
-  nextLabel,
-}) => {
-  const [activeTab, setActiveTab] = useState<"holeDetails">("holeDetails");
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore('hole-details');
 
   const holeSteps = [
     "Step 1: Select Arrange Machine Part from the icon menu.",
@@ -27,29 +36,6 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
     "Step 3: After setting the desired specifications, click OK.",
     "Step 4: Click the location of the hole on the solid entity and click GO to create the cut."
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const element = containerRef.current;
-      const totalHeight = element.scrollHeight - element.clientHeight;
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-    return () => {
-      if (currentContainer) currentContainer.removeEventListener("scroll", handleScroll);
-    };
-  }, [activeTab]);
 
   const getStepClass = (stepId: string) => "instruction-step";
   const tabs = [{ id: "holeDetails", label: "Hole Details" }];

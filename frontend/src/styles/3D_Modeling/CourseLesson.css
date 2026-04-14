@@ -66,6 +66,7 @@
   margin: 0;
   letter-spacing: -0.04em;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
   border: none;
@@ -114,6 +115,7 @@
   letter-spacing: 0.1em;
   margin-bottom: 2rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
 }
@@ -156,6 +158,14 @@
 }
 
 
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
 .card-header h4 {
   font-family: var(--font-heading);
   font-size: 1.5rem;
@@ -164,6 +174,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin: 0;
 }
 
 /* --- Steps & Instructions --- */
