@@ -9,6 +9,7 @@ interface MentorSidebarProps {
     sidebarOpen: boolean;
     setSidebarOpen: (open: boolean) => void;
     activeLessonId: string;
+    setActiveLessonId: (id: string) => void;
     expandedIds: Set<string>;
     toggleExpand: (id: string) => void;
     setSelectedCourse: (course: Course | null) => void;

@@ -8,9 +8,15 @@ import React,
   useEffect, useRef
 } from 'react';
 
-import { ChevronLeft, ChevronRight, Play, Box as BoxIcon, Info } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
-
+import {
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Box as BoxIcon,
+  Info
+} from 'lucide-react';
+import { useLessonCore } from '../../hooks/useLessonCore';
+import { ReadAloudButton } from "../ReadAloudButton";
 import '../../styles/3D_Modeling/CourseLesson.css';
 /* Shared Assets */
 
@@ -25,14 +31,14 @@ import arrangeBoxTool from '../../assets/3D_Image_File/arrange_box_operation_sam
 
 import machinePartTool from '../../assets/3D_Image_File/select_and_arrange_machine_part.png';
 
-import moveTool from '../../assets/3D_Image_File/component(1)_move.png';
+import moveTool from '../../assets/3D_Image_File/component1_move.png';
 
-import opSample1 from '../../assets/3D_Image_File/operation_sample(1).png';
+import opSample1 from '../../assets/3D_Image_File/operation_sample1.png';
 
-import opSample1Move from '../../assets/3D_Image_File/operation_sample(1)1.png';
+import opSample1Move from '../../assets/3D_Image_File/operation_sample11.png';
 /* Step 6 Assets */
 
-import subtractTool from '../../assets/3D_Image_File/boolean(1)_boolean_subtract.png';
+import subtractTool from '../../assets/3D_Image_File/boolean1_boolean_subtract.png';
 
 import subtractResult from '../../assets/3D_Image_File/subtract_operation_sample2.png';
 /* Step 7 Assets */
@@ -42,7 +48,7 @@ import filletTool from '../../assets/3D_Image_File/fillet_edge.png';
 import filletResult from '../../assets/3D_Image_File/filleted.png';
 /* Step 8 Assets */
 
-import copyTool from '../../assets/3D_Image_File/component(1)_copy.png';
+import copyTool from '../../assets/3D_Image_File/component1_copy.png';
 
 import copyResult from '../../assets/3D_Image_File/copy_component.png';
 /* Step 9 Assets */
@@ -50,12 +56,12 @@ import copyResult from '../../assets/3D_Image_File/copy_component.png';
 import chamferTool from '../../assets/3D_Image_File/chamfer_edge.png';
 import chamferResult from '../../assets/3D_Image_File/chamfered.png';
 /* Step 10 Assets */
-import createPartTool from '../../assets/3D_Image_File/3d_part(1)_create_3d_part.png';
+import createPartTool from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
 import enterPartName from '../../assets/3D_Image_File/enter_3d_part_name.png';
 /* Step 11 Assets */
 import propertiesWindow from '../../assets/3D_Image_File/3d_properties.png';
 /* Step 12 Assets */
-import materialSettings from '../../assets/3D_Image_File/material_setting(1)_material_setting.png';
+import materialSettings from '../../assets/3D_Image_File/material_setting1_material_setting.png';
 import layerInfo from '../../assets/3D_Image_File/materials_layer.png';
 /* Step 13 Assets */
 import fileMenu from '../../assets/3D_Image_File/tool_bars_file.png';
@@ -64,9 +70,9 @@ import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.png';
 import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.jpg';
 import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segmet_a.jpg';
 import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segmet_b.jpg';
-import unionTool from '../../assets/3D_Image_File/boolean(1)_union.png';
+import unionTool from '../../assets/3D_Image_File/boolean1_union.png';
 /* Operation Sample (4) Assets */
-import mainDrawing4 from '../../assets/3D_Image_File/operation_sample(3).png';
+import mainDrawing4 from '../../assets/3D_Image_File/operation_sample3.png';
 import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.png';
 import sketchImg from '../../assets/3D_Image_File/operation_sample4_revolving.png';
 import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.png';
@@ -74,7 +80,7 @@ import segmentDResult from '../../assets/3D_Image_File/operation_sample4_segment
 import segmentEResult from '../../assets/3D_Image_File/operation_sample4_segment_e.png';
 import keyGrooveBox from '../../assets/3D_Image_File/operation_sample4_4.png';
 import keyGroovePos from '../../assets/3D_Image_File/operation_sample4_4_position_tool_entity.png';
-import arrangeBoxIcon from '../../assets/3D_Image_File/basic_operation(1)_arrange_box.png';
+import arrangeBoxIcon from '../../assets/3D_Image_File/basic_operation1_arrange_box.png';
 /* Operation Sample (5) Assets */
 import keyGrooveSubtractResult from '../../assets/3D_Image_File/operation_sample5_4_subtract_tool.png';
 import keyGrooveFilletResult from '../../assets/3D_Image_File/operation_sample5_4_add_fillet_radius.png';
@@ -84,15 +90,15 @@ interface OperationSampleLessonProps {
   nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void;
 }
 
-const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLessonId = 'op-sample-1', onNextLesson, onPrevLesson
-  , nextLabel }) => {
-
-  const [scrollProgress, setScrollProgress] =
-
-    useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLessonId = 'op-sample-1', onNextLesson, onPrevLesson, nextLabel }) => {
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(subLessonId);
 
   const opSample1Steps = [
     "Step 1: Open a new drawing via File, New. Save it using the drawing number as the file name. Always verify if it's a Normal or Mirror part before starting modeling.",
@@ -130,34 +136,6 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     "Retainer Ring: Follow the standard workflow to cut the retaining ring groove using the designated tool and dimensions.",
     "Final Fairing: Apply final fairing and surface grinding symbols to ensure the part is ready for 2D detailing and fabrication."
   ];
-
-  useEffect(() => {
-
-    const handleScroll = () => {
-
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) { setScrollProgress(100); return; }
-
-      const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener('scroll', handleScroll);
-      handleScroll(); // Initial trigger
-    }
-
-    return () => {
-
-      if (currentContainer) { currentContainer.removeEventListener('scroll', handleScroll); }
-    };
-  }, [subLessonId]);
 
   const getStepClass = (stepId: string) => "instruction-step";
   const isSample1 = subLessonId === 'op-sample-1';
