@@ -79,7 +79,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
         <div className="lesson-card">
           {isPart1 ? (
             <div className="fade-in">
-              <h3>IMPORT</h3>
+              <h3 className="section-title">Import</h3>
               <div className={`${getStepClass('p1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
@@ -117,7 +117,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
             </div>
           ) : (
             <div className="fade-in">
-              <h3>4.) LIGHTEN B-REP SOLID</h3>
+              <h3 className="section-title">4.) Lighten B-Rep Solid</h3>
               <p className="p-flush">Use this tool to lighten up the file size.</p>
 
               <div className={`${getStepClass('p2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>

@@ -846,9 +846,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
       </div>
 
       <section className="lesson-intro">
-
-        <h3>MOVE, ROTATE, COPY, MIRROR, DELETE
-        </h3>
+        <h3 className="section-title">Move, rotate, copy, mirror, delete</h3>
 
         <div className="instruction-box">
 
@@ -1421,9 +1419,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
       </div>
 
       <section className="lesson-intro">
-
-        <h3>SKETCH / EXTRUDE / REVOLVE / SHOW-HIDE / STRETCH / RESIZE
-        </h3>
+        <h3 className="section-title">Sketch / Extrude / Revolve / Show-hide / Stretch / Resize</h3>
 
       </section>
 
