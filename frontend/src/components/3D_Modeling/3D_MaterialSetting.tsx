@@ -61,7 +61,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          {isMaterial1 ? "MATERIAL SETTING" : "MATERIAL NOT INCLUDED ON ICAD MATERIAL LIST"}
+          {isMaterial1 ? "Material setting" : "Material not included on iCAD material list"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isMaterial1 ? material1Steps : material2Steps)} onStop={stop} />
         </h3>
         {isMaterial1 && (

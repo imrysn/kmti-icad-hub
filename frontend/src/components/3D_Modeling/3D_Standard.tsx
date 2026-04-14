@@ -62,10 +62,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({ subLessonId = "standard
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          {subLessonId === "standard-1" && "KEMCO STANDARD (1)"}
-          {subLessonId === "standard-2" && "KEMCO STANDARD (2)"}
-          {subLessonId === "standard-3" && "KEMCO STANDARD (3)"}
-          {subLessonId === "standard-4" && "KEMCO STANDARD (4)"}
+          {subLessonId === "standard-1" && "Kemco standard (1)"}
+          {subLessonId === "standard-2" && "Kemco standard (2)"}
+          {subLessonId === "standard-3" && "Kemco standard (3)"}
+          {subLessonId === "standard-4" && "Kemco standard (4)"}
           <ReadAloudButton 
             isSpeaking={isSpeaking} 
             onStart={() => {

@@ -107,7 +107,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
-          ANNOTATION
+          Annotation
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isAnnotation1 ? annotation1Steps : annotation2Steps)}
             onStop={stop}
           />

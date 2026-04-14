@@ -41,7 +41,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
   // --- Content Mapping ---
   const LESSON_DATA: Record<string, { title: string; steps: string[]; description: string }> = {
     '3d-part-1': {
-      title: 'CREATING 3D PART',
+      title: 'Creating 3d part',
       description: 'Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Detailing.',
       steps: [
         "Step 1: Select Create 3D Part from the icon menu.",
@@ -52,7 +52,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
       ]
     },
     '3d-part-2': {
-      title: 'CHANGE 3D PART NAME',
+      title: 'Change 3d part name',
       description: 'Allows editing 3D names, drawing names (for external parts), and comments.',
       steps: [
         "Step 1: Select Change 3D Part Name from the icon menu.",

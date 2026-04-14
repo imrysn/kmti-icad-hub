@@ -55,7 +55,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3 className="section-title">MOVE/COPY/DELETE COMPONENT</h3>
+        <h3 className="section-title">Move/copy/delete component</h3>
         <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
         <div className="instruction-box">
           <div className="image-wrapper-flush"><img src={componentMenu} alt="Component Operation Menu" className="software-screenshot screenshot-small" /></div>
@@ -81,7 +81,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                   <div className="step-header"><span className="step-number">3</span><span className="step-label">Specify the movement distance on the X, Y and Z-axis on the item entry &gt; Press <strong className="text-highlight">Enter</strong></span></div>
                   <div className="image-wrapper-flush"><img src={moveEntry} alt="Move Item Entry" className="software-screenshot screenshot-large" /></div>
                 </div>
-                <div className="tool-block"><h4 className="section-title">RESULT</h4><div className="image-wrapper-flush"><img src={moveResult} alt="Move Result" className="software-screenshot screenshot-medium" /></div></div>
+                <div className="tool-block"><h4 className="section-title">Result</h4><div className="image-wrapper-flush"><img src={moveResult} alt="Move Result" className="software-screenshot screenshot-medium" /></div></div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>
             )}
@@ -99,7 +99,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                   <div className="step-header"><span className="step-number">3</span><span className="step-label">Specify the distance and number of copies needed &gt; Press <strong className="text-highlight">Enter</strong></span></div>
                   <div className="image-wrapper-flush"><img src={copyFinal} alt="Copy Result" className="software-screenshot screenshot-large" /></div>
                 </div>
-                <div className="tool-block"><h4 className="section-title">RESULT</h4><div className="image-wrapper-flush"><img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-medium" /></div></div>
+                <div className="tool-block"><h4 className="section-title">Result</h4><div className="image-wrapper-flush"><img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-medium" /></div></div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>
             )}
@@ -137,7 +137,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                   <div className="step-header"><span className="step-number">4</span><span className="step-label">Specify the angle of rotation on the item entry &gt; Press <strong className="text-highlight">Enter</strong></span></div>
                   <div className="image-wrapper-flush"><img src={rotateEntry} alt="Rotate Entry" className="software-screenshot screenshot-large" /></div>
                 </div>
-                <div className="tool-block"><h4 className="section-title">RESULT</h4><div className="image-wrapper-flush"><img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-medium" /></div></div>
+                <div className="tool-block"><h4 className="section-title">Result</h4><div className="image-wrapper-flush"><img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-medium" /></div></div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>
             )}
@@ -167,7 +167,7 @@ const Component2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3 className="section-title">MOVE/COPY/DELETE COMPONENT</h3>
+        <h3 className="section-title">Repeat copy / Delete component</h3>
         <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
         <div className="instruction-box">
           <div className="image-wrapper-flush"><img src={componentMenu} alt="Component Operation Menu" className="software-screenshot screenshot-small" /></div>

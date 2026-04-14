@@ -50,7 +50,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          INTERFERENCE CHECK
+          Interference check
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} />
         </h3>
         <p className="p-flush">

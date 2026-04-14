@@ -107,7 +107,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">BOOLEAN OPERATIONS</h3>
+        <h3 className="section-title">Boolean operations</h3>
         <div className="instruction-box">
           <div className="image-wrapper-flush">
             <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot screenshot-small" />

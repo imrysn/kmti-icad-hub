@@ -48,7 +48,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          CREATING HOLE DETAILS ON PARTS
+          Creating hole details on parts
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(holeSteps)} onStop={stop} />
         </h3>
         <p className="p-flush">

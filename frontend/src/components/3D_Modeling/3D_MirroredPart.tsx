@@ -58,7 +58,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          {isMirrored1 ? "MIRRORED PARTS (1)" : "3D MODELING OF MIRROR PARTS"}
+          {isMirrored1 ? "Mirrored parts (1)" : "3d modeling of mirror parts"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isMirrored1 ? mirrored1Steps : mirrored2Steps)} onStop={stop} />
         </h3>
         <p className="p-flush">{isMirrored1 ? "Based on KEMCO Standard" : ""}</p>
@@ -140,7 +140,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
             </div>
           ) : (
             <div className="tab-pane fade-in">
-              <h4 className="section-title">MIRRORING PROCEDURE</h4>
+              <h4 className="section-title">Mirroring procedure</h4>
               <div className={`${getStepClass("mp2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>

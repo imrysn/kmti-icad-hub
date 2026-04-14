@@ -252,9 +252,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
       </div>
 
       <section className="lesson-intro">
-
-        <h3 className="section-title">CREATING BASIC SHAPES
-        </h3>
+        <h3 className="section-title">Creating basic shapes</h3>
 
         <p>When creating a 3D model, always start with the <strong>Front View</strong>.
         </p>
@@ -1893,7 +1891,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
             <div className="section-divider">
             </div>
 
-            <div className="tool-block"> <h4 className="section-title">OR</h4>
+            <div className="tool-block"> <h4 className="section-title">Or</h4>
 
               <div className="instruction-step">
 
