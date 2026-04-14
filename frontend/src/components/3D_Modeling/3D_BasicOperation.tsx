@@ -23,7 +23,7 @@ import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 import cmdMenu from '../../assets/3D_Image_File/basic_operation(1)_command_menu.png';
 
-import threeDView from '../../assets/3D_Image_File/basic_operation(1)_3d_view.jpg';
+import threeDView from '../../assets/3D_Image_File/basic_operation(1)_3d_view.png';
 
 import arrangeCylinder from '../../assets/3D_Image_File/basic_operation(1)_arrange_cylinder.png';
 
@@ -35,7 +35,7 @@ import keyEntry from '../../assets/3D_Image_File/basic_operation(1)_key_entry_ar
 
 import arrangeBox from '../../assets/3D_Image_File/basic_operation(1)_arrange_box.png';
 
-import itemEntryBox from '../../assets/3D_Image_File/basic_operation(1)_item_entry_box.jpg';
+import itemEntryBox from '../../assets/3D_Image_File/basic_operation(1)_item_entry_box.png';
 
 import boxResult from '../../assets/3D_Image_File/box.png';
 
@@ -51,11 +51,11 @@ import itemEntryCone from '../../assets/3D_Image_File/basic_operation(2)_item_en
 
 import coneResult from '../../assets/3D_Image_File/cone.png';
 
-import arrangeTorus from '../../assets/3D_Image_File/basic_operation(2)_arrange_torus.jpg';
+import arrangeTorus from '../../assets/3D_Image_File/basic_operation(2)_arrange_torus.png';
 
 import torusResult from '../../assets/3D_Image_File/torus.png';
 
-import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_entry_torus.jpg';
+import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_entry_torus.png';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (2)  EMOVE, ROTATE, COPY, MIRROR, DELETE */
 /* Lesson-item child ID: 'basic-op-2' */
@@ -64,7 +64,7 @@ import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_e
 
 import operationsMenu from '../../assets/3D_Image_File/basic_operation(1)_move_rotate_copy_mirror_delete.png';
 
-import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.jpg';
+import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.png';
 
 import itemEntryMove from '../../assets/3D_Image_File/basic_operation(2)_item_entry_box.png';
 
@@ -346,7 +346,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot screenshot-medium" />
+                  <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
 
                 </div>
 
@@ -387,7 +387,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
+                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
                 </div>
 
@@ -402,7 +402,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="image-wrapper-flush">
 
-                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" />
+                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" style={{ height: '450px' }} />
 
               </div>
 
@@ -438,7 +438,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" />
+                  <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
 
                 </div>
 
@@ -476,7 +476,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
+                  <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
                 </div>
 
@@ -527,7 +527,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot screenshot-medium" />
+                  <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
 
                 </div>
 
@@ -565,7 +565,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
+                  <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
                 </div>
 
@@ -616,7 +616,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" />
+                  <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
 
                 </div>
 
@@ -654,7 +654,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
+                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
                 </div>
 
@@ -705,7 +705,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" />
+                  <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
 
                 </div>
 
@@ -743,7 +743,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
+                  <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
                 </div>
 
@@ -949,7 +949,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" />
+                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
                 </div>
 
@@ -1035,7 +1035,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" />
+                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
                 </div>
 
@@ -1124,7 +1124,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" />
+                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
                 </div>
 
@@ -1197,7 +1197,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" />
+                  <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
                 </div>
 
@@ -1280,7 +1280,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" />
+                  <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
                 </div>
 
@@ -1331,7 +1331,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" />
+                  <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
                 </div>
 
@@ -1389,7 +1389,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   <div className="image-wrapper-flush">
 
-                    <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" />
+                    <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" style={{ width: '300px', height: 'auto' }} />
 
                   </div>
 
@@ -1575,7 +1575,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div className="image-wrapper-flush">
 
-              <img src={sketch1} alt="Sketch Overview" className="software-screenshot screenshot-small" />
+              <img src={sketch1} alt="Sketch Overview" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
             </div>
 
@@ -1594,7 +1594,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                     <div className="image-wrapper-flush">
 
-                      <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" />
+                      <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                     </div>
 
@@ -1624,7 +1624,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="image-wrapper-flush">
 
-                <img src={extrudeRevolveMenu} alt="Extrude Revolve Menu" className="software-screenshot screenshot-small" />
+                <img src={extrudeRevolveMenu} alt="Extrude Revolve Menu" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
               </div>
 
@@ -1653,13 +1653,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                         <div className="image-wrapper-flush">
 
-                          <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" />
+                          <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                         </div>
 
                         <div className="image-wrapper-flush">
-
-                          <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" />
+                          <br />
+                          <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                         </div>
 
@@ -1741,7 +1741,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                       <div className="image-wrapper-flush">
 
-                        <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" />
+                        <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                       </div>
 
@@ -1824,7 +1824,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" />
+                  <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                 </div>
 
@@ -1851,7 +1851,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" />
+                  <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                 </div>
 
@@ -1890,10 +1890,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                     <div className="image-wrapper-flush">
 
-                      <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" />
+                      <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" style={{ width: '280px', height: 'auto' }} />
+                      <br />
                       <p className="step-label"> 1. Select Hide Unselected Entity From the icon menu.</p>
                       <span className="step-label">2. Select all entities to be retain GO
+
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+
                       </span>
 
                       <p className="step-label">All unselected entities will be hidden</p>
@@ -1949,7 +1952,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" />
+                  <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                 </div>
 
@@ -1961,7 +1964,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Select the face to be stretch &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
+
 
               </div>
 
@@ -1998,7 +2002,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                 </div>
 
                 <div className="image-wrapper-flush flex-no-shrink">
-
+                  <br />
                   <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" />
 
                 </div>
@@ -2015,7 +2019,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="instruction-step">
 
                 <div className="step-header"> <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /> &gt; Left-click on the 3D Space.</span>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> &gt; Left-click on the 3D Space.</span>
 
                 </div>
 
@@ -2063,7 +2067,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" />
+                  <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                 </div>
 
@@ -2075,7 +2079,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Select the entity for resizing &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" /></span>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
 
               </div>
 
@@ -2101,12 +2105,11 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   <div className="image-wrapper-flush">
 
-                    <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" />
+                    <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                   </div>
-
+                  <br />
                   <div className="image-wrapper-flush">
-
                     <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" />
 
                   </div>
@@ -2207,7 +2210,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="image-wrapper-flush">
 
-                <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot screenshot-medium" />
+                <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot screenshot-medium" style={{ height: '225px' }} />
 
               </div>
 
@@ -2236,7 +2239,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" />
+                  <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ height: '150px' }} />
 
                 </div>
 
@@ -2278,7 +2281,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                     <div className="image-wrapper-flush">
 
-                      <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" />
+                      <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
                     </div>
 
@@ -2287,8 +2290,9 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                 </div>
 
                 <div className="image-wrapper-flush">
+                  <br />
 
-                  <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" />
+                  <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ height: '450px' }} />
 
                 </div>
 

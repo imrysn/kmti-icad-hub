@@ -61,9 +61,9 @@ import layerInfo from '../../assets/3D_Image_File/materials_layer.png';
 import fileMenu from '../../assets/3D_Image_File/tool_bars_file.png';
 /* Operation Sample (3) Assets */
 import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.png';
-import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.jpg';
-import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segmet_a.jpg';
-import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segmet_b.jpg';
+import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.png';
+import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segment_a.png';
+import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segment_b.png';
 import unionTool from '../../assets/3D_Image_File/boolean(1)_union.png';
 /* Operation Sample (4) Assets */
 import mainDrawing4 from '../../assets/3D_Image_File/operation_sample(3).png';
@@ -326,7 +326,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                         <p className="p-flush">Click on the center
 
-                          <img src={centerTool} alt="Center Tool" className="software-screenshot screenshot-click--inline" />
+                          <img src={centerTool} alt="Center Tool" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                         </p>
 
                       </div>

@@ -70,7 +70,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
         </p>
         <div className="instruction-box">
           <div className="image-wrapper-flush">
-            <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" />
+            <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" style={{ height: '250px' }} />
           </div>
         </div>
       </section>
@@ -95,7 +95,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
                 </div>
                 <div className="step-description">
                   <div className="image-wrapper-flush">
-                    <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" />
+                    <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
                 </div>
               </div>
@@ -133,7 +133,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
                 </div>
                 <div className="step-description">
                   <div className="image-wrapper-flush">
-                    <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-wide" />
+                    <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-wide" style={{ height: '250px' }} />
                   </div>
                 </div>
               </div>
@@ -143,7 +143,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({
                   <strong className="text-highlight">Note:</strong> Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.
                 </p>
                 <div className="image-wrapper-flush">
-                  <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" />
+                  <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" style={{ height: '250px' }} />
                 </div>
               </div>
             </div>

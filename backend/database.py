@@ -6,7 +6,7 @@ from sqlalchemy.pool import QueuePool
 from dotenv import load_dotenv
 
 # Load environment variables
-env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
 load_dotenv(dotenv_path=env_path)
 # Determine database URL based on configuration
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"

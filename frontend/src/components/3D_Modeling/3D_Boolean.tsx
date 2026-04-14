@@ -351,6 +351,7 @@ import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/Co
                 <strong>
                   This tool is use to separate all components from the solid
                   entity.
+                  This tool is is use seperate all components from the solid entity.
                 </strong>
               </p>
 
