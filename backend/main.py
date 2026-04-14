@@ -3,6 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Load environment variables early
+# Adjust '.parent.parent' if your .env is in the project root
 _env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=_env_path)
 
@@ -20,7 +21,12 @@ app = FastAPI(title="KMTI iCAD Hub API")
 # Enable CORS for Electron app and dev servers
 origins = os.getenv("CORS_ORIGINS", "").split(",")
 if not origins or origins == ['']:
-    origins = ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:3000"]
+    origins = [
+        "http://localhost:5173", 
+        "http://localhost:5174", 
+        "http://localhost:5175", 
+        "http://localhost:3000"
+    ]
 
 app.add_middleware(
     CORSMiddleware,

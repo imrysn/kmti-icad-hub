@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Walk up from this file to find the project root .env
-_env_path = Path(__file__).resolve().parents[3] / ".env"
+# Walk up from this file to find the backend .env
+_env_path = Path(__file__).resolve().parents[1] / ".env"
 load_dotenv(dotenv_path=_env_path)
 
 import hashlib

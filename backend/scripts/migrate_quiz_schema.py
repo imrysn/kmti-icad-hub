@@ -2,8 +2,10 @@ from sqlalchemy import create_engine, text
 import os
 from dotenv import load_dotenv
 
+from pathlib import Path
 # Load database config
-load_dotenv()
+_env_path = Path(__file__).resolve().parents[1] / ".env"
+load_dotenv(dotenv_path=_env_path)
 
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"
 
