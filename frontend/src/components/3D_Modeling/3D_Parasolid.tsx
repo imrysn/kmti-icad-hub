@@ -60,7 +60,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          {isPart1 ? 'LOADING OF PARASOLID' : 'PARASOLID EXPORT & EDIT'}
+          {isPart1 ? 'Loading of parasolid' : 'Parasolid export & edit'}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? importSteps : editSteps)} onStop={stop} />
         </h3>
         {isPart1 && (

@@ -42,8 +42,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
       <section className="lesson-intro">
         <h3 className="section-title">
           {isPart1
-            ? "PURCHASE PART 3D MODELING"
-            : "SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS ON THE SERVER"}
+            ? "Purchase part 3d modeling"
+            : "Sample flow chart for uploading purchase parts on the server"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(purchaseSteps)} onStop={stop} />
         </h3>
       </section>

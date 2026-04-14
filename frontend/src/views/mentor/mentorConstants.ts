@@ -18,12 +18,17 @@ export type Lesson = {
   isCompleted?: boolean;
   children?: Lesson[];
   quiz?: Quiz;
+  content?: string[];
 };
 
 export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   { 
     id: 'interface', 
     title: 'iCAD Interface',
+    content: ['Window Structure', 'Command menus', 'Hierarchical tree view', '3D viewport', 'UI placement', 'modeling environment', 'software layout'],
+    children: [
+      { id: 'interface', title: 'iCAD Window Interface', content: ['hotspots', 'interactive diagram', 'functional areas', 'navigation'] },
+    ],
     quiz: {
       title: 'iCAD Interface Competency',
       description: 'Verify your knowledge of the iCAD modeling environment and UI placement based on the manual.',
@@ -44,6 +49,10 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   { 
     id: 'toolbars', 
     title: 'Tool Bars',
+    content: ['File', 'New', 'Open', 'Save', 'Print', '2D View', 'Previous View', 'Switch Views', 'Next View', 'Switch Display', 'Projection Method', 'Switch Dimensions', 'Screen Operations', 'Zoom Area', 'Zoom In/Out', 'Zoom to Fit', 'Re-Display', '3D View', 'Top', 'Front', 'Right', 'Left', 'Back', 'Bottom', 'Plane', 'Isometric', 'User Views', 'Edit', 'Undo', 'Redo', 'Shading', 'Frame', 'Hidden Lines', 'Wireframe', 'Section Display', 'Open Work Plane', 'Switch Section Display', '2D Standard Screen', 'Standard Range', 'System Information', 'Line Type', 'Color', 'Layer', 'Scale', 'Grid', 'Screen Memory', 'Entry Control', 'Entity Selection', 'Coordinate Entry', 'AP', 'Magnet Tools'],
+    children: [
+      { id: 'toolbars', title: 'iCAD Toolbars', content: ['toolbar explorer', 'functional groups', 'quick access'] },
+    ],
     quiz: {
       title: 'Tool Bars Mastery',
       description: 'Test your ability to identify and locate essential iCAD toolsets based on specific icon groups.',
@@ -64,6 +73,10 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   { 
     id: 'origin', 
     title: 'Origin',
+    content: ['X axis', 'Y axis', 'Z axis', '0,0,0', 'Projections', 'Layout', 'orientation', 'Change 3D Part Layout', 'Front view', 'XY-plane', 'relative origin', 'absolute origin'],
+    children: [
+      { id: 'origin', title: 'Origin Control', content: ['coordinates', 'view orientation', 'alignment'] },
+    ],
     quiz: {
       title: 'Coordinate Systems & iCAD Mapping',
       description: 'Understanding the mathematical center and its relation to views in iCAD.',
@@ -84,7 +97,13 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'basic-op',
     title: 'Basic Operation',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `basic-op-${i + 1}`, title: `Basic Operation (${i + 1})` })),
+    content: ['Creating Basic Shapes', 'Move', 'Rotate', 'Copy', 'Mirror', 'Delete', 'Cylinder', 'Box', 'Polygon', 'Cone', 'Torus', 'prism', 'coordinate entry', 'angle of rotation', 'mirror plane'],
+    children: [
+      { id: 'basic-op-1', title: 'Basic Operation (1)', content: ['Cylinder', 'Box', 'Polygon', 'Cone', 'Torus'] },
+      { id: 'basic-op-2', title: 'Basic Operation (2)', content: ['Move', 'Rotate', 'Mirror', 'Copy', 'Rotate Copy', 'Mirror Copy', 'Delete'] },
+      { id: 'basic-op-3', title: 'Basic Operation (3)', content: ['Move', 'Rotate', 'Mirror', 'Copy'] },
+      { id: 'basic-op-4', title: 'Basic Operation (4)', content: ['Delete'] },
+    ],
     quiz: {
       title: 'Basic iCAD Operations',
       description: 'Test your understanding of the standard workflow for creating and modifying solids in iCAD.',
@@ -126,6 +145,10 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   { 
     id: 'hole-details', 
     title: 'Hole Details',
+    content: ['Arrange Machine Part', 'drill holes', 'tapping holes', 'counterbores', 'specifications', 'tapped holes', 'green', 'threaded', 'hole details'],
+    children: [
+      { id: 'hole-details', title: 'Creating Hole Details on Parts', content: ['solid entity', 'cut creation', 'color coding'] },
+    ],
     quiz: {
       title: 'Hole Engineering & iCAD Logic',
       description: 'Understanding different types of holes and their representation in iCAD.',
@@ -146,7 +169,11 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'boolean',
     title: 'Boolean',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `boolean-${i + 1}`, title: `Boolean (${i + 1})` })),
+    content: ['Boolean Operations', 'Union', 'Subtract', 'Intersect', 'Separate Entity', 'joining 3D entities', 'cutout', 'intersecting product', 'reverse boolean', 'CSG solid', 'Target entity', 'Tool entity'],
+    children: [
+      { id: 'boolean-1', title: 'Boolean (1) - Union & Subtract', content: ['merging parts', 'cutting out'] },
+      { id: 'boolean-2', title: 'Boolean (2) - Intersect & Separate', content: ['intersection product', 'de-union'] },
+    ],
     quiz: {
       title: 'Boolean Operations in iCAD',
       description: 'Understanding the logical addition and subtraction of solids based on the manual.',
@@ -167,7 +194,11 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'component',
     title: 'Component',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `component-${i + 1}`, title: `Component (${i + 1})` })),
+    content: ['Move Component', 'Copy Component', 'Mirror Component', 'Rotate Component', 'Repeat Copy', 'Delete Component', 'distance', 'number of copies', 'axis of rotation', 'angle of rotation', 'mirror plane', 'drill holes', 'cutouts'],
+    children: [
+      { id: 'component-1', title: 'Component (1) - Move, Copy, Mirror, Rotate', content: ['repositioning', 'duplication'] },
+      { id: 'component-2', title: 'Component (2) - Repeat Copy, Delete', content: ['bulk removal', 'sequential duplication'] },
+    ],
     quiz: {
       title: 'iCAD Component Management',
       description: 'Understanding how to handle multiple independent solids as parts.',
@@ -185,7 +216,13 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
       ]
     }
   },
-  { id: 'fairing', title: 'Fairing', quiz: {
+  { id: 'fairing', 
+    title: 'Fairing', 
+    content: ['Chamfer', 'Fillet', 'Shell', 'rounding corners', 'hollowing', 'wall thickness', 'chamfer length', 'fillet radius', 'edge selection'],
+    children: [
+      { id: 'fairing-1', title: 'Chamfer, Fillet, Shell', content: ['beveled edges', 'rounded edges', 'hollow solid'] }
+    ],
+    quiz: {
     title: 'Fairing & Advanced Shaping',
     description: 'Mastering smooth transitions and hollow bodies based on the iCAD manual.',
     questions: [
@@ -411,7 +448,13 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-orthographic',
     title: 'Orthographic View',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-orthographic-${i + 1}`, title: `Orthographic View (${i + 1})` })),
+    content: ['Projection', 'Third Angle', 'First Angle', 'Glass Box', 'Top View', 'Front View', 'Side View', 'principal views', 'engineering views', 'orthographic projection'],
+    children: [
+      { id: '2d-orthographic-1', title: 'Orthographic View (1)', content: ['third angle standards'] },
+      { id: '2d-orthographic-2', title: 'Orthographic View (2)', content: ['front view definition'] },
+      { id: '2d-orthographic-3', title: 'Orthographic View (3)', content: ['view alignment'] },
+      { id: '2d-orthographic-4', title: 'Orthographic View (4)', content: ['six principal views'] },
+    ],
     quiz: {
       title: 'iCAD Orthographic Projection',
       description: 'Mastering the standards of engineering views in the iCAD manual.',
@@ -453,7 +496,13 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-line-props',
     title: 'Line Properties',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-line-props-${i + 1}`, title: `Line Properties (${i + 1})` })),
+    content: ['Line Specifications', 'uniform specs', 'line types', 'line weights', 'Changing Colors', 'hidden lines', 'color green', 'Splines', 'partial sections', 'wave', 'curve distance', 'Center Lines', 'manual center line', 'offset value', 'Piping Center Line', 'OF Piping Assembly', 'Hierarchical Representation', 'assembly context', 'attributes', 'Layer'],
+    children: [
+      { id: '2d-line-props-1', title: 'Line Properties (1)', content: ['line specifications', 'standard requirements'] },
+      { id: '2d-line-props-2', title: 'Line Properties (2)', content: ['color dialog', 'part selection', 'spline waves'] },
+      { id: '2d-line-props-3', title: 'Line Properties (3)', content: ['center line offset', 'piping assembly'] },
+      { id: '2d-line-props-4', title: 'Line Properties (4)', content: ['hierarchical representation', 'part detailling'] },
+    ],
     quiz: {
       title: 'Alphabet of Lines in iCAD',
       description: 'Understanding the standard line types and physical properties in engineering.',
@@ -761,6 +810,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   { 
     id: '2d-titleblock', 
     title: 'Titleblock',
+    content: ['Title block', 'metadata', 'Drawing Number', 'Scale', 'Unit', 'Revision Level', 'Projection Symbol', '3rd angle', 'Material field', 'AL6061', 'S35C', 'S45C', 'Tolerance Block', 'Drawn By', 'accountability', 'administrative info', 'company standards'],
     quiz: {
       title: 'Drawing Title Block & Metadata',
       description: 'Mastering the administrative requirements of engineering drawings.',
@@ -781,7 +831,12 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   { 
     id: '2d-additional-view', 
     title: 'Additional View', 
-    children: Array.from({ length: 3 }, (_, i) => ({ id: `2d-additional-view-${i + 1}`, title: `Additional View (${i + 1})` })),
+    content: ['Auxiliary View', 'Partial View', 'True Shape', 'inclined face', 'Broken-out Section', 'View Break', 'Detail View', 'Section View', 'magnified area', 'Removed Section', 'cutting plane', 'localized details', 'view enlargement'],
+    children: [
+      { id: '2d-additional-view-1', title: 'Additional View (1) - Auxiliary & Partial', content: ['inclined surfaces', 'true shape projection'] },
+      { id: '2d-additional-view-2', title: 'Additional View (2) - Break & Section', content: ['broken-out cutouts', 'view shortening'] },
+      { id: '2d-additional-view-3', title: 'Additional View (3) - Detail & Removed', content: ['magnification', 'offset sections'] },
+    ],
     quiz: {
       title: 'Auxiliary & Additional Views',
       description: 'Understanding complex viewing methods for non-standard geometry.',
@@ -802,7 +857,11 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   { 
     id: '2d-operal-view', 
     title: 'Operal View', 
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-operal-view-${i + 1}`, title: `Operal View (${i + 1})` })),
+    content: ['Operal View', 'Operation Drawing', 'manufacturing steps', 'setup dimensions', 'stock outline', 'in-process inspection', 'machining datums', 'process sequence', 'factory station guidance'],
+    children: [
+      { id: '2d-operal-view-1', title: 'Operal View (1)', content: ['setup dimensions', 'stock visualization'] },
+      { id: '2d-operal-view-2', title: 'Operal View (2)', content: ['process sequences', 'quality control'] },
+    ],
     quiz: {
       title: 'Manufacturing Operation Views',
       description: 'Understanding process-specific drawing layouts.',

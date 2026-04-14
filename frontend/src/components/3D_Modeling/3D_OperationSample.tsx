@@ -162,7 +162,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
       <section className="lesson-intro">
 
         <h3 className="section-title">
-          {isSample1 ? 'OPERATION SAMPLE (1)' : isSample2 ? 'OPERATION SAMPLE (2)' : isSample3 ? 'OPERATION SAMPLE (3)' : isSample4 ? 'OPERATION SAMPLE (4)' : 'OPERATION SAMPLE (5)'}
+          {isSample1 ? 'Operation sample (1)' : isSample2 ? 'Operation sample (2)' : isSample3 ? 'Operation sample (3)' : isSample4 ? 'Operation sample (4)' : 'Operation sample (5)'}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             if (isSample1) speak(opSample1Steps);
             else if (isSample2) speak(opSample2Steps);
@@ -212,7 +212,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
         <div className="lesson-card">
           {isSample1 ? (
 
-            <div className="tab-pane"> <h4 className="section-title">HERE IS THE STEP-BY-STEP PROCEDURE OF CREATING 3D MODEL</h4>
+            <div className="tab-pane"> <h4 className="section-title">Here is the step-by-step procedure of creating 3d model</h4>
               {/* STEP 1 */}
 
               <div className={`${getStepClass('s1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
@@ -371,7 +371,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
           ) : subLessonId === 'op-sample-2' ? (
 
-            <div className="tab-pane"> <h4 className="section-title">SAMPLES OF 3D MODELING OF PARTS</h4>
+            <div className="tab-pane"> <h4 className="section-title">Samples of 3d modeling of parts</h4>
               {/* STEP 6 */}
 
               <div className={getStepClass('s2-6')}>
@@ -628,7 +628,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
           ) : isSample3 ? (
 
-            <div className="tab-pane"> <h4 className="section-title">HERE IS THE STEP-BY-STEP PROCEDURE OF CREATING 3D MODEL</h4>
+            <div className="tab-pane"> <h4 className="section-title">Here is the step-by-step procedure of creating 3d model</h4>
 
               <div className={getStepClass('s3-1')}>
 
@@ -672,7 +672,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <div className="flex-row">
                   {/* SEGMENT A */}
 
-                  <div > <h4 className="section-title">SEGMENT A</h4>
+                  <div > <h4 className="section-title">Segment A</h4>
 
                     <div className="flex-row-center">
 
@@ -701,7 +701,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                   {/* SEGMENT B */}
 
-                  <div > <h4 className="section-title">SEGMENT B</h4>
+                  <div > <h4 className="section-title">Segment B</h4>
 
                     <div className="flex-row-center">
 
@@ -801,7 +801,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div /* sanitized: flex: 1 */> <h4 className="section-title">SEGMENT D</h4>
+                    <div /* sanitized: flex: 1 */> <h4 className="section-title">Segment D</h4>
 
                       <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Arrange Cylinder</strong></span>
 
@@ -929,7 +929,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
           ) : isSample5 ? (
 
-            <div className="tab-pane"> <h4 className="section-title">FINAL FINISHING OPERATIONS</h4>
+            <div className="tab-pane"> <h4 className="section-title">Final finishing operations</h4>
               {/* STEP 5 */}
 
               <div className={getStepClass('s5-5')}>
