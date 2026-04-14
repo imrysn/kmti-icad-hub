@@ -302,12 +302,12 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(separateSteps)} onStop={stop} />
                 </div>
                 <p className="p-flush">Tool use to reverse the boolean operations by creating CSG solid.</p>
-                
+
                 <div className="info-box">
-                    <p className="p-flush"><strong className="text-highlight">Component:</strong> By-product of boolean operations (entities joined by union, cutout, holes)</p>
-                    <div className="image-wrapper-flush">
-                        <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" />
-                    </div>
+                  <p className="p-flush"><strong className="text-highlight">Component:</strong> By-product of boolean operations (entities joined by union, cutout, holes)</p>
+                  <div className="image-wrapper-flush">
+                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" />
+                  </div>
                 </div>
 
                 <div className={`${getStepClass("bl2s-1")} ${currentIndex === 0 || currentIndex === 1 ? "reading-active" : ""}`}>
@@ -338,34 +338,49 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <div className="section-divider" />
 
                 <div className={`${getStepClass("bl2s-2")} ${currentIndex === 2 ? "reading-active" : ""}`}>
-                  <p className="p-flush"><strong>This tool is used to separate all components from the solid entity at once.</strong></p>
-                  <div className="flex-col">
-                    <div className="step-header">
-                      <span className="step-number">1</span>
-                      <span className="step-label">
-                        Select the entire solid entity &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-                      </span>
+                  <p className="p-flush">
+                    <strong>
+                      This tool is use to separate all components from the solid
+                      entity.
+                    </strong>
+                  </p>
+
+                  <div className="step-description">
+                    <div className="flex-col">
+                      <div className="step-header">
+                        {" "}
+                        <span className="step-number">1</span>{" "}
+                        <span className="step-label">
+                          Select the entire solid entity &gt;{" "}
+                          <strong className="text-highlight">GO</strong>
+                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                        </span>
+                      </div>
+
+                      <div className="step-header">
+                        {" "}
+                        <span className="step-number">2</span>{" "}
+                        <span className="step-label">
+                          Separate components will be displayed in a form of CSG
+                          solid. Select OK
+                        </span>
+                      </div>
                     </div>
-                    <div className="step-header">
-                      <span className="step-number">2</span>
-                      <span className="step-label">All separate components will be displayed as CSG solid. Select OK.</span>
+
+                    <div className="flex-row-center--wrap">
+                      <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" />
+                      <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
 
-                  <div className="flex-row-center--wrap">
-                    <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" />
-                    <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" />
+                  <div className="lesson-navigation">
+                    <button className="nav-button" onClick={handlePrev2}>
+                      <ChevronLeft size={18} /> Previous
+                    </button>
+                    <button className="nav-button next" onClick={handleNext2}>
+                      Finish <ChevronRight size={18} />
+                    </button>
                   </div>
-                </div>
-
-                <div className="lesson-navigation">
-                  <button className="nav-button" onClick={handlePrev2}>
-                    <ChevronLeft size={18} /> Previous
-                  </button>
-                  <button className="nav-button next" onClick={handleNext2}>
-                    Finish <ChevronRight size={18} />
-                  </button>
                 </div>
               </div>
             )}
