@@ -132,16 +132,17 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   useEffect(() => {
     setShowQuiz(false);
     setTimeout(() => {
-      const tabsEl = document.querySelector('.lesson-tabs');
-      if (tabsEl) {
-        tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const scrollArea = document.querySelector('.lesson-scroll-area');
+      if (scrollArea) {
+        scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        const introEl = document.querySelector('.lesson-intro');
-        if (introEl) {
-          introEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Fallback to searching specific elements if needed
+        const tabsEl = document.querySelector('.lesson-tabs');
+        if (tabsEl) {
+          tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          const scrollContainer = document.querySelector('.main-content-viewer');
-          if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+          const introEl = document.querySelector('.lesson-intro');
+          if (introEl) introEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }
     }, 50);

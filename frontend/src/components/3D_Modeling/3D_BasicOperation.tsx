@@ -34,11 +34,7 @@ import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 import cmdMenu from '../../assets/3D_Image_File/basic_operation1_command_menu.png';
 
-<<<<<<< HEAD
-import threeDView from '../../assets/3D_Image_File/basic_operation1_3d_view.jpg';
-=======
-import threeDView from '../../assets/3D_Image_File/basic_operation(1)_3d_view.png';
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2
+import threeDView from '../../assets/3D_Image_File/basic_operation1_3d_view.png';
 
 import arrangeCylinder from '../../assets/3D_Image_File/basic_operation1_arrange_cylinder.png';
 
@@ -50,11 +46,7 @@ import keyEntry from '../../assets/3D_Image_File/basic_operation1_key_entry_area
 
 import arrangeBox from '../../assets/3D_Image_File/basic_operation1_arrange_box.png';
 
-<<<<<<< HEAD
 import itemEntryBox from '../../assets/3D_Image_File/basic_operation1_item_entry_box.png';
-=======
-import itemEntryBox from '../../assets/3D_Image_File/basic_operation(1)_item_entry_box.png';
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2
 
 import boxResult from '../../assets/3D_Image_File/box.png';
 
@@ -70,19 +62,11 @@ import itemEntryCone from '../../assets/3D_Image_File/basic_operation2_item_entr
 
 import coneResult from '../../assets/3D_Image_File/cone.png';
 
-<<<<<<< HEAD
 import arrangeTorus from '../../assets/3D_Image_File/basic_operation2_arrange_torus.png';
 
 import torusResult from '../../assets/3D_Image_File/torus.png';
 
 import itemEntryTorus from '../../assets/3D_Image_File/basic_operation2_item_entry_torus.png';
-=======
-import arrangeTorus from '../../assets/3D_Image_File/basic_operation(2)_arrange_torus.png';
-
-import torusResult from '../../assets/3D_Image_File/torus.png';
-
-import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_entry_torus.png';
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (2)  EMOVE, ROTATE, COPY, MIRROR, DELETE */
 /* Lesson-item child ID: 'basic-op-2' */
@@ -91,11 +75,7 @@ import itemEntryTorus from '../../assets/3D_Image_File/basic_operation(2)_item_e
 
 import operationsMenu from '../../assets/3D_Image_File/basic_operation1_move_rotate_copy_mirror_delete.png';
 
-<<<<<<< HEAD
-import moveMenu from '../../assets/3D_Image_File/basic_operation2_move.jpg';
-=======
-import moveMenu from '../../assets/3D_Image_File/basic_operation(2)_move.png';
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2
+import moveMenu from '../../assets/3D_Image_File/basic_operation2_move.png';
 
 import itemEntryMove from '../../assets/3D_Image_File/basic_operation2_item_entry_box.png';
 
@@ -271,6 +251,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
       </div>
 
+      <div className="lesson-tabs">
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+        ))}
+
+      </div>
+
       <section className="lesson-intro">
         <h3 className="section-title">Creating basic shapes</h3>
 
@@ -301,12 +287,6 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
         </div>
 
       </section>
-
-      <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
-        ))}
-
-      </div>
 
       <div className="lesson-grid single-card">
         {/* CYLINDER */}
@@ -845,6 +825,12 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
       </div>
 
+      <div className="lesson-tabs">
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
+        ))}
+
+      </div>
+
       <section className="lesson-intro">
         <h3 className="section-title">Move, rotate, copy, mirror, delete</h3>
 
@@ -859,12 +845,6 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
         </div>
 
       </section>
-
-      <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
-        ))}
-
-      </div>
 
       <div className="lesson-grid single-card">
         {/* MOVE */}
@@ -1418,16 +1398,16 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
       </div>
 
-      <section className="lesson-intro">
-        <h3 className="section-title">Sketch / Extrude / Revolve / Show-hide / Stretch / Resize</h3>
-
-      </section>
-
       <div className="lesson-tabs">
         {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
         ))}
 
       </div>
+
+      <section className="lesson-intro">
+        <h3 className="section-title">Sketch / Extrude / Revolve / Show-hide / Stretch / Resize</h3>
+
+      </section>
       {activeTab === 'showHide' && (
 
         <div className="instruction-box">

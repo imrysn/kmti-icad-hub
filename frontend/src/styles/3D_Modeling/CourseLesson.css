@@ -6,12 +6,12 @@
 .course-lesson-container {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: 3.5rem;
   animation: fadeInSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   padding-bottom: 8rem;
   max-width: 1000px;
   width: 95%;
-  margin: 3rem auto 0;
+  margin: 2.5rem auto 0;
 }
 
 @keyframes fadeInSlideUp {
@@ -31,7 +31,7 @@
 .lesson-intro {
   text-align: left;
   padding: 3rem 4rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
@@ -70,7 +70,8 @@
   gap: 1.5rem;
   border: none;
   padding: 0;
-  text-transform: none; /* Already none, but ensuring consistency */
+  text-transform: none;
+  /* Already none, but ensuring consistency */
 }
 
 
@@ -109,8 +110,10 @@
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--primary); /* Matching iCAD sidebar indicators */
-  text-transform: none; /* Changed from uppercase to allow Sentence Case */
+  color: var(--primary);
+  /* Matching iCAD sidebar indicators */
+  text-transform: none;
+  /* Changed from uppercase to allow Sentence Case */
   letter-spacing: 0.05em;
   margin-bottom: 2rem;
   display: flex;
@@ -121,14 +124,16 @@
 .section-title::before {
   content: '';
   width: 5px;
-  height: 1.2em; /* Proportional to font size */
+  height: 1.2em;
+  /* Proportional to font size */
   background: var(--primary);
   border-radius: 2px;
-  box-shadow: none; /* Remove neon glow for professional industrial look */
+  box-shadow: none;
+  /* Remove neon glow for professional industrial look */
 }
 
 .tool-block {
-  margin-bottom: 5rem;
+  margin-bottom: 3.5rem;
 }
 
 /* --- Lesson Cards --- */
@@ -149,7 +154,8 @@
 }
 
 [data-theme='dark'] .lesson-card {
-  background: #111827; /* Deep Obsidian background for high-contrast dark mode */
+  background: #111827;
+  /* Deep Obsidian background for high-contrast dark mode */
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   color: var(--text-white);
@@ -242,7 +248,8 @@
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  background: #ffffff; /* White canvas background for document-style screenshots */
+  background: #ffffff;
+  /* White canvas background for document-style screenshots */
   padding: 1.25rem;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
@@ -260,7 +267,8 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 4px; /* Minimal padding for spacing */
+  padding: 4px;
+  /* Minimal padding for spacing */
   margin: 4px 0;
 }
 
@@ -274,9 +282,11 @@
 /* Luminescent Indigo theme specifically for Dark Mode to match Midnight Aurora aesthetics */
 [data-theme='dark'] .image-wrapper,
 [data-theme='dark'] .image-wrapper-flush {
-  background: rgba(238, 242, 255, 0.92); /* Luminescent Indigo 50 tint */
+  background: rgba(238, 242, 255, 0.92);
+  /* Luminescent Indigo 50 tint */
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.35); /* Match var(--primary) indigo */
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  /* Match var(--primary) indigo */
   box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1);
 }
 
@@ -452,15 +462,36 @@
   border: 1px solid var(--glass-border);
   border-radius: 100px;
   width: fit-content;
-  margin: 0 auto 3.5rem;
+  margin: 0 auto 2.5rem;
   /* Center horizontally and add bottom spacing */
   backdrop-filter: blur(var(--glass-blur));
   position: sticky;
   top: 1rem;
   /* Stick to top with some breathing room */
   z-index: 100;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
-  animation: fadeInDown 0.6s ease-out;
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    0 0 20px var(--color-primary-glow);
+  animation: fadeInDown 0.6s ease-out, pulseGlow 4s infinite alternate;
+}
+
+/* New Glowing Halo Effect */
+.lesson-tabs::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% auto;
+  border-radius: 100px;
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(8px);
+  animation: shine 6s linear infinite;
+}
+
+@keyframes pulseGlow {
+  from { box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 10px var(--color-primary-glow); }
+  to { box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 25px var(--color-primary-glow); }
 }
 
 @keyframes fadeInDown {

@@ -70,11 +70,7 @@ import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.png';
 import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.png';
 import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segment_a.png';
 import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segment_b.png';
-<<<<<<< HEAD
 import unionTool from '../../assets/3D_Image_File/boolean1_union.png';
-=======
-import unionTool from '../../assets/3D_Image_File/boolean(1)_union.png';
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2
 /* Operation Sample (4) Assets */
 import mainDrawing4 from '../../assets/3D_Image_File/operation_sample3.png';
 import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.png';

@@ -33,8 +33,13 @@ export const useLessonCore = (subLessonId: string) => {
 
     // Reset progress on sub-lesson change
     setScrollProgress(0);
-    if (containerRef.current) {
-        containerRef.current.scrollTop = 0;
+    
+    // Also scroll the main viewer to top
+    const scrollContainer = document.querySelector('.lesson-scroll-area');
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
     }
 
     window.addEventListener('scroll', handleScroll, true);

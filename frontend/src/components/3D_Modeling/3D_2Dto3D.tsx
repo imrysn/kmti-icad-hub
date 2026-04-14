@@ -64,12 +64,12 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">2D &gt; 3D (1) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(workPlaneSteps)} onStop={stop} /> </h3>
-      </section>
       <div className="lesson-tabs">
         {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { setActiveTab(tab.id as any); if (containerRef.current) containerRef.current.scrollTop = 0; }} > {tab.label} </button>))}
       </div>
+      <section className="lesson-intro">
+        <h3 className="section-title">2D &gt; 3D (1) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(workPlaneSteps)} onStop={stop} /> </h3>
+      </section>
       <div className="lesson-grid single-card">
         {activeTab === "workPlane" && (
           <div className="lesson-card tab-content">
@@ -116,12 +116,12 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">2D &gt; 3D (2) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(menuSteps)} onStop={stop} /> </h3>
-      </section>
       <div className="lesson-tabs">
         {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => setActiveTab(tab.id as any)} > {tab.label} </button>))}
       </div>
+      <section className="lesson-intro">
+        <h3 className="section-title">2D &gt; 3D (2) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(menuSteps)} onStop={stop} /> </h3>
+      </section>
       <div className="lesson-grid single-card">
         {activeTab === "commandMenu" && (
           <div className="lesson-card tab-content">
@@ -164,12 +164,12 @@ const TwoDTo3D3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      <section className="lesson-intro">
-        <h3 className="section-title">2D &gt; 3D (3) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (activeTab === "extrude") speak(extrudeSteps); else if (activeTab === "revolve") speak(revolveStepsTTS); else speak(spiralSteps); }} onStop={stop} /> </h3>
-      </section>
       <div className="lesson-tabs">
         {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { setActiveTab(tab.id as any); if (containerRef.current) containerRef.current.scrollTop = 0; }} > {tab.label} </button>))}
       </div>
+      <section className="lesson-intro">
+        <h3 className="section-title">2D &gt; 3D (3) <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (activeTab === "extrude") speak(extrudeSteps); else if (activeTab === "revolve") speak(revolveStepsTTS); else speak(spiralSteps); }} onStop={stop} /> </h3>
+      </section>
       <div className="lesson-grid single-card">
         {activeTab === "extrude" && (
           <div className="lesson-card tab-content">
