@@ -25,14 +25,14 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
   nextLabel,
 }) => {
   const [activeTab, setActiveTab] = useState<"projections" | "layout">("projections");
-  
-  const { 
-    scrollProgress, 
-    containerRef, 
-    speak, 
-    stop, 
-    isSpeaking, 
-    currentIndex 
+
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
   } = useLessonCore(activeTab); // Use activeTab as the subLessonId equivalent
 
   const LESSON_DATA = {
@@ -56,7 +56,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
   useEffect(() => {
     // Scroll to top when tab changes
     if (containerRef.current) {
-        containerRef.current.scrollTop = 0;
+      containerRef.current.scrollTop = 0;
     }
   }, [activeTab, containerRef]);
 
@@ -85,8 +85,8 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           <span>Origin Control</span>
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA[activeTab].steps)} 
-            onStop={stop} 
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA[activeTab].steps)}
+            onStop={stop}
           />
         </h3>
         <p className="section-description">
@@ -125,14 +125,14 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 <div className="card-header">
                   <h4>Change 3D Part Layout Tool</h4>
                 </div>
-                
+
                 <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
                   <div className="step-header">
                     <span className="step-number">1</span>
                     <span className="step-label">Select <strong>Change 3D Part Layout</strong> from the icon menu.</span>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-medium" />
+                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-medium" style={{ height: '200px' }} />
                   </div>
                 </div>
 
