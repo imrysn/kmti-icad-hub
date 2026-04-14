@@ -9,6 +9,7 @@ interface MentorSidebarProps {
     sidebarOpen: boolean;
     setSidebarOpen: (open: boolean) => void;
     activeLessonId: string;
+    setActiveLessonId: (id: string) => void;
     expandedIds: Set<string>;
     toggleExpand: (id: string) => void;
     setSelectedCourse: (course: Course | null) => void;
@@ -42,19 +43,42 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     // Lessons list based on course type
     const lessons = is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS;
 
-    // Filtering Logic
-    const filteredLessons = useMemo(() => {
-        if (!searchTerm.trim()) return lessons;
+    // Recursive Deep Filtering Logic with Multi-word support & Inheritance
+    const searchTerms = useMemo(() => 
+        searchTerm.toLowerCase().split(/\s+/).filter(t => t), 
+    [searchTerm]);
 
-        const term = searchTerm.toLowerCase();
-        return lessons.filter(lesson => {
-            const lessonMatch = lesson.title.toLowerCase().includes(term);
-            const childrenMatch = lesson.children?.some(child =>
-                child.title.toLowerCase().includes(term)
-            );
-            return lessonMatch || childrenMatch;
-        });
-    }, [lessons, searchTerm]);
+    const filteredLessons = useMemo(() => {
+        if (searchTerms.length === 0) return lessons;
+
+        const deepFilter = (list: Lesson[], inheritedMatch: boolean = false): Lesson[] => {
+            return list
+                .map(lesson => {
+                    const lessonMatch = searchTerms.every(t => 
+                        lesson.title.toLowerCase().includes(t) || 
+                        lesson.content?.some(c => c.toLowerCase().includes(t))
+                    );
+                    
+                    const filteredChildren = lesson.children 
+                        ? deepFilter(lesson.children, inheritedMatch || lessonMatch) 
+                        : undefined;
+                    
+                    const hasMatchingChildren = filteredChildren && filteredChildren.length > 0;
+
+                    // Node is included if it matches OR has matching children OR parent matched
+                    if (lessonMatch || hasMatchingChildren || inheritedMatch) {
+                        return {
+                            ...lesson,
+                            children: filteredChildren
+                        } as Lesson;
+                    }
+                    return null;
+                })
+                .filter((l): l is Lesson => l !== null);
+        };
+
+        return deepFilter(lessons);
+    }, [lessons, searchTerms]);
 
     // Auto-focus search input
     useEffect(() => {
@@ -63,20 +87,16 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
         }
     }, [isSearchOpen]);
 
-    // Auto-expand parents if they contain a matching child
+    // Auto-expand parents if they contain children after filtering
     useEffect(() => {
-        if (searchTerm.trim()) {
+        if (searchTerms.length > 0) {
             filteredLessons.forEach(l => {
-                const hasMatchingChild = l.children?.some(c =>
-                    c.title.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                // Only expand if it contains a matching child AND is not already expanded
-                if (hasMatchingChild && !expandedIds.has(l.id)) {
+                if (l.children && l.children.length > 0 && !expandedIds.has(l.id)) {
                     toggleExpand(l.id);
                 }
             });
         }
-    }, [filteredLessons, searchTerm, toggleExpand, expandedIds]);
+    }, [filteredLessons, searchTerms, toggleExpand, expandedIds]);
 
     return (
         <aside
@@ -168,7 +188,14 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                     <Menu size={16} className={`lesson-icon--dim ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                 )
                                             )}
-                                            <span>{lesson.title}</span>
+                                            <div className="lesson-title-text-group">
+                                                <span>{lesson.title}</span>
+                                                {searchTerms.length > 0 && 
+                                                 !searchTerms.every(t => lesson.title.toLowerCase().includes(t)) && 
+                                                 searchTerms.some(t => lesson.content?.some(c => c.toLowerCase().includes(t))) && (
+                                                    <span className="search-match-badge">Found in Content</span>
+                                                )}
+                                            </div>
                                         </div>
                                         {moduleStatus.isLocked && (
                                             <Lock size={14} className="lesson-lock-icon" />
@@ -201,7 +228,14 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                         ) : (
                                                             <Menu size={14} className={`sub-lesson-icon ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                         )}
-                                                        {child.title}
+                                                        <div className="lesson-title-text-group">
+                                                            <span>{child.title}</span>
+                                                            {searchTerms.length > 0 && 
+                                                             !searchTerms.every(t => child.title.toLowerCase().includes(t)) && 
+                                                             searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t))) && (
+                                                                <span className="search-match-badge sub">Found in Content</span>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     {moduleStatus.isLocked && (
                                                         <Lock size={12} className="sub-lesson-lock" />

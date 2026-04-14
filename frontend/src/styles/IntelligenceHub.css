@@ -19,19 +19,24 @@
 }
 
 .ih-stat-pill {
-    background: var(--color-white);
-    border: 1px solid var(--border-color);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     border-left: 3px solid var(--ih-accent, #6366f1);
-    padding: 0.875rem 1rem;
+    padding: 1rem 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    box-shadow: var(--shadow-xs);
-    transition: box-shadow 0.15s;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.ih-stat-pill:hover { box-shadow: var(--shadow-sm); }
+.ih-stat-pill:hover { 
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px var(--color-primary-glow);
+    border-color: var(--ih-accent, #6366f1);
+}
 
 .ih-stat-icon {
     width: 32px;
@@ -73,12 +78,16 @@
 }
 
 .ih-card {
-    background: var(--color-white);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 1rem 1.125rem;
-    box-shadow: var(--shadow-xs);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
 }
+
+.ih-card:hover { box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); }
 
 .ih-card-wide {
     grid-column: span 2;
@@ -337,11 +346,12 @@
 /* ── Logs section ───────────────────────────────────────────── */
 
 .ih-logs-section {
-    background: var(--color-white);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-card);
 }
 
 .ih-logs-header {
@@ -419,15 +429,16 @@
 .ih-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
 
 .ih-table th {
-    padding: 0.45rem 0.875rem;
-    background: var(--bg-surface);
+    padding: 1rem 1.125rem;
+    background: rgba(15, 23, 42, 0.4);
     text-align: left;
-    font-size: 0.6rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-dim);
-    border-bottom: 1px solid var(--border-color);
+    letter-spacing: 0.1em;
+    color: var(--text-white);
+    border-bottom: 1px solid var(--glass-border);
     white-space: nowrap;
 }
 

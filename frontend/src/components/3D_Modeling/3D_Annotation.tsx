@@ -2,12 +2,17 @@
 
 import React, { useState, useEffect, useRef } from "react";
 
-import { ChevronLeft, ChevronRight, Edit3, Box, Zap, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
-
+import {
+  ChevronLeft,
+  ChevronRight,
+  Edit3,
+  Box,
+  Zap
+} from 'lucide-react';
+import { useLessonCore } from "../../hooks/useLessonCore";
+import { ReadAloudButton } from "../ReadAloudButton";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
-import "../../styles/3D_Modeling/CourseLesson.css";
 /* Annotation (1) Assets */
 
 import annotationImg from "../../assets/3D_Image_File/annotation.png";
@@ -34,11 +39,11 @@ import editDimensionImg from "../../assets/3D_Image_File/edit_dimension_characte
 
 import changePropertiesWindowImg from "../../assets/3D_Image_File/change_properties_window.png";
 
-import changesDraftingEntityImg from "../../assets/3D_Image_File/annotation(2)_edits_drafting.png";
+import changesDraftingEntityImg from "../../assets/3D_Image_File/annotation2_edits_drafting.png";
 
 import changesPositionDraftingEntitiesImg from "../../assets/3D_Image_File/changes_position_drafting_entities.png";
 
-import collectiveDimensionImg from "../../assets/3D_Image_File/annotation(2)_dimension.png";
+import collectiveDimensionImg from "../../assets/3D_Image_File/annotation2_dimension.png";
 
 import annotation2Img from "../../assets/3D_Image_File/angular_dimension1.png";
 
@@ -57,12 +62,15 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
   onPrevLesson, nextLabel }) => {
   const isAnnotation1 = subLessonId === "annotation-1";
 
-
-
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+  // Use core hook for scroll tracking and TTS
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(subLessonId);
 
   const annotation1Steps = [
     "Step 1: Creates linear dimension between two points.",
@@ -78,36 +86,6 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
     "Step 3: Changes common attributes like color or layer for drafting entities.",
     "Step 4: Moves the position of existing dimensions or notes."
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => {
-      if (currentContainer) {
-        currentContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [subLessonId]);
 
 
 
@@ -129,7 +107,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
       </div>
       <section className="lesson-intro">
         <h3 className="section-title">
-          ANNOTATION
+          Annotation
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isAnnotation1 ? annotation1Steps : annotation2Steps)}
             onStop={stop}
           />

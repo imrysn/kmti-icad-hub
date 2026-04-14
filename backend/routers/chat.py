@@ -1,65 +1,26 @@
 import os
-from pathlib import Path
-from dotenv import load_dotenv
 import json
-
-_env_path = Path(__file__).resolve().parent.parent / ".env"
-load_dotenv(dotenv_path=_env_path)
-from typing import Optional
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
-from .database import engine, Base, get_db
-from .models import User, ChatLog, ChatFeedback
 import time
-from .services.search_service import search_service, chat_service
-from .services.course_service import course_service
-from .schemas import SearchResponse, CourseList, CourseProgress, ChatRequest, ChatResponse, FeedbackRequest
-from .routers import auth, admin
-from .auth.dependencies import get_current_user
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Session
+from fastapi.responses import StreamingResponse
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+from ..database import get_db
+from ..models import User, ChatLog, ChatFeedback
+from ..services.search_service import search_service, chat_service
+from ..schemas import SearchResponse, ChatRequest, ChatResponse, FeedbackRequest
+from ..auth.dependencies import get_current_user
 
-app = FastAPI(title="KMTI iCAD Hub API")
+router = APIRouter(prefix="/chat", tags=["Intelligence Chat"])
 
-from fastapi.staticfiles import StaticFiles
-
-# Enable CORS for Electron app and dev servers
-origins = os.getenv("CORS_ORIGINS", "").split(",")
-if not origins or origins == ['']:
-    # Fallback only for local dev if not specified
-    origins = ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:3000"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Mount frontend/src directory to serve RAG multimedia links and other source assets
-frontend_src_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "src")
-if os.path.exists(frontend_src_path):
-    app.mount("/src", StaticFiles(directory=frontend_src_path), name="src")
-
-# Include routers
-app.include_router(auth.router)
-app.include_router(admin.router)
-
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to KMTI iCAD Hub API"}
-
-@app.get("/search", response_model=SearchResponse)
+@router.get("/search", response_model=SearchResponse)
 def search_knowledge_base(query: str, current_user: User = Depends(get_current_user)):
     """
     Search the RAG knowledge base. Requires authentication.
     """
     return search_service.search_knowledge_base(query)
 
-@app.post("/chat", response_model=ChatResponse)
+@router.post("/", response_model=ChatResponse)
 async def chat_with_intelligence_node(
     request: ChatRequest,
     db: Session = Depends(get_db),
@@ -68,9 +29,6 @@ async def chat_with_intelligence_node(
     """
     RAG-grounded AI chat. Retrieves context from ChromaDB, synthesizes an answer,
     and logs the interaction to chat_logs for admin monitoring.
-    
-    PHASE 1 FIX #5: Image validation is enforced at the Pydantic schema level.
-    If more than 3 images are sent, the request will be rejected with a 422 error.
     """
     t_start = time.time()
     result = await chat_service.chat(
@@ -117,7 +75,7 @@ async def chat_with_intelligence_node(
         result["log_id"] = log_id
     return result
 
-@app.post("/chat/stream")
+@router.post("/stream")
 async def chat_stream_with_intelligence_node(
     request: ChatRequest,
     db: Session = Depends(get_db),
@@ -127,10 +85,6 @@ async def chat_stream_with_intelligence_node(
     Streaming RAG-grounded AI chat.
     Yields Server-Sent Events (SSE) for real-time token delivery.
     """
-    from fastapi.responses import StreamingResponse
-    import json
-    import time
-
     async def event_generator():
         t_start = time.time()
         full_answer = ""
@@ -177,8 +131,6 @@ async def chat_stream_with_intelligence_node(
                 db.add(log)
                 db.commit()
                 db.refresh(log)
-                # We can't easily return the log_id in SSE after the stream is already half-sent 
-                # unless we send it in a final 'metadata' chunk.
                 yield f"data: {json.dumps({'type': 'metadata', 'log_id': log.id})}\n\n"
             except Exception as log_err:
                 db.rollback()
@@ -190,7 +142,7 @@ async def chat_stream_with_intelligence_node(
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 
-@app.post("/chat/name-session")
+@router.post("/name-session")
 def name_session(
     request: ChatRequest,
     current_user: User = Depends(get_current_user)
@@ -199,7 +151,7 @@ def name_session(
     title = chat_service.summarize_session_title(request.message, request.history)
     return {"title": title or "New Chat"}
 
-@app.post("/chat/feedback")
+@router.post("/feedback")
 def submit_chat_feedback(
     request: FeedbackRequest,
     db: Session = Depends(get_db),
@@ -207,10 +159,6 @@ def submit_chat_feedback(
 ):
     """
     Submit thumbs up/down feedback for a chat log entry.
-    Upserts — one feedback per user per log entry.
-    
-    PHASE 1 FIX #2: Now accepts null rating to delete feedback.
-    If rating is null, the existing feedback is deleted.
     """
     existing = db.query(ChatFeedback).filter(
         ChatFeedback.chat_log_id == request.chat_log_id,
@@ -218,12 +166,10 @@ def submit_chat_feedback(
     ).first()
     
     if request.rating is None:
-        # Delete feedback if it exists
         if existing:
             db.delete(existing)
             db.commit()
     else:
-        # Upsert feedback
         if existing:
             existing.rating = request.rating
         else:
@@ -237,19 +183,3 @@ def submit_chat_feedback(
         db.commit()
     
     return {"ok": True}
-
-
-@app.get("/courses", response_model=CourseList)
-def get_courses(current_user: User = Depends(get_current_user)):
-    """
-    Get list of available courses. Requires authentication.
-    """
-    return course_service.get_available_courses()
-
-@app.get("/courses/{course_id}/progress/{user_id}", response_model=CourseProgress)
-def get_progress(course_id: str, user_id: str, db: Session = Depends(get_db),
-                 current_user: User = Depends(get_current_user)):
-    """
-    Get user progress for a specific course. Requires authentication.
-    """
-    return course_service.get_user_progress(db, course_id, user_id)

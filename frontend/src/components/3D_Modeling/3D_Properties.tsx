@@ -2,11 +2,67 @@
 
 import React, { useState, useEffect, useRef } from "react";
 
-import { ChevronLeft, ChevronRight, Sliders, Zap, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS"; import "../../styles/3D_Modeling/CourseLesson.css"; /* Properties (1) Assets */ import changeColorIcon from "../../assets/3D_Image_File/change_color.jpg"; import changePropertiesWindow from "../../assets/3D_Image_File/change_properties_window.png"; import changeColorEntity from "../../assets/3D_Image_File/change_color_entity.png"; import changeColorFace from "../../assets/3D_Image_File/change_color_face.png"; import changeLayerIcon from "../../assets/3D_Image_File/change_layer.png"; import itemEntryChangeLayer from "../../assets/3D_Image_File/item_entry_changelayer.png"; import propertiesColorImg from "../../assets/3D_Image_File/properties_color.png"; import layer1Img from "../../assets/3D_Image_File/layer1.png"; import layer2Img from "../../assets/3D_Image_File/layer2.png"; import layer3Img from "../../assets/3D_Image_File/layer3.png"; import acrylicPointerImg from "../../assets/3D_Image_File/acrylic_pointer.png"; import propertiesMaterialImg from "../../assets/3D_Image_File/properties_material.png"; import isoniteManganeseImg from "../../assets/3D_Image_File/isonite_manganese.png"; import leftClick from "../../assets/3D_Image_File/left_click.png"; /* Properties (2) Assets */ import information1 from "../../assets/3D_Image_File/information1.png"; import information2 from "../../assets/3D_Image_File/information2.png"; import information3 from "../../assets/3D_Image_File/information3.png"; import information4 from "../../assets/3D_Image_File/information4.png"; import information5 from "../../assets/3D_Image_File/information5.png"; /* Properties (2) Assets dito pa ako */ import infoPointImg from "../../assets/3D_Image_File/properties(2)_information_point.png"; import infoEdgeImg from "../../assets/3D_Image_File/properties(2)_information_point_edge.png"; import infoPointEdgeImg from "../../assets/3D_Image_File/properties(2)_information_point_edge.png"; import infoAngleImg from "../../assets/3D_Image_File/properties(2)_information_angle.png"; import infoEntityImg from "../../assets/3D_Image_File/properties(2)_information_entity.png"; interface PropertiesLessonProps {
+import {
+  ChevronLeft,
+  ChevronRight,
+  Sliders,
+  Zap
+} from 'lucide-react';
+import { useLessonCore } from "../../hooks/useLessonCore";
+import { ReadAloudButton } from "../ReadAloudButton";
+import "../../styles/3D_Modeling/CourseLesson.css";
+
+/* Properties (1) Assets */
+import changeColorIcon from "../../assets/3D_Image_File/change_color.jpg";
+import changePropertiesWindow from "../../assets/3D_Image_File/change_properties_window.png";
+import changeColorEntity from "../../assets/3D_Image_File/change_color_entity.png";
+import changeColorFace from "../../assets/3D_Image_File/change_color_face.png";
+import changeLayerIcon from "../../assets/3D_Image_File/change_layer.png";
+import itemEntryChangeLayer from "../../assets/3D_Image_File/item_entry_changelayer.png";
+import propertiesColorImg from "../../assets/3D_Image_File/properties_color.png";
+import layer1Img from "../../assets/3D_Image_File/layer1.png";
+import layer2Img from "../../assets/3D_Image_File/layer2.png";
+import layer3Img from "../../assets/3D_Image_File/layer3.png";
+import acrylicPointerImg from "../../assets/3D_Image_File/acrylic_pointer.png";
+import propertiesMaterialImg from "../../assets/3D_Image_File/properties_material.png";
+import isoniteManganeseImg from "../../assets/3D_Image_File/isonite_manganese.png";
+import leftClick from "../../assets/3D_Image_File/left_click.png";
+
+/* Properties (2) Assets */
+import information1 from "../../assets/3D_Image_File/information1.png";
+import information2 from "../../assets/3D_Image_File/information2.png";
+import information3 from "../../assets/3D_Image_File/information3.png";
+import information4 from "../../assets/3D_Image_File/information4.png";
+import information5 from "../../assets/3D_Image_File/information5.png";
+
+/* Properties (2) Additional Assets */
+import infoPointImg from "../../assets/3D_Image_File/properties2_information_point.png";
+import infoEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
+import infoPointEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
+import infoAngleImg from "../../assets/3D_Image_File/properties2_information_angle.png";
+import infoEntityImg from "../../assets/3D_Image_File/properties2_information_entity.png";
+
+interface PropertiesLessonProps {
   nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void;
 } const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "properties-1", onNextLesson, onPrevLesson, nextLabel }) => {
-  const isProperties1 = subLessonId === "properties-1"; const [activeTab, setActiveTab] = useState<"color" | "layer">("color"); const [scrollProgress, setScrollProgress] = useState(0); const containerRef = useRef<HTMLDivElement>(null); const { speak, stop, isSpeaking, currentIndex } = useTTS(); const colorSteps = ["Step 1: Select Change Color from the icon menu.", "Step 2: Choose either Entity or Face. For Entity, pick a color and select the solid to change everything. For Face, pick a color and select specific surfaces, then click GO."]; const layerSteps = ["Step 1: Select Change Layer from the icon menu.", "Step 2: Specify the target layer number on the item entry.", "Step 3: Click on the solid entity to move it to that layer.", "Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."]; const infoSteps = ["Step 1: Coordinates. Pick a point to display its position from the origin.", "Step 2: Length. Pick an edge and click GO to measure it.", "Step 3: Distance. Pick two points or edges to measure the gap between them.", "Step 4: Angle. Pick two edges or three points to calculate the angle.", "Step 5: Entity Info. Pick a solid and click GO to see all technical information."]; useEffect(() => { const handleScroll = () => { if (!containerRef.current) return; const element = containerRef.current; const totalHeight = element.scrollHeight - element.clientHeight; if (totalHeight === 0) { setScrollProgress(100); return; } const progress = (element.scrollTop / totalHeight) * 100; setScrollProgress(progress); }; const currentContainer = containerRef.current; if (currentContainer) { currentContainer.addEventListener("scroll", handleScroll); handleScroll(); } return () => { if (currentContainer) { currentContainer.removeEventListener("scroll", handleScroll); } }; }, [activeTab, subLessonId]); const getStepClass = (stepId: string) => "instruction-step"; const handleNext = () => { if (isProperties1) { if (activeTab === "color") setActiveTab("layer"); else if (onNextLesson) onNextLesson(); } else { if (onNextLesson) onNextLesson(); } }; const handlePrev = () => { if (isProperties1) { if (activeTab === "layer") setActiveTab("color"); else if (onPrevLesson) onPrevLesson(); } else { if (onPrevLesson) onPrevLesson(); } }; return (<div className="course-lesson-container" ref={containerRef}> {" "} {/* Sticky Progress Bar */} <div className="lesson-progress-container"> <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} /> </div> <section className="lesson-intro"> <h3 className="section-title"> PROPERTIES <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (!isProperties1) speak(infoSteps); else if (activeTab === "color") speak(colorSteps); else speak(layerSteps); }} onStop={stop} /> </h3>{" "} {!isProperties1 && (<p className="p-flush"> {" "} Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information) </p>)}{" "} {isProperties1 && activeTab === "color" && (<div className="instruction-box"> <div className="image-wrapper-flush"> <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" /> </div> </div>)} </section> <div className="lesson-grid single-card"> <div className="lesson-card"> {" "} {isProperties1 ? (<> <div className="lesson-tabs"> {" "} <button className={`tab-button ${activeTab === "color" ? "active" : ""}`} onClick={() => setActiveTab("color")} > {" "} Change Color{" "} </button>{" "} <button className={`tab-button ${activeTab === "layer" ? "active" : ""}`} onClick={() => setActiveTab("layer")} > {" "} Change Layer{" "} </button> </div>{" "} {activeTab === "color" && (<div className="tab-pane fade-in"> <h3>CHANGE COLOR</h3> <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}> <div className="step-header"> {" "} <span className="step-number"> 1 </span>{" "} <span className="step-label"> Select{" "} <strong className="text-highlight">Change Color</strong>{" "} from the icon menu.
+  const isProperties1 = subLessonId === "properties-1";
+  const [activeTab, setActiveTab] = useState<"color" | "layer">("color");
+
+  // Use core hook for scroll tracking and TTS
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore(`${subLessonId}-${activeTab}`);
+
+  const colorSteps = ["Step 1: Select Change Color from the icon menu.", "Step 2: Choose either Entity or Face. For Entity, pick a color and select the solid to change everything. For Face, pick a color and select specific surfaces, then click GO."];
+  const layerSteps = ["Step 1: Select Change Layer from the icon menu.", "Step 2: Specify the target layer number on the item entry.", "Step 3: Click on the solid entity to move it to that layer.", "Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."];
+  const infoSteps = ["Step 1: Coordinates. Pick a point to display its position from the origin.", "Step 2: Length. Pick an edge and click GO to measure it.", "Step 3: Distance. Pick two points or edges to measure the gap between them.", "Step 4: Angle. Pick two edges or three points to calculate the angle.", "Step 5: Entity Info. Pick a solid and click GO to see all technical information."];
+
+  const getStepClass = (stepId: string) => "instruction-step"; const handleNext = () => { if (isProperties1) { if (activeTab === "color") setActiveTab("layer"); else if (onNextLesson) onNextLesson(); } else { if (onNextLesson) onNextLesson(); } }; const handlePrev = () => { if (isProperties1) { if (activeTab === "layer") setActiveTab("color"); else if (onPrevLesson) onPrevLesson(); } else { if (onPrevLesson) onPrevLesson(); } }; return (<div className="course-lesson-container" ref={containerRef}> {" "} {/* Sticky Progress Bar */} <div className="lesson-progress-container"> <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} /> </div> <section className="lesson-intro"> <h3 className="section-title"> Properties <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (!isProperties1) speak(infoSteps); else if (activeTab === "color") speak(colorSteps); else speak(layerSteps); }} onStop={stop} /> </h3>{" "} {!isProperties1 && (<p className="p-flush"> {" "} Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information) </p>)}{" "} {isProperties1 && activeTab === "color" && (<div className="instruction-box"> <div className="image-wrapper-flush"> <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" /> </div> </div>)} </section> <div className="lesson-grid single-card"> <div className="lesson-card"> {" "} {isProperties1 ? (<> <div className="lesson-tabs"> {" "} <button className={`tab-button ${activeTab === "color" ? "active" : ""}`} onClick={() => setActiveTab("color")} > {" "} Change Color{" "} </button>{" "} <button className={`tab-button ${activeTab === "layer" ? "active" : ""}`} onClick={() => setActiveTab("layer")} > {" "} Change Layer{" "} </button> </div>{" "} {activeTab === "color" && (<div className="tab-pane fade-in"> <h3>CHANGE COLOR</h3> <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}> <div className="step-header"> {" "} <span className="step-number"> 1 </span>{" "} <span className="step-label"> Select{" "} <strong className="text-highlight">Change Color</strong>{" "} from the icon menu.
   </span>
   </div>
 

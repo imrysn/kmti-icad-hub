@@ -1,7 +1,12 @@
 /** * ToolbarExplorer.tsx  EReusable toolbar selector component * * Displays a list of toolbars in a sidebar. Selecting one shows its * image, description, and features in the main panel. * * Props: * toolbars  Earray of ToolbarItem objects (defined in 3DToolBars.tsx) * * Each ToolbarItem: * id unique string * title display name * description short summary text * features string[] bullet points * imageSrc imported image asset * icon JSX icon element (from lucide-react) * * Used by: 3DToolBars.tsx */
 
 import React, { useState, useRef } from "react";
-import { Info, ChevronRight, Settings, Zap,  } from 'lucide-react';
+import {
+  Info,
+  ChevronRight,
+  Settings,
+  Zap
+} from 'lucide-react';
 import "../../styles/3D_Modeling/ToolbarExplorer.css";
 
 interface ToolbarItem {
