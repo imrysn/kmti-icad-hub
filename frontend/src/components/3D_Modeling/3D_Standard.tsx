@@ -123,9 +123,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <h4 className="section-title">Scale Pointer</h4>
                 </div>
                 <div className="step-header">
-                  <span className="step-number">1</span> </div>
-
-                <p className="p">Based on the image. We must apply it on <strong className="text-highlight">3D Modeling</strong> and <strong className="text-highlight">2D Detailing</strong>.</p>
+                  <span className="step-number">1</span>
+                  <p className="p">Based on the image. We must apply it on <strong className="text-highlight">3D Modeling</strong> and <strong className="text-highlight">2D Detailing</strong>.</p>
+                </div>
                 <div className="flex-row--top">
                   <div className="image-wrapper-flush">
                     <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" />
