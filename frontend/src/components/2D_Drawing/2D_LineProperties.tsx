@@ -57,7 +57,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
   subLessonId = "2d-line-props-1",
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  
+
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -113,7 +113,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
     };
   }, [subLessonId]);
 
-  
+
 
   const getStepClass = (stepId: string) => "instruction-step";
   return (
@@ -126,16 +126,16 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          
+
           {subLessonId === "2d-line-props-1"
             ? "LINE PROPERTIES (1)"
             : "LINE PROPERTIES"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-line-props-1") speak(lineProp1Steps);
-              else if (subLessonId === "2d-line-props-2") speak(lineProp2Steps);
-              else if (subLessonId === "2d-line-props-3") speak(lineProp3Steps);
-              else if (subLessonId === "2d-line-props-4") speak(lineProp4Steps);
-            }}
+            if (subLessonId === "2d-line-props-1") speak(lineProp1Steps);
+            else if (subLessonId === "2d-line-props-2") speak(lineProp2Steps);
+            else if (subLessonId === "2d-line-props-3") speak(lineProp3Steps);
+            else if (subLessonId === "2d-line-props-4") speak(lineProp4Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -156,7 +156,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     5
                   </span>{" "}
                   <span className="step-label">Line Properties</span>
@@ -185,7 +185,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     6
                   </span>{" "}
                   <span className="step-label">Changing line properties</span>
@@ -246,7 +246,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     7
                   </span>{" "}
                   <span className="step-label">Additional Lines</span>
@@ -307,7 +307,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     b
                   </span>{" "}
                   <span className="step-label">Center Line</span>
@@ -395,7 +395,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     c
                   </span>{" "}
                   <span className="step-label">Piping Center Line</span>
@@ -436,7 +436,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     d
                   </span>{" "}
                   <span className="step-label">

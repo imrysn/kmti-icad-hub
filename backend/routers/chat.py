@@ -2,7 +2,8 @@ import os
 import json
 import time
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Session
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse
 
 from ..database import get_db

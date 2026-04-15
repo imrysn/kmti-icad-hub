@@ -125,7 +125,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
     return () => currentContainer?.removeEventListener("scroll", handleScroll);
   }, [subLessonId]);
 
-  
+
 
   const getStepClass = (stepId: string) => "instruction-step";
   return (
@@ -141,12 +141,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
           Dimensioning (
           {subLessonId?.split("-").pop() || "1"})
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-dimensioning-1") speak(dim1Steps);
-              else if (subLessonId === "2d-dimensioning-2") speak(dim2Steps);
-              else if (subLessonId === "2d-dimensioning-3") speak(dim3Steps);
-              else if (subLessonId === "2d-dimensioning-4") speak(dim4Steps);
-              else if (subLessonId === "2d-dimensioning-5") speak(dim5Steps);
-            }}
+            if (subLessonId === "2d-dimensioning-1") speak(dim1Steps);
+            else if (subLessonId === "2d-dimensioning-2") speak(dim2Steps);
+            else if (subLessonId === "2d-dimensioning-3") speak(dim3Steps);
+            else if (subLessonId === "2d-dimensioning-4") speak(dim4Steps);
+            else if (subLessonId === "2d-dimensioning-5") speak(dim5Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -190,7 +190,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     2
                   </span>{" "}
                   <span className="step-label">Tolerance Fitting</span>
@@ -221,7 +221,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     3
                   </span>{" "}
                   <span className="step-label">Chamfer and Radius Marks</span>
@@ -255,7 +255,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     b.2
                   </span>{" "}
                   <span className="step-label">

@@ -102,11 +102,11 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
           16. Bill Of
           Material (BOM)
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "1") speak(bom1Steps);
-              else if (subLessonId === "2") speak(bom2Steps);
-              else if (subLessonId === "3") speak(bom3Steps);
-              else if (subLessonId === "4") speak(bom4Steps);
-            }}
+            if (subLessonId === "1") speak(bom1Steps);
+            else if (subLessonId === "2") speak(bom2Steps);
+            else if (subLessonId === "3") speak(bom3Steps);
+            else if (subLessonId === "4") speak(bom4Steps);
+          }}
             onStop={stop}
           />
         </h3>

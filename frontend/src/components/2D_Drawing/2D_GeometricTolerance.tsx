@@ -12,14 +12,14 @@ import geoTolStepAImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1)
 
 import geoTolStepBImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1)_2.png";
 
-import geoTolStepCImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1)_3.jpg";
+import geoTolStepCImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1)_3.png";
 /* Importing assets for Geometric Tolerance (2) */
 
 import geoTolStepDImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png";
 
-import geoTolStepEImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_5.jpg";
+import geoTolStepEImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_5.png";
 
-import geoTolStepFImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_6.jpg";
+import geoTolStepFImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_6.png";
 
 import datumSelectionImg from "../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png";
 
@@ -91,9 +91,9 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
           Tolerance
           {subLessonId === "2d-geometric-tol-1" ? "(1)" : "(2)"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-geometric-tol-1") speak(geoTol1Steps);
-              else speak(geoTol2Steps);
-            }}
+            if (subLessonId === "2d-geometric-tol-1") speak(geoTol1Steps);
+            else speak(geoTol2Steps);
+          }}
             onStop={stop}
           />
         </h3>

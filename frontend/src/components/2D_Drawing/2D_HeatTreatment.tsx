@@ -89,11 +89,11 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
           Heat Treatment (
           {subLessonId.split("-").pop()})
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-heat-treatment-1") speak(heat1Steps);
-              else if (subLessonId === "2d-heat-treatment-2") speak(heat2Steps);
-              else if (subLessonId === "2d-heat-treatment-3") speak(heat3Steps);
-              else if (subLessonId === "2d-heat-treatment-4") speak(heat4Steps);
-            }}
+            if (subLessonId === "2d-heat-treatment-1") speak(heat1Steps);
+            else if (subLessonId === "2d-heat-treatment-2") speak(heat2Steps);
+            else if (subLessonId === "2d-heat-treatment-3") speak(heat3Steps);
+            else if (subLessonId === "2d-heat-treatment-4") speak(heat4Steps);
+          }}
             onStop={stop}
           />
         </h3>

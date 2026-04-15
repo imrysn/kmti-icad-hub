@@ -31,7 +31,7 @@ import spiralItemEntry from "../../assets/3D_Image_File/2d_3d_2_spiral_form_item
 import spiralPitch from "../../assets/3D_Image_File/2d_3d_2_spiral_form_pitch.png";
 import spiralRotation1 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation1.png";
 import spiralRotation from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation.png";
-import spiralRotation2 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation2.jpg";
+import spiralRotation2 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation2.png";
 
 interface SubLessonProps {
   onNextLesson?: () => void;
@@ -100,7 +100,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 /* ── 2D > 3D (2) ── */
 const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"commandMenu">("commandMenu");
-  
+
   const {
     scrollProgress,
     containerRef,

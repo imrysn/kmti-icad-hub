@@ -13,7 +13,7 @@ import { ReadAloudButton } from "../ReadAloudButton";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Properties (1) Assets */
-import changeColorIcon from "../../assets/3D_Image_File/change_color.jpg";
+import changeColorIcon from "../../assets/3D_Image_File/change_color.png";
 import changePropertiesWindow from "../../assets/3D_Image_File/change_properties_window.png";
 import changeColorEntity from "../../assets/3D_Image_File/change_color_entity.png";
 import changeColorFace from "../../assets/3D_Image_File/change_color_face.png";
