@@ -28,7 +28,7 @@ interface FairingLessonProps {
 
 const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<'chamfer' | 'fillet' | 'shell'>('chamfer');
-  
+
   const {
     scrollProgress,
     containerRef,

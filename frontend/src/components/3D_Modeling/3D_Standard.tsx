@@ -119,9 +119,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
+
                   <h4 className="section-title">Scale Pointer</h4>
                 </div>
+                <div className="step-header">
+                  <span className="step-number">1</span> </div>
+
                 <p className="p">Based on the image. We must apply it on <strong className="text-highlight">3D Modeling</strong> and <strong className="text-highlight">2D Detailing</strong>.</p>
                 <div className="flex-row--top">
                   <div className="image-wrapper-flush">

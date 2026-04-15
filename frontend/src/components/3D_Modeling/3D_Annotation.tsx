@@ -141,7 +141,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                     </p>
 
                     <div className="image-wrapper-flush">
-                      <img src={linearDimensionImg} alt="Linear Dimension" className="software-screenshot screenshot-small" />
+                      <img src={linearDimensionImg} alt="Linear Dimension" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                     </div>
                   </div>{" "}
                   {/* Item 2 */}
@@ -159,7 +159,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
 
                     <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                       <div className="image-wrapper-flush">
-                        <img src={diameterDimensionImg} alt="Diameter Dimension" className="software-screenshot screenshot-small" />
+                        <img src={diameterDimensionImg} alt="Diameter Dimension" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                       </div>
                     </div>
 
@@ -186,7 +186,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
 
                     <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                       <div className="image-wrapper-flush">
-                        <img src={angularDimensionImg} alt="Angular Dimension" className="software-screenshot screenshot-small" />
+                        <img src={angularDimensionImg} alt="Angular Dimension" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                       </div>
                     </div>
 
@@ -221,7 +221,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
 
                   <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                     <div className="image-wrapper-flush">
-                      <img src={notesLeaderLinesImg} alt="Notes with Leader Lines" className="software-screenshot" />
+                      <img src={notesLeaderLinesImg} alt="Notes with Leader Lines" className="software-screenshot" style={{ height: '140px' }} />
                     </div>
                   </div>
 
@@ -238,7 +238,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
 
                   <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                     <div className="image-wrapper-flush">
-                      <img src={noteStringEntryImg} alt="Note String Entry Window" className="software-screenshot screenshot-wide" />
+                      <img src={noteStringEntryImg} alt="Note String Entry Window" className="software-screenshot screenshot-wide" style={{ height: '210px' }} />
                     </div>
                   </div>
 
@@ -275,11 +275,12 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
 
                   <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
                     <div className="image-wrapper-flush">
-                      <img src={characterStringsImg} alt="Character Strings" className="software-screenshot" />
+                      <img src={characterStringsImg} alt="Character Strings" className="software-screenshot" style={{ height: '140px' }} />
                     </div>
-
+                    <br />
+                    <br />
                     <div className="image-wrapper-flush">
-                      <img src={textEntryImg} alt="Text Entry Window" className="software-screenshot screenshot-wide" />
+                      <img src={textEntryImg} alt="Text Entry Window" className="software-screenshot screenshot-wide" style={{ height: '210px' }} />
                     </div>
                   </div>
 
@@ -310,7 +311,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                   </strong>
                 </p>
                 <div className="image-wrapper-flush">
-                  <img src={annotation2Img} alt="Collective Dimension Result" className="software-screenshot screenshot-medium" />
+                  <img src={annotation2Img} alt="Collective Dimension Result" className="software-screenshot screenshot-medium" style={{ height: '95px' }} />
                 </div>
                 <div className={`${getStepClass("anno2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                   <div className="flex-row-wrap">
@@ -348,7 +349,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                   <strong>Edits drafting entity characters</strong>
                 </p>
                 <div className="image-wrapper-flush">
-                  <img src={changesDraftingEntityImg} alt="Edits Drafting Entity Characters" className="software-screenshot screenshot-small" />
+                  <img src={changesDraftingEntityImg} alt="Edits Drafting Entity Characters" className="software-screenshot screenshot-small" style={{ height: '95px' }} />
                 </div>
                 <div className={`${getStepClass("anno2-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                   <div className="flex-row-wrap">
@@ -397,7 +398,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                   <strong>Changes the attributes of a drafting entity</strong>
                 </p>
                 <div className="image-wrapper-flush">
-                  <img src={changesDraftingEntity2Img} alt="Changes Draft Entity Attribute" className="software-screenshot screenshot-small" />
+                  <img src={changesDraftingEntity2Img} alt="Changes Draft Entity Attribute" className="software-screenshot screenshot-small" style={{ height: '95px' }} />
                 </div>
                 <div className={`${getStepClass("anno2-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                   <div className="flex-row-wrap">
@@ -448,7 +449,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                 <div className={`${getStepClass("anno2-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
                   <div className="step-description">
                     <div className="image-wrapper-flush">
-                      <img src={changesPositionDraftingEntitiesImg} alt="Changes Position Tool" className="software-screenshot screenshot-small" />
+                      <img src={changesPositionDraftingEntitiesImg} alt="Changes Position Tool" className="software-screenshot screenshot-small" style={{ height: '95px' }} />
                     </div>
                   </div>
                 </div>

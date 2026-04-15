@@ -62,7 +62,7 @@ interface PropertiesLessonProps {
   const layerSteps = ["Step 1: Select Change Layer from the icon menu.", "Step 2: Specify the target layer number on the item entry.", "Step 3: Click on the solid entity to move it to that layer.", "Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."];
   const infoSteps = ["Step 1: Coordinates. Pick a point to display its position from the origin.", "Step 2: Length. Pick an edge and click GO to measure it.", "Step 3: Distance. Pick two points or edges to measure the gap between them.", "Step 4: Angle. Pick two edges or three points to calculate the angle.", "Step 5: Entity Info. Pick a solid and click GO to see all technical information."];
 
-  const getStepClass = (stepId: string) => "instruction-step"; const handleNext = () => { if (isProperties1) { if (activeTab === "color") setActiveTab("layer"); else if (onNextLesson) onNextLesson(); } else { if (onNextLesson) onNextLesson(); } }; const handlePrev = () => { if (isProperties1) { if (activeTab === "layer") setActiveTab("color"); else if (onPrevLesson) onPrevLesson(); } else { if (onPrevLesson) onPrevLesson(); } }; return (<div className="course-lesson-container" ref={containerRef}> {" "} {/* Sticky Progress Bar */} <div className="lesson-progress-container"> <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} /> </div> <section className="lesson-intro"> <h3 className="section-title"> Properties <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (!isProperties1) speak(infoSteps); else if (activeTab === "color") speak(colorSteps); else speak(layerSteps); }} onStop={stop} /> </h3>{" "} {!isProperties1 && (<p className="p-flush"> {" "} Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information) </p>)}{" "} {isProperties1 && activeTab === "color" && (<div className="instruction-box"> <div className="image-wrapper-flush"> <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" /> </div> </div>)} </section> <div className="lesson-grid single-card"> <div className="lesson-card"> {" "} {isProperties1 ? (<> <div className="lesson-tabs"> {" "} <button className={`tab-button ${activeTab === "color" ? "active" : ""}`} onClick={() => setActiveTab("color")} > {" "} Change Color{" "} </button>{" "} <button className={`tab-button ${activeTab === "layer" ? "active" : ""}`} onClick={() => setActiveTab("layer")} > {" "} Change Layer{" "} </button> </div>{" "} {activeTab === "color" && (<div className="tab-pane fade-in"> <h3>CHANGE COLOR</h3> <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}> <div className="step-header"> {" "} <span className="step-number"> 1 </span>{" "} <span className="step-label"> Select{" "} <strong className="text-highlight">Change Color</strong>{" "} from the icon menu.
+  const getStepClass = (stepId: string) => "instruction-step"; const handleNext = () => { if (isProperties1) { if (activeTab === "color") setActiveTab("layer"); else if (onNextLesson) onNextLesson(); } else { if (onNextLesson) onNextLesson(); } }; const handlePrev = () => { if (isProperties1) { if (activeTab === "layer") setActiveTab("color"); else if (onPrevLesson) onPrevLesson(); } else { if (onPrevLesson) onPrevLesson(); } }; return (<div className="course-lesson-container" ref={containerRef}> {" "} {/* Sticky Progress Bar */} <div className="lesson-progress-container"> <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} /> </div> <section className="lesson-intro"> <h3 className="section-title"> PROPERTIES <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (!isProperties1) speak(infoSteps); else if (activeTab === "color") speak(colorSteps); else speak(layerSteps); }} onStop={stop} /> </h3>{" "} {!isProperties1 && (<p className="p-flush"> {" "} Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information) </p>)}{" "} {isProperties1 && activeTab === "color" && (<div className="instruction-box"> <div className="image-wrapper-flush"> <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" /> </div> </div>)} </section> <div className="lesson-grid single-card"> <div className="lesson-card"> {" "} {isProperties1 ? (<> <div className="lesson-tabs"> {" "} <button className={`tab-button ${activeTab === "color" ? "active" : ""}`} onClick={() => setActiveTab("color")} > {" "} Change Color{" "} </button>{" "} <button className={`tab-button ${activeTab === "layer" ? "active" : ""}`} onClick={() => setActiveTab("layer")} > {" "} Change Layer{" "} </button> </div>{" "} {activeTab === "color" && (<div className="tab-pane fade-in"> <h3>CHANGE COLOR</h3> <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}> <div className="step-header"> {" "} <span className="step-number"> 1 </span>{" "} <span className="step-label"> Select{" "} <strong className="text-highlight">Change Color</strong>{" "} from the icon menu.
   </span>
   </div>
 
@@ -89,7 +89,7 @@ interface PropertiesLessonProps {
         <div className="flex-row-wrap">
           <div className="flex-1">
             {" "}
-            <h4 className="section-title">Entity</h4>
+            <h4 className="section-title" style={{ marginRight: "810px" }}>Entity</h4>
             <div className="step-header">
               {" "}
               <span className="step-label">
@@ -113,7 +113,9 @@ interface PropertiesLessonProps {
         <div className="flex-row-wrap">
           <div className="flex-1">
             {" "}
-            <h4 className="section-title">Face</h4>
+            <br />
+            <br />
+            <h4 className="section-title" style={{ marginRight: "830px" }}>Face</h4>
             <div className="step-header">
               {" "}
               <span className="step-label">
@@ -160,7 +162,7 @@ interface PropertiesLessonProps {
           </div>
 
           <div className="image-wrapper-flush">
-            <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot screenshot-small" />
+            <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
           </div>
         </div>
 
@@ -177,7 +179,7 @@ interface PropertiesLessonProps {
           </div>
 
           <div className="image-wrapper-flush">
-            <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" />
+            <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" style={{ height: '70px' }} />
           </div>
         </div>
 
@@ -200,7 +202,8 @@ interface PropertiesLessonProps {
 
         <div className="tool-block">
           {" "}
-          <h4 className="section-title">Layer 1</h4>{" "}
+          <br />
+          <h4 className="section-title" style={{ marginRight: "800px" }}>Layer 1</h4>{" "}
           <ul className="interaction-list--plain">
             {" "}
             <li>
@@ -220,7 +223,7 @@ interface PropertiesLessonProps {
 
         <div className="tool-block">
           {" "}
-          <h4 className="section-title">Layer 2</h4>{" "}
+          <h4 className="section-title" style={{ marginRight: "790px" }}>Layer 2</h4>{" "}
           <ul className="interaction-list--plain">
             {" "}
             <li>
@@ -229,7 +232,7 @@ interface PropertiesLessonProps {
             <li>Safety Cover - Yellow (No. 4)</li>{" "}
           </ul>
           <div className="image-wrapper-flush">
-            <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" />
+            <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" style={{ height: '290px' }} />
           </div>
           <p className="step-description text-center">
             {" "}
@@ -247,9 +250,10 @@ interface PropertiesLessonProps {
             <li>Acrylic - white (No.1)</li>{" "}
           </ul>
           <div className="image-wrapper-flush">
-            <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" />
+            <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" style={{ height: '350px' }} />
           </div>{" "}
           <h4 className="text-error text-center" /* sanitized: marginTop: '1.5rem' */>
+            <br />
             {" "}
             Red paint only on the pointer{" "}
           </h4>
@@ -313,7 +317,7 @@ interface PropertiesLessonProps {
 
         <div className={`tool-block ${currentIndex === 3 ? "reading-active" : ""}`}>
           {" "}
-          <h4 className="section-title">Layer 3</h4>{" "}
+          <h4 className="section-title" style={{ marginRight: "780px" }}>Layer 3</h4>{" "}
           <ul className="interaction-list--plain">
             {" "}
             <li>Purchase Parts (Include stud bolt)</li>{" "}
@@ -344,7 +348,7 @@ interface PropertiesLessonProps {
                   1
                 </span>
                 <div className="flex-row-center">
-                  <img src={information1} alt="Coordinates" />{" "}
+                  <img src={information1} alt="Coordinates" style={{ width: '35px', height: '35px' }} />{" "}
                   <span className="step-label">
                     Pick a point to display coordinates from the origin.
                   </span>
@@ -357,7 +361,7 @@ interface PropertiesLessonProps {
                 </p>
 
                 <div className="image-wrapper-flush">
-                  <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" />
+                  <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                 </div>
               </div>
             </div>{" "}
@@ -370,11 +374,11 @@ interface PropertiesLessonProps {
                   2
                 </span>
                 <div className="flex-row-center">
-                  <img src={information2} alt="Length" />{" "}
+                  <img src={information2} alt="Length" style={{ width: '35px', height: '35px' }} />{" "}
                   <span className="step-label">
                     Pick an edge &gt;{" "}
                     <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />{" "}
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '30px', verticalAlign: 'middle', margin: '0 4px' }} />{" "}
                     to measure length.
                   </span>
                 </div>
@@ -386,7 +390,7 @@ interface PropertiesLessonProps {
                 </p>
 
                 <div className="image-wrapper-flush">
-                  <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" />
+                  <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                 </div>
               </div>
             </div>{" "}
@@ -399,7 +403,7 @@ interface PropertiesLessonProps {
                   3
                 </span>
                 <div className="flex-row-center">
-                  <img src={information3} alt="Distance" />{" "}
+                  <img src={information3} alt="Distance" style={{ width: '35px', height: '35px' }} />{" "}
                   <span className="step-label">
                     Pick first point/edge &gt; Pick second point/edge to
                     measure distance.
@@ -413,7 +417,7 @@ interface PropertiesLessonProps {
                 </p>
 
                 <div className="image-wrapper-flush">
-                  <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" />
+                  <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                 </div>
               </div>
             </div>{" "}
@@ -426,7 +430,7 @@ interface PropertiesLessonProps {
                   4
                 </span>
                 <div className="flex-row-center">
-                  <img src={information4} alt="Angle" />{" "}
+                  <img src={information4} alt="Angle" style={{ width: '35px', height: '35px' }} />{" "}
                   <span className="step-label">
                     Pick 2 edges OR 3 points to measure angle.
                   </span>
@@ -439,7 +443,7 @@ interface PropertiesLessonProps {
                 </p>
 
                 <div className="image-wrapper-flush">
-                  <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" />
+                  <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                 </div>
               </div>
             </div>{" "}
@@ -452,11 +456,11 @@ interface PropertiesLessonProps {
                   5
                 </span>
                 <div className="flex-row-center">
-                  <img src={information5} alt="Entity Info" />{" "}
+                  <img src={information5} alt="Entity Info" style={{ width: '35px', height: '35px' }} />{" "}
                   <span className="step-label">
                     Pick the solid entity &gt;{" "}
                     <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />{" "}
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '30px', verticalAlign: 'middle', margin: '0 4px' }} />{" "}
                     to display information.
                   </span>
                 </div>

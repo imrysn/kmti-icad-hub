@@ -121,7 +121,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 </div>
                 <div className="step-description">
                   <div className="image-wrapper-flush">
-                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" />
+                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" style={{ height: '80px' }} />
                   </div>
                   <div className="info-box">
                     <p className="p-flush"><strong>Place mirror copy over the original part.</strong></p>
@@ -133,14 +133,14 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <p className="p-flush"><strong>NOTE:</strong> Watch for <strong>Mirror Image</strong> notes on reference drawings.</p>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot screenshot-small" />
+                    <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot screenshot-small" style={{ height: '80px' }} />
                   </div>
                 </div>
               </div>
             </div>
           ) : (
             <div className="tab-pane fade-in">
-              <h4 className="section-title">Mirroring procedure</h4>
+              <h4 className="section-title" style={{ marginRight: '645px' }}>Mirroring procedure</h4>
               <div className={`${getStepClass("mp2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
@@ -172,7 +172,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 </div>
                 <div className="step-description">
                   <div className="image-wrapper-flush">
-                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" />
+                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
                   <p className="p-flush">Pick 3 points consecutively from the Part, <strong>starting from the origin.</strong></p>
                   <div className="image-wrapper-flush">

@@ -83,7 +83,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
         <p className="p-flush">{currentLesson.description}</p>
         <div className="instruction-box">
           <div className="image-wrapper-flush">
-            <img src={subLessonId === '3d-part-1' ? partMenu1 : partMenu2} alt="3D Part Menu" className="software-screenshot screenshot-small" />
+            <img src={subLessonId === '3d-part-1' ? partMenu1 : partMenu2} alt="3D Part Menu" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
           </div>
         </div>
       </section>
@@ -98,7 +98,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Select <strong>Create 3D Part</strong> from the icon menu.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" />
+                  <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                 </div>
               </div>
 
@@ -115,7 +115,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" />
+                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" style={{ height: '330px' }} />
                 </div>
               </div>
 
@@ -125,7 +125,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">The created 3D Part will appear in the tree view.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" />
+                  <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '320px' }} />
                 </div>
               </div>
 
@@ -137,7 +137,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Material Description</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" />
+                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" style={{ height: '360px', width: '1200px' }} />
                 </div>
               </div>
             </div>
@@ -151,7 +151,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Select <strong>Change 3D Part Name</strong> from the icon menu.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" />
+                  <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                 </div>
               </div>
 

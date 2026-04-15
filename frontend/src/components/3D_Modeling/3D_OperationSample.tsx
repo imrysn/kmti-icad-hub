@@ -214,7 +214,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
         <div className="lesson-card">
           {isSample1 ? (
 
-            <div className="tab-pane"> <h4 className="section-title">Here is the step-by-step procedure of creating 3d model</h4>
+            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '240px' }}>Here is the step-by-step procedure of creating 3d model</h4>
               {/* STEP 1 */}
 
               <div className={`${getStepClass('s1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
@@ -347,12 +347,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div className="image-wrapper-flush flex-no-shrink">
 
-                      <img src={moveTool} alt="Move Component Tool" className="software-screenshot screenshot-small" />
+                      <img src={moveTool} alt="Move Component Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
                     </div>
 
                     <div /* sanitized: flex: 1 */>
-
+                      <br />
                       <p className="p-flush"><strong>INPUT:</strong>
                       </p> <ul className="interaction-list"> <li>MOVELENGX = <strong className="text-highlight">0</strong></li> <li>MOVELENGY = <strong className="text-highlight">183mm</strong></li> <li>MOVELENGZ = <strong className="text-highlight">0</strong></li> </ul>
 
@@ -373,7 +373,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
           ) : subLessonId === 'op-sample-2' ? (
 
-            <div className="tab-pane"> <h4 className="section-title">Samples of 3d modeling of parts</h4>
+            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '510px' }}>Samples of 3d modeling of parts</h4>
               {/* STEP 6 */}
 
               <div className={getStepClass('s2-6')}>
@@ -428,7 +428,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                       <div className="image-wrapper-flush">
 
-                        <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" />
+                        <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" style={{ height: '230px' }} />
 
                       </div>
 
@@ -438,7 +438,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <p className="p-flush">Pick all the edges to be filleted &gt; <strong className="text-highlight">GO</strong>
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                       </p>
-
+                      <br />
                     </div>
 
                     <div className="image-wrapper-flush">
@@ -469,10 +469,11 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                       <div className="image-wrapper-flush">
 
-                        <img src={copyTool} alt="Copy Tool" className="software-screenshot screenshot-small" />
+                        <img src={copyTool} alt="Copy Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
                       </div>
-
+                      <br />
+                      <br />
                     </div>
 
                     <div className="image-wrapper-flush">
@@ -503,7 +504,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                       <div className="image-wrapper-flush">
 
-                        <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" />
+                        <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
                       </div>
 
@@ -544,7 +545,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                       <div className="image-wrapper-flush">
 
-                        <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" />
+                        <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
                       </div>
 
@@ -559,7 +560,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div className="image-wrapper-flush">
 
-                      <img src={enterPartName} alt="Enter Part Name" className="software-screenshot screenshot-medium" />
+                      <img src={enterPartName} alt="Enter Part Name" className="software-screenshot screenshot-meduim" style={{ height: '400px', width: '400px' }} />
 
                     </div>
 
@@ -630,7 +631,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
           ) : isSample3 ? (
 
-            <div className="tab-pane"> <h4 className="section-title">Here is the step-by-step procedure of creating 3d model</h4>
+            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '240px' }}>Here is the step-by-step procedure of creating 3d model</h4>
 
               <div className={getStepClass('s3-1')}>
 
@@ -674,7 +675,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <div className="flex-row">
                   {/* SEGMENT A */}
 
-                  <div > <h4 className="section-title">Segment A</h4>
+                  <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment A</h4>
 
                     <div className="flex-row-center">
 
@@ -703,7 +704,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                   {/* SEGMENT B */}
 
-                  <div > <h4 className="section-title">Segment B</h4>
+                  <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment B</h4>
 
                     <div className="flex-row-center">
 
@@ -741,8 +742,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className={getStepClass('s4-1')}>
 
-                <div className="step-header"> <span className="step-number">
-                  1 </span> <span className="step-label">SEGMENT C</span>
+                <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment C</h4>
 
                 </div>
 
@@ -802,8 +802,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       </div>
 
                     </div>
-
-                    <div /* sanitized: flex: 1 */> <h4 className="section-title">Segment D</h4>
+                    <br />
+                    <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment D</h4>
 
                       <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Arrange Cylinder</strong></span>
 
@@ -835,8 +835,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className={getStepClass('s4-2')}>
 
-                <div className="step-header"> <span className="step-number">
-                  2 </span> <span className="step-label">SEGMENT E</span>
+                <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment E</h4>
 
                 </div>
 
@@ -907,6 +906,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <img src={keyGrooveBox} alt="Key Groove Box Tool" className="software-screenshot screenshot-medium" />
 
                     </div>
+                    <br />
+                    <br />
 
                   </div>
 
@@ -992,7 +993,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                 <div className="image-wrapper-flush">
 
-                  <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" />
+                  <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" style={{ height: '325px' }} />
 
                 </div>
 
