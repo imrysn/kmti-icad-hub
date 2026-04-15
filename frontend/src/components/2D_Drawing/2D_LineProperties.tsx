@@ -57,7 +57,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
   subLessonId = "2d-line-props-1",
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  
+
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -113,7 +113,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
     };
   }, [subLessonId]);
 
-  
+
 
   const getStepClass = (stepId: string) => "instruction-step";
   return (
@@ -126,16 +126,16 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          
+
           {subLessonId === "2d-line-props-1"
             ? "LINE PROPERTIES (1)"
             : "LINE PROPERTIES"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-line-props-1") speak(lineProp1Steps);
-              else if (subLessonId === "2d-line-props-2") speak(lineProp2Steps);
-              else if (subLessonId === "2d-line-props-3") speak(lineProp3Steps);
-              else if (subLessonId === "2d-line-props-4") speak(lineProp4Steps);
-            }}
+            if (subLessonId === "2d-line-props-1") speak(lineProp1Steps);
+            else if (subLessonId === "2d-line-props-2") speak(lineProp2Steps);
+            else if (subLessonId === "2d-line-props-3") speak(lineProp3Steps);
+            else if (subLessonId === "2d-line-props-4") speak(lineProp4Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -156,7 +156,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     5
                   </span>{" "}
                   <span className="step-label">Line Properties</span>
@@ -185,7 +185,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     6
                   </span>{" "}
                   <span className="step-label">Changing line properties</span>
@@ -201,52 +201,22 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       <div>
                         <img src={colorDialogImg} alt="Color Dialog" className="software-screenshot" />
                       </div>
-
-                      <div className="flex-col">
-                        <div className="flex-row--top">
-                          <div className="annotation-pointing-box">
-                            <p className="p-flush">
-                              Note: Hidden lines are color green.
-                            </p>
-
-                            <p className="p-flush">
-                              <span>To change color:</span> Select the required
-                              color, then pick the lines you need to change.
-                            </p>
-                          </div>
-
-                          <div className="flex-col">
-                            <div className="info-box">
-                              <p className="p-flush">
-                                * If hidden lines must be shown, it should be
-                                checked on Projection Properties.
-                              </p>
-                            </div>
-
-                            <div className="info-box">
-                              <p className="p-flush">
-                                NOTE: As possible, avoid deletion of any lines
-                                on the drawing, because once the drawing is
-                                updated, the deleted lines will appear.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="image-wrapper-flush">
-                          <img src={colorComparisonImg} alt="Color Comparison" className="software-screenshot screenshot-wide" />
-                        </div>
-                      </div>
                     </div>
                   </div>
+                  <div className="image-wrapper-flush">
+                    <img src={colorComparisonImg} alt="Color Comparison" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
-              </div>{" "}
+              </div>
+
+
+
               {/* Section 7: Additional Lines */}
               <div className={`${getStepClass("lp2-7")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     7
                   </span>{" "}
                   <span className="step-label">Additional Lines</span>
@@ -272,7 +242,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         </div>
 
                         <div className="info-box">
-                          <p className="p-flush">
+                          <p className="p-flush" style={{ marginTop: "1rem" }}>
                             Number of wave and curve distance displayed in item
                             entry box. It can change according to the desired
                             value.
@@ -307,7 +277,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     b
                   </span>{" "}
                   <span className="step-label">Center Line</span>
@@ -369,7 +339,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         </div>
 
                         <div className="info-box">
-                          <p className="p-flush">
+                          <p className="p-flush" style={{ fontStyle: "italic", marginTop: "1rem" }}>
                             Note: Be careful when choosing which line will be
                             picked first because the center is always base on
                             L1.
@@ -389,13 +359,13 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                   </div>
                 </div>
               </div>
-              <div className="section-divider-sm"></div>{" "}
+
               {/* Section c: Piping Center Line */}
               <div className={`${getStepClass("lp3-c")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     c
                   </span>{" "}
                   <span className="step-label">Piping Center Line</span>
@@ -411,14 +381,6 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                     <div className="flex-row--top">
                       <img src={pipingDialogImg} alt="Piping Center Line Dialog" className="software-screenshot screenshot-small" />
-
-                      <div className="info-box">
-                        <p className="p-flush">
-                          Upon inserting the orthographic view, the piping
-                          center line is already checked. It can be unchecked if
-                          the center line is unnecessary.
-                        </p>
-                      </div>
                     </div>
 
                     <div className="image-wrapper-flush">
@@ -436,7 +398,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     d
                   </span>{" "}
                   <span className="step-label">
@@ -459,40 +421,19 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         </div>
                       </div>
 
-                      <div className="flex-col">
-                        <div className="info-box">
-                          <p className="p-flush">
-                            1. Pick the icon. The list of parts will show.
-                          </p>
-                        </div>
 
-                        <div className="info-box">
-                          <p className="p-flush">
-                            2. Select on the desired attributes for the parts
-                            detail. Select which parts will change the
-                            attributes.
-                          </p>
-                        </div>
 
-                        <img src={hierarchicalDialogImg} alt="Hierarchical Parts Selection Detail" className="software-screenshot screenshot-medium" />
-                      </div>
-                    </div>
-
-                    <div className="flex-col">
-                      <div className="info-box">
-                        <p className="p-flush">
-                          Aside from using this icon, there are also separate
-                          icon that can be use to do the same commands.
-                        </p>
-                      </div>
-
-                      <div className="image-wrapper-flush">
-                        <img src={hierarchicalResultsImg} alt="Hierarchical Results and Icons" className="software-screenshot screenshot-wide" />
-                      </div>
+                      <img src={hierarchicalDialogImg} alt="Hierarchical Parts Selection Detail" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
+
+                  <div className="image-wrapper-flush">
+                    <img src={hierarchicalResultsImg} alt="Hierarchical Results and Icons" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
-              </div>{" "}
+              </div>
+
+
             </>
           ) : (
             <p>
@@ -513,7 +454,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

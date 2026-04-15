@@ -128,7 +128,7 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
             {/* 11. Text Section */}
             <div>
               {" "}
-              <h4> 11. Text </h4>
+              <h4 style={{ marginTop: "1rem", marginBottom: "0.5rem" }}> 11. Text </h4>
               <div className="image-wrapper-flush">
                 <img src={textNoteImg} alt="Text Command and Configuration" className="software-screenshot screenshot-wide" />
               </div>

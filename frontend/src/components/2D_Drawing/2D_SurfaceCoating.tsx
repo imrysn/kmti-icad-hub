@@ -96,50 +96,24 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             {/* b. Special Notes Section */}
             <div className="lesson-section">
               {" "}
-              <h4> b. Special Notes </h4>
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> b. Special Notes </h4>
               <div className="flex-row">
                 <div className="image-wrapper-flush">
                   <img src={specialNotesImg} alt="Special Notes location in Drawing Template" className="software-screenshot screenshot-wide" />
-                </div>
-
-                <div className="info-box">
-                  <p> Special notes</p>
-
-                  <p>
-                    {" "}
-                    It can be the following:
-                    <br /> 1. Heat & surface treatment ( if part requires
-                    hardness).
-                    <br /> 2. Welding notes ( if part is too big and details are
-                    too crowded).
-                    <br /> 3. Notes pertaining to specific portion of the part.
-                    <br /> 4. Machine before welding.
-                    <br /> 5. Additional process notes for purchase parts.
-                  </p>
-
-                  <p> Notes:</p>
-
-                  <p>
-                    {" "}
-                    1. If two or more special notes needed for the drawing, it
-                    will arrange on what process will be done first.
-                    <br /> 2. Text properties need to be match with standard
-                    notes.
-                  </p>
                 </div>
               </div>
             </div>{" "}
             {/* c. Copy / Move Section */}
             <div className="lesson-section">
               {" "}
-              <h4> c. Copy / Move </h4>
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> c. Copy / Move </h4>
               <div className="flex-row">
                 <div className="image-wrapper-flush">
                   <img src={copyMoveImg} alt="Copy and Move Command Configuration" className="software-screenshot screenshot-wide" />
                 </div>
 
                 <div className="info-box">
-                  <p>
+                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                     {" "}
                     Copy and move has the same procedure. The only difference it
                     that copy will multiply its quantity while move will only

@@ -88,7 +88,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
             {/* 13. Welding Symbol Section */}
             <div id="welding-symbol-section">
               {" "}
-              <h4> 13. Welding Symbol </h4>
+              <h4 style={{ marginBottom: "1rem" }}> 13. Welding Symbol </h4>
               <div className="flex-col">
                 <div className="image-wrapper-flush">
                   <img src={weldingSymbolMainImg} alt="Welding Symbol Menu Selection" className="software-screenshot screenshot-wide" />
@@ -96,19 +96,18 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
               </div>
               <div className="flex-row">
                 <div className="info-box">
-                  <p>
+                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                     {" "}
                     ※ Before indicating the welding symbol on the drawing,
                     welding hatches shall be put up first as representation of
                     welding on actual fabrication.
-                    <br />
                     <br /> ※ Select and put all the required details for welding
                     on the dialog box, then click OK. Place it together with
                     welding hatch.
                   </p>
 
                   <div>
-                    <p>
+                    <p style={{ marginBottom: "1rem" }}>
                       {" "}
                       Notes:
                       <br /> 1. Arrow line acts as a welding torch on the actual
@@ -132,7 +131,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
             {/* 14. Notes Section */}
             <div id="notes-section">
               {" "}
-              <h4>
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                 {" "}
                 14. Notes{" "}
                 <span>
@@ -142,7 +141,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
               </h4>
               <div className="lesson-section">
                 {" "}
-                <h5>a. Standard Notes</h5>
+                <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>a. Standard Notes</h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush">
                     <img src={standardNotesImg} alt="Standard Notes location in Title Block" className="software-screenshot screenshot-wide" />
@@ -150,7 +149,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
 
                   <div className="info-box">
                     <div>
-                      <p>Standard notes:</p>
+                      <p style={{ marginTop: "1rem", marginBottom: "0.5rem" }}><strong>Standard notes:</strong></p>
 
                       <p>
                         {" "}
@@ -162,9 +161,9 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                     </div>
 
                     <div>
-                      <p>Notes:</p>
+                      <p style={{ marginTop: "1rem", marginBottom: "0.5rem" }}><strong>Notes:</strong></p>
 
-                      <p>
+                      <p style={{ fontStyle: "italic" }}>
                         {" "}
                         1. These three standard notes automatically appear from
                         the beginning while selecting the template.

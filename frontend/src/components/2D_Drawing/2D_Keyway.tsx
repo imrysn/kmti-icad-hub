@@ -63,7 +63,7 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          Keyway Standards
+          Keyway Standards Size and Tolerance
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(keywaySteps)}
             onStop={stop}
           />
