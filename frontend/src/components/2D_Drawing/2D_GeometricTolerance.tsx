@@ -87,13 +87,11 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          Geometric
-          Tolerance
-          {subLessonId === "2d-geometric-tol-1" ? "(1)" : "(2)"}
+          Geometric Tolerance {subLessonId === "2d-geometric-tol-1" ? "(1)" : "(2)"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-geometric-tol-1") speak(geoTol1Steps);
-              else speak(geoTol2Steps);
-            }}
+            if (subLessonId === "2d-geometric-tol-1") speak(geoTol1Steps);
+            else speak(geoTol2Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -116,9 +114,9 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 <h4>
                   {" "}
                   9. Geometric Tolerance{" "}
-                  <span>
-                    - a system for defining allowable enoineerino tolerances. It
-                    tells what deoree of accuracv and precision that needs to be
+                  <span style={{ fontWeight: "normal" }}>
+                    - a system for defining allowable engineering tolerances. It
+                    tells what degree of accuracy and precision that needs to be
                     applied on the part.
                   </span>{" "}
                 </h4>
@@ -136,7 +134,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {/* Step B Section */}
               <div className="flex-row">
                 <div className="info-box">
-                  <p>
+                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                     {" "}
                     <strong>
                       b. "Geometric Tolerance" dialog box appear. Complete the
@@ -152,7 +150,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {/* Step C Section */}
               <div className="flex-row">
                 <div className="info-box">
-                  <p>
+                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                     {" "}
                     <strong>
                       c. Click P2 to set the position of geometric tolerance
@@ -161,7 +159,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                   </p>
                 </div>
 
-                <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
+                <div className="image-wrapper-flush" style={{ maxWidth: "400px" }}>
                   <img src={geoTolStepCImg} alt="Setting Geometric Tolerance Position (P2)" className="software-screenshot" />
                 </div>
               </div>
@@ -178,7 +176,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {/* Step E */}
               <div className="flex-row">
                 <div className="info-box">
-                  <p>
+                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                     {" "}
                     <strong>
                       e. "Geometric Tolerance" dialog box appear. Complete the
@@ -194,7 +192,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {/* Step F */}
               <div className="flex-row">
                 <div className="info-box">
-                  <p>
+                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                     {" "}
                     <strong>
                       f. Required geometric tolerance based on the sample
@@ -211,13 +209,9 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {/* Section 10: Datum */}
               <div>
                 {" "}
-                <h4>
+                <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                   {" "}
                   10. Datum{" "}
-                  <span>
-                    - Datum is a fixed reference point by which other machining
-                    operations can be carried out.
-                  </span>{" "}
                 </h4>
                 <div className="flex-row">
                   <div className="image-wrapper-flush">
@@ -226,7 +220,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                 </div>
                 <div className="flex-row">
                   <div className="info-box">
-                    <p>
+                    <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                       {" "}
                       1. Apply the selected commands shown above.
                       <br /> 2. Click L1, then enter datum character in item

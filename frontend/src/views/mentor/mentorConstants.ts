@@ -22,8 +22,8 @@ export type Lesson = {
 };
 
 export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
-  { 
-    id: 'interface', 
+  {
+    id: 'interface',
     title: 'iCAD Interface',
     content: ['Window Structure', 'Command menus', 'Hierarchical tree view', '3D viewport', 'UI placement', 'modeling environment', 'software layout'],
     children: [
@@ -46,8 +46,8 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
       ]
     }
   },
-  { 
-    id: 'toolbars', 
+  {
+    id: 'toolbars',
     title: 'Tool Bars',
     content: ['File', 'New', 'Open', 'Save', 'Print', '2D View', 'Previous View', 'Switch Views', 'Next View', 'Switch Display', 'Projection Method', 'Switch Dimensions', 'Screen Operations', 'Zoom Area', 'Zoom In/Out', 'Zoom to Fit', 'Re-Display', '3D View', 'Top', 'Front', 'Right', 'Left', 'Back', 'Bottom', 'Plane', 'Isometric', 'User Views', 'Edit', 'Undo', 'Redo', 'Shading', 'Frame', 'Hidden Lines', 'Wireframe', 'Section Display', 'Open Work Plane', 'Switch Section Display', '2D Standard Screen', 'Standard Range', 'System Information', 'Line Type', 'Color', 'Layer', 'Scale', 'Grid', 'Screen Memory', 'Entry Control', 'Entity Selection', 'Coordinate Entry', 'AP', 'Magnet Tools'],
     children: [
@@ -70,8 +70,8 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
       ]
     }
   },
-  { 
-    id: 'origin', 
+  {
+    id: 'origin',
     title: 'Origin',
     content: ['X axis', 'Y axis', 'Z axis', '0,0,0', 'Projections', 'Layout', 'orientation', 'Change 3D Part Layout', 'Front view', 'XY-plane', 'relative origin', 'absolute origin'],
     children: [
@@ -142,8 +142,8 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
       ]
     }
   },
-  { 
-    id: 'hole-details', 
+  {
+    id: 'hole-details',
     title: 'Hole Details',
     content: ['Arrange Machine Part', 'drill holes', 'tapping holes', 'counterbores', 'specifications', 'tapped holes', 'green', 'threaded', 'hole details'],
     children: [
@@ -216,16 +216,17 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
       ]
     }
   },
-  { id: 'fairing', 
-    title: 'Fairing', 
+  {
+    id: 'fairing',
+    title: 'Fairing',
     content: ['Chamfer', 'Fillet', 'Shell', 'rounding corners', 'hollowing', 'wall thickness', 'chamfer length', 'fillet radius', 'edge selection'],
     children: [
       { id: 'fairing-1', title: 'Chamfer, Fillet, Shell', content: ['beveled edges', 'rounded edges', 'hollow solid'] }
     ],
     quiz: {
-    title: 'Fairing & Advanced Shaping',
-    description: 'Mastering smooth transitions and hollow bodies based on the iCAD manual.',
-    questions: [
+      title: 'Fairing & Advanced Shaping',
+      description: 'Mastering smooth transitions and hollow bodies based on the iCAD manual.',
+      questions: [
         { id: 'f1', text: 'What is the "Shell" operation primarily used for in iCAD?', options: ['Painting the part', 'Hollowing out a solid to create a specific wall thickness', 'Deleting edges', 'Adding labels'], correctAnswer: 1, explanation: 'Shelling creates a thin-walled cavity inside a solid.' },
         { id: 'f2', text: 'Technical: What is the unique finalization step for the "Shell" command according to the manual?', options: ['Press Escape', 'Perform a "Double GO" (Click GO twice)', 'Save and Close', 'Restart the PC'], correctAnswer: 1, explanation: 'The manual specifies a "Double GO" sequence for certain hollow modeling finalizations.' },
         { id: 'f3', text: 'Situational: You want to make a box hollow but leave the top open. How do you do this with the Shell tool?', options: ['Delete the top face later', 'Select the top face as the "Open Surface" during the Shell command', 'Draw it with thin walls manually', 'It is not possible'], correctAnswer: 1, explanation: 'Selecting an open face removes that surface from the hull during shelling.' },
@@ -236,8 +237,9 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
         { id: 'f8', text: 'Situational: After applying a fillet, the geometry looks corrupted. What is a likely cause?', options: ['The radius is too large for the available face space', 'The screen resolution', 'The color of the part', 'The mouse speed'], correctAnswer: 0, explanation: 'Fillets cannot exceed the boundaries of the local geometric edges.' },
         { id: 'f9', text: 'Technical: What is "Fairing" used for in automotive design?', options: ['Weight reduction', 'Ensuring aerodynamic and high-quality light reflection on surfaces', 'Painting', 'Measuring'], correctAnswer: 1, explanation: 'Fairing ensures smooth, highlight-consistent surfaces.' },
         { id: 'f10', text: 'True or False: In iCAD, Shelling is a parametric feature that can be edited later in the tree.', options: ['True', 'False'], correctAnswer: 0, explanation: 'Shelling is a history-based feature allowing wall thickness updates.' }
-    ]
-  } },
+      ]
+    }
+  },
   {
     id: '3d-part',
     title: '3D Part',
@@ -322,21 +324,22 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
       ]
     }
   },
-  { id: 'interference', title: 'Interference Check', quiz: {
-    title: 'iCAD Clash Detection',
-    description: 'Ensuring parts fit together correctly without physical overlap.',
-    questions: [
-      { id: 'ic1', text: 'What is an "Interference" in iCAD?', options: ['A missing file', 'Physical overlap where two parts occupy the same space', 'A wrong color', 'Low internet speed'], correctAnswer: 1, explanation: 'Interference occurs when parts collide in the 3D model.' },
-      { id: 'ic2', text: 'Technical: How can you visually confirm an internal interference that is not visible from the outside?', options: ['Delete the outer part', 'Use a Section View to cut through the model', 'Turn the monitor off', 'Print it'], correctAnswer: 1, explanation: 'Sectioning reveals internal clashes clearly.' },
-      { id: 'ic3', text: 'Situational: After running a check, the report shows "0 Interferences". What does this mean?', options: ['The parts are missing', 'The assembly is physically feasible without overlaps', 'The software is broken', 'The model is transparent'], correctAnswer: 1, explanation: 'Zero interference is the goal for a functional assembly.' },
-      { id: 'ic4', text: 'Technical: When checking for interference between a bolt and a hole, why might a small clash be "ignored"?', options: ['Bolts are always wrong', 'Threads are often modeled as a simple overlap for performance', 'The bolt is blue', 'The hole is missing'], correctAnswer: 1, explanation: 'Nominal thread modeling often results in minor intentional overlaps in CAD.' },
-      { id: 'ic5', text: 'Where is the Interference Check tool located?', options: ['In the File menu', 'On the Analysis / Standard Toolbar', 'Inside the Hole command', 'In the Color palette'], correctAnswer: 1, explanation: 'Analysis tools are grouped for project verification.' },
-      { id: 'ic6', text: 'Situational: You found a large interference. What is the standard iCAD fix?', options: ['Ignore it', 'Adjust the part position or modify the geometry to create clearance', 'Make the part red', 'Delete the whole assembly'], correctAnswer: 1, explanation: 'Clashes must be resolved through design modification.' },
-      { id: 'ic7', text: 'What is "Clearance" in terms of assembly check?', options: ['The same as interference', 'A minimum required gap between two parts', 'The price of the part', 'A file format'], correctAnswer: 1, explanation: 'Clearance ensures parts have room for assembly and operation.' },
-      { id: 'ic8', text: 'Technical: Can you perform an interference check on an entire assembly at once?', options: ['No, only two parts at a time', 'Yes, Global Interference Check analyzes the whole project', 'Only if they are white', 'Only for boxes'], correctAnswer: 1, explanation: 'Global checks are automated to find all conflicts in the scene.' }
-    ]
+  {
+    id: 'interference', title: 'Interference Check', quiz: {
+      title: 'iCAD Clash Detection',
+      description: 'Ensuring parts fit together correctly without physical overlap.',
+      questions: [
+        { id: 'ic1', text: 'What is an "Interference" in iCAD?', options: ['A missing file', 'Physical overlap where two parts occupy the same space', 'A wrong color', 'Low internet speed'], correctAnswer: 1, explanation: 'Interference occurs when parts collide in the 3D model.' },
+        { id: 'ic2', text: 'Technical: How can you visually confirm an internal interference that is not visible from the outside?', options: ['Delete the outer part', 'Use a Section View to cut through the model', 'Turn the monitor off', 'Print it'], correctAnswer: 1, explanation: 'Sectioning reveals internal clashes clearly.' },
+        { id: 'ic3', text: 'Situational: After running a check, the report shows "0 Interferences". What does this mean?', options: ['The parts are missing', 'The assembly is physically feasible without overlaps', 'The software is broken', 'The model is transparent'], correctAnswer: 1, explanation: 'Zero interference is the goal for a functional assembly.' },
+        { id: 'ic4', text: 'Technical: When checking for interference between a bolt and a hole, why might a small clash be "ignored"?', options: ['Bolts are always wrong', 'Threads are often modeled as a simple overlap for performance', 'The bolt is blue', 'The hole is missing'], correctAnswer: 1, explanation: 'Nominal thread modeling often results in minor intentional overlaps in CAD.' },
+        { id: 'ic5', text: 'Where is the Interference Check tool located?', options: ['In the File menu', 'On the Analysis / Standard Toolbar', 'Inside the Hole command', 'In the Color palette'], correctAnswer: 1, explanation: 'Analysis tools are grouped for project verification.' },
+        { id: 'ic6', text: 'Situational: You found a large interference. What is the standard iCAD fix?', options: ['Ignore it', 'Adjust the part position or modify the geometry to create clearance', 'Make the part red', 'Delete the whole assembly'], correctAnswer: 1, explanation: 'Clashes must be resolved through design modification.' },
+        { id: 'ic7', text: 'What is "Clearance" in terms of assembly check?', options: ['The same as interference', 'A minimum required gap between two parts', 'The price of the part', 'A file format'], correctAnswer: 1, explanation: 'Clearance ensures parts have room for assembly and operation.' },
+        { id: 'ic8', text: 'Technical: Can you perform an interference check on an entire assembly at once?', options: ['No, only two parts at a time', 'Yes, Global Interference Check analyzes the whole project', 'Only if they are white', 'Only for boxes'], correctAnswer: 1, explanation: 'Global checks are automated to find all conflicts in the scene.' }
+      ]
+    },
   },
-},
   {
     id: 'purchase-parts',
     title: '3D Purchase Parts',
@@ -453,7 +456,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       { id: '2d-orthographic-1', title: 'Orthographic View (1)', content: ['third angle standards'] },
       { id: '2d-orthographic-2', title: 'Orthographic View (2)', content: ['front view definition'] },
       { id: '2d-orthographic-3', title: 'Orthographic View (3)', content: ['view alignment'] },
-      { id: '2d-orthographic-4', title: 'Orthographic View (4)', content: ['six principal views'] },
     ],
     quiz: {
       title: 'iCAD Orthographic Projection',
@@ -523,7 +525,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-dimensioning',
     title: 'Dimensioning',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-dimensioning-${i + 1}`, title: `Dimensioning (${i + 1})` })),
+    children: Array.from({ length: 5 }, (_, i) => ({ id: `2d-dimensioning-${i + 1}`, title: `Dimensioning (${i + 1})` })),
     quiz: {
       title: 'Precision 2D Dimensioning',
       description: 'Rules for accurate manufacturing communication in iCAD.',
@@ -544,7 +546,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-standard-part',
     title: 'Standard Part',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-standard-part-${i + 1}`, title: `Standard Part (${i + 1})` })),
+    children: Array.from({ length: 7 }, (_, i) => ({ id: `2d-standard-part-${i + 1}`, title: `Standard Part (${i + 1})` })),
     quiz: {
       title: 'iCAD 2D Standard Components',
       description: 'Understanding how to place and represent hardware in 2D layouts.',
@@ -562,10 +564,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-surface-app', 
-    title: 'Surface Application', 
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Surface Application (${i + 1})` })),
+  {
+    id: '2d-surface-app',
+    title: 'Application of Surface',
+    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Application of Surface(${i + 1})` })),
     quiz: {
       title: 'iCAD Surface Symbols & Sectioning',
       description: 'Understanding hatching and surface representation in 2D.',
@@ -583,8 +585,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-keyway', 
+  {
+    id: '2d-keyway',
     title: 'Keyway',
     quiz: {
       title: 'iCAD Keyway Engineering',
@@ -603,9 +605,9 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-retaining-ring', 
-    title: 'Retaining Ring', 
+  {
+    id: '2d-retaining-ring',
+    title: 'Retaining Ring',
     children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-retaining-ring-${i + 1}`, title: `Retaining Ring (${i + 1})` })),
     quiz: {
       title: 'iCAD Retaining Rings & Grooves',
@@ -624,10 +626,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-geometric-tol', 
-    title: 'Geometric Tol', 
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tol (${i + 1})` })),
+  {
+    id: '2d-geometric-tol',
+    title: 'Geometric Tolerance',
+    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })),
     quiz: {
       title: 'iCAD GD&T (Geometric Tolerance)',
       description: 'Understanding geometric control and datums in 2D drafting.',
@@ -645,8 +647,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-part-note', 
+  {
+    id: '2d-part-note',
     title: 'Part Note',
     quiz: {
       title: 'iCAD Technical Notes & Requirements',
@@ -665,8 +667,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-machining-symbol', 
+  {
+    id: '2d-machining-symbol',
     title: 'Machining Symbol',
     quiz: {
       title: 'Surface Finish & Machining Symbols',
@@ -685,8 +687,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-welding-symbol', 
+  {
+    id: '2d-welding-symbol',
     title: 'Welding Symbol',
     quiz: {
       title: 'Welding Design & Communication',
@@ -705,10 +707,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-heat-treatment', 
-    title: 'Heat Treatment', 
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-heat-treatment-${i + 1}`, title: `Heat Treatment (${i + 1})` })),
+  {
+    id: '2d-heat-treatment',
+    title: 'Heat Treatment',
+    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-heat-treatment-${i + 1}`, title: `Heat Treatment (${i + 1})` })),
     quiz: {
       title: 'Heat Treatment & Hardness',
       description: 'Understanding metallurgical instructions in CAD.',
@@ -726,8 +728,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-surface-coating', 
+  {
+    id: '2d-surface-coating',
     title: 'Surface Coating',
     quiz: {
       title: 'Surface Coating & Plating',
@@ -746,8 +748,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-weight-computation', 
+  {
+    id: '2d-weight-computation',
     title: 'Weight Computation',
     quiz: {
       title: 'Mass & Weight Calculation',
@@ -766,10 +768,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-bom', 
-    title: 'BOM', 
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-bom-${i + 1}`, title: `BOM (${i + 1})` })),
+  {
+    id: '2d-bom',
+    title: 'BOM',
+    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-bom-${i + 1}`, title: `BOM (${i + 1})` })),
     quiz: {
       title: 'Bill of Materials Management',
       description: 'Mastering assembly parts lists and procurement data.',
@@ -787,8 +789,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-balloon', 
+  {
+    id: '2d-balloon',
     title: 'Balloon',
     quiz: {
       title: 'Assembly Balloons & Identification',
@@ -807,8 +809,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-titleblock', 
+  {
+    id: '2d-titleblock',
     title: 'Titleblock',
     content: ['Title block', 'metadata', 'Drawing Number', 'Scale', 'Unit', 'Revision Level', 'Projection Symbol', '3rd angle', 'Material field', 'AL6061', 'S35C', 'S45C', 'Tolerance Block', 'Drawn By', 'accountability', 'administrative info', 'company standards'],
     quiz: {
@@ -828,14 +830,15 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-additional-view', 
-    title: 'Additional View', 
+  {
+    id: '2d-additional-view',
+    title: 'Additional View',
     content: ['Auxiliary View', 'Partial View', 'True Shape', 'inclined face', 'Broken-out Section', 'View Break', 'Detail View', 'Section View', 'magnified area', 'Removed Section', 'cutting plane', 'localized details', 'view enlargement'],
     children: [
       { id: '2d-additional-view-1', title: 'Additional View (1) - Auxiliary & Partial', content: ['inclined surfaces', 'true shape projection'] },
       { id: '2d-additional-view-2', title: 'Additional View (2) - Break & Section', content: ['broken-out cutouts', 'view shortening'] },
       { id: '2d-additional-view-3', title: 'Additional View (3) - Detail & Removed', content: ['magnification', 'offset sections'] },
+      { id: '2d-additional-view-4', title: 'Additional View (4) - Trim View', content: ['view trimming', 'detail view restrictions'] },
     ],
     quiz: {
       title: 'Auxiliary & Additional Views',
@@ -854,9 +857,9 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-operal-view', 
-    title: 'Operal View', 
+  {
+    id: '2d-operal-view',
+    title: 'Operal View',
     content: ['Operal View', 'Operation Drawing', 'manufacturing steps', 'setup dimensions', 'stock outline', 'in-process inspection', 'machining datums', 'process sequence', 'factory station guidance'],
     children: [
       { id: '2d-operal-view-1', title: 'Operal View (1)', content: ['setup dimensions', 'stock visualization'] },
@@ -879,9 +882,9 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-normal-mirror', 
-    title: 'Normal/Mirror Parts', 
+  {
+    id: '2d-normal-mirror',
+    title: 'Normal/Mirror Parts',
     children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-normal-mirror-${i + 1}`, title: `Normal/Mirror Parts (${i + 1})` })),
     quiz: {
       title: 'Symmetry in 2D Layouts',
@@ -900,8 +903,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-revision-code', 
+  {
+    id: '2d-revision-code',
     title: 'Revision Code',
     quiz: {
       title: 'Revision Control & ECOs',
@@ -920,8 +923,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       ]
     }
   },
-  { 
-    id: '2d-standard-library', 
+  {
+    id: '2d-standard-library',
     title: 'Standard Part Library',
     quiz: {
       title: 'Standard Library Competency',

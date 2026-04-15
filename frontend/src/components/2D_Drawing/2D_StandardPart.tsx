@@ -148,14 +148,14 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         ? "(7)"
                         : ""}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-standard-part-1") speak(standard1Steps);
-              else if (subLessonId === "2d-standard-part-2") speak(standard2Steps);
-              else if (subLessonId === "2d-standard-part-3") speak(standard3Steps);
-              else if (subLessonId === "2d-standard-part-4") speak(standard4Steps);
-              else if (subLessonId === "2d-standard-part-5") speak(standard5Steps);
-              else if (subLessonId === "2d-standard-part-6") speak(standard6Steps);
-              else if (subLessonId === "2d-standard-part-7") speak(standard7Steps);
-            }}
+            if (subLessonId === "2d-standard-part-1") speak(standard1Steps);
+            else if (subLessonId === "2d-standard-part-2") speak(standard2Steps);
+            else if (subLessonId === "2d-standard-part-3") speak(standard3Steps);
+            else if (subLessonId === "2d-standard-part-4") speak(standard4Steps);
+            else if (subLessonId === "2d-standard-part-5") speak(standard5Steps);
+            else if (subLessonId === "2d-standard-part-6") speak(standard6Steps);
+            else if (subLessonId === "2d-standard-part-7") speak(standard7Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -235,13 +235,13 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   Is a groove in the surface of a machine part that distributes
                   lubricating oil injected through an oil hole
                 </p>
-                <div className="info-box">
+                <div className="info-box" style={{ marginTop: "1rem", marginBottom: "0.5rem" }}>
                   <p>※ There are two (2) kinds of oil groove</p>
                 </div>{" "}
                 {/* 1. For Flat Surface */}
                 <div className="sub-section-container">
                   {" "}
-                  <h5>1. For Flat Surface</h5>
+                  <h4 style={{ marginBottom: "0.2rem" }}>1. For Flat Surface</h4>
                   <div className="image-wrapper-flush">
                     <img src={oilGroove1Img} alt="Oil Groove - Flat Surface Detail and Example" className="software-screenshot screenshot-wide" />
                   </div>{" "}
@@ -249,16 +249,16 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     {" "}
                     <li>
                       {" "}
-                      <span>✔</span> Follow the standard detail of KEMCO for
+                      <span></span> Follow the standard detail of KEMCO for
                       flat surface <span>(Figure 1)</span>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>✔</span> Depth of grease line should be 1.5mm{" "}
+                      <span></span> Depth of grease line should be 1.5mm{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>✔</span> In case of drill hole and tap hole, the
+                      <span></span> In case of drill hole and tap hole, the
                       diameter of the hole must be smaller than width of
                       groove.{" "}
                     </li>{" "}
@@ -269,8 +269,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 <div className="sub-section-container">
                   <div className="flex-row">
                     {" "}
-                    <h5>2. For Circular Portion</h5>{" "}
-                    <span>New Revised: 07/01/19</span>
+                    <h4 style={{ marginBottom: "0.2rem" }}>2. For Circular Portion</h4>{" "}
                   </div>
                   <div className="image-wrapper-flush">
                     <img src={oilGroove2Img} alt="Oil Groove - Circular Portion Detail and Example" className="software-screenshot screenshot-wide" />
@@ -279,24 +278,24 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     {" "}
                     <li>
                       {" "}
-                      <span>✔</span> Follow the standard detail of KEMCO for
+                      <span></span> Follow the standard detail of KEMCO for
                       circular portion <span>(Figure 2)</span>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>✔</span> Compared to grooving of flat surfaces,
+                      <span></span> Compared to grooving of flat surfaces,
                       radius 2 cannot achieve on actual.
                       <br />
                       But the surface should be smooth finish{" "}
-                      <span>R (滑らかに仕上げ</span>.{" "}
+                      <span>R (滑らかに仕上)</span>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>✔</span> Depth of grease line should be 1.5mm{" "}
+                      <span></span> Depth of grease line should be 1.5mm{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>✔</span> In case of drill hole and tap hole, the
+                      <span></span> In case of drill hole and tap hole, the
                       diameter of the hole must be smaller than width of
                       groove.{" "}
                     </li>{" "}
@@ -324,18 +323,18 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     {" "}
                     <li>
                       {" "}
-                      <span>✔</span> The shape after cutting must be free from
+                      <span></span> The shape after cutting must be free from
                       burrs{" "}
                     </li>{" "}
                     <li>
                       {" "}
-                      <span>✔</span> Use flat bar material{" "}
+                      <span></span> Use flat bar material{" "}
                     </li>{" "}
                     <li>
-                      {" "}
-                      <span>✔</span>{" "}
-                      <span>The tolerance of the width groove must be</span>
-                      <img src={shaftKeyPlate2Img} alt="Tolerance callout" />{" "}
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", verticalAlign: "middle" }}>
+                        <span>The tolerance of the width groove must be</span>
+                        <img src={shaftKeyPlate2Img} alt="Tolerance callout" style={{ height: "2.5rem", width: "auto", borderRadius: "2px" }} />
+                      </span>
                     </li>{" "}
                   </ul>
                 </div>
@@ -343,7 +342,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 {/* Sample Drawing Section */}
                 <div className="sub-section-header">
                   {" "}
-                  <h5>※ Sample Drawing</h5>
+                  <h4>※ Sample Drawing</h4>
                 </div>
                 <div className="image-wrapper-flush">
                   <img src={shaftKeyPlate3Img} alt="Sample Drawing and Isometric View" className="software-screenshot screenshot-wide" />
@@ -352,12 +351,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   {" "}
                   <li>
                     {" "}
-                    <span>✔</span>
                     <div>
                       {" "}
                       As much as possible, follow the way of detailing in this
                       reference. <br /> Do not position the key groove below.
-                    </div>{" "}
+                    </div>
                   </li>{" "}
                 </ul>
               </div>
@@ -371,7 +369,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 <h4>c. Collar</h4>
                 <div>
                   {" "}
-                  <span>New Revised:</span> <span>07/01/19</span>
+
                 </div>
               </div>
               <div className="info-box">
@@ -384,7 +382,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               </div>
               <div className="sub-section-header">
                 {" "}
-                <h5>※ Tolerances for collar</h5>
+                <h4 style={{ marginTop: "0.5rem" }}>※ Tolerances for collar</h4>
               </div>
               <div className="image-wrapper-flush">
                 <img src={collarImg} alt="Tolerances for Collar - Example 1 and 2" className="software-screenshot screenshot-wide" />

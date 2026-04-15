@@ -3,11 +3,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import json
 
-<<<<<<< HEAD
-=======
 # Load environment variables early
 # Adjust '.parent.parent' if your .env is in the project root
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2
 _env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=_env_path)
 from typing import Optional
@@ -33,17 +30,13 @@ from fastapi.staticfiles import StaticFiles
 # Enable CORS for Electron app and dev servers
 origins = os.getenv("CORS_ORIGINS", "").split(",")
 if not origins or origins == ['']:
-<<<<<<< HEAD
     # Fallback only for local dev if not specified
-    origins = ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:3000"]
-=======
     origins = [
         "http://localhost:5173", 
         "http://localhost:5174", 
         "http://localhost:5175", 
         "http://localhost:3000"
     ]
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2
 
 app.add_middleware(
     CORSMiddleware,
@@ -64,7 +57,6 @@ app.include_router(admin.router)
 
 @app.get("/")
 def read_root():
-<<<<<<< HEAD
     return {"message": "Welcome to KMTI iCAD Hub API"}
 
 @app.get("/search", response_model=SearchResponse)
@@ -268,6 +260,3 @@ def get_progress(course_id: str, user_id: str, db: Session = Depends(get_db),
     Get user progress for a specific course. Requires authentication.
     """
     return course_service.get_user_progress(db, course_id, user_id)
-=======
-    return {"message": "Welcome to KMTI iCAD Hub API"}
->>>>>>> b562330fb0187d2946ba56dfa29cc3f5760579e2

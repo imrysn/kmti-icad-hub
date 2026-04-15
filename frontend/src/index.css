@@ -3,7 +3,7 @@
    Modern, Engaging, and High-Tech Educational UI
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..700;1,300..700&family=Outfit:ital,wght@0,400..800;1,400..800&display=swap');
 
 :root {
   /* Typography & Layout (Shared) */
@@ -91,7 +91,7 @@
   font-family: var(--font-main);
   line-height: 1.6;
   font-weight: 400;
-  font-synthesis: none;
+  font-synthesis: style;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

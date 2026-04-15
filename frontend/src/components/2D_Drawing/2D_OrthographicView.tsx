@@ -30,13 +30,13 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
   subLessonId = "2d-orthographic-1",
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  const { 
-    scrollProgress, 
-    containerRef, 
-    speak, 
-    stop, 
-    isSpeaking, 
-    currentIndex 
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
   } = useLessonCore(subLessonId);
 
   // --- Content Mapping ---
@@ -100,22 +100,6 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider" />
-
-              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
-                <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">PROJECTION METHOD</span>
-                </div>
-                <div className="step-description">
-                  <div className="info-box">
-                    <p className="p-flush">KEMCO Hub follows the <strong>Third Angle Projection</strong> method (JIS/ANSI standard).</p>
-                    <p className="p-flush">In this method, the <strong>Top View</strong> is placed directly above the <strong>Front View</strong>, and the <strong>Right View</strong> is placed to its right.</p>
-                  </div>
-                </div>
-              </div>
-
               <div className="section-divider" />
 
               <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
@@ -144,7 +128,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide" />
                   </div>
                   <div className="info-box">
-                    <p className="p-flush">Note: Standard views scale together (Top, Front, Right). Other views like Cross sections must be scaled separately.</p>
+                    <p className="p-flush">Note: When changing the scale of a standard view, other standard views also change the scale. <br /> Cross section view and detail view need to chnage the scale separately.</p>
                   </div>
                 </div>
               </div>
@@ -156,13 +140,12 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">c</span>
-                  <span className="step-label">Hidden Line Configuration</span>
+                  <span className="step-label">Hidden Line</span>
                 </div>
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="annotation-pointing-box">
-                      <p className="p-flush">Hidden lines are not automatically shown. Check the <strong>hidden lines</strong> box in Projection Properties.</p>
-                      <p className="p-flush"><em>Note: If required in multiple views, enable it for each view individually.</em></p>
+                      <p className="p-flush">The hidden line is not automatically shown when orthographic view was inserted. It can be shown through the Projection Properties.</p>
                     </div>
                     <img src={hiddenLineDialogImg} alt="Hidden Line Dialog" className="software-screenshot screenshot-small" />
                     <div className="flex-1">
@@ -177,13 +160,12 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">d</span>
-                  <span className="step-label">Tangent Line Configuration</span>
+                  <span className="step-label">Tangent Line</span>
                 </div>
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="annotation-pointing-box">
-                      <p className="p-flush">Shows/hides lines from fillets. Chamfer lines are shown automatically.</p>
-                      <p className="p-flush"><em>Note: Enable via checkbox in Projection Properties per view.</em></p>
+                      <p className="p-flush">Shows and hides lines from fillets of a view. The tangent lines from chamfers are shown automatically during insertion of orthographic view.</p>
                     </div>
                     <img src={tangentLineDialogImg} alt="Tangent Line Dialog" className="software-screenshot screenshot-small" />
                     <div className="flex-1">
@@ -200,13 +182,12 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">e</span>
-                  <span className="step-label">High Precision Projection</span>
+                  <span className="step-label">High Precision</span>
                 </div>
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="annotation-pointing-box">
-                      <p className="p-flush">Used for better projection of small components. Prevents broken or missing lines in detailed drawings.</p>
-                      <p className="p-flush"><em>Note: Commonly used on assembly drawings to ensure all fine details are visible.</em></p>
+                      <p className="p-flush">Used for better projection of small components or parts on a part or assembly. When High precision is unchecked, some lines in the detail drawing are broken and some lines are missing. This is commonly used on assembly drawings but can also be used for parts, if necessary.</p>
                     </div>
                     <img src={highPrecisionDialogImg} alt="High Precision Dialog" className="software-screenshot screenshot-small" />
                     <div className="flex-1">

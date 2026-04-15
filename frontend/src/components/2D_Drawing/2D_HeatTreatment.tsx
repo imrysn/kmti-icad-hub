@@ -12,7 +12,7 @@ import heatTreatmentImg2 from "../../assets/2D_Image_File/2D_heat_treatment_(2).
 
 import heatTreatmentProcessImg2 from "../../assets/2D_Image_File/2D_heat_treatment_(2)_heat_treatment_process.jpg";
 
-import heatTreatmentProcessImg3 from "../../assets/2D_Image_File/2D_heat_treatment_(3)_heat_treatment_process.jpg.png";
+import heatTreatmentProcessImg3 from "../../assets/2D_Image_File/2D_heat_treatment_(3)_heat_treatment_process.png";
 
 import heatTreatmentProcessImg4 from "../../assets/2D_Image_File/2D_heat_treatment_(4)_heat_treatment_process.jpg";
 
@@ -89,11 +89,11 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
           Heat Treatment (
           {subLessonId.split("-").pop()})
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-heat-treatment-1") speak(heat1Steps);
-              else if (subLessonId === "2d-heat-treatment-2") speak(heat2Steps);
-              else if (subLessonId === "2d-heat-treatment-3") speak(heat3Steps);
-              else if (subLessonId === "2d-heat-treatment-4") speak(heat4Steps);
-            }}
+            if (subLessonId === "2d-heat-treatment-1") speak(heat1Steps);
+            else if (subLessonId === "2d-heat-treatment-2") speak(heat2Steps);
+            else if (subLessonId === "2d-heat-treatment-3") speak(heat3Steps);
+            else if (subLessonId === "2d-heat-treatment-4") speak(heat4Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -126,7 +126,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 </div>{" "}
                 {/* Rev Notes Section */}
                 <div className="lesson-section">
-                  <div className="flex-col">
+                  <div className="flex-col" >
                     {" "}
                     {[
                       { rev: "Rev2", text: "Expression of hardness" },
@@ -166,7 +166,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 {/* Heat Treatment Process Table */}
                 <div className="lesson-section">
                   {" "}
-                  <h4> Heat Treatment Process </h4>
+                  <h4 style={{ marginTop: "1rem", marginBottom: "0.5rem" }}> Heat Treatment Process </h4>
                   <div className="image-wrapper-flush">
                     <img src={heatTreatmentProcessImg2} alt="Heat Treatment Process Table" className="software-screenshot screenshot-wide" />
                   </div>

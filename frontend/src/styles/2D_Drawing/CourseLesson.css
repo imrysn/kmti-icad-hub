@@ -15,8 +15,15 @@
 }
 
 @keyframes fadeInSlideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --- Lesson Header & Intro Overhaul --- */
@@ -28,8 +35,7 @@
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  border-left: 8px solid var(--primary); /* Thick accent line */
-  border-radius: 0 24px 24px 0;
+  border-radius: 24px;
   box-shadow: var(--shadow-card);
   position: relative;
   overflow: hidden;
@@ -59,16 +65,23 @@
   letter-spacing: -0.04em;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: flex-start;
+  width: 100%;
   border: none;
   padding: 0;
   text-transform: none;
+  text-align: left;
+}
+
+.lesson-intro h3.section-title .tts-button {
+  margin-left: auto;
 }
 
 
 .lesson-intro .p-flush {
   font-size: 1.15rem;
-  color: var(--text-main); /* High contrast for intro text */
+  color: var(--text-main);
+  /* High contrast for intro text */
   max-width: 850px;
   line-height: 1.75;
   margin: 0;
@@ -82,13 +95,13 @@
 }
 
 [data-theme='dark'] .section-description {
-  color: var(--text-main); /* Ensure it's bright enough over glass backgrounds */
+  color: var(--text-main);
+  /* Ensure it's bright enough over glass backgrounds */
 }
 
 /* Light mode specific refinements */
 [data-theme='light'] .lesson-intro {
   background: rgba(255, 255, 255, 0.85);
-  border-left-width: 10px;
   box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.12);
 }
 
@@ -99,8 +112,10 @@
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--primary); /* Matching iCAD sidebar indicators */
-  text-transform: none; /* Changed from uppercase to allow Sentence Case */
+  color: var(--primary);
+  /* Matching iCAD sidebar indicators */
+  text-transform: none;
+  /* Changed from uppercase to allow Sentence Case */
   letter-spacing: 0.05em;
   margin-bottom: 2rem;
   display: flex;
@@ -111,10 +126,12 @@
 .section-title::before {
   content: '';
   width: 5px;
-  height: 1.2em; /* Proportional to font size */
+  height: 1.2em;
+  /* Proportional to font size */
   background: var(--primary);
   border-radius: 2px;
-  box-shadow: none; /* Remove neon glow for professional industrial look */
+  box-shadow: none;
+  /* Remove neon glow for professional industrial look */
 }
 
 .tool-block {
@@ -124,7 +141,8 @@
 /* --- Lesson Cards --- */
 
 .lesson-card {
-  background: #ffffff; /* Page-style background for maximum document readability */
+  background: #ffffff;
+  /* Page-style background for maximum document readability */
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: 3rem;
@@ -134,11 +152,13 @@
   box-shadow: var(--shadow-card);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  color: #1e293b; /* Dark text for light card */
+  color: #1e293b;
+  /* Dark text for light card */
 }
 
 [data-theme='dark'] .lesson-card {
-  background: #111827; /* Deep Obsidian background for high-contrast dark mode */
+  background: #111827;
+  /* Deep Obsidian background for high-contrast dark mode */
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   color: var(--text-white);
@@ -161,6 +181,54 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+/* --- Layout Utilities --- */
+
+.flex-row {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.image-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.info-box {
+  flex: 1;
+  min-width: 300px;
+  background: rgba(99, 102, 241, 0.04);
+  border-left: 4px solid var(--primary);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .info-box {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--primary);
+}
+
+.info-box p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.info-box p:last-child {
+  margin-bottom: 0;
 }
 
 /* --- Steps & Instructions --- */
@@ -200,17 +268,20 @@
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-main); /* Theme-aware fallback */
+  color: var(--text-main);
+  /* Theme-aware fallback */
 }
 
 .lesson-card .step-label {
-  color: #1e293b; /* Locked to dark for light cards */
+  color: #1e293b;
+  /* Locked to dark for light cards */
 }
 
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  background: #ffffff; /* White canvas background for document-style screenshots */
+  background: #ffffff;
+  /* White canvas background for document-style screenshots */
   padding: 1.25rem;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
@@ -228,7 +299,8 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 4px; /* Minimal padding for spacing */
+  padding: 4px;
+  /* Minimal padding for spacing */
   margin: 4px 0;
 }
 
@@ -242,18 +314,39 @@
 /* Luminescent Indigo theme specifically for Dark Mode to match Midnight Aurora aesthetics */
 [data-theme='dark'] .image-wrapper,
 [data-theme='dark'] .image-wrapper-flush {
-  background: rgba(238, 242, 255, 0.92); /* Luminescent Indigo 50 tint */
+  background: rgba(238, 242, 255, 0.92);
+  /* Luminescent Indigo 50 tint */
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.35); /* Match var(--primary) indigo */
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  /* Match var(--primary) indigo */
   box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1);
 }
-
 .software-screenshot {
   display: block;
   max-width: 100%;
   height: auto;
   border-radius: 8px;
   transition: transform 0.5s ease;
+}
+
+.software-screenshot.screenshot-small {
+  max-width: 320px !important;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+}
+
+.screenshot-medium {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+}
+
+.screenshot-wide {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
 }
 
 /* --- UX Enhancement: Progress Bar --- */
@@ -279,8 +372,13 @@
 }
 
 @keyframes shine {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
 }
 
 /* --- Navigation --- */
@@ -320,7 +418,8 @@
 
 /* --- Instruction Box & Alerts --- */
 
-.instruction-box, .alert-box {
+.instruction-box,
+.alert-box {
   background: rgba(99, 102, 241, 0.05);
   border: 1px solid rgba(99, 102, 241, 0.2);
   border-left: 5px solid var(--primary);
@@ -372,19 +471,22 @@
 
 .lesson-tabs {
   display: flex;
-  justify-content: center; /* Center the tabs */
+  justify-content: center;
+  /* Center the tabs */
   gap: 0.5rem;
   padding: 0.6rem;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 100px;
   width: fit-content;
-  margin: 0 auto 2.5rem; /* Center horizontally and add bottom spacing */
+  margin: 0 auto 2.5rem;
+  /* Center horizontally and add bottom spacing */
   backdrop-filter: blur(var(--glass-blur));
   position: sticky;
-  top: 1rem; /* Stick to top with some breathing room */
+  top: 1rem;
+  /* Stick to top with some breathing room */
   z-index: 100;
-  box-shadow: 
+  box-shadow:
     0 10px 30px -10px rgba(0, 0, 0, 0.5),
     0 0 20px var(--color-primary-glow);
   animation: fadeInDown 0.6s ease-out, pulseGlow 4s infinite alternate;
@@ -405,13 +507,25 @@
 }
 
 @keyframes pulseGlow {
-  from { box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 10px var(--color-primary-glow); }
-  to { box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 25px var(--color-primary-glow); }
+  from {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 10px var(--color-primary-glow);
+  }
+
+  to {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 25px var(--color-primary-glow);
+  }
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tab-button {
