@@ -259,13 +259,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title" style={{ textAlign: 'left', width: '10%', margin: '0' }}>
+        <h3 className="section-title" style={{ marginRight: '240px' }}>
           Creating basic shapes
         </h3>
         <p>When creating a 3D model, always start with the <strong>Front View</strong>.
         </p>
 
-        <div className="image-wrapper-flush">
+        <div className="image-wrapper-flush" style={{ width: '450px', height: 'auto' }}>
 
           <img src={threeDView} alt="3D View" className="software-screenshot screenshot-medium" />
 
@@ -280,7 +280,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div className="image-wrapper-flush">
 
-              <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" />
+              <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
             </div>
 
@@ -315,7 +315,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="image-wrapper-flush">
 
-                  <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
+                  <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
 
                 </div>
 
@@ -332,9 +332,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div className="image-wrapper-flush" style={{ width: '950px', height: '' }}>
 
-                  <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot screenshot-wide" />
+                  <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot screenshot-wide" style={{ width: '850px', height: 'auto' }} />
 
                 </div>
 
@@ -834,7 +834,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">Move, rotate, copy, mirror, delete</h3>
+        <h3 className="section-title" style={{ marginRight: '200px' }}>Move, rotate, copy, mirror, delete</h3>
 
         <div className="instruction-box">
 
