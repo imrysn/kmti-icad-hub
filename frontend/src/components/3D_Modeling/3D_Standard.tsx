@@ -130,6 +130,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className="image-wrapper-flush">
                     <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" />
                   </div>
+                  <br />
+                  <br />
                   <div className="image-wrapper-flush">
                     <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
@@ -147,6 +149,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className="image-wrapper-flush">
                     <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-wide" />
                   </div>
+                  <br />
+                  <br />
                   <div className="image-wrapper-flush">
                     <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
@@ -169,10 +173,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   </div>
                   <div className="flex-col">
                     <div className="image-wrapper-flush">
-                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" />
+                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" style={{ height: '140px' }} />
                     </div>
+                    <br />
+                    <br />
                     <div className="image-wrapper-flush">
-                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" />
+                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" style={{ height: '70px' }} />
                     </div>
                   </div>
                 </div>
@@ -184,10 +190,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
+
                   <h4 className="section-title">Gas Discharge</h4>
                 </div>
-                <p className="p">Deformation may happen due to the presence of heat and gas at time of welding. Holes added to square pipes for gas discharge. One <strong className="text-highlight">ρE Drill hole</strong> per square pipe is enough.</p>
+                <div className="step-header">
+                  <span className="step-number">1</span>
+
+                  <p className="p">Deformation may happen due to the presence of heat and gas at time of welding. Holes added to square pipes for gas discharge. One <strong className="text-highlight">ρE Drill hole</strong> per square pipe is enough.</p>
+                </div>
                 <div className="image-wrapper-flush">
                   <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot screenshot-wide" />
                 </div>
@@ -197,10 +207,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
+
                   <h4 className="section-title">Oil Groove</h4>
                 </div>
-                <p className="p">Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole.</p>
+                <div className="step-header">
+                  <span className="step-number">2</span>
+                  <p className="p">Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole.</p>
+                </div>
                 <div className="flex-row--top">
                   <ul className="interaction-list--plain">
                     <li>Follow oil way standard of KEM.</li>
@@ -217,10 +230,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
+
                   <h4 className="section-title">Sprocket</h4>
                 </div>
-                <p className="p">In 2D detail of sprocket, there is a <strong>safety color note</strong>.</p>
+                <div className="step-header">
+                  <span className="step-number">3</span>
+                  <p className="p">In 2D detail of sprocket, there is a <strong>safety color note</strong>.</p>
+                </div>
                 <div className="image-wrapper-flush">
                   <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot screenshot-wide" />
                 </div>
@@ -268,6 +284,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className="image-wrapper-flush">
                     <img src={screwStandard1} alt="Kusakabe Screw Codes 1" className="software-screenshot screenshot-wide" />
                   </div>
+                  <br />
+                  <br />
                   <div className="image-wrapper-flush">
                     <img src={screwStandard2} alt="Kusakabe Screw Codes 2 (Stainless)" className="software-screenshot screenshot-wide" />
                   </div>
@@ -284,12 +302,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <h4 className="section-title">STANDARD OF SYMBOL OF HARDWARE</h4>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={hardwareSymbolStandard} alt="Hardware Symbol Standards" className="software-screenshot screenshot-wide" />
+                  <img src={hardwareSymbolStandard} alt="Hardware Symbol Standards" className="software-screenshot screenshot-wide" style={{ height: 'auto' }} />
                 </div>
               </div>
+              <br />
+
               <div className="section-divider" />
               <div className="image-wrapper-flush">
-                <img src={boltHoleStandard} alt="Bolt Hole Diameter Standard Table" className="software-screenshot screenshot-wide" />
+                <img src={boltHoleStandard} alt="Bolt Hole Diameter Standard Table" className="software-screenshot screenshot-wide" style={{ width: '100%', height: 'auto' }} />
               </div>
             </div>
           )}
@@ -315,13 +335,15 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <span className="step-number">2</span>
                   <h4 className="section-title">BOLTING SETUP</h4>
                 </div>
-                <div className="flex-row--top">
+                <div className="flex-row--top" >
                   <div className="image-wrapper-flush">
                     <img src={pillowBlock1} alt="Pillow Block Setup" className="software-screenshot screenshot-medium" />
                   </div>
-                  <div className="image-wrapper-flush">
+                  <div className="image-wrapper-flush" style={{ marginLeft: '50px' }}>
                     <img src={pillowBlock2} alt="Flange Pillow Block 1" className="software-screenshot screenshot-medium" />
                   </div>
+                  <br />
+                  <br />
                   <div className="image-wrapper-flush">
                     <img src={pillowBlock3} alt="Flange Pillow Block 2" className="software-screenshot screenshot-medium" />
                   </div>
@@ -338,14 +360,27 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <h4 className="section-title">SLOTTED HOLE</h4>
                 </div>
                 <div className="flex-row--top">
+                  <p className="p-flush text-highlight">Case 1: Slotted + Threaded</p>
+                  <br />
+                  <p className="p-flush text-highlight">Hexagonal Bolt (HB)</p>
+                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
+                  <p className="p-flush text-highlight">Flat Washer (Hardening)</p>
                   <div className="image-wrapper-flush">
                     <img src={slottedThreaded} alt="Slotted + Threaded Case" className="software-screenshot screenshot-large" />
-                    <p className="p-flush text-highlight">Case 1: Slotted + Threaded</p>
+
                   </div>
-                  <div className="image-wrapper-flush">
-                    <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" />
-                    <p className="p-flush text-highlight">Case 2: Slotted + Drill</p>
-                  </div>
+                  <br />
+                  <br />
+                  <p className="p-flush text-highlight">Case 2: Slotted + Drill</p>
+                  <br />
+                  <p className="p-flush text-highlight">Hexagonal Bolt (HB)</p>
+                  <p className="p-flush text-highlight">Flat washer (FWH)</p>
+                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
+                  <p className="p-flush text-highlight">Hex Nut (HN1)</p>
+                </div>
+                <div className="image-wrapper-flush">
+                  <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" />
+
                 </div>
               </div>
               <div className="section-divider" />
@@ -355,13 +390,28 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <h4 className="section-title">CONNECTIONS</h4>
                 </div>
                 <div className="flex-row--top">
+                  <p className="p-flush text-highlight">Case 1: C-Channel</p>
+                  <br />
+
+                  <p className="p-flush text-highlight">Hexagonal Bolt (HB)</p>
+                  <p className="p-flush text-highlight">Taper washer (AW5)</p>
+                  <p className="p-flush text-highlight">Flat Washer (FHW) - IF SLOTTED</p>
+                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
+                  <p className="p-flush text-highlight">Hex Nut (HN1)</p>
                   <div className="image-wrapper-flush">
                     <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot screenshot-large" />
-                    <p className="p-flush text-highlight">Case 1: C-Channel</p>
+
                   </div>
+                  <br />
+                  <br />
+                  <p className="p-flush text-highlight">Case 2: Dual Drill</p>
+                  <br />
+                  <p className="p-flush text-highlight">Hex Socket Cap Screw (CS)</p>
+                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
+                  <p className="p-flush text-highlight">Hex Nut (HN1)</p>
                   <div className="image-wrapper-flush">
                     <img src={connectionBothDrill} alt="Both Drill Connection" className="software-screenshot screenshot-large" />
-                    <p className="p-flush text-highlight">Case 2: Dual Drill</p>
+
                   </div>
                 </div>
               </div>
@@ -372,18 +422,24 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
+
                   <h4 className="section-title">SGP PIPES</h4>
                 </div>
                 <div className="flex-row--top">
+
                   <div className="image-wrapper-flush">
                     <img src={sgpPipesRed} alt="SGP White (Red) Pipes" className="software-screenshot screenshot-large" />
-                    <p className="p-flush"><strong>Red = SGP White</strong> (Fluid)</p>
+
                   </div>
+                  <p className="p-flush"><strong>Red = SGP White</strong> (Fluid)</p>
+
+                  <br />
+                  <br />
                   <div className="image-wrapper-flush">
                     <img src={sgpPipesYellow} alt="SGP Black (Yellow) Pipes" className="software-screenshot screenshot-medium" />
-                    <p className="p-flush"><strong>Yellow = SGP Black</strong> (Structural)</p>
+
                   </div>
+                  <p className="p-flush"><strong>Yellow = SGP Black</strong> (Structural)</p>
                 </div>
               </div>
             </div>

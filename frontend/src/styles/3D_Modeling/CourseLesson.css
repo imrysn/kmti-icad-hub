@@ -71,7 +71,8 @@
   gap: 1.5rem;
   border: none;
   padding: 0;
-  text-transform: none; /* Already none, but ensuring consistency */
+  text-transform: none;
+  /* Already none, but ensuring consistency */
 }
 
 
@@ -110,10 +111,12 @@
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--primary); /* Matching iCAD sidebar indicators */
-  text-transform: none; /* Changed from uppercase to allow Sentence Case */
+  color: var(--primary);
+  /* Matching iCAD sidebar indicators */
+  text-transform: none;
+  /* Changed from uppercase to allow Sentence Case */
   letter-spacing: 0.05em;
-  margin-bottom: 2rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -123,10 +126,12 @@
 .section-title::before {
   content: '';
   width: 5px;
-  height: 1.2em; /* Proportional to font size */
+  height: 1.2em;
+  /* Proportional to font size */
   background: var(--primary);
   border-radius: 2px;
-  box-shadow: none; /* Remove neon glow for professional industrial look */
+  box-shadow: none;
+  /* Remove neon glow for professional industrial look */
 }
 
 .tool-block {
@@ -151,7 +156,8 @@
 }
 
 [data-theme='dark'] .lesson-card {
-  background: #111827; /* Deep Obsidian background for high-contrast dark mode */
+  background: #111827;
+  /* Deep Obsidian background for high-contrast dark mode */
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   color: var(--text-white);
@@ -244,7 +250,8 @@
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  background: #ffffff; /* White canvas background for document-style screenshots */
+  background: #ffffff;
+  /* White canvas background for document-style screenshots */
   padding: 1.25rem;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
@@ -262,7 +269,8 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 4px; /* Minimal padding for spacing */
+  padding: 4px;
+  /* Minimal padding for spacing */
   margin: 4px 0;
 }
 
@@ -276,9 +284,11 @@
 /* Luminescent Indigo theme specifically for Dark Mode to match Midnight Aurora aesthetics */
 [data-theme='dark'] .image-wrapper,
 [data-theme='dark'] .image-wrapper-flush {
-  background: rgba(238, 242, 255, 0.92); /* Luminescent Indigo 50 tint */
+  background: rgba(238, 242, 255, 0.92);
+  /* Luminescent Indigo 50 tint */
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.35); /* Match var(--primary) indigo */
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  /* Match var(--primary) indigo */
   box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1);
 }
 

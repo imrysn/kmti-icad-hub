@@ -26,8 +26,7 @@ npm run electron:dev
 # Navigate to project root
 cd C:\Users\Enduser\.gemini\antigravity\scratch\kmti-icad-hub
 
-# Activate virtual environment (if needed)
-.\backend\venv\Scripts\Activate.ps1
+# Activate virtual environment (if needed).\backend\venv\Scripts\Activate.ps1
 
 # Start backend server
 python -m uvicorn backend.main:app --reload
