@@ -103,13 +103,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             {/* a. Plate Section */}
             <div className="lesson-section">
               {" "}
-              <h4> a. Plate (L ÁEW ÁEH ÁESG) </h4>
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> a. Plate (L × W × H × SG) </h4>
+              <p>example:</p>
               <div className="flex-row">
-                <div className="flex-col">
-                  <p>example:</p>
-
-                  <img src={plateExImg} alt="Plate Weight Computation Example" />
-                </div>
+                <img src={plateExImg} alt="Plate Weight Computation Example" className="software-screenshot screenshot-small" />
 
                 <div className="info-box">
                   <p>Note:</p>
@@ -127,17 +124,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             {/* b. Cylinder Section */}
             <div className="lesson-section">
               {" "}
-              <h4>
-                {" "}
-                b. Cylinder ( π ÁEr² ÁEL ÁESG) or [ ( π ÁEd² ÁEL ÁESG) / 4
-                ]{" "}
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+                b. Cylinder ( π × r² × L × SG) or [ ( π × d² × L × SG) / 4
+                ]
               </h4>
+              <p>example:</p>
               <div className="flex-row">
-                <div className="flex-col">
-                  <p>example:</p>
-
-                  <img src={cylinderExImg} alt="Cylinder Weight Computation Example" />
-                </div>
+                <img src={cylinderExImg} alt="Cylinder Weight Computation Example" className="software-screenshot screenshot-small" />
 
                 <div className="info-box">
                   <p>Note:</p>
@@ -156,19 +149,19 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             {/* c. Shape Steel Section */}
             <div className="lesson-section">
               {" "}
-              <h4> c. Shape Steel ( Cross Sectional Area ÁEL ÁESG ) </h4>
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> c. Shape Steel ( Cross Sectional Area × L × SG ) </h4>
               <div className="flex-row">
-                <div className="flex-col">
-                  <div className="flex-col">
+                <div className="image-column">
+                  <div className="flex-col" style={{ gap: '0.5rem' }}>
                     <p>example:</p>
 
-                    <img src={shapeSteelEx1Img} alt="Shape Steel C-Channel Example" />
+                    <img src={shapeSteelEx1Img} alt="Shape Steel C-Channel Example" className="software-screenshot screenshot-small" />
                   </div>
 
-                  <div className="flex-col">
+                  <div className="flex-col" style={{ gap: '0.5rem' }}>
                     <p>example:</p>
 
-                    <img src={shapeSteelEx2Img} alt="Shape Steel Angle Bar Example" />
+                    <img src={shapeSteelEx2Img} alt="Shape Steel Angle Bar Example" className="software-screenshot screenshot-small" />
                   </div>
                 </div>
 
@@ -193,22 +186,15 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             {/* d. Square / Rectangular Pipe Section */}
             <div className="lesson-section">
               {" "}
-              <h4>
-                {" "}
-                d. Square / Rectangular Pipe ( Cross Sectional Area ÁEL ÁESG
-                ){" "}
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+                d. Square / Rectangular Pipe ( Cross Sectional Area × L × SG
+                )
               </h4>
+              <p>example:</p>
               <div className="flex-row">
-                <div className="flex-col">
-                  <p>example:</p>
+                <img src={pipeExImg} alt="Rectangular Pipe Example" className="software-screenshot screenshot-medium" />
 
-                  <img src={pipeExImg} alt="Rectangular Pipe Example" />
-                </div>
 
-                <div className="info-box">
-                  {" "}
-                  {/* Placeholder to maintain alignment */}
-                </div>
               </div>
             </div>
           </div>{" "}

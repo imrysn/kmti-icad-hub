@@ -79,26 +79,31 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
         <div className="lesson-card">
           {" "}
           {/* Header section with Toolbar */}
-          <div>
-            <div className="image-wrapper-flush">
-              <img src={imgToolbar} alt="Toolbar Menu" className="software-screenshot" />
-            </div>{" "}
-            {/* customizable position via top/left/right/bottom values */}
-            <div>
-              {" "}
+          <div style={{ position: 'relative', marginBottom: '3rem' }}>
+            <div style={{ width: '100%' }}>
+              <img src={imgToolbar} alt="Toolbar Menu" className="software-screenshot screenshot-medium" />
+            </div>
+
+            {/* Floating Info Box - Position customizable via top/bottom/left/right */}
+            <div className="info-box" style={{
+              position: 'absolute',
+              top: '55%',
+              right: '15%',
+              maxWidth: '500px',
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              backdropFilter: 'blur(10px)',
+              zIndex: 10
+            }}>
               <h4>a. Safety Color</h4>
-              <div className="red-box">
-                <p>
-                  To easily recognize that the area in which this part is
-                  located has a rotating or moving object, hence, it is an
-                  accident-prone area.
-                </p>{" "}
-                <br />
-                <p>
-                  Chain cover, gear cover, motor cover, universal joint cover
-                  and rotated parts need to be painted by yellow color (#4).
-                </p>
-              </div>
+              <p>
+                To easily recognize that the area in which this part is
+                located has a rotating or moving object, hence, it is an
+                accident-prone area.
+              </p>
+              <p style={{ marginTop: '1rem' }}>
+                Chain cover, gear cover, motor cover, universal joint cover
+                and rotated parts need to be painted by yellow color (#4).
+              </p>
             </div>
           </div>{" "}
           {/* Safety Color Procedure */}
@@ -118,26 +123,20 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
               </p>
             </div>
 
-            <div className="image-wrapper-flush">
+            <div>
               <img src={imgSafetyColor} alt="Safety color selection" className="software-screenshot" />
             </div>
           </div>{" "}
           {/* Note for Safety Color */}
-          <div>
-            {" "}
-            <span className="red-text">Note: </span>{" "}
-            <span>
-              {" "}
-              <span>
-                1. Solenoid cover, junction box cover and other cover that is
-                not stated above
-              </span>{" "}
-              <span>
-                {" "}
-                and not rotated parts should be painted by machine color.
-              </span>{" "}
-              <span>2. No need to indicate notes for machine color.</span>{" "}
-            </span>
+          <div className="info-box" style={{ marginTop: '2rem' }}>
+            <span className="red-bold">Note: </span>
+            <p style={{ marginTop: '0.5rem' }}>
+              1. Solenoid cover, junction box cover and other covers that are
+              not stated above and not rotated parts should be painted by machine color.
+            </p>
+            <p style={{ marginTop: '0.5rem' }}>
+              2. No need to indicate notes for machine color.
+            </p>
           </div>{" "}
           {/* Revision History Section */} <h4>b. Revision History</h4>
           <div className="flex-row">
@@ -162,10 +161,8 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
               <img src={imgRevHistory1} alt="Revision history selection" className="software-screenshot" />
             </div>
           </div>
-          <div className="flex-row">
-            <div className="image-wrapper-flush">
-              <img src={imgRevHistory2} alt="Revision history template" className="software-screenshot" />
-            </div>
+          <div style={{ width: '100%', marginTop: '2rem' }}>
+            <img src={imgRevHistory2} alt="Revision history template" className="software-screenshot screenshot-wide" />
           </div>
         </div>
       </div>
@@ -180,7 +177,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
           {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
         </button>
       </div>
-    </div>
+    </div >
   );
 };
 

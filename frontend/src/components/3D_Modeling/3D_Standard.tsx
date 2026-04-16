@@ -31,6 +31,7 @@ import connectionBothDrill from '../../assets/3D_Image_File/standard7_connection
 import sgpPipesRed from '../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
 import sgpPipesYellow from '../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
 
+
 interface StandardLessonProps {
   nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void;
 }

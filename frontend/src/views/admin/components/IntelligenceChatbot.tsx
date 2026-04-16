@@ -54,7 +54,7 @@ export const IntelligenceChatbot: React.FC = () => {
     const { sessions, setSessions, activeSessionId, setActiveSessionId, updateSessionMessages, deleteSession, clearAllSessions } = useChatSessions(showModal);
     const { currentlyReadingIdx, speakText } = useSpeech(forcedLanguage);
     const { selectedImages, setSelectedImages, handlePaste, removeSelectedImage } = useImagePaste(showModal);
-    
+
     const scrollToBottom = useCallback(() => {
         setTimeout(() => {
             const chatMessages = document.querySelector('.chat-messages');
@@ -250,7 +250,7 @@ export const IntelligenceChatbot: React.FC = () => {
             }));
         }
     }, [sessions, setSessions]);
-    
+
 
 
     const switchSession = useCallback((id: string) => {

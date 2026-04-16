@@ -20,7 +20,13 @@ app = FastAPI(title="KMTI iCAD Hub API")
 # Enable CORS for Electron app and dev servers
 origins = os.getenv("CORS_ORIGINS", "").split(",")
 if not origins or origins == ['']:
-    origins = ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:3000"]
+    # Fallback only for local dev if not specified
+    origins = [
+        "http://localhost:5173", 
+        "http://localhost:5174", 
+        "http://localhost:5175", 
+        "http://localhost:3000"
+    ]
 
 app.add_middleware(
     CORSMiddleware,
@@ -44,3 +50,4 @@ app.include_router(lessons.router)
 @app.get("/")
 def read_root():
     return {"message": "Welcome to KMTI iCAD Hub API"}
+

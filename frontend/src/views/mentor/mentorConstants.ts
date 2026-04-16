@@ -456,7 +456,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       { id: '2d-orthographic-1', title: 'Orthographic View (1)', content: ['third angle standards'] },
       { id: '2d-orthographic-2', title: 'Orthographic View (2)', content: ['front view definition'] },
       { id: '2d-orthographic-3', title: 'Orthographic View (3)', content: ['view alignment'] },
-      { id: '2d-orthographic-4', title: 'Orthographic View (4)', content: ['six principal views'] },
     ],
     quiz: {
       title: 'iCAD Orthographic Projection',
@@ -526,7 +525,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-dimensioning',
     title: 'Dimensioning',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-dimensioning-${i + 1}`, title: `Dimensioning (${i + 1})` })),
+    children: Array.from({ length: 5 }, (_, i) => ({ id: `2d-dimensioning-${i + 1}`, title: `Dimensioning (${i + 1})` })),
     quiz: {
       title: 'Precision 2D Dimensioning',
       description: 'Rules for accurate manufacturing communication in iCAD.',
@@ -547,7 +546,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-standard-part',
     title: 'Standard Part',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-standard-part-${i + 1}`, title: `Standard Part (${i + 1})` })),
+    children: Array.from({ length: 7 }, (_, i) => ({ id: `2d-standard-part-${i + 1}`, title: `Standard Part (${i + 1})` })),
     quiz: {
       title: 'iCAD 2D Standard Components',
       description: 'Understanding how to place and represent hardware in 2D layouts.',
@@ -567,8 +566,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   },
   {
     id: '2d-surface-app',
-    title: 'Surface Application',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Surface Application (${i + 1})` })),
+    title: 'Application of Surface',
+    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Application of Surface (${i + 1})` })),
     quiz: {
       title: 'iCAD Surface Symbols & Sectioning',
       description: 'Understanding hatching and surface representation in 2D.',
@@ -629,8 +628,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   },
   {
     id: '2d-geometric-tol',
-    title: 'Geometric Tol',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tol (${i + 1})` })),
+    title: 'Geometric Tolerance',
+    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })),
     quiz: {
       title: 'iCAD GD&T (Geometric Tolerance)',
       description: 'Understanding geometric control and datums in 2D drafting.',
@@ -711,7 +710,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-heat-treatment',
     title: 'Heat Treatment',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-heat-treatment-${i + 1}`, title: `Heat Treatment (${i + 1})` })),
+    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-heat-treatment-${i + 1}`, title: `Heat Treatment (${i + 1})` })),
     quiz: {
       title: 'Heat Treatment & Hardness',
       description: 'Understanding metallurgical instructions in CAD.',
@@ -772,7 +771,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-bom',
     title: 'BOM',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-bom-${i + 1}`, title: `BOM (${i + 1})` })),
+    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-bom-${i + 1}`, title: `BOM (${i + 1})` })),
     quiz: {
       title: 'Bill of Materials Management',
       description: 'Mastering assembly parts lists and procurement data.',
@@ -839,6 +838,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       { id: '2d-additional-view-1', title: 'Additional View (1) - Auxiliary & Partial', content: ['inclined surfaces', 'true shape projection'] },
       { id: '2d-additional-view-2', title: 'Additional View (2) - Break & Section', content: ['broken-out cutouts', 'view shortening'] },
       { id: '2d-additional-view-3', title: 'Additional View (3) - Detail & Removed', content: ['magnification', 'offset sections'] },
+      { id: '2d-additional-view-4', title: 'Additional View (4) - Trim View', content: ['view trimming', 'detail view restrictions'] },
     ],
     quiz: {
       title: 'Auxiliary & Additional Views',
@@ -859,23 +859,23 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   },
   {
     id: '2d-operal-view',
-    title: 'Operal View',
-    content: ['Operal View', 'Operation Drawing', 'manufacturing steps', 'setup dimensions', 'stock outline', 'in-process inspection', 'machining datums', 'process sequence', 'factory station guidance'],
+    title: 'Operate View',
+    content: ['Operate View', 'Operation Drawing', 'manufacturing steps', 'setup dimensions', 'stock outline', 'in-process inspection', 'machining datums', 'process sequence', 'factory station guidance'],
     children: [
-      { id: '2d-operal-view-1', title: 'Operal View (1)', content: ['setup dimensions', 'stock visualization'] },
-      { id: '2d-operal-view-2', title: 'Operal View (2)', content: ['process sequences', 'quality control'] },
+      { id: '2d-operal-view-1', title: 'Operate View (1)', content: ['setup dimensions', 'stock visualization'] },
+      { id: '2d-operal-view-2', title: 'Operate View (2)', content: ['process sequences', 'quality control'] },
     ],
     quiz: {
       title: 'Manufacturing Operation Views',
       description: 'Understanding process-specific drawing layouts.',
       questions: [
-        { id: '2ov1', text: 'What is an "Operation Drawing" (Operal View)?', options: ['A drawing for surgery', 'A drawing that shows the part state at a specific manufacturing step (e.g., after turning)', 'A final assembly', 'A 3D model'], correctAnswer: 1, explanation: 'Operation drawings guide individual factory stations.' },
+        { id: '2ov1', text: 'What is an "Operation Drawing" (Operate View)?', options: ['A drawing for surgery', 'A drawing that shows the part state at a specific manufacturing step (e.g., after turning)', 'A final assembly', 'A 3D model'], correctAnswer: 1, explanation: 'Operation drawings guide individual factory stations.' },
         { id: '2ov2', text: 'Technical: What are "Setup Dimensions"?', options: ['Final sizes', 'Dimensions required specifically for setting up the machine tool for an operation', 'Color codes', 'File paths'], correctAnswer: 1, explanation: 'Setup dimensions help the machinist position the raw stock.' },
         { id: '2ov3', text: 'Situational: A part needs to be Heat Treated then Ground. How many operation states are there?', options: ['1', '2 (Pre-heat treat and Post-heat treat/grind)', '0', '10'], correctAnswer: 1, explanation: 'Each significant process state may require its own view/control.' },
         { id: '2ov4', text: 'What does a "Stock Outline" represent in an operation view?', options: ['The final part', 'The original raw material shape (e.g., bar stock) using phantom lines', 'A box', 'A hole'], correctAnswer: 1, explanation: 'Visualizing the stock helps identify material removal zones.' },
         { id: '2ov5', text: 'Technical: What is "In-process Inspection"?', options: ['Checking the part after it is shipped', 'Measuring critical dimensions DURING the manufacturing sequence', 'Checking the computer', 'None'], correctAnswer: 1, explanation: 'Saves cost by catching errors before finishing.' },
-        { id: '2ov6', text: 'Situational: An operation requires a specific specialized jig. Is it shown in the Operal View?', options: ['Never', 'Often yes, as a light/phantom reference to show how the part is held', 'Always in 3D', 'In the notes only'], correctAnswer: 1, explanation: 'Tooling references clarify the manufacturing setup.' },
-        { id: '2ov7', text: 'Which information is prioritized in an Operal View?', options: ['Administrative data', 'The dimensions being created in THIS specific operation', 'Hidden lines', 'BOM'], correctAnswer: 1, explanation: 'Operator focus should be on their immediate task.' },
+        { id: '2ov6', text: 'Situational: An operation requires a specific specialized jig. Is it shown in the Operate View?', options: ['Never', 'Often yes, as a light/phantom reference to show how the part is held', 'Always in 3D', 'In the notes only'], correctAnswer: 1, explanation: 'Tooling references clarify the manufacturing setup.' },
+        { id: '2ov7', text: 'Which information is prioritized in an Operate View?', options: ['Administrative data', 'The dimensions being created in THIS specific operation', 'Hidden lines', 'BOM'], correctAnswer: 1, explanation: 'Operator focus should be on their immediate task.' },
         { id: '2ov8', text: 'Technical: What is a "Datum for Machining"?', options: ['The same as the design datum', 'Specific surfaces used to locate the part in a fixture', 'A date', 'A name'], correctAnswer: 1, explanation: 'Machining datums must be physically accessible during the cut.' },
         { id: '2ov9', text: 'Situational: You need to specify a turning speed for an operation. Where does it go?', options: ['In the Title Block', 'In the Operation Note or CNC instruction header', 'On the dimension', 'Nowhere'], correctAnswer: 1, explanation: 'Process parameters are operation-specific data.' },
         { id: '2ov10', text: 'True or False: Operation Drawings are often simplified versions of the final engineering drawing.', options: ['True', 'False'], correctAnswer: 0, explanation: 'Simplification reduces cognitive load for the factory floor.' }

@@ -132,16 +132,17 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   useEffect(() => {
     setShowQuiz(false);
     setTimeout(() => {
-      const tabsEl = document.querySelector('.lesson-tabs');
-      if (tabsEl) {
-        tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const scrollArea = document.querySelector('.lesson-scroll-area');
+      if (scrollArea) {
+        scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        const introEl = document.querySelector('.lesson-intro');
-        if (introEl) {
-          introEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Fallback to searching specific elements if needed
+        const tabsEl = document.querySelector('.lesson-tabs');
+        if (tabsEl) {
+          tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          const scrollContainer = document.querySelector('.main-content-viewer');
-          if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+          const introEl = document.querySelector('.lesson-intro');
+          if (introEl) introEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }
     }, 50);
@@ -221,8 +222,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   return (
     <main className="main-content-viewer">
       <div className="sticky-lesson-controls" style={{ justifyContent: 'flex-end', gap: '0.75rem' }}>
-        <button 
-          className="exit-course-btn" 
+        <button
+          className="exit-course-btn"
           style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-main)', display: 'flex', alignItems: 'center' }}
           onClick={() => setIsChatbotOpen(!isChatbotOpen)}
         >
@@ -237,139 +238,139 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       <div className="lesson-split-layout">
         <div className="lesson-scroll-area">
           <div className="lesson-header-banner">
-        <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIdsLength}</p>
-        <h2 className="lesson-banner-title">
-          {getActiveLessonTitle(lessons, activeLessonId)}
-        </h2>
-        <div className="lesson-banner-divider"></div>
-      </div>
+            <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIdsLength}</p>
+            <h2 className="lesson-banner-title">
+              {getActiveLessonTitle(lessons, activeLessonId)}
+            </h2>
+            <div className="lesson-banner-divider"></div>
+          </div>
 
-      <div className="lesson-content-body">
-          <Suspense fallback={
-            <div className="lesson-loading-fallback">
-              <div className="fallback-card">
-                <Loader2 className="animate-spin" size={48} />
-                <p>Preparing lesson modules...</p>
-              </div>
-            </div>
-          }>
-            {(() => {
-              const registry: Record<string, () => React.ReactNode> = {
-                'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'origin': () => <div className="origin-lesson-container"><OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} /></div>,
-                'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-              };
-
-              const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
-                'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'annotation': (id) => <AnnotationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-orthographic': (id) => <OrthographicViewLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-command-menu': (id) => <CommandMenuLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-line-props': (id) => <LinePropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-dimensioning': (id) => <DimensioningLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-standard-part': (id) => <StandardPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-surface-app': (id) => <SurfaceApplicationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-retaining-ring': (id) => <RetainingRingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-geometric-tol': (id) => <GeometricToleranceLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-heat-treatment': (id) => <HeatTreatmentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-bom': (id) => <BillOfMaterialLesson subLessonId={id.split('-').pop()} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-additional-view': (id) => <AdditionalViewLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-operal-view': (id) => <OperalViewLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-normal-mirror': (id) => <NormalMirrorPartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-              };
-
-              const exactMatch = activeLessonId ? registry[activeLessonId] : null;
-              if (exactMatch) return exactMatch();
-
-              const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && activeLessonId.startsWith(p + '-'));
-              if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
-
-              if (is2DDrawingCourse) {
-                switch (activeLessonId) {
-                  case '2d-keyway': return <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  case '2d-part-note': return <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  case '2d-machining-symbol': return <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  case '2d-welding-symbol': return <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  case '2d-surface-coating': return <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  case '2d-weight-computation': return <WeightComputationLesson />;
-                  case '2d-balloon': return <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  case '2d-titleblock': return <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  case '2d-revision-code': return <RevisionCodeLesson />;
-                  case '2d-standard-library': return <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                  default:
-                    return (
-                      <div className="content-2d-placeholder">
-                        <BookOpen size={48} strokeWidth={1.5} />
-                        <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
-                        <p className="content-2d-placeholder__text">Content will be available soon.</p>
-
-                        <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
-                          <button className="nav-button" onClick={goToPrevLesson}>
-                            <ChevronLeft size={18} /> Previous
-                          </button>
-                          <button className="nav-button next" onClick={handleNextAction}>
-                            {nextLabel} <ChevronRight size={18} />
-                          </button>
-                        </div>
-                      </div>
-                    );
-                }
-              }
-
-              return (
-                <div className="content-placeholder">
-                  <Video size={48} className="content-placeholder__icon" />
-                  <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
-                  <p className="content-placeholder__note">
-                    This area will host the instructional text, video demonstrations, and active testing prompts.
-                  </p>
-
-                  <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
-                    <button className="nav-button" onClick={goToPrevLesson}>
-                      <ChevronLeft size={18} /> Previous
-                    </button>
-                    <button className="nav-button next" onClick={handleNextAction}>
-                      {nextLabel} <ChevronRight size={18} />
-                    </button>
-                  </div>
+          <div className="lesson-content-body">
+            <Suspense fallback={
+              <div className="lesson-loading-fallback">
+                <div className="fallback-card">
+                  <Loader2 className="animate-spin" size={48} />
+                  <p>Preparing lesson modules...</p>
                 </div>
-              );
-            })()}
-          </Suspense>
+              </div>
+            }>
+              {(() => {
+                const registry: Record<string, () => React.ReactNode> = {
+                  'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'origin': () => <div className="origin-lesson-container"><OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} /></div>,
+                  'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                };
+
+                const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
+                  'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'annotation': (id) => <AnnotationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-orthographic': (id) => <OrthographicViewLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-command-menu': (id) => <CommandMenuLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-line-props': (id) => <LinePropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-dimensioning': (id) => <DimensioningLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-standard-part': (id) => <StandardPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-surface-app': (id) => <SurfaceApplicationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-retaining-ring': (id) => <RetainingRingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-geometric-tol': (id) => <GeometricToleranceLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-heat-treatment': (id) => <HeatTreatmentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-bom': (id) => <BillOfMaterialLesson subLessonId={id.split('-').pop()} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-additional-view': (id) => <AdditionalViewLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-operal-view': (id) => <OperalViewLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-normal-mirror': (id) => <NormalMirrorPartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                };
+
+                const exactMatch = activeLessonId ? registry[activeLessonId] : null;
+                if (exactMatch) return exactMatch();
+
+                const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && activeLessonId.startsWith(p + '-'));
+                if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
+
+                if (is2DDrawingCourse) {
+                  switch (activeLessonId) {
+                    case '2d-keyway': return <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-part-note': return <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-machining-symbol': return <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-welding-symbol': return <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-surface-coating': return <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-weight-computation': return <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-balloon': return <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-titleblock': return <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-revision-code': return <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    case '2d-standard-library': return <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    default:
+                      return (
+                        <div className="content-2d-placeholder">
+                          <BookOpen size={48} strokeWidth={1.5} />
+                          <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
+                          <p className="content-2d-placeholder__text">Content will be available soon.</p>
+
+                          <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
+                            <button className="nav-button" onClick={goToPrevLesson}>
+                              <ChevronLeft size={18} /> Previous
+                            </button>
+                            <button className="nav-button next" onClick={handleNextAction}>
+                              {nextLabel} <ChevronRight size={18} />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                  }
+                }
+
+                return (
+                  <div className="content-placeholder">
+                    <Video size={48} className="content-placeholder__icon" />
+                    <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
+                    <p className="content-placeholder__note">
+                      This area will host the instructional text, video demonstrations, and active testing prompts.
+                    </p>
+
+                    <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
+                      <button className="nav-button" onClick={goToPrevLesson}>
+                        <ChevronLeft size={18} /> Previous
+                      </button>
+                      <button className="nav-button next" onClick={handleNextAction}>
+                        {nextLabel} <ChevronRight size={18} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+            </Suspense>
 
 
-        {/* Premium Quiz Modal */}
-        {parentResult?.parent?.quiz && (
-          <QuizModal isOpen={showQuiz} onClose={() => setShowQuiz(false)}
-            quiz={parentResult.parent.quiz}
-            onComplete={handleQuizComplete}
-            onSuccessContinue={handleQuizSuccessContinue}
-          />
-        )}
-      </div>
-      
+            {/* Premium Quiz Modal */}
+            {parentResult?.parent?.quiz && (
+              <QuizModal isOpen={showQuiz} onClose={() => setShowQuiz(false)}
+                quiz={parentResult.parent.quiz}
+                onComplete={handleQuizComplete}
+                onSuccessContinue={handleQuizSuccessContinue}
+              />
+            )}
+          </div>
+
         </div> {/* End of lesson-scroll-area */}
 
         {isChatbotOpen && (
           <>
-            <div 
-              className="chatbot-resizer" 
+            <div
+              className="chatbot-resizer"
               onMouseDown={handleMouseDown}
             />
             <aside className="lesson-chatbot-sidebar" style={{ width: `${chatbotWidth}px` }}>

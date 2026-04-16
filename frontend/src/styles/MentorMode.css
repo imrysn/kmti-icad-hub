@@ -128,23 +128,29 @@
 /* ── Sidebar ─────────────────────────────────────────────────── */
 
 .course-sidebar {
-  width: 50px;
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 64px;
   /* Slim dock when collapsed */
-  opacity: 1;
   flex-shrink: 0;
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border-right: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-  z-index: 100;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease;
+  z-index: 1000;
+  box-shadow: var(--shadow-card), 0 0 40px rgba(0, 0, 0, 0.3);
 }
 
 .course-sidebar.open {
   width: 320px;
-  pointer-events: auto;
+  box-shadow: var(--shadow-card), 0 0 60px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Hover Sidebar Overrides for Inner Content ── */
@@ -206,9 +212,47 @@
 
 .sidebar-course-meta {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: -0.5rem;
   min-height: 32px;
+  gap: 1rem;
+}
+
+.sidebar-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-white);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+.sidebar-search-wrapper.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(10px);
+}
+
+.sidebar-search-wrapper.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
 }
 
 .sidebar-search-wrapper {
@@ -287,6 +331,46 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* ── Collapsed Dashboard (Dock) ──────────────────────────────── */
+
+.sidebar-collapsed-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.collapsed-zap-icon {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+}
+
+.collapsed-progress-track {
+  width: 32px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.collapsed-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.collapsed-stats-pill {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--text-white);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* ── Analytics Card Dashboard ────────────────────────────────── */
@@ -494,37 +578,114 @@
 }
 
 .lesson-item {
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  margin: 0.5rem 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  margin: 0.25rem 0.75rem;
   border: 1px solid transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.lesson-item-wrapper {
+  position: relative;
 }
 
 .lesson-item-title {
   display: flex;
   align-items: center;
-  gap: 0.875rem;
-  font-size: 0.9rem;
+  gap: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-main);
+  z-index: 2;
+}
+
+.lesson-icon-wrapper {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.lesson-icon-inner {
+  position: absolute;
+  z-index: 2;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-circle-container {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  z-index: 1;
+}
+
+.progress-circle {
+  transform: rotate(-90deg);
+}
+
+.progress-circle-bg {
+  color: transparent;
+}
+
+.progress-circle-fill {
+  transition: stroke-dashoffset 0.8s ease-in-out;
+  filter: drop-shadow(0 0 2px var(--primary));
+}
+
+.lesson-item.completed .progress-circle-fill {
+  stroke: #10b981;
+  filter: drop-shadow(0 0 2px #10b981);
 }
 
 .lesson-item:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text-white);
   transform: translateX(4px);
 }
 
 .lesson-item.active {
-  background: rgba(99, 102, 241, 0.08);
-  border-color: rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(255, 255, 255, 0.1);
   color: var(--primary);
   font-weight: 700;
+  box-shadow: inset 0 0 20px rgba(99, 102, 241, 0.05);
+}
+
+/* Aurora Glow for Active Item */
+.lesson-item.active::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, 
+    rgba(99, 102, 241, 0.15), 
+    rgba(6, 182, 212, 0.15), 
+    rgba(99, 102, 241, 0.15)
+  );
+  background-size: 200% 100%;
+  animation: auroraFlow 4s linear infinite;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+@keyframes auroraFlow {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
 [data-theme='light'] .lesson-item.active {
@@ -561,13 +722,14 @@
 }
 
 .sub-lesson-list {
-  padding-bottom: 0.5rem;
+  padding: 0.25rem 0 0.75rem 0;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .sub-lesson-item {
-  margin: 0.125rem 0.75rem 0.125rem 2.5rem;
+  margin: 0.125rem 0.75rem 0.125rem 2.8rem;
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   font-size: 0.85rem;
@@ -576,22 +738,68 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  transition: all 0.2s ease;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.sub-lesson-connector {
+  position: absolute;
+  left: -1.25rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sub-lesson-item.is-first .sub-lesson-connector {
+  top: -0.5rem;
+}
+
+.sub-lesson-item.is-last .sub-lesson-connector {
+  bottom: 50%;
+}
+
+.sub-lesson-item.active .sub-lesson-connector {
+  background: var(--secondary);
+  box-shadow: 0 0 10px var(--secondary);
 }
 
 .sub-lesson-item:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-white);
   padding-left: 1rem;
 }
 
+.sub-lesson-list.collapsed-dots {
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
 .sub-lesson-item.active {
   color: var(--secondary);
-  background: rgba(6, 182, 212, 0.05);
+  background: rgba(6, 182, 212, 0.08);
   border-color: rgba(6, 182, 212, 0.2);
-  border-left: 2px solid var(--secondary);
   font-weight: 600;
+}
+
+.sub-lesson-dot-indicator {
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.sub-lesson-item.active .sub-lesson-dot-indicator {
+  background: var(--secondary);
+  box-shadow: 0 0 8px var(--secondary);
+  transform: scale(1.3);
+}
+
+.sub-lesson-item.completed .sub-lesson-dot-indicator {
+  background: #10b981;
 }
 
 .sub-lesson-icon {
@@ -682,6 +890,12 @@
   flex: 1;
   overflow-y: auto;
   position: relative;
+  padding-left: 80px; /* Offset for the floating dock */
+  transition: padding-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.course-sidebar.open + .main-content-viewer .lesson-scroll-area {
+  padding-left: 336px;
 }
 
 .lesson-chatbot-sidebar {
@@ -723,7 +937,7 @@
 }
 
 .lesson-header-banner {
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   text-align: center;
 }
 

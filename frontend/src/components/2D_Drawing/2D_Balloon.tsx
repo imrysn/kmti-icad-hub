@@ -85,48 +85,18 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                 <img src={balloonPartMenuImg} alt="Part Balloon Menu Selection" className="software-screenshot screenshot-wide" />
               </div>
             </div>
-            <div className="flex-row">
-              <div className="flex-col">
-                <div className="info-box">
-                  <p>
-                    {" "}
-                    Select the command for part balloon. Click{" "}
-                    <strong>L1</strong> of the part that needs balloon, then{" "}
-                    <strong>P1</strong> to locate it properly.
-                  </p>
-                </div>
+            <div className="flex-col">
 
-                <div className="image-wrapper-flush">
-                  <img src={balloonPartDiagramImg} alt="Part Balloon Landmark Diagram (P1, L1)" className="software-screenshot screenshot-wide" />{" "}
-                  {/* Part Balloon Input Box Overlay */}
-                  <div>
-                    <img src={balloonPartInputImg} alt="Part Balloon Input Box" />
-                  </div>
+
+              <div className="image-wrapper-flush" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
+                <img src={balloonPartDiagramImg} alt="Part Balloon Landmark Diagram (P1, L1)" className="software-screenshot" style={{ maxWidth: '400px' }} />
+                <div className="flex-col" style={{ width: '100%', alignItems: 'center' }}>
+                  <img src={balloonPartInputImg} alt="Part Balloon Input Box" className="software-screenshot screenshot-medium" />
                 </div>
               </div>
 
-              <div className="info-box">
-                <p>
-                  {" "}
-                  A balloon will be placed where the part image is clearly
-                  shown.
-                  <br />
-                  <br /> <strong>Notes:</strong>
-                  <br /> 1. Balloons should not overlap with other lines or
-                  dimensions.
-                  <br />
-                  <br /> 2. If the details on the BOM are properly linked, part
-                  balloons are automatically displayed.
-                  <br />
-                  <br /> 3. If part balloon is not displayed, the drawing and
-                  the BOM properties is not linked. Do not manually input the
-                  letters / numbers in item entry box.
-                  <br />
-                  <br /> 4. Text should not change using edit characters.
-                </p>
-              </div>
-            </div>
-          </div>{" "}
+
+            </div>          </div>{" "}
           {/* b. Assembly drawing Section */}
           <div className={`lesson-section ${currentIndex === 1 ? "reading-active" : ""}`}>
             {" "}

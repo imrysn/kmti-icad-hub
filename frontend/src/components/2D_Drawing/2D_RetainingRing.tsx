@@ -71,12 +71,12 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          Retaining Ring{" "}
+          Retaining Ring Size and Tolerance{" "}
           {subLessonId === "2d-retaining-ring-1" ? "(1)" : "(2)"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-retaining-ring-1") speak(externalSteps);
-              else speak(internalSteps);
-            }}
+            if (subLessonId === "2d-retaining-ring-1") speak(externalSteps);
+            else speak(internalSteps);
+          }}
             onStop={stop}
           />
         </h3>

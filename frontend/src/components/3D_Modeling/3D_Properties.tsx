@@ -62,7 +62,69 @@ interface PropertiesLessonProps {
   const layerSteps = ["Step 1: Select Change Layer from the icon menu.", "Step 2: Specify the target layer number on the item entry.", "Step 3: Click on the solid entity to move it to that layer.", "Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."];
   const infoSteps = ["Step 1: Coordinates. Pick a point to display its position from the origin.", "Step 2: Length. Pick an edge and click GO to measure it.", "Step 3: Distance. Pick two points or edges to measure the gap between them.", "Step 4: Angle. Pick two edges or three points to calculate the angle.", "Step 5: Entity Info. Pick a solid and click GO to see all technical information."];
 
-  const getStepClass = (stepId: string) => "instruction-step"; const handleNext = () => { if (isProperties1) { if (activeTab === "color") setActiveTab("layer"); else if (onNextLesson) onNextLesson(); } else { if (onNextLesson) onNextLesson(); } }; const handlePrev = () => { if (isProperties1) { if (activeTab === "layer") setActiveTab("color"); else if (onPrevLesson) onPrevLesson(); } else { if (onPrevLesson) onPrevLesson(); } }; return (<div className="course-lesson-container" ref={containerRef}> {" "} {/* Sticky Progress Bar */} <div className="lesson-progress-container"> <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} /> </div> <section className="lesson-intro"> <h3 className="section-title"> PROPERTIES <ReadAloudButton isSpeaking={isSpeaking} onStart={() => { if (!isProperties1) speak(infoSteps); else if (activeTab === "color") speak(colorSteps); else speak(layerSteps); }} onStop={stop} /> </h3>{" "} {!isProperties1 && (<p className="p-flush"> {" "} Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information) </p>)}{" "} {isProperties1 && activeTab === "color" && (<div className="instruction-box"> <div className="image-wrapper-flush"> <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" /> </div> </div>)} </section> <div className="lesson-grid single-card"> <div className="lesson-card"> {" "} {isProperties1 ? (<> <div className="lesson-tabs"> {" "} <button className={`tab-button ${activeTab === "color" ? "active" : ""}`} onClick={() => setActiveTab("color")} > {" "} Change Color{" "} </button>{" "} <button className={`tab-button ${activeTab === "layer" ? "active" : ""}`} onClick={() => setActiveTab("layer")} > {" "} Change Layer{" "} </button> </div>{" "} {activeTab === "color" && (<div className="tab-pane fade-in"> <h3>CHANGE COLOR</h3> <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}> <div className="step-header"> {" "} <span className="step-number"> 1 </span>{" "} <span className="step-label"> Select{" "} <strong className="text-highlight">Change Color</strong>{" "} from the icon menu.
+  const getStepClass = (stepId: string) => "instruction-step"; const handleNext = () => { if (isProperties1) { if (activeTab === "color") setActiveTab("layer"); else if (onNextLesson) onNextLesson(); } else { if (onNextLesson) onNextLesson(); } }; const handlePrev = () => { if (isProperties1) { if (activeTab === "layer") setActiveTab("color"); else if (onPrevLesson) onPrevLesson(); } else { if (onPrevLesson) onPrevLesson(); } };   return (
+    <div className="course-lesson-container" ref={containerRef}>
+      {" "}
+      {/* Sticky Progress Bar */}
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
+
+      {isProperties1 && (
+        <div className="lesson-tabs">
+          {" "}
+          <button className={`tab-button ${activeTab === "color" ? "active" : ""}`} onClick={() => setActiveTab("color")} >
+            {" "}
+            Change Color{" "}
+          </button>{" "}
+          <button className={`tab-button ${activeTab === "layer" ? "active" : ""}`} onClick={() => setActiveTab("layer")} >
+            {" "}
+            Change Layer{" "}
+          </button>
+        </div>
+      )}
+
+      <section className="lesson-intro">
+        <h3 className="section-title">
+          Properties
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            if (!isProperties1) speak(infoSteps);
+            else if (activeTab === "color") speak(colorSteps);
+            else speak(layerSteps);
+          }} onStop={stop} />
+        </h3>{" "}
+        {!isProperties1 && (
+          <p className="p-flush">
+            {" "}
+            Displays the information about the clicked entities (coordinates, length, distance, angle, and entity information)
+          </p>
+        )}{" "}
+        {isProperties1 && activeTab === "color" && (
+          <div className="instruction-box">
+            <div className="image-wrapper-flush">
+              <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" />
+            </div>
+          </div>
+        )}
+      </section>
+
+      <div className="lesson-grid single-card">
+        <div className="lesson-card">
+          {" "}
+          {isProperties1 ? (
+            <>
+              {" "}
+              {activeTab === "color" && (
+                <div className="tab-pane fade-in">
+                  <h3 className="section-title">Change color</h3>
+                  <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+                    <div className="step-header">
+                      {" "}
+                      <span className="step-number"> 1 </span>{" "}
+                      <span className="step-label">
+                        Select{" "}
+                        <strong className="text-highlight">Change Color</strong>{" "}
+                        from the icon menu.
   </span>
   </div>
 
@@ -145,7 +207,7 @@ interface PropertiesLessonProps {
   )}{" "}
     {activeTab === "layer" && (
       <div className="tab-pane fade-in">
-        <h3>CHANGE LAYER</h3>
+        <h3 className="section-title">Change layer</h3>
 
         <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
           <div className="step-header">
@@ -198,7 +260,7 @@ interface PropertiesLessonProps {
 
         <div className="section-divider"></div>
 
-        <h3>LAYER DESIGNATION OF 3D PARTS</h3>
+        <h3 className="section-title">Layer designation of 3D parts</h3>
 
         <div className="tool-block">
           {" "}
@@ -333,7 +395,7 @@ interface PropertiesLessonProps {
   </>
   ) : (
     <div className="fade-in">
-      <h3>INFORMATION</h3>
+      <h3 className="section-title">Information</h3>
 
       <div className="tool-block">
         <div className="flex-row-wrap">

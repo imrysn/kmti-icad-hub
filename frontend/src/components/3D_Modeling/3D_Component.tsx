@@ -54,6 +54,9 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
+      <div className="lesson-tabs">
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+      </div>
       <section className="lesson-intro">
         <h3 className="section-title" style={{ marginRight: '375px' }}>Move/copy/delete component</h3>
         <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
@@ -63,9 +66,6 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content">
-          <div className="lesson-tabs">
-            {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
-          </div>
           <div className="tab-content-area">
             {activeTab === 'move' && (
               <div className="fade-in">
@@ -167,6 +167,9 @@ const Component2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
+      <div className="lesson-tabs">
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+      </div>
       <section className="lesson-intro">
         <h3 className="section-title" style={{ marginRight: '330px' }}>Repeat copy / Delete component</h3>
         <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
@@ -176,9 +179,6 @@ const Component2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content">
-          <div className="lesson-tabs">
-            {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
-          </div>
           <div className="tab-content-area">
             {activeTab === 'repeat' && (
               <div className="fade-in">

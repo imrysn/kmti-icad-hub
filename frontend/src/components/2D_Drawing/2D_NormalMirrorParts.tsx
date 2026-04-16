@@ -6,15 +6,7 @@ import { useTTS } from "../../hooks/useTTS";
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Import images */
 
-import img1 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_1.jpg";
-
-import img2 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_2.jpg";
-
-import img3 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_3.jpg";
-
-import img4 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_4.jpg";
-
-import img5 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_5.jpg";
+import img2 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_2.png";
 
 import imgA1 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(2)_a_1.png";
 
@@ -83,12 +75,11 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          22. Normal and
-          Mirror parts
+          22. Normal and Mirror parts
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-normal-mirror-1") speak(mirror1Steps);
-              else speak(mirror2Steps);
-            }}
+            if (subLessonId === "2d-normal-mirror-1") speak(mirror1Steps);
+            else speak(mirror2Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -143,94 +134,14 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
               </div>{" "}
               {/* Main Grid Content */}
               <div className="mirror-grid-layout">
-                {" "}
                 {/* Upper Left & Upper Right Row */}
                 <div className="mirror-row flex-top">
                   <div className="mirror-col left-col">
-                    <div className="image-wrapper-flush">
-                      <img src={img4} alt="Detailing 1" className="software-screenshot screenshot-wide" />
-                    </div>
-
-                    <div className="red-box">
-                      <p>
-                        1. Detail the first drawing, for example RTXXXXXXA01.
-                      </p>
-
-                      <p>
-                        2. Proceed to checking and editing of check back until
-                        finalized the part.
-                      </p>
-                    </div>
-
-                    <div className="image-wrapper-bordered">
-                      <img src={img3} alt="Isometric 2" className="software-screenshot screenshot-small" />
-                    </div>
                   </div>
 
                   <div className="mirror-col right-col">
-                    <div className="image-wrapper-bordered">
-                      <img src={img1} alt="Isometric 1" className="software-screenshot screenshot-wide" />
-                    </div>
-
-                    <div className="flex-row">
-                      <div className="red-box">
-                        <p>
-                          3. Save as RTXXXXXXA01 to RTXXXXXXB01.
-                          <br />
-                          Replace part if it is already existed.
-                        </p>
-
-                        <p>
-                          4. Properly mirror the part using mirror icon.
-                          <br />
-                          Edit properties and part dimension affected by mirror
-                          process.{" "}
-                          <span className="red-text small-text">
-                            ※※※ procedures on 3D modeling
-                          </span>
-                        </p>
-
-                        <p>5. Proceed on editing 2D detailing.</p>
-                      </div>
-
-                      <div className="image-wrapper-flush toolbar-img-wrapper">
-                        <img src={img2} alt="Toolbar" className="software-screenshot toolbar" />
-                      </div>
-                    </div>
-                  </div>
-                </div>{" "}
-                {/* Bottom Row */}
-                <div className="mirror-row flex-top">
-                  <div className="mirror-col left-col flex-row">
-                    <div className="red-box flex-1">
-                      <p>
-                        6. View inside the box need to mirror, the reference is
-                        in origin same as what we do in 3D modeling.{" "}
-                        <span className="red-text small-text">※※※ page 40</span>
-                      </p>
-
-                      <p>
-                        7. Encircled view is right side view. Mirror it and
-                        change ownership to left side view.{" "}
-                        <span className="red-text small-text">※※※ page 40</span>
-                      </p>
-
-                      <p>
-                        8. Update isometric view, switch user view as needed.{" "}
-                        <span className="red-text small-text">※※※ page 34</span>
-                      </p>
-
-                      <p>
-                        9. Insert new title block to update the drawing number
-                        on template.{" "}
-                        <span className="red-text small-text">※※※ page 33</span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mirror-col right-col">
-                    <div className="image-wrapper-flush">
-                      <img src={img5} alt="Detailing 2" className="software-screenshot screenshot-wide" />
+                    <div className="image-wrapper-flush toolbar-img-wrapper" style={{ width: '100%' }}>
+                      <img src={img2} alt="Toolbar" className="software-screenshot toolbar screenshot-wide" />
                     </div>
                   </div>
                 </div>
@@ -243,14 +154,12 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                 <h4>Mirror Command on detailing</h4>
               </div>
 
-              <div className="flex-row">
-                <div className="image-wrapper-flush">
-                  <img src={imgA1} alt="Mirror Command Menu" className="software-screenshot" />
-                </div>
+              <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                <img src={imgA1} alt="Mirror Command Menu" className="software-screenshot screenshot-wide" />
               </div>
 
-              <div className="flex-row">
-                <img src={imgA2} alt="Mirroring result" />
+              <div className="image-wrapper-bordered" style={{ width: '100%', marginTop: '1.5rem' }}>
+                <img src={imgA2} alt="Mirroring result" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           ) : (

@@ -97,8 +97,6 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
             {/* Section Arrow and Sample Drawing */}
             <div className="flex-col">
               <div>
-                {" "}
-                <MoveDown size={40} color="red" strokeWidth={3} />
               </div>
 
               <div className="image-wrapper-flush">
@@ -106,7 +104,7 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
               </div>
 
               <div>
-                <p>
+                <p style={{ marginTop: "1rem" }}>
                   {" "}
                   Note: Machining symbol with open & close parenthesis indicates
                   that the part must be machined before welding. Machining after
@@ -118,7 +116,7 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
             {/* a. Machining Surface Condition */}
             <div className="lesson-section">
               {" "}
-              <h4> a. Machining Surface Condition </h4>
+              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> a. Machining Surface Condition </h4>
               <div className="image-wrapper-flush">
                 <img src={machiningSurfaceCondImg} alt="Machining Surface Condition Reference Table" className="software-screenshot screenshot-wide" />
               </div>

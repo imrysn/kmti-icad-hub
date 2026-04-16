@@ -36,7 +36,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
   subLessonId = "2d-command-menu-1",
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  
+
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -85,7 +85,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     };
   }, [subLessonId]);
 
-  
+
 
   const getStepClass = (stepId: string) => "instruction-step";
   return (
@@ -98,14 +98,14 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
       <section className="lesson-intro">
         <h3 className="section-title">
           {" "}
-          
+
           {subLessonId === "2d-command-menu-1"
             ? "COMMAND MENU (1)"
             : "COMMAND MENU (2)"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              if (subLessonId === "2d-command-menu-1") speak(commandMenu1Steps);
-              else speak(commandMenu2Steps);
-            }}
+            if (subLessonId === "2d-command-menu-1") speak(commandMenu1Steps);
+            else speak(commandMenu2Steps);
+          }}
             onStop={stop}
           />
         </h3>
@@ -126,7 +126,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     2
                   </span>{" "}
                   <span className="step-label">
@@ -158,44 +158,20 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                   </div>
                 </div>
               </div>
-              <div className="section-divider-sm"></div>{" "}
-              {/* Section 2b: Essential Tools */}
-              <div className={`${getStepClass("cm1-2b")} ${currentIndex === 1 ? "reading-active" : ""}`}>
-                <div className="step-header">
-                  {" "}
-                  <span className="step-number">
-                    
-                    b
-                  </span>{" "}
-                  <span className="step-label">ESSENTIAL TOOLS (TRIM & OFFSET)</span>
-                </div>
-                <div className="step-description">
-                  <div className="info-box">
-                    <p className="p-flush">
-                      The 2D Command Menu provides rapid access to critical editing tools:
-                    </p>
-                    <ul>
-                      <li><strong>Trim:</strong> Used to cut or delete overlapping segments of lines at their intersections.</li>
-                      <li><strong>Offset:</strong> Creates a parallel copy of a line, arc, or circle at a specified distance.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="section-divider"></div>{" "}
               {/* Section 3: Command Menu */}
               <div className={`${getStepClass("cm1-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     3
                   </span>{" "}
                   <span className="step-label">
                     {" "}
-                    <strong>Command Menu</strong> ↁEDuring 2D detailing, command
-                    menu is more effective to use rather than icon menu.{" "}
+                    <strong>Command Menu</strong>{" "}
                   </span>
                 </div>
+                <p style={{ fontStyle: "italic" }}>During 2D detailing, command menu is more effective to use rather than icon menu.</p>
 
                 <div className="step-description">
                   <div className="flex-col">
@@ -218,7 +194,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     3
                   </span>{" "}
                   <span className="step-label">Active View</span>
@@ -245,7 +221,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
-                    
+
                     4
                   </span>{" "}
                   <span className="step-label">
@@ -259,31 +235,22 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                       <div className="image-wrapper-flush">
                         <img src={componentHighlighted1Img} alt="Chamfer line appearing too close" className="software-screenshot screenshot-large" />
                       </div>
-
-                      <div className="info-box">
-                        <p className="p-flush">
-                          <i>
-                            NOTE: The process of removing the chamfer is per
-                            orthographic view.
-                          </i>
-                        </p>
-                      </div>
                     </div>
 
                     <div className="flex-1">
                       <div className="info-box">
-                        <p className="p-flush">
+                        <p className="p-flush" style={{ marginTop: "1rem" }}>
                           As shown, chamfer line appear in the drawing. It shows
                           that it is too close to the object line.
                         </p>
 
-                        <p className="p-flush">
+                        <p className="p-flush" style={{ marginTop: "0rem", marginBottom: "0rem" }}>
                           It may cause offsetting of line selection upon
                           dimensioning, and during printing, these lines may
                           appear much thicker than the others.
                         </p>
 
-                        <p className="p-flush">
+                        <p className="p-flush" style={{ marginBottom: "1rem", fontStyle: "italic" }}>
                           This chamfer line can be removed.
                         </p>
                       </div>
@@ -291,6 +258,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                       <div className="image-wrapper-flush">
                         <img src={componentHighlighted2Img} alt="Properties for removing chamfer" className="software-screenshot screenshot-wide" />
                       </div>
+                      <p style={{ marginTop: "1rem", fontStyle: "italic" }}>Note: The process of removing the chamfer is per orthographic view.</p>
                     </div>
                   </div>
                 </div>

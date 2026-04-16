@@ -145,8 +145,8 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="section-divider"></div>
               {/* c. Section */}
               <div className="lesson-section">
-                <div className="flex-row">
-                  <div> c</div>
+                <div className="flex-col">
+                  <div> c </div>
                 </div>
 
                 <div className="flex-col">
@@ -162,8 +162,8 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {" "}
               {/* d. Excel operations for parts */}
               <div className="lesson-section">
-                <div className="flex-row">
-                  <div> d</div>
+                <div className="flex-col">
+                  <div> d </div>
                 </div>
 
                 <div className="flex-col">
@@ -171,17 +171,15 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                     <img src={bomPartDrawingDImg} alt="Detailed Excel Operations for Parts and Single Part Configuration" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
 
-                  <div className="flex-row">
-                    <div className="info-box">
-                      <p>Note:</p>
+                  <div className="info-box">
+                    <p>Note:</p>
 
-                      <p>
-                        {" "}
-                        Material weight and finish weight must be in 2 decimal
-                        places, but for some special cases, 3 decimal places is
-                        acceptable.
-                      </p>
-                    </div>
+                    <p>
+                      {" "}
+                      Material weight and finish weight must be in 2 decimal
+                      places, but for some special cases, 3 decimal places is
+                      acceptable.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -190,47 +188,9 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="lesson-section">
                 {" "}
                 <h4> b. Assembly drawing </h4>
-                <div className="info-box">
-                  <p>
-                    {" "}
-                    BOM of assembly drawing divides into three groups.
-                    <br /> 1. Fabricated and Machine Parts
-                    <br /> 2. Mechanical / Purchase parts
-                    <br /> 3. Hardwares
-                  </p>
-                </div>
                 <div className="flex-row">
                   <div className="flex-col">
                     <img src={bomAssemblyDrawingImg} alt="Assembly BOM Excel with Grouping Callouts" className="software-screenshot screenshot-wide" />
-                  </div>
-
-                  <div className="info-box">
-                    <p>
-                      {" "}
-                      1. Excel will appear.
-                      <br />
-                      <br /> 2. Rearrange the excel data from;
-                      <br /> &nbsp;&nbsp;&nbsp;a. Drawing number of parts
-                      arranged successively
-                      <br /> &nbsp;&nbsp;&nbsp;b. Purchased parts
-                      <br /> &nbsp;&nbsp;&nbsp;c. Hardware (HS, BS, CS, SS, SP,
-                      HN, FW, SW)
-                      <br />
-                      <br /> 3. Click 'delete abbreviation' button to delete
-                      hardware codes.
-                      <br />
-                      <br /> 4. Click 'sum the parts' button to combine quantity
-                      of same parts.
-                      <br />
-                      <br /> 5. Purchase parts must indicate the maker in
-                      English.
-                      <br />
-                      <br /> 6. Hardwares arrange in decreasing order.
-                      <br />
-                      <br /> 7. In terms of assembly detail, use number for part
-                      balloon. Also, there must be a gap of 20 numbers in
-                      between the three groups.
-                    </p>
                   </div>
                 </div>
               </div>
@@ -252,15 +212,13 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <section className="lesson-section">
                 <h3> 17. Additional Information</h3>
 
-                <div className="flex-row">
-                  <div className="flex-col">
-                    <div className="image-wrapper-flush">
-                      <img src={bomAdditionalInfoImg} alt="Additional Information Excel and Menu Configuration" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
-                    </div>
+                <div className="flex-col">
+                  <div className="image-wrapper-flush">
+                    <img src={bomAdditionalInfoImg} alt="Additional Information Excel and Menu Configuration" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
+                  </div>
 
-                    <div className="info-box">
-                      <p> NOTE: Columns with green color can not be changed.</p>
-                    </div>
+                  <div className="info-box">
+                    <p> NOTE: Columns with green color can not be changed.</p>
                   </div>
                 </div>
               </section>
@@ -273,10 +231,8 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="lesson-section">
                 {" "}
                 <h4> Bill of Material after inserting on ICAD data </h4>
-                <div className="flex-row">
-                  <div className="image-wrapper-flush">
-                    <img src={bomAfterInsertImg} alt="BOM Entry with Text Overflow Case" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
-                  </div>
+                <div className="image-wrapper-flush">
+                  <img src={bomAfterInsertImg} alt="BOM Entry with Text Overflow Case" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                 </div>
               </div>{" "}
               {/* Edit Attribute Section */}
@@ -289,15 +245,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                   </div>
                 </div>{" "}
                 {/* Step-by-step editing process */}
-                <div className="flex-row">
-                  <div className="info-box">
-                    <p>
-                      {" "}
-                      1. Apply selected command above.
-                      <br /> 2. Click the text that need to edit (P1).
-                    </p>
-                  </div>
-
+                <div>
                   <div className="image-wrapper-flush">
                     <img src={bomEditAttr2Img} alt="Selecting Text Row to Edit (P1)" className="software-screenshot screenshot-wide" />
                   </div>
@@ -305,15 +253,6 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 <div className="flex-col">
                   <div className="image-wrapper-flush">
                     <img src={bomEditAttr3Img} alt="Change Attribute Dialog and Final Result" className="software-screenshot screenshot-wide" />
-                  </div>
-
-                  <div className="info-box">
-                    <p>
-                      {" "}
-                      3. The Change Attribute dialog box will appear.
-                      <br /> 4. Edit width and interval ratio.
-                      <br /> 5. Click "OK".
-                    </p>
                   </div>
                 </div>
               </div>

@@ -41,6 +41,7 @@ export interface TokenResponse {
 // 401 handling, token injection, and base URL config are all in one place.
 const authApi = axios.create({
     baseURL: API_BASE_URL,
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
     },

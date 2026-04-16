@@ -82,6 +82,17 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <div className="lesson-tabs">
+        <button className={`tab-button ${activeTab === "projections" ? "active" : ""}`} onClick={() => setActiveTab("projections")}
+        >
+          Origin
+        </button>
+        <button className={`tab-button ${activeTab === "layout" ? "active" : ""}`} onClick={() => setActiveTab("layout")}
+        >
+          Change 3D Part Layout
+        </button>
+      </div>
+
       <section className="lesson-intro">
         <h3 className="section-title">
           <span>Origin Control</span>
@@ -96,16 +107,6 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content">
-          <div className="lesson-tabs">
-            <button className={`tab-button ${activeTab === "projections" ? "active" : ""}`} onClick={() => setActiveTab("projections")}
-            >
-              Origin
-            </button>
-            <button className={`tab-button ${activeTab === "layout" ? "active" : ""}`} onClick={() => setActiveTab("layout")}
-            >
-              Change 3D Part Layout
-            </button>
-          </div>
 
           <div className="tab-content-area">
             {activeTab === "projections" ? (
