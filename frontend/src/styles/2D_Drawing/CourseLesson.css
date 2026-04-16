@@ -448,23 +448,53 @@
 }
 
 /* --- Image Size Manipulation Utilities --- */
-.img-small { max-width: 300px !important; width: 100%; height: auto; }
-.img-medium { max-width: 600px !important; width: 100%; height: auto; }
-.img-large { max-width: 900px !important; width: 100%; height: auto; }
-.img-full { width: 100% !important; height: auto; }
-.img-bleed { 
-  width: calc(100% + 6rem) !important; 
-  max-width: none !important; 
-  margin-left: -3rem; 
-  margin-right: -3rem; 
+.img-small {
+  max-width: 300px !important;
+  width: 100%;
+  height: auto;
+}
+
+.img-medium {
+  max-width: 600px !important;
+  width: 100%;
+  height: auto;
+}
+
+.img-large {
+  max-width: 900px !important;
+  width: 100%;
+  height: auto;
+}
+
+.img-full {
+  width: 100% !important;
+  height: auto;
+}
+
+.img-bleed {
+  width: calc(100% + 6rem) !important;
+  max-width: none !important;
+  margin-left: -3rem;
+  margin-right: -3rem;
   border-radius: 0;
 }
 
 /* Percentage widths */
-.w-25 { width: 25% !important; }
-.w-50 { width: 50% !important; }
-.w-75 { width: 75% !important; }
-.w-100 { width: 100% !important; }
+.w-25 {
+  width: 25% !important;
+}
+
+.w-50 {
+  width: 50% !important;
+}
+
+.w-75 {
+  width: 75% !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
 
 /* --- Highlighting for Reading --- */
 .instruction-step.reading-active {
