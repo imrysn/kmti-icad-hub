@@ -127,7 +127,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
         <h3 className="section-title">Boolean operations</h3>
         <div className="instruction-box">
           <div className="image-wrapper-flush">
-            <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot screenshot-small" />
+            <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot screenshot-small" style={{ height: '190px' }} />
           </div>
         </div>
       </section>
@@ -149,7 +149,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select <strong className="text-highlight">Union</strong> from the menu.</span>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" style={{ height: '190px' }} />
                   </div>
                 </div>
 
@@ -158,7 +158,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-number">2</span>
                     <span className="step-label">
                       Select all 3D entities for joining &gt; <strong className="text-highlight">GO</strong>
-                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '30px', verticalAlign: 'middle', margin: '0 4px' }} />
                     </span>
                   </div>
                   <div className="image-wrapper-flush">
