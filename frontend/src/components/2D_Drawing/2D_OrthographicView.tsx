@@ -7,13 +7,13 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 // --- Assets ---
 import drawingTemplateImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_1.png";
 import createViewImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_a.png";
+
 import scalingImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_b.png";
-import hiddenLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_c.2.jpg";
-import hiddenLineResultImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_c.png";
-import tangentLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_d.2.jpg";
-import tangentLineResultImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_d.png";
-import highPrecisionDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(3)_e1.jpg";
-import highPrecisionResultImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(3)_e.png";
+import hiddenLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_c.2.png";
+import tangentLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_d.2.png";
+
+import highPrecisionDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(3)_e1.png";
+
 
 interface OrthographicViewLessonProps {
   nextLabel?: string;
@@ -22,10 +22,7 @@ interface OrthographicViewLessonProps {
   onPrevLesson?: () => void;
 }
 
-/**
- * OrthographicViewLesson component for 2D Drawing curriculum.
- * Refactored to use useLessonCore hook for centralized logic.
- */
+
 const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
   subLessonId = "2d-orthographic-1",
   onNextLesson,
@@ -95,12 +92,11 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                   <span className="step-label">INSERTING DRAWING TEMPLATE</span>
                 </div>
                 <div className="step-description">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={drawingTemplateImg} alt="Inserting Drawing Template" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
-              <div className="section-divider" />
 
               <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
@@ -108,7 +104,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                   <span className="step-label">CREATING ORTHOGRAPHIC VIEW / DELETE VIEWS</span>
                 </div>
                 <div className="step-description">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={createViewImg} alt="Creating Orthographic Views" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
@@ -124,11 +120,11 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                 <div className="step-description">
                   <p className="p-flush">Set the scale of selected view. When changing the scale, take note to always use the Projection Properties.</p>
                   <p className="p-flush"><em>Do not change the scale on the tool bar because the dimensions and notes will not update according to the set scale.</em></p>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide" />
                   </div>
-                  <div className="info-box">
-                    <p className="p-flush">Note: When changing the scale of a standard view, other standard views also change the scale. <br /> Cross section view and detail view need to chnage the scale separately.</p>
+                  <div className="info-box" style={{ marginTop: "2rem" }}>
+                    <p className="p-flush red-text">Note: When changing the scale of a standard view, other standard views also change the scale. <br /> Cross section view and detail view need to chnage the scale separately.</p>
                   </div>
                 </div>
               </div>
@@ -145,12 +141,9 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="annotation-pointing-box">
-                      <p className="p-flush">The hidden line is not automatically shown when orthographic view was inserted. It can be shown through the Projection Properties.</p>
+                      <p style={{ marginBottom: "1rem" }}>The hidden line is not automatically shown when orthographic view was inserted. It can be shown through the Projection Properties.</p>
                     </div>
-                    <img src={hiddenLineDialogImg} alt="Hidden Line Dialog" className="software-screenshot screenshot-small" />
-                    <div className="flex-1">
-                      <img src={hiddenLineResultImg} alt="Hidden Line Result" className="software-screenshot screenshot-large" />
-                    </div>
+                    <img src={hiddenLineDialogImg} alt="Hidden Line Dialog" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -165,12 +158,9 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="annotation-pointing-box">
-                      <p className="p-flush">Shows and hides lines from fillets of a view. The tangent lines from chamfers are shown automatically during insertion of orthographic view.</p>
+                      <p className="p-flush" style={{ marginBottom: "1rem" }}>Shows and hides lines from fillets of a view. The tangent lines from chamfers are shown automatically during insertion of orthographic view.</p>
                     </div>
-                    <img src={tangentLineDialogImg} alt="Tangent Line Dialog" className="software-screenshot screenshot-small" />
-                    <div className="flex-1">
-                      <img src={tangentLineResultImg} alt="Tangent Line Result" className="software-screenshot screenshot-wide" />
-                    </div>
+                    <img src={tangentLineDialogImg} alt="Tangent Line Dialog" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -187,11 +177,10 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="annotation-pointing-box">
-                      <p className="p-flush">Used for better projection of small components or parts on a part or assembly. When High precision is unchecked, some lines in the detail drawing are broken and some lines are missing. This is commonly used on assembly drawings but can also be used for parts, if necessary.</p>
+                      <p className="p-flush" style={{ marginBottom: "1rem" }}>Used for better projection of small components or parts on a part or assembly. When High precision is unchecked, some lines in the detail drawing are broken and some lines are missing. This is commonly used on assembly drawings but can also be used for parts, if necessary.</p>
                     </div>
-                    <img src={highPrecisionDialogImg} alt="High Precision Dialog" className="software-screenshot screenshot-small" />
-                    <div className="flex-1">
-                      <img src={highPrecisionResultImg} alt="High Precision Result" className="software-screenshot screenshot-large" />
+                    <div>
+                      <img src={highPrecisionDialogImg} alt="High Precision Dialog" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>

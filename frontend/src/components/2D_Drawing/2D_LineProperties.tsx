@@ -9,40 +9,30 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 import linePropertiesImg from "../../assets/2D_Image_File/2D_line_properties_(1).png";
 /* Section 5 UI/Notes */
 
-import linePropertiesTableImg from "../../assets/2D_Image_File/2D_line_properties_(1)_1.png";
 /* Section 5 Table */
 /* Importing assets for Line Properties (2) */
 
-import colorDialogImg from "../../assets/2D_Image_File/2D_line_properties_(2)_6_changing_line_color.jpg";
+import colorDialogImg from "../../assets/2D_Image_File/2D_line_properties_(2)_6_changing_line_color.png";
 /* Section 6 - Dialog */
 
-import colorComparisonImg from "../../assets/2D_Image_File/2D_line_properties_(2)_6_changing_line_color_1.png";
-/* Section 6 - Comparison */
-
-import splineMenuImg from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline.png";
+import splineMenuImg from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline1.png";
 /* Section 7 - Menu */
 
-import splineControlImg from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline_wave_and_curve.png";
-/* Section 7 - Control */
+import splineMenuImg1 from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline.png";
+/* Section 7 - Menu */
+
 
 import splineResultImg from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline_spline.png";
 /* Section 7 - Result */
 /* Importing assets for Line Properties (3) */
 
-import centerLineOffsetControlImg from "../../assets/2D_Image_File/2D_line_properties_(3)_b_center_line_2.jpg";
 
-import centerLineL1L2Img from "../../assets/2D_Image_File/2D_line_properties_(3)_b_center_line_3.png";
+import pipingDialogImg from "../../assets/2D_Image_File/2D_line_properties_(3)_c_piping_center_line_1.png";
 
-import holeOffsetDialogImg from "../../assets/2D_Image_File/2D_line_properties_(3)_b_center_line_4.png";
 
-import pipingDialogImg from "../../assets/2D_Image_File/2D_line_properties_(3)_c_piping_center_line_1.jpg";
-
-import pipingComparisonImg from "../../assets/2D_Image_File/2D_line_properties_(3)_c_piping_center_line.png";
 /* Importing assets for Line Properties (4) */
 
 import hierarchicalPartsImg from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_1.png";
-
-import hierarchicalDialogImg from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_2.jpg";
 
 import hierarchicalResultsImg from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_3.png";
 
@@ -165,14 +155,180 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="flex-1">
-                      <div className="image-wrapper-flush">
+                      <div style={{ marginTop: "1rem" }}>
                         <img src={linePropertiesImg} alt="Line Properties Interface and Notes" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
                   </div>
 
-                  <div className="image-wrapper-flush">
-                    <img src={linePropertiesTableImg} alt="Uniform Line Specifications" className="software-screenshot" />
+                  <div className="lesson-table-container">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Application</th>
+                          <th>Line Type</th>
+                          <th>Line Weight</th>
+                          <th>Thickness</th>
+                          <th>Color</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Actual Line</td>
+                          <td>Continuous Line</td>
+                          <td>Thick</td>
+                          <td>0.4mm</td>
+                          <td>White (1)</td>
+                        </tr>
+                        <tr>
+                          <td>Hidden Line</td>
+                          <td>Broken Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Center Line</td>
+                          <td>Single Dot</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Cyan (7)</td>
+                        </tr>
+                        <tr>
+                          <td>Phantom Line</td>
+                          <td>Double Dot Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Arrow / Machine Flow</td>
+                          <td>Continuous Line</td>
+                          <td>Thick</td>
+                          <td>0.4mm</td>
+                          <td>White (1)</td>
+                        </tr>
+                        <tr>
+                          <td>Welding Hatch</td>
+                          <td>Continuous Line</td>
+                          <td>Middle</td>
+                          <td>0.2mm</td>
+                          <td>Pink (6)</td>
+                        </tr>
+                        <tr>
+                          <td>Scribe Line</td>
+                          <td>Continuous Line</td>
+                          <td>Thick</td>
+                          <td>0.4mm</td>
+                          <td>White (1)</td>
+                        </tr>
+                        <tr>
+                          <td>Floor Level</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Spline / Cutting Line</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Additional Information / Table</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Detail View Indicator</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Text / Letter</td>
+                          <td>=</td>
+                          <td>Thin</td>
+                          <td>0.15mm</td>
+                          <td>Yellow (4)</td>
+                        </tr>
+                        <tr>
+                          <td>Machining Symbol</td>
+                          <td>=</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Red (2)</td>
+                        </tr>
+                        <tr>
+                          <td>Revised Old Data / Dimension</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Red (2)</td>
+                        </tr>
+                        <tr>
+                          <td>Cutted part (Hatch)</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Red (2)</td>
+                        </tr>
+                        <tr>
+                          <td>Revision Cloud</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Red (2)</td>
+                        </tr>
+                        <tr>
+                          <td>Pipe Reference Drawing</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Pipe End Reference Line</td>
+                          <td>Continuous Line</td>
+                          <td>Thin</td>
+                          <td>0.2mm</td>
+                          <td>Green (3)</td>
+                        </tr>
+                        <tr>
+                          <td>Scale Line</td>
+                          <td>Continuous Line</td>
+                          <td>Middle</td>
+                          <td>0.1mm</td>
+                          <td>SkinColor (15)</td>
+                        </tr>
+                        <tr>
+                          <td>Surface Treatment / Condition</td>
+                          <td>Single Dot Line</td>
+                          <td>Middle</td>
+                          <td>0.2mm</td>
+                          <td>SkinColor (15)</td>
+                        </tr>
+                        <tr>
+                          <td>Surface Without Welding Appearance</td>
+                          <td>Single Dot Line</td>
+                          <td>Middle</td>
+                          <td>0.2mm</td>
+                          <td>SkinColor (15)</td>
+                        </tr>
+                        <tr>
+                          <td>Same Level</td>
+                          <td>Single Dot Line</td>
+                          <td>Thin</td>
+                          <td>0.1mm</td>
+                          <td>Cyan (7)</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>{" "}
@@ -198,13 +354,10 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-col">
                     <div className="flex-row--top">
-                      <div>
+                      <div style={{ marginBottom: "-2rem" }}>
                         <img src={colorDialogImg} alt="Color Dialog" className="software-screenshot" />
                       </div>
                     </div>
-                  </div>
-                  <div className="image-wrapper-flush">
-                    <img src={colorComparisonImg} alt="Color Comparison" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -229,41 +382,23 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     </p>
 
                     <div className="flex-row--top">
-                      <div>
+                      <div style={{ marginBottom: "2rem" }}>
                         <img src={splineMenuImg} alt="Spline Menu Navigation" className="software-screenshot screenshot-wide" />
                       </div>
 
                       <div className="flex-1">
-                        <div className="info-box">
-                          <p className="p-flush">
-                            Apply all the selected commands shown in the picture
-                            to perform the spline
-                          </p>
-                        </div>
 
-                        <div className="info-box">
-                          <p className="p-flush" style={{ marginTop: "1rem" }}>
-                            Number of wave and curve distance displayed in item
-                            entry box. It can change according to the desired
-                            value.
-                          </p>
-                        </div>
-
-                        <div className="image-wrapper-flush">
-                          <img src={splineControlImg} alt="Spline Control" className="software-screenshot screenshot-wide" />
-                        </div>
                       </div>
                     </div>
 
-                    <div className="info-box">
-                      <p className="p-flush">
+                    <div>
+                      <p>
                         Spline is used to replace lines when partial section is
                         done on the drawing.
                       </p>
-
-                      <div className="image-wrapper-flush" /* sanitized: marginTop: '1.5rem' */>
-                        <img src={splineResultImg} alt="Spline Result" className="software-screenshot screenshot-wide" />
-                      </div>
+                    </div>
+                    <div>
+                      <img src={splineResultImg} alt="Spline Result" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
@@ -292,73 +427,30 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     </p>
 
                     <div className="flex-row--top">
-                      <div>
-                        <img src={splineMenuImg} alt="Center Line Menu" className="software-screenshot screenshot-wide" />
-                      </div>
-
-                      <div className="flex-col">
-                        <div className="info-box">
-                          <p className="p-flush">
-                            Apply all the selected command shown in the picture
-                            to perform the center line.
-                          </p>
-                        </div>
-
-                        <div className="flex-col">
-                          <div className="info-box">
-                            <p className="p-flush">
-                              Offset line display in item entry box. It can
-                              change according to the desired value.
-                            </p>
-                          </div>
-
-                          <img src={centerLineOffsetControlImg} alt="Offset Control" className="software-screenshot screenshot-medium" />
-                        </div>
+                      <div className="image-overlay-container" style={{ position: "relative" }}>
+                        <img src={splineMenuImg1} alt="Center Line Menu" className="software-screenshot screenshot-wide" />
                       </div>
                     </div>
 
-                    <div className="info-box">
-                      <p className="p-flush">
-                        After selecting all the necessary commands and put
-                        desired value in item entry box, click L1 and L2.
+                    <div className="info-box" style={{
+                      position: "absolute",
+                      top: "53.5rem",
+                      right: "45px",
+                      width: "430px",
+                      height: "170px",
+                      zIndex: 1,
+                      boxShadow: "var(--shadow-lg)"
+                    }}>
+                      <p className="p-flush red-text">
+                        <strong>Note:</strong> Be careful when choosing which line will be picked first because the center line is always base on L1. <br />
+                        The standard properties for centerline are already applied of this command is used.
                       </p>
-                    </div>
-
-                    <div className="image-wrapper-flush">
-                      <img src={centerLineL1L2Img} alt="L1 L2 Center Line Process" className="software-screenshot screenshot-wide" />
-                    </div>
-
-                    <div className="flex-col">
-                      <div className="flex-row--top">
-                        <div className="info-box">
-                          <p className="p-flush">
-                            In case of the offset line for the holes from
-                            machine tools, it can be set from the projection
-                            properties.
-                          </p>
-                        </div>
-
-                        <div className="info-box">
-                          <p className="p-flush" style={{ fontStyle: "italic", marginTop: "1rem" }}>
-                            Note: Be careful when choosing which line will be
-                            picked first because the center is always base on
-                            L1.
-                          </p>
-
-                          <p className="p-flush">
-                            The standard properties for centerline are already
-                            applied if this command is used.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="image-wrapper-flush">
-                        <img src={holeOffsetDialogImg} alt="Hole Offset Dialog" className="software-screenshot screenshot-large" />
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+
 
               {/* Section c: Piping Center Line */}
               <div className={`${getStepClass("lp3-c")} ${currentIndex === 1 ? "reading-active" : ""}`}>
@@ -380,11 +472,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     </p>
 
                     <div className="flex-row--top">
-                      <img src={pipingDialogImg} alt="Piping Center Line Dialog" className="software-screenshot screenshot-small" />
-                    </div>
-
-                    <div className="image-wrapper-flush">
-                      <img src={pipingComparisonImg} alt="Piping Center Line Comparison" className="software-screenshot screenshot-medium" />
+                      <img src={pipingDialogImg} alt="Piping Center Line Dialog" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
@@ -416,18 +504,14 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                     <div className="flex-row--top">
                       <div className="flex-1">
-                        <div className="image-wrapper-flush">
+                        <div style={{ marginBottom: "2rem" }}>
                           <img src={hierarchicalPartsImg} alt="Hierarchical Parts Selection" className="software-screenshot screenshot-wide" />
                         </div>
                       </div>
-
-
-
-                      <img src={hierarchicalDialogImg} alt="Hierarchical Parts Selection Detail" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
 
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={hierarchicalResultsImg} alt="Hierarchical Results and Icons" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
