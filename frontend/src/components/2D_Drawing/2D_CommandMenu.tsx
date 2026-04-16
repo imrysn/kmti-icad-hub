@@ -19,11 +19,10 @@ import commandMenu2Img from "../../assets/2D_Image_File/2D_command_menu_(1)_comm
 import activeViewImg from "../../assets/2D_Image_File/2D_command_menu_(2)_active_view.png";
 /* Section 3 */
 
-import componentHighlighted1Img from "../../assets/2D_Image_File/2D_command_menu_(2)_component_highlighled_1.png";
+import componentHighlighted1Img from "../../assets/2D_Image_File/2D_command_menu_(3)_component_highlighled_1.png";
 /* Section 4 - Part 1 */
 
-import componentHighlighted2Img from "../../assets/2D_Image_File/2D_command_menu_(2)_component_highlighled_2.png";
-/* Section 4 - Part 2 */
+
 
 interface CommandMenuLessonProps {
   nextLabel?: string;
@@ -136,30 +135,40 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
                 <div className="step-description">
                   <div className="flex-col">
-                    <div className="image-wrapper-flush">
+                    {/* Relative container to allow absolute positioning of the info-box over the image */}
+                    <div className="image-overlay-container" style={{ position: "relative" }}>
                       <img src={selectableLineImg} alt="Selectable Line Properties" className="software-screenshot screenshot-wide" />
-                    </div>
 
-                    <div className="info-box">
-                      <p className="p-flush">
-                        All line type, line weight, and color are selectable
-                        when system is started.
-                      </p>
 
-                      <p className="p-flush">
-                        Click on the entities to select and unselect line
-                        properties.
-                      </p>
+                      <div className="info-box" style={{
+                        position: "absolute",
+                        top: "285px",
+                        right: "1px",
+                        width: "510px",
+                        margin: 0,
+                        zIndex: 10,
+                        boxShadow: "var(--shadow-lg)"
+                      }}>
+                        <p className="p-flush">
+                          All line type, line weight, and color are selectable
+                          when system is started.
+                        </p>
 
-                      <div className="flex-row-center">
-                        <div> Entities highlighted in blue are selectables</div>
+                        <p className="p-flush">
+                          Click on the entities to select and unselect line
+                          properties.
+                        </p>
+
+                        <div className="flex-row-center">
+                          <div className="blue-bold">Entities highlighted in blue are selectables</div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               {/* Section 3: Command Menu */}
-              <div className={`${getStepClass("cm1-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("cm1-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: "3rem" }}>
                 <div className="step-header">
                   {" "}
                   <span className="step-number">
@@ -171,15 +180,15 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                     <strong>Command Menu</strong>{" "}
                   </span>
                 </div>
-                <p style={{ fontStyle: "italic" }}>During 2D detailing, command menu is more effective to use rather than icon menu.</p>
+                <p>During 2D detailing, command menu is more effective to use rather than icon menu.</p>
 
                 <div className="step-description">
                   <div className="flex-col">
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={commandMenu1Img} alt="Command Menu - Basic Tools" className="software-screenshot screenshot-wide" />
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={commandMenu2Img} alt="Command Menu - Advanced Tools" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
@@ -210,7 +219,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                       command will be performed.
                     </p>
 
-                    <div className="image-wrapper-flush">
+                    <div style={{ marginBottom: "-2rem" }}>
                       <img src={activeViewImg} alt="Active View and Local View" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
@@ -232,37 +241,20 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                 <div className="step-description">
                   <div className="flex-row--top">
                     <div className="flex-1">
-                      <div className="image-wrapper-flush">
+                      <div>
                         <img src={componentHighlighted1Img} alt="Chamfer line appearing too close" className="software-screenshot screenshot-large" />
                       </div>
                     </div>
-
-                    <div className="flex-1">
-                      <div className="info-box">
-                        <p className="p-flush" style={{ marginTop: "1rem" }}>
-                          As shown, chamfer line appear in the drawing. It shows
-                          that it is too close to the object line.
-                        </p>
-
-                        <p className="p-flush" style={{ marginTop: "0rem", marginBottom: "0rem" }}>
-                          It may cause offsetting of line selection upon
-                          dimensioning, and during printing, these lines may
-                          appear much thicker than the others.
-                        </p>
-
-                        <p className="p-flush" style={{ marginBottom: "1rem", fontStyle: "italic" }}>
-                          This chamfer line can be removed.
-                        </p>
-                      </div>
-
-                      <div className="image-wrapper-flush">
-                        <img src={componentHighlighted2Img} alt="Properties for removing chamfer" className="software-screenshot screenshot-wide" />
-                      </div>
-                      <p style={{ marginTop: "1rem", fontStyle: "italic" }}>Note: The process of removing the chamfer is per orthographic view.</p>
-                    </div>
                   </div>
+
                 </div>
-              </div>{" "}
+                <div className="info-box" style={{ marginTop: "1rem" }}>
+                  <p className="p-flush red-text">Note: The process of removing the chamfer is per orthographic view.</p>
+                </div>
+              </div>
+
+
+
             </>
           ) : (
             <p>
