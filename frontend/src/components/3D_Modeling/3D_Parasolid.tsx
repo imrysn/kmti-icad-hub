@@ -68,7 +68,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
             <p className="p-flush">Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.</p>
             <div className="instruction-box">
               <div className="image-wrapper">
-                <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" />
+                <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ height: '290px' }} />
               </div>
             </div>
           </>
@@ -86,7 +86,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" />
+                  <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '230px' }} />
                 </div>
               </div>
 
@@ -126,7 +126,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
                 </div>
                 <div className="image-wrapper-flush">
-                  <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" />
+                  <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                 </div>
               </div>
 
@@ -150,7 +150,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
                 <p className="p-flush">Check the message pane to see if the process is successful</p>
                 <div className="image-wrapper-flush">
-                  <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" />
+                  <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" style={{ height: '45px' }} />
                 </div>
               </div>
 
@@ -179,10 +179,10 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     <li><strong>3.)</strong> Enter the comment for the specific part &gt; Press OK</li>
                   </ul>
                   <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-                    <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
+                    <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" style={{ height: '300px' }} />
                   </div>
                   <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
-                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" />
+                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" style={{ height: '400px', width: '700px' }} />
                   </div>
                 </div>
               </div>

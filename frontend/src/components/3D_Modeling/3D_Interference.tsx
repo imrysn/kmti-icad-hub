@@ -59,7 +59,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
         <p className="step-label">These following tools are used to detect interferences on the 3D Modeling.</p>
         <div className="instruction-box">
           <div className="image-wrapper-flush">
-            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" />
+            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ height: '385px' }} />
           </div>
         </div>
       </section>
@@ -77,7 +77,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
             <div className="step-description">
               <div className="image-wrapper-flush">
-                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" />
+                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" style={{ height: '200px' }} />
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
             <div className="step-description">
               <div className="image-wrapper-flush">
-                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" />
+                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" style={{ height: '280px' }} />
               </div>
             </div>
           </div>
@@ -131,7 +131,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
           <div className="instruction-box">
             <p className="step-label"><strong>Tool use to display the list of all detected interferences.</strong></p>
             <div className="image-wrapper-flush">
-              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" />
+              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
             </div>
           </div>
 

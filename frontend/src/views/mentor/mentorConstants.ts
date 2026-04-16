@@ -567,7 +567,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-surface-app',
     title: 'Application of Surface',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Application of Surface(${i + 1})` })),
+    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Application of Surface (${i + 1})` })),
     quiz: {
       title: 'iCAD Surface Symbols & Sectioning',
       description: 'Understanding hatching and surface representation in 2D.',
@@ -629,7 +629,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-geometric-tol',
     title: 'Geometric Tolerance',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })),
+    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })),
     quiz: {
       title: 'iCAD GD&T (Geometric Tolerance)',
       description: 'Understanding geometric control and datums in 2D drafting.',

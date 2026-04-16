@@ -28,7 +28,7 @@ interface FairingLessonProps {
 
 const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<'chamfer' | 'fillet' | 'shell'>('chamfer');
-  
+
   const {
     scrollProgress,
     containerRef,
@@ -84,7 +84,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          Fairing
+          FAIRING
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             if (activeTab === 'chamfer') speak(chamferSteps);
             else if (activeTab === 'fillet') speak(filletSteps);
@@ -146,7 +146,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
                 <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title">Result</h4>
+                  <h4 className="section-title">RESULT</h4>
                   <div className="flex-row-center--wrap">
                     <div className="image-wrapper-flush">
                       <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-large" />
@@ -197,7 +197,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
                 <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title">Result</h4>
+                  <h4 className="section-title">RESULT</h4>
                   <div className="flex-row-center--wrap">
                     <div className="image-wrapper-flush">
                       <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" />
@@ -251,7 +251,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
                 <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title">Result</h4>
+                  <h4 className="section-title">RESULT</h4>
                   <div className="flex-row-center--wrap">
                     <div className="image-wrapper-flush">
                       <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" />

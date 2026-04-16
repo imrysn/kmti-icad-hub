@@ -71,7 +71,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
   ];
 
   const getStepClass = (stepId: string) => "instruction-step";
-  
+
   const tabs1 = [
     { id: "union", label: "Union" },
     { id: "subtract", label: "Subtract" },
@@ -149,7 +149,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select <strong className="text-highlight">Union</strong> from the menu.</span>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" />
+                    <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
                 </div>
 
@@ -189,7 +189,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select <strong className="text-highlight">Subtract</strong> from the icon menu.</span>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot screenshot-small" />
+                    <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
                 </div>
 
@@ -231,8 +231,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <p className="p-flush">This subtract tool will retain the tool entities after subtraction.</p>
                   <div className="flex-row-center--wrap">
                     <div className="image-wrapper-flush">
-                      <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot screenshot-small" />
+                      <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                     </div>
+                    <br />
+                    <br />
+                    <br />
                     <div className="image-wrapper-flush">
                       <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-large" />
                     </div>
@@ -268,7 +271,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select <strong className="text-highlight">Intersect</strong> from the menu.</span>
                   </div>
                   <div className="image-wrapper-flush">
-                    <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot screenshot-small" />
+                    <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
                 </div>
 
@@ -306,7 +309,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <div className="info-box">
                   <p className="p-flush"><strong className="text-highlight">Component:</strong> By-product of boolean operations (entities joined by union, cutout, holes)</p>
                   <div className="image-wrapper-flush">
-                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" />
+                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
                 </div>
 
@@ -327,11 +330,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </div>
 
                   <div className="flex-row-center--wrap">
-                    <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" />
+                    <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '250px' }} />
+                    <br />
+                    <br />
                     <img src={componentSeparated} alt="Separated Result" className="software-screenshot screenshot-medium" />
                   </div>
+                  <br />
                   <div className="image-wrapper-flush" style={{ marginTop: '1rem' }}>
-                    <img src={componentSeparate} alt="Separate All Components Icon" className="software-screenshot screenshot-small" />
+                    <img src={componentSeparate} alt="Separate All Components Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
                 </div>
 
@@ -368,7 +374,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     </div>
 
                     <div className="flex-row-center--wrap">
-                      <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" />
+                      <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '250px' }} />
+                      <br />
+                      <br />
                       <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>

@@ -50,6 +50,7 @@ import itemEntryBox from '../../assets/3D_Image_File/basic_operation1_item_entry
 
 import boxResult from '../../assets/3D_Image_File/box.png';
 
+
 import arrangePolygon from '../../assets/3D_Image_File/basic_operation1_arrange_polygon_prism.png';
 
 import polygonResult from '../../assets/3D_Image_File/polygon.png';
@@ -258,8 +259,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">Creating basic shapes</h3>
-
+        <h3 className="section-title" style={{ textAlign: 'left', width: '10%', margin: '0' }}>
+          Creating basic shapes
+        </h3>
         <p>When creating a 3D model, always start with the <strong>Front View</strong>.
         </p>
 
@@ -1463,7 +1465,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               </div>
 
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+              <div className="step-description" /* sanitized: paddingLeft: '2.rem' */>
 
                 <div className="flex-row-wrap">
 
@@ -1533,7 +1535,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                           <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                         </div>
-
+                        <br />
+                        <br />
                         <div className="image-wrapper-flush">
                           <br />
                           <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
@@ -1765,23 +1768,23 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   <div className="flex-1">
 
-                    <div className="image-wrapper-flush">
+                    <div className="image-wrapper-">
 
-                      <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" style={{ width: '280px', height: 'auto' }} />
-                      <br />
-                      <p className="step-label"> 1. Select Hide Unselected Entity From the icon menu.</p>
-                      <span className="step-label">2. Select all entities to be retain GO
 
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-
-                      </span>
-
-                      <p className="step-label">All unselected entities will be hidden</p>
                     </div>
+                    <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" style={{ width: '280px', height: 'auto' }} />
+                    <br />
+                    <p className="step-label"> 1. Select Hide Unselected Entity From the icon menu.</p>
+                    <span className="step-label">2. Select all entities to be retain GO
 
-                    <div className="image-wrapper-flush">
+                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
 
+                    </span>
 
+                    <p className="step-label">All unselected entities will be hidden</p>
+                    <div className="image-wrapper-">
+
+                      <br />
 
                     </div>
 
@@ -1870,10 +1873,12 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                     <div className="image-wrapper-flush">
 
-                      <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" />
+                      <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" style={{ width: '900px', height: 'auto' }} />
 
                     </div>
-
+                    <br />
+                    <br />
+                    <br />
                   </div>
 
                 </div>
@@ -1891,8 +1896,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
             <div className="section-divider">
             </div>
 
-            <div className="tool-block"> <h4 className="section-title">Or</h4>
+            <div className="tool-block"> <h4 className=""></h4>
 
+              <div className="tool-block" style={{ display: 'flex', alignItems: 'center' }}>
+                <h4 className="section-title" style={{ marginRight: '16px' }}>Or</h4>
+                {/* The rest of your content (the vertical line/input) goes here */}
+
+              </div>
               <div className="instruction-step">
 
                 <div className="step-header"> <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong>
@@ -1985,6 +1995,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                     <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
                   </div>
+                  <br />
+                  <br />
                   <br />
                   <div className="image-wrapper-flush">
                     <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" />

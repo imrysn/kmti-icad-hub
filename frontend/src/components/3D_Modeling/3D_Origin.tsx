@@ -112,6 +112,9 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
             {activeTab === "projections" ? (
               <div className="tab-pane">
                 <p className={currentIndex === 0 ? "reading-active p-highlight" : "p"}>
+                  ORIGIN
+                </p>
+                <p className={currentIndex === 0 ? "reading-active p-highlight" : "p"}>
                   A point where the coordinates of the X, Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity.
                 </p>
                 <p className={currentIndex === 1 ? "reading-active p-highlight" : "p"}>
@@ -124,10 +127,10 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
             ) : (
               <div className="tab-pane">
                 <div className="card-header">
-                  <h4>Change 3D Part Layout Tool</h4>
+                  <h4>Change 3D Part Layout </h4>
                 </div>
-
                 <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
+                  <h3>Use this tool to set the location of origin</h3>
                   <div className="step-header">
                     <span className="step-number">1</span>
                     <span className="step-label">Select <strong>Change 3D Part Layout</strong> from the icon menu.</span>

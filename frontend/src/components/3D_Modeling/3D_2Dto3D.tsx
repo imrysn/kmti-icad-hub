@@ -31,7 +31,7 @@ import spiralItemEntry from "../../assets/3D_Image_File/2d_3d_2_spiral_form_item
 import spiralPitch from "../../assets/3D_Image_File/2d_3d_2_spiral_form_pitch.png";
 import spiralRotation1 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation1.png";
 import spiralRotation from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation.png";
-import spiralRotation2 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation2.jpg";
+import spiralRotation2 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation2.png";
 
 interface SubLessonProps {
   onNextLesson?: () => void;
@@ -100,7 +100,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 /* ── 2D > 3D (2) ── */
 const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"commandMenu">("commandMenu");
-  
+
   const {
     scrollProgress,
     containerRef,
@@ -217,10 +217,17 @@ const TwoDTo3D3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <p className="p-flush-bottom"> Creates a 3D spiral form from a section form created on a 2D sketch. </p>
             <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}> <div className="step-header"> <span className="step-number"> 1 </span> <span className="step-label">First do the sketch.</span> </div> <div className="step-description"> <div className="image-wrapper-flush"> <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" /> </div> </div> </div>
             <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}> <div className="step-header"> <span className="step-number"> 2 </span> <span className="step-label"> Select <strong className="text-highlight">Spiral Form</strong> from the icon menu </span> </div> <div className="step-description"> <div className="image-wrapper-flush"> <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} /> </div> <p className="text-caption"> Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO </p> </div> </div>
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}> <div className="step-header"> <span className="step-number"> 3 </span> <span className="step-label"> Specify the pitch of the spiral on the item entry &gt; Press &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> </span> </div> <div className="step-description"> <p className="p-flush"> *Note: Pitch must be greater than Thickness </p> <div className="flex-row-center--wrap"> <div className="image-wrapper-flush"> <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-large" /> </div> <div className="image-wrapper-flush"> <img src={spiralPitch} alt="Spiral Pitch Diagram" className="software-screenshot screenshot-medium" /> </div> </div> </div> </div>
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}> <div className="step-header"> <span className="step-number"> 3 </span> <span className="step-label"> Specify the pitch of the spiral on the item entry &gt; Press &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> </span> </div> <div className="step-description"> <p className="p-flush"> *Note: Pitch must be greater than Thickness </p> <div className="flex-row-center--wrap"> <div className="image-wrapper-flush"> <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-large" style={{ height: '110px' }} /> </div>
+              <br />
+              <br />
+              <br />
+              <div className="image-wrapper-flush"> <img src={spiralPitch} alt="Spiral Pitch Diagram" className="software-screenshot screenshot-medium" /> </div> </div> </div> </div>
             <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}> <div className="step-header"> <span className="step-number"> 4 </span> <span className="step-label"> Select the ends of the length of the spiral along the axis of rotation. Then <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> </span> </div> <div className="step-description"> <div className="image-wrapper-flush"> <img src={spiralRotation1} alt="Spiral Axis 1" className="software-screenshot screenshot-medium" /> </div> </div> </div>
             <div className="section-divider"></div>
-            <div className="tool-block"> <h4 className="section-title">RESULT</h4> <div className="flex-row-center--wrap"> <ArrowRight size={20} color="var(--primary-red)" /> <div className="image-wrapper-flush"> <img src={spiralRotation} alt="Spiral Axis" className="software-screenshot screenshot-medium" /> </div> <ArrowRight size={20} color="var(--primary-red)" /> <div className="image-wrapper-flush"> <img src={spiralRotation2} alt="Spiral Result" className="software-screenshot screenshot-medium" /> </div> </div> </div>
+            <div className="tool-block" > <h4 className="section-title" style={{ marginRight: '790px' }}>RESULT</h4>
+              <div className="flex-row-center--wrap"> <ArrowRight size={20} color="var(--primary-red)" />
+                <div className="image-wrapper-flush"> <img src={spiralRotation} alt="Spiral Axis" className="software-screenshot screenshot-medium" /> </div> <ArrowRight size={20} color="var(--primary-red)" />
+              </div> </div>
             <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}> <ChevronLeft size={18} /> Previous </button> <button className="nav-button next" onClick={onNextLesson}> {nextLabel || 'Next Lesson'} <ChevronRight size={18} /> </button> </div>
           </div>
         )}
