@@ -117,20 +117,16 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 {" "}
                 <h4> a. Cross Section View </h4>
                 {/* Steps 1-4 */}
-                <div className="flex-row">
-                  <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img src={additionalView1Img1} alt="Cross Section View Steps 1-4" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                  <img src={additionalView1Img1} alt="Cross Section View Steps 1-4" className="software-screenshot screenshot-wide" />
                 </div>{" "}
                 {/* Step 6 and Dialog Box Content */}
-                <div className="flex-row">
-                  <div className="image-wrapper-flush">
-                    <img src={additionalView1Img2} alt="Cross Section View Dialog and Steps 5-6" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                  <img src={additionalView1Img2} alt="Cross Section View Dialog and Steps 5-6" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
               {/* Footer Note */}
-              <div>
+              <div className="info-box">
                 <p>
                   {" "}
                   Note: The text height of the section name should be the same
@@ -151,10 +147,8 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     - use to make a cross-section of a part partially
                   </span>{" "}
                 </h4>
-                <div className="flex-row">
-                  <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img src={additionalView2ImgB} alt="Partial Section Operations" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                  <img src={additionalView2ImgB} alt="Partial Section Operations" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
               {/* c. Detail Drawing Section */}
@@ -168,10 +162,8 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     view.
                   </span>{" "}
                 </h4>
-                <div className="flex-row">
-                  <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img src={additionalView2ImgC} alt="Detail Drawing Procedure" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                  <img src={additionalView2ImgC} alt="Detail Drawing Procedure" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>
@@ -182,10 +174,8 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
               <div id="isometric-view">
                 {" "}
                 <h4> d. Isometric View </h4>
-                <div className="flex-row">
-                  <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img src={additionalView3ImgD} alt="Isometric View Steps" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                  <img src={additionalView3ImgD} alt="Isometric View Steps" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
               {/* e. Cross-sectional depth Section */}
@@ -199,10 +189,8 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                   can set the cross-sectional depth to eliminate the unnecessary
                   parts.
                 </p>
-                <div className="flex-row">
-                  <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img src={additionalView3ImgE} alt="Cross-sectional depth Steps" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                  <img src={additionalView3ImgE} alt="Cross-sectional depth Steps" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>
@@ -220,10 +208,8 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     certain view. This can not be applied on Detail Drawing.
                   </span>{" "}
                 </h4>
-                <div className="flex-row">
-                  <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img src={additionalView4ImgF} alt="Trim View Steps" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                  <img src={additionalView4ImgF} alt="Trim View Steps" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>

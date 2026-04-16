@@ -89,17 +89,17 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
         <div className="lesson-card">
           {" "}
           {/* Main Top Image */}
-          <div className="flex-row">
-            <img src={img1} alt="Revision Code and History" className="software-screenshot" />
+          <div style={{ width: '100%' }}>
+            <img src={img1} alt="Revision Code and History" className="software-screenshot screenshot-wide" />
           </div>{" "}
           {/* Sub-section A */} <h4>a. Revised detail</h4>
-          <div className="flex-row">
-            <div className="image-wrapper-flush">
-              <img src={imgA1} alt="Revised Detail Menu" className="software-screenshot" />
+          <div className="flex-row" style={{ gridTemplateColumns: '1fr 1fr' }}>
+            <div>
+              <img src={imgA1} alt="Revised Detail Menu" className="software-screenshot screenshot-wide" />
             </div>
 
-            <div className="flex-col">
-              <img src={imgA2} alt="Delta input" className="software-screenshot" />
+            <div>
+              <img src={imgA2} alt="Delta input" className="software-screenshot screenshot-medium" />
             </div>
           </div>{" "}
           {/* Sub-section A - Bottom Row */}
@@ -119,15 +119,13 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
               </p>
             </div>
 
-            <div className="image-wrapper-flush">
+            <div>
               <img src={imgA3} alt="Delta symbol placement" className="software-screenshot" />
             </div>
           </div>{" "}
           {/* Sub-section B */} <h4>b. Revision Code</h4>
-          <div className="flex-row">
-            <div className="image-wrapper-flush">
-              <img src={imgB} alt="Revision Code Bottom" className="software-screenshot" />
-            </div>
+          <div style={{ width: '100%' }}>
+            <img src={imgB} alt="Revision Code Bottom" className="software-screenshot screenshot-wide" />
           </div>
         </div>
       </div>

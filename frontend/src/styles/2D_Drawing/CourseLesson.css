@@ -568,3 +568,18 @@
   background: rgba(99, 102, 241, 0.05);
   color: var(--primary);
 }
+
+/* --- Highlight Text Styles --- */
+.red-bold {
+  color: var(--color-error);
+  font-weight: 800;
+}
+
+.red-text {
+  color: var(--color-error);
+}
+
+.small-text {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
