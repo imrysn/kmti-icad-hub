@@ -125,7 +125,7 @@
 
 .section-title::before {
   content: '';
-  width: 5px;
+  width: 0px;
   height: 1.2em;
   /* Proportional to font size */
   background: var(--primary);
