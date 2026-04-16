@@ -340,11 +340,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className="image-wrapper-flush">
                     <img src={pillowBlock1} alt="Pillow Block Setup" className="software-screenshot screenshot-medium" />
                   </div>
-                  <div className="image-wrapper-flush" style={{ marginLeft: '50px' }}>
+                  <br />
+                  <div className="image-wrapper-flush" >
                     <img src={pillowBlock2} alt="Flange Pillow Block 1" className="software-screenshot screenshot-medium" />
                   </div>
                   <br />
-                  <br />
+
                   <div className="image-wrapper-flush">
                     <img src={pillowBlock3} alt="Flange Pillow Block 2" className="software-screenshot screenshot-medium" />
                   </div>
