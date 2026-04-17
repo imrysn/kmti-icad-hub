@@ -51,12 +51,11 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="tab-pane fade-in">
-            <div>
+            <div className="image-wrapper-flush">
               <img
                 src={isPart1 ? purchasePartsFlowchart : uploadingFlowchart}
                 alt={isPart1 ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
                 className="software-screenshot screenshot-wide"
-                style={{ height: '830px', width: '700px', marginLeft: '100px' }}
               />
             </div>
           </div>
