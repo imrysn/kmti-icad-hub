@@ -188,13 +188,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {/* d. PCD Section */}
               <div className="sub-section-container">
                 {" "}
-                <h4>
-                  {" "}
-                  <strong>d. PCD</strong> (Pitch Center Diameter) is no longer
-                  used for KEMCO drawing to avoid misreading of dimension during
-                  fabrication.{" "}
-                </h4>
-                <div className="image-wrapper-flush">
+                <h4>  d. PCD  </h4>
+                <p className="p-flush" style={{ marginBottom: "1rem" }}>
+                  (Pitch Center Diameter) is no longer used for KEMCO drawing to avoid misreading of dimension during fabrication.
+                </p>
+                <div>
                   <img src={pcdImg} alt="PCD Dimension Comparison" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -203,10 +201,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               <div className="sub-section-container">
                 {" "}
                 <h4>e. Tapered Thread (Rc)</h4>
-                <p className="p-flush">
+                <p className="p-flush" style={{ marginBottom: "1rem" }}>
                   Based on the drawing, we must apply it on 2D detailing
                 </p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={taperedThreadImg} alt="Tapered Thread 2D Detailing" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -215,11 +213,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               <div className="sub-section-container">
                 {" "}
                 <h4>f. Standard Parts</h4>
-                <p className="p-flush">
+                <p className="p-flush" style={{ marginBottom: "1rem" }}>
                   Boxed portion of the template is the only data need to be
                   input, other than that no detail will be change.
                 </p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={standardPartDetailImg} alt="Standard Parts Template details" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -235,14 +233,14 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   Is a groove in the surface of a machine part that distributes
                   lubricating oil injected through an oil hole
                 </p>
-                <div className="info-box" style={{ marginTop: "1rem", marginBottom: "0.5rem" }}>
-                  <p>※ There are two (2) kinds of oil groove</p>
+                <div style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>
+                  <p className="red-text"><strong>※ There are two (2) kinds of oil groove</strong></p>
                 </div>{" "}
                 {/* 1. For Flat Surface */}
                 <div className="sub-section-container">
                   {" "}
                   <h4 style={{ marginBottom: "0.2rem" }}>1. For Flat Surface</h4>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={oilGroove1Img} alt="Oil Groove - Flat Surface Detail and Example" className="software-screenshot screenshot-wide" />
                   </div>{" "}
                   <ul className="list-flush">
@@ -250,7 +248,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     <li>
                       {" "}
                       <span></span> Follow the standard detail of KEMCO for
-                      flat surface <span>(Figure 1)</span>.{" "}
+                      flat surface <strong>(Figure 1)</strong>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
@@ -269,9 +267,9 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 <div className="sub-section-container">
                   <div className="flex-row">
                     {" "}
-                    <h4 style={{ marginBottom: "0.2rem" }}>2. For Circular Portion</h4>{" "}
+                    <h4 style={{ marginBottom: "1rem", marginTop: "1rem" }}>2. For Circular Portion</h4>{" "}
                   </div>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={oilGroove2Img} alt="Oil Groove - Circular Portion Detail and Example" className="software-screenshot screenshot-wide" />
                   </div>{" "}
                   <ul className="list-flush">
@@ -279,7 +277,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     <li>
                       {" "}
                       <span></span> Follow the standard detail of KEMCO for
-                      circular portion <span>(Figure 2)</span>.{" "}
+                      circular portion <strong>(Figure 2</strong>).{" "}
                     </li>{" "}
                     <li>
                       {" "}
@@ -287,7 +285,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       radius 2 cannot achieve on actual.
                       <br />
                       But the surface should be smooth finish{" "}
-                      <span>R (滑らかに仕上)</span>.{" "}
+                      <strong>R (滑らかに仕上)</strong>.{" "}
                     </li>{" "}
                     <li>
                       {" "}
@@ -312,13 +310,13 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 <h4>b. Shaft and Key Plate</h4>
                 <div className="sub-section-header">
                   {" "}
-                  <h5>※ Dimension of Shaft and Key Plate</h5>
+                  <p className="red-text" style={{ marginBottom: "1rem", marginTop: "1rem" }}><strong>※ Dimension of Shaft and Key Plate</strong></p>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={shaftKeyPlate1Img} alt="Shaft and Key Plate Dimensions Table" className="software-screenshot screenshot-wide" />
                 </div>
-                <div className="info-box-note">
-                  <p>Note:</p>{" "}
+                <div className="info-box" style={{ marginBottom: "2rem", marginTop: "1rem", height: "11rem" }}>
+                  <p className="red-text"><strong>Note:</strong></p>{" "}
                   <ul className="list-flush">
                     {" "}
                     <li>
@@ -342,22 +340,16 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 {/* Sample Drawing Section */}
                 <div className="sub-section-header">
                   {" "}
-                  <h4>※ Sample Drawing</h4>
+                  <p className="red-text" style={{ marginBottom: "1rem", marginTop: "1rem" }}><strong>※ Sample Drawing</strong></p>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={shaftKeyPlate3Img} alt="Sample Drawing and Isometric View" className="software-screenshot screenshot-wide" />
                 </div>{" "}
-                <ul className="list-flush">
-                  {" "}
-                  <li>
-                    {" "}
-                    <div>
-                      {" "}
-                      As much as possible, follow the way of detailing in this
-                      reference. <br /> Do not position the key groove below.
-                    </div>
-                  </li>{" "}
-                </ul>
+
+                <div className="info-box" style={{ marginTop: "1rem" }}>
+                  As much as possible, follow the way of detailing in this
+                  reference. <br /> Do not position the key groove below.
+                </div>
               </div>
             </div>
           ) : subLessonId === "2d-standard-part-4" ? (
@@ -366,34 +358,27 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {/* c. Collar Section */}
               <div className="sub-section-header">
                 {" "}
-                <h4>c. Collar</h4>
-                <div>
-                  {" "}
-
-                </div>
+                <h4 style={{ marginBottom: "-2rem" }}>c. Collar</h4>
               </div>
-              <div className="info-box">
-                <p className="p-flush">
-                  {" "}
+              <div>
+                <p>
                   Used in machine, fitted on a shaft to prevent sliding
                   movement.
                   <br /> Also serves as mechanical stopper and stroke limiters.
                 </p>
               </div>
-              <div className="sub-section-header">
-                {" "}
-                <h4 style={{ marginTop: "0.5rem" }}>※ Tolerances for collar</h4>
-              </div>
-              <div className="image-wrapper-flush">
+
+              <p className="red-text" style={{ marginBottom: "1rem" }}><strong>※ Tolerances for collar</strong></p>
+
+              <div>
                 <img src={collarImg} alt="Tolerances for Collar - Example 1 and 2" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           ) : subLessonId === "2d-standard-part-5" ? (
             <div className="flex-col">
               {" "}
-              {/* Example 3 Header */} <h4>Example 3.</h4>{" "}
-              {/* Top Diagram: Sectional View of OST-2 */}
-              <div className="image-wrapper-flush">
+              <h4 className="red-text" style={{ fontStyle: "italic" }}>Example 3.</h4>
+              <div>
                 <img src={collar1Img} alt="OST-2 Sectional View" className="software-screenshot" />
               </div>
               <div className="info-box">
@@ -401,42 +386,35 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 <ul className="list-flush">
                   {" "}
                   <li>
-                    {" "}
-                    <span>✔</span>{" "}
                     <span>
                       Can used to hold urethane rubber and serve as stopper.
                     </span>{" "}
                   </li>{" "}
                   <li>
-                    {" "}
-                    <span>✔</span>{" "}
                     <span>
                       To avoid over press of the material during tightening that
                       causes the urethane to distort.
-                    </span>{" "}
+                    </span>
                   </li>{" "}
                 </ul>
               </div>
               <div className="section-divider"></div>{" "}
-              {/* ※ Sample Drawing Header */}
               <div className="sub-section-header">
                 {" "}
-                <h5>※ Sample Drawing</h5>
+                <p className="red-text"><strong>※ Sample Drawing</strong></p>
               </div>{" "}
-              {/* Bottom Diagram: Technical drawing of OST-2 */}
-              <div className="image-wrapper-flush">
-                <img src={collar2Img} alt="OST-2 Sample Technical Drawing" />
+
+              <div>
+                <img src={collar2Img} alt="OST-2 Sample Technical Drawing" className="software-screenshot screenshot-wide" />
               </div>{" "}
               <ul className="list-flush">
                 {" "}
                 <li>
-                  {" "}
-                  <span>✔</span>{" "}
-                  <span>
+                  <span><strong>
                     As much as possible, follow the way of detailing in this
                     reference.
-                  </span>{" "}
-                </li>{" "}
+                  </strong></span>
+                </li>
               </ul>
             </div>
           ) : subLessonId === "2d-standard-part-6" ? (
@@ -445,40 +423,32 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {/* g. Scale Section */}
               <div>
                 {" "}
-                <h4>g. Scale</h4>
-                <div className="image-wrapper-flush">
+                <h4 style={{ marginBottom: "1rem" }}>g. Scale</h4>
+                <div style={{ marginBottom: "2rem" }}>
                   <img src={scaleImg} alt="Standard Scale Table JIS Z 8314" className="software-screenshot screenshot-large" />
                 </div>{" "}
                 <ul className="list-flush">
-                  {" "}
                   <li>
-                    {" "}
-                    <span>✔</span>{" "}
-                    <span>Follow the standard scale given by KEMCO.</span>{" "}
-                  </li>{" "}
+                    <span>Follow the standard scale given by KEMCO.</span>
+                  </li>
                   <li>
-                    {" "}
-                    <span>✔</span>{" "}
                     <span>
                       On parts drawing, standard scale must be always used.
-                    </span>{" "}
-                  </li>{" "}
+                    </span>
+                  </li>
                   <li>
-                    {" "}
-                    <span>✔</span>{" "}
                     <span>
                       On assembly drawing, standard scale should be used, but
                       non-standard scale can be used as a second option.
-                    </span>{" "}
-                  </li>{" "}
+                    </span>
+                  </li>
                 </ul>
               </div>
-              <div className="section-divider"></div>{" "}
-              {/* h. Relief process Section */}
+
               <div>
                 {" "}
                 <h4>h. Relief process</h4>
-                <div className="info-box">
+                <div>
                   <p className="p-flush">
                     {" "}
                     Often used at the end of the shoulder portion of a shaft to
@@ -486,46 +456,42 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                     damaging it.
                   </p>
                 </div>
-                <p>In 2D</p>
-                <div className="image-wrapper-flush">
-                  <img src={reliefProcess1Img} alt="Relief Process Diagram in 2D" className="software-screenshot screenshot-large" />
-                </div>{" "}
-                <ul className="list-flush">
-                  {" "}
-                  <li>
-                    {" "}
-                    <span>✔</span>{" "}
-                    <span>
-                      Relief process detail should be{" "}
-                      <strong>used on shaft parts</strong> with three (3)
-                      triangle and surface grinding process.
-                    </span>
-                    <img src={reliefProcess2Img} alt="Relief Symbol" />{" "}
-                  </li>{" "}
-                  <li>
-                    {" "}
-                    <span>✔</span>{" "}
-                    <span>
-                      Relief process should be{" "}
-                      <strong>shown on 2D detailing.</strong>
-                    </span>{" "}
-                  </li>{" "}
-                </ul>
-                <div className="info-box-note">
-                  <p>Note:</p>{" "}
+                <p className="red-text" style={{ marginTop: "1rem", marginBottom: "1rem" }}><strong>In 2D</strong></p>
+                <div>
+                  <img src={reliefProcess1Img} alt="Relief Process Diagram in 2D" className="software-screenshot screenshot-wide" />
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "2rem" }}>
                   <ul className="list-flush">
-                    {" "}
                     <li>
-                      {" "}
-                      <span>✔</span>{" "}
+                      <span>
+                        Relief process detail should be{" "}
+                        <strong>used on shaft parts</strong> <br /> with three (3)
+                        triangle and surface grinding process.
+                      </span>
+                    </li>
+                    <li>
+                      <span>
+                        Relief process should be{" "}
+                        <strong>shown on 2D detailing.</strong>
+                      </span>
+                    </li>
+                  </ul>
+                  <div style={{ marginRight: "22rem", marginBottom: "2rem" }}>
+                    <img src={reliefProcess2Img} alt="Relief Symbol" style={{ width: "70px", height: "auto" }} />
+                  </div>
+                </div>
+                <div className="info-box" style={{ marginTop: "2rem" }}>
+                  <p className="red-text"><strong>Note:</strong></p>{" "}
+                  <ul className="list-flush">
+
+                    <li>
+
                       <span>
                         All corners of the shaft cannot be straight by using
                         grinding or any machining equipment.
                       </span>{" "}
                     </li>{" "}
                     <li>
-                      {" "}
-                      <span>✔</span>{" "}
                       <span>
                         Sliding portion needs to be supplied with oil.
                       </span>{" "}
@@ -540,40 +506,26 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {/* Workflow Header */}
               <div className="sub-section-header">
                 {" "}
-                <h5>
-                  ※ There are four (4) steps to show the detail on the template
-                </h5>
+                <p className="red-text"><strong>※ There are four (4) steps to show the detail on the template</strong></p>
               </div>{" "}
-              {/* Workflow Image */}
-              <div className="image-wrapper-flush">
+              <div>
                 <img src={reliefWorkflowImg} alt="Relief process loading workflow" className="software-screenshot" />
               </div>{" "}
-              {/* Template Selection Info */}
-              <div className="info-box">
-                <p className="p-flush">
-                  {" "}
-                  Choose required template (Relief process detail)
-                </p>{" "}
-                <ul className="list-flush">
-                  {" "}
+              <div>
+                <p>
+                  Choose required template <strong>(Relief process detail)</strong>
+                </p>
+                <ul>
                   <li>
-                    {" "}
-                    <span>✔</span> <span>Click OK</span>{" "}
-                  </li>{" "}
+                    <span>Click OK</span>
+                  </li>
                 </ul>
-              </div>{" "}
-              {/* Dialog Image */}
-              <div className="image-wrapper-flush">
+              </div>
+              <div style={{ marginTop: "-1rem" }}>
                 <img src={reliefDialogImg} alt="Template selection dialogue" className="software-screenshot screenshot-large" />
-              </div>{" "}
-              {/* Footer Note */}
+              </div>
               <div className="sub-section-header">
-                {" "}
-                <h5>
-                  {" "}
-                  ※ Designated location of relief process detail is on the
-                  global view of the drawing.{" "}
-                </h5>
+                <p className="red-text"><strong>※ Designated location of relief process detail is on the global view of the drawing.</strong></p>
               </div>
             </div>
           ) : (
@@ -592,7 +544,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
