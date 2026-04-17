@@ -179,7 +179,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
           <div className="instruction-box" /* sanitized: marginTop: '1.5rem' */>
 
-            <div className="image-wrapper-flush">
+            <div>
 
               <img src={mainDrawing} alt="3D Modeling Samples" className="software-screenshot screenshot-wide" />
 
@@ -193,10 +193,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
           </p>
         ) : (
 
-          <div className="instruction-box" /* sanitized: marginTop: '1.5rem' */> <h4 className="section-title">3D Modeling Using 2D Sketch, Key Groove, Retainer Ring Groove</h4>
+          <div className="instruction-box" /* sanitized: marginTop: '1.5rem' */> <h4 className="section-title" style={{ marginRight: '42px' }}>3D Modeling Using 2D Sketch, Key Groove, Retainer Ring Groove</h4>
 
-            <div className="image-wrapper-flush">
-
+            <div style={{ marginTop: '1.5rem' }}>
               <img src={isSample4 ? mainDrawing4 : mainDrawing3} alt={isSample4 ? "Sample 4 Technical Drawing" : "Sample 3 Technical Drawing"} className="software-screenshot screenshot-wide" />
 
             </div>
@@ -248,7 +247,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                 <div className="flex-row-center--wrap">
 
-                  <div className="image-wrapper-flush">
+                  <div>
 
                     <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot screenshot-medium" />
 
@@ -273,7 +272,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                 </div>
 
-                <div className="image-wrapper-flush" /* sanitized: paddingLeft: '2.5rem' */>
+                <div /* sanitized: paddingLeft: '2.5rem' */>
 
                   <img src={machinePartTool} alt="Select and Arrange Machine Part" className="software-screenshot screenshot-large" />
 
@@ -316,12 +315,11 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                         <p className="p-flush">Left-click on the selected point &gt; <strong className="text-highlight">GO</strong>
                           <img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                         </p>
-
                       </div>
-
+                      <br />
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={opSample1} alt="Operation Sample 1 Result" className="software-screenshot screenshot-medium" />
 
@@ -345,7 +343,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                   <div className="flex-row-center--wrap">
 
-                    <div className="image-wrapper-flush flex-no-shrink">
+                    <div>
 
                       <img src={moveTool} alt="Move Component Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
@@ -358,7 +356,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div className="image-wrapper-flush flex-no-shrink">
+                    <div>
 
                       <img src={opSample1Move} alt="Move Component Result" className="software-screenshot screenshot-small" />
 
@@ -400,7 +398,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={subtractResult} alt="Subtract Result" className="software-screenshot screenshot-large" />
 
@@ -426,7 +424,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div /* sanitized: flex: 1 */>
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" style={{ height: '230px' }} />
 
@@ -441,7 +439,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <br />
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" />
 
@@ -467,7 +465,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div /* sanitized: flex: 1 */>
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={copyTool} alt="Copy Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
@@ -476,7 +474,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <br />
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" />
 
@@ -502,7 +500,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div /* sanitized: flex: 1 */>
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
@@ -517,7 +515,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-small" />
 
@@ -543,7 +541,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div /* sanitized: flex: 1 */>
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
 
@@ -558,7 +556,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={enterPartName} alt="Enter Part Name" className="software-screenshot screenshot-meduim" style={{ height: '400px', width: '400px' }} />
 
@@ -582,7 +580,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                   <div className="flex-row-center--wrap">
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={propertiesWindow} alt="Properties Window" className="software-screenshot screenshot-large" />
 
@@ -606,7 +604,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                   <div className="flex-row-center--wrap">
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={layerInfo} alt="Layer Information" className="software-screenshot screenshot-large" />
 
@@ -664,7 +662,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                 <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                  <div className="image-wrapper-flush" /* sanitized: marginTop: '1.5rem' */>
+                  <div /* sanitized: marginTop: '1.5rem' */>
 
                     <img src={segmentOverview} alt="Segments Overview" className="software-screenshot screenshot-wide" />
 
@@ -693,7 +691,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div className="flex-row-center">
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={segmentAResult} alt="Segment A Result" className="software-screenshot screenshot-large" />
 
@@ -723,7 +721,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" />
 
@@ -761,14 +759,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <p className="p-flush">Use <strong className="text-highlight">Center</strong> &gt; Place at end of Segment B
                       </p>
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={workPlaneImg} alt="Open Work Plane" className="software-screenshot screenshot-small" />
 
                       </div>
 
                     </div>
-
+                    <br />
                     <div /* sanitized: flex: 1 */>
 
                       <p className="p-flush">Sketch half of segment C (For revolving)
@@ -777,7 +775,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <p className="p-flush">*These are the dimensions that must be prioritized.
                       </p>
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={sketchImg} alt="Sketch half of Segment C" className="software-screenshot screenshot-medium" />
 
@@ -794,8 +792,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Revolve (2D &gt;&gt; 3D)</strong></span>
 
                       </div>
-
-                      <div className="image-wrapper-flush">
+                      <br />
+                      <div>
 
                         <img src={revolveImg} alt="Revolve Result" className="software-screenshot screenshot-medium" />
 
@@ -815,8 +813,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment C</span>
 
                       </div>
-
-                      <div className="image-wrapper-flush">
+                      <br />
+                      <div>
 
                         <img src={segmentDResult} alt="Segment D Result" className="software-screenshot screenshot-medium" />
 
@@ -852,7 +850,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                   </div>
 
-                  <div className="image-wrapper-flush">
+                  <div>
 
                     <img src={segmentEResult} alt="Segment E Result" className="software-screenshot screenshot-medium" />
 
@@ -901,7 +899,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <p className="p-flush">INPUT:
                       </p> <li>Depth = 6mm</li> <li>Width = 3.5mm</li> <li>Height = 43mm</li> </ul>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={keyGrooveBox} alt="Key Groove Box Tool" className="software-screenshot screenshot-medium" />
 
@@ -932,7 +930,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
           ) : isSample5 ? (
 
-            <div className="tab-pane"> <h4 className="section-title">Final finishing operations</h4>
+            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '590px' }}>Final finishing operations</h4>
               {/* STEP 5 */}
 
               <div className={getStepClass('s5-5')}>
@@ -950,7 +948,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={keyGrooveSubtractResult} alt="Subtract Key Groove" className="software-screenshot screenshot-medium" />
 
@@ -971,7 +969,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={keyGrooveFilletResult} alt="Fillet Key Groove" className="software-screenshot screenshot-large" />
 
@@ -991,7 +989,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                 </div>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" style={{ height: '325px' }} />
 

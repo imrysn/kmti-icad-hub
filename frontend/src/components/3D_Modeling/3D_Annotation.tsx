@@ -118,8 +118,8 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
         </p>{" "}
         {isAnnotation1 && (
           <div className="instruction-box">
-            <div className="image-wrapper-flush">
-              <img src={isAnnotation1 ? annotationImg : annotation2Img} alt={isAnnotation1 ? "Annotation Tool Menu" : "Annotation Dimension Result"} className={isAnnotation1 ? "software-screenshot screenshot-small" : "software-screenshot screenshot-medium"} />
+            <div>
+              <img src={isAnnotation1 ? annotationImg : annotation2Img} alt={isAnnotation1 ? "Annotation Tool Menu" : "Annotation Dimension Result"} className={isAnnotation1 ? "software-screenshot screenshot-small" : "software-screenshot screenshot-medium"} style={{ width: '260px' }} />
             </div>
           </div>
         )}
@@ -140,7 +140,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                       <strong>Creates linear dimension</strong>
                     </p>
 
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={linearDimensionImg} alt="Linear Dimension" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                     </div>
                   </div>{" "}
@@ -158,7 +158,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                     </div>
 
                     <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                      <div className="image-wrapper-flush">
+                      <div>
                         <img src={diameterDimensionImg} alt="Diameter Dimension" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                       </div>
                     </div>
@@ -185,7 +185,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                     </div>
 
                     <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                      <div className="image-wrapper-flush">
+                      <div>
                         <img src={angularDimensionImg} alt="Angular Dimension" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                       </div>
                     </div>
@@ -220,7 +220,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                   </div>
 
                   <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={notesLeaderLinesImg} alt="Notes with Leader Lines" className="software-screenshot" style={{ height: '140px' }} />
                     </div>
                   </div>
@@ -237,7 +237,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                   </div>
 
                   <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={noteStringEntryImg} alt="Note String Entry Window" className="software-screenshot screenshot-wide" style={{ height: '210px' }} />
                     </div>
                   </div>
@@ -274,12 +274,12 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                   </div>
 
                   <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={characterStringsImg} alt="Character Strings" className="software-screenshot" style={{ height: '140px' }} />
                     </div>
                     <br />
                     <br />
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={textEntryImg} alt="Text Entry Window" className="software-screenshot screenshot-wide" style={{ height: '210px' }} />
                     </div>
                   </div>
@@ -310,7 +310,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                     Creates dimensions for 3D entities collectively
                   </strong>
                 </p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={annotation2Img} alt="Collective Dimension Result" className="software-screenshot screenshot-medium" style={{ height: '95px' }} />
                 </div>
                 <div className={`${getStepClass("anno2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
@@ -338,7 +338,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                       </div>
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={collectiveDimensionImg} alt="Collectively Creates Dimension" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
@@ -348,7 +348,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                 <p className="p-flush">
                   <strong>Edits drafting entity characters</strong>
                 </p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={changesDraftingEntityImg} alt="Edits Drafting Entity Characters" className="software-screenshot screenshot-small" style={{ height: '95px' }} />
                 </div>
                 <div className={`${getStepClass("anno2-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
@@ -387,7 +387,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                       </div>
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div >
                       <img src={editDimensionImg} alt="Edit Dimension Characters Window" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
@@ -397,7 +397,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                 <p className="p-flush">
                   <strong>Changes the attributes of a drafting entity</strong>
                 </p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={changesDraftingEntity2Img} alt="Changes Draft Entity Attribute" className="software-screenshot screenshot-small" style={{ height: '95px' }} />
                 </div>
                 <div className={`${getStepClass("anno2-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
@@ -436,7 +436,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                       </div>
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={changePropertiesWindowImg} alt="Change Properties Window" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
@@ -448,7 +448,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({
                 </p>
                 <div className={`${getStepClass("anno2-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
                   <div className="step-description">
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={changesPositionDraftingEntitiesImg} alt="Changes Position Tool" className="software-screenshot screenshot-small" style={{ height: '95px' }} />
                     </div>
                   </div>

@@ -120,7 +120,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 <p className={currentIndex === 1 ? "reading-active p-highlight" : "p"}>
                   ※ The origin must be in the same position in 3D and 2D.
                 </p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-large" />
                 </div>
               </div>
@@ -135,7 +135,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                     <span className="step-number">1</span>
                     <span className="step-label">Select <strong>Change 3D Part Layout</strong> from the icon menu.</span>
                   </div>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-medium" style={{ height: '200px' }} />
                   </div>
                 </div>
@@ -166,7 +166,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                     <span className="step-number">5</span>
                     <span className="step-label">Left-click on a 3rd point to set the Y-axis. The XY-plane becomes the front view.</span>
                   </div>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-large" />
                   </div>
                 </div>

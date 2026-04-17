@@ -79,7 +79,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <div className="drawing-number-box">RTXXXXXX<strong>N</strong>01</div>
                   <p className="p-flush">Here is an example of a normal part.</p>
                   <div className="flex-row-center">
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
@@ -106,7 +106,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <li>Mirror Parts B cannot exist without Mirror Parts A.</li>
                   </ul>
                   <p className="p-flush" style={{ marginTop: '1rem' }}><strong>Note:</strong> If there are no existing part to be mirrored, use <strong>A</strong> when naming the part.</p>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
@@ -120,7 +120,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <span className="step-label">Use Mirror copy tool on the icon menu.</span>
                 </div>
                 <div className="step-description">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" style={{ height: '80px' }} />
                   </div>
                   <div className="info-box">
@@ -132,7 +132,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <p className="p-flush" style={{ marginTop: '1rem' }}><strong>NOTE:</strong> Be careful in identifying parts because it affects drawing number assignment.</p>
                     <p className="p-flush"><strong>NOTE:</strong> Watch for <strong>Mirror Image</strong> notes on reference drawings.</p>
                   </div>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot screenshot-small" style={{ height: '80px' }} />
                   </div>
                 </div>
@@ -146,7 +146,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <span className="step-number">1</span>
                   <span className="step-label">Identify the proper location of origin of the part.</span>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" />
                 </div>
               </div>
@@ -171,15 +171,17 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <span className="step-label">Use mirror to convert the 3D Model of Part A to Part B.</span>
                 </div>
                 <div className="step-description">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
+                  <br />
                   <p className="p-flush">Pick 3 points consecutively from the Part, <strong>starting from the origin.</strong></p>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot screenshot-medium" />
                   </div>
+                  <br />
                   <p className="p-flush">After doing the command, this will be the outcome as Part B.</p>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" />
                   </div>
                   <p className="p-flush"><strong>Note:</strong> The <strong>Origin Part B</strong> must be at the <strong>same location as in Part A.</strong></p>

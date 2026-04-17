@@ -101,7 +101,7 @@ interface PropertiesLessonProps {
         )}{" "}
         {isProperties1 && activeTab === "color" && (
           <div className="instruction-box">
-            <div className="image-wrapper-flush">
+            <div>
               <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" />
             </div>
           </div>
@@ -116,7 +116,7 @@ interface PropertiesLessonProps {
               {" "}
               {activeTab === "color" && (
                 <div className="tab-pane fade-in">
-                  <h3 className="section-title">Change color</h3>
+                  <h3 className="section-title" style={{ marginRight: "730px" }}>Change color</h3>
                   <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                     <div className="step-header">
                       {" "}
@@ -128,7 +128,7 @@ interface PropertiesLessonProps {
                       </span>
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" />
                     </div>
                   </div>
@@ -207,7 +207,7 @@ interface PropertiesLessonProps {
               )}{" "}
               {activeTab === "layer" && (
                 <div className="tab-pane fade-in">
-                  <h3 className="section-title">Change layer</h3>
+                  <h3 className="section-title" style={{ marginRight: "730px" }}>Change layer</h3>
 
                   <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                     <div className="step-header">
@@ -218,12 +218,12 @@ interface PropertiesLessonProps {
                       </span>{" "}
                       <span className="step-label">
                         Select{" "}
-                        <strong className="text-highlight">Change Layer</strong>{" "}
+                        <strong className="text-highlight" >Change Layer</strong>{" "}
                         from the icon menu.
                       </span>
                     </div>
 
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                     </div>
                   </div>
@@ -240,8 +240,8 @@ interface PropertiesLessonProps {
                       </span>
                     </div>
 
-                    <div className="image-wrapper-flush">
-                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" style={{ height: '70px' }} />
+                    <div>
+                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" style={{ height: '0px' }} />
                     </div>
                   </div>
 
@@ -260,7 +260,7 @@ interface PropertiesLessonProps {
 
                   <div className="section-divider"></div>
 
-                  <h3 className="section-title">Layer designation of 3D parts</h3>
+                  <h3 className="section-title" style={{ marginRight: "540px" }}>Layer designation of 3D parts</h3>
 
                   <div className="tool-block">
                     {" "}
@@ -278,7 +278,7 @@ interface PropertiesLessonProps {
                       <li>Covers for purchase parts (No mechanism)</li>{" "}
                       <li>All parts must be color white</li>{" "}
                     </ul>
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
@@ -293,9 +293,10 @@ interface PropertiesLessonProps {
                       </li>{" "}
                       <li>Safety Cover - Yellow (No. 4)</li>{" "}
                     </ul>
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" style={{ height: '290px' }} />
                     </div>
+                    <br />
                     <p className="step-description text-center">
                       {" "}
                       Safety color applies to covers for machine guarding such
@@ -422,7 +423,7 @@ interface PropertiesLessonProps {
                           Displays coordinates of a point from the origin
                         </p>
 
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                         </div>
                       </div>
@@ -451,7 +452,7 @@ interface PropertiesLessonProps {
                           Measures the length of an edge
                         </p>
 
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                         </div>
                       </div>
@@ -478,7 +479,7 @@ interface PropertiesLessonProps {
                           Measures the distance between two points or edges
                         </p>
 
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                         </div>
                       </div>
@@ -504,7 +505,7 @@ interface PropertiesLessonProps {
                           Measures the angle between two edges or three points
                         </p>
 
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
                         </div>
                       </div>
@@ -533,7 +534,7 @@ interface PropertiesLessonProps {
                           Displays the informations about the selected entity
                         </p>
 
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" />
                         </div>
                       </div>

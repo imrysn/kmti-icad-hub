@@ -51,7 +51,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="tab-pane fade-in">
-            <div className="image-wrapper-flush">
+            <div>
               <img
                 src={isPart1 ? purchasePartsFlowchart : uploadingFlowchart}
                 alt={isPart1 ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
