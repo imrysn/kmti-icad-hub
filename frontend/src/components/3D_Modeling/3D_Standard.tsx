@@ -248,8 +248,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           {subLessonId === 'standard-3' && (
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+                <p>This is what we should do in 3D model. Because,as we know in actual, the teeth don't have paint.</p>
                 <div className="step-header">
+
                   <span className="step-number">1</span>
+
                   <h4 className="section-title">Actual sprocket teeth are unpainted.</h4>
                 </div>
                 <div className="image-wrapper-flush">
@@ -277,6 +280,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           {subLessonId === 'standard-4' && (
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+                <p>This is what we should do in 3D model. Because,as we know in actual, the teeth don't have paint. </p>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <h4 className="section-title">Kusakabe Standard Code for Screw, etc.</h4>
@@ -324,7 +328,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 </div>
                 <p className="p-flush"><strong>Example:</strong> (Bolt size ÁE1.5) + (Thickness) = (8 ÁE1.5) + 11 = 23mm ≁E25mm</p>
                 <div className="info-box">
-                  <p className="p-flush"><strong>Note</strong>: To ensure fastening, multiply size by 1.5-2x for thread length. Round up to nearest standard size.</p>
+                  <p className="p-flush"><strong>Note</strong>: To avoid easily loosen of the bolt, bolt size is need to multiply size by 1.5-2. </p>
+                  <p>In case the result is not standard, it will round up to the nearest standard bolt length.</p>
                 </div>
                 <div className="image-wrapper-flush">
                   <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot screenshot-wide" />
@@ -336,14 +341,29 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <span className="step-number">2</span>
                   <h4 className="section-title">BOLTING SETUP</h4>
                 </div>
+                <h4>Bolting setup will depend on a case-by-case basis. These examples are the commonly used to setup.</h4>
+                <p className="p-flush"><strong>Note</strong>: Hexagonal Bolt (HB) can be change to Capscrew (CS) if there will be problems at installation like tight spaces for tools (wrench) or hard to reach areas.</p>
                 <div className="flex-row--top" >
+                  <p><strong style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}>Pillow Block</strong></p>
+                  <p style={{ textDecoration: 'underline' }}>Bolting for Pillow Block:</p>
+                  <p>Hexagonal Bolt (HB)</p>
+                  <p>Spring Washer (SW)</p>
+                  <p>Flat Washer (Hardening)</p>
+                  <br />
                   <div className="image-wrapper-flush">
                     <img src={pillowBlock1} alt="Pillow Block Setup" className="software-screenshot screenshot-medium" />
                   </div>
-                  <div className="image-wrapper-flush" style={{ marginLeft: '50px' }}>
+                  <br />
+                  <div className="image-wrapper-flush" >
                     <img src={pillowBlock2} alt="Flange Pillow Block 1" className="software-screenshot screenshot-medium" />
                   </div>
                   <br />
+                  <br />
+                  <br />
+                  <p><strong style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}>Flange Pillow Block 1</strong></p>
+                  <p style={{ textDecoration: 'underline' }}>For Flange-type Pillow Block:</p>
+                  <p>Hexagonal Bolt (HB)</p>
+                  <p>Spring Washer (SW)</p>
                   <br />
                   <div className="image-wrapper-flush">
                     <img src={pillowBlock3} alt="Flange Pillow Block 2" className="software-screenshot screenshot-medium" />
@@ -356,9 +376,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           {subLessonId === 'standard-7' && (
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+                <p style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}>For Parts that need adjustments.</p>
+                <p className="p-flush" style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}><strong>Note:</strong > Slotted holes need Flat washer (FW). Spring Washer (SW) is enough.</p>
+
                 <div className="step-header">
                   <span className="step-number">1</span>
-                  <h4 className="section-title">SLOTTED HOLE</h4>
+                  <h4 className="section-title" style={{ marginLeft: '0px' }}>SLOTTED HOLE</h4>
                 </div>
                 <div className="flex-row--top">
                   <p className="p-flush text-highlight">Case 1: Slotted + Threaded</p>
@@ -426,6 +449,17 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                   <h4 className="section-title">SGP PIPES</h4>
                 </div>
+                <p className="p-flush" style={{ color: '#e41717ff', fontSize: '1.2rem' }} ><strong>a</strong>.SGP (White) <br /><p>Apply for fluid (Oil, Air and Coolant)</p>
+                </p>
+                <p className="p-flush" style={{ color: '#e41717ff', fontSize: '1.2rem' }} ><strong>b</strong>.SGP (Black) <br /><p>Apply for structural</p>
+                </p>
+                <p>This two types of SGP Pipes will be added on Icad Material List and must be strictly applied on all the drawings to avoid mistakes on purchasing of pipes. This
+                  means, we need to identify the 2 types of pipes separately. We will apply it on 3D modeling and 2D detailing of parts</p>
+                <p>Inspite of having distinction of White and Black, it does not not mean that we also apply it on the 3D Modeling.
+                  The color that we will apply on SGP Pipes will based on its usage and application. We must not be confused about the
+                  color of SGP Pipes.  </p>
+
+
                 <div className="flex-row--top">
 
                   <div className="image-wrapper-flush">
@@ -433,6 +467,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                   </div>
                   <p className="p-flush"><strong>Red = SGP White</strong> (Fluid)</p>
+                  <p className="p-flush"><strong>Red Colored Pipes are </strong> <span style={{ color: '#e41717ff' }}>SGP (White) Pipes</span></p>
+                  <p>ex. Pipes for cutting Outfitting</p>
 
                   <br />
                   <br />
@@ -441,6 +477,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                   </div>
                   <p className="p-flush"><strong>Yellow = SGP Black</strong> (Structural)</p>
+                  <p className="p-flush"><strong>Yellow Colored Pipes are </strong> <span style={{ color: '#e41717ff' }}>SGP (Black) Pipes</span></p>
+                  <p>ex. Hand Rails</p>
                 </div>
               </div>
             </div>
