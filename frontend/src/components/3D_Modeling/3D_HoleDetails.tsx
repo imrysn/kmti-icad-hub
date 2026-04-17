@@ -62,8 +62,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
         <p className="p-flush">
           We have standard tools for creating holes such as drill holes, tapping holes and counterbores on the parts.
         </p>
-        <div className="instruction-box">
-          <div className="image-wrapper-flush">
+        <div>
+          <div>
             <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" style={{ height: '250px' }} />
           </div>
         </div>
@@ -81,8 +81,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   </span>
                 </div>
                 <div className="step-description">
-                  <div className="image-wrapper-flush">
-                    <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  <div>
+                    <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" style={{ height: '120px' }} />
                   </div>
                 </div>
               </div>
@@ -95,7 +95,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   </span>
                 </div>
                 <div className="step-description">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={listTools} alt="List of available tools" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
@@ -119,17 +119,18 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   </span>
                 </div>
                 <div className="step-description">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-wide" style={{ height: '250px' }} />
                   </div>
                 </div>
               </div>
+              <br />
 
               <div className="info-box">
                 <p className="p-flush">
                   <strong className="text-highlight">Note:</strong> Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.
                 </p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" style={{ height: '250px' }} />
                 </div>
               </div>
