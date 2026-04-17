@@ -8,7 +8,7 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 
 import surfaceCoatingTableImg from "../../assets/2D_Image_File/2D_surface_coating.jpg";
 
-import specialNotesImg from "../../assets/2D_Image_File/2D_surface_coating_special_notes.jpg";
+import specialNotesImg from "../../assets/2D_Image_File/2D_surface_coating_special_notes.png";
 
 import copyMoveImg from "../../assets/2D_Image_File/2D_surface_coating_copy_move.png";
 
@@ -88,7 +88,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             {" "}
             {/* Surface Coating Table Section */}
             <div className="lesson-section">
-              <div className="image-wrapper-flush">
+              <div>
                 <img src={surfaceCoatingTableImg} alt="Surface Coating Specification Table" className="software-screenshot screenshot-wide" />
               </div>
             </div>
@@ -97,8 +97,8 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             <div className="lesson-section">
               {" "}
               <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> b. Special Notes </h4>
-              <div className="flex-row">
-                <div className="image-wrapper-flush">
+              <div>
+                <div>
                   <img src={specialNotesImg} alt="Special Notes location in Drawing Template" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -107,13 +107,13 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             <div className="lesson-section">
               {" "}
               <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> c. Copy / Move </h4>
-              <div className="flex-row">
-                <div className="image-wrapper-flush">
+              <div>
+                <div style={{ marginBottom: "2rem" }}>
                   <img src={copyMoveImg} alt="Copy and Move Command Configuration" className="software-screenshot screenshot-wide" />
                 </div>
 
                 <div className="info-box">
-                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+                  <p>
                     {" "}
                     Copy and move has the same procedure. The only difference it
                     that copy will multiply its quantity while move will only

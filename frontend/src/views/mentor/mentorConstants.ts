@@ -629,7 +629,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-geometric-tol',
     title: 'Geometric Tolerance',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })),
+    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })),
     quiz: {
       title: 'iCAD GD&T (Geometric Tolerance)',
       description: 'Understanding geometric control and datums in 2D drafting.',
