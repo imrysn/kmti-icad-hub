@@ -361,9 +361,6 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                   </div>
                 </div>
               </div>
-
-
-
               {/* Section 7: Additional Lines */}
               <div className={`${getStepClass("lp2-7")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">

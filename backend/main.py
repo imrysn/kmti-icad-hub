@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables early
-_env_path = Path(__file__).resolve().parent / ".env"
+# Load environment variables from the project root
+_env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=_env_path)
 
 from fastapi import FastAPI
