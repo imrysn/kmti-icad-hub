@@ -87,53 +87,40 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
             {/* 12. Machining Symbols - Title Header */}
             <div>
               {" "}
-              <h4> 12. Machining Symbols </h4>
-              <div className="flex-row">
-                <div className="image-wrapper-flush">
+              <h4 style={{ marginBottom: "1rem" }}> 12. Machining Symbols </h4>
+              <div>
+                <div>
                   <img src={machiningSymbolMainImg} alt="Machining Symbol Selection" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
-            </div>{" "}
-            {/* Section Arrow and Sample Drawing */}
-            <div className="flex-col">
-              <div>
-              </div>
-
-              <div className="image-wrapper-flush">
-                <img src={machiningSymbolNoteImg} alt="Machining Symbol Implementation Sample" className="software-screenshot screenshot-wide" />
-              </div>
-
-              <div>
-                <p style={{ marginTop: "1rem" }}>
-                  {" "}
-                  Note: Machining symbol with open & close parenthesis indicates
-                  that the part must be machined before welding. Machining after
-                  welding will be impossible.
-                </p>
-              </div>
             </div>
-            <div className="section-divider"></div>{" "}
-            {/* a. Machining Surface Condition */}
-            <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> a. Machining Surface Condition </h4>
-              <div className="image-wrapper-flush">
-                <img src={machiningSurfaceCondImg} alt="Machining Surface Condition Reference Table" className="software-screenshot screenshot-wide" />
-              </div>
+
+            <div className="info-box" style={{ marginTop: "2rem" }}>
+              <p className="red-text">  <strong>Note:</strong></p>
+              <p>Machining symbol with open & close parenthesis indicates
+                that the part must be machined before welding. Machining after
+                welding will be impossible.</p>
             </div>
-          </div>{" "}
-          {/* Navigation */}
-          <div className="lesson-navigation">
-            {" "}
-            <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
-            <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
-            </button>
           </div>
+          <div className="lesson-section">
+            {" "}
+            <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> a. Machining Surface Condition </h4>
+            <div className="image-wrapper-flush">
+              <img src={machiningSurfaceCondImg} alt="Machining Surface Condition Reference Table" className="software-screenshot screenshot-wide" />
+            </div>
+          </div>
+        </div>{" "}
+        {/* Navigation */}
+        <div className="lesson-navigation">
+          {" "}
+          <button className="nav-button" onClick={onPrevLesson}>
+            {" "}
+            <ChevronLeft size={18} /> Previous{" "}
+          </button>{" "}
+          <button className="nav-button next" onClick={onNextLesson}>
+            {" "}
+            {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
+          </button>
         </div>
       </div>
     </div>
