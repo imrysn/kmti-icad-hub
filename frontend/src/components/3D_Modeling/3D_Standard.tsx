@@ -134,6 +134,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <br />
                   <br />
                   <div>
+                    <span style={{ fontSize: '2rem', marginLeft: "10rem" }}>Pointer Color:</span> <br />
+                    <span style={{ fontSize: '2rem', marginLeft: "13rem", color: "#da2525ff" }}>Red#3</span>
                     <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
