@@ -113,20 +113,20 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                   black skin of the material must be removed first to the part.
                   There are two (2) processes that we can apply on the part to
                   remove the black skin;
-                  <br /> <strong style={{ fontStyle: "italic" }}>
+                  <p className="red-text"><strong style={{ fontStyle: "italic" }}>
                     (1) Shotblasting(Black skin Removal)
                   </strong>{" "}
-                  and <strong style={{ fontStyle: "italic" }}>(2) Machining.</strong>
+                    and <strong style={{ fontStyle: "italic" }}>(2) Machining.</strong></p>
                 </p>
               </div>{" "}
               {/* 1. Shotblasting Section */}
               <div>
                 <p style={{ marginTop: "1rem" }}>
                   {" "}
-                  <strong style={{ marginLeft: "2.5rem" }}>1. Shotblasting</strong> is an operation of forcibly
+                  <strong style={{ marginLeft: "2.5rem" }} className="red-text">1. Shotblasting</strong> is an operation of forcibly
                   propelling a stream of abrasive material against a surface
                   under high pressure to{" "}
-                  <span style={{ fontStyle: "italic" }}>
+                  <span style={{ fontStyle: "italic" }} className="red-text">
                     smooth a rough surface, roughen a smooth surface, shape a
                     surface or remove surface contaminants.
                   </span>
@@ -155,13 +155,13 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                     </li>{" "}
                     <li>preparing surfaces for painting</li>{" "}
                   </ul>
-                  <p>Example:</p>
-                  <div className="image-wrapper-flush">
+                  <p className="red-text"><strong>Example:</strong></p>
+                  <div>
                     <img src={shotblast1Img} alt="Shotblasting Example 1 - Welding Stress" className="software-screenshot screenshot-wide" />
                   </div>
-                  <p>
+                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                     {" "}
-                    For this part, <strong>shotblasting</strong> is applied to
+                    For this part, <span className="red-text">shotblasting</span> is applied to
                     remove the stress from the welding process and in
                     preparation of painting.
                   </p>
@@ -183,13 +183,12 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                       ex. Isonite, Ionite, Parsonite, etc.
                     </li>{" "}
                   </ul>
-                  <p>Example:</p>
-                  <div className="image-wrapper-flush">
+                  <p className="red-text"><strong>Example:</strong></p>
+                  <div>
                     <img src={shotblast2Img} alt="Shotblasting Example 2 - Black Skin Removal" className="software-screenshot screenshot-wide" />
                   </div>
-                  <p>
-                    {" "}
-                    For the given example, <strong>shotblasting</strong> is applied
+                  <p style={{ marginTop: "1rem" }}>
+                    For the given example, <span className="red-text">shotblasting</span> is applied
                     because the part is attached to an adjusting bracket which
                     increases the possibility of corrosion due to friction and
                     heat. Since shotblasting have a property where it increases
@@ -206,15 +205,15 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
               <div>
                 <p>
                   {" "}
-                  <strong style={{ marginLeft: "2.5rem" }}>2. Machining</strong> is any of vaiorius processes in
+                  <strong style={{ marginLeft: "2.5rem" }} className="red-text">2. Machining</strong> is any of vaiorius processes in
                   which a piece of raw material is cut into a desired final
                   shape and size by controlled material-removal process.
                 </p>{" "}
                 {/* Example 1 */}
                 <div>
-                  <p style={{ marginTop: "1rem" }}>Example:</p>
+                  <p style={{ marginTop: "1rem" }} className="red-text"><strong>Example:</strong></p>
 
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={machiningImg} alt="Machining Example 1 - Mounting Bracket" className="software-screenshot screenshot-wide" />
                   </div>
 
@@ -224,7 +223,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                     attached. Since the clutch rotates with the aid of a bearing
                     installed with it, the part will not rotate and no corrosion
                     will be applied on the part, which means{" "}
-                    <strong style={{ fontStyle: "italic" }}>application of shotblasting is not necessary</strong>,
+                    <span style={{ fontStyle: "italic" }} className="red-text">application of shotblasting is not necessary</span>,
                     instead machine all the sides in order to get rid the black
                     skin of the material.
                   </p>
@@ -232,9 +231,9 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                 <div className="section-divider"></div>
                 {/* Example 2 */}
                 <div>
-                  <p style={{ marginTop: "1rem" }}>Example:</p>
+                  <p style={{ marginTop: "1rem" }} className="red-text"><strong>Example:</strong></p>
 
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={machining2Img} alt="Machining Example 2 - Polished Material" className="software-screenshot screenshot-wide" />
                   </div>
 
@@ -242,7 +241,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                     {" "}
                     This part uses a polished material where in from the raw
                     material itself, black skin is not present which means{" "}
-                    <span style={{ fontStyle: "italic" }}>
+                    <span style={{ fontStyle: "italic" }} className="red-text">
                       application of Shotblasting(Black skin removal) and
                       Machining the sides are not necessary
                     </span>
