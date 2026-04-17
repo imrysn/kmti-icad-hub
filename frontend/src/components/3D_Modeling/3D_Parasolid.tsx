@@ -67,7 +67,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
           <>
             <p className="p-flush">Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.</p>
             <div className="instruction-box">
-              <div className="image-wrapper">
+              <div>
                 <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ height: '290px' }} />
               </div>
             </div>
@@ -79,13 +79,13 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
         <div className="lesson-card">
           {isPart1 ? (
             <div className="fade-in">
-              <h3 className="section-title">Import</h3>
+              <h3 className="section-title" style={{ marginRight: '900px' }}>Import</h3>
               <div className={`${getStepClass('p1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '230px' }} />
                 </div>
               </div>
@@ -110,14 +110,16 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
                 <p className="p-flush">The Name change dialog box will appear &gt; Pick Cancel</p>
                 <p className="p-flush">All Part names of purchase parts must be release on the tree view.</p>
-                <div className="image-wrapper-flush">
+                <div
+                >
                   <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>
           ) : (
             <div className="fade-in">
-              <h3 className="section-title">4.) Lighten B-Rep Solid</h3>
+              <h3 className="section-title" style={{ marginRight: '625px' }}>4.) Lighten B-Rep Solid</h3>
+              <br />
               <p className="p-flush">Use this tool to lighten up the file size.</p>
 
               <div className={`${getStepClass('p2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
@@ -125,7 +127,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-number">1</span>
                   <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                 </div>
               </div>
@@ -135,7 +137,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-number">2</span>
                   <span className="step-label">A dialog box will appear. Select No form changes &gt; <strong className="text-highlight">OK</strong></span>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
                 </div>
               </div>
@@ -149,7 +151,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   </span>
                 </div>
                 <p className="p-flush">Check the message pane to see if the process is successful</p>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" style={{ height: '45px' }} />
                 </div>
               </div>
@@ -178,10 +180,11 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     <li><strong>2.)</strong> Select Properties. The Property dialog box will appear.</li>
                     <li><strong>3.)</strong> Enter the comment for the specific part &gt; Press OK</li>
                   </ul>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                  <div style={{ marginTop: '1.5rem' }}>
                     <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" style={{ height: '300px' }} />
                   </div>
-                  <div className="image-wrapper-flush" style={{ marginTop: '1.5rem' }}>
+                  <br />
+                  <div style={{ marginTop: '1.5rem' }}>
                     <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" style={{ height: '400px', width: '700px' }} />
                   </div>
                 </div>

@@ -265,7 +265,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
         <p>When creating a 3D model, always start with the <strong>Front View</strong>.
         </p>
 
-        <div className="image-wrapper-flush" style={{ width: '450px', height: 'auto' }}>
+        <div style={{ width: '450px', height: 'auto' }}>
 
           <img src={threeDView} alt="3D View" className="software-screenshot screenshot-medium" />
 
@@ -278,7 +278,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
           <div className="flex-row-center--wrap">
 
-            <div className="image-wrapper-flush">
+            <div>
 
               <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
@@ -313,7 +313,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
 
@@ -332,7 +332,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush" style={{ width: '950px', height: '' }}>
+                <div style={{ width: '950px', height: '' }}>
 
                   <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot screenshot-wide" style={{ width: '850px', height: 'auto' }} />
 
@@ -354,7 +354,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
@@ -369,7 +369,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>PREVIEW</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" style={{ height: '450px' }} />
 
@@ -405,9 +405,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
+                  <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
 
                 </div>
 
@@ -424,9 +424,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot screenshot-wide" />
+                  <img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
 
                 </div>
 
@@ -443,7 +443,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
@@ -458,7 +458,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>PREVIEW</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" />
 
@@ -494,7 +494,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
 
@@ -513,9 +513,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot screenshot-wide" />
+                  <img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
 
                 </div>
 
@@ -532,7 +532,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
@@ -547,7 +547,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>PREVIEW</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" />
 
@@ -583,9 +583,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
+                  <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
 
                 </div>
 
@@ -602,9 +602,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot screenshot-wide" />
+                  <img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot screenshot-wide" style={{ width: '850px', height: 'auto' }} />
 
                 </div>
 
@@ -621,7 +621,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
@@ -636,7 +636,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>PREVIEW</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" />
 
@@ -672,9 +672,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
+                  <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
 
                 </div>
 
@@ -691,9 +691,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot screenshot-wide" />
+                  <img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
 
                 </div>
 
@@ -710,7 +710,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
@@ -725,7 +725,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>PREVIEW</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large" />
 
@@ -838,9 +838,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
         <div className="instruction-box">
 
-          <div className="image-wrapper">
+          <div>
 
-            <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" />
+            <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '200px', height: 'auto' }} />
 
           </div>
 
@@ -871,7 +871,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
@@ -903,9 +903,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot screenshot-wide" />
+                  <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot screenshot-wide" style={{ width: '850px', height: 'auto' }} />
 
                 </div>
 
@@ -921,7 +921,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>RESULT</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-large" />
 
@@ -957,7 +957,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
@@ -989,7 +989,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot screenshot-medium" />
 
@@ -1008,9 +1008,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-large" />
+                  <img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-large" style={{ width: '530px', height: 'auto' }} />
 
                 </div>
 
@@ -1046,7 +1046,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
@@ -1083,7 +1083,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>RESULT</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-large" />
 
@@ -1119,7 +1119,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
@@ -1151,9 +1151,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
-                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" />
+                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '900px', height: '110px' }} />
 
                 </div>
 
@@ -1166,7 +1166,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>RESULT</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" />
 
@@ -1202,7 +1202,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
@@ -1217,7 +1217,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>RESULT</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large" />
 
@@ -1253,7 +1253,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
@@ -1268,7 +1268,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>RESULT</h4>
               </div>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large" />
 
@@ -1311,7 +1311,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                  <div className="image-wrapper-flush">
+                  <div >
 
                     <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" style={{ width: '300px', height: 'auto' }} />
 
@@ -1427,7 +1427,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
           <div className="flex-row-center--wrap">
 
-            <div className="image-wrapper-flush">
+            <div>
 
               <img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" />
 
@@ -1452,7 +1452,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className="image-wrapper-flush">
+            <div>
 
               <img src={sketch1} alt="Sketch Overview" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1471,7 +1471,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   <div className="flex-row">
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1501,7 +1501,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div className="instruction-step">
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={extrudeRevolveMenu} alt="Extrude Revolve Menu" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1619,7 +1619,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                     <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                      <div className="image-wrapper-flush">
+                      <div>
 
                         <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1662,7 +1662,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="flex-col-start result-preview-box">
 
-                  <div className="image-wrapper-flush">
+                  <div>
 
                     <img src={revolveP1} alt="Revolve P1" className="software-screenshot screenshot-mmedium" />
 
@@ -1702,7 +1702,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div >
 
                   <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1729,7 +1729,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 </div>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1748,7 +1748,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                  <div className="image-wrapper-flush">
+                  <div>
 
                     <img src={draftingEntitiesTable} alt="Drafting Entities Diagram" className="software-screenshot screenshot-large img-mt-sm" />
 
@@ -1790,7 +1790,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   </div>
 
-                  <div className="image-wrapper-flush flex-no-shrink">
+                  <div className="flex-no-shrink">
 
                     <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium flex-no-shrink" />
 
@@ -1830,7 +1830,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1871,9 +1871,9 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   <div className="flex-1">
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
-                      <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" style={{ width: '900px', height: 'auto' }} />
+                      <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
 
                     </div>
                     <br />
@@ -1883,7 +1883,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 </div>
 
-                <div className="image-wrapper-flush flex-no-shrink">
+                <div className="flex-no-shrink">
                   <br />
                   <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" />
 
@@ -1914,7 +1914,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 </div>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" />
 
@@ -1952,7 +1952,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
@@ -1990,15 +1990,15 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="flex-row-center--wide">
 
-                  <div className="image-wrapper-flush">
+                  <div>
 
-                    <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
+                    <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
 
                   </div>
                   <br />
                   <br />
                   <br />
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" />
 
                   </div>
@@ -2075,7 +2075,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div className="instruction-step">
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot screenshot-medium" style={{ height: '225px' }} />
 
@@ -2084,7 +2084,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <p className="p-flush"><strong className="text-highlight">Shape Steels includes:</strong>
               </p>
 
-              <div className="image-wrapper-flush">
+              <div>
 
                 <img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot screenshot-wide" />
 
@@ -2104,7 +2104,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ height: '150px' }} />
 
@@ -2123,7 +2123,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="image-wrapper-flush">
+                <div>
 
                   <img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window" className="software-screenshot screenshot-wide" />
 
@@ -2146,7 +2146,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   <div className="flex-1">
 
-                    <div className="image-wrapper-flush">
+                    <div>
 
                       <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
 
@@ -2156,7 +2156,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 </div>
 
-                <div className="image-wrapper-flush">
+                <div>
                   <br />
 
                   <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ height: '450px' }} />

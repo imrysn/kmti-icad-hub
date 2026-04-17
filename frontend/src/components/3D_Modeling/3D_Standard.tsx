@@ -128,12 +128,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p">Based on the image. We must apply it on <strong className="text-highlight">3D Modeling</strong> and <strong className="text-highlight">2D Detailing</strong>.</p>
                 </div>
                 <div className="flex-row--top">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" />
                   </div>
                   <br />
                   <br />
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
@@ -147,12 +147,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush">Another type of <strong className="text-highlight">Scale Pointer</strong> is by putting <strong className="text-highlight">V-groove</strong>. We must also apply this on 3D and 2D.</p>
                 </div>
                 <div className="flex-row--top">
-                  <div className="image-wrapper-flush">
+                  <div className="image-wra`pper-flush">
                     <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-wide" />
                   </div>
                   <br />
                   <br />
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
@@ -173,12 +173,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     </ul>
                   </div>
                   <div className="flex-col">
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" style={{ height: '140px' }} />
                     </div>
                     <br />
                     <br />
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" style={{ height: '70px' }} />
                     </div>
                   </div>
@@ -199,9 +199,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                   <p className="p">Deformation may happen due to the presence of heat and gas at time of welding. Holes added to square pipes for gas discharge. One <strong className="text-highlight">ρE Drill hole</strong> per square pipe is enough.</p>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot screenshot-wide" />
                 </div>
+                <span style={{ marginLeft: '350px' }}>On the 2D Detail, add the note for air discharge. <br /> <strong style={{ fontSize: "35px", marginLeft: "4rem" }}>（エアー抜き）</strong></span>
+
               </div>
 
               <div className="section-divider" />
@@ -221,7 +223,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <li>Depth of manufacturing should be <strong>1.5mm</strong>.</li>
                     <li>In case drill/tap holes reach to ditch, the diameter must be <strong>smaller than width of groove</strong>.</li>
                   </ul>
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
