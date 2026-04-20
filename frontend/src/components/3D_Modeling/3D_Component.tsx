@@ -100,7 +100,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                   <div><img src={copyFinal} alt="Copy Result" className="software-screenshot screenshot-large" style={{ width: '670px' }} /></div>
                   <br />
                 </div>
-                <div className="tool-block"><h4 className="section-title" style={{ marginRight: '810px' }}>Result</h4><div><img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-medium" /></div></div>
+                <div className="tool-block"><h4 className="section-title" style={{ marginRight: '810px' }}>Result</h4><div><img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-medium" style={{ width: '360px' }} /></div></div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>
             )}
@@ -138,7 +138,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                   <div className="step-header"><span className="step-number">4</span><span className="step-label">Specify the angle of rotation on the item entry &gt; Press <strong className="text-highlight">Enter</strong></span></div>
                   <div><img src={rotateEntry} alt="Rotate Entry" className="software-screenshot screenshot-large" style={{ width: '650px' }} /></div>
                 </div>
-                <div className="tool-block"><h4 className="section-title" style={{ marginRight: "1000px" }}>Result</h4><div><img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-medium" style={{ width: '650px' }} /></div></div>
+                <div className="tool-block"><h4 className="section-title" style={{ marginRight: "1000px" }}>Result</h4><div><img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-medium" style={{ width: '550px' }} /></div></div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>
             )}
@@ -189,7 +189,7 @@ const Component2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                 </div>
                 <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                   <div className="step-header"><span className="step-number">2</span><span className="step-label">Select component to be copied &gt; <strong className="text-highlight">GO</strong></span></div>
-                  <div><img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot screenshot-wide" style={{ width: '905px' }} /></div>
+                  <div><img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot screenshot-wide" style={{ width: '805px' }} /></div>
                 </div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>

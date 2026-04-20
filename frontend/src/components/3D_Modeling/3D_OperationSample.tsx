@@ -249,7 +249,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                   <div>
 
-                    <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot screenshot-medium" />
+                    <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
 
                   </div>
 
@@ -321,7 +321,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={opSample1} alt="Operation Sample 1 Result" className="software-screenshot screenshot-medium" />
+                      <img src={opSample1} alt="Operation Sample 1 Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
 
                     </div>
 
@@ -358,7 +358,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={opSample1Move} alt="Move Component Result" className="software-screenshot screenshot-small" />
+                      <img src={opSample1Move} alt="Move Component Result" className="software-screenshot screenshot-small" style={{ marginLeft: '1rem', width: '150px' }} />
 
                     </div>
 
@@ -395,12 +395,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                       <p className="p-flush">Position the tool entity on the location to be cut then use <strong className="text-highlight">Subtract</strong>.
                       </p>
-
+                      <br />
                     </div>
 
                     <div>
 
-                      <img src={subtractResult} alt="Subtract Result" className="software-screenshot screenshot-large" />
+                      <img src={subtractResult} alt="Subtract Result" className="software-screenshot screenshot-large" style={{ marginLeft: '4rem', width: '560px' }} />
 
                     </div>
 
@@ -441,7 +441,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" />
+                      <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" style={{ marginLeft: '1rem', width: '650px' }} />
 
                     </div>
 
@@ -476,7 +476,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" />
+                      <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ marginLeft: '1rem', width: '750px' }} />
 
                     </div>
 
@@ -517,7 +517,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-small" />
+                      <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-small" style={{ marginLeft: '1rem', width: '160px' }} />
 
                     </div>
 
@@ -816,7 +816,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                       <br />
                       <div>
 
-                        <img src={segmentDResult} alt="Segment D Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
+                        <img src={segmentDResult} alt="Segment D Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '350px' }} />
 
                       </div>
 
@@ -852,7 +852,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                   <div>
 
-                    <img src={segmentEResult} alt="Segment E Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
+                    <img src={segmentEResult} alt="Segment E Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '350px' }} />
 
                   </div>
 
@@ -901,7 +901,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={keyGrooveBox} alt="Key Groove Box Tool" className="software-screenshot screenshot-medium" style={{ marginLeft: '2rem', width: '400px' }} />
+                      <img src={keyGrooveBox} alt="Key Groove Box Tool" className="software-screenshot screenshot-medium" style={{ marginLeft: '2rem', width: '350px' }} />
 
                     </div>
                     <br />
@@ -951,7 +951,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={keyGrooveSubtractResult} alt="Subtract Key Groove" className="software-screenshot screenshot-medium" style={{ marginLeft: '2rem', width: '400px' }} />
+                      <img src={keyGrooveSubtractResult} alt="Subtract Key Groove" className="software-screenshot screenshot-medium" style={{ marginLeft: '2rem', width: '350px' }} />
 
                     </div>
 
@@ -992,7 +992,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                 <div>
 
-                  <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
+                  <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '350px' }} />
 
                 </div>
 

@@ -29,7 +29,7 @@ import slottedDrill from '../../assets/3D_Image_File/standard7_case2.png';
 import connectionCChannel from '../../assets/3D_Image_File/standard7_connections_case1.png';
 import connectionBothDrill from '../../assets/3D_Image_File/standard7_connections_case2.png';
 import sgpPipesRed from '../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
-import sgpPipesYellow from '../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
+import sgpPipesYellow from '../../assets/3D_Image_File/standard8_SGP_pipes_yellow.png';
 
 
 interface StandardLessonProps {
@@ -155,7 +155,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <br />
                   <br />
                   <span style={{ fontSize: '1.5rem', marginLeft: "5rem" }}>Pointer Color:</span> <br />
-                  <span style={{ fontSize: '1.5rem', marginLeft: "7rem", color: "#da2525ff" }}>Red#3</span>
+                  <span style={{ fontSize: '1.5rem', marginLeft: "rem", color: "#da2525ff" }}>Red#3</span>
 
                   <div>
 
