@@ -298,7 +298,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 const exactMatch = activeLessonId ? registry[activeLessonId] : null;
                 if (exactMatch) return exactMatch();
 
-                const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && activeLessonId.startsWith(p + '-'));
+                const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && (activeLessonId === p || activeLessonId.startsWith(p + '-')));
                 if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
 
                 if (is2DDrawingCourse) {
@@ -309,8 +309,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     case '2d-welding-symbol': return <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
                     case '2d-surface-coating': return <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
                     case '2d-weight-computation': return <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-balloon': return <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-titleblock': return <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
                     case '2d-revision-code': return <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
                     case '2d-standard-library': return <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
                     default:

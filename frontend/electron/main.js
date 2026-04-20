@@ -8,8 +8,8 @@ const path = require('path');
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 1200,
-        height: 800,
+        width: 1280,
+        height: 720,
         frame: false, // Make the window frameless
         transparent: false,
         backgroundColor: '#020617',
@@ -20,6 +20,7 @@ function createWindow() {
             contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
             sandbox: true,
+            zoomFactor: 1.0, // Force 100% zoom on start
         },
     });
 
@@ -30,7 +31,7 @@ function createWindow() {
             console.log('Failed to load 5173, trying 5174...');
             mainWindow.loadURL('http://localhost:5174');
         });
-        
+
         // DevTools auto-open disabled to prevent "Failed to fetch" console errors
         // mainWindow.webContents.openDevTools();
 
