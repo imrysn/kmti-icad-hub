@@ -81,7 +81,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                   <div className="step-header"><span className="step-number">3</span><span className="step-label">Specify the movement distance on the X, Y and Z-axis on the item entry &gt; Press <strong className="text-highlight">Enter</strong></span></div>
                   <div><img src={moveEntry} alt="Move Item Entry" className="software-screenshot screenshot-large" style={{ width: '500px' }} /></div>
                 </div>
-                <div className="tool-block"><h4 className="section-title" style={{ marginRight: "1000px" }}>Result</h4><div><img src={moveResult} alt="Move Result" className="software-screenshot screenshot-medium" /></div></div>
+                <div className="tool-block"><h4 className="section-title" style={{ marginRight: "1000px" }}>Result</h4><div><img src={moveResult} alt="Move Result" className="software-screenshot screenshot-medium" style={{ width: '400px' }} /></div></div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>
             )}
@@ -116,7 +116,7 @@ const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
                 </div>
                 <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
                   <div className="step-header"><span className="step-number">3</span><span className="step-label">Select 3-points to set the mirror plane or left-click on a face.</span></div>
-                  <div><img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-medium" style={{ width: '500px' }} /></div>
+                  <div><img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-medium" style={{ width: '400px' }} /></div>
                 </div>
                 <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
               </div>
@@ -174,7 +174,7 @@ const Component2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, next
         <h3 className="section-title" style={{ marginRight: '330px' }}>Repeat copy / Delete component</h3>
         <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
         <div className="instruction-box">
-          <div><img src={componentMenu} alt="Component Operation Menu" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
+          <div><img src={componentMenu} alt="Component Operation Menu" className="software-screenshot screenshot-small" style={{ width: '200px' }} /></div>
         </div>
       </section>
       <div className="lesson-grid single-card">

@@ -180,13 +180,13 @@ const TwoDTo3D3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <p className="p-flush-bottom"> Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical at projection. </p>
             <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
               <div className="step-header"> <span className="step-number"> 1 </span> <span className="step-label"> Select <strong className="text-highlight">Extrude</strong> from the icon menu. </span> </div>
-              <div className="step-description"> <div> <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" style={{ height: '200px' }} /> </div> </div>
+              <div className="step-description"> <div> <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" style={{ height: '190px' }} /> </div> </div>
             </div>
             <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
               <div className="step-header"> <span className="step-number"> 2 </span> <span className="step-label"> Pick the cross-section to be extruded.&gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> </span> </div>
               <br />
               <p> A hatch will appear to show that the sketch is an enclosed figure</p>
-              <div className="step-description"> <div> <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-large" /> </div> </div>
+              <div className="step-description"> <div> <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-large" style={{ width: '480px', height: 'auto' }} /> </div> </div>
             </div>
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
               <div className="step-header"> <span className="step-number"> 3 </span> <span className="step-label"> Specify the height of extrusion on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> </span> </div>

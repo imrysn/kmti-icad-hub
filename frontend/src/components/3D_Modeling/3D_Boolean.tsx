@@ -162,7 +162,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     </span>
                   </div>
                   <div>
-                    <img src={select3D} alt="Select 3D entities" className="software-screenshot screenshot-large" />
+                    <img src={select3D} alt="Select 3D entities" className="software-screenshot screenshot-large" style={{ width: '600px', height: 'auto' }} />
                   </div>
                 </div>
 
@@ -309,7 +309,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <div className="info-box">
                   <p className="p-flush"><strong className="text-highlight">Component:</strong> By-product of boolean operations (entities joined by union, cutout, holes)</p>
                   <div>
-                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    <br />
+                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" style={{ height: '150px' }} />
                   </div>
                 </div>
 
@@ -320,7 +321,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                       <span className="step-number">1</span>
                       <span className="step-label">
                         Select the desired components &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '30px', verticalAlign: 'middle', margin: '0 4px' }} />
                       </span>
                     </div>
                     <div className="step-header">
@@ -330,10 +331,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </div>
 
                   <div className="flex-row-center--wrap">
-                    <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '250px' }} />
+                    <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '180px' }} />
                     <br />
                     <br />
-                    <img src={componentSeparated} alt="Separated Result" className="software-screenshot screenshot-medium" />
+                    <img src={componentSeparated} alt="Separated Result" className="software-screenshot screenshot-medium" style={{ height: '300px' }} />
                   </div>
                   <br />
                   <div style={{ marginTop: '1rem' }}>
@@ -374,10 +375,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     </div>
                     <br />
                     <div className="flex-row-center--wrap">
-                      <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '250px' }} />
+                      <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '180px' }} />
                       <br />
                       <br />
-                      <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" />
+                      <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" style={{ height: '300px' }} />
                     </div>
                   </div>
 
