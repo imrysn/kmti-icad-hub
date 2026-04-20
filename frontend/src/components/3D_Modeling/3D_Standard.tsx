@@ -154,7 +154,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   </div>
                   <br />
                   <br />
+                  <span style={{ fontSize: '1.5rem', marginLeft: "5rem" }}>Pointer Color:</span> <br />
+                  <span style={{ fontSize: '1.5rem', marginLeft: "7rem", color: "#da2525ff" }}>Red#3</span>
+
                   <div>
+
                     <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>

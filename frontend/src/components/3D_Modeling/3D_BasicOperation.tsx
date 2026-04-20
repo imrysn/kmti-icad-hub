@@ -1530,16 +1530,19 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                       <div className="flex-row">
 
-                        <div className="image-wrapper-flush">
+                        <div>
 
                           <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
+                          <span style={{ fontSize: '1.5rem', marginLeft: "0rem" }}>EXTRUSION (ONE SIDE):</span>
 
                         </div>
                         <br />
                         <br />
-                        <div className="image-wrapper-flush">
+                        <div>
                           <br />
                           <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
+                          <span style={{ fontSize: '1.5rem', marginLeft: "0rem" }}>EXTRUSION (BOTH SIDE):</span>
+
 
                         </div>
 

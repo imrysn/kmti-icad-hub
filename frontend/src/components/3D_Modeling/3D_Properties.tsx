@@ -129,7 +129,7 @@ interface PropertiesLessonProps {
                     </div>
 
                     <div>
-                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" />
+                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" style={{ width: ' 250px' }} />
                     </div>
                   </div>
 
@@ -166,9 +166,12 @@ interface PropertiesLessonProps {
                         </div>
 
                         <div className="flex-1">
-                          <div className="image-wrapper-flush">
-                            <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-medium" />
-                          </div>
+                          <br />
+
+                          <span style={{ fontSize: '1.5rem', marginLeft: "10rem" }}>CHANGE COLOR (ENTITY):</span>
+                          <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-medium" style={{ width: ' 600px', marginTop: '10px' }} />
+
+
                         </div>
                       </div>
 
@@ -192,12 +195,14 @@ interface PropertiesLessonProps {
                               Only selected faces/surfaces will change its
                               color.
                             </p>
+                            <br />
                           </div>
                         </div>
 
                         <div className="flex-1">
-                          <div className="image-wrapper-flush">
-                            <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" />
+                          <div>
+                            <span style={{ fontSize: '1.5rem', marginLeft: "10rem" }}>CHANGE COLOR (FACE):</span>
+                            <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" style={{ width: ' 600px', marginTop: '10px' }} />
                           </div>
                         </div>
                       </div>
@@ -312,8 +317,11 @@ interface PropertiesLessonProps {
                       <li>All Stainless Steel (SUS) - white (No.1)</li>{" "}
                       <li>Acrylic - white (No.1)</li>{" "}
                     </ul>
-                    <div className="image-wrapper-flush">
-                      <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" style={{ height: '350px' }} />
+                    <div>
+                      <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" /> <br />
+                      <span style={{ fontSize: '1.5rem', marginLeft: "2rem" }}>ACRYLIC</span>
+                      <span style={{ fontSize: '1.5rem', marginLeft: "21rem" }}>POINTER</span>
+
                     </div>{" "}
                     <h4 className="text-error text-center" /* sanitized: marginTop: '1.5rem' */>
                       <br />
@@ -341,7 +349,7 @@ interface PropertiesLessonProps {
                       </div>
 
                       <div className="flex-1">
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={propertiesMaterialImg} alt="Properties Material" className="software-screenshot screenshot-large" />
                         </div>
                       </div>
@@ -371,8 +379,11 @@ interface PropertiesLessonProps {
                       </div>
 
                       <div className="flex-1">
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={isoniteManganeseImg} alt="Heat Treatment Parts" className="software-screenshot screenshot-large" />
+                          <span style={{ fontSize: '1.8rem', marginLeft: "6rem" }}>ISONITE</span>
+                          <span style={{ fontSize: '1.8rem', marginLeft: "15rem" }}>MANGANESE</span> <br />
+                          <span style={{ fontSize: '1.8rem', marginLeft: "28rem" }}>PHOSPHATE</span>
                         </div>
                       </div>
                     </div>
@@ -387,8 +398,11 @@ interface PropertiesLessonProps {
                       <li>Purchase Parts with Additional Process</li>{" "}
                       <li>Use manufacturer standard color</li>{" "}
                     </ul>
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
+                      <span style={{ fontSize: '1.8rem', marginLeft: "1rem" }}>MOTOR</span>
+                      <span style={{ fontSize: '1.8rem', marginLeft: "8rem" }}>ENCODER</span>
+                      <span style={{ fontSize: '1.8rem', marginLeft: "10rem" }}>CHAIN & SPROCKET</span>
                     </div>
                   </div>
                 </div>
@@ -396,7 +410,7 @@ interface PropertiesLessonProps {
             </>
           ) : (
             <div className="fade-in">
-              <h3 className="section-title">Information</h3>
+              <h3 className="section-title" style={{ marginRight: "780px" }}>Information</h3>
 
               <div className="tool-block">
                 <div className="flex-row-wrap">
