@@ -184,7 +184,7 @@ const TwoDTo3D3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
             <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
               <div className="step-header"> <span className="step-number"> 2 </span> <span className="step-label"> Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> </span> </div>
-              <div className="step-description"> <div className="image-wrapper-flush"> <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-large" /> </div> </div>
+              <div className="step-description"> <div> <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot screenshot-large" /> </div> </div>
             </div>
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
               <div className="step-header"> <span className="step-number"> 3 </span> <span className="step-label"> Specify the height of extrusion on the item entry &gt; Press <strong className="text-highlight">Enter</strong> &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> </span> </div>
@@ -195,7 +195,7 @@ const TwoDTo3D3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <p className="p-flush"> <strong className="text-highlight"> Note: Deleting the work plane will delete all the sketch made on the plane. This process cannot be undone. </strong> </p>
               <p className="p-flush"> Select Cancel to keep the work plane together with all the 2D sketches. </p>
             </div>
-            <div className="flex-row-center--wrap"> <div className="image-wrapper-flush"> <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot screenshot-medium" /> </div> <ArrowRight size={24} color="var(--primary-red)" /> <div className="image-wrapper-flush"> <img src={extrudeResultFinal} alt="Extrude Result" className="software-screenshot screenshot-medium" /> </div> </div>
+            <div className="flex-row-center--wrap"> <div> <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot screenshot-medium" /> </div> <ArrowRight size={24} color="var(--primary-red)" /> <div> <img src={extrudeResultFinal} alt="Extrude Result" className="software-screenshot screenshot-medium" /> </div> </div>
             <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}> <ChevronLeft size={18} /> Previous </button> <button className="nav-button next" onClick={handleNext}> {nextLabel || 'Next'} <ChevronRight size={18} /> </button> </div>
           </div>
         )}
