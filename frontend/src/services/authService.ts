@@ -49,7 +49,7 @@ const authApi = axios.create({
 
 // Add Bearer token to every request
 authApi.interceptors.request.use((config) => {
-    const token = localStorage.getItem('access_token');
+    const token = sessionStorage.getItem('access_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -67,8 +67,8 @@ authApi.interceptors.response.use(
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
             console.warn('Authentication failure - clearing session and redirecting');
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('access_token');
+            sessionStorage.removeItem('user');
             
             if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
                 window.location.href = '/';
@@ -84,8 +84,8 @@ export const authService = {
      */
     async login(credentials: LoginCredentials): Promise<TokenResponse> {
         const response = await authApi.post<TokenResponse>('/auth/login', credentials);
-        localStorage.setItem('access_token', response.data.access_token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        sessionStorage.setItem('access_token', response.data.access_token);
+        sessionStorage.setItem('user', JSON.stringify(response.data.user));
         return response.data;
     },
 
@@ -102,7 +102,7 @@ export const authService = {
      */
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
-        localStorage.setItem('user', JSON.stringify(response.data));
+        sessionStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     },
 
@@ -152,8 +152,8 @@ export const authService = {
      * Logout and clear local storage
      */
     logout() {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('user');
         window.location.href = '/login';
     },
 
@@ -161,14 +161,14 @@ export const authService = {
      * Check if user is authenticated
      */
     isAuthenticated(): boolean {
-        return !!localStorage.getItem('access_token');
+        return !!sessionStorage.getItem('access_token');
     },
 
     /**
      * Get stored user information
      */
     getStoredUser(): User | null {
-        const user = localStorage.getItem('user');
+        const user = sessionStorage.getItem('user');
         return user ? JSON.parse(user) : null;
     }
 };

@@ -110,7 +110,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                 <img src={plateExImg} alt="Plate Weight Computation Example" className="software-screenshot screenshot-wide" />
 
                 <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p>Note:</p>
+                  <p className="red-text"><strong>Note:</strong></p>
 
                   <p>
                     {" "}
@@ -134,7 +134,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                 <img src={cylinderExImg} alt="Cylinder Weight Computation Example" className="software-screenshot screenshot-wide" />
 
                 <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p>Note:</p>
+                  <p className="red-text"><strong>Note:</strong></p>
 
                   <p>
                     {" "}
@@ -167,20 +167,22 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                 </div>
 
                 <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p>Notes:</p>
+                  <p className="red-text"><strong>Notes:</strong></p>
 
-                  <p>
-                    {" "}
-                    1. Cross sectional area refers from{" "}
-                    <span>Japan Industrial Standard (JIS)</span>.<br />
-                    <br /> 2. Cross sectional area needs to convert in m² first.
-                    <br />
-                    <br /> 3. To skip computation of cross sectional area from
-                    cm² to m², just move 4 decimal places to the left.
-                    <br />
-                    <br /> 4. Use specific gravity with unit kg/m³ and follow
-                    the given formula.
-                  </p>
+                  <div style={{ padding: "0.5rem 0" }}>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      2. Cross sectional area needs to convert in m² first.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      3. To skip computation of cross sectional area from cm² to m², just move 4 decimal places to the left.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      4. Use specific gravity with unit kg/m³ and follow the given formula.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>{" "}
@@ -196,20 +198,22 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                 <img src={pipeExImg} alt="Rectangular Pipe Example" className="software-screenshot screenshot-wide" />
 
                 <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p>Notes:</p>
+                  <p className="red-text"><strong>Notes:</strong></p>
 
-                  <p>
-                    {" "}
-                    1. Cross sectional area refers from{" "}
-                    <span>Japan Industrial Standard (JIS)</span>.<br />
-                    <br /> 2. Cross sectional area needs to convert in m² first.
-                    <br />
-                    <br /> 3. To skip computation of cross sectional area from
-                    cm² to m², just move 4 decimal places to the left.
-                    <br />
-                    <br /> 4. Use specific gravity with unit kg/m³ and follow
-                    the given formula.
-                  </p>
+                  <div style={{ padding: "0.5rem 0" }}>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      2. Cross sectional area needs to convert in m² first.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      3. To skip computation of cross sectional area from cm² to m², just move 4 decimal places to the left.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      4. Use specific gravity with unit kg/m³ and follow the given formula.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

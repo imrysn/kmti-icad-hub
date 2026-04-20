@@ -3,11 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeft, ChevronLeft, ChevronRight, ArrowBigDown, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
 import { useTTS } from "../../hooks/useTTS";
 
+import "../../styles/2D_Drawing/CourseLesson.css";
+
 import titleBlock1Img from "../../assets/2D_Image_File/2D_title_block_1.png";
-
-import titleBlock2Img from "../../assets/2D_Image_File/2D_title_block_2.png";
-
-import titleBlock3Img from "../../assets/2D_Image_File/2D_title_block_3.png";
 
 interface TitleBlockLessonProps {
   nextLabel?: string;
@@ -86,35 +84,13 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
             {/* Section 1: Main Fields and Procedure */}
             <div className="lesson-section">
               <div className="flex-col">
-                <div className="image-wrapper-flush">
-                  <img src={titleBlock1Img} alt="Title Block Field Definitions and Creation Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
+                <div>
+                  <img src={titleBlock1Img} alt="Title Block Field Definitions and Creation Procedure" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
             </div>
-            <div className="flex-row">
-              {" "}
-              <ArrowBigDown size={85} fill="red" color="red" />
-            </div>{" "}
-            {/* Section 2: Data Reflection and Notes */}
-            <div className="lesson-section" /* sanitized: width: '100%' */>
-              <div className="flex-col">
-                <div className="image-wrapper-flush">
-                  <img src={titleBlock2Img} alt="Title Block Data Reflection and Technical Notes" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
-                </div>
-              </div>
-            </div>
-            <div className="flex-row">
-              {" "}
-              <ArrowBigDown size={85} fill="red" color="red" />
-            </div>{" "}
-            {/* Section 3: Placement Landmarks */}
-            <div className="lesson-section">
-              <div className="flex-col">
-                <div className="image-wrapper-flush">
-                  <img src={titleBlock3Img} alt="Title Block Placement Landmarks (P1, P2)" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
-                </div>
-              </div>
-            </div>
+
+
           </div>{" "}
           {/* Navigation */}
           <div className="lesson-navigation">
@@ -130,7 +106,7 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

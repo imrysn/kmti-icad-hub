@@ -8,7 +8,6 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 
 import additionalView1Img1 from "../../assets/2D_Image_File/2D_additional_view(1)_a.png";
 
-import additionalView1Img2 from "../../assets/2D_Image_File/2D_additional_view(1)_a2.png";
 /* Importing assets for Additional View (2) */
 
 import additionalView2ImgB from "../../assets/2D_Image_File/2D_additional_view(2)_b.png";
@@ -115,21 +114,17 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
               {/* a. Cross Section View Section */}
               <div id="cross-section-view">
                 {" "}
-                <h4> a. Cross Section View </h4>
+                <h4 style={{ marginBottom: "2rem" }}> a. Cross Section View </h4>
                 {/* Steps 1-4 */}
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                <div>
                   <img src={additionalView1Img1} alt="Cross Section View Steps 1-4" className="software-screenshot screenshot-wide" />
                 </div>{" "}
-                {/* Step 6 and Dialog Box Content */}
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
-                  <img src={additionalView1Img2} alt="Cross Section View Dialog and Steps 5-6" className="software-screenshot screenshot-wide" />
-                </div>
               </div>{" "}
               {/* Footer Note */}
               <div className="info-box">
                 <p>
                   {" "}
-                  Note: The text height of the section name should be the same
+                  <div className="red-text"><strong>Note:</strong></div>The text height of the section name should be the same
                   with dimension text height.
                 </p>
               </div>
@@ -147,22 +142,18 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     - use to make a cross-section of a part partially
                   </span>{" "}
                 </h4>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                <div>
                   <img src={additionalView2ImgB} alt="Partial Section Operations" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
               {/* c. Detail Drawing Section */}
               <div id="detail-drawing">
                 {" "}
-                <h4>
-                  {" "}
-                  c. Detail drawing{" "}
-                  <span>
-                    - use to detail a view on a bigger scale from a different
-                    view.
-                  </span>{" "}
-                </h4>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                <h4> c. Detail drawing</h4>
+                <p className="p-flush" style={{ marginBottom: "1rem" }}>use to detail a view on a bigger scale from a different view. </p>
+
+
+                <div>
                   <img src={additionalView2ImgC} alt="Detail Drawing Procedure" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -173,8 +164,8 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
               {/* d. Isometric View Section */}
               <div id="isometric-view">
                 {" "}
-                <h4> d. Isometric View </h4>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                <h4 style={{ marginBottom: "1rem" }}> d. Isometric View </h4>
+                <div>
                   <img src={additionalView3ImgD} alt="Isometric View Steps" className="software-screenshot screenshot-wide" />
                 </div>
               </div>{" "}
@@ -182,14 +173,13 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
               <div id="cross-sectional-depth">
                 {" "}
                 <h4> e. Cross-sectional depth </h4>
-                <p>
-                  {" "}
+                <p style={{ marginBottom: "1rem" }}>
                   There are some instances that the cross-sectional view have
                   parts which is not related to the desired view to be seen, we
                   can set the cross-sectional depth to eliminate the unnecessary
                   parts.
                 </p>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                <div>
                   <img src={additionalView3ImgE} alt="Cross-sectional depth Steps" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -200,15 +190,11 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
               {/* f. Trim Section */}
               <div id="trim-view">
                 {" "}
-                <h4>
-                  {" "}
-                  f. Trim{" "}
-                  <span>
-                    - another way to eliminate parts that are not needed on a
-                    certain view. This can not be applied on Detail Drawing.
-                  </span>{" "}
-                </h4>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
+                <h4> f. Trim </h4>
+                <p style={{ marginBottom: "1rem" }}>
+                  Another way to eliminate parts that are not needed on a certain view. This can not be applied on Detail Drawing.
+                </p>
+                <div>
                   <img src={additionalView4ImgF} alt="Trim View Steps" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
