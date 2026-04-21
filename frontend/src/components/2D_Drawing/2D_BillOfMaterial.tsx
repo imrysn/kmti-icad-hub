@@ -123,8 +123,10 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {" "}
               {/* a. Part drawing Section */}
               <div className="lesson-section">
-                {" "}
-                <h4> a. Part drawing </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">a.</span>
+                  <span className="step-label">Part drawing</span>
+                </div>
                 <div className="flex-col">
                   <div>
                     <img src={bomPartDrawingImg} alt="BOM Part Drawing Entry with Technical Callouts" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
@@ -142,8 +144,9 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="section-divider"></div>
               {/* c. Section */}
               <div className="lesson-section">
-                <div className="flex-col">
-                  <h4 style={{ marginBottom: "1rem" }}> c </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">c.</span>
+
                 </div>
 
                 <div className="flex-col">
@@ -168,8 +171,9 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {" "}
               {/* d. Excel operations for parts */}
               <div className="lesson-section">
-                <div className="flex-col">
-                  <h4 style={{ marginBottom: "1rem" }}> d </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">d.</span>
+
                 </div>
 
                 <div className="flex-col">
@@ -196,8 +200,10 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="section-divider"></div>{" "}
               {/* b. Assembly drawing Section */}
               <div className="lesson-section">
-                {" "}
-                <h4 style={{ marginBottom: "1rem" }}> b. Assembly drawing </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">b.</span>
+                  <span className="step-label">Assembly drawing</span>
+                </div>
                 <div className="step-description">
                   <div>
                     <div className="p-flush" style={{ marginBottom: "1rem" }}>
@@ -244,7 +250,10 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="section-divider"></div>{" "}
               {/* 17. Additional Information */}
               <section className="lesson-section">
-                <h4 style={{ marginBottom: "1rem" }}> 17. Additional Information</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">17.</span>
+                  <span className="step-label">Additional Information</span>
+                </div>
 
                 <div className="flex-col">
                   <div>

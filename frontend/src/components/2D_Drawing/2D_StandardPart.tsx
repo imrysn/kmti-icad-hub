@@ -187,8 +187,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {" "}
               {/* d. PCD Section */}
               <div className="sub-section-container">
-                {" "}
-                <h4>  d. PCD  </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">d.</span>
+                  <span className="step-label">PCD</span>
+                </div>
                 <p className="p-flush" style={{ marginBottom: "1rem" }}>
                   (Pitch Center Diameter) is no longer used for KEMCO drawing to avoid misreading of dimension during fabrication.
                 </p>
@@ -199,8 +201,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               <div className="section-divider"></div>{" "}
               {/* e. Tapered Thread (Rc) Section */}
               <div className="sub-section-container">
-                {" "}
-                <h4>e. Tapered Thread (Rc)</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">e.</span>
+                  <span className="step-label">Tapered Thread (Rc)</span>
+                </div>
                 <p className="p-flush" style={{ marginBottom: "1rem" }}>
                   Based on the drawing, we must apply it on 2D detailing
                 </p>
@@ -211,8 +215,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               <div className="section-divider"></div>{" "}
               {/* f. Standard Parts Section */}
               <div className="sub-section-container">
-                {" "}
-                <h4>f. Standard Parts</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">f.</span>
+                  <span className="step-label">Standard Parts</span>
+                </div>
                 <p className="p-flush" style={{ marginBottom: "1rem" }}>
                   Boxed portion of the template is the only data need to be
                   input, other than that no detail will be change.
@@ -227,8 +233,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {" "}
               {/* a. Oil Groove Section */}
               <div>
-                {" "}
-                <h4>a. Oil Groove</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">a.</span>
+                  <span className="step-label">Oil Groove</span>
+                </div>
                 <p className="p-flush">
                   Is a groove in the surface of a machine part that distributes
                   lubricating oil injected through an oil hole
@@ -238,8 +246,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 </div>{" "}
                 {/* 1. For Flat Surface */}
                 <div className="sub-section-container">
-                  {" "}
-                  <h4 style={{ marginBottom: "0.2rem" }}>1. For Flat Surface</h4>
+                  <div className="step-header" style={{ marginBottom: "1rem" }}>
+                    <span className="step-number">1.</span>
+                    <span className="step-label">For Flat Surface</span>
+                  </div>
                   <div>
                     <img src={oilGroove1Img} alt="Oil Groove - Flat Surface Detail and Example" className="software-screenshot screenshot-wide" />
                   </div>{" "}
@@ -265,9 +275,9 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                 <div className="section-divider"></div>{" "}
                 {/* 2. For Circular Portion */}
                 <div className="sub-section-container">
-                  <div className="flex-row">
-                    {" "}
-                    <h4 style={{ marginBottom: "1rem", marginTop: "1rem" }}>2. For Circular Portion</h4>{" "}
+                  <div className="step-header" style={{ marginBottom: "1rem" }}>
+                    <span className="step-number">2.</span>
+                    <span className="step-label">For Circular Portion</span>
                   </div>
                   <div>
                     <img src={oilGroove2Img} alt="Oil Groove - Circular Portion Detail and Example" className="software-screenshot screenshot-wide" />
@@ -306,8 +316,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {" "}
               {/* b. Shaft and Key Plate Section */}
               <div>
-                {" "}
-                <h4>b. Shaft and Key Plate</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">b.</span>
+                  <span className="step-label">Shaft and Key Plate</span>
+                </div>
                 <div className="sub-section-header">
                   {" "}
                   <p className="red-text" style={{ marginBottom: "1rem", marginTop: "1rem" }}><strong>※ Dimension of Shaft and Key Plate</strong></p>
@@ -357,8 +369,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {" "}
               {/* c. Collar Section */}
               <div className="sub-section-header">
-                {" "}
-                <h4 style={{ marginBottom: "-2rem" }}>c. Collar</h4>
+                <div className="step-header" style={{ marginBottom: "-1rem" }}>
+                  <span className="step-number">c.</span>
+                  <span className="step-label">Collar</span>
+                </div>
               </div>
               <div>
                 <p>
@@ -422,8 +436,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {" "}
               {/* g. Scale Section */}
               <div>
-                {" "}
-                <h4 style={{ marginBottom: "1rem" }}>g. Scale</h4>
+                <div className="step-header" style={{ marginBottom: "2rem" }}>
+                  <span className="step-number">g.</span>
+                  <span className="step-label">Scale</span>
+                </div>
                 <div style={{ marginBottom: "2rem" }}>
                   <img src={scaleImg} alt="Standard Scale Table JIS Z 8314" className="software-screenshot screenshot-large" />
                 </div>{" "}
@@ -446,8 +462,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               </div>
 
               <div>
-                {" "}
-                <h4>h. Relief process</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">h.</span>
+                  <span className="step-label">Relief process</span>
+                </div>
                 <div>
                   <p className="p-flush">
                     {" "}

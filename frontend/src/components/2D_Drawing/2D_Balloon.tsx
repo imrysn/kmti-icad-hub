@@ -75,7 +75,10 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
         <div className="lesson-card">
           {" "}
           <div className={`lesson-section ${currentIndex === 0 ? "reading-active" : ""}`}>
-            <h4 style={{ marginBottom: "2rem" }}> a. Part drawing </h4>
+            <div className="step-header" style={{ marginBottom: "2rem" }}>
+              <span className="step-number">a.</span>
+              <span className="step-label">Part drawing</span>
+            </div>
 
             <div>
               <div>
@@ -98,7 +101,10 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
             </div>
           </div>{" "}
           <div className={`lesson-section ${currentIndex === 1 ? "reading-active" : ""}`}>
-            <h4 style={{ marginBottom: "2rem" }}> b. Assembly drawing </h4>
+            <div className="step-header" style={{ marginBottom: "2rem" }}>
+              <span className="step-number">b.</span>
+              <span className="step-label">Assembly drawing</span>
+            </div>
             <div>
               <div>
                 <div>

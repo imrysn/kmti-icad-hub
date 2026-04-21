@@ -86,8 +86,10 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
             {" "}
             {/* 12. Machining Symbols - Title Header */}
             <div>
-              {" "}
-              <h4 style={{ marginBottom: "1rem" }}> 12. Machining Symbols </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">12.</span>
+                <span className="step-label">Machining Symbols</span>
+              </div>
               <div>
                 <div>
                   <img src={machiningSymbolMainImg} alt="Machining Symbol Selection" className="software-screenshot screenshot-wide" />
@@ -103,8 +105,10 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
             </div>
           </div>
           <div className="lesson-section">
-            {" "}
-            <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> a. Machining Surface Condition </h4>
+            <div className="step-header" style={{ marginBottom: "2rem" }}>
+              <span className="step-number">a.</span>
+              <span className="step-label">Machining Surface Condition</span>
+            </div>
             <div className="image-wrapper-flush">
               <img src={machiningSurfaceCondImg} alt="Machining Surface Condition Reference Table" className="software-screenshot screenshot-wide" />
             </div>

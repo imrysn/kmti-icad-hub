@@ -6,13 +6,12 @@ import { useTTS } from "../../hooks/useTTS";
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Operate View (1) */
 
-import operateView1ImgA from "../../assets/2D_Image_File/2D_operate_view(1)_a.jpg";
-import operateView1ImgA1 from "../../assets/2D_Image_File/2D_operate_view(1)_a1.jpg";
-import operateView1ImgB2 from "../../assets/2D_Image_File/2D_operate_view(1)_b2.jpg";
-import operateView1ImgB2_2 from "../../assets/2D_Image_File/2D_operate_view(1)_b2_2.png";
+import operateView1ImgA from "../../assets/2D_Image_File/2D_operate_view(1)_a.png";
+import operateView1ImgA1 from "../../assets/2D_Image_File/2D_operate_view(1)_a1.png";
+import operateView1ImgB2 from "../../assets/2D_Image_File/2D_operate_view(1)_b2.png";
 
 /* Importing assets for Operate View (2) */
-import operateView2ImgB1 from "../../assets/2D_Image_File/2D_operate_view(2)_b_1.jpg";
+import operateView2ImgB1 from "../../assets/2D_Image_File/2D_operate_view(2)_b_1.png";
 import operateView2ImgB2 from "../../assets/2D_Image_File/2D_operate_view(2)_b_2.jpg";
 import operateView2ImgB3 from "../../assets/2D_Image_File/2D_operate_view(2)_b2_3.jpg";
 
@@ -94,31 +93,41 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
               {" "}
               {/* a. Move view */}
               <div id="move-view">
-                {" "}
-                <h4> a. Move view </h4>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
-                  <img src={operateView1ImgA} alt="Move View" className="software-screenshot screenshot-small" />
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">a.</span>
+                  <span className="step-label">Move view</span>
+                </div>
+                <div>
+                  <img src={operateView1ImgA} alt="Move View" className="software-screenshot screenshot-medium" />
                 </div>
               </div>{" "}
               {/* a.1) Isometric view */}
               <div id="isometric-view-move">
-                {" "}
-                <h4> a.1) Isometric view </h4>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
-                  <img src={operateView1ImgA1} alt="Isometric View Move" className="software-screenshot screenshot-small" />
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">a.1</span>
+                  <span className="step-label">Isometric view</span>
                 </div>
+                <div className="info-box" style={{ marginBottom: "1rem" }}>
+                  <p className="p-flush">Position of isometric view must not be too close, too far, or over lap with the orthographic view.</p>
+                </div>
+                <img src={operateView1ImgA1} alt="Isometric View Move" className="software-screenshot screenshot-wide" />
               </div>{" "}
               {/* b.2) Orthographic view */}
               <div id="orthographic-view-move">
-                {" "}
-                <h4> b.2) Orthographic view </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">a.2</span>
+                  <span className="step-label">Orthographic view</span>
+                </div>
+                <div className="info-box" style={{ marginBottom: "1rem" }}>
+                  <p className="p-flush">All projection views must always aligned.</p>
+                </div>
                 <div className="flex-col">
-                  <div className="image-wrapper-flush" style={{ width: '100%' }}>
-                    <img src={operateView1ImgB2} alt="Orthographic View Move" className="software-screenshot screenshot-small" />
+                  <div>
+                    <img src={operateView1ImgB2} alt="Orthographic View Move" className="software-screenshot screenshot-wide" />
                   </div>
-
-                  <div className="image-wrapper-flush" style={{ width: '100%' }}>
-                    <img src={operateView1ImgB2_2} alt="Orthographic View Align" className="software-screenshot screenshot-small" />
+                  <div className="info-box" style={{ marginBottom: "1rem" }}>
+                    <p className="p-flush">1. Select create-three-view icon and select the Front view. If all the main view are highlighted, it means that the views are align.</p>
+                    <p className="red-text"><strong>Note:</strong> <br /> If the projected views are aligned, upon moving the views, all views will move simultaneously.</p>
                   </div>
                 </div>
               </div>
@@ -127,15 +136,25 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
             <div className="flex-col">
               {/* Operation Drawing Layout */}
               <div id="operation-alignment">
-                <div className="image-wrapper-flush" style={{ width: '100%', marginTop: '1.5rem' }}>
-                  <img src={operateView2ImgB3} alt="View Alignment Step 3" className="software-screenshot screenshot-small" />
+                <div className="info-box" style={{ marginBottom: "1rem" }}> <p className="p-flush"> If the views are not aligned, you can use also the same icon to adjust the location and aligning lines will appear.</p></div>
+                <div style={{ marginBottom: "2rem" }}>
+                  <img src={operateView2ImgB3} alt="View Alignment Step 3" className="software-screenshot screenshot-wide" />
                 </div>
-                <h4> b. Delete View </h4>
-                <div className="image-wrapper-flush" style={{ width: '100%' }}>
-                  <img src={operateView2ImgB1} alt="View Alignment Step 1" className="software-screenshot screenshot-small" />
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">b.</span>
+                  <span className="step-label">Delete View</span>
                 </div>
-                <div className="image-wrapper-flush" style={{ width: '100%', marginTop: '1.5rem' }}>
-                  <img src={operateView2ImgB2} alt="View Alignment Step 2" className="software-screenshot screenshot-small" />
+                <div>
+                  <img src={operateView2ImgB1} alt="View Alignment Step 1" className="software-screenshot screenshot-medium" />
+                </div>
+
+                <div className="info-box" style={{ marginBottom: "1rem", marginTop: "1rem" }}>
+                  <p className="p-flush">1. CLick the unnecessary view, then GO.</p>
+                  <p className="p-flush">2. Delete view dialog box display.</p>
+                  <p className="p-flush">3. Click OK if you decided to delete view. Click CANCEL if it's still needed.</p>
+                </div>
+                <div style={{ marginTop: "1rem" }}>
+                  <img src={operateView2ImgB2} alt="View Alignment Step 2" className="software-screenshot screenshot-wide" />
                 </div>
 
               </div>

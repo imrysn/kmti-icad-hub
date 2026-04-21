@@ -124,7 +124,9 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide" />
                   </div>
                   <div className="info-box" style={{ marginTop: "2rem" }}>
-                    <p className="p-flush red-text">Note: When changing the scale of a standard view, other standard views also change the scale. <br /> Cross section view and detail view need to chnage the scale separately.</p>
+                    <p className="p-flush red-text"><strong>Note:</strong></p>
+                    <p>When changing the scale of a standard view, other standard views also change the scale.
+                      Cross section view and detail view need to chnage the scale separately.</p>
                   </div>
                 </div>
               </div>
