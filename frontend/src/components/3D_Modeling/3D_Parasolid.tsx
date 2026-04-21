@@ -112,7 +112,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 <p className="p-flush">All Part names of purchase parts must be release on the tree view.</p>
                 <div
                 >
-                  <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
+                  <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" style={{ width: '690px' }} />
                 </div>
               </div>
             </div>

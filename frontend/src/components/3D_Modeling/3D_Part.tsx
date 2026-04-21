@@ -115,7 +115,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
                 <div>
-                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" style={{ height: '330px' }} />
+                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" style={{ height: '300px', width: '200px' }} />
                 </div>
               </div>
 
@@ -125,7 +125,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">The created 3D Part will appear in the tree view.</span>
                 </div>
                 <div>
-                  <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '320px' }} />
+                  <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '300px' }} />
                 </div>
               </div>
 
@@ -137,7 +137,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Material Description</span>
                 </div>
                 <div>
-                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" style={{ height: '360px', width: '1200px' }} />
+                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" style={{ height: '350px', width: '1200px' }} />
                 </div>
               </div>
             </div>
@@ -168,7 +168,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
                 <div>
-                  <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" />
+                  <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" style={{ width: '800px' }} />
                 </div>
               </div>
 
@@ -178,7 +178,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Update both 3D and 2D names automatically by selecting <strong>Yes</strong>.</span>
                 </div>
                 <div>
-                  <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
+                  <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" style={{ width: '800px' }} />
                 </div>
               </div>
             </div>

@@ -582,7 +582,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div>
 
-                      <img src={propertiesWindow} alt="Properties Window" className="software-screenshot screenshot-large" />
+                      <img src={propertiesWindow} alt="Properties Window" className="software-screenshot screenshot-meduim" style={{ width: '695px', height: '300px' }} />
 
                     </div>
 
@@ -718,12 +718,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                       <p className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment A
                       </p>
-
+                      <br />
                     </div>
 
                     <div>
 
-                      <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" />
+                      <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '330px' }} />
 
                     </div>
 

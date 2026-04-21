@@ -371,7 +371,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" style={{ height: '450px' }} />
+                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" style={{ height: '370px' }} />
 
               </div>
 
@@ -460,7 +460,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" />
+                <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" style={{ width: '800px' }} />
 
               </div>
 
@@ -549,7 +549,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" />
+                <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" style={{ width: '800px' }} />
 
               </div>
 
@@ -638,7 +638,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" />
+                <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" style={{ width: '400px' }} />
 
               </div>
 
@@ -1151,10 +1151,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div>
-
-                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '900px', height: '110px' }} />
-
+                <div className="flex-row-center--wrap">
+                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: '100px' }} />
                 </div>
 
               </div>
@@ -1166,10 +1164,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>RESULT</h4>
               </div>
 
-              <div>
-
-                <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ width: '500px', height: 'auto' }} />
-
+              <div className="flex-row-center--wrap">
+                <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ maxWidth: '600px', height: 'auto' }} />
               </div>
 
             </div>
@@ -2162,7 +2158,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                 <div>
                   <br />
 
-                  <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ height: '450px' }} />
+                  <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ height: '400px' }} />
 
                 </div>
 

@@ -149,7 +149,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           ) : (
             <div className="tab-pane fade-in">
               <div>
-                <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
+                <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" style={{ width: '800px', marginLeft: "2rem" }} />
               </div>
 
               <p className={`${currentIndex === 0 ? "reading-active" : ""}`} style={{ borderRadius: '8px', padding: '1rem', marginTop: '1rem' }}>
@@ -157,7 +157,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               </p>
 
               <div style={{ marginTop: '1.5rem' }}>
-                <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
+                <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" style={{ width: '800px', marginLeft: "2rem" }} />
               </div>
               <br />
               <br />
@@ -168,7 +168,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <h4 className="section-title" style={{ marginRight: '195px' }}>Other materials that are not on iCAD Material List includes:</h4>
                 <div>
                   <br />
-                  <img src={materialsListImg} alt="Materials List" className="software-screenshot screenshot-wide" />
+                  <img src={materialsListImg} alt="Materials List" className="software-screenshot screenshot-wide" style={{ marginLeft: "2rem" }} />
                 </div>
               </div>
             </div>

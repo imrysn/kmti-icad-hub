@@ -129,7 +129,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 </div>
                 <div className="flex-row--top">
                   <div>
-                    <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" />
+                    <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" style={{ width: '650px', height: '400px' }} />
                   </div>
                   <br />
                   <br />
@@ -149,13 +149,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush">Another type of <strong className="text-highlight">Scale Pointer</strong> is by putting <strong className="text-highlight">V-groove</strong>. We must also apply this on 3D and 2D.</p>
                 </div>
                 <div className="flex-row--top">
-                  <div className="image-wra`pper-flush">
-                    <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-wide" />
+                  <div>
+                    <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-wide" style={{ width: '650px', height: '400px' }} />
                   </div>
                   <br />
                   <br />
                   <span style={{ fontSize: '1.5rem', marginLeft: "5rem" }}>Pointer Color:</span> <br />
-                  <span style={{ fontSize: '1.5rem', marginLeft: "rem", color: "#da2525ff" }}>Red#3</span>
+                  <span style={{ fontSize: '1.5rem', marginLeft: "7.5rem", color: "#da2525ff" }}>Red#3</span>
 
                   <div>
 
@@ -180,12 +180,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   </div>
                   <div className="flex-col">
                     <div>
-                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" style={{ height: '140px' }} />
+                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" style={{ width: '700px' }} />
                     </div>
                     <br />
                     <br />
                     <div>
-                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" style={{ height: '70px' }} />
+                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" style={{ width: '910px', height: '70px' }} />
                     </div>
                   </div>
                 </div>
@@ -230,7 +230,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <li>In case drill/tap holes reach to ditch, the diameter must be <strong>smaller than width of groove</strong>.</li>
                   </ul>
                   <div>
-                    <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-large" />
+                    <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
                   </div>
                 </div>
               </div>
@@ -277,12 +277,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <h4 className="section-title">Location of Sprocket Keyway</h4>
                 </div>
                 <div>
-                  <img src={sprocketKeywayLoc} alt="Keyway Location Standards" className="software-screenshot screenshot-wide" />
+                  <img src={sprocketKeywayLoc} alt="Keyway Location Standards" className="software-screenshot screenshot-wide" style={{ width: '600px' }} />
                 </div>
                 <div className="info-box">
                   <p className="p-flush"><strong>Note</strong>: 1. Location of keyway always indicated on special notes.</p>
-                  <p className="p-flush">キー溝�E歯山部中忁E��合わせ加工すること (Key groove centered on tooth)</p>
-                  <p className="p-flush">2. 本図は市販品�E追加加工図である (Purchased part with additional process)</p>
+                  <p className="p-flush">キー溝E歯山部中忁E合わせ加工すること (Key groove centered on tooth)</p>
+                  <p className="p-flush">2. 本図は市販品E追加加工図である (Purchased part with additional process)</p>
                 </div>
               </div>
             </div>
@@ -401,7 +401,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Spring Washer (SW)</p>
                   <p className="p-flush text-highlight">Flat Washer (Hardening)</p>
                   <div>
-                    <img src={slottedThreaded} alt="Slotted + Threaded Case" className="software-screenshot screenshot-large" />
+                    <img src={slottedThreaded} alt="Slotted + Threaded Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                   </div>
                   <br />
@@ -414,7 +414,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Hex Nut (HN1)</p>
                 </div>
                 <div>
-                  <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" />
+                  <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                 </div>
               </div>
@@ -434,7 +434,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Spring Washer (SW)</p>
                   <p className="p-flush text-highlight">Hex Nut (HN1)</p>
                   <div>
-                    <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot screenshot-large" />
+                    <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                   </div>
                   <br />
@@ -445,7 +445,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Spring Washer (SW)</p>
                   <p className="p-flush text-highlight">Hex Nut (HN1)</p>
                   <div>
-                    <img src={connectionBothDrill} alt="Both Drill Connection" className="software-screenshot screenshot-large" />
+                    <img src={connectionBothDrill} alt="Both Drill Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                   </div>
                 </div>

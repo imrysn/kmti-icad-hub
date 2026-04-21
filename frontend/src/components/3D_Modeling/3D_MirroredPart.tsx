@@ -80,7 +80,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <p className="p-flush">Here is an example of a normal part.</p>
                   <div className="flex-row-center">
                     <div>
-                      <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-medium" />
+                      <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-medium" style={{ width: '700px' }} />
                     </div>
                   </div>
                 </div>
@@ -106,8 +106,9 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <li>Mirror Parts B cannot exist without Mirror Parts A.</li>
                   </ul>
                   <p className="p-flush" style={{ marginTop: '1rem' }}><strong>Note:</strong> If there are no existing part to be mirrored, use <strong>A</strong> when naming the part.</p>
+                  <br />
                   <div>
-                    <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot screenshot-large" />
+                    <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot screenshot-large" style={{ width: '700px' }} />
                   </div>
                 </div>
               </div>
@@ -147,7 +148,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <span className="step-label">Identify the proper location of origin of the part.</span>
                 </div>
                 <div>
-                  <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" />
+                  <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
                 </div>
               </div>
 
@@ -172,17 +173,17 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 </div>
                 <div className="step-description">
                   <div>
-                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
                   </div>
                   <br />
                   <p className="p-flush">Pick 3 points consecutively from the Part, <strong>starting from the origin.</strong></p>
                   <div>
-                    <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot screenshot-medium" />
+                    <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot screenshot-medium" style={{ height: '350px', width: '500px' }} />
                   </div>
                   <br />
                   <p className="p-flush">After doing the command, this will be the outcome as Part B.</p>
                   <div>
-                    <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" />
+                    <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" style={{ height: '350px', width: '550px' }} />
                   </div>
                   <p className="p-flush"><strong>Note:</strong> The <strong>Origin Part B</strong> must be at the <strong>same location as in Part A.</strong></p>
                 </div>
