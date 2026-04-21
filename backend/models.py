@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey
 from sqlalchemy.sql import func
 try:
     from .database import Base
@@ -22,6 +22,7 @@ class QuizScore(Base):
     course_id = Column(String(100), index=True)
     lesson_id = Column(String(100), index=True)
     score = Column(Float)
+    attempts_count = Column(Integer, default=1)
     completed_at = Column(DateTime, nullable=True)
 
 class MediaMetadata(Base):

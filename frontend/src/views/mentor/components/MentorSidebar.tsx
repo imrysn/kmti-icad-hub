@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, ChevronDown, ChevronRight, Menu, CheckCircle2, X, Lock, Zap } from 'lucide-react'; import { Course } from '../../../types';
+import { Search, ChevronDown, ChevronRight, ChevronLeft, CheckCircle2, X, Lock, Zap, BookOpen, Menu } from 'lucide-react'; import { Course } from '../../../types';
 import { Lesson, ICAD_2D_LESSONS, ICAD_3D_LESSONS } from '../mentorConstants';
 import { AnalyticsCard } from './AnalyticsCard';
 
@@ -56,6 +56,7 @@ interface MentorSidebarProps {
     isLoadingProgress: boolean;
     isEmployeeSide?: boolean;
     totalLessons: number;
+    completedLessonsCount: number;
     averageScore: number;
 }
 
@@ -73,6 +74,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     isLoadingProgress,
     isEmployeeSide = false,
     totalLessons,
+    completedLessonsCount,
     averageScore
 }) => {
     // Search State
@@ -174,11 +176,11 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             <div className="collapsed-progress-track">
                                 <div 
                                     className="collapsed-progress-fill" 
-                                    style={{ width: `${(completedLessons.length / totalLessons) * 100}%` }} 
+                                    style={{ width: `${(completedLessonsCount / totalLessons) * 100}%` }} 
                                 />
                             </div>
                             <div className="collapsed-stats-pill">
-                                {Math.round((completedLessons.length / totalLessons) * 100)}%
+                                {Math.round((completedLessonsCount / totalLessons) * 100)}%
                             </div>
                         </div>
                     ) : (
@@ -188,9 +190,9 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                     {!isLoadingProgress && !isEmployeeSide && sidebarOpen && (
                         <div className="sidebar-analytics-wrapper">
                             <AnalyticsCard
-                                completionPercentage={Math.min(100, (completedLessons.length / totalLessons) * 100)}
+                                completionPercentage={Math.min(100, (completedLessonsCount / totalLessons) * 100)}
                                 averageScore={averageScore}
-                                lessonsCompleted={completedLessons.length}
+                                lessonsCompleted={completedLessonsCount}
                                 totalLessons={totalLessons}
                             />
                         </div>
@@ -222,15 +224,18 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             const moduleStatus = getLessonGateStatus(lesson);
                             const isActive = activeLessonId === lesson.id || (lesson.children?.some(c => c.id === activeLessonId));
                             
+                            // PROGRESS INHERITANCE: If the parent module is completed, children are visually completed
+                            const isParentCompleted = moduleStatus.isSelfCompleted;
+
                             // Calculate progress percentage for children
                             const subLessonProgress = lesson.children 
-                               ? (lesson.children.filter(c => completedLessons.includes(c.id)).length / lesson.children.length) * 100
+                               ? (isParentCompleted ? 100 : (lesson.children.filter(c => completedLessons.includes(c.id)).length / lesson.children.length) * 100)
                                : (moduleStatus.isSelfCompleted ? 100 : 0);
 
                             return (
                                 <div key={lesson.id} className="lesson-item-wrapper">
                                     <div className={`lesson-item ${isActive ? 'active' : ''} 
-                                     ${moduleStatus.isSelfCompleted ? 'completed' : ''}
+                                     ${isParentCompleted ? 'completed' : ''}
                                      ${moduleStatus.isLocked ? 'locked' : ''}
                                 `}
                                         onClick={() => {
@@ -259,7 +264,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                         moduleStatus.isSelfCompleted ? (
                                                             <CheckCircle2 size={14} className="lesson-icon--completed" />
                                                         ) : (
-                                                            <Menu size={14} className={`lesson-icon--dim ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
+                                                            <BookOpen size={14} className={`lesson-icon--dim ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                         )
                                                     )}
                                                 </div>
@@ -305,7 +310,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                             {completedLessons.includes(child.id) ? (
                                                                 <CheckCircle2 size={14} className="sub-lesson-icon--completed" />
                                                             ) : (
-                                                                <Menu size={14} className={`sub-lesson-icon ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
+                                                                <BookOpen size={14} className={`sub-lesson-icon ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                             )}
                                                             <div className="lesson-title-text-group">
                                                                 <span>{child.title}</span>

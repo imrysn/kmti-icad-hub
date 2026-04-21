@@ -370,8 +370,8 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 
               <div className="info-box" style={{
                 position: "absolute",
-                top: "86rem",
-                right: "3.5rem",
+                top: "76rem",
+                right: "2rem",
                 width: "340px",
                 margin: "0",
                 zIndex: "10",

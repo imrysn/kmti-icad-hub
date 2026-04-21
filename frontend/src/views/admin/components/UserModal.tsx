@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, UserPlus, Save, User as UserIcon, Mail, Shield, Key } from 'lucide-react'; import { User } from '../../../services/authService';
+import { parseBackendError } from '../../../utils/errorUtils';
 
 interface UserModalProps {
     isOpen: boolean;
@@ -45,7 +46,7 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
             await onSave(formData);
             onClose();
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to save user.');
+            setError(parseBackendError(err, 'Failed to save user.'));
         } finally {
             setLoading(false);
         }

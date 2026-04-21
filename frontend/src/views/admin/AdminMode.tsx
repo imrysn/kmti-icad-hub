@@ -11,6 +11,7 @@ import { UserManagement } from './components/UserManagement'; import { Performan
 import { TraineeDetail } from './components/TraineeDetail'; import { AuditLogs } from './components/AuditLogs';
 import { KnowledgeManagement } from './components/KnowledgeManagement'; import { IntelligenceChatbot } from './components/IntelligenceChatbot';
 import { BroadcastCenter } from './components/BroadcastCenter'; import { UserModal } from './components/UserModal';
+import { parseBackendError } from '../../utils/errorUtils';
 
 export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'logs';
 
@@ -60,7 +61,7 @@ export const AdminMode: React.FC = () => {
                 setLogs(l);
             }
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to load data.');
+            setError(parseBackendError(err, 'Failed to load data.'));
         } finally {
             setLoading(false);
         }
@@ -77,7 +78,7 @@ export const AdminMode: React.FC = () => {
             const updated = await authService.toggleUserStatus(userId);
             setUsers((prev: User[]) => prev.map(u => u.id === updated.id ? { ...u, is_active: updated.is_active } : u));
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to update user status.');
+            setError(parseBackendError(err, 'Failed to update user status.'));
         }
     };
 
@@ -94,7 +95,7 @@ export const AdminMode: React.FC = () => {
             setUsers((prev: User[]) => prev.filter(u => u.id !== userId));
             if (activeTab === 'overview') fetchData();
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to delete user.');
+            setError(parseBackendError(err, 'Failed to delete user.'));
         }
     };
 

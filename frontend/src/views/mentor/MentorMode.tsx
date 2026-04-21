@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { Lesson, ICAD_2D_LESSONS, ICAD_3D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
 
@@ -33,6 +33,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const [averageScore, setAverageScore] = useState(0);
     const [isLoadingProgress, setIsLoadingProgress] = useState(true);
     const [isRestored, setIsRestored] = useState(false);
+    const lastCourseIdRef = useRef<string | null>(null);
 
     // Derived stable state
     const currentLessons = useMemo(() => is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS, [is2DDrawingCourse]);
@@ -76,10 +77,37 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         }
     }, [selectedCourse, activeLessonId, expandedIds, sidebarOpen, isRestored]);
 
-    // Derived stable state for lessons
+    // Derived stable state for lessons (for navigation)
     const allLessonIds = useMemo(() => currentLessons.flatMap((l: Lesson) =>
         l.children ? l.children.map((c: { id: string }) => c.id) : [l.id]
     ), [currentLessons]);
+
+    // Progressable units (Modules with quizzes)
+    const completableModuleIds = useMemo(() => 
+        currentLessons.filter(l => !!l.quiz).map(l => l.id),
+    [currentLessons]);
+
+    // Filter completions to only include valid modules for this specific course
+    const relevantCompletedCount = useMemo(() => 
+        completedLessons.filter(id => completableModuleIds.includes(id)).length,
+    [completedLessons, completableModuleIds]);
+    
+    // Detect Course Switch or Exit and Reset Lesson State
+    useEffect(() => {
+        if (!selectedCourse) {
+            // Exit to Hub: Clear lesson state immediately so the next course starts fresh
+            setActiveLessonId('');
+            setExpandedIds(new Set());
+            lastCourseIdRef.current = null;
+        } else if (lastCourseIdRef.current !== selectedCourse.id) {
+            // Course Switch: If we came from another course, clear the state
+            if (lastCourseIdRef.current !== null) {
+                setActiveLessonId('');
+                setExpandedIds(new Set());
+            }
+            lastCourseIdRef.current = selectedCourse.id;
+        }
+    }, [selectedCourse, isRestored]);
 
     const currentLessonIndex = allLessonIds.indexOf(activeLessonId);
 
@@ -225,7 +253,23 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
-                <MentorSidebar selectedCourse={selectedCourse} is2DDrawingCourse={is2DDrawingCourse} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} activeLessonId={activeLessonId} setActiveLessonId={setActiveLessonId} expandedIds={expandedIds} toggleExpand={toggleExpand} setSelectedCourse={setSelectedCourse} completedLessons={completedLessons} isLoadingProgress={isLoadingProgress} isEmployeeSide={isEmployeeSide} totalLessons={allLessonIds.length} averageScore={averageScore} />
+                <MentorSidebar 
+                    selectedCourse={selectedCourse} 
+                    is2DDrawingCourse={is2DDrawingCourse} 
+                    sidebarOpen={sidebarOpen} 
+                    setSidebarOpen={setSidebarOpen} 
+                    activeLessonId={activeLessonId} 
+                    setActiveLessonId={setActiveLessonId} 
+                    expandedIds={expandedIds} 
+                    toggleExpand={toggleExpand} 
+                    setSelectedCourse={setSelectedCourse} 
+                    completedLessons={completedLessons} 
+                    isLoadingProgress={isLoadingProgress} 
+                    isEmployeeSide={isEmployeeSide} 
+                    totalLessons={completableModuleIds.length} 
+                    completedLessonsCount={relevantCompletedCount}
+                    averageScore={averageScore} 
+                />
 
                 <LessonViewer is2DDrawingCourse={is2DDrawingCourse} activeLessonId={activeLessonId} currentLessonIndex={currentLessonIndex} allLessonIdsLength={allLessonIds.length} goToNextLesson={goToNextLesson} goToPrevLesson={goToPrevLesson} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} setSelectedCourse={setSelectedCourse} getActiveLessonTitle={getActiveLessonTitle} ICAD_2D_LESSONS={ICAD_2D_LESSONS} ICAD_3D_LESSONS={ICAD_3D_LESSONS} completedLessons={completedLessons} onLessonComplete={fetchProgress} isEmployeeSide={isEmployeeSide} />
             </div>

@@ -374,9 +374,10 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                 <div className="step-description">
                   <div className="flex-col">
-                    <p className="p-flush">
-                      <strong>a. Spline</strong>
-                    </p>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">a.</span>
+                      <span className="step-label">Spline</span>
+                    </div>
 
                     <div className="flex-row--top">
                       <div style={{ marginBottom: "2rem" }}>
