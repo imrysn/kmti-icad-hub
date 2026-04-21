@@ -111,7 +111,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
             {" "}
             {subLessonId === "2d-heat-treatment-1" ? (
               <div className="lesson-section">
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={heatTreatmentImg1} alt="Heat Treatment Material and Specification Table" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -119,14 +119,14 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
               <div className="flex-col">
                 {" "}
                 {/* Part 2 - Material Table Continuation */}
-                <div className="lesson-section">
-                  <div className="image-wrapper-flush">
+                <div className="lesson-section" style={{ marginBottom: "1rem" }}>
+                  <div>
                     <img src={heatTreatmentImg2} alt="Heat Treatment Material and Specification Table Continued" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>{" "}
                 {/* Rev Notes Section */}
                 <div className="lesson-section">
-                  <div className="flex-col" >
+                  <div className="flex-col" style={{ gap: "0.8rem" }}>
                     {" "}
                     {[
                       { rev: "Rev2", text: "Expression of hardness" },
@@ -156,7 +156,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         text: "Describe thermal refining hardness for each material. It follows the standard of JIS.",
                       },
                     ].map((item, idx) => (
-                      <div key={idx} className="flex-row">
+                      <div key={idx} className="flex-row" style={{ gridTemplateColumns: "80px 1fr", gap: "1rem" }}>
                         {" "}
                         <span>{item.rev}:</span> <span>{item.text}</span>
                       </div>
@@ -166,8 +166,8 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 {/* Heat Treatment Process Table */}
                 <div className="lesson-section">
                   {" "}
-                  <h4 style={{ marginTop: "1rem", marginBottom: "0.5rem" }}> Heat Treatment Process </h4>
-                  <div className="image-wrapper-flush">
+                  <h4 style={{ marginTop: "2rem", marginBottom: "1rem" }}> Heat Treatment Process </h4>
+                  <div>
                     <img src={heatTreatmentProcessImg2} alt="Heat Treatment Process Table" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
@@ -176,8 +176,8 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
               <div className="flex-col">
                 <div className="lesson-section">
                   {" "}
-                  <h4> Heat Treatment Process (Continued) </h4>
-                  <div className="image-wrapper-flush">
+                  <h4 style={{ marginBottom: "1rem" }}> Heat Treatment Process (Continued) </h4>
+                  <div>
                     <img src={heatTreatmentProcessImg3} alt="Heat Treatment Process Table Continued" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
@@ -186,8 +186,8 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
               <div className="flex-col">
                 <div className="lesson-section">
                   {" "}
-                  <h4> Heat Treatment Process (Final) </h4>
-                  <div className="image-wrapper-flush">
+                  <h4 style={{ marginBottom: "1rem" }}> Heat Treatment Process (Final) </h4>
+                  <div>
                     <img src={heatTreatmentProcessImg4} alt="Heat Treatment Process Table Final" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>

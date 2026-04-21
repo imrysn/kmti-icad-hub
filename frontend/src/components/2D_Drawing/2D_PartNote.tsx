@@ -87,17 +87,11 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
             {" "}
             {/* 1. Part Note - Process Section */}
             <div>
-              <div className="info-box">
-                <p>
-                  {" "}
-                  Notes are also used to indicate additional instructions on the
-                  process to be applied on the part.
-                </p>
-              </div>
+
 
               <div className="lesson-section">
-                <div className="flex-row">
-                  <div className="image-wrapper-flush">
+                <div>
+                  <div>
                     <img src={partNoteImg1} alt="Part Note Process Drawing" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
@@ -107,19 +101,15 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
             {/* 2. Part Note - Assemblies Section */}
             <div className="lesson-section">
               <div className="flex-col">
-                <div className="image-wrapper-flush" /* sanitized: width: '100%' */>
+                <div>
                   <img src={partNoteImg2} alt="Part Note Assembly Reference" className="software-screenshot screenshot-wide" />
                 </div>
 
-                <div>
+                <div className="info-box" style={{ marginTop: "2rem" }}>
+                  <p className="red-text"><strong>
+                    Note: </strong></p>
                   <p>
-                    {" "}
-                    Note:
-                    <br /> &nbsp;&nbsp;&nbsp;&nbsp;Aside from the given samples,
-                    note command
-                    <br /> &nbsp;&nbsp;&nbsp;&nbsp;can be applied depends on the
-                    purpose and on <br /> &nbsp;&nbsp;&nbsp;&nbsp;the required
-                    process to be applied.
+                    Aside from the given samples, note command can be applied depends on the purpose and on the required process to be applied.
                   </p>
                 </div>
               </div>
@@ -127,9 +117,11 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
             <div className="section-divider"></div>
             {/* 11. Text Section */}
             <div>
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "0.5rem" }}> 11. Text </h4>
-              <div className="image-wrapper-flush">
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">11.</span>
+                <span className="step-label">Text</span>
+              </div>
+              <div>
                 <img src={textNoteImg} alt="Text Command and Configuration" className="software-screenshot screenshot-wide" />
               </div>
             </div>

@@ -3,11 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
 import { useTTS } from "../../hooks/useTTS";
 
+import "../../styles/2D_Drawing/CourseLesson.css";
+
 import balloonPartMenuImg from "../../assets/2D_Image_File/2D_balloon_part_drawing.png";
-
-import balloonPartDiagramImg from "../../assets/2D_Image_File/2D_balloon_part_drawing_2.jpg";
-
-import balloonPartInputImg from "../../assets/2D_Image_File/2D_balloon_part_drawing_3.png";
 
 import balloonAssemblyMenuImg from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png";
 
@@ -76,34 +74,42 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           {" "}
-          {/* a. Part drawing Section */}
           <div className={`lesson-section ${currentIndex === 0 ? "reading-active" : ""}`}>
-            {" "}
-            <h4> a. Part drawing </h4>
-            <div className="flex-col">
-              <div className="image-wrapper-flush">
-                <img src={balloonPartMenuImg} alt="Part Balloon Menu Selection" className="software-screenshot screenshot-wide" />
-              </div>
+            <div className="step-header" style={{ marginBottom: "2rem" }}>
+              <span className="step-number">a.</span>
+              <span className="step-label">Part drawing</span>
             </div>
-            <div className="flex-col">
 
-
-              <div className="image-wrapper-flush" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
-                <img src={balloonPartDiagramImg} alt="Part Balloon Landmark Diagram (P1, L1)" className="software-screenshot" style={{ maxWidth: '400px' }} />
-                <div className="flex-col" style={{ width: '100%', alignItems: 'center' }}>
-                  <img src={balloonPartInputImg} alt="Part Balloon Input Box" className="software-screenshot screenshot-medium" />
+            <div>
+              <div>
+                <div>
+                  <div>
+                    <img src={balloonPartMenuImg} alt="Part Balloon Menu Selection" className="software-screenshot screenshot-wide" />
+                  </div>
+                  <div className="info-box" style={{ marginTop: "2rem" }}>
+                    <div style={{ padding: "1rem" }}>
+                      <div style={{ marginBottom: "0.8rem" }}>A balloon will be placed where the part image is clearly shown.</div>
+                      <div className="red-text" style={{ marginBottom: "0.5rem" }}><strong>Notes:</strong></div>
+                      <div style={{ marginBottom: "0.8rem" }}>1. Balloons should not overlap with other lines or dimensions.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>2. If the details on the BOM are properly linked, part balloons are automatically displayed.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>3. If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters / numbers in item entry box.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>4. Text should not change using edit characters.</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-
-            </div>          </div>{" "}
-          {/* b. Assembly drawing Section */}
+            </div>
+          </div>{" "}
           <div className={`lesson-section ${currentIndex === 1 ? "reading-active" : ""}`}>
-            {" "}
-            <h4> b. Assembly drawing </h4>
-            <div className="flex-col">
-              <div className="image-wrapper-flush">
-                <img src={balloonAssemblyMenuImg} alt="Add Balloon Menu Selection" className="software-screenshot screenshot-wide" />
+            <div className="step-header" style={{ marginBottom: "2rem" }}>
+              <span className="step-number">b.</span>
+              <span className="step-label">Assembly drawing</span>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <img src={balloonAssemblyMenuImg} alt="Add Balloon Menu Selection" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
             </div>
           </div>{" "}
@@ -121,7 +127,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

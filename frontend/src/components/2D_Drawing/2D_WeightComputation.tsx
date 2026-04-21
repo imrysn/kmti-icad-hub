@@ -93,23 +93,27 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="flex-col">
-            {" "}
-            {/* Specific Gravity Table */}
+            <div className="step-header" style={{ marginBottom: "1rem" }}>
+              <span className="step-number">15.</span>
+              <span className="step-label">Material Weight Computation</span>
+            </div>
             <div className="lesson-section">
-              <div className="image-wrapper-flush">
+              <div>
                 <img src={gravityTableImg} alt="Material Specific Gravity Reference Table" className="software-screenshot screenshot-wide" />
               </div>
             </div>{" "}
             {/* a. Plate Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> a. Plate (L × W × H × SG) </h4>
-              <p>example:</p>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">a.</span>
+                <span className="step-label">Plate (L × W × H × SG)</span>
+              </div>
+              <p className="red-text">example:</p>
               <div className="flex-row">
-                <img src={plateExImg} alt="Plate Weight Computation Example" className="software-screenshot screenshot-small" />
+                <img src={plateExImg} alt="Plate Weight Computation Example" className="software-screenshot screenshot-wide" />
 
-                <div className="info-box">
-                  <p>Note:</p>
+                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
+                  <p className="red-text"><strong>Note:</strong></p>
 
                   <p>
                     {" "}
@@ -123,17 +127,16 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             </div>{" "}
             {/* b. Cylinder Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                b. Cylinder ( π × r² × L × SG) or [ ( π × d² × L × SG) / 4
-                ]
-              </h4>
-              <p>example:</p>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">b.</span>
+                <span className="step-label">Cylinder ( π × r² × L × SG) or [ ( π × d² × L × SG) / 4 ]</span>
+              </div>
+              <p className="red-text">example:</p>
               <div className="flex-row">
-                <img src={cylinderExImg} alt="Cylinder Weight Computation Example" className="software-screenshot screenshot-small" />
+                <img src={cylinderExImg} alt="Cylinder Weight Computation Example" className="software-screenshot screenshot-wide" />
 
-                <div className="info-box">
-                  <p>Note:</p>
+                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
+                  <p className="red-text"><strong>Note:</strong></p>
 
                   <p>
                     {" "}
@@ -148,53 +151,73 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             </div>{" "}
             {/* c. Shape Steel Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> c. Shape Steel ( Cross Sectional Area × L × SG ) </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">c.</span>
+                <span className="step-label">Shape Steel ( Cross Sectional Area × L × SG )</span>
+              </div>
               <div className="flex-row">
                 <div className="image-column">
                   <div className="flex-col" style={{ gap: '0.5rem' }}>
-                    <p>example:</p>
+                    <p className="red-text">example:</p>
 
-                    <img src={shapeSteelEx1Img} alt="Shape Steel C-Channel Example" className="software-screenshot screenshot-small" />
+                    <img src={shapeSteelEx1Img} alt="Shape Steel C-Channel Example" className="software-screenshot screenshot-wide" />
                   </div>
 
-                  <div className="flex-col" style={{ gap: '0.5rem' }}>
-                    <p>example:</p>
+                  <div className="flex-col" style={{ gap: '0.5rem', marginTop: '1rem' }}>
+                    <p className="red-text">example:</p>
 
-                    <img src={shapeSteelEx2Img} alt="Shape Steel Angle Bar Example" className="software-screenshot screenshot-small" />
+                    <img src={shapeSteelEx2Img} alt="Shape Steel Angle Bar Example" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
 
-                <div className="info-box">
-                  <p>Notes:</p>
+                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
+                  <p className="red-text"><strong>Notes:</strong></p>
 
-                  <p>
-                    {" "}
-                    1. Cross sectional area refers from{" "}
-                    <span>Japan Industrial Standard (JIS)</span>.<br />
-                    <br /> 2. Cross sectional area needs to convert in m² first.
-                    <br />
-                    <br /> 3. To skip computation of cross sectional area from
-                    cm² to m², just move 4 decimal places to the left.
-                    <br />
-                    <br /> 4. Use specific gravity with unit kg/m³ and follow
-                    the given formula.
-                  </p>
+                  <div style={{ padding: "0.5rem 0" }}>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      2. Cross sectional area needs to convert in m² first.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      3. To skip computation of cross sectional area from cm² to m², just move 4 decimal places to the left.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      4. Use specific gravity with unit kg/m³ and follow the given formula.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>{" "}
             {/* d. Square / Rectangular Pipe Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                d. Square / Rectangular Pipe ( Cross Sectional Area × L × SG
-                )
-              </h4>
-              <p>example:</p>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">d.</span>
+                <span className="step-label">Square / Rectangular Pipe ( Cross Sectional Area × L × SG )</span>
+              </div>
+              <p className="red-text" style={{ marginBottom: "1rem" }}>example:</p>
               <div className="flex-row">
-                <img src={pipeExImg} alt="Rectangular Pipe Example" className="software-screenshot screenshot-medium" />
+                <img src={pipeExImg} alt="Rectangular Pipe Example" className="software-screenshot screenshot-wide" />
 
+                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
+                  <p className="red-text"><strong>Notes:</strong></p>
 
+                  <div style={{ padding: "0.5rem 0" }}>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      2. Cross sectional area needs to convert in m² first.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      3. To skip computation of cross sectional area from cm² to m², just move 4 decimal places to the left.
+                    </div>
+                    <div style={{ marginBottom: "0.8rem" }}>
+                      4. Use specific gravity with unit kg/m³ and follow the given formula.
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>{" "}

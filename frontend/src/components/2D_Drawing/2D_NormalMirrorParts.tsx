@@ -93,14 +93,14 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
               {/* Definitions */}
               <div className="def-container">
                 <div className="def-row">
-                  <div className="def-label">
+                  <div className="def-label" style={{ marginBottom: "0.3rem" }}>
                     {" "}
-                    <span className="red-bold">Normal</span>
+                    <span className="red-bold" >Normal</span>
                   </div>
 
-                  <div className="def-value">
+                  <div className="def-value" style={{ marginBottom: "1rem" }}>
                     {" "}
-                    <span>
+                    <span style={{ marginLeft: "3rem" }}>
                       Example drawing number RTXXXXXX
                       <span className="red-bold">N</span>01
                     </span>
@@ -108,16 +108,16 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                 </div>
 
                 <div className="def-row">
-                  <div className="def-label">
+                  <div className="def-label" style={{ marginBottom: "1rem" }}>
                     {" "}
                     <span className="red-bold">Mirror parts</span>
                   </div>
 
                   <div className="def-value">
                     {" "}
-                    <span>are parts that are symmetrically the same.</span>
+                    <span style={{ marginLeft: "3rem" }}>are parts that are symmetrically the same.</span>
                     <br />{" "}
-                    <span>
+                    <span style={{ marginLeft: "3rem" }}>
                       Example drawing number RTXXXXXX
                       <span className="red-bold">A</span>01 &amp; RTXXXXXX
                       <span className="red-bold">B</span>01
@@ -125,9 +125,9 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                   </div>
                 </div>
 
-                <div className="rule-title">
+                <div className="rule-title" style={{ marginTop: "2rem" }}>
                   {" "}
-                  <span className="red-bold">
+                  <span className="red-bold" >
                     ※ Rule on how to detail a mirror parts
                   </span>
                 </div>
@@ -140,7 +140,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                   </div>
 
                   <div className="mirror-col right-col">
-                    <div className="image-wrapper-flush toolbar-img-wrapper" style={{ width: '100%' }}>
+                    <div>
                       <img src={img2} alt="Toolbar" className="software-screenshot toolbar screenshot-wide" />
                     </div>
                   </div>
@@ -150,11 +150,12 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
           ) : subLessonId === "2d-normal-mirror-2" ? (
             <div className="normal-mirror-wrapper">
               <div className="step-header">
-                <div className="step-number">a</div>{" "}
-                <h4>Mirror Command on detailing</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">a.</span>
+                  <span className="step-label">Mirror Command on detailing</span>
+                </div>
               </div>
-
-              <div className="image-wrapper-flush" style={{ width: '100%' }}>
+              <div>
                 <img src={imgA1} alt="Mirror Command Menu" className="software-screenshot screenshot-wide" />
               </div>
 

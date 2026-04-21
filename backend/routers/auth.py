@@ -278,6 +278,9 @@ def submit_quiz_score(
     ).first()
     
     if existing_score:
+        # Increment attempt counter
+        existing_score.attempts_count = (existing_score.attempts_count or 0) + 1
+        
         # Update score only if the new one is higher
         if submission.score > existing_score.score:
             existing_score.score = submission.score

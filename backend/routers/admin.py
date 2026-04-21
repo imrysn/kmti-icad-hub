@@ -120,7 +120,9 @@ def get_all_trainee_progress(
         quizzes = [
             {
                 "course_id": q.course_id,
+                "lesson_id": q.lesson_id,
                 "score": q.score,
+                "attempts_count": q.attempts_count,
                 "completed_at": q.completed_at
             } for q in user_scores
         ]

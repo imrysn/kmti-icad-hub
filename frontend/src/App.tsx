@@ -58,8 +58,7 @@ function App() {
           window.electronAPI.setWindowSize(440, 550, false);
         }
       } else if (prevAuthRef.current === false) {
-        // ONLY expand if we are transitioning from NOT authenticated to authenticated (fresh login)
-        // If we were already authenticated (prevAuthRef.current was true or null), we DO NOT resize on reload.
+        // Transitioning from login
         if (window.electronAPI) {
           window.electronAPI.setWindowSize(1280, 720, true);
         }

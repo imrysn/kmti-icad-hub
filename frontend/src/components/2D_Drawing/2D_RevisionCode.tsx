@@ -79,20 +79,20 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
           />
         </h3>
 
-        <p className="lesson-description">
-          {" "}
-          <span className="red-text">Revision </span> will occur if the finished
-          drawing is already approved yet discrepancy notice during fabrication.
-        </p>
+
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           {" "}
-          {/* Main Top Image */}
-          <div style={{ width: '100%' }}>
+          <p className="p-flush"> <strong style={{ color: 'red' }}>Revision</strong> will occur if the finished
+            drawing is already approved yet discrepancy notice during fabrication.</p>
+          <div>
             <img src={img1} alt="Revision Code and History" className="software-screenshot screenshot-wide" />
           </div>{" "}
-          {/* Sub-section A */} <h4>a. Revised detail</h4>
+          <div className="step-header" style={{ marginBottom: "1rem" }}>
+            <span className="step-number">a.</span>
+            <span className="step-label">Revised detail</span>
+          </div>
           <div className="flex-row" style={{ gridTemplateColumns: '1fr 1fr' }}>
             <div>
               <img src={imgA1} alt="Revised Detail Menu" className="software-screenshot screenshot-wide" />
@@ -123,7 +123,10 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
               <img src={imgA3} alt="Delta symbol placement" className="software-screenshot" />
             </div>
           </div>{" "}
-          {/* Sub-section B */} <h4>b. Revision Code</h4>
+          <div className="step-header" style={{ marginBottom: "1rem" }}>
+            <span className="step-number">b.</span>
+            <span className="step-label">Revision Code</span>
+          </div>
           <div style={{ width: '100%' }}>
             <img src={imgB} alt="Revision Code Bottom" className="software-screenshot screenshot-wide" />
           </div>

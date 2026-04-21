@@ -13,7 +13,7 @@ const api = axios.create({
 // Request interceptor to add JWT token to headers
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('access_token');
+        const token = sessionStorage.getItem('access_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -35,8 +35,8 @@ api.interceptors.response.use(
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
             console.warn('Authentication failure - clearing session and redirecting');
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('access_token');
+            sessionStorage.removeItem('user');
             
             // Avoid redundant reloads if already redirecting
             if (window.location.pathname !== '/' && window.location.pathname !== '/login') {

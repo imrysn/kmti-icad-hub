@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'; import { authService } from '../serv
 import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti_logo.png';
 import LightPillar from '../components/LightPillar';
+import { parseBackendError } from '../utils/errorUtils';
 
 export const LoginView: React.FC = () => {
     const { login, isLoggingIn, error } = useAuth();
@@ -89,7 +90,7 @@ export const LoginView: React.FC = () => {
                 setShowForgotPasswordModal(false);
             }, 3000);
         } catch (err: any) {
-            setForgotPasswordMessage(err.response?.data?.detail || 'Failed to send reset request. Please try again later.');
+            setForgotPasswordMessage(parseBackendError(err, 'Failed to send reset request. Please try again later.'));
         } finally {
             setIsForgotPasswordSubmitting(false);
         }

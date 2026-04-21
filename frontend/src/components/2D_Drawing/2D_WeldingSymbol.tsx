@@ -87,16 +87,23 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
             {" "}
             {/* 13. Welding Symbol Section */}
             <div id="welding-symbol-section">
-              {" "}
-              <h4 style={{ marginBottom: "1rem" }}> 13. Welding Symbol </h4>
+              <div className="step-header" style={{ marginBottom: "2rem" }}>
+                <span className="step-number">13.</span>
+                <span className="step-label">Welding Symbol</span>
+              </div>
               <div className="flex-col">
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={weldingSymbolMainImg} alt="Welding Symbol Menu Selection" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
-              <div className="flex-row">
+
+
+              <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+                <img src={weldingSymbolNotesImg} alt="Welding Hatches and Symbol Sample Drawing" className="software-screenshot screenshot-wide" />
+              </div>
+              <div>
                 <div className="info-box">
-                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+                  <span style={{ marginTop: "0rem", marginBottom: "0rem" }}>
                     {" "}
                     ※ Before indicating the welding symbol on the drawing,
                     welding hatches shall be put up first as representation of
@@ -104,12 +111,11 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                     <br /> ※ Select and put all the required details for welding
                     on the dialog box, then click OK. Place it together with
                     welding hatch.
-                  </p>
+                  </span>
 
                   <div>
-                    <p style={{ marginBottom: "1rem" }}>
-                      {" "}
-                      Notes:
+                    <p style={{ marginTop: "1rem" }}>
+                      <strong className="red-text" > Notes:</strong>
                       <br /> 1. Arrow line acts as a welding torch on the actual
                       job.
                       <br /> 2. The leg length of the welding is 60% of plate
@@ -121,38 +127,34 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                     </p>
                   </div>
                 </div>
-
-                <div className="image-wrapper-flush">
-                  <img src={weldingSymbolNotesImg} alt="Welding Hatches and Symbol Sample Drawing" className="software-screenshot screenshot-wide" />
-                </div>
               </div>
             </div>
             <div className="section-divider"></div>
             {/* 14. Notes Section */}
             <div id="notes-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                {" "}
-                14. Notes{" "}
-                <span>
-                  — ENotes are always located in the upper left corner of the
-                  template.
-                </span>{" "}
-              </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">14.</span>
+                <span className="step-label">Notes</span>
+              </div>
+              <p className="p-flush" style={{ marginBottom: "1rem" }}>
+                Notes are always located in the upper left corner of the
+                template.
+              </p>
+
               <div className="lesson-section">
-                {" "}
-                <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>a. Standard Notes</h4>
+                <div className="step-header" style={{ marginBottom: "2rem" }}>
+                  <span className="step-number">a.</span>
+                  <span className="step-label">Standard Notes</span>
+                </div>
                 <div className="flex-row">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={standardNotesImg} alt="Standard Notes location in Title Block" className="software-screenshot screenshot-wide" />
                   </div>
 
                   <div className="info-box">
                     <div>
-                      <p style={{ marginTop: "1rem", marginBottom: "0.5rem" }}><strong>Standard notes:</strong></p>
-
+                      <p className="red-text" style={{ marginTop: "1rem", marginBottom: "0.5rem" }}><strong>Standard notes:</strong></p>
                       <p>
-                        {" "}
                         1. Tap, drill hole shall be chamfered finish.
                         <br /> 2. Corner without any instruction shall be
                         slightly chamfer.
@@ -161,10 +163,9 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                     </div>
 
                     <div>
-                      <p style={{ marginTop: "1rem", marginBottom: "0.5rem" }}><strong>Notes:</strong></p>
+                      <p className="red-text" style={{ marginTop: "1rem", marginBottom: "0.5rem" }}><strong>Notes:</strong></p>
 
                       <p style={{ fontStyle: "italic" }}>
-                        {" "}
                         1. These three standard notes automatically appear from
                         the beginning while selecting the template.
                         <br /> 2. First line can be eliminated if tapping hole
@@ -192,7 +193,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

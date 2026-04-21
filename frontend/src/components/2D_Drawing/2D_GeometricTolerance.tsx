@@ -8,22 +8,12 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 
 import geoTolMainImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1).png";
 
-import geoTolStepAImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1)_1.png";
-
-import geoTolStepBImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1)_2.png";
-
-import geoTolStepCImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1)_3.jpg";
 /* Importing assets for Geometric Tolerance (2) */
 
 import geoTolStepDImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png";
 
-import geoTolStepEImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_5.jpg";
-
-import geoTolStepFImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_6.jpg";
-
 import datumSelectionImg from "../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png";
 
-import datumOperationImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_datum_2.png";
 
 interface GeometricToleranceLessonProps {
   nextLabel?: string;
@@ -110,128 +100,40 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {" "}
               {/* Title and Definition */}
               <div>
-                {" "}
-                <h4>
-                  {" "}
-                  9. Geometric Tolerance{" "}
-                  <span style={{ fontWeight: "normal" }}>
-                    - a system for defining allowable engineering tolerances. It
-                    tells what degree of accuracy and precision that needs to be
-                    applied on the part.
-                  </span>{" "}
-                </h4>
-              </div>{" "}
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">9.</span>
+                  <span className="step-label">Geometric Tolerance</span>
+                </div>
+                <p className="p-flush" style={{ marginBottom: "0rem" }}>
+                  A system for defining allowable engineering tolerances. It
+                  tells what degree of accuracy and precision that needs to be
+                  applied on the part.
+                </p>
+
+              </div>
               {/* Top Images Row */}
               <div className="flex-row-center">
-                <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
+                <div>
                   <img src={geoTolMainImg} alt="Geometric Tolerance Sample Drawing and Menu Selection" className="software-screenshot" />
-                </div>
-
-                <div className="image-wrapper-flush">
-                  <img src={geoTolStepAImg} alt="Picking line for Geometric Tolerance (P1)" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>{" "}
-              {/* Step B Section */}
-              <div className="flex-row">
-                <div className="info-box">
-                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                    {" "}
-                    <strong>
-                      b. "Geometric Tolerance" dialog box appear. Complete the
-                      required details then click "OK".
-                    </strong>
-                  </p>
-                </div>
-
-                <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                  <img src={geoTolStepBImg} alt="Geometric Tolerance Dialog Box Configuration" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>{" "}
-              {/* Step C Section */}
-              <div className="flex-row">
-                <div className="info-box">
-                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                    {" "}
-                    <strong>
-                      c. Click P2 to set the position of geometric tolerance
-                      then "GO" to end the command.
-                    </strong>
-                  </p>
-                </div>
-
-                <div className="image-wrapper-flush" style={{ maxWidth: "400px" }}>
-                  <img src={geoTolStepCImg} alt="Setting Geometric Tolerance Position (P2)" className="software-screenshot" />
                 </div>
               </div>
             </div>
           ) : (
             <div className="flex-col">
-              {" "}
-              {/* Step D */}
-              <div className="flex-row">
-                <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
+              <div>
+                <div>
                   <img src={geoTolStepDImg} alt="Adding geometric tolerance (P3)" className="software-screenshot screenshot-wide" />
                 </div>
-              </div>{" "}
-              {/* Step E */}
-              <div className="flex-row">
-                <div className="info-box">
-                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                    {" "}
-                    <strong>
-                      e. "Geometric Tolerance" dialog box appear. Complete the
-                      required details, then click "OK".
-                    </strong>
-                  </p>
-                </div>
-
-                <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                  <img src={geoTolStepEImg} alt="Geometric Tolerance Dialog - Perpendicular" className="software-screenshot" />
-                </div>
-              </div>{" "}
-              {/* Step F */}
-              <div className="flex-row">
-                <div className="info-box">
-                  <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                    {" "}
-                    <strong>
-                      f. Required geometric tolerance based on the sample
-                      drawing.
-                    </strong>
-                  </p>
-                </div>
-
-                <div className="image-wrapper-flush">
-                  <img src={geoTolStepFImg} alt="Resulting Control Frame" className="software-screenshot" />
-                </div>
               </div>
-              <div className="section-divider"></div>
               {/* Section 10: Datum */}
               <div>
-                {" "}
-                <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                  {" "}
-                  10. Datum{" "}
-                </h4>
-                <div className="flex-row">
-                  <div className="image-wrapper-flush">
-                    <img src={datumSelectionImg} alt="Datum Selection Menu" className="software-screenshot screenshot-wide" />
-                  </div>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">10.</span>
+                  <span className="step-label">Datum</span>
                 </div>
-                <div className="flex-row">
-                  <div className="info-box">
-                    <p style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                      {" "}
-                      1. Apply the selected commands shown above.
-                      <br /> 2. Click L1, then enter datum character in item
-                      entry box.
-                      <br /> 3. Click P2 to position the datum, then "GO" to end
-                      the command.
-                    </p>
-                  </div>
-
-                  <div className="image-wrapper-flush" /* sanitized: flex: 1 */>
-                    <img src={datumOperationImg} alt="Datum Placement Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
+                <div>
+                  <div>
+                    <img src={datumSelectionImg} alt="Datum Selection Menu" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>

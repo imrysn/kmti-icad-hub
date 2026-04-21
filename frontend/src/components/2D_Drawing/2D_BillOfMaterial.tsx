@@ -24,9 +24,6 @@ import bomAfterInsertImg from "../../assets/2D_Image_File/2D_bill_of_material_(4
 
 import bomEditAttrImg from "../../assets/2D_Image_File/2D_bill_of_material_(4)_edit_attribute.png";
 
-import bomEditAttr2Img from "../../assets/2D_Image_File/2D_bill_of_material_(4)_edit_attribute_2.jpg";
-
-import bomEditAttr3Img from "../../assets/2D_Image_File/2D_bill_of_material_(4)_edit_attribute_3.png";
 
 interface BillOfMaterialLessonProps {
   nextLabel?: string;
@@ -126,10 +123,12 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {" "}
               {/* a. Part drawing Section */}
               <div className="lesson-section">
-                {" "}
-                <h4> a. Part drawing </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">a.</span>
+                  <span className="step-label">Part drawing</span>
+                </div>
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={bomPartDrawingImg} alt="BOM Part Drawing Entry with Technical Callouts" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
@@ -137,7 +136,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {/* Creation Workflow Section (unlabeled in manual as b, but follows a) */}
               <div className="lesson-section">
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={bomPartDrawingBImg} alt="BOM Template Selection and Command Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
@@ -145,14 +144,24 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="section-divider"></div>
               {/* c. Section */}
               <div className="lesson-section">
-                <div className="flex-col">
-                  <div> c </div>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">c.</span>
+
                 </div>
 
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={bomPartDrawingCImg} alt="Excel BOM Generation Procedure" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
+                  <div className="info-box">
+                    <div style={{ padding: "1rem" }}>
+                      <div style={{ marginBottom: "0.8rem" }}>1. Excel will appear.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>2. Rearrange the sequence of part specification in decreasing order. Make sure the entire row (including the data on column A).</div>
+                      <div style={{ marginBottom: "0.8rem" }}>3. For parts detail, use letters for part balloon.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>4. Compute the material weight of each part specification.</div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -162,35 +171,66 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {" "}
               {/* d. Excel operations for parts */}
               <div className="lesson-section">
-                <div className="flex-col">
-                  <div> d </div>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">d.</span>
+
                 </div>
 
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div className="image-overlay-container" style={{ position: "relative" }}>
                     <img src={bomPartDrawingDImg} alt="Detailed Excel Operations for Parts and Single Part Configuration" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
 
-                  <div className="info-box">
-                    <p>Note:</p>
-
-                    <p>
-                      {" "}
-                      Material weight and finish weight must be in 2 decimal
+                  <div className="info-box" style={{
+                    position: "absolute",
+                    top: "27rem",
+                    right: "3.5rem",
+                    width: "495px",
+                    height: "9rem",
+                    margin: 0,
+                    zIndex: 10,
+                    boxShadow: "var(--shadoe-lg"
+                  }}>
+                    <p className="red-text"> <strong>Note:</strong> <br />  Material weight and finish weight must be in 2 decimal
                       places, but for some special cases, 3 decimal places is
-                      acceptable.
-                    </p>
+                      acceptable. </p>
                   </div>
                 </div>
               </div>
               <div className="section-divider"></div>{" "}
               {/* b. Assembly drawing Section */}
               <div className="lesson-section">
-                {" "}
-                <h4> b. Assembly drawing </h4>
-                <div className="flex-row">
-                  <div className="flex-col">
-                    <img src={bomAssemblyDrawingImg} alt="Assembly BOM Excel with Grouping Callouts" className="software-screenshot screenshot-wide" />
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">b.</span>
+                  <span className="step-label">Assembly drawing</span>
+                </div>
+                <div className="step-description">
+                  <div>
+                    <div className="p-flush" style={{ marginBottom: "1rem" }}>
+                      <div style={{ marginBottom: "0.5rem" }}>BOM of assembly drawing divides into three groups.</div>
+                      <div style={{ marginBottom: "0.4rem" }}>1. Fabricated and Machine Parts</div>
+                      <div style={{ marginBottom: "0.4rem" }}>2. Mechanical / Purchase parts</div>
+                      <div style={{ marginBottom: "0.4rem" }}>3. Hardwares</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <img src={bomAssemblyDrawingImg} alt="Assembly BOM Excel with Grouping Callouts" className="software-screenshot screenshot-medium" />
+                  </div>
+                  <div className="info-box" style={{ marginTop: "2em" }}>
+                    <div style={{ padding: "1rem" }}>
+                      <div style={{ marginBottom: "0.8rem" }}>1. Excel will appear </div>
+                      <div style={{ marginBottom: "0.5rem" }}>2. Rearrange the excel data from;</div>
+                      <div style={{ marginLeft: "1.5em", marginBottom: "0.3rem" }}>a. Drawing number of parts arranged successively</div>
+                      <div style={{ marginLeft: "1.5em", marginBottom: "0.3rem" }}>b. Purchased parts</div>
+                      <div style={{ marginLeft: "1.5em", marginBottom: "0.8rem" }}>c. Hardware (HS, BS, CS, SS, SP, HN, FW, SW)</div>
+                      <div style={{ marginBottom: "0.8rem" }}>3. Click "delete abbreviation" button to delete hardware codes.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>4. Click "sum the parts" button to combine quantity of same parts.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>5. Purchase parts must indicate the maker in English.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>6. Hardwares arrange in decreasing order.</div>
+                      <div style={{ marginBottom: "0.8rem" }}>7. In terms of assembly detail, use number for parts balloon. Also, there must be a gap of 20 numbers in between the groups.</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -202,7 +242,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {/* Assembly Extended Section */}
               <div className="lesson-section">
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={bomAssemblyDrawing2Img} alt="Standard Assembly BOM Grouping and Numbering Gaps" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
                 </div>
@@ -210,15 +250,19 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               <div className="section-divider"></div>{" "}
               {/* 17. Additional Information */}
               <section className="lesson-section">
-                <h3> 17. Additional Information</h3>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">17.</span>
+                  <span className="step-label">Additional Information</span>
+                </div>
 
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={bomAdditionalInfoImg} alt="Additional Information Excel and Menu Configuration" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                   </div>
 
                   <div className="info-box">
-                    <p> NOTE: Columns with green color can not be changed.</p>
+                    <p className="red-text"> <strong>Note:</strong> </p>
+                    <p> Columns with green color can not be changed.</p>
                   </div>
                 </div>
               </section>
@@ -230,31 +274,21 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               {/* Bill of Material after inserting Section */}
               <div className="lesson-section">
                 {" "}
-                <h4> Bill of Material after inserting on ICAD data </h4>
-                <div className="image-wrapper-flush">
+                <h4 style={{ marginBottom: "2rem" }}> Bill of Material after inserting on ICAD data </h4>
+                <div>
                   <img src={bomAfterInsertImg} alt="BOM Entry with Text Overflow Case" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
                 </div>
               </div>{" "}
               {/* Edit Attribute Section */}
               <div className="lesson-section">
                 {" "}
-                <h4> Edit Attribute </h4>
+                <h4 style={{ marginBottom: "2rem" }}> Edit Attribute </h4>
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={bomEditAttrImg} alt="Edit Attribute Command Selection" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>{" "}
                 {/* Step-by-step editing process */}
-                <div>
-                  <div className="image-wrapper-flush">
-                    <img src={bomEditAttr2Img} alt="Selecting Text Row to Edit (P1)" className="software-screenshot screenshot-wide" />
-                  </div>
-                </div>
-                <div className="flex-col">
-                  <div className="image-wrapper-flush">
-                    <img src={bomEditAttr3Img} alt="Change Attribute Dialog and Final Result" className="software-screenshot screenshot-wide" />
-                  </div>
-                </div>
               </div>
             </div>
           )}{" "}
@@ -284,7 +318,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
