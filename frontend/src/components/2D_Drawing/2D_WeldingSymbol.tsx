@@ -87,8 +87,10 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
             {" "}
             {/* 13. Welding Symbol Section */}
             <div id="welding-symbol-section">
-              {" "}
-              <h4 style={{ marginBottom: "1rem" }}> 13. Welding Symbol </h4>
+              <div className="step-header" style={{ marginBottom: "2rem" }}>
+                <span className="step-number">13.</span>
+                <span className="step-label">Welding Symbol</span>
+              </div>
               <div className="flex-col">
                 <div>
                   <img src={weldingSymbolMainImg} alt="Welding Symbol Menu Selection" className="software-screenshot screenshot-wide" />
@@ -130,16 +132,20 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
             <div className="section-divider"></div>
             {/* 14. Notes Section */}
             <div id="notes-section">
-              {" "}
-              <h4>14. Notes</h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">14.</span>
+                <span className="step-label">Notes</span>
+              </div>
               <p className="p-flush" style={{ marginBottom: "1rem" }}>
                 Notes are always located in the upper left corner of the
                 template.
               </p>
 
               <div className="lesson-section">
-                {" "}
-                <h4 style={{ marginTop: "1rem", marginBottom: "2rem" }}>a. Standard Notes</h4>
+                <div className="step-header" style={{ marginBottom: "2rem" }}>
+                  <span className="step-number">a.</span>
+                  <span className="step-label">Standard Notes</span>
+                </div>
                 <div className="flex-row">
                   <div>
                     <img src={standardNotesImg} alt="Standard Notes location in Title Block" className="software-screenshot screenshot-wide" />

@@ -117,8 +117,10 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
             <div className="section-divider"></div>
             {/* 11. Text Section */}
             <div>
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "0.5rem" }}> 11. Text </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">11.</span>
+                <span className="step-label">Text</span>
+              </div>
               <div>
                 <img src={textNoteImg} alt="Text Command and Configuration" className="software-screenshot screenshot-wide" />
               </div>

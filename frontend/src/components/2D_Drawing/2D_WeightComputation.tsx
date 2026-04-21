@@ -93,9 +93,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="flex-col">
-            {" "}
-            {/* Specific Gravity Table */}
-            <h4 style={{ marginBottom: "1rem" }}> 15. Material Weight Computation </h4>
+            <div className="step-header" style={{ marginBottom: "1rem" }}>
+              <span className="step-number">15.</span>
+              <span className="step-label">Material Weight Computation</span>
+            </div>
             <div className="lesson-section">
               <div>
                 <img src={gravityTableImg} alt="Material Specific Gravity Reference Table" className="software-screenshot screenshot-wide" />
@@ -103,8 +104,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             </div>{" "}
             {/* a. Plate Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> a. Plate (L × W × H × SG) </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">a.</span>
+                <span className="step-label">Plate (L × W × H × SG)</span>
+              </div>
               <p className="red-text">example:</p>
               <div className="flex-row">
                 <img src={plateExImg} alt="Plate Weight Computation Example" className="software-screenshot screenshot-wide" />
@@ -124,11 +127,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             </div>{" "}
             {/* b. Cylinder Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                b. Cylinder ( π × r² × L × SG) or [ ( π × d² × L × SG) / 4
-                ]
-              </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">b.</span>
+                <span className="step-label">Cylinder ( π × r² × L × SG) or [ ( π × d² × L × SG) / 4 ]</span>
+              </div>
               <p className="red-text">example:</p>
               <div className="flex-row">
                 <img src={cylinderExImg} alt="Cylinder Weight Computation Example" className="software-screenshot screenshot-wide" />
@@ -149,8 +151,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             </div>{" "}
             {/* c. Shape Steel Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> c. Shape Steel ( Cross Sectional Area × L × SG ) </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">c.</span>
+                <span className="step-label">Shape Steel ( Cross Sectional Area × L × SG )</span>
+              </div>
               <div className="flex-row">
                 <div className="image-column">
                   <div className="flex-col" style={{ gap: '0.5rem' }}>
@@ -188,11 +192,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             </div>{" "}
             {/* d. Square / Rectangular Pipe Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                d. Square / Rectangular Pipe ( Cross Sectional Area × L × SG
-                )
-              </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">d.</span>
+                <span className="step-label">Square / Rectangular Pipe ( Cross Sectional Area × L × SG )</span>
+              </div>
               <p className="red-text" style={{ marginBottom: "1rem" }}>example:</p>
               <div className="flex-row">
                 <img src={pipeExImg} alt="Rectangular Pipe Example" className="software-screenshot screenshot-wide" />

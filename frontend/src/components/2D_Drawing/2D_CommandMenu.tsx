@@ -249,7 +249,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
                 </div>
                 <div className="info-box" style={{ marginTop: "1rem" }}>
-                  <p className="p-flush red-text">Note: The process of removing the chamfer is per orthographic view.</p>
+                  <p className="p-flush red-text"><strong>Note:</strong> </p> <p> The process of removing the chamfer is per orthographic view.</p>
                 </div>
               </div>
 

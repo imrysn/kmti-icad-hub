@@ -100,8 +100,10 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {" "}
               {/* Title and Definition */}
               <div>
-                {" "}
-                <h4>9. Geometric Tolerance</h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">9.</span>
+                  <span className="step-label">Geometric Tolerance</span>
+                </div>
                 <p className="p-flush" style={{ marginBottom: "0rem" }}>
                   A system for defining allowable engineering tolerances. It
                   tells what degree of accuracy and precision that needs to be
@@ -125,11 +127,10 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               </div>
               {/* Section 10: Datum */}
               <div>
-                {" "}
-                <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                  {" "}
-                  10. Datum{" "}
-                </h4>
+                <div className="step-header" style={{ marginBottom: "1rem" }}>
+                  <span className="step-number">10.</span>
+                  <span className="step-label">Datum</span>
+                </div>
                 <div>
                   <div>
                     <img src={datumSelectionImg} alt="Datum Selection Menu" className="software-screenshot screenshot-wide" />

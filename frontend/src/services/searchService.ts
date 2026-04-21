@@ -96,7 +96,7 @@ export const chatService = {
         onChunk: (chunk: { type: string; delta?: string; sources?: ChatSource[]; suggestions?: string[]; log_id?: number }) => void
     ): Promise<void> {
         const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-        const token = localStorage.getItem('access_token');
+        const token = sessionStorage.getItem('access_token');
 
         const response = await fetch(`${API_BASE}/chat/stream`, {
             method: 'POST',

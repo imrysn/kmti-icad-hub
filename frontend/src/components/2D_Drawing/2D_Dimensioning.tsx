@@ -140,9 +140,9 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
               {" "}
               {/* 8. Dimensioning Overview */}
               <div className="flex-col">
-                <div className="flex-row--top">
-                  {" "}
-                  <h4>8. Dimensioning</h4>
+                <div className="step-header">
+                  <span className="step-number">8.</span>
+                  <span className="step-label">Dimensioning</span>
                 </div>
 
                 <div>
@@ -158,15 +158,15 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
               </div>
               <div className="section-divider"></div>{" "}
               {/* Section a: Adding dimensions */}
-              <div className="sub-section-header">
-                {" "}
-                <h4>a. Adding dimensions</h4>
-              </div>{" "}
+              <div className="step-header">
+                <span className="step-number">a.</span>
+                <span className="step-label">Adding dimensions</span>
+              </div>
               {/* a.1) Standard dimension */}
               <div className={`${getStepClass("dim1-a1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header" style={{ marginTop: "-3rem" }}>
                   {" "}
-                  <span className="step-number">
+                  <span className="step-number" style={{ marginLeft: "3rem" }}>
                     a.1
                   </span>{" "}
                   <span className="step-label">Standard Dimension</span>
@@ -204,16 +204,15 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
             </>
           ) : subLessonId === "2d-dimensioning-2" ? (
             <div className="flex-col">
-              {/* b. Editing Dimension */}
-              <div className="sub-section-header">
-                {" "}
-                <h4>b. Editing Dimension</h4>
+              <div className="step-header">
+                <span className="step-number">b.</span>
+                <span className="step-label">Editing Dimension</span>
               </div>
 
               {/* b.1 Edit Dimension Characters */}
               <div className={currentIndex === 0 ? "reading-active-container" : ""}>
                 <div className="step-header">
-                  <span className="step-number">b.1</span>
+                  <span className="step-number" style={{ marginLeft: "3rem" }}>b.1</span>
                   <span className="step-label">Edit Dimension Characters</span>
                 </div>
 
@@ -282,9 +281,9 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
             <>
               {" "}
               {/* b.2) Polished Material */}
-              <div className="sub-section-header">
-                {" "}
-                <h4 style={{ marginBottom: "-2rem" }}>b.2) Polished Material</h4>
+              <div className="step-header">
+                <span className="step-number">b.2</span>
+                <span className="step-label">Polished Material</span>
               </div>
               <div className="step-description">
                 <div className="flex-col">
@@ -341,9 +340,9 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 
               <div className="section-divider"></div>
               {/* 11. Part note */}
-              <div className="sub-section-header" style={{ marginTop: "-3rem" }}>
-                {" "}
-                <h4>11. Part note</h4>
+              <div className="step-header">
+                <span className="step-number">11.</span>
+                <span className="step-label">Part note</span>
               </div>
               <div className={currentIndex === 1 ? "reading-active" : ""}>
                 <div className="flex-col">
@@ -359,9 +358,9 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
             <>
               {" "}
               {/* b.4) Change Position Overview */}
-              <div className={`sub-section-header ${currentIndex === 0 ? "reading-active" : ""}`}>
-                {" "}
-                <h4>b.4) Change Position</h4>
+              <div className="step-header">
+                <span className="step-number">b.4</span>
+                <span className="step-label">Change Position</span>
               </div>
               <div className="flex-row--top">
                 <div className="image-overlay-container" style={{ position: "relative" }}>
@@ -371,17 +370,15 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 
               <div className="info-box" style={{
                 position: "absolute",
-                top: "88rem",
+                top: "86rem",
                 right: "3.5rem",
                 width: "340px",
                 margin: "0",
                 zIndex: "10",
                 boxShadow: "var(--shadow-lg)"
               }}>
-                <p className="p-flush red-text">
-                  NOTE: Either of these commands can be use to align
-                  dimensions.
-                </p>
+                <p className="p-flush red-text"><strong>NOTE:</strong></p>  <p>Either of these commands can be use to align
+                  dimensions.</p>
               </div>
 
 
@@ -390,10 +387,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
             <>
               {" "}
               {/* c.) Dimension for Breakviews */}
-              <div className="sub-section-header">
-                {" "}
-                <h4>c.) Dimension for Breakviews</h4>
-                <div style={{ marginTop: "1rem" }}>
+              <div className="step-header">
+                <span className="step-number">c.</span>
+                <span className="step-label">Dimension for Breakviews</span>
+              </div>
+              <div className="flex-row--top">
+                <div style={{ marginTop: "-1rem" }}>
                   <p className="p-flush">
                     {" "}
                     There are parts that are too long for the template, which,

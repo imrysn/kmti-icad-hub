@@ -95,8 +95,10 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             <div className="section-divider"></div>{" "}
             {/* b. Special Notes Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> b. Special Notes </h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">b.</span>
+                <span className="step-label">Special Notes</span>
+              </div>
               <div>
                 <div>
                   <img src={specialNotesImg} alt="Special Notes location in Drawing Template" className="software-screenshot screenshot-wide" />
@@ -105,8 +107,10 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             </div>{" "}
             {/* c. Copy / Move Section */}
             <div className="lesson-section">
-              {" "}
-              <h4 style={{ marginTop: "1rem", marginBottom: "1rem" }}> c. Copy / Move </h4>
+              <div className="step-header" style={{ marginBottom: "2rem" }}>
+                <span className="step-number">c.</span>
+                <span className="step-label">Copy / Move</span>
+              </div>
               <div>
                 <div style={{ marginBottom: "2rem" }}>
                   <img src={copyMoveImg} alt="Copy and Move Command Configuration" className="software-screenshot screenshot-wide" />

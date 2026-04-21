@@ -139,8 +139,10 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                 </p>{" "}
                 {/* a. Common Usage */}
                 <div>
-                  {" "}
-                  <h4>a. Shotblasting is commonly used for:</h4>{" "}
+                  <div className="step-header" style={{ marginBottom: "1rem" }}>
+                    <span className="step-number">a.</span>
+                    <span className="step-label">Shotblasting is commonly used for:</span>
+                  </div>
                   <ul className="list-flush">
                     {" "}
                     <li>removal of stress after welding process</li>{" "}
@@ -169,8 +171,10 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
                 <div className="section-divider"></div>{" "}
                 {/* b. Black Skin Removal */}
                 <div>
-                  {" "}
-                  <h4 style={{ marginTop: "1rem" }}>b. Shotblasting(Black skin Removal) is used for:</h4>{" "}
+                  <div className="step-header" style={{ marginBottom: "1rem" }}>
+                    <span className="step-number">b.</span>
+                    <span className="step-label">Shotblasting(Black skin Removal) is used for:</span>
+                  </div>
                   <ul className="list-flush">
                     {" "}
                     <li>removal of black skin of part or material</li>{" "}

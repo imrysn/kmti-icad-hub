@@ -87,14 +87,17 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
             {/* Floating Info Box - Position customizable via top/bottom/left/right */}
             <div className="info-box" style={{
               position: 'absolute',
-              top: '55%',
-              right: '15%',
-              maxWidth: '500px',
+              top: '61%',
+              right: '9%',
+              maxWidth: '550px',
               backgroundColor: 'rgba(15, 23, 42, 0.9)',
               backdropFilter: 'blur(10px)',
               zIndex: 10
             }}>
-              <h4>a. Safety Color</h4>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">a.</span>
+                <span className="step-label">Safety Color</span>
+              </div>
               <p>
                 To easily recognize that the area in which this part is
                 located has a rotating or moving object, hence, it is an
@@ -138,7 +141,10 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
               2. No need to indicate notes for machine color.
             </p>
           </div>{" "}
-          {/* Revision History Section */} <h4>b. Revision History</h4>
+          <div className="step-header" style={{ marginBottom: "1rem" }}>
+            <span className="step-number">b.</span>
+            <span className="step-label">Revision History</span>
+          </div>
           <div className="flex-row">
             <div className="red-box">
               <p>1. Global view must be activated.</p>
