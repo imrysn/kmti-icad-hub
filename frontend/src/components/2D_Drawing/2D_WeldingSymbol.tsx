@@ -142,7 +142,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
               </p>
 
               <div className="lesson-section">
-                <div className="step-header" style={{ marginBottom: "2rem" }}>
+                <div className="step-header" style={{ marginBottom: "2rem", marginLeft: "3rem" }}>
                   <span className="step-number">a.</span>
                   <span className="step-label">Standard Notes</span>
                 </div>
