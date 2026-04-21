@@ -29,7 +29,7 @@ import slottedDrill from '../../assets/3D_Image_File/standard7_case2.png';
 import connectionCChannel from '../../assets/3D_Image_File/standard7_connections_case1.png';
 import connectionBothDrill from '../../assets/3D_Image_File/standard7_connections_case2.png';
 import sgpPipesRed from '../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
-import sgpPipesYellow from '../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
+import sgpPipesYellow from '../../assets/3D_Image_File/standard8_SGP_pipes_yellow.png';
 
 
 interface StandardLessonProps {
@@ -129,11 +129,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 </div>
                 <div className="flex-row--top">
                   <div>
-                    <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" />
+                    <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" style={{ width: '650px', height: '400px' }} />
                   </div>
                   <br />
                   <br />
                   <div>
+                    <span style={{ fontSize: '2rem', marginLeft: "10rem" }}>Pointer Color:</span> <br />
+                    <span style={{ fontSize: '2rem', marginLeft: "13rem", color: "#da2525ff" }}>Red#3</span>
                     <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
@@ -147,12 +149,16 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush">Another type of <strong className="text-highlight">Scale Pointer</strong> is by putting <strong className="text-highlight">V-groove</strong>. We must also apply this on 3D and 2D.</p>
                 </div>
                 <div className="flex-row--top">
-                  <div className="image-wra`pper-flush">
-                    <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-wide" />
+                  <div>
+                    <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-wide" style={{ width: '650px', height: '400px' }} />
                   </div>
                   <br />
                   <br />
+                  <span style={{ fontSize: '1.5rem', marginLeft: "5rem" }}>Pointer Color:</span> <br />
+                  <span style={{ fontSize: '1.5rem', marginLeft: "7.5rem", color: "#da2525ff" }}>Red#3</span>
+
                   <div>
+
                     <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
@@ -174,12 +180,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   </div>
                   <div className="flex-col">
                     <div>
-                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" style={{ height: '140px' }} />
+                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" style={{ width: '700px' }} />
                     </div>
                     <br />
                     <br />
                     <div>
-                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" style={{ height: '70px' }} />
+                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" style={{ width: '910px', height: '70px' }} />
                     </div>
                   </div>
                 </div>
@@ -224,7 +230,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <li>In case drill/tap holes reach to ditch, the diameter must be <strong>smaller than width of groove</strong>.</li>
                   </ul>
                   <div>
-                    <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-large" />
+                    <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
                   </div>
                 </div>
               </div>
@@ -240,7 +246,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <span className="step-number">3</span>
                   <p className="p">In 2D detail of sprocket, there is a <strong>safety color note</strong>.</p>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -257,23 +263,26 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                   <h4 className="section-title">Actual sprocket teeth are unpainted.</h4>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={sprocketColoring} alt="Sprocket Coloring NG vs GOOD" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
               <div className="section-divider" />
+              <div> <span style={{ fontSize: '1.3rem', marginLeft: "28rem", lineHeight: "0.2", position: "absolute", top: "20rem" }}>※  All selected entity will be color yellow</span> <br />
+                <span style={{ fontSize: '1.3rem', marginLeft: "28rem", position: "absolute", top: "35rem" }}>※  Only the selected surface will be color yellow</span> <br /></div>
+
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <h4 className="section-title">Location of Sprocket Keyway</h4>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={sprocketKeywayLoc} alt="Keyway Location Standards" className="software-screenshot screenshot-wide" />
+                <div>
+                  <img src={sprocketKeywayLoc} alt="Keyway Location Standards" className="software-screenshot screenshot-wide" style={{ width: '600px' }} />
                 </div>
                 <div className="info-box">
                   <p className="p-flush"><strong>Note</strong>: 1. Location of keyway always indicated on special notes.</p>
-                  <p className="p-flush">キー溝�E歯山部中忁E��合わせ加工すること (Key groove centered on tooth)</p>
-                  <p className="p-flush">2. 本図は市販品�E追加加工図である (Purchased part with additional process)</p>
+                  <p className="p-flush">キー溝E歯山部中忁E合わせ加工すること (Key groove centered on tooth)</p>
+                  <p className="p-flush">2. 本図は市販品E追加加工図である (Purchased part with additional process)</p>
                 </div>
               </div>
             </div>
@@ -288,12 +297,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <h4 className="section-title">Kusakabe Standard Code for Screw, etc.</h4>
                 </div>
                 <div className="flex-col">
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={screwStandard1} alt="Kusakabe Screw Codes 1" className="software-screenshot screenshot-wide" />
                   </div>
                   <br />
                   <br />
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={screwStandard2} alt="Kusakabe Screw Codes 2 (Stainless)" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
@@ -308,14 +317,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <span className="step-number">1</span>
                   <h4 className="section-title">STANDARD OF SYMBOL OF HARDWARE</h4>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={hardwareSymbolStandard} alt="Hardware Symbol Standards" className="software-screenshot screenshot-wide" style={{ height: 'auto' }} />
                 </div>
               </div>
               <br />
 
               <div className="section-divider" />
-              <div className="image-wrapper-flush">
+              <div>
                 <img src={boltHoleStandard} alt="Bolt Hole Diameter Standard Table" className="software-screenshot screenshot-wide" style={{ width: '100%', height: 'auto' }} />
               </div>
             </div>
@@ -333,7 +342,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush"><strong>Note</strong>: To avoid easily loosen of the bolt, bolt size is need to multiply size by 1.5-2. </p>
                   <p>In case the result is not standard, it will round up to the nearest standard bolt length.</p>
                 </div>
-                <div className="image-wrapper-flush">
+                <div>
                   <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -352,11 +361,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p>Spring Washer (SW)</p>
                   <p>Flat Washer (Hardening)</p>
                   <br />
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={pillowBlock1} alt="Pillow Block Setup" className="software-screenshot screenshot-medium" />
                   </div>
                   <br />
-                  <div className="image-wrapper-flush" >
+                  <div>
                     <img src={pillowBlock2} alt="Flange Pillow Block 1" className="software-screenshot screenshot-medium" />
                   </div>
                   <br />
@@ -367,7 +376,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p>Hexagonal Bolt (HB)</p>
                   <p>Spring Washer (SW)</p>
                   <br />
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={pillowBlock3} alt="Flange Pillow Block 2" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
@@ -391,8 +400,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Hexagonal Bolt (HB)</p>
                   <p className="p-flush text-highlight">Spring Washer (SW)</p>
                   <p className="p-flush text-highlight">Flat Washer (Hardening)</p>
-                  <div className="image-wrapper-flush">
-                    <img src={slottedThreaded} alt="Slotted + Threaded Case" className="software-screenshot screenshot-large" />
+                  <div>
+                    <img src={slottedThreaded} alt="Slotted + Threaded Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                   </div>
                   <br />
@@ -404,8 +413,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Spring Washer (SW)</p>
                   <p className="p-flush text-highlight">Hex Nut (HN1)</p>
                 </div>
-                <div className="image-wrapper-flush">
-                  <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" />
+                <div>
+                  <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                 </div>
               </div>
@@ -424,8 +433,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Flat Washer (FHW) - IF SLOTTED</p>
                   <p className="p-flush text-highlight">Spring Washer (SW)</p>
                   <p className="p-flush text-highlight">Hex Nut (HN1)</p>
-                  <div className="image-wrapper-flush">
-                    <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot screenshot-large" />
+                  <div>
+                    <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                   </div>
                   <br />
@@ -435,8 +444,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <p className="p-flush text-highlight">Hex Socket Cap Screw (CS)</p>
                   <p className="p-flush text-highlight">Spring Washer (SW)</p>
                   <p className="p-flush text-highlight">Hex Nut (HN1)</p>
-                  <div className="image-wrapper-flush">
-                    <img src={connectionBothDrill} alt="Both Drill Connection" className="software-screenshot screenshot-large" />
+                  <div>
+                    <img src={connectionBothDrill} alt="Both Drill Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
 
                   </div>
                 </div>
@@ -464,7 +473,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                 <div className="flex-row--top">
 
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={sgpPipesRed} alt="SGP White (Red) Pipes" className="software-screenshot screenshot-large" />
 
                   </div>
@@ -474,12 +483,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                   <br />
                   <br />
-                  <div className="image-wrapper-flush">
+                  <div>
                     <img src={sgpPipesYellow} alt="SGP Black (Yellow) Pipes" className="software-screenshot screenshot-medium" />
 
                   </div>
                   <p className="p-flush"><strong>Yellow = SGP Black</strong> (Structural)</p>
-                  <p className="p-flush"><strong>Yellow Colored Pipes are </strong> <span style={{ color: '#e41717ff' }}>SGP (Black) Pipes</span></p>
+                  <span><p className="p-flush"><strong>Yellow Colored Pipes are </strong> <span style={{ color: '#e41717ff' }}>SGP (Black) Pipes</span></p> </span>
                   <p>ex. Hand Rails</p>
                 </div>
               </div>
@@ -489,7 +498,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           {!Object.keys(LESSON_DATA).includes(subLessonId) && (
             <div className="tab-pane">
               <div className="content-placeholder">
-                <Play size={48} className="content-placeholder__icon" />
+                <Play size={48} className="content-placeholder_icon" />
                 <p>Content for <strong>{subLessonId}</strong> will be provided soon.</p>
               </div>
             </div>

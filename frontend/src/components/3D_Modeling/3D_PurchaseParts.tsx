@@ -55,9 +55,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
               <img
                 src={isPart1 ? purchasePartsFlowchart : uploadingFlowchart}
                 alt={isPart1 ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
-                className="software-screenshot screenshot-wide"
-                style={{ height: '830px', width: '700px', marginLeft: '100px' }}
-              />
+                className="software-screenshot screenshot-wide" style={{ width: "600px", height: "auto", marginLeft: "auto", marginRight: "auto" }} />
             </div>
           </div>
 

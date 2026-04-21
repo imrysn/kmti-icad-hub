@@ -62,7 +62,7 @@ export const LoginView: React.FC = () => {
             }
             navigate('/');
         } catch (err: any) {
-            setLocalError('LOGIN FAILED. CHECK YOUR CREDENTIALS.');
+            setLocalError(err.message || 'LOGIN FAILED. CHECK YOUR CREDENTIALS.');
         }
     };
 

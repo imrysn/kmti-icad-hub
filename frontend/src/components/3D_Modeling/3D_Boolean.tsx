@@ -124,10 +124,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title" style={{ marginRight: '320px' }}>Boolean operations</h3>
+        <h3 className="section-title" style={{ marginRight: "33rem" }}>Boolean operations</h3>
         <div className="instruction-box">
           <div>
-            <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot screenshot-small" style={{ height: '190px' }} />
+            <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot screenshot-small" style={{ height: '240px' }} />
           </div>
         </div>
       </section>
@@ -149,7 +149,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select <strong className="text-highlight">Union</strong> from the menu.</span>
                   </div>
                   <div>
-                    <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" style={{ height: '190px' }} />
+                    <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" style={{ height: '170px' }} />
                   </div>
                 </div>
 
@@ -158,11 +158,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-number">2</span>
                     <span className="step-label">
                       Select all 3D entities for joining &gt; <strong className="text-highlight">GO</strong>
-                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '30px', verticalAlign: 'middle', margin: '0 4px' }} />
+                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ height: '24px', verticalAlign: 'middle', margin: '0 4px' }} />
                     </span>
                   </div>
                   <div>
-                    <img src={select3D} alt="Select 3D entities" className="software-screenshot screenshot-large" />
+                    <img src={select3D} alt="Select 3D entities" className="software-screenshot screenshot-large" style={{ width: '600px', height: 'auto' }} />
                   </div>
                 </div>
 
@@ -189,7 +189,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select <strong className="text-highlight">Subtract</strong> from the icon menu.</span>
                   </div>
                   <div>
-                    <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot screenshot-small" style={{ height: '170px' }} />
                   </div>
                 </div>
 
@@ -199,16 +199,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">First, select the Target entity</span>
                   </div>
                   <div className="step-description">
-                    <div className="flex-row-wrap">
-                      <div className="flex-1">
+                    <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
+                      <div className="flex-1" style={{ minWidth: '300px' }}>
                         <ul className="interaction-list--plain">
                           <li><strong className="text-highlight">Target Entity:</strong> Main Part</li>
                           <li><strong className="text-highlight">Tool Entity:</strong> Entities to be subtracted on the target.</li>
                         </ul>
                       </div>
-                      <div>
-                        <img src={subtractEntity} alt="Target and Tool Entity" className="software-screenshot screenshot-medium" />
-                      </div>
+                      <img src={subtractEntity} alt="Target and Tool Entity" className="software-screenshot screenshot-medium" style={{ height: '200px' }} />
                     </div>
                   </div>
                 </div>
@@ -218,27 +216,20 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-number">3</span>
                     <span className="step-label">
                       Select the tool entities &gt; <strong className="text-highlight">GO</strong>
-                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ height: '24px', verticalAlign: 'middle', margin: '0 4px' }} />
                     </span>
                   </div>
                   <p className="p-flush">Tool entities will disappear and become components after subtraction.</p>
-                  <div>
-                    <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot screenshot-large" />
+                  <div className="flex-row-center--wrap">
+                    <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot screenshot-large" style={{ maxWidth: '700px', height: 'auto' }} />
                   </div>
                 </div>
 
                 <div className="tool-block">
                   <p className="p-flush">This subtract tool will retain the tool entities after subtraction.</p>
-                  <div className="flex-row-center--wrap">
-                    <div>
-                      <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-                    </div>
-                    <br />
-                    <br />
-                    <br />
-                    <div>
-                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-large" />
-                    </div>
+                  <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
+                    <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot screenshot-small" style={{ height: '170px' }} /> <br />
+                    <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-large" style={{ height: '190px' }} />
                   </div>
                 </div>
 
@@ -271,7 +262,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-label">Select <strong className="text-highlight">Intersect</strong> from the menu.</span>
                   </div>
                   <div>
-                    <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot screenshot-small" style={{ height: '170px' }} />
                   </div>
                 </div>
 
@@ -280,12 +271,12 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <span className="step-number">2</span>
                     <span className="step-label">
                       Select the intersecting entities &gt; <strong className="text-highlight">GO</strong>
-                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ height: '24px', verticalAlign: 'middle', margin: '0 4px' }} />
                     </span>
                   </div>
                   <p className="p-flush">Intersecting entities will not disappear after the process</p>
-                  <div>
-                    <img src={intersectingEntities} alt="Intersecting Entities" className="software-screenshot screenshot-large" />
+                  <div className="flex-row-center--wrap">
+                    <img src={intersectingEntities} alt="Intersecting Entities" className="software-screenshot screenshot-large" style={{ maxWidth: '700px', height: 'auto' }} />
                   </div>
                 </div>
 
@@ -307,9 +298,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <p className="p-flush">Tool use to reverse the boolean operations by creating CSG solid.</p>
 
                 <div className="info-box">
-                  <p className="p-flush"><strong className="text-highlight">Component:</strong> By-product of boolean operations (entities joined by union, cutout, holes)</p>
-                  <div>
-                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
+                    <p className="p-flush" style={{ flex: 1, minWidth: '250px' }}><strong className="text-highlight">Component:</strong> By-product of boolean operations (entities joined by union, cutout, holes)</p>
+                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" style={{ height: '170px' }} />
                   </div>
                 </div>
 
@@ -320,7 +311,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                       <span className="step-number">1</span>
                       <span className="step-label">
                         Select the desired components &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ height: '24px', verticalAlign: 'middle', margin: '0 4px' }} />
                       </span>
                     </div>
                     <div className="step-header">
@@ -329,15 +320,12 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     </div>
                   </div>
 
-                  <div className="flex-row-center--wrap">
-                    <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '250px' }} />
-                    <br />
-                    <br />
-                    <img src={componentSeparated} alt="Separated Result" className="software-screenshot screenshot-medium" />
+                  <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
+                    <img src={componentOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '200px' }} /> <br />
+                    <img src={componentSeparated} alt="Separated Result" className="software-screenshot screenshot-medium" style={{ height: '347px' }} />
                   </div>
-                  <br />
-                  <div style={{ marginTop: '1rem' }}>
-                    <img src={componentSeparate} alt="Separate All Components Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  <div className="flex-row-center--wrap" style={{ marginTop: '1.5rem' }}>
+                    <img src={componentSeparate} alt="Separate All Components Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
                   </div>
                 </div>
 
@@ -359,7 +347,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                         <span className="step-label">
                           Select the entire solid entity &gt;{" "}
                           <strong className="text-highlight">GO</strong>
-                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ height: '24px', verticalAlign: 'middle', margin: '0 4px' }} />
                         </span>
                       </div>
 
@@ -373,11 +361,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                       </div>
                     </div>
                     <br />
-                    <div className="flex-row-center--wrap">
-                      <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '250px' }} />
-                      <br />
-                      <br />
-                      <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" />
+                    <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
+                      <img src={selectOk} alt="Confirm Dialog" className="software-screenshot screenshot-medium" style={{ height: '200px' }} /> <br /> <br />
+                      <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" style={{ height: '350px' }} />
                     </div>
                   </div>
 

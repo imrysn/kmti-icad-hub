@@ -280,7 +280,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div>
 
-              <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+              <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" style={{ width: '180px', height: 'auto' }} />
 
             </div>
 
@@ -371,7 +371,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" style={{ height: '450px' }} />
+                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" style={{ height: '370px' }} />
 
               </div>
 
@@ -460,7 +460,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" />
+                <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" style={{ width: '800px' }} />
 
               </div>
 
@@ -549,7 +549,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" />
+                <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" style={{ width: '800px' }} />
 
               </div>
 
@@ -638,7 +638,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" />
+                <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" style={{ width: '400px' }} />
 
               </div>
 
@@ -840,7 +840,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
           <div>
 
-            <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '200px', height: 'auto' }} />
+            <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '180px', height: 'auto' }} />
 
           </div>
 
@@ -873,7 +873,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
 
                 </div>
 
@@ -923,7 +923,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-large" />
+                <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
 
               </div>
 
@@ -959,7 +959,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
 
                 </div>
 
@@ -969,7 +969,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div className={`${getStepClass('b2r-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-              <div className="step-header"> <span className="step-number">
+              <div className="step-header"> <span className="step-number" style={{ marginTop: "-4rem" }}>
                 2 </span> <span className="step-label">Left-click on the entity to be rotate &gt; <strong className="text-highlight">GO</strong>
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
 
@@ -991,7 +991,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot screenshot-medium" />
+                  <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot screenshot-medium" style={{ width: '630px', height: 'auto' }} />
 
                 </div>
 
@@ -1048,7 +1048,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
 
                 </div>
 
@@ -1085,7 +1085,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-large" />
+                <img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
 
               </div>
 
@@ -1151,10 +1151,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div>
-
-                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '900px', height: '110px' }} />
-
+                <div className="flex-row-center--wrap">
+                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: '100px' }} />
                 </div>
 
               </div>
@@ -1166,10 +1164,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>RESULT</h4>
               </div>
 
-              <div>
-
-                <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" />
-
+              <div className="flex-row-center--wrap">
+                <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ maxWidth: '600px', height: 'auto' }} />
               </div>
 
             </div>
@@ -1219,7 +1215,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large" />
+                <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
 
               </div>
 
@@ -1270,7 +1266,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               <div>
 
-                <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large" />
+                <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
 
               </div>
 
@@ -1423,13 +1419,12 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
           </div>
 
           <p>Tools use to switch between displaying and hiding entities.
-          </p>
-
+          </p> <br />
           <div className="flex-row-center--wrap">
 
             <div>
 
-              <img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" />
+              <img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" style={{ width: '192px', height: 'auto' }} />
 
             </div>
 
@@ -1530,16 +1525,19 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                       <div className="flex-row">
 
-                        <div className="image-wrapper-flush">
+                        <div>
 
                           <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
+                          <span style={{ fontSize: '1.5rem', marginLeft: "0rem" }}>EXTRUSION (ONE SIDE):</span>
 
                         </div>
                         <br />
                         <br />
-                        <div className="image-wrapper-flush">
+                        <div>
                           <br />
                           <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
+                          <span style={{ fontSize: '1.5rem', marginLeft: "0rem" }}>EXTRUSION (BOTH SIDE):</span>
+
 
                         </div>
 
@@ -1792,7 +1790,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   <div className="flex-no-shrink">
 
-                    <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium flex-no-shrink" />
+                    <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium flex-no-shrink" style={{ width: '750px', height: 'auto' }} />
 
                   </div>
 
@@ -1885,7 +1883,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="flex-no-shrink">
                   <br />
-                  <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" />
+                  <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" style={{ width: '650px', height: 'auto' }} />
 
                 </div>
 
@@ -1916,7 +1914,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" />
+                  <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
 
                 </div>
 
@@ -1999,7 +1997,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                   <br />
                   <br />
                   <div>
-                    <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" />
+                    <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" style={{ width: '750px', height: 'auto' }} />
 
                   </div>
 
@@ -2106,7 +2104,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ height: '150px' }} />
+                  <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
 
                 </div>
 
@@ -2159,7 +2157,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                 <div>
                   <br />
 
-                  <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ height: '450px' }} />
+                  <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ height: '400px' }} />
 
                 </div>
 

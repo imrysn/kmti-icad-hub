@@ -116,7 +116,7 @@ interface PropertiesLessonProps {
               {" "}
               {activeTab === "color" && (
                 <div className="tab-pane fade-in">
-                  <h3 className="section-title" style={{ marginRight: "730px" }}>Change color</h3>
+                  <h3 className="section-title" style={{ marginRight: "725px" }}>Change color</h3>
                   <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                     <div className="step-header">
                       {" "}
@@ -128,8 +128,8 @@ interface PropertiesLessonProps {
                       </span>
                     </div>
 
-                    <div>
-                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" />
+                    <div className="flex-row-center--wrap">
+                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                     </div>
                   </div>
 
@@ -166,39 +166,30 @@ interface PropertiesLessonProps {
                         </div>
 
                         <div className="flex-1">
-                          <div className="image-wrapper-flush">
-                            <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-medium" />
-                          </div>
+                          <br />
+
+                          <span style={{ fontSize: '1.5rem', marginLeft: "10rem" }}>CHANGE COLOR (ENTITY):</span>
+                          <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-medium" style={{ width: ' 600px', marginTop: '10px' }} />
+
+
                         </div>
                       </div>
-
-                      <div className="flex-row-wrap">
-                        <div className="flex-1">
-                          {" "}
-                          <br />
-                          <br />
+                      <div className="flex-row-center--wrap" style={{ gap: '2rem', marginTop: '3rem' }}>
+                        <div className="flex-1" style={{ minWidth: '300px' }}>
                           <h4 className="section-title" style={{ marginRight: "830px" }}>Face</h4>
                           <div className="step-header">
-                            {" "}
                             <span className="step-label">
-                              Pick a color &gt; Select surface to be changed
-                              &gt;{" "}
-                              <strong className="text-highlight">GO</strong>
-                              <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                              Pick a color &gt; Select surface to be changed &gt; <strong className="text-highlight">GO</strong>
+                              <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ height: '24px', verticalAlign: 'middle', margin: '0 4px' }} />
                             </span>
                           </div>
                           <div className="step-description">
-                            <p className="p-flush">
-                              Only selected faces/surfaces will change its
-                              color.
-                            </p>
-                          </div>
+                            <p className="p-flush">Only selected faces/surfaces will change its color.</p>
+                          </div> <br />
                         </div>
-
-                        <div className="flex-1">
-                          <div className="image-wrapper-flush">
-                            <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" />
-                          </div>
+                        <div className="flex-1" style={{ minWidth: '300px' }}>
+                          <span style={{ fontSize: '1.5rem', marginLeft: "10rem" }}>CHANGE COLOR (FACE):</span>
+                          <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" style={{ maxWidth: '600px', height: 'auto' }} />
                         </div>
                       </div>
                     </div>
@@ -240,8 +231,8 @@ interface PropertiesLessonProps {
                       </span>
                     </div>
 
-                    <div>
-                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" style={{ height: '0px' }} />
+                    <div className="flex-row-center--wrap">
+                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" style={{ height: '50px', width: '800px' }} />
                     </div>
                   </div>
 
@@ -260,7 +251,7 @@ interface PropertiesLessonProps {
 
                   <div className="section-divider"></div>
 
-                  <h3 className="section-title" style={{ marginRight: "540px" }}>Layer designation of 3D parts</h3>
+                  <h3 className="section-title" style={{ marginRight: "34rem" }}>Layer designation of 3D parts</h3>
 
                   <div className="tool-block">
                     {" "}
@@ -312,8 +303,11 @@ interface PropertiesLessonProps {
                       <li>All Stainless Steel (SUS) - white (No.1)</li>{" "}
                       <li>Acrylic - white (No.1)</li>{" "}
                     </ul>
-                    <div className="image-wrapper-flush">
-                      <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" style={{ height: '350px' }} />
+                    <div>
+                      <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" /> <br />
+                      <span style={{ fontSize: '1.5rem', marginLeft: "2rem" }}>ACRYLIC</span>
+                      <span style={{ fontSize: '1.5rem', marginLeft: "21rem" }}>POINTER</span>
+
                     </div>{" "}
                     <h4 className="text-error text-center" /* sanitized: marginTop: '1.5rem' */>
                       <br />
@@ -341,7 +335,7 @@ interface PropertiesLessonProps {
                       </div>
 
                       <div className="flex-1">
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={propertiesMaterialImg} alt="Properties Material" className="software-screenshot screenshot-large" />
                         </div>
                       </div>
@@ -371,8 +365,11 @@ interface PropertiesLessonProps {
                       </div>
 
                       <div className="flex-1">
-                        <div className="image-wrapper-flush">
+                        <div>
                           <img src={isoniteManganeseImg} alt="Heat Treatment Parts" className="software-screenshot screenshot-large" />
+                          <span style={{ fontSize: '1.8rem', marginLeft: "6rem" }}>ISONITE</span>
+                          <span style={{ fontSize: '1.8rem', marginLeft: "15rem" }}>MANGANESE</span> <br />
+                          <span style={{ fontSize: '1.8rem', marginLeft: "28rem" }}>PHOSPHATE</span>
                         </div>
                       </div>
                     </div>
@@ -387,8 +384,13 @@ interface PropertiesLessonProps {
                       <li>Purchase Parts with Additional Process</li>{" "}
                       <li>Use manufacturer standard color</li>{" "}
                     </ul>
-                    <div className="image-wrapper-flush">
-                      <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
+                    <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
+                      <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" style={{ maxWidth: '850px', height: 'auto' }} />
+                      <div className="flex-row-center--wrap" style={{ gap: '2rem', width: '100%' }}>
+                        <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>MOTOR</span>
+                        <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>ENCODER</span>
+                        <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>CHAIN & SPROCKET</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -396,7 +398,7 @@ interface PropertiesLessonProps {
             </>
           ) : (
             <div className="fade-in">
-              <h3 className="section-title">Information</h3>
+              <h3 className="section-title" style={{ marginRight: "780px" }}>Information</h3>
 
               <div className="tool-block">
                 <div className="flex-row-wrap">

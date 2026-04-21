@@ -59,7 +59,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
         <p className="step-label">These following tools are used to detect interferences on the 3D Modeling.</p>
         <div>
           <div>
-            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ height: '385px' }} />
+            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
           </div>
         </div>
       </section>
@@ -77,7 +77,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
             <div className="step-description">
               <div >
-                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" style={{ height: '200px' }} />
+                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" style={{ height: '200px', width: '270px' }} />
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
             <div className="step-description">
               <div>
-                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" style={{ height: '280px' }} />
+                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" style={{ height: '270px', width: '780px' }} />
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
             <div className="step-description">
               <p className="step-label">A dialog box will appear showing the number of detected interferences.</p>
-              <div className="image-wrapper-flush">
+              <div>
                 <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
               </div>
               <div className="info-box">
@@ -131,7 +131,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
           <div className="instruction-box">
             <p className="step-label"><strong>Tool use to display the list of all detected interferences.</strong></p>
             <div>
-              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
             </div>
           </div>
 
@@ -152,7 +152,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
             <div className="step-description">
               <div>
-                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
+                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" style={{ width: '700px' }} />
               </div>
             </div>
           </div>
