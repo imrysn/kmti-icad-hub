@@ -119,14 +119,13 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                 </div>
                 <div className="step-description">
                   <p className="p-flush">Set the scale of selected view. When changing the scale, take note to always use the Projection Properties.</p>
-                  <p className="p-flush"><em>Do not change the scale on the tool bar because the dimensions and notes will not update according to the set scale.</em></p>
+                  <p className="p-flush red-text" ><em>Do not change the scale on the tool bar because the dimensions and notes will not update according to the set scale.</em></p>
                   <div>
                     <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide" />
                   </div>
                   <div className="info-box" style={{ marginTop: "2rem" }}>
                     <p className="p-flush red-text"><strong>Note:</strong></p>
-                    <p>When changing the scale of a standard view, other standard views also change the scale.
-                      Cross section view and detail view need to chnage the scale separately.</p>
+                    <p>When changing the scale of a standard view, other standard views also change the scale. Cross section view and detail view need to change the scale separately..</p>
                   </div>
                 </div>
               </div>

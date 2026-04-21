@@ -432,7 +432,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                     <div className="info-box" style={{
                       position: "absolute",
-                      top: "53.5rem",
+                      top: "50rem",
                       right: "45px",
                       width: "430px",
                       height: "170px",
