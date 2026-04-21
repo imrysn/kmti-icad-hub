@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { X, ZoomIn, ZoomOut, RotateCcw, Download, ChevronLeft, ChevronRight } from 'lucide-react';
+import { parseBackendError } from '../../../utils/errorUtils';
 import './Overlays.css';
 
 /* ─────────────────────────────────────────────────────────────────
@@ -129,7 +130,7 @@ export const FilePreviewModal: React.FC<FilePreviewProps> = ({ filename, onClose
                     setActiveSheet(Object.keys(d.sheets)[0] || '');
                 }
             })
-            .catch((err) => setError(err.response?.data?.detail || 'Failed to load file preview.'))
+            .catch((err) => setError(parseBackendError(err, 'Failed to load file preview.')))
             .finally(() => setLoading(false));
     }, [filename]);
 
