@@ -185,10 +185,10 @@ interface PropertiesLessonProps {
                           </div>
                           <div className="step-description">
                             <p className="p-flush">Only selected faces/surfaces will change its color.</p>
-                          </div>
+                          </div> <br />
                         </div>
                         <div className="flex-1" style={{ minWidth: '300px' }}>
-                          <p className="text-center" style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '10px' }}>CHANGE COLOR (FACE):</p>
+                          <span style={{ fontSize: '1.5rem', marginLeft: "10rem" }}>CHANGE COLOR (FACE):</span>
                           <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" style={{ maxWidth: '600px', height: 'auto' }} />
                         </div>
                       </div>

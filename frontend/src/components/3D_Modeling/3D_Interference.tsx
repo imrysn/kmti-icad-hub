@@ -59,7 +59,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
         <p className="step-label">These following tools are used to detect interferences on the 3D Modeling.</p>
         <div>
           <div>
-            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ height: '385px' }} />
+            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
           </div>
         </div>
       </section>

@@ -68,7 +68,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
             <p className="p-flush">Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.</p>
             <div className="instruction-box">
               <div>
-                <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ height: '290px' }} />
+                <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "16rem" }} />
               </div>
             </div>
           </>
@@ -86,7 +86,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
                 </div>
                 <div>
-                  <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '230px' }} />
+                  <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                 </div>
               </div>
 
@@ -128,7 +128,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
                 </div>
                 <div>
-                  <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
                 </div>
               </div>
 

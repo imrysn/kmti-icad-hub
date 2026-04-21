@@ -77,13 +77,13 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <p className="p-flush"> 3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension. </p>
             <p className="text-caption"> To create 2D plane on the 3D Dimension, use <strong className="text-highlight">Open Work Plane</strong> from the toolbar. </p>
             <div className="tool-block">
-              <div> <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" style={{ height: '100px' }} /> </div>
+              <div> <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" style={{ width: "8.5rem" }} /> </div>
               <br />
               <br />
               <div> <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" /> </div>
               <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: '1.5rem' }}>
                 <div className="step-header"> <span className="step-number"> 2 </span> <span className="step-label"> Use to rotate the work plane to X-Y Plane, X-Y Plane or Y-Z Plane. </span> </div>
-                <div className="step-description" style={{ paddingLeft: '2.5rem' }}> <div className="flex-row-center"> <div> <img src={openWorkPlaneImg2} alt="Open Work Plane" className="software-screenshot screenshot-small" style={{ height: '100px' }} /> </div> </div> </div>
+                <div className="step-description" style={{ paddingLeft: '2.5rem' }}> <div className="flex-row-center"> <div> <img src={openWorkPlaneImg2} alt="Open Work Plane" className="software-screenshot screenshot-small" style={{ width: '15rem' }} /> </div> </div> </div>
               </div>
             </div>
             <div className="lesson-navigation">

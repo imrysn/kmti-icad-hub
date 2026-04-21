@@ -280,7 +280,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div>
 
-              <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+              <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" style={{ width: '180px', height: 'auto' }} />
 
             </div>
 
@@ -840,7 +840,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
           <div>
 
-            <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '200px', height: 'auto' }} />
+            <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '180px', height: 'auto' }} />
 
           </div>
 
@@ -873,7 +873,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
 
                 </div>
 
@@ -959,7 +959,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
 
                 </div>
 
@@ -969,7 +969,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             <div className={`${getStepClass('b2r-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
 
-              <div className="step-header"> <span className="step-number">
+              <div className="step-header"> <span className="step-number" style={{ marginTop: "-4rem" }}>
                 2 </span> <span className="step-label">Left-click on the entity to be rotate &gt; <strong className="text-highlight">GO</strong>
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
 
@@ -1048,7 +1048,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
 
                 </div>
 
@@ -1419,13 +1419,12 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
           </div>
 
           <p>Tools use to switch between displaying and hiding entities.
-          </p>
-
+          </p> <br />
           <div className="flex-row-center--wrap">
 
             <div>
 
-              <img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" />
+              <img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" style={{ width: '192px', height: 'auto' }} />
 
             </div>
 
@@ -2105,7 +2104,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div>
 
-                  <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ height: '150px' }} />
+                  <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
 
                 </div>
 
