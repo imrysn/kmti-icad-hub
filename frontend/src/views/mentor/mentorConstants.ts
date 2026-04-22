@@ -453,9 +453,9 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     title: 'Orthographic View',
     content: ['Projection', 'Third Angle', 'First Angle', 'Glass Box', 'Top View', 'Front View', 'Side View', 'principal views', 'engineering views', 'orthographic projection'],
     children: [
-      { id: '2d-orthographic-1', title: 'Orthographic View (1)', content: ['third angle standards'] },
-      { id: '2d-orthographic-2', title: 'Orthographic View (2)', content: ['front view definition'] },
-      { id: '2d-orthographic-3', title: 'Orthographic View (3)', content: ['view alignment'] },
+      { id: '2d-orthographic-1', title: 'Drawing Template, Orthographic View, & Scale', content: ['third angle standards'] },
+      { id: '2d-orthographic-2', title: 'Hidden Line and Tangent Line', content: ['front view definition'] },
+      { id: '2d-orthographic-3', title: 'High Precision', content: ['view alignment'] },
     ],
     quiz: {
       title: 'iCAD Orthographic Projection Standards',
@@ -477,7 +477,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-command-menu',
     title: 'Command Menu',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-command-menu-${i + 1}`, title: `Command Menu (${i + 1})` })),
+    children: [
+      { id: '2d-command-menu-1', title: 'Line Properties', content: ['third angle standards'] },
+      { id: '2d-command-menu-2', title: 'Active View', content: ['front view definition'] },
+    ],
     quiz: {
       title: 'iCAD 2D Command Menu Logic',
       description: 'Understanding the 2D drafting interface and core geometric toolsets.',
@@ -500,10 +503,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     title: 'Line Properties',
     content: ['Line Specifications', 'uniform specs', 'line types', 'line weights', 'Changing Colors', 'hidden lines', 'color green', 'Splines', 'partial sections', 'wave', 'curve distance', 'Center Lines', 'manual center line', 'offset value', 'Piping Center Line', 'OF Piping Assembly', 'Hierarchical Representation', 'assembly context', 'attributes', 'Layer'],
     children: [
-      { id: '2d-line-props-1', title: 'Line Properties (1)', content: ['line specifications', 'standard requirements'] },
-      { id: '2d-line-props-2', title: 'Line Properties (2)', content: ['color dialog', 'part selection', 'spline waves'] },
-      { id: '2d-line-props-3', title: 'Line Properties (3)', content: ['center line offset', 'piping assembly'] },
-      { id: '2d-line-props-4', title: 'Line Properties (4)', content: ['hierarchical representation', 'part detailling'] },
+      { id: '2d-line-props-1', title: 'Line Properties', content: ['line specifications', 'standard requirements'] },
+      { id: '2d-line-props-2', title: 'Changing Line Properties & Additional Lines', content: ['color dialog', 'part selection', 'spline waves'] },
+      { id: '2d-line-props-3', title: 'Center Line', content: ['center line offset', 'piping assembly'] },
+      { id: '2d-line-props-4', title: ' Representation of Parts Hierarchically', content: ['hierarchical representation', 'part detailling'] },
     ],
     quiz: {
       title: 'The Alphabet of Lines (JIS Standards)',
@@ -525,7 +528,12 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-dimensioning',
     title: 'Dimensioning',
-    children: Array.from({ length: 5 }, (_, i) => ({ id: `2d-dimensioning-${i + 1}`, title: `Dimensioning (${i + 1})` })),
+    children: [
+      { id: '2d-dimensioning-1', title: 'Adding Dimensions', content: ['dimensioning', 'adding dimensions', 'standard dimensioning', 'series dimesnion'] },
+      { id: '2d-dimensioning-2', title: 'Editing Dimensions', content: ['editing dimension', 'edit dimension characters', 'tolerance', 'chamfer', 'radius'] },
+      { id: '2d-dimensioning-3', title: 'Part Note', content: ['polished material', 'part note', 'S45C-D', 'S45C-CG', 'SS400-D'] },
+      { id: '2d-dimensioning-4', title: ' Change Position', content: ['change position', 'align dimensions', 'change dimension position', 'alignment of dimensions'] },
+    ],
     quiz: {
       title: 'Precision 2D Dimensioning Logic',
       description: 'Rules for accurate manufacturing communication and JIS compliance.',
@@ -546,7 +554,15 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-standard-part',
     title: 'Standard Part',
-    children: Array.from({ length: 7 }, (_, i) => ({ id: `2d-standard-part-${i + 1}`, title: `Standard Part (${i + 1})` })),
+    children: [
+      { id: '2d-standard-part-1', title: 'PCD, Thread, & Standard Parts', content: ['PCD', 'tapered thread(RC)', 'standard parts'] },
+      { id: '2d-standard-part-2', title: 'Oil Groove', content: ['oil groove', 'for flat surface', 'for circular portion', 'oil groove for flat surface', 'oil groove for circular portion'] },
+      { id: '2d-standard-part-3', title: 'Shaft and Key Plate', content: ['shaft and key plate', 'dimesnion of shaft and key plate'] },
+      { id: '2d-standard-part-4', title: 'Collar', content: ['collar', 'tolerance for collar', 'machining tolerance to be used in collar'] },
+      { id: '2d-standard-part-5', title: 'Collar - 2', content: ['collar', 'tolerance for collar', 'machining tolerance to be used in collar'] },
+      { id: '2d-standard-part-6', title: 'Scale & Relief Process', content: ['scale', 'relief process', 'standard scale',] },
+      { id: '2d-standard-part-7', title: 'Relief Process', content: ['relief process', 'four steps to show the detail on the template', 'subdrawing/library', 'load part', 'standard part', 'required template for relief process detail'] },
+    ],
     quiz: {
       title: '2D Standard Parts & Libraries',
       description: 'Understanding symbolic representation and placement of industrial hardware.',
@@ -567,7 +583,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-surface-app',
     title: 'Application of Surface',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-surface-app-${i + 1}`, title: `Application of Surface (${i + 1})` })),
+    children: [
+      { id: '2d-surface-app-1', title: 'Shotblasting', content: ['shotblasting', 'shotblasting for flat surface', 'shotblasting for circular portion'] },
+      { id: '2d-surface-app-2', title: 'Machining', content: ['machining', 'machining for flat surface', 'machining for circular portion'] },
+    ],
     quiz: {
       title: 'Hatching & Surface Logic',
       description: 'Understanding materials representation and sectional views.',
@@ -608,7 +627,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-retaining-ring',
     title: 'Retaining Ring',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-retaining-ring-${i + 1}`, title: `Retaining Ring (${i + 1})` })),
+    children: [
+      { id: '2d-retaining-ring-1', title: 'Retaining Rings-C - External', content: ['dimensioning', 'adding dimensions', 'standard dimensioning', 'series dimesnion'] },
+      { id: '2d-retaining-ring-2', title: 'Retaining Rings-C - Internal', content: ['editing dimension', 'edit dimension characters', 'tolerance', 'chamfer', 'radius'] }
+    ],
     quiz: {
       title: 'Retaining Rings & Groove Standards',
       description: 'Understanding axial retention logic and JIS B 2804/2805 standards.',
@@ -629,7 +651,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-geometric-tol',
     title: 'Geometric Tolerance',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-geometric-tol-${i + 1}`, title: `Geometric Tolerance (${i + 1})` })),
+    children: [
+      { id: '2d-geometric-tol-1', title: 'Geometric Tolerance', content: ['geometric tolerance', 'datum', 'tolerance value', 'tolerance symbol',] },
+      { id: '2d-geometric-tol-2', title: 'Datum', content: ['datum', 'datum feature', 'datum reference frame', 'datum shift'] }
+    ],
     quiz: {
       title: 'iCAD GD&T (Geometric Dimensioning & Tolerancing)',
       description: 'Understanding geometric control beyond linear dimensions according to ISO 1101.',
@@ -771,7 +796,12 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-bom',
     title: 'BOM',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-bom-${i + 1}`, title: `BOM (${i + 1})` })),
+    children: [
+      { id: '2d-bom-1', title: 'Part drawing', content: ['how to create BOM', 'how to create BOM in 2d'] },
+      { id: '2d-bom-2', title: 'Assembly drawing', content: ['how to create assembly drawing', 'how to create assembly drawing in 2d'] },
+      { id: '2d-bom-3', title: 'Additional Information', content: ['additional information', 'parts information setting'] },
+      { id: '2d-bom-4', title: 'Edit Attribute', content: ['edit attribute', 'bill of material after inserting on iCAD data', "how to edit BOM attributes"] }
+    ],
     quiz: {
       title: 'Parts List (BOM) & Inventory Management',
       description: 'Understanding the structured list of all components in an assembly.',
@@ -835,10 +865,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     title: 'Additional View',
     content: ['Auxiliary View', 'Partial View', 'True Shape', 'inclined face', 'Broken-out Section', 'View Break', 'Detail View', 'Section View', 'magnified area', 'Removed Section', 'cutting plane', 'localized details', 'view enlargement'],
     children: [
-      { id: '2d-additional-view-1', title: 'Additional View (1) - Auxiliary & Partial', content: ['inclined surfaces', 'true shape projection'] },
-      { id: '2d-additional-view-2', title: 'Additional View (2) - Break & Section', content: ['broken-out cutouts', 'view shortening'] },
-      { id: '2d-additional-view-3', title: 'Additional View (3) - Detail & Removed', content: ['magnification', 'offset sections'] },
-      { id: '2d-additional-view-4', title: 'Additional View (4) - Trim View', content: ['view trimming', 'detail view restrictions'] },
+      { id: '2d-additional-view-1', title: 'Cross Section View', content: ['inclined surfaces', 'true shape projection'] },
+      { id: '2d-additional-view-2', title: 'Partial Section & Detail Drawing', content: ['broken-out cutouts', 'view shortening'] },
+      { id: '2d-additional-view-3', title: 'Isometric View & Cross-sectional depth', content: ['magnification', 'offset sections'] },
+      { id: '2d-additional-view-4', title: 'Trim', content: ['view trimming', 'detail view restrictions'] },
     ],
     quiz: {
       title: 'Auxiliary & Additional Views',
@@ -862,8 +892,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     title: 'Operate View',
     content: ['Operate View', 'Operation Drawing', 'manufacturing steps', 'setup dimensions', 'stock outline', 'in-process inspection', 'machining datums', 'process sequence', 'factory station guidance'],
     children: [
-      { id: '2d-operal-view-1', title: 'Operate View (1)', content: ['setup dimensions', 'stock visualization'] },
-      { id: '2d-operal-view-2', title: 'Operate View (2)', content: ['process sequences', 'quality control'] },
+      { id: '2d-operal-view-1', title: 'Move, Isometric, and Orthographic view', content: ['move', 'isometric view', 'orthographic view'] },
+      { id: '2d-operal-view-2', title: 'Delete View', content: ['delete view', 'delete view in 2d'] },
     ],
     quiz: {
       title: 'Manufacturing Operation Views',
@@ -885,7 +915,10 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-normal-mirror',
     title: 'Normal/Mirror Parts',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-normal-mirror-${i + 1}`, title: `Normal/Mirror Parts (${i + 1})` })),
+    children: [
+      { id: '2d-normal-mirror-1', title: 'Normal & Mirror Parts', content: ['normal parts', 'mirror parts', 'rule on how to detail a mirror parts'] },
+      { id: '2d-normal-mirror-2', title: 'Mirror command on detailing', content: ['mirror command', 'mirror parts', 'rule on how to detail a mirror parts'] }
+    ],
     quiz: {
       title: 'Symmetry in 2D Layouts',
       description: 'Managing LH/RH parts in documentation.',
