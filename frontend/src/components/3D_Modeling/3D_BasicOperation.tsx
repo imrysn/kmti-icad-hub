@@ -304,7 +304,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Cylinder</strong> from the icon menu.</span>
@@ -323,29 +323,27 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5rem", marginBottom: "-2rem" }}>
 
-              <div className="step-header"> <span className="step-number">
+              <div className="step-header" > <span className="step-number">
                 2 </span> <span className="step-label">On the bottom left corner, the <strong className="text-highlight">item entry</strong> can be located.</span>
 
               </div>
 
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+              <div className="step-description" style={{ marginInline: "-0.2rem", marginTop: "-1.5rem" }}/* sanitized: paddingLeft: '2.5rem' */>
 
                 <div style={{ width: '950px', height: '' }}>
 
                   <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot screenshot-wide" style={{ width: '850px', height: 'auto' }} />
 
                 </div>
-
-                <p className="text-caption">Specify the diameter and heigth of cylinder on the item entry.
-                </p>
+                <span style={{ marginBottom: "0.8rem" }}>Specify the diameter and height of cylinder on the item entry.</span>
 
               </div>
 
             </div>
 
-            <div className={`${getStepClass('b1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-2rem", marginBottom: "-1rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
@@ -396,7 +394,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b1b-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1b-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Box</strong> from the icon menu.</span>
@@ -415,7 +413,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1b-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1b-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5rem", marginBottom: "-2rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Specify the <strong className="text-highlight">depth, width and height</strong> of the box on the item entry.</span>
@@ -434,9 +432,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1b-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1b-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-3.2rem", marginBottom: "-0.4rem" }}>
 
-              <div className="step-header"> <span className="step-number">
+              <div className="step-header"> <span className="step-number" >
                 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
 
               </div>
@@ -485,7 +483,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b1p-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1p-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Polygonal Prism</strong> from the icon menu.</span>
@@ -504,7 +502,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1p-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1p-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.</span>
@@ -523,7 +521,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1p-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1p-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
@@ -574,7 +572,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b1c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Cone</strong> from the icon menu.</span>
@@ -593,7 +591,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry.</span>
@@ -612,7 +610,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">On the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
@@ -663,7 +661,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b1t-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            {/* <div className={`${getStepClass('b1t-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}  > */}
+            <div className={`${getStepClass('b1t-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Torus</strong> from the icon menu.</span>
@@ -682,7 +681,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1t-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1t-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Specify the section diameter, path radius, and turn angle.</span>
@@ -701,7 +700,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b1t-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b1t-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
@@ -862,7 +861,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b2m-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2m-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Move</strong> from the icon menu.</span>
@@ -881,9 +880,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2m-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2m-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
-              <div className="step-header"> <span className="step-number">
+              <div className="step-header" style={{ marginInline: "-0.2rem", marginBottom: "-0.4rem" }}> <span className="step-number">
                 2 </span> <span className="step-label">Left-click on the entity to be move &gt; <strong className="text-highlight">GO</strong>
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
 
@@ -894,9 +893,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2m-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2m-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.9rem", marginBottom: "-0.9rem" }}>
 
-              <div className="step-header"> <span className="step-number">
+              <div className="step-header" style={{ marginInline: "-0.2rem", marginBottom: "-0.9rem" }}> <span className="step-number">
                 3 </span> <span className="step-label">Specify the movement distance on the <strong className="text-highlight">X, Y, and Z-axis</strong> on the item entry. Press Enter.</span>
 
               </div>
@@ -948,7 +947,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b2r-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2r-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Rotate</strong> from the icon menu.</span>
@@ -967,9 +966,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2r-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2r-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.6rem", marginBottom: "-0.4rem" }}>
 
-              <div className="step-header"> <span className="step-number" style={{ marginTop: "-4rem" }}>
+              <div className="step-header"> <span className="step-number" >
                 2 </span> <span className="step-label">Left-click on the entity to be rotate &gt; <strong className="text-highlight">GO</strong>
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
 
@@ -980,7 +979,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-6rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">Select 2-points to set the axis of rotation.</span>
@@ -999,7 +998,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2r-4')} ${currentIndex === 3 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2r-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 4 </span> <span className="step-label">Specify the desired angle of rotation on the item entry &gt; Press Enter</span>
@@ -1037,7 +1036,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b2mir-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2mir-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Mirror</strong> from the icon menu.</span>
@@ -1056,7 +1055,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2mir-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2mir-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Left-click on the entity to be mirror &gt; <strong className="text-highlight">GO</strong>
@@ -1069,7 +1068,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2mir-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2mir-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-6rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
@@ -1110,7 +1109,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b2c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Copy</strong> from the icon menu.</span>
@@ -1129,7 +1128,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Left-click on the entity to be copy &gt; <strong className="text-highlight">GO</strong>
@@ -1142,14 +1141,14 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b2c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">Specify the distance on the <strong className="text-highlight">X, Y and Z-axis</strong> and the <strong className="text-highlight">number of copies</strong> needed &gt; Press Enter.</span>
 
               </div>
 
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
+              <div className="step-description"  /* sanitized: paddingLeft: '2.5rem' */>
 
                 <div className="flex-row-center--wrap">
                   <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: '100px' }} />
@@ -1189,7 +1188,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b2rc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2rc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Same as rotate tool but makes a rotated duplicate of the entity.</span>
@@ -1240,7 +1239,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b2mc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2mc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Same as mirror tool but makes a mirror duplicate of the entity.</span>
@@ -1291,14 +1290,14 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={`${getStepClass('b2d-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b2d-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Delete</strong> from the icon menu.</span>
 
               </div>
 
-              <div className={`${getStepClass('b2d-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`${getStepClass('b2d-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem", marginBottom: "-0.9rem" }}>
 
                 <div className="step-header"> <span className="step-number">
                   2 </span> <span className="step-label">Left-click on the entity to delete.</span>
@@ -1437,7 +1436,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
         {/* SKETCH / EXTRUDE / REVOLVE */}
         {activeTab === 'sketchExtrude' && (
 
-          <div className="lesson-card tab-content">
+          <div className="lesson-card tab-content" >
 
             <div
               className="card-header">
@@ -1447,13 +1446,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div>
+            <div style={{ marginTop: "-3rem" }} >
 
               <img src={sketch1} alt="Sketch Overview" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
 
             </div>
 
-            <div className={`${getStepClass('b3s-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b3s-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.</span>
@@ -1488,13 +1487,12 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className="card-header card-sub-header"><h4>EXTRUDE/REVOLVE</h4>
+            <div className="card-header card-sub-header" ><h4>EXTRUDE/REVOLVE</h4>
             </div>
+            <span style={{ marginTop: "-3rem" }}>Tool use to create solids from sketch in the 3D space</span>
 
-            <p > Tools use to create solids from sketch in the 3D space.
-            </p>
 
-            <div className="instruction-step">
+            <div className="instruction-step" style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
 
               <div>
 
@@ -1514,7 +1512,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                   <div className="card-header card-sub-header"><h4>EXTRUDE</h4>
                   </div>
 
-                  <div className={`${getStepClass('b3e-1')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass('b3e-1')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
 
                     <div className="step-header"> <span className="step-number">
                       1 </span> <span className="step-label">Select Extrude from the icon menu.</span>
@@ -1533,7 +1531,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                         </div>
                         <br />
                         <br />
-                        <div>
+                        <div style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
                           <br />
                           <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
                           <span style={{ fontSize: '1.5rem', marginLeft: "0rem" }}>EXTRUSION (BOTH SIDE):</span>
@@ -1547,7 +1545,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   </div>
 
-                  <div className={`${getStepClass('b3e-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass('b3e-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-1rem", marginBottom: "-0.9rem" }}>
 
                     <div className="step-header"> <span className="step-number">
                       2 </span> <span className="step-label">Select the perimeter of the sketch to be extrude &gt; GO</span>
@@ -1556,14 +1554,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                     <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                      <p className="p-flush">* A hatch will appear indicating the specified area to be extruded.
-                      </p>
+                      <span> * A hatch will appear indicating the specified area to be extruded.</span>
 
                     </div>
 
                   </div>
 
-                  <div className={`${getStepClass('b3e-3')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass('b3e-3')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-2rem", marginBottom: "-0.9rem" }}>
 
                     <div className="step-header"> <span className="step-number">
                       3 </span> <span className="step-label">Specify the height of extrusion. Can also be set on the item entry.</span>
@@ -1572,7 +1569,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   </div>
 
-                  <div className={`${getStepClass('b3e-4')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass('b3e-4')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-2.5rem", marginBottom: "-0.9rem" }}>
 
                     <div className="step-header"> <span className="step-number">
                       4 </span> <span className="step-label">Press <strong className="text-highlight">ENTER</strong>.</span>
@@ -1608,7 +1605,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 <div className="flex-1">
 
-                  <div className={`${getStepClass('b3r-1')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass('b3r-1')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-2.5rem", marginBottom: "-0.9rem" }} >
 
                     <div className="step-header"> <span className="step-number">
                       1 </span> <span className="step-label">Select <strong className="text-highlight">Revolve</strong> from the icon menu.</span>
@@ -1627,7 +1624,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   </div>
 
-                  <div className={`${getStepClass('b3r-2')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass('b3r-2')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-2rem", marginBottom: "-0.9rem" }}>
 
                     <div className="step-header"> <span className="step-number">
                       2 </span> <span className="step-label">Select the perimeter of the sketch to be revolve &gt; GO</span>
@@ -1640,7 +1637,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                   </div>
 
-                  <div className={`${getStepClass('b3r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass('b3r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4rem", marginBottom: "-0.9rem" }}>
 
                     <div className="step-header"> <span className="step-number">
                       3 </span> <span className="step-label">Select the axis of rotation (pick points or edge) &gt; GO</span>
@@ -1648,9 +1645,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                     </div>
 
                     <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                      <p className="p-flush">A hatch will appear indicating the specified area to be revolve.
-                      </p>
+                      <span>A hatch will appear indicating the specified area to be revolve</span>
 
                     </div>
 
@@ -1691,7 +1686,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={getStepClass('b3sh-1')}>
+            <div className={getStepClass('b3sh-1')} style={{ marginInline: "-0.2rem", marginTop: "-5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Show/Hide</strong> from the icon menu.</span>
@@ -1710,7 +1705,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={getStepClass('b3sh-2')}>
+            <div className={getStepClass('b3sh-2')} style={{ marginInline: "-0.2rem", marginTop: "-4rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Select the entities for showing/hiding &gt; GO</span>
@@ -1720,7 +1715,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               <div className="card-header"><h4>SHOW/HIDE DRAFTING ENTITY</h4>
 
               </div>
-              <div className={getStepClass('b3sh13')}>
+              <div className={getStepClass('b3sh13')} style={{ marginInline: "-0.2rem", marginTop: "-3.9rem", marginBottom: "-0.9rem" }}>
 
                 <div className="step-header"> <span className="step-number">
                   1 </span> <span className="step-label">Select <strong className="text-highlight">Show/Hide Drafting Entity</strong> from the icon menu.</span>
@@ -1734,16 +1729,14 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
                 </div>
 
               </div>
-              <div className={getStepClass('b3sh12')}>
+              <div className={getStepClass('b3sh12')} style={{ marginInline: "-0.2rem", marginTop: "-2rem", marginBottom: "-0.9rem" }}>
 
                 <div className="step-header"> <span className="step-number">
                   2 </span> <span className="step-label">Right-click to show/hide all drafting entities.</span>
 
                 </div>
 
-                <p className="text-caption">Drafting Entities includes:
-                </p>
-
+                <span>Drafting Entities includes:</span>
                 <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
                   <div>
@@ -1756,20 +1749,16 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
               </div>
 
-              <div className="card-header"><h4>HIDE UNSELECTED ENTITY</h4>
+              <div className="card-header" style={{ marginTop: "-0.5rem" }}><h4>HIDE UNSELECTED ENTITY</h4>
 
               </div>
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
-                <div className="flex-row">
+                <div className="flex-row" style={{ marginTop: "-2rem" }}>
 
                   <div className="flex-1">
 
-                    <div className="image-wrapper-">
-
-
-                    </div>
                     <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" style={{ width: '280px', height: 'auto' }} />
                     <br />
                     <p className="step-label"> 1. Select Hide Unselected Entity From the icon menu.</p>
@@ -1809,7 +1798,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
         {/* STRETCH */}
         {activeTab === 'stretch' && (
 
-          <div className="lesson-card tab-content">
+          <div className="lesson-card tab-content" >
 
             <div
               className="card-header">
@@ -1819,7 +1808,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={getStepClass('b3st-1')}>
+            <div className={getStepClass('b3st-1')} style={{ marginInline: "-0.2rem", marginTop: "-5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Stretch</strong> from the menu.</span>
@@ -1838,7 +1827,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={getStepClass('b3st-2')}>
+            <div className={getStepClass('b3st-2')} style={{ marginInline: "-0.2rem", marginTop: "-4rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Select the face to be stretch &gt; <strong className="text-highlight">GO</strong>
@@ -1853,15 +1842,14 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={getStepClass('b3st-3')}>
+            <div className={getStepClass('b3st-3')} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} S>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">Specify the desired length of the solid entity on the item entry.</span>
 
               </div>
 
-              <p className="text-caption">Also works for circular surfaces.
-              </p>
+              <span>Also works for circular surfaces.</span>
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
@@ -1875,8 +1863,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                     </div>
                     <br />
-                    <br />
-                    <br />
+
                   </div>
 
                 </div>
@@ -1894,21 +1881,21 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
             <div className="section-divider">
             </div>
 
-            <div className="tool-block"> <h4 className=""></h4>
+            <div className="tool-block" style={{ marginInline: "-0.2rem", marginTop: "-4rem", marginBottom: "-0.9rem" }}>
 
               <div className="tool-block" style={{ display: 'flex', alignItems: 'center' }}>
-                <h4 className="section-title" style={{ marginRight: '16px' }}>Or</h4>
+                <h4 className="section-title" style={{ marginRight: '10px', marginBottom: "-7.5rem", marginTop: "-2rem" }}>Or</h4>
                 {/* The rest of your content (the vertical line/input) goes here */}
 
               </div>
-              <div className="instruction-step">
+              <div className="instruction-step" style={{ marginInline: "-0.2rem", marginTop: "-2rem", marginBottom: "-0.9rem" }}>
 
                 <div className="step-header"> <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /> &gt; Left-click on the 3D Space.</span>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', verticalAlign: 'middle', margin: '0 4px' }} /> &gt; Left-click on the 3D Space.</span>
 
                 </div>
 
-                <div className="step-header"> <span className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
+                <div className="step-header" style={{ marginInline: "-0.2rem", marginTop: "-1.5rem", marginBottom: "-0.9rem" }}> <span className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
 
                 </div>
 
@@ -1941,7 +1928,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
               />
             </div>
 
-            <div className={getStepClass('b3rez-1')}>
+            <div className={getStepClass('b3rez-1')} style={{ marginInline: "-0.2rem", marginTop: "-5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 1 </span> <span className="step-label">Select <strong className="text-highlight">Resize</strong> from the menu.</span>
@@ -1960,7 +1947,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={getStepClass('b3rez-2')}>
+            <div className={getStepClass('b3rez-2')} style={{ marginInline: "-0.2rem", marginTop: "-3.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">Select the entity for resizing &gt; <strong className="text-highlight">GO</strong>
@@ -1974,15 +1961,15 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={getStepClass('b3rez-3')}>
+            <div className={getStepClass('b3rez-3')} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">Using resize allows the user to scale up or scale down the size of the solid entity.</span>
 
               </div>
 
-              <p className="text-caption">Specify the scale on the item entry &gt; Left-click on the 3D Space
-              </p>
+
+              <span>Specify the scale on the item entry &gt; Left-click on the 3D Space</span>
 
               <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
 
@@ -2112,7 +2099,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b4ss-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b4ss-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 2 </span> <span className="step-label">The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK</span>
@@ -2131,7 +2118,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={`${getStepClass('b4ss-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`${getStepClass('b4ss-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-4.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">in the Key Entry Area, enter the coordinates for the position (origin point)</span>
