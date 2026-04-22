@@ -6,10 +6,6 @@ import { useTTS } from "../../hooks/useTTS";
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Heat Treatment */
 
-import heatTreatmentImg1 from "../../assets/2D_Image_File/2D_heat_treatment_(1).jpg";
-
-import heatTreatmentImg2 from "../../assets/2D_Image_File/2D_heat_treatment_(2).jpg";
-
 import heatTreatmentProcessImg2 from "../../assets/2D_Image_File/2D_heat_treatment_(2)_heat_treatment_process.jpg";
 
 import heatTreatmentProcessImg3 from "../../assets/2D_Image_File/2D_heat_treatment_(3)_heat_treatment_process.png";
@@ -111,8 +107,279 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
             {" "}
             {subLessonId === "2d-heat-treatment-1" ? (
               <div className="lesson-section">
-                <div>
-                  <img src={heatTreatmentImg1} alt="Heat Treatment Material and Specification Table" className="software-screenshot screenshot-wide" />
+                <div className="lesson-table-container">
+                  <table className="lesson-table">
+                    <thead>
+                      <tr>
+                        <th>Material</th>
+                        <th>English (JIS)</th>
+                        <th>Japanese (KEM, Style)</th>
+                        <th>Rev</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* S35C, S45C */}
+                      <tr>
+                        <td rowSpan={8}>S35C, S45C</td>
+                        <td>Thermal refining to 35~40 HS</td>
+                        <td>素材調質施工 硬度HS35〜40</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>After rough machining thermal refining to 35~40 HS</td>
+                        <td>荒削後調質施工 硬度HS35〜40</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>Through hardening to 55~60 HS (Thru)</td>
+                        <td>ズブ焼入れ施工 硬度HS55〜60 (無心焼入れ、心部焼入れ)</td>
+                        <td className="text-center">Rev1,2</td>
+                      </tr>
+                      <tr>
+                        <td>Induction hardening to 60~65 HS</td>
+                        <td>高周波焼入れ施工 硬度HS60〜65</td>
+                        <td className="text-center">Rev3</td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV500 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV500 UP</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Ion nitriding to HV400 UP</td>
+                        <td>イオンナイト施工 硬度HV400 UP</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Parsonite construction to HV400 UP</td>
+                        <td>パルソナイト施工 硬度HV400 UP</td>
+                        <td className="text-center">Rev6</td>
+                      </tr>
+                      <tr>
+                        <td>part(Upper and lower) Laser Hardening Hardness HRC50up (S45C-D)</td>
+                        <td>部(上下両面) レーザー焼入れ施工 硬度HRC50up</td>
+                        <td></td>
+                      </tr>
+
+                      {/* S50C, S55C */}
+                      <tr>
+                        <td rowSpan={5}>S50C, S55C</td>
+                        <td>Thermal refining to 35~40 HS</td>
+                        <td>素材調質施工 硬度HS35〜40</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>After rough machining thermal refining to 35~40 HS</td>
+                        <td>荒削後調質施工 硬度HS35〜40</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>Through hardening to 60~70 HS (Thru)</td>
+                        <td>ズブ焼入れ施工 硬度HS60~70 (無心焼入れ、心部焼入れ)</td>
+                        <td className="text-center">Rev10</td>
+                      </tr>
+                      <tr>
+                        <td>Induction hardening to 70~75 HS</td>
+                        <td>高周波焼入れ施工 硬度HS70〜75</td>
+                        <td className="text-center">Rev10</td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV500 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV500 UP</td>
+                        <td></td>
+                      </tr>
+
+                      {/* SCM435 */}
+                      <tr>
+                        <td rowSpan={5}>SCM435</td>
+                        <td>Thermal refining to 42~48 HS</td>
+                        <td>素材調質施工 硬度HS42〜48</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>After rough machining thermal refining to 42~48 HS</td>
+                        <td>荒削後調質施工 硬度HS42〜48</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV600 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV600 UP</td>
+                        <td className="text-center">Rev9</td>
+                      </tr>
+                      <tr>
+                        <td>Parsonite construction to HV500 UP</td>
+                        <td>パルソナイト施工 硬度HV500 UP</td>
+                        <td className="text-center">Rev9</td>
+                      </tr>
+                      <tr>
+                        <td>Ion nitriding to HV700 UP</td>
+                        <td>イオンナイト施工 硬度HV700 UP</td>
+                        <td></td>
+                      </tr>
+
+                      {/* SCM440 */}
+                      <tr>
+                        <td rowSpan={5}>SCM440</td>
+                        <td>Thermal refining to 42~48 HS</td>
+                        <td>素材調質施工 硬度HS42〜48</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>After rough machining thermal refining to 42~48 HS</td>
+                        <td>荒削後調質施工 硬度HS42〜48</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV600 UP (Tufttride®, isonite)</td>
+                        <td>高周波焼入れ施工 硬度HS70~75</td>
+                        <td className="text-center">Rev9</td>
+                      </tr>
+                      <tr>
+                        <td>Parsonite construction to HV500 UP</td>
+                        <td>イソナイト施工 硬度HV600 UP</td>
+                        <td className="text-center">Rev9</td>
+                      </tr>
+                      <tr>
+                        <td>Ion nitriding to HV700 UP</td>
+                        <td>イオンナイト施工 硬度HV700 UP</td>
+                        <td></td>
+                      </tr>
+
+                      {/* SKD11 */}
+                      <tr>
+                        <td rowSpan={3}>SKD11</td>
+                        <td>Through hardening to 80~83 HS (Thru)</td>
+                        <td>ズブ焼入れ施工 硬度HS80~83 (無心焼入れ、心部焼入れ)</td>
+                        <td className="text-center">Rev2</td>
+                      </tr>
+                      <tr>
+                        <td>Vacuum hardening to 80~83 HS</td>
+                        <td>真空焼入れ施工 硬度HS80~83</td>
+                        <td className="text-center">Rev2</td>
+                      </tr>
+                      <tr>
+                        <td>Vacuum hardening to 78±2 HS (for SW BLADE)</td>
+                        <td>真空焼入れ施工 硬度HS78±2 (対象SW 刃物)</td>
+                        <td className="text-center">Rev9</td>
+                      </tr>
+
+                      {/* SKH51 */}
+                      <tr>
+                        <td>SKH51</td>
+                        <td>Through hardening to 80~83 HS</td>
+                        <td>ズブ焼入れ施工 硬度HS80~83</td>
+                        <td></td>
+                      </tr>
+
+                      {/* SNC631 */}
+                      <tr>
+                        <td rowSpan={4}>SNC631</td>
+                        <td>Thermal refining to 38~44 HS</td>
+                        <td>素材調質施工 硬度HS38〜44</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>After rough machining thermal refining to 38~44 HS</td>
+                        <td>荒削後調質施工 硬度HS38〜44</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>Induction hardening to 68~75 HS</td>
+                        <td>高周波焼入れ施工 硬度HS68〜75</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV600 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV600 UP</td>
+                        <td></td>
+                      </tr>
+
+                      {/* SNC631 repeated or another same entry in image */}
+                      <tr>
+                        <td rowSpan={3}>SNC631</td>
+                        <td>Thermal refining to 44~50 HS</td>
+                        <td>素材調質施工 硬度HS44〜50</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>After rough machining thermal refining to 35~40 HS</td>
+                        <td>荒削後調質施工 硬度HS44〜50</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV600 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV600 UP</td>
+                        <td></td>
+                      </tr>
+
+                      {/* SNCM447 */}
+                      <tr>
+                        <td rowSpan={4}>SNCM447</td>
+                        <td>Thermal refining to 44~50 HS</td>
+                        <td>素材調質施工 硬度HS44〜50</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>After rough machining thermal refining to 35~40 HS</td>
+                        <td>荒削後調質施工 硬度HS44〜50</td>
+                        <td className="text-center">Rev11</td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV600 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV600 UP</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Induction hardening to 70~85 HS</td>
+                        <td>高周波焼入れ施工 硬度HS70〜85</td>
+                        <td></td>
+                      </tr>
+
+                      {/* FCD500 */}
+                      <tr>
+                        <td>FCD500</td>
+                        <td>Salt-bath nitrocarburizing to HV500 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV500 UP</td>
+                        <td></td>
+                      </tr>
+
+                      {/* SS400 */}
+                      <tr>
+                        <td rowSpan={3}>SS400</td>
+                        <td>Salt-bath nitrocarburizing to HV400 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV400 UP</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Ion nitriding to HV400 UP</td>
+                        <td>イオンナイト施工 硬度HV400 UP</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Parsonite construction to HV300 UP</td>
+                        <td>パルソナイト施工 硬度HV300 UP</td>
+                        <td className="text-center">Rev6</td>
+                      </tr>
+
+                      {/* STKM13A */}
+                      <tr>
+                        <td rowSpan={3}>STKM13A</td>
+                        <td>Thermal refining to 35~40 HS</td>
+                        <td>素材調質施工 硬度HS35〜40</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Induction hardening to 60~65 HS</td>
+                        <td>高周波焼入れ施工 硬度HS60〜65</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Salt-bath nitrocarburizing to HV500 UP (Tufttride®, isonite)</td>
+                        <td>イソナイト施工 硬度HV500 UP</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             ) : subLessonId === "2d-heat-treatment-2" ? (
@@ -120,10 +387,92 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 {" "}
                 {/* Part 2 - Material Table Continuation */}
                 <div className="lesson-section" style={{ marginBottom: "1rem" }}>
-                  <div>
-                    <img src={heatTreatmentImg2} alt="Heat Treatment Material and Specification Table Continued" className="software-screenshot screenshot-wide" />
+                  <div className="lesson-table-container">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Material</th>
+                          <th>English (JIS)</th>
+                          <th>Japanese (KEM, Style)</th>
+                          <th>Rev</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* SUJ2 */}
+                        <tr>
+                          <td rowSpan={3}>SUJ2</td>
+                          <td>Thermal refining to 35~45 HS</td>
+                          <td>素材調質施工 硬度HS35〜45</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Through hardening to 75~80 HS (Thru)</td>
+                          <td>ズブ焼入れ施工 硬度HS75〜80 (無心焼入れ、心部焼入れ)</td>
+                          <td className="text-center">Rev9</td>
+                        </tr>
+                        <tr>
+                          <td>Induction hardening to 75~80 HS</td>
+                          <td>高周波焼入れ施工 硬度HS75〜80</td>
+                          <td className="text-center">Rev2,4</td>
+                        </tr>
+
+                        {/* SUS304 */}
+                        <tr>
+                          <td>SUS304</td>
+                          <td>Ion nitriding to HV1000 UP</td>
+                          <td>イオンナイト施工 硬度HV1000 UP</td>
+                          <td className="text-center">Rev6</td>
+                        </tr>
+
+                        {/* Material for Gear Cutting */}
+                        <tr>
+                          <td rowSpan={2}>Material for Gear Cutting</td>
+                          <td>Thermal refining to 35~38 HS</td>
+                          <td>素材調質施工 硬度HS35〜38</td>
+                          <td className="text-center">Rev11</td>
+                        </tr>
+                        <tr>
+                          <td>After rough machining thermal refining to 35~38 HS</td>
+                          <td>荒削後調質施工 硬度HS35〜38</td>
+                          <td></td>
+                        </tr>
+
+                        {/* Heat treatment without specific material */}
+                        <tr>
+                          <td rowSpan={6}>Heat treatment without specific material</td>
+                          <td>Annealing</td>
+                          <td>焼鈍施工</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>After rough machining Annealing</td>
+                          <td>荒削後焼鈍施工</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Annealing and shot blasting</td>
+                          <td>焼鈍ショットブラスト施工</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Sulphonitriding to HV500 UP</td>
+                          <td>浸硫窒化 硬度HV500 UP</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Manganese phosphate film processing construction</td>
+                          <td>リン酸マンガン被膜処理</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Normalizing</td>
+                          <td>焼戻し温度 600℃以上のこと</td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                </div>{" "}
+                </div>
                 {/* Rev Notes Section */}
                 <div className="lesson-section">
                   <div className="flex-col" style={{ gap: "0.8rem" }}>

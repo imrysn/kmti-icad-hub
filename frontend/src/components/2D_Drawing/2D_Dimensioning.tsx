@@ -368,15 +368,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 </div>
               </div>
 
-              <div className="info-box" style={{
-                position: "absolute",
-                top: "76rem",
-                right: "2rem",
-                width: "340px",
-                margin: "0",
-                zIndex: "10",
-                boxShadow: "var(--shadow-lg)"
-              }}>
+              <div className="info-box" style={{ marginTop: "2rem" }}>
                 <p className="p-flush red-text"><strong>NOTE:</strong></p>  <p>Either of these commands can be use to align
                   dimensions.</p>
               </div>
