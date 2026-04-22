@@ -1,10 +1,9 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-# Load environment variables from the backend directory
-_env_path = Path(__file__).resolve().parent / ".env"
-load_dotenv(dotenv_path=_env_path)
+# Load environment variables from the project root
+load_dotenv(find_dotenv())
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
