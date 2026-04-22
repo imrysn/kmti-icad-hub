@@ -260,11 +260,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'origin': () => <div className="origin-lesson-container"><OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} /></div>,
                   'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
+                  'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
