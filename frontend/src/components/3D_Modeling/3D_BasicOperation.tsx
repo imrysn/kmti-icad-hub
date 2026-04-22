@@ -1895,7 +1895,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
                 </div>
 
-                <div className="step-header" style={{ marginInline: "-0.2rem", marginTop: "-1.5rem", marginBottom: "-0.9rem" }}> <span className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
+                <div className="step-header" style={{ marginInline: "-0.2rem", marginTop: "-1.5rem", marginBottom: "-1rem" }}> <span className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
 
                 </div>
 
