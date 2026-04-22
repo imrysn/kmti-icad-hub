@@ -141,31 +141,32 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 </div>
 
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
-                  <div className="step-header">
-                    <span className="step-number">2</span>
+                  <div className="step-header" style={{ marginTop: "-2.5rem" }}>
+                    <span className="step-number" style={{ padding: "1rem" }}>2</span>
                     <span className="step-label">Right-click to show the current location of the origin.</span>
                   </div>
                 </div>
 
                 <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
-                  <div className="step-header">
-                    <span className="step-number">3</span>
+                  <div className="step-header" style={{ marginTop: "-2.5rem" }}>
+                    <span className="step-number" style={{ padding: "0.5rem" }}>3</span>
                     <span className="step-label">Left-click on the desired new location point.</span>
                   </div>
                 </div>
 
                 <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} style={{ paddingTop: "0.1rem" }}>
-                  <div className="step-header">
-                    <span className="step-number">4</span>
+                  <div className="step-header" style={{ marginTop: "-2rem" }}>
+                    <span className="step-number" style={{ padding: "0.5rem" }}>4</span>
                     <span className="step-label">Left-click on a 2nd point to set the X-axis.</span>
                   </div>
                 </div>
 
                 <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`}>
-                  <div className="step-header">
-                    <span className="step-number">5</span>
+                  <div className="step-header" style={{ marginTop: "-2.5rem" }}>
+                    <span className="step-number" style={{ padding: "0.5rem" }}>5</span>
                     <span className="step-label">Left-click on a 3rd point to set the Y-axis. The XY-plane becomes the front view.</span>
                   </div>
+
                   <div>
                     <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-large" />
                   </div>
