@@ -6,11 +6,7 @@ import { useTTS } from "../../hooks/useTTS";
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Heat Treatment */
 
-import heatTreatmentProcessImg2 from "../../assets/2D_Image_File/2D_heat_treatment_(2)_heat_treatment_process.jpg";
 
-import heatTreatmentProcessImg3 from "../../assets/2D_Image_File/2D_heat_treatment_(3)_heat_treatment_process.png";
-
-import heatTreatmentProcessImg4 from "../../assets/2D_Image_File/2D_heat_treatment_(4)_heat_treatment_process.jpg";
 
 interface HeatTreatmentLessonProps {
   nextLabel?: string;
@@ -516,8 +512,65 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 <div className="lesson-section">
                   {" "}
                   <h4 style={{ marginTop: "2rem", marginBottom: "1rem" }}> Heat Treatment Process </h4>
-                  <div>
-                    <img src={heatTreatmentProcessImg2} alt="Heat Treatment Process Table" className="software-screenshot screenshot-wide" />
+                  <div className="lesson-table-container">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Kind of Process</th>
+                          <th>Indication of Drawing</th>
+                          <th>Applicable Material</th>
+                          <th>Applicable Hardness</th>
+                          <th>Purpose</th>
+                          <th>Characteristics</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Through Hardening */}
+                        <tr>
+                          <td rowSpan={4}>Through Hardening</td>
+                          <td rowSpan={4}>ズブ焼入れ施工 硬度HS-</td>
+                          <td>S45C</td>
+                          <td>HS55〜60</td>
+                          <td rowSpan={4}>Cutting Tools, Roller, Spacer, etc.</td>
+                          <td rowSpan={4}>
+                            <strong>ADVANTAGE:</strong><br/>
+                            • Good for Anti-Friction.<br/>
+                            • Good for Anti-Fatigue.<br/>
+                            • Cost is Cheaper, because its process is simple.<br/><br/>
+                            <strong>RECOMMEND:</strong><br/>
+                            • To achieve more accuracy it will be needed additional process such as polishing, buffing, grinding or etc.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>SKD11</td>
+                          <td>HS80〜83</td>
+                        </tr>
+                        <tr>
+                          <td>SKH51</td>
+                          <td>HS80〜83</td>
+                        </tr>
+                        <tr>
+                          <td>etc.</td>
+                          <td></td>
+                        </tr>
+
+                        {/* Vacuum Hardening */}
+                        <tr>
+                          <td>Vacuum Hardening</td>
+                          <td>真空焼入れ施工 硬度HS-</td>
+                          <td>SKD11</td>
+                          <td>HS80〜83</td>
+                          <td>Roller, Plug Head (DF Machine)</td>
+                          <td>
+                            <strong>ADVANTAGE:</strong><br/>
+                            • Good for Anti-Friction.<br/>
+                            • Good for Anti-Fatigue.<br/>
+                            • After hardening, less deformation will produce.<br/><br/>
+                            • No oxidation left after hardening, additional process will not be needed.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -526,8 +579,121 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 <div className="lesson-section">
                   {" "}
                   <h4 style={{ marginBottom: "1rem" }}> Heat Treatment Process (Continued) </h4>
-                  <div>
-                    <img src={heatTreatmentProcessImg3} alt="Heat Treatment Process Table Continued" className="software-screenshot screenshot-wide" />
+                  <div className="lesson-table-container">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Kind of Process</th>
+                          <th>Indication of Drawing</th>
+                          <th>Applicable Material</th>
+                          <th>Applicable Hardness</th>
+                          <th>Purpose</th>
+                          <th>Characteristics</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Thermal Refining */}
+                        <tr>
+                          <td rowSpan={5}>Thermal Refining</td>
+                          <td rowSpan={5}>
+                            素材調質施工 程度HS-<br/><br/>
+                            素材調質施工 程度HS-
+                          </td>
+                          <td>S45C</td>
+                          <td rowSpan={5}>
+                            All material - HS35〜40<br/>
+                            (Except for Roller shaft it is need to increase the temperature up to HS44〜50)
+                          </td>
+                          <td rowSpan={5}>Shaft, Roller, Gear, Collar, etc.</td>
+                          <td rowSpan={5}>
+                            <strong>ADVANTAGE:</strong><br/>
+                            • It stabilize the composition of material.<br/>
+                            • It reduces the deformation after hardening.<br/><br/>
+                            <strong>RECOMMEND:</strong><br/>
+                            • Thermal refining is applicable to other heat treatment, except those two-Through Hardening and Vacuum Hardening.
+                          </td>
+                        </tr>
+                        <tr><td>STKM16A</td></tr>
+                        <tr><td>SNC631</td></tr>
+                        <tr><td>SNCM447</td></tr>
+                        <tr><td>SUJ2, etc.</td></tr>
+
+                        {/* Annealing */}
+                        <tr>
+                          <td rowSpan={2}>Annealing</td>
+                          <td>焼鈍施工</td>
+                          <td rowSpan={2}>SS400, SC420, etc.</td>
+                          <td rowSpan={2}></td>
+                          <td rowSpan={2}>Welded Structure, Forge Material, etc.</td>
+                          <td rowSpan={2}>
+                            <strong>ADVANTAGE (Annealing):</strong><br/>
+                            • Good to remove the material stress.<br/><br/>
+                            <strong>ADVANTAGE (Annealing shotblast):</strong><br/>
+                            • Good to remove slugs. (Good for painting parts)<br/><br/>
+                            <strong>RECOMMEND:</strong><br/>
+                            • Generally, shotblast will be done except for small and urgent parts.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>焼鈍ショットブラス 施工</td>
+                        </tr>
+
+                        {/* Induction Hardening */}
+                        <tr>
+                          <td rowSpan={5}>Induction Hardening</td>
+                          <td rowSpan={5}>
+                            高周波焼入れ施工 程度HS-<br/><br/>
+                            (Without any notes before polishing or grinding, hardening depths must be 1mm.)
+                          </td>
+                          <td>S45C</td>
+                          <td>HS60〜65</td>
+                          <td rowSpan={5}>Roller Shaft, Roller, Gear, Shaft, Collar, Pin, Slide Shoe, etc.</td>
+                          <td rowSpan={5}>
+                            <strong>ADVANTAGE:</strong><br/>
+                            • Good for Anti-Friction.<br/>
+                            • Good for Anti-Fatigue.<br/>
+                            • It is possible to harden specific area.<br/>
+                            • Can achieve more require hardened than others.<br/>
+                            • Process can be done by short period of time.<br/><br/>
+                            <strong>RECOMMEND:</strong><br/>
+                            • Before induction hardening, thermal refining must be done first.<br/>
+                            • To achieve more accuracy it will be needing additional process such as polishing, grinding or etc.<br/>
+                            • Hardened area must be clarified.
+                          </td>
+                        </tr>
+                        <tr><td>STKM16A</td><td>HS60〜65</td></tr>
+                        <tr><td>SNC631</td><td>HS68〜75</td></tr>
+                        <tr><td>SNCM447</td><td>HS70〜85</td></tr>
+                        <tr><td>SUJ2, etc.</td><td>HS75〜80</td></tr>
+
+                        {/* QPQ */}
+                        <tr>
+                          <td>QPQ (Quench Polish Quench)</td>
+                          <td>QPQ施工</td>
+                          <td>SS400, S45C, etc.</td>
+                          <td></td>
+                          <td>Shaft, Head cover for cylinder, etc.</td>
+                          <td>
+                            <strong>ADVANTAGE:</strong><br/>
+                            • Good for Anti-Corrosion.<br/>
+                            • Good for Decoration.
+                          </td>
+                        </tr>
+
+                        {/* PLU-1A */}
+                        <tr>
+                          <td>PLU-1A</td>
+                          <td>PLU-1A施工</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <strong>RECOMMEND:</strong><br/>
+                            • However, it is not applicable to use with Isonite.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -536,8 +702,78 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                 <div className="lesson-section">
                   {" "}
                   <h4 style={{ marginBottom: "1rem" }}> Heat Treatment Process (Final) </h4>
-                  <div>
-                    <img src={heatTreatmentProcessImg4} alt="Heat Treatment Process Table Final" className="software-screenshot screenshot-wide" />
+                  <div className="lesson-table-container">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Kind of Process</th>
+                          <th>Indication of Drawing</th>
+                          <th>Applicable Material</th>
+                          <th>Applicable Hardness</th>
+                          <th>Purpose</th>
+                          <th>Characteristics</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Isonite */}
+                        <tr>
+                          <td rowSpan={8}>Isonite</td>
+                          <td rowSpan={8}>
+                            イソナイト施工 硬度HV-<br/><br/>
+                            (Hardening depth - the thickness of chemical compound must be over 10μ.)
+                          </td>
+                          <td>SS400</td>
+                          <td>HV400UP</td>
+                          <td rowSpan={8}>Roller Shaft, Roller, Gear, Shaft, Collar, Pin, Slide Shoe, etc.</td>
+                          <td rowSpan={8}>
+                            <strong>ADVANTAGE:</strong><br/>
+                            • Good for Anti-Friction.<br/>
+                            • Good for Anti-Fatigue.<br/>
+                            • Good for anti-Fitting.<br/>
+                            • Good for Anti-Heat.<br/>
+                            • Good for Anti-Corrosion (equivalent as martensite SUS).<br/>
+                            • Less friction coefficient.<br/>
+                            • Less deformation, because its processing temperature lessens 570°.<br/><br/>
+                            <strong>RECOMMEND:</strong><br/>
+                            • Before Isonite, thermal refining 650° must be done first.
+                          </td>
+                        </tr>
+                        <tr><td>SC410</td><td>HV450UP</td></tr>
+                        <tr><td>S45C</td><td>HV500UP</td></tr>
+                        <tr><td>STKM16A</td><td>HS500UP</td></tr>
+                        <tr><td>SNC631</td><td>HV600UP</td></tr>
+                        <tr><td>SNCM447</td><td>HV600UP</td></tr>
+                        <tr><td>SCM430</td><td>HV600UP</td></tr>
+                        <tr><td>SACM645, etc.</td><td>HV900UP</td></tr>
+
+                        {/* Ionite */}
+                        <tr>
+                          <td rowSpan={4}>Ionite (Ion Nitriding)</td>
+                          <td rowSpan={4}>
+                            イソナイト施工 硬度HV-<br/><br/>
+                            (Hardening depth - the thickness of chemical compound must be over 10μ.)
+                          </td>
+                          <td>S45C</td>
+                          <td>HV400UP</td>
+                          <td rowSpan={4}>Roller, Shaft, Locator, Cam, Bearing sleeve, etc.</td>
+                          <td rowSpan={4}>
+                            <strong>ADVANTAGE:</strong><br/>
+                            • Good for Anti-Friction.<br/>
+                            • Good for Anti-Fatigue.<br/>
+                            • Good for anti-Fitting.<br/>
+                            • Good for Anti-Heat.<br/>
+                            • Good for Anti-Corrosion (equivalent as martensite SUS).<br/>
+                            • Less friction coefficient.<br/><br/>
+                            • If there would be no dimensional change, polish can be processed before Ionite, but after Ionite no need to polish.<br/><br/>
+                            <strong>RECOMMEND:</strong><br/>
+                            • Before Ionite, thermal refining 650° must be done first.
+                          </td>
+                        </tr>
+                        <tr><td>SCM440</td><td>HV700UP</td></tr>
+                        <tr><td>SACM645</td><td>HV1000UP</td></tr>
+                        <tr><td>SUS304, etc.</td><td>HV1000UP</td></tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
