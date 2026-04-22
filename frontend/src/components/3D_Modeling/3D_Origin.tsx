@@ -164,7 +164,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`}>
                   <div className="step-header" style={{ marginTop: "-2.5rem" }}>
                     <span className="step-number" style={{ padding: "0.5rem" }}>5</span>
-                    <span className="step-label">Left-click on a 3rd point to set the Y-axis. The XY-plane becomes the front view.</span>
+                    <span className="step-label">mmmmLeft-click on a 3rd point to set the Y-axis. The XY-plane becomes the front view.</span>
                   </div>
 
                   <div>
