@@ -87,7 +87,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                 </div>
               </div>
 
-              <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginInline: "-0.2rem", marginTop: "-2.5rem", marginBottom: "-0.9rem" }}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <span className="step-label">
@@ -101,7 +101,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                 </div>
               </div>
 
-              <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">
@@ -110,7 +110,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                 </div>
               </div>
 
-              <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
                 <div className="step-header">
                   <span className="step-number">4</span>
                   <span className="step-label">
@@ -128,8 +128,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
               <div className="info-box">
                 <p className="p-flush">
-                  <strong className="text-highlight">Note:</strong> Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.
-                </p>
+                  <strong className="text-highlight">Note:</strong> <span>Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.</span> </p>
+
                 <div>
                   <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" style={{ height: '250px' }} />
                 </div>
