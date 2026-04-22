@@ -1842,7 +1842,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
             </div>
 
-            <div className={getStepClass('b3st-3')} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} S>
+            <div className={getStepClass('b3st-3')} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }}>
 
               <div className="step-header"> <span className="step-number">
                 3 </span> <span className="step-label">Specify the desired length of the solid entity on the item entry.</span>
