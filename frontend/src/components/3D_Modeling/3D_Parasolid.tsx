@@ -185,7 +185,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   </div>
                   <br />
                   <div style={{ marginTop: '1.5rem' }}>
-                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" style={{ height: '400px', width: '700px' }} />
+                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" style={{ width: '950px' }} />
                   </div>
                 </div>
               </div>

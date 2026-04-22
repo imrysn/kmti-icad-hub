@@ -264,12 +264,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <h4 className="section-title">Actual sprocket teeth are unpainted.</h4>
                 </div>
                 <div>
-                  <img src={sprocketColoring} alt="Sprocket Coloring NG vs GOOD" className="software-screenshot screenshot-wide" />
+                  <img src={sprocketColoring} alt="Sprocket Coloring NG vs GOOD" className="software-screenshot screenshot-wide" style={{ width: "410px" }} />
                 </div>
               </div>
               <div className="section-divider" />
-              <div> <span style={{ fontSize: '1.3rem', marginLeft: "28rem", lineHeight: "0.2", position: "absolute", top: "20rem" }}>※  All selected entity will be color yellow</span> <br />
-                <span style={{ fontSize: '1.3rem', marginLeft: "28rem", position: "absolute", top: "35rem" }}>※  Only the selected surface will be color yellow</span> <br /></div>
+              <div> <span style={{ fontSize: '1.2rem', marginLeft: "28rem", lineHeight: "0.2", position: "absolute", top: "18rem" }}>※  All selected entity will be color yellow</span> <br />
+                <span style={{ fontSize: '1.2rem', marginLeft: "28rem", position: "absolute", top: "34rem" }}>※  Only the selected surface will be color yellow</span> <br /></div>
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
@@ -279,6 +279,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <div>
                   <img src={sprocketKeywayLoc} alt="Keyway Location Standards" className="software-screenshot screenshot-wide" style={{ width: '600px' }} />
                 </div>
+                <span style={{ fontSize: '0.9rem', marginLeft: "1.5rem", position: "absolute", top: "74rem", border: "1px solid red", padding: "1rem", width: "15.5rem", lineHeight: "0.9rem", }}>When arranging parts diagram, keyway location will be at the center of the tooth.</span>
+                <span style={{ fontSize: '0.9rem', marginLeft: "23rem", position: "absolute", top: "74rem", border: "1px solid red", padding: "1rem", width: "17rem", lineHeight: "0.9rem", }}>Keyway on sprocket as purchase part will be arrange on the valley. (MANUFACTURER STANDARD).</span>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
                 <div className="info-box">
                   <p className="p-flush"><strong>Note</strong>: 1. Location of keyway always indicated on special notes.</p>
                   <p className="p-flush">キー溝E歯山部中忁E合わせ加工すること (Key groove centered on tooth)</p>
