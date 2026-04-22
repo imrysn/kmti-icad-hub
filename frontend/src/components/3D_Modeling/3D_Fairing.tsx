@@ -94,7 +94,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
           />
         </h3>
         <div className="instruction-box">
-          <div className="image-wrapper-flush">
+          <div>
             <img src={chamferIcon} alt="Fairing Menu" className="software-screenshot screenshot-small" />
           </div>
         </div>
@@ -114,7 +114,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className="step-label">Select <strong className="text-highlight">Chamfer edge</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot screenshot-medium" />
                     </div>
                   </div>
@@ -126,7 +126,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                     <span className="step-label">Specify chamfer length on the item entry.</span>
                   </div>
                   <div className="step-description">
-                    <div className="image-wrapper-flush">
+                    <div>
                       <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
@@ -146,14 +146,14 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
                 <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title">RESULT</h4>
-                  <div className="flex-row-center--wrap">
-                    <div className="image-wrapper-flush">
-                      <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-large" />
-                    </div>
+                  <h4 className="section-title" style={{ textAlign: "left", marginBottom: "2rem" }}>RESULT</h4>
+
+                  <div>
+                    <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
               </div>
+
             )}
 
             {activeTab === 'fillet' && (
@@ -270,7 +270,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

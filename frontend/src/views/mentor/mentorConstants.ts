@@ -221,7 +221,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     title: 'Fairing',
     content: ['Chamfer', 'Fillet', 'Shell', 'rounding corners', 'hollowing', 'wall thickness', 'chamfer length', 'fillet radius', 'edge selection'],
     children: [
-      { id: 'fairing-1', title: 'Chamfer, Fillet, Shell', content: ['beveled edges', 'rounded edges', 'hollow solid'] }
+      { id: 'fairing', title: 'Chamfer, Fillet, Shell', content: ['beveled edges', 'rounded edges', 'hollow solid'] }
     ],
     quiz: {
       title: 'Fairing & Advanced Shaping',
