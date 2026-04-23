@@ -70,7 +70,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             <h4>Interference Check Tool</h4>
           </div>
 
-          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`} style={{ marginTop: "-4rem" }}>
             <div className="step-header">
               <span className="step-number">1</span>
               <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
@@ -82,7 +82,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: "-3rem" }}>
             <div className="step-header">
               <span className="step-number">2</span>
               <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
@@ -94,7 +94,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: "-3rem" }}>
             <div className="step-header">
               <span className="step-number">3</span>
               <span className="step-label">
@@ -117,10 +117,10 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: "-6rem" }}>
             <div className="step-header">
               <span className="step-number">4</span>
-              <span className="step-label">
+              <span className="step-label" style={{ marginTop: "1.5rem" }}>
                 Analyze possible countermeasures to remove the interference on the parts. To remove the red CGS solid, use Undo or Ctrl+Z
               </span>
             </div>
@@ -128,14 +128,14 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className="instruction-box">
+          <div className="instruction-box" style={{ marginTop: "-4rem" }}>
             <p className="step-label"><strong>Tool use to display the list of all detected interferences.</strong></p> <br />
             <div>
               <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
             </div>
           </div>
 
-          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`} style={{ marginTop: "-3rem" }}>
             <div className="step-header">
               <span className="step-number">1</span>
               <span className="step-label">
@@ -145,7 +145,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`} style={{ marginTop: "-5rem" }}>
             <div className="step-header">
               <span className="step-number">2</span>
               <span className="step-label">The List Display window will appear showing all interfering parts.</span>
