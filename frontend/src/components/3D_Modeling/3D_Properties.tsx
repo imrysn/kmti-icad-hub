@@ -6,6 +6,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Sliders,
+  Space,
   Zap
 } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -116,7 +117,7 @@ interface PropertiesLessonProps {
               {" "}
               {activeTab === "color" && (
                 <div className="tab-pane fade-in">
-                  <h3 className="section-title" style={{ marginRight: "725px" }}>Change color</h3>
+                  <h3 className="section-title" style={{ marginRight: "735px", marginLeft: "auto" }}>Change color</h3>
                   <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                     <div className="step-header">
                       {" "}
@@ -133,14 +134,14 @@ interface PropertiesLessonProps {
                     </div>
                   </div>
 
-                  <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+                  <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
                     <div className="step-header">
                       {" "}
                       <span className="step-number">
 
                         2
                       </span>{" "}
-                      <span className="step-label">
+                      <span className="step-label" >
                         Select either{" "}
                         <strong className="text-highlight">Entity</strong> or{" "}
                         <strong className="text-highlight">Face</strong>
@@ -151,17 +152,17 @@ interface PropertiesLessonProps {
                       <div className="flex-row-wrap">
                         <div className="flex-1">
                           {" "}
-                          <h4 className="section-title" style={{ marginRight: "810px" }}>Entity</h4>
+                          <h4 className="section-title" style={{ marginRight: "820px" }}>Entity</h4>
                           <div className="step-header">
                             {" "}
-                            <span className="step-label">
+                            <span className="step-label" style={{ marginTop: "1rem" }}>
                               Pick a color &gt; Select the solid entity
                             </span>
                           </div>
                           <div className="step-description">
-                            <p className="p-flush">
+                            <span className="p-flush">
                               The entire solid entity will change its color.
-                            </p>
+                            </span>
                           </div>
                         </div>
 
@@ -176,7 +177,7 @@ interface PropertiesLessonProps {
                       </div>
                       <div className="flex-row-center--wrap" style={{ gap: '2rem', marginTop: '3rem' }}>
                         <div className="flex-1" style={{ minWidth: '300px' }}>
-                          <h4 className="section-title" style={{ marginRight: "830px" }}>Face</h4>
+                          <h4 className="section-title" style={{ marginRight: "836px" }}>Face</h4>
                           <div className="step-header">
                             <span className="step-label">
                               Pick a color &gt; Select surface to be changed &gt; <strong className="text-highlight">GO</strong>
@@ -184,7 +185,7 @@ interface PropertiesLessonProps {
                             </span>
                           </div>
                           <div className="step-description">
-                            <p className="p-flush">Only selected faces/surfaces will change its color.</p>
+                            <span className="p-flush">Only selected faces/surfaces will change its color.</span>
                           </div> <br />
                         </div>
                         <div className="flex-1" style={{ minWidth: '300px' }}>
@@ -288,14 +289,14 @@ interface PropertiesLessonProps {
                       <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" style={{ height: '290px' }} />
                     </div>
                     <br />
-                    <p className="step-description text-center">
+                    <span className="step-description text-center">
                       {" "}
                       Safety color applies to covers for machine guarding such
                       as chain, belt and gear drive power transmission system.
-                    </p>
+                    </span>
                   </div>
 
-                  <div className="tool-block">
+                  <div className="tool-block" style={{ marginTop: "-4rem" }}>
                     {" "}
                     <ul className="interaction-list--plain">
                       {" "}
@@ -316,12 +317,12 @@ interface PropertiesLessonProps {
                     </h4>
                   </div>
 
-                  <div className="tool-block">
+                  <div className="tool-block" style={{ marginTop: "-4rem" }}>
                     <div className="flex-row-wrap">
                       <div className="flex-1">
-                        <p className="font-semibold mb-2">
+                        <span className="font-semibold mb-2">
                           Materials with Color codes on the material list
-                        </p>
+                        </span>
                         <p>
                           <strong>Examples:</strong>
                         </p>{" "}
@@ -342,7 +343,7 @@ interface PropertiesLessonProps {
                     </div>
                   </div>
 
-                  <div className="tool-block">
+                  <div className="tool-block" style={{ marginTop: "-3rem" }}>
                     <div className="flex-row-wrap">
                       <div className="flex-1">
                         {" "}
@@ -375,7 +376,7 @@ interface PropertiesLessonProps {
                     </div>
                   </div>
 
-                  <div className={`tool-block ${currentIndex === 3 ? "reading-active" : ""}`}>
+                  <div className={`tool-block ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: "-4rem" }}>
                     {" "}
                     <h4 className="section-title" style={{ marginRight: "780px" }}>Layer 3</h4>{" "}
                     <ul className="interaction-list--plain">
@@ -386,10 +387,10 @@ interface PropertiesLessonProps {
                     </ul>
                     <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
                       <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" style={{ maxWidth: '850px', height: 'auto' }} />
-                      <div className="flex-row-center--wrap" style={{ gap: '2rem', width: '100%' }}>
-                        <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>MOTOR</span>
-                        <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>ENCODER</span>
-                        <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>CHAIN & SPROCKET</span>
+                      <div className="flex-row-center--wrap" style={{ gap: '2rem', width: '100%', marginTop: '1rem' }}>
+                        <span style={{ fontSize: '1.2rem', marginLeft: "2rem", fontWeight: 800 }}>MOTOR</span>
+                        <span style={{ fontSize: '1.2rem', marginLeft: "10rem", fontWeight: 800 }}>ENCODER</span>
+                        <span style={{ fontSize: '1.2rem', marginLeft: "10rem", fontWeight: 800 }}>CHAIN & SPROCKET</span>
                       </div>
                     </div>
                   </div>
@@ -413,7 +414,7 @@ interface PropertiesLessonProps {
                           1
                         </span>
                         <div className="flex-row-center">
-                          <img src={information1} alt="Coordinates" style={{ width: '35px', height: '35px' }} />{" "}
+                          <img src={information1} alt="Coordinates" style={{ width: '35px' }} />{" "}
                           <span className="step-label">
                             Pick a point to display coordinates from the origin.
                           </span>
@@ -421,17 +422,17 @@ interface PropertiesLessonProps {
                       </div>
 
                       <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <p className="p-flush">
+                        <span className="p-flush">
                           Displays coordinates of a point from the origin
-                        </p>
+                        </span>
 
                         <div>
-                          <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
+                          <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
                         </div>
                       </div>
                     </div>{" "}
                     {/* Item 2 */}
-                    <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+                    <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
                       <div className="step-header">
                         {" "}
                         <span className="step-number">
@@ -443,24 +444,24 @@ interface PropertiesLessonProps {
                           <span className="step-label">
                             Pick an edge &gt;{" "}
                             <strong className="text-highlight">GO</strong>
-                            <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '30px', verticalAlign: 'middle', margin: '0 4px' }} />{" "}
+                            <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', verticalAlign: 'middle', margin: '0 4px', marginTop: "-1.8rem" }} />{" "}
                             to measure length.
                           </span>
                         </div>
                       </div>
 
                       <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <p className="p-flush">
+                        <span className="p-flush">
                           Measures the length of an edge
-                        </p>
+                        </span>
 
                         <div>
-                          <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
+                          <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
                         </div>
                       </div>
                     </div>{" "}
                     {/* Item 3 */}
-                    <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+                    <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
                       <div className="step-header">
                         {" "}
                         <span className="step-number">
@@ -477,17 +478,17 @@ interface PropertiesLessonProps {
                       </div>
 
                       <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <p className="p-flush">
+                        <span className="p-flush">
                           Measures the distance between two points or edges
-                        </p>
+                        </span>
 
                         <div>
-                          <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
+                          <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
                         </div>
                       </div>
                     </div>{" "}
                     {/* Item 4 */}
-                    <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+                    <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: "-2resm" }}>
                       <div className="step-header">
                         {" "}
                         <span className="step-number">
@@ -502,18 +503,18 @@ interface PropertiesLessonProps {
                         </div>
                       </div>
 
-                      <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <p className="p-flush">
+                      <div className="step-description" style={{ marginBottom: "-1rem" }}/* sanitized: paddingLeft: '2.5rem' */>
+                        <span className="p-flush" >
                           Measures the angle between two edges or three points
-                        </p>
+                        </span>
 
                         <div>
-                          <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" style={{ height: '120px' }} />
+                          <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
                         </div>
                       </div>
                     </div>{" "}
                     {/* Item 5 */}
-                    <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`}>
+                    <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} style={{ marginTop: "-1rem" }}>
                       <div className="step-header">
                         {" "}
                         <span className="step-number">
@@ -525,19 +526,19 @@ interface PropertiesLessonProps {
                           <span className="step-label">
                             Pick the solid entity &gt;{" "}
                             <strong className="text-highlight">GO</strong>
-                            <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '30px', verticalAlign: 'middle', margin: '0 4px' }} />{" "}
+                            <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', verticalAlign: 'middle', margin: '0 4px', marginTop: "-1.8rem" }} />{" "}
                             to display information.
                           </span>
                         </div>
                       </div>
 
                       <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <p className="p-flush">
+                        <span className="p-flush">
                           Displays the informations about the selected entity
-                        </p>
+                        </span>
 
                         <div>
-                          <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" />
+                          <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" style={{ marginTop: "1rem" }} />
                         </div>
                       </div>
                     </div>
