@@ -1,19 +1,28 @@
-import React from 'react';
-import { FileText, CheckCircle2, BarChart3, RotateCw, Check, X } from 'lucide-react'; 
-import { TraineeProgress } from '../../../services/adminService';
+import React, { useState } from 'react';
+import { FileText, CheckCircle2, BarChart3, RotateCw, Check, X, RotateCcw, Loader2 } from 'lucide-react'; 
+import { TraineeProgress, adminService } from '../../../services/adminService';
 import { ICAD_2D_LESSONS, ICAD_3D_LESSONS } from '../../mentor/mentorConstants';
+import { useUI } from '../../../context/UIContext';
 
 interface TraineeDetailProps {
     selectedTrainee: TraineeProgress;
     setSelectedTrainee: (trainee: TraineeProgress | null) => void;
     onExport: (userId: number) => void;
+    onRefresh: () => Promise<void>;
 }
 
 export const TraineeDetail: React.FC<TraineeDetailProps> = ({ 
     selectedTrainee, 
     setSelectedTrainee,
-    onExport
+    onExport,
+    onRefresh
 }) => {
+    const { requestConfirmation } = useUI();
+    const [reopeningId, setReopeningId] = useState<string | null>(null);
+    const [isReopeningAll, setIsReopeningAll] = useState(false);
+    const [isClosingAll, setIsClosingAll] = useState(false);
+    const [targetScope, setTargetScope] = useState<'all' | '2D_Drawing' | '3D_Modeling'>('all');
+
     const getLessonTitle = (lessonId: string, courseId: string) => {
         const lessons = courseId === '2' ? ICAD_2D_LESSONS : ICAD_3D_LESSONS;
         
@@ -30,6 +39,75 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
         }
         
         return `${courseId === '2' ? '2D' : '3D'} Assessment`;
+    };
+
+    const handleReopenAssessment = async (quizSlug: string) => {
+        const confirmed = await requestConfirmation({
+            title: 'Reopen Assessment',
+            message: `Are you sure you want to reopen the assessment "${quizSlug}" for ${selectedTrainee.full_name}? This will permanently delete their current score and all question attempts for this quiz.`,
+            confirmText: 'Reopen & Reset',
+            type: 'danger'
+        });
+
+        if (!confirmed) return;
+
+        setReopeningId(quizSlug);
+        try {
+            await adminService.reopenAssessment(selectedTrainee.id, quizSlug);
+            await onRefresh();
+        } catch (error) {
+            console.error('Failed to reopen assessment:', error);
+            // Fallback to basic alert if endpoint fails (likely needs backend restart)
+            alert('Failed to reopen assessment. Please ensure the backend server has been restarted to pick up the new changes.');
+        } finally {
+            setReopeningId(null);
+        }
+    };
+
+    const handleReopenAll = async () => {
+        const scopeLabel = targetScope === 'all' ? 'ALL' : (targetScope === '2D_Drawing' ? '2D Drawing' : '3D Modeling');
+        const confirmed = await requestConfirmation({
+            title: `Reset ${scopeLabel} Assessments`,
+            message: `Are you sure you want to reset ${scopeLabel} assessment progress for ${selectedTrainee.full_name}? This will permanently delete scores and attempts for the selected scope. This action cannot be undone.`,
+            confirmText: 'Reset Progress',
+            type: 'danger'
+        });
+
+        if (!confirmed) return;
+
+        setIsReopeningAll(true);
+        try {
+            await adminService.reopenAllAssessments(selectedTrainee.id, targetScope === 'all' ? undefined : targetScope);
+            await onRefresh();
+        } catch (error) {
+            console.error('Failed to reset assessments:', error);
+            alert('Failed to reset assessments. Please ensure the backend server is running.');
+        } finally {
+            setIsReopeningAll(false);
+        }
+    };
+
+    const handleCloseAll = async () => {
+        const scopeLabel = targetScope === 'all' ? 'ALL' : (targetScope === '2D_Drawing' ? '2D Drawing' : '3D Modeling');
+        const confirmed = await requestConfirmation({
+            title: `Close ${scopeLabel} Assessments`,
+            message: `Are you sure you want to CLOSE (Complete) ${scopeLabel} assessments for ${selectedTrainee.full_name}? This will mark every module in the selected scope as 100% completed.`,
+            confirmText: 'Complete All',
+            type: 'danger'
+        });
+
+        if (!confirmed) return;
+
+        setIsClosingAll(true);
+        try {
+            await adminService.closeAllAssessments(selectedTrainee.id, targetScope === 'all' ? undefined : targetScope);
+            await onRefresh();
+        } catch (error) {
+            console.error('Failed to close assessments:', error);
+            alert('Failed to close assessments. Please ensure the backend server is running.');
+        } finally {
+            setIsClosingAll(false);
+        }
     };
 
     return (
@@ -53,6 +131,47 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             style={{ marginTop: '1.5rem', width: '100%', gap: '0.5rem' }}
                         >
                             <FileText size={16} /> Export Progress Report
+                        </button>
+
+                        <div className="admin-action-scope" style={{ marginTop: '2rem' }}>
+                            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem', fontWeight: 600, letterSpacing: '0.05em' }}>BULK ACTION SCOPE</p>
+                            <div className="scope-toggle" style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '2px', marginBottom: '1rem' }}>
+                                <button 
+                                    className={`scope-btn ${targetScope === 'all' ? 'active' : ''}`}
+                                    onClick={() => setTargetScope('all')}
+                                    style={{ flex: 1, padding: '0.4rem', fontSize: '0.7rem', borderRadius: '6px', border: 'none', background: targetScope === 'all' ? 'rgba(255,255,255,0.1)' : 'transparent', color: targetScope === 'all' ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
+                                >
+                                    ALL
+                                </button>
+                                <button 
+                                    className={`scope-btn ${targetScope === '2D_Drawing' ? 'active' : ''}`}
+                                    onClick={() => setTargetScope('2D_Drawing')}
+                                    style={{ flex: 1, padding: '0.4rem', fontSize: '0.7rem', borderRadius: '6px', border: 'none', background: targetScope === '2D_Drawing' ? 'rgba(255,255,255,0.1)' : 'transparent', color: targetScope === '2D_Drawing' ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
+                                >
+                                    2D
+                                </button>
+                                <button 
+                                    className={`scope-btn ${targetScope === '3D_Modeling' ? 'active' : ''}`}
+                                    onClick={() => setTargetScope('3D_Modeling')}
+                                    style={{ flex: 1, padding: '0.4rem', fontSize: '0.7rem', borderRadius: '6px', border: 'none', background: targetScope === '3D_Modeling' ? 'rgba(255,255,255,0.1)' : 'transparent', color: targetScope === '3D_Modeling' ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
+                                >
+                                    3D
+                                </button>
+                            </div>
+                        </div>
+
+                        <button className="reset-all-btn" onClick={handleReopenAll} disabled={isReopeningAll}
+                            style={{ width: '100%', gap: '0.5rem' }}
+                        >
+                            {isReopeningAll ? <Loader2 size={16} className="spin" /> : <RotateCcw size={16} />} 
+                            Reset Assessments
+                        </button>
+
+                        <button className="reset-all-btn close-all-btn" onClick={handleCloseAll} disabled={isClosingAll}
+                            style={{ marginTop: '0.5rem', width: '100%', gap: '0.5rem', background: 'rgba(52, 211, 153, 0.1)', borderColor: 'rgba(52, 211, 153, 0.3)', color: '#34d399' }}
+                        >
+                            {isClosingAll ? <Loader2 size={16} className="spin" /> : <CheckCircle2 size={16} />} 
+                            Close Assessments
                         </button>
                     </div>
                 </div>
@@ -111,8 +230,19 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                         {q.score >= 80 ? 'Passed' : 'Failed'}
                                                     </div>
                                                 </div>
-                                                <div className="assessment-date">
-                                                    {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
+                                                <div className="assessment-actions">
+                                                    <div className="assessment-date">
+                                                        {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
+                                                    </div>
+                                                    <button 
+                                                        className="reopen-btn" 
+                                                        title="Reopen Assessment (Clear Score)"
+                                                        onClick={() => handleReopenAssessment(q.lesson_id)}
+                                                        disabled={reopeningId === q.lesson_id}
+                                                    >
+                                                        {reopeningId === q.lesson_id ? <Loader2 size={14} className="spin" /> : <RotateCcw size={14} />}
+                                                        Reopen
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))
@@ -149,8 +279,19 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                         {q.score >= 80 ? 'Passed' : 'Failed'}
                                                     </div>
                                                 </div>
-                                                <div className="assessment-date">
-                                                    {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
+                                                <div className="assessment-actions">
+                                                    <div className="assessment-date">
+                                                        {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
+                                                    </div>
+                                                    <button 
+                                                        className="reopen-btn" 
+                                                        title="Reopen Assessment (Clear Score)"
+                                                        onClick={() => handleReopenAssessment(q.lesson_id)}
+                                                        disabled={reopeningId === q.lesson_id}
+                                                    >
+                                                        {reopeningId === q.lesson_id ? <Loader2 size={14} className="spin" /> : <RotateCcw size={14} />}
+                                                        Reopen
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))

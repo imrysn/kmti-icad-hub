@@ -23,7 +23,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Global State
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-    const is2DDrawingCourse = selectedCourse?.id === '2';
+    const is2DDrawingCourse = selectedCourse?.id?.toString() === '2' || selectedCourse?.course_type === '2D_Drawing';
     
     // UI/Interaction State 
     const [activeLessonId, setActiveLessonId] = useState<string>(''); 
@@ -47,12 +47,19 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             const savedSidebar = localStorage.getItem('kmti_sidebarOpen');
 
             if (savedCourseId) {
-                const course = courses.find(c => c.id === savedCourseId);
+                console.log('Restoring course from storage:', savedCourseId);
+                const course = courses.find(c => c.id.toString() == savedCourseId.toString());
                 if (course) {
+                    console.log('Found course for restoration:', course.title);
                     setSelectedCourse(course);
-                    if (savedLessonId) setActiveLessonId(savedLessonId);
+                    if (savedLessonId) {
+                        console.log('Restoring lesson:', savedLessonId);
+                        setActiveLessonId(savedLessonId);
+                    }
                     if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
                     if (savedSidebar) setSidebarOpen(savedSidebar === 'true');
+                } else {
+                    console.warn('Could not find course in list for ID:', savedCourseId);
                 }
             }
             setIsRestored(true);
@@ -171,8 +178,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, [selectedCourse?.id, is2DDrawingCourse, activeLessonId]);
 
     useEffect(() => {
-        const viewer = document.querySelector('.main-content-viewer');
-        if (viewer) viewer.scrollTo(0, 0);
+        const viewer = document.querySelector('.lesson-scroll-area');
+        if (viewer) viewer.scrollTo({ top: 0, behavior: 'instant' });
     }, [activeLessonId]);
 
     // Handlers and Helpers

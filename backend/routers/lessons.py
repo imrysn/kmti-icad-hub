@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import User
+from ..models import User, Lesson, LessonContent
 from ..services.course_service import course_service
 from ..schemas import CourseList, CourseProgress
 from ..auth.dependencies import get_current_user
@@ -22,3 +22,15 @@ def get_progress(course_id: str, user_id: str, db: Session = Depends(get_db),
     Get user progress for a specific course. Requires authentication.
     """
     return course_service.get_user_progress(db, course_id, user_id)
+
+@router.get("/lesson/{slug}/content")
+def get_lesson_content(slug: str, db: Session = Depends(get_db)):
+    """
+    Fetch modular content for a lesson by its slug.
+    Used for dynamically managed curriculum.
+    """
+    lesson = db.query(Lesson).filter(Lesson.slug == slug).first()
+    if not lesson:
+        return []
+    
+    return db.query(LessonContent).filter(LessonContent.lesson_id == lesson.id).order_by(LessonContent.order).all()

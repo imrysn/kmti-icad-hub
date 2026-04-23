@@ -2,6 +2,7 @@ export interface Course {
     id: string;
     title: string;
     description: string;
+    course_type?: string;
 }
 
 export interface MediaAsset {

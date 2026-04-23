@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from .database import engine, Base
-from .routers import auth, admin, chat, lessons
+from .routers import auth, admin, chat, lessons, quizzes
 
 # Create database tables on startup
 Base.metadata.create_all(bind=engine)
@@ -45,6 +45,7 @@ app.include_router(auth.router)
 app.include_router(admin.router)
 app.include_router(chat.router)
 app.include_router(lessons.router)
+app.include_router(quizzes.router)
 
 @app.get("/")
 def read_root():

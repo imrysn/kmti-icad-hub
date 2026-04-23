@@ -89,10 +89,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const { requestConfirmation } = useUI();
   const { user } = useAuth();
   const [showQuiz, setShowQuiz] = useState(false);
+  const [activeQuiz, setActiveQuiz] = useState<any>(null);
+  const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
 
   // Chatbot Resizer & Toggle State
   const [isChatbotOpen, setIsChatbotOpen] = useState(true);
   const [chatbotWidth, setChatbotWidth] = useState(300);
+  const [dbContent, setDbContent] = useState<any[]>([]);
+  const [isDbLoading, setIsDbLoading] = useState(false);
   const isDragging = useRef(false);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
@@ -131,22 +135,71 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   useEffect(() => {
     setShowQuiz(false);
-    setTimeout(() => {
+    setDbContent([]);
+    
+    // Fetch dynamic content if available
+    const fetchDbContent = async () => {
+      setIsDbLoading(true);
+      try {
+        const res = await api.get(`/courses/lesson/${activeLessonId}/content?t=${Date.now()}`);
+        setDbContent(res.data);
+      } catch (err) {
+        console.error('Failed to fetch DB content:', err);
+      } finally {
+        setIsDbLoading(false);
+      }
+    };
+    
+    fetchDbContent();
+    
+    // Restore quiz state for this lesson if it was open
+    const savedShowQuiz = localStorage.getItem(`kmti_showQuiz_${activeLessonId}`);
+    if (savedShowQuiz === 'true') {
+      // Re-fetch quiz data if we're restoring the session
+      const restoreQuiz = async () => {
+        setIsLoadingQuiz(true);
+        try {
+          const parentResult = findParentAndQuiz();
+          if (parentResult?.parent) {
+            const response = await api.get(`/quizzes/${parentResult.parent.id}`);
+            setActiveQuiz(response.data);
+            setShowQuiz(true);
+          }
+        } catch (err) {
+          console.error('Failed to restore quiz:', err);
+          // Fallback to hardcoded quiz
+          const parentResult = findParentAndQuiz();
+          if (parentResult?.parent?.quiz) {
+            setActiveQuiz(parentResult.parent.quiz);
+            setShowQuiz(true);
+          }
+        } finally {
+          setIsLoadingQuiz(false);
+        }
+      };
+      restoreQuiz();
+    }
+
+    // Comprehensive scroll reset
+    const performScrollReset = () => {
       const scrollArea = document.querySelector('.lesson-scroll-area');
       if (scrollArea) {
-        scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        // Fallback to searching specific elements if needed
-        const tabsEl = document.querySelector('.lesson-tabs');
-        if (tabsEl) {
-          tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-          const introEl = document.querySelector('.lesson-intro');
-          if (introEl) introEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        scrollArea.scrollTo({ top: 0, behavior: 'instant' });
       }
-    }, 50);
+      // Fallback
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+
+    setTimeout(performScrollReset, 10);
+    setTimeout(performScrollReset, 100); // Second pass for slow rendering
   }, [activeLessonId]);
+
+  // Persist showQuiz state
+  useEffect(() => {
+    if (activeLessonId) {
+      localStorage.setItem(`kmti_showQuiz_${activeLessonId}`, showQuiz.toString());
+    }
+  }, [showQuiz, activeLessonId]);
 
   const handleExitCourse = async () => {
     const confirmed = await requestConfirmation({
@@ -181,13 +234,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const isModuleCompleted = parentResult?.parent ? completedLessons.includes(parentResult.parent.id) : false;
   const nextLabel = (hasQuiz && !isModuleCompleted && !isEmployeeSide) ? 'Continue' : 'Next Lesson';
 
-  const handleQuizComplete = async (score: number) => {
+  const handleQuizComplete = async (score: number, detailedAnswers?: any[]) => {
     if (!parentResult?.parent) return;
     try {
       await api.post('/auth/submit-quiz', {
         course_id: is2DDrawingCourse ? '2' : '1',
         lesson_id: parentResult.parent.id,
-        score: score
+        score: score,
+        answers: detailedAnswers
       });
       if (score >= 80) {
         onLessonComplete(parentResult.parent.id);
@@ -211,9 +265,21 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     goToNextLesson();
   };
 
-  const handleNextAction = () => {
+  const handleNextAction = async () => {
     if (hasQuiz && !isModuleCompleted && !isEmployeeSide) {
-      setShowQuiz(true);
+      setIsLoadingQuiz(true);
+      try {
+        const response = await api.get(`/quizzes/${parentResult.parent.id}`);
+        setActiveQuiz(response.data);
+        setShowQuiz(true);
+      } catch (err) {
+        console.error('Failed to fetch quiz:', err);
+        // Fallback to hardcoded quiz if API fails
+        setActiveQuiz(parentResult.parent.quiz);
+        setShowQuiz(true);
+      } finally {
+        setIsLoadingQuiz(false);
+      }
     } else {
       goToNextLesson();
     }
@@ -270,7 +336,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'annotation': (id) => <AnnotationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'annotation': () => <AnnotationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
@@ -298,8 +364,35 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 const exactMatch = activeLessonId ? registry[activeLessonId] : null;
                 if (exactMatch) return exactMatch();
 
-                const prefix = Object.keys(prefixRegistry).find(p => activeLessonId && (activeLessonId === p || activeLessonId.startsWith(p + '-')));
+                const prefix = activeLessonId?.includes('-') 
+                  ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-')) 
+                  : activeLessonId;
+
                 if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
+
+                // Check for dynamic DB content as primary fallback
+                if (dbContent.length > 0) {
+                  return (
+                    <div className="dynamic-lesson-view">
+                      <div className="modular-content">
+                        {dbContent.map((item, idx) => (
+                          <div key={idx} className={`content-block ${item.content_type}`}>
+                            {item.content_type === 'text' && <p className="instruction-text">{item.data}</p>}
+                            {item.content_type === 'image' && <img className="instruction-image" src={item.data} alt="Curriculum Fig" />}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="lesson-navigation" style={{ marginTop: '3rem', justifyContent: 'center', gap: '1.5rem' }}>
+                        <button className="nav-button" onClick={goToPrevLesson}>
+                          <ChevronLeft size={18} /> Previous Module
+                        </button>
+                        <button className="nav-button next" onClick={handleNextAction}>
+                          {nextLabel} <ChevronRight size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
 
                 if (is2DDrawingCourse) {
                   switch (activeLessonId) {
@@ -354,9 +447,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
 
             {/* Premium Quiz Modal */}
-            {parentResult?.parent?.quiz && (
+            {hasQuiz && (activeQuiz || parentResult?.parent?.quiz) && (
               <QuizModal isOpen={showQuiz} onClose={() => setShowQuiz(false)}
-                quiz={parentResult.parent.quiz}
+                quiz={activeQuiz || parentResult?.parent?.quiz}
                 onComplete={handleQuizComplete}
                 onSuccessContinue={handleQuizSuccessContinue}
               />
