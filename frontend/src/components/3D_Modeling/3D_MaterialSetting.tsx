@@ -66,11 +66,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
         </h3>
         {isMaterial1 && (
           <div className="instruction-box">
-            <p className="p-flush">
+            <span className="p-flush">
               Setting material is important in order to measure the weigth of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part.
-            </p>
+            </span>
             <div>
-              <img src={materialSettingImg} alt="Material Setting" className="software-screenshot screenshot-small" style={{ height: '350px' }} />
+              <img src={materialSettingImg} alt="Material Setting" className="software-screenshot screenshot-small" style={{ height: '350px', marginTop: "1rem" }} />
             </div>
           </div>
         )}
@@ -80,7 +80,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
         <div className="lesson-card">
           {isMaterial1 ? (
             <div className="tab-pane fade-in">
-              <div className={`${getStepClass("ms-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("ms-1")} ${currentIndex === 0 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <span className="step-label">Select <strong className="text-highlight">Set Material</strong> from the icon menu.</span>
@@ -92,7 +92,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("ms-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("ms-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <span className="step-label">
@@ -102,59 +102,59 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("ms-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("ms-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: "-2.5rem" }}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">The Material Setting Window will appear. Select the material from the list &gt; Press <strong className="text-highlight">OK</strong></span>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">The list consists of the materials and their corresponding Notation, Specific Gravity and Color.</p>
-                  <p className="p-flush">However, we follow the color base on the <strong className="text-highlight">color codes.</strong> Materials that don't have a color code must be machine color <strong className="text-highlight">(WHITE).</strong></p>
+                  <span className="p-flush">The list consists of the materials and their corresponding Notation, Specific Gravity and Color.</span>
+                  <span className="p-flush">However, we follow the color base on the <strong className="text-highlight">color codes.</strong> Materials that don't have a color code must be machine color <strong className="text-highlight">(WHITE).</strong></span>
                   <div>
-                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" style={{ height: '450px' }} />
+                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" style={{ height: '450px', marginTop: "1rem" }} />
                   </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass("ms-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("ms-4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">4</span>
                   <span className="step-label">After setting the material, a dialog box will appear &gt; Select <strong className="text-highlight">OK</strong>.</span>
                 </div>
-                <div className="step-description">
-                  <p className="p-flush">Parts that already have material set will be highlighted to show distinction with parts that does not have yet.</p>
+                <div className="step-description" style={{ marginTop: "0.1rem" }}>
+                  <span className="p-flush">Parts that already have material set will be highlighted to show distinction with parts that does not have yet.</span>
                   <div>
-                    <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide" style={{ height: '310px' }} />
+                    <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide" style={{ height: '310px', marginTop: "1rem" }} />
                   </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass("ms-5")} ${currentIndex === 4 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("ms-5")} ${currentIndex === 4 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">5</span>
                   <span className="step-label">In case there are changes in the material, select <strong className="text-highlight">Set Material</strong> from the icon menu.</span>
                 </div>
-                <div className="step-description">
-                  <p className="p-flush">A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.</p>
+                <div className="step-description" style={{ marginTop: "-0.4rem" }}>
+                  <span className="p-flush">A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.</span>
                   <div>
-                    <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" style={{ height: '190px' }} />
+                    <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" style={{ height: '190px', marginTop: "1rem" }} />
                   </div>
                   <div className="step-header" style={{ marginTop: '1rem' }}>
                     <span className="step-label">Select <strong className="text-highlight">OK</strong> &gt; Material Setting window will appear &gt; Reselect new material for the part</span>
                   </div>
-                  <p className="p-flush"><strong>OR</strong> Select Cancel &gt; No changes will be made.</p>
+                  <span className="p-flush"><strong>OR</strong> Select Cancel &gt; No changes will be made.</span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="tab-pane fade-in">
+            <div className="tab-pane fade-in" style={{ marginTop: '0rem' }}>
               <div>
                 <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" style={{ width: '800px', marginLeft: "2rem" }} />
               </div>
-
-              <p className={`${currentIndex === 0 ? "reading-active" : ""}`} style={{ borderRadius: '8px', padding: '1rem', marginTop: '1rem' }}>
+              <div className="step-description" style={{ marginTop: "1rem" }}> </div>
+              <span className={`${currentIndex === 0 ? "reading-active" : ""}`} style={{ borderRadius: '8px', padding: '2rem' }}>
                 On iCAD, <strong className="text-highlight">S35C</strong> is not included on the material list in this case, we can use <strong className="text-highlight">S45C</strong> as material on 3D in case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is use as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same.
-              </p>
+              </span>
 
               <div style={{ marginTop: '1.5rem' }}>
                 <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" style={{ width: '800px', marginLeft: "2rem" }} />
