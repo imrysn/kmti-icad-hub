@@ -145,7 +145,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`} style={{ marginTop: "-5rem" }} s>
+          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`} style={{ marginTop: "-5rem" }} >
             <div className="step-header">
               <span className="step-number">2</span>
               <span className="step-label">The List Display window will appear showing all interfering parts.</span>
