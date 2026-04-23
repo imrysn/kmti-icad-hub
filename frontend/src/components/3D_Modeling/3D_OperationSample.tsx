@@ -653,10 +653,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               </div>
               {/* STEP 2 */}
 
-              <div className={getStepClass('s3-2')}>
+              <div className={getStepClass('s3-2')} style={{ marginTop: "-4rem" }}>
 
-                <div className="step-header"> <span className="step-number">
-                  2 </span> <span className="step-label">In order to create this part, it must be done by segments. Segments must be attach together after modeling.</span>
+                <div className="step-header"> <span className="step-number" style={{ marginTop: "1rem" }}>
+                  2 </span> <span className="step-label" style={{ marginTop: "2rem" }}>In order to create this part, it must be done by segments. Segments must be attach together after modeling.</span>
 
                 </div>
 
@@ -673,19 +673,19 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <div className="flex-row">
                   {/* SEGMENT A */}
 
-                  <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment A</h4>
+                  <div > <h4 className="section-title" style={{ marginRight: '766px' }}>Segment A</h4>
 
                     <div className="flex-row-center">
 
-                      <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong>
-                      </p>
+                      <span className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong>
+                      </span>
 
                     </div>
 
                     <div className="flex-row-center">
 
-                      <p className="p-flush">Create 3 cylinders to make the retainer ring groove &gt; <strong className="text-highlight">[UNION]</strong>
-                      </p>
+                      <span className="p-flush">Create 3 cylinders to make the retainer ring groove &gt; <strong className="text-highlight">[UNION]</strong>
+                      </span>
 
                     </div> <ul className="interaction-list--plain"> <li>Cylinder 1: <strong className="text-highlight">Diameter = 20mm, Height = 3.65mm, Coordinates (0,0,0)</strong></li> <li>Cylinder 2: <strong className="text-highlight">Diameter = 19mm, Height = 1.35mm</strong></li> <li>Cylinder 3: <strong className="text-highlight">Diameter = 20mm, Height = 64.5mm</strong></li> </ul>
 
@@ -702,12 +702,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   </div>
                   {/* SEGMENT B */}
 
-                  <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment B</h4>
+                  <div > <h4 className="section-title" style={{ marginRight: '766px', marginTop: "1.5rem" }}>Segment B</h4>
 
                     <div className="flex-row-center">
 
-                      <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong>
-                      </p>
+                      <span className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong>
+                      </span>
 
                     </div>
 
@@ -716,14 +716,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                     <div className="flex-row-center">
 
-                      <p className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment A
-                      </p>
+                      <span className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment A
+                      </span>
                       <br />
                     </div>
 
                     <div>
 
-                      <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '330px' }} />
+                      <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '330px', marginTop: "1rem" }} />
 
                     </div>
 
@@ -738,7 +738,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
             <div className="tab-pane">
 
-              <div className={getStepClass('s4-1')}>
+              <div className={getStepClass('s4-1')} style={{ marginTop: "-2rem" }}>
 
                 <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment C</h4>
 
@@ -746,22 +746,22 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
                 <div /* sanitized: paddingLeft: '2.5rem' */>
 
-                  <p className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required dimensions precisely. dimensions enclosed in parentheses are close but not exact with the original dimension.
-                  </p>
+                  <span className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required dimensions precisely. dimensions enclosed in parentheses are close but not exact with the original dimension.
+                  </span>
 
                   <div className="flex-row">
 
                     <div /* sanitized: flex: 1 */>
 
-                      <p className="p-flush">Open Work Plane
+                      <p className="p-flush" style={{ color: "red", fontWeight: "bold", fontSize: "1.2rem" }}>Open Work Plane
                       </p>
 
-                      <p className="p-flush">Use <strong className="text-highlight">Center</strong> &gt; Place at end of Segment B
-                      </p>
+                      <span className="p-flush">Use <strong className="text-highlight">Center</strong> &gt; Place at end of Segment B
+                      </span>
 
                       <div>
 
-                        <img src={workPlaneImg} alt="Open Work Plane" className="software-screenshot screenshot-small" style={{ marginLeft: '1rem', width: '200px' }} />
+                        <img src={workPlaneImg} alt="Open Work Plane" className="software-screenshot screenshot-small" style={{ marginLeft: '0rem', width: '200px', marginTop: "1rem" }} />
 
                       </div>
 
@@ -769,33 +769,34 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                     <br />
                     <div /* sanitized: flex: 1 */>
 
-                      <p className="p-flush">Sketch half of segment C (For revolving)
-                      </p>
+                      <span className="p-flush">Sketch half of segment C (For revolving)
+                      </span> <br />
 
-                      <p className="p-flush">*These are the dimensions that must be prioritized.
-                      </p>
+                      <span className="p-flush">*These are the dimensions that must be prioritized.
+                      </span>
 
                       <div>
 
-                        <img src={sketchImg} alt="Sketch half of Segment C" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
+                        <img src={sketchImg} alt="Sketch half of Segment C" className="software-screenshot screenshot-medium" style={{ marginLeft: '0rem', width: '400px', marginTop: "0.5rem" }} />
 
                       </div>
 
                     </div>
 
                   </div>
+                  <br /><br />
 
                   <div className="flex-row-center">
 
                     <div /* sanitized: flex: 1 */>
 
-                      <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Revolve (2D &gt;&gt; 3D)</strong></span>
+                      <div className="step-header" style={{ marginLeft: "0rem" }}> <span className="step-label">Use <strong className="text-highlight">Revolve (2D &gt;&gt; 3D)</strong></span>
 
                       </div>
                       <br />
                       <div>
 
-                        <img src={revolveImg} alt="Revolve Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '300px' }} />
+                        <img src={revolveImg} alt="Revolve Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '0rem', width: '300px', marginTop: "-1rem" }} />
 
                       </div>
 
