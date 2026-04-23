@@ -117,52 +117,49 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           {subLessonId === 'standard-1' && (
-            <div className="tab-pane">
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className="tab-pane">              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-
                   <h4 className="section-title">Scale Pointer</h4>
                 </div>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <p className="p">Based on the image. We must apply it on <strong className="text-highlight">3D Modeling</strong> and <strong className="text-highlight">2D Detailing</strong>.</p>
                 </div>
-                <div className="flex-row--top">
-                  <div>
+                <div className="flex-row-wrap mt-4">
+                  <div className="screenshot-wrapper">
                     <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-large" style={{ width: '650px', height: '400px' }} />
                   </div>
-                  <br />
-                  <br />
-                  <div>
-                    <span style={{ fontSize: '2rem', marginLeft: "10rem" }}>Pointer Color:</span> <br />
-                    <span style={{ fontSize: '2rem', marginLeft: "13rem", color: "#da2525ff" }}>Red#3</span>
-                    <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-medium" />
+                  <div className="mt-8 ml-8">
+                    <p className="p-flush"><strong>Pointer Color:</strong></p>
+                    <p className="p-flush text-highlight" style={{ fontSize: '1.5rem' }}>Red #3</p>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-medium" />
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="section-divider" />
 
+              <div className="section-divider" />
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <p className="p-flush">Another type of <strong className="text-highlight">Scale Pointer</strong> is by putting <strong className="text-highlight">V-groove</strong>. We must also apply this on 3D and 2D.</p>
                 </div>
-                <div className="flex-row--top">
-                  <div>
+                <div className="flex-row-wrap mt-4">
+                  <div className="screenshot-wrapper">
                     <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-wide" style={{ width: '650px', height: '400px' }} />
                   </div>
-                  <br />
-                  <br />
-                  <span style={{ fontSize: '1.5rem', marginLeft: "5rem" }}>Pointer Color:</span> <br />
-                  <span style={{ fontSize: '1.5rem', marginLeft: "7.5rem", color: "#da2525ff" }}>Red#3</span>
-
-                  <div>
-
-                    <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-medium" />
+                  <div className="mt-8 ml-8">
+                    <p className="p-flush"><strong>Pointer Color:</strong></p>
+                    <p className="p-flush text-highlight" style={{ fontSize: '1.5rem' }}>Red #3</p>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-medium" />
+                    </div>
                   </div>
                 </div>
               </div>
+
 
               <div className="section-divider" />
 
@@ -197,39 +194,40 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-
                   <h4 className="section-title">Gas Discharge</h4>
                 </div>
                 <div className="step-header">
                   <span className="step-number">1</span>
-
                   <p className="p">Deformation may happen due to the presence of heat and gas at time of welding. Holes added to square pipes for gas discharge. One <strong className="text-highlight">ρE Drill hole</strong> per square pipe is enough.</p>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot screenshot-wide" />
                 </div>
-                <span style={{ marginLeft: '350px' }}>On the 2D Detail, add the note for air discharge. <br /> <strong style={{ fontSize: "35px", marginLeft: "4rem" }}>（エアー抜き）</strong></span>
-
+                <div className="instruction-box mt-4">
+                  <p>On the 2D Detail, add the note for air discharge.</p>
+                  <p className="text-highlight" style={{ fontSize: "1.5rem", fontWeight: 'bold' }}>（エアー抜き）</p>
+                </div>
               </div>
 
               <div className="section-divider" />
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-
                   <h4 className="section-title">Oil Groove</h4>
                 </div>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <p className="p">Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole.</p>
                 </div>
-                <div className="flex-row--top">
-                  <ul className="interaction-list--plain">
-                    <li>Follow oil way standard of KEM.</li>
-                    <li>Depth of manufacturing should be <strong>1.5mm</strong>.</li>
-                    <li>In case drill/tap holes reach to ditch, the diameter must be <strong>smaller than width of groove</strong>.</li>
-                  </ul>
-                  <div>
+                <div className="flex-row-wrap mt-4">
+                  <div className="flex-1">
+                    <ul className="interaction-list--plain">
+                      <li>Follow oil way standard of KEM.</li>
+                      <li>Depth of manufacturing should be <strong>1.5mm</strong>.</li>
+                      <li>In case drill/tap holes reach to ditch, the diameter must be <strong>smaller than width of groove</strong>.</li>
+                    </ul>
+                  </div>
+                  <div className="screenshot-wrapper">
                     <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
                   </div>
                 </div>
@@ -246,7 +244,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <span className="step-number">3</span>
                   <p className="p">In 2D detail of sprocket, there is a <strong>safety color note</strong>.</p>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
@@ -256,37 +254,39 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           {subLessonId === 'standard-3' && (
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                <p>This is what we should do in 3D model. Because,as we know in actual, the teeth don't have paint.</p>
+                <p>This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint.</p>
                 <div className="step-header">
-
                   <span className="step-number">1</span>
-
                   <h4 className="section-title">Actual sprocket teeth are unpainted.</h4>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={sprocketColoring} alt="Sprocket Coloring NG vs GOOD" className="software-screenshot screenshot-wide" style={{ width: "410px" }} />
                 </div>
+                <div className="info-box mt-4">
+                  <p className="p-flush">※ All selected entity will be color yellow</p>
+                  <p className="p-flush">※ Only the selected surface will be color yellow</p>
+                </div>
               </div>
+
               <div className="section-divider" />
-              <div> <span style={{ fontSize: '1.2rem', marginLeft: "28rem", lineHeight: "0.2", position: "absolute", top: "18rem" }}>※  All selected entity will be color yellow</span> <br />
-                <span style={{ fontSize: '1.2rem', marginLeft: "28rem", position: "absolute", top: "34rem" }}>※  Only the selected surface will be color yellow</span> <br /></div>
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <h4 className="section-title">Location of Sprocket Keyway</h4>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={sprocketKeywayLoc} alt="Keyway Location Standards" className="software-screenshot screenshot-wide" style={{ width: '600px' }} />
                 </div>
-                <span style={{ fontSize: '0.9rem', marginLeft: "1.5rem", position: "absolute", top: "74rem", border: "1px solid red", padding: "1rem", width: "15.5rem", lineHeight: "0.9rem", }}>When arranging parts diagram, keyway location will be at the center of the tooth.</span>
-                <span style={{ fontSize: '0.9rem', marginLeft: "23rem", position: "absolute", top: "74rem", border: "1px solid red", padding: "1rem", width: "17rem", lineHeight: "0.9rem", }}>Keyway on sprocket as purchase part will be arrange on the valley. (MANUFACTURER STANDARD).</span>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <div className="info-box">
+                <div className="flex-row-wrap mt-4" style={{ gap: '1rem' }}>
+                  <div className="instruction-box flex-1">
+                    <p className="p-flush">When arranging parts diagram, keyway location will be at the center of the tooth.</p>
+                  </div>
+                  <div className="instruction-box flex-1">
+                    <p className="p-flush">Keyway on sprocket as purchase part will be arrange on the valley. (MANUFACTURER STANDARD).</p>
+                  </div>
+                </div>
+                <div className="info-box mt-4">
                   <p className="p-flush"><strong>Note</strong>: 1. Location of keyway always indicated on special notes.</p>
                   <p className="p-flush">キー溝E歯山部中忁E合わせ加工すること (Key groove centered on tooth)</p>
                   <p className="p-flush">2. 本図は市販品E追加加工図である (Purchased part with additional process)</p>
@@ -298,18 +298,16 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           {subLessonId === 'standard-4' && (
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                <p>This is what we should do in 3D model. Because,as we know in actual, the teeth don't have paint. </p>
+                <p>This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint. </p>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <h4 className="section-title">Kusakabe Standard Code for Screw, etc.</h4>
                 </div>
                 <div className="flex-col">
-                  <div>
+                  <div className="screenshot-wrapper">
                     <img src={screwStandard1} alt="Kusakabe Screw Codes 1" className="software-screenshot screenshot-wide" />
                   </div>
-                  <br />
-                  <br />
-                  <div>
+                  <div className="screenshot-wrapper mt-8">
                     <img src={screwStandard2} alt="Kusakabe Screw Codes 2 (Stainless)" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
@@ -324,15 +322,15 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <span className="step-number">1</span>
                   <h4 className="section-title">STANDARD OF SYMBOL OF HARDWARE</h4>
                 </div>
-                <div>
-                  <img src={hardwareSymbolStandard} alt="Hardware Symbol Standards" className="software-screenshot screenshot-wide" style={{ height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={hardwareSymbolStandard} alt="Hardware Symbol Standards" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
-              <br />
 
               <div className="section-divider" />
-              <div>
-                <img src={boltHoleStandard} alt="Bolt Hole Diameter Standard Table" className="software-screenshot screenshot-wide" style={{ width: '100%', height: 'auto' }} />
+
+              <div className="screenshot-wrapper">
+                <img src={boltHoleStandard} alt="Bolt Hole Diameter Standard Table" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           )}
@@ -344,47 +342,53 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <span className="step-number">1</span>
                   <h4 className="section-title">BOLT LENGTH</h4>
                 </div>
-                <p className="p-flush"><strong>Example:</strong> (Bolt size ÁE1.5) + (Thickness) = (8 ÁE1.5) + 11 = 23mm ≁E25mm</p>
-                <div className="info-box">
+                <p className="p-flush"><strong>Example:</strong> (Bolt size × 1.5) + (Thickness) = (8 × 1.5) + 11 = 23mm ≈ 25mm</p>
+                <div className="info-box mt-4">
                   <p className="p-flush"><strong>Note</strong>: To avoid easily loosen of the bolt, bolt size is need to multiply size by 1.5-2. </p>
                   <p>In case the result is not standard, it will round up to the nearest standard bolt length.</p>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
+
               <div className="section-divider" />
+
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <h4 className="section-title">BOLTING SETUP</h4>
                 </div>
-                <h4>Bolting setup will depend on a case-by-case basis. These examples are the commonly used to setup.</h4>
-                <p className="p-flush"><strong>Note</strong>: Hexagonal Bolt (HB) can be change to Capscrew (CS) if there will be problems at installation like tight spaces for tools (wrench) or hard to reach areas.</p>
-                <div className="flex-row--top" >
-                  <p><strong style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}>Pillow Block</strong></p>
-                  <p style={{ textDecoration: 'underline' }}>Bolting for Pillow Block:</p>
-                  <p>Hexagonal Bolt (HB)</p>
-                  <p>Spring Washer (SW)</p>
-                  <p>Flat Washer (Hardening)</p>
-                  <br />
-                  <div>
-                    <img src={pillowBlock1} alt="Pillow Block Setup" className="software-screenshot screenshot-medium" />
+                <p className="lesson-subtitle">Bolting setup will depend on a case-by-case basis. These examples are the commonly used to setup.</p>
+                <div className="instruction-box">
+                  <p className="p-flush"><strong>Note</strong>: Hexagonal Bolt (HB) can be change to Capscrew (CS) if there will be problems at installation like tight spaces for tools (wrench) or hard to reach areas.</p>
+                </div>
+                <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Pillow Block</p>
+                    <p style={{ textDecoration: 'underline' }}>Bolting for Pillow Block:</p>
+                    <ul className="interaction-list--plain">
+                      <li>Hexagonal Bolt (HB)</li>
+                      <li>Spring Washer (SW)</li>
+                      <li>Flat Washer (Hardening)</li>
+                    </ul>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={pillowBlock1} alt="Pillow Block Setup" className="software-screenshot screenshot-medium" />
+                    </div>
                   </div>
-                  <br />
-                  <div>
-                    <img src={pillowBlock2} alt="Flange Pillow Block 1" className="software-screenshot screenshot-medium" />
-                  </div>
-                  <br />
-                  <br />
-                  <br />
-                  <p><strong style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}>Flange Pillow Block 1</strong></p>
-                  <p style={{ textDecoration: 'underline' }}>For Flange-type Pillow Block:</p>
-                  <p>Hexagonal Bolt (HB)</p>
-                  <p>Spring Washer (SW)</p>
-                  <br />
-                  <div>
-                    <img src={pillowBlock3} alt="Flange Pillow Block 2" className="software-screenshot screenshot-medium" />
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Flange Pillow Block 1</p>
+                    <p style={{ textDecoration: 'underline' }}>For Flange-type Pillow Block:</p>
+                    <ul className="interaction-list--plain">
+                      <li>Hexagonal Bolt (HB)</li>
+                      <li>Spring Washer (SW)</li>
+                    </ul>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={pillowBlock2} alt="Flange Pillow Block 1" className="software-screenshot screenshot-medium" />
+                    </div>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={pillowBlock3} alt="Flange Pillow Block 2" className="software-screenshot screenshot-medium" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -394,66 +398,73 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           {subLessonId === 'standard-7' && (
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                <p style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}>For Parts that need adjustments.</p>
-                <p className="p-flush" style={{ color: '#f5eeeeff', fontSize: '1.2rem' }}><strong>Note:</strong > Slotted holes need Flat washer (FW). Spring Washer (SW) is enough.</p>
+                <p className="lesson-subtitle">For Parts that need adjustments.</p>
+                <div className="instruction-box">
+                  <p className="p-flush"><strong>Note:</strong > Slotted holes need Flat washer (FW). Spring Washer (SW) is enough.</p>
+                </div>
 
                 <div className="step-header">
                   <span className="step-number">1</span>
-                  <h4 className="section-title" style={{ marginLeft: '0px' }}>SLOTTED HOLE</h4>
+                  <h4 className="section-title">SLOTTED HOLE</h4>
                 </div>
-                <div className="flex-row--top">
-                  <p className="p-flush text-highlight">Case 1: Slotted + Threaded</p>
-                  <br />
-                  <p className="p-flush text-highlight">Hexagonal Bolt (HB)</p>
-                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
-                  <p className="p-flush text-highlight">Flat Washer (Hardening)</p>
-                  <div>
-                    <img src={slottedThreaded} alt="Slotted + Threaded Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
-
+                <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontWeight: 'bold' }}>Case 1: Slotted + Threaded</p>
+                    <ul className="interaction-list--plain mt-2">
+                      <li>Hexagonal Bolt (HB)</li>
+                      <li>Spring Washer (SW)</li>
+                      <li>Flat Washer (Hardening)</li>
+                    </ul>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={slottedThreaded} alt="Slotted + Threaded Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
+                    </div>
                   </div>
-                  <br />
-                  <br />
-                  <p className="p-flush text-highlight">Case 2: Slotted + Drill</p>
-                  <br />
-                  <p className="p-flush text-highlight">Hexagonal Bolt (HB)</p>
-                  <p className="p-flush text-highlight">Flat washer (FWH)</p>
-                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
-                  <p className="p-flush text-highlight">Hex Nut (HN1)</p>
-                </div>
-                <div>
-                  <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
-
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontWeight: 'bold' }}>Case 2: Slotted + Drill</p>
+                    <ul className="interaction-list--plain mt-2">
+                      <li>Hexagonal Bolt (HB)</li>
+                      <li>Flat washer (FWH)</li>
+                      <li>Spring Washer (SW)</li>
+                      <li>Hex Nut (HN1)</li>
+                    </ul>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={slottedDrill} alt="Slotted + Drill Case" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
+                    </div>
+                  </div>
                 </div>
               </div>
+
               <div className="section-divider" />
+
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <h4 className="section-title">CONNECTIONS</h4>
                 </div>
-                <div className="flex-row--top">
-                  <p className="p-flush text-highlight">Case 1: C-Channel</p>
-                  <br />
-
-                  <p className="p-flush text-highlight">Hexagonal Bolt (HB)</p>
-                  <p className="p-flush text-highlight">Taper washer (AW5)</p>
-                  <p className="p-flush text-highlight">Flat Washer (FHW) - IF SLOTTED</p>
-                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
-                  <p className="p-flush text-highlight">Hex Nut (HN1)</p>
-                  <div>
-                    <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
-
+                <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontWeight: 'bold' }}>Case 1: C-Channel</p>
+                    <ul className="interaction-list--plain mt-2">
+                      <li>Hexagonal Bolt (HB)</li>
+                      <li>Taper washer (AW5)</li>
+                      <li>Flat Washer (FHW) - IF SLOTTED</li>
+                      <li>Spring Washer (SW)</li>
+                      <li>Hex Nut (HN1)</li>
+                    </ul>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
+                    </div>
                   </div>
-                  <br />
-                  <br />
-                  <p className="p-flush text-highlight">Case 2: Dual Drill</p>
-                  <br />
-                  <p className="p-flush text-highlight">Hex Socket Cap Screw (CS)</p>
-                  <p className="p-flush text-highlight">Spring Washer (SW)</p>
-                  <p className="p-flush text-highlight">Hex Nut (HN1)</p>
-                  <div>
-                    <img src={connectionBothDrill} alt="Both Drill Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
-
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontWeight: 'bold' }}>Case 2: Dual Drill</p>
+                    <ul className="interaction-list--plain mt-2">
+                      <li>Hex Socket Cap Screw (CS)</li>
+                      <li>Spring Washer (SW)</li>
+                      <li>Hex Nut (HN1)</li>
+                    </ul>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={connectionBothDrill} alt="Both Drill Connection" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -464,39 +475,42 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="tab-pane">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-
                   <h4 className="section-title">SGP PIPES</h4>
                 </div>
-                <p className="p-flush" style={{ color: '#e41717ff', fontSize: '1.2rem' }} ><strong>a</strong>.SGP (White) <br /><p>Apply for fluid (Oil, Air and Coolant)</p>
-                </p>
-                <p className="p-flush" style={{ color: '#e41717ff', fontSize: '1.2rem' }} ><strong>b</strong>.SGP (Black) <br /><p>Apply for structural</p>
-                </p>
-                <p>This two types of SGP Pipes will be added on Icad Material List and must be strictly applied on all the drawings to avoid mistakes on purchasing of pipes. This
-                  means, we need to identify the 2 types of pipes separately. We will apply it on 3D modeling and 2D detailing of parts</p>
-                <p>Inspite of having distinction of White and Black, it does not not mean that we also apply it on the 3D Modeling.
-                  The color that we will apply on SGP Pipes will based on its usage and application. We must not be confused about the
-                  color of SGP Pipes.  </p>
-
-
-                <div className="flex-row--top">
-
-                  <div>
-                    <img src={sgpPipesRed} alt="SGP White (Red) Pipes" className="software-screenshot screenshot-large" />
-
+                <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>a. SGP (White)</p>
+                    <p className="p-flush">Apply for fluid (Oil, Air and Coolant)</p>
                   </div>
-                  <p className="p-flush"><strong>Red = SGP White</strong> (Fluid)</p>
-                  <p className="p-flush"><strong>Red Colored Pipes are </strong> <span style={{ color: '#e41717ff' }}>SGP (White) Pipes</span></p>
-                  <p>ex. Pipes for cutting Outfitting</p>
-
-                  <br />
-                  <br />
-                  <div>
-                    <img src={sgpPipesYellow} alt="SGP Black (Yellow) Pipes" className="software-screenshot screenshot-medium" />
-
+                  <div className="flex-1">
+                    <p className="text-highlight" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>b. SGP (Black)</p>
+                    <p className="p-flush">Apply for structural</p>
                   </div>
-                  <p className="p-flush"><strong>Yellow = SGP Black</strong> (Structural)</p>
-                  <span><p className="p-flush"><strong>Yellow Colored Pipes are </strong> <span style={{ color: '#e41717ff' }}>SGP (Black) Pipes</span></p> </span>
-                  <p>ex. Hand Rails</p>
+                </div>
+                <div className="instruction-box mt-4">
+                  <p>These two types of SGP Pipes will be added on iCAD Material List and must be strictly applied on all the drawings to avoid mistakes on purchasing of pipes. This means, we need to identify the 2 types of pipes separately. We will apply it on 3D modeling and 2D detailing of parts.</p>
+                </div>
+                <p className="p-flush mt-4">In spite of having distinction of White and Black, it does not mean that we also apply it on the 3D Modeling. The color that we will apply on SGP Pipes will based on its usage and application. We must not be confused about the color of SGP Pipes.</p>
+
+                <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                  <div className="flex-1">
+                    <div className="screenshot-wrapper">
+                      <img src={sgpPipesRed} alt="SGP White (Red) Pipes" className="software-screenshot screenshot-large" />
+                    </div>
+                    <div className="mt-4">
+                      <p><strong>Red = SGP White</strong> (Fluid)</p>
+                      <p><em>ex. Pipes for cutting Outfitting</em></p>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="screenshot-wrapper">
+                      <img src={sgpPipesYellow} alt="SGP Black (Yellow) Pipes" className="software-screenshot screenshot-medium" />
+                    </div>
+                    <div className="mt-4">
+                      <p><strong>Yellow = SGP Black</strong> (Structural)</p>
+                      <p><em>ex. Hand Rails</em></p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

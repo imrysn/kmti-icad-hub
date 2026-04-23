@@ -23,7 +23,7 @@ interface ToolbarExplorerProps {
   toolbars: ToolbarItem[];
 }
 
-const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({ toolbars , nextLabel }) => {
+const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({ toolbars, nextLabel }) => {
   const [selectedId, setSelectedId] = useState<string>(toolbars[0]?.id || "");
   const containerRef = useRef<HTMLDivElement>(null);
 

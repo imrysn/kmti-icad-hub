@@ -56,11 +56,9 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
         <p className="p-flush">
           Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling.
         </p>
-        <p className="step-label">These following tools are used to detect interferences on the 3D Modeling.</p>
-        <div>
-          <div>
-            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
-          </div>
+        <p className="lesson-subtitle mt-4">These following tools are used to detect interferences on the 3D Modeling.</p>
+        <div className="screenshot-wrapper mt-4">
+          <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
         </div>
       </section>
 
@@ -70,31 +68,31 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             <h4>Interference Check Tool</h4>
           </div>
 
-          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`} style={{ marginTop: "-4rem" }}>
+          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">1</span>
               <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
             </div>
             <div className="step-description">
-              <div >
+              <div className="screenshot-wrapper">
                 <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" style={{ height: '200px', width: '270px' }} />
               </div>
             </div>
           </div>
 
-          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: "-3rem" }}>
+          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">2</span>
               <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
             </div>
             <div className="step-description">
-              <div>
+              <div className="screenshot-wrapper">
                 <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" style={{ height: '270px', width: '780px' }} />
               </div>
             </div>
           </div>
 
-          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: "-4rem" }}>
+          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">3</span>
               <span className="step-label">
@@ -103,24 +101,20 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               </span>
             </div>
             <div className="step-description">
-              <p className="step-label">A dialog box will appear showing the number of detected interferences.</p>
-              <div>
+              <p className="p">A dialog box will appear showing the number of detected interferences.</p>
+              <div className="screenshot-wrapper mt-4">
                 <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
               </div>
-              <div className="info-box">
-                <div className="step-header">
-                  <span className="step-label">
-                    <strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.
-                  </span>
-                </div>
+              <div className="info-box mt-4">
+                <p className="p-flush"><strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.</p>
               </div>
             </div>
           </div>
 
-          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: "-4rem" }}>
+          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">4</span>
-              <span className="step-label" style={{ marginTop: "1.3rem" }}>
+              <span className="step-label">
                 Analyze possible countermeasures to remove the interference on the parts. To remove the red CGS solid, use Undo or Ctrl+Z
               </span>
             </div>
@@ -128,14 +122,14 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className="instruction-box" style={{ marginTop: "-4rem" }}>
-            <p className="step-label"><strong>Tool use to display the list of all detected interferences.</strong></p>
-            <div>
-              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '180px', marginTop: "1rem" }} />
+          <div className="instruction-box">
+            <p className="p-flush"><strong>Tool used to display the list of all detected interferences.</strong></p>
+            <div className="screenshot-wrapper mt-4">
+              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
             </div>
           </div>
 
-          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`} style={{ marginTop: "-3rem" }}>
+          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">1</span>
               <span className="step-label">
@@ -145,13 +139,13 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`} style={{ marginTop: "-5rem" }} >
+          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">2</span>
               <span className="step-label">The List Display window will appear showing all interfering parts.</span>
             </div>
             <div className="step-description">
-              <div>
+              <div className="screenshot-wrapper">
                 <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" style={{ width: '700px' }} />
               </div>
             </div>

@@ -63,11 +63,14 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
         </h3>
         <p className="p-flush">{isMirrored1 ? "Based on KEMCO Standard" : ""}</p>
       </section>
-
       <div className="lesson-grid single-card">
-        <div className="lesson-card">
+        <div className="lesson-card tab-content">
           {isMirrored1 ? (
             <div className="tab-pane fade-in">
+              <div className="card-header">
+                <h4>MIRRORED PARTS (1)</h4>
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrored1Steps)} onStop={stop} />
+              </div>
               <div className={`${getStepClass("mp1-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
@@ -78,15 +81,11 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <p className="p-flush">Normal parts have drawing number with <strong className="text-highlight">N</strong>.</p>
                   <div className="drawing-number-box">RTXXXXXX<strong>N</strong>01</div>
                   <p className="p-flush">Here is an example of a normal part.</p>
-                  <div className="flex-row-center">
-                    <div>
-                      <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-medium" style={{ width: '700px' }} />
-                    </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-medium" style={{ width: '700px' }} />
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider" />
 
               <div className={`${getStepClass("mp1-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
@@ -96,24 +95,21 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 <div className="step-description">
                   <p className="p-flush">Parts that are symmetrically the same.</p>
                   <p className="p-flush">Mirror parts have drawing number with <strong className="text-highlight">A</strong> and <strong className="text-highlight">B</strong>.</p>
-                  <div className="flex-column">
+                  <div className="flex-column gap-2 mt-4">
                     <div className="drawing-number-box">RTXXXXX<strong>A</strong>01</div>
                     <div className="drawing-number-box">RTXXXXX<strong>B</strong>01</div>
                   </div>
-                  <ul className="interaction-list--plain" style={{ marginTop: '1rem' }}>
+                  <ul className="interaction-list--plain mt-4">
                     <li>Mirror Parts <strong className="text-highlight">A</strong> are the original part.</li>
                     <li>Mirror Parts <strong className="text-highlight">B</strong> are the mirror copy of Mirror Parts A.</li>
                     <li>Mirror Parts B cannot exist without Mirror Parts A.</li>
                   </ul>
-                  <p className="p-flush" style={{ marginTop: '1rem' }}><strong>Note:</strong> If there are no existing part to be mirrored, use <strong>A</strong> when naming the part.</p>
-                  <br />
-                  <div>
+                  <p className="p-flush mt-4"><strong>Note:</strong> If there are no existing part to be mirrored, use <strong>A</strong> when naming the part.</p>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot screenshot-large" style={{ width: '700px' }} />
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider" />
 
               <div className={`${getStepClass("mp1-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
@@ -121,19 +117,19 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <span className="step-label">Use Mirror copy tool on the icon menu.</span>
                 </div>
                 <div className="step-description">
-                  <div>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" style={{ height: '80px' }} />
                   </div>
-                  <div className="info-box">
+                  <div className="info-box mt-4">
                     <p className="p-flush"><strong>Place mirror copy over the original part.</strong></p>
-                    <ul className="interaction-list--plain">
+                    <ul className="interaction-list--plain mt-2">
                       <li>If there are no changes or the part details are all exactly the same, it is a Normal Part.</li>
                       <li>If there are changes that can be recognize like hole location, cutouts or fairings, it is a Mirror Part.</li>
                     </ul>
-                    <p className="p-flush" style={{ marginTop: '1rem' }}><strong>NOTE:</strong> Be careful in identifying parts because it affects drawing number assignment.</p>
-                    <p className="p-flush"><strong>NOTE:</strong> Watch for <strong>Mirror Image</strong> notes on reference drawings.</p>
+                    <p className="p-flush mt-4"><strong>NOTE:</strong> Be careful in identifying parts because it affects drawing number assignment.</p>
+                    <p className="p-flush mt-2"><strong>NOTE:</strong> Watch for <strong>Mirror Image</strong> notes on reference drawings.</p>
                   </div>
-                  <div>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot screenshot-small" style={{ height: '80px' }} />
                   </div>
                 </div>
@@ -141,55 +137,57 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
             </div>
           ) : (
             <div className="tab-pane fade-in">
-              <h4 className="section-title" style={{ marginRight: '645px' }}>Mirroring procedure</h4>
+              <div className="card-header">
+                <h4>MIRRORING PROCEDURE</h4>
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrored2Steps)} onStop={stop} />
+              </div>
               <div className={`${getStepClass("mp2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <span className="step-label">Identify the proper location of origin of the part.</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
                 </div>
               </div>
 
-              <div className={`${getStepClass("mp2-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: '1.5rem' }}>
+              <div className={`${getStepClass("mp2-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <span className="step-label">After doing 3D modeling of the part, Save it as <strong>Part A</strong></span>
                 </div>
               </div>
 
-              <div className={`${getStepClass("mp2-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: '1.5rem' }}>
+              <div className={`${getStepClass("mp2-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">In doing the 3D model of the mirror part, Part A must be saved to another file as Part B.</span>
                 </div>
               </div>
 
-              <div className={`${getStepClass("mp2-4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: '1.5rem' }}>
+              <div className={`${getStepClass("mp2-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">4</span>
                   <span className="step-label">Use mirror to convert the 3D Model of Part A to Part B.</span>
                 </div>
                 <div className="step-description">
-                  <div>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
                   </div>
-                  <br />
-                  <p className="p-flush">Pick 3 points consecutively from the Part, <strong>starting from the origin.</strong></p>
-                  <div>
+                  <p className="p-flush mt-4">Pick 3 points consecutively from the Part, <strong>starting from the origin.</strong></p>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot screenshot-medium" style={{ height: '350px', width: '500px' }} />
                   </div>
-                  <br />
-                  <p className="p-flush">After doing the command, this will be the outcome as Part B.</p>
-                  <div>
+                  <p className="p-flush mt-4">After doing the command, this will be the outcome as Part B.</p>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" style={{ height: '350px', width: '550px' }} />
                   </div>
-                  <p className="p-flush"><strong>Note:</strong> The <strong>Origin Part B</strong> must be at the <strong>same location as in Part A.</strong></p>
+                  <p className="p-flush mt-4"><strong>Note:</strong> The <strong>Origin Part B</strong> must be at the <strong>same location as in Part A.</strong></p>
                 </div>
               </div>
             </div>
           )}
+
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={onPrevLesson}>

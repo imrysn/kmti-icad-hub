@@ -432,7 +432,8 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                     <div className="info-box" style={{ marginTop: "2rem" }}>
                       <p className="p-flush red-text">
-                        <strong>Note:</strong> Be careful when choosing which line will be picked first because the center line is always base on L1. <br />
+                        <strong>Note:</strong> </p>
+                      <p>Be careful when choosing which line will be picked first because the center line is always base on L1. <br />
                         The standard properties for centerline are already applied of this command is used.
                       </p>
                     </div>

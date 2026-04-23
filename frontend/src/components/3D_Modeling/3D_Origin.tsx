@@ -94,14 +94,9 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
-          <span>Origin Control</span>
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA[activeTab].steps)}
-            onStop={stop}
-          />
-        </h3>
-        <p className="section-description">
-          Define and manage the origin point (0, 0, 0) for your 3D parts. The origin location is critical for orientation and alignment.
+        <h3 className="section-title">Origin</h3>
+        <p className="p-flush">
+          A point where the coordinates of the X, Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity.
         </p>
       </section>
 
@@ -111,50 +106,72 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
           <div className="tab-content-area">
             {activeTab === "projections" ? (
               <div className="tab-pane">
-                <p className={currentIndex === 0 ? "reading-active p-highlight" : "p"}>
-                  ORIGIN
-                </p>
-                <p className={currentIndex === 0 ? "reading-active p-highlight" : "p"}>
-                  A point where the coordinates of the X, Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity.
-                </p>
-                <p className={currentIndex === 1 ? "reading-active p-highlight" : "p"}>
-                  ※ The origin must be in the same position in 3D and 2D.
-                </p>
+                <div className="card-header">
+                  <h4>ORIGIN</h4>
+                  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA.projections.steps)} onStop={stop} />
+                </div>
                 <div>
+                  <p className={currentIndex === 0 ? "reading-active p-highlight" : "p"}>
+                    A point where the coordinates of the X, Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity.
+                  </p>
+                  <p className="red-text" style={{ marginBottom: "3rem" }}>
+                    ※ The origin must be in the same position in 3D and 2D.
+                  </p>
+                </div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-large" />
                 </div>
               </div>
             ) : (
               <div className="tab-pane">
                 <div className="card-header">
-                  <h4>Change 3D Part Layout </h4>
+                  <h4>CHANGE 3D PART LAYOUT</h4>
+                  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA.layout.steps)} onStop={stop} />
                 </div>
+                <p className="p-flush mb-4">Use this tool to set the location of origin</p>
+
                 <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
-                  <h3>Use this tool to set the location of origin</h3>
                   <div className="step-header">
-
-                    <div style={{ marginBottom: "0.8rem" }}>1. Select Change 3D Part layout from the icon menu.</div>
+                    <span className="step-number">1</span>
+                    <span className="step-label">Select <strong className="text-highlight">Change 3D Part layout</strong> from the icon menu.</span>
                   </div>
-                  <div>
-                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-medium" style={{ height: '200px' }} />
+                  <div className="step-description">
+                    <div className="screenshot-wrapper">
+                      <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-medium" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ marginBottom: "0.8rem" }}>2. Right-click to show the current location of the origin..</div>
-                <div style={{ marginBottom: "0.8rem" }}>3. Left-click on the desired new location point..</div>
-                <div style={{ marginBottom: "0.8rem" }}>4. Left-click on a 2nd point to set the X-axis.</div>
-                <div style={{ marginBottom: "0.8rem" }}>5. Left-click on a 3rd point to set the Y-axis. The XY-plane becomes the front view.</div>
+                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
+                  <div className="step-header">
+                    <span className="step-number">2</span>
+                    <span className="step-label">Right-click to show the current location of the origin.</span>
+                  </div>
+                </div>
 
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
+                  <div className="step-header">
+                    <span className="step-number">3</span>
+                    <span className="step-label">Left-click on the desired new location point.</span>
+                  </div>
+                </div>
 
+                <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}>
+                  <div className="step-header">
+                    <span className="step-number">4</span>
+                    <span className="step-label">Left-click on a 2nd point to set the X-axis.</span>
+                  </div>
+                </div>
 
                 <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`}>
-                  <div className="step-header" style={{ marginTop: "-2.5rem" }}>
-
-
+                  <div className="step-header">
+                    <span className="step-number">5</span>
+                    <span className="step-label">Left-click on a 3rd point to set the Y-axis. The XY-plane becomes the front view.</span>
                   </div>
-
-                  <div>
-                    <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-large" />
+                  <div className="step-description">
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-large" />
+                    </div>
                   </div>
                 </div>
               </div>

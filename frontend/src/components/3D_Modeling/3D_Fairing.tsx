@@ -83,18 +83,9 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
-          FAIRING
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (activeTab === 'chamfer') speak(chamferSteps);
-            else if (activeTab === 'fillet') speak(filletSteps);
-            else speak(shellSteps);
-          }}
-            onStop={stop}
-          />
-        </h3>
+        <h4 className="section-title">Fairing</h4>
         <div className="instruction-box">
-          <div>
+          <div className="screenshot-wrapper mt-4">
             <img src={chamferIcon} alt="Fairing Menu" className="software-screenshot screenshot-small" />
           </div>
         </div>
@@ -106,157 +97,156 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
           <div className="tab-content-area">
             {activeTab === 'chamfer' && (
               <div className="tab-pane fade-in">
-                <div className="card-header"><h4>CHAMFER</h4></div>
-                <span style={{ marginTop: "rem" }}>Use for creating chamfer dimensions.</span>
+                <div className="card-header">
+                  <h4>CHAMFER</h4>
+                  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(chamferSteps)} onStop={stop} />
+                </div>
+                <p className="p-flush">Use for creating chamfer dimensions.</p>
                 <div className={`${getStepClass('chamfer-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
                   <div className="step-header">
                     <span className="step-number">1</span>
                     <span className="step-label">Select <strong className="text-highlight">Chamfer edge</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <div>
+                    <div className="screenshot-wrapper">
                       <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot screenshot-medium" style={{ width: '250px' }} />
                     </div>
                   </div>
                 </div>
 
-                <div className={`${getStepClass('chamfer-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: '1.5rem' }}>
-                  <div className="step-header" style={{ marginTop: "-3rem" }}>
+                <div className={`${getStepClass('chamfer-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                  <div className="step-header">
                     <span className="step-number">2</span>
                     <span className="step-label">Specify chamfer length on the item entry.</span>
                   </div>
                   <div className="step-description">
-                    <div>
-                      <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-large" style={{ width: '550px' }} />
+                    <div className="screenshot-wrapper">
+                      <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
                 </div>
 
-                <div className={`${getStepClass('chamfer-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginTop: '1rem' }}>
-                  <div className="step-header" style={{ marginTop: "-3rem" }}>
+                <div className={`${getStepClass('chamfer-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+                  <div className="step-header">
                     <span className="step-number">3</span>
                     <span className="step-label">Select the edge of the entity to be chamfered &gt; <strong className="text-highlight">GO</strong>
-                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
-
+                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" /></span>
                   </div>
-                  <div className="step-description" style={{ paddingLeft: '2.5rem', marginTop: "-0.5rem" }}>
-                    <span className="p-flush">*Note: Several edges can be chamfered all at once.</span>
+                  <div className="step-description">
+                    <p className="text-caption">*Note: Several edges can be chamfered all at once.</p>
                   </div>
                 </div>
                 <br />
 
-                <div className="section-divider"></div>
-                <div className="tool-block" style={{ marginTop: '-0.5rem', marginRight: '20rem' }}>
-                  <h4 className="section-title" style={{ textAlign: "left", marginBottom: "2rem", marginRight: "30rem" }}>RESULT</h4>
-
-                  <div>
+                <div className="tool-block">
+                  <h4 className="section-title">RESULT</h4>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={chamferResult2} alt="Chamfer Additional Result" className="software-screenshot screenshot-large" />
                   </div>
                 </div>
               </div>
-
             )}
 
             {activeTab === 'fillet' && (
               <div className="tab-pane fade-in">
-                <div className="card-header"><h4>FILLET</h4></div>
-                <span style={{ marginTop: "0rem" }}>Use for rounding specified corners.</span>
+                <div className="card-header">
+                  <h4>FILLET</h4>
+                  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(filletSteps)} onStop={stop} />
+                </div>
+                <p className="p-flush">Use for rounding specified corners.</p>
                 <div className={`${getStepClass('fillet-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header" style={{ marginTop: "-1rem" }}>
+                  <div className="step-header">
                     <span className="step-number">1</span>
                     <span className="step-label">Select <strong className="text-highlight">Fillet edge</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <div>
+                    <div className="screenshot-wrapper">
                       <img src={filletIcon} alt="Fillet Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
                     </div>
                   </div>
                 </div>
 
-                <div className={`${getStepClass('fillet-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: '1.5rem' }}>
-                  <div className="step-header" style={{ marginTop: "-3rem" }}>
+                <div className={`${getStepClass('fillet-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                  <div className="step-header">
                     <span className="step-number">2</span>
                     <span className="step-label">Specify fillet radius on the item entry.</span>
                   </div>
                   <div className="step-description">
-                    <div>
+                    <div className="screenshot-wrapper">
                       <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot screenshot-large" style={{ width: "30rem" }} />
                     </div>
                   </div>
                 </div>
 
-                <div className={`${getStepClass('fillet-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginTop: '-1.5rem' }}>
+                <div className={`${getStepClass('fillet-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
                   <div className="step-header">
                     <span className="step-number">3</span>
                     <span className="step-label">Select the edge of the entity to be fillet &gt; <strong className="text-highlight">GO</strong>
                       <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
                   </div>
-                  <div className="step-description" style={{ paddingLeft: '2.5rem', marginTop: "-0.5rem" }}>
-                    <span className="p-flush">*Note: Several edges can be fillet all at once.</span>
+                  <div className="step-description">
+                    <p className="text-caption">*Note: Several edges can be fillet all at once.</p>
                   </div>
                 </div>
 
-                <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title" style={{ textAlign: "left", marginBottom: "2rem", marginRight: "50rem" }}>RESULT</h4>
-                  <div className="flex-row-center--wrap">
-                    <div>
-                      <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" style={{ width: '360px' }} />
-                    </div>
+                  <h4 className="section-title">RESULT</h4>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" style={{ width: '360px' }} />
                   </div>
                 </div>
               </div>
             )}
 
             {activeTab === 'shell' && (
-              <div className="tab-pane fade-in" style={{ marginTop: "0.5rem" }}>
-                <div className="card-header"><h4>SHELL</h4></div>
-                <span style={{ marginTop: "0rem" }}>Use for hollowing solid entities using the specified wall thickness.</span>
+              <div className="tab-pane fade-in">
+                <div className="card-header">
+                  <h4>SHELL</h4>
+                  <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(shellSteps)} onStop={stop} />
+                </div>
+                <p className="p-flush">Use for hollowing solid entities using the specified wall thickness.</p>
                 <div className={`${getStepClass('shell-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
                   <div className="step-header">
                     <span className="step-number">1</span>
                     <span className="step-label">Select <strong className="text-highlight">Shell</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
-                    <div>
+                    <div className="screenshot-wrapper">
                       <img src={shellIcon} alt="Shell Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
                     </div>
                   </div>
                 </div>
 
-                <div className={`${getStepClass('shell-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: '-2rem' }}>
+                <div className={`${getStepClass('shell-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
                   <div className="step-header">
                     <span className="step-number">2</span>
                     <span className="step-label">Select the two endfaces of the solid entity &gt; <strong className="text-highlight">GO</strong>
                       <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
                   </div>
                   <div className="step-description">
-                    <div >
+                    <div className="screenshot-wrapper mt-4">
                       <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" style={{ width: '500px' }} />
                     </div>
                   </div>
                 </div>
 
-                <div className={`${getStepClass('shell-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginTop: '1.5rem' }}>
-                  <div className="step-header" style={{ marginTop: "-3rem" }}>
+                <div className={`${getStepClass('shell-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+                  <div className="step-header">
                     <span className="step-number">3</span>
                     <span className="step-label">Specify thickness on item entry &gt; double <strong className="text-highlight">GO</strong>
                       <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
                   </div>
                   <div className="step-description">
-                    <div >
+                    <div className="screenshot-wrapper mt-4">
                       <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
                     </div>
                   </div>
                 </div>
 
-                <div className="section-divider"></div>
                 <div className="tool-block">
-                  <h4 className="section-title" style={{ textAlign: "left", marginBottom: "2rem", marginRight: "50rem", marginTop: "2rem" }}>RESULT</h4>
-                  <div className="flex-row-center--wrap">
-                    <div>
-                      <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" style={{ width: '490px' }} />
-                    </div>
+                  <h4 className="section-title">RESULT</h4>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" style={{ width: '490px' }} />
                   </div>
                 </div>
               </div>

@@ -82,7 +82,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
         </h3>
         <p className="p-flush">{currentLesson.description}</p>
         <div className="instruction-box">
-          <div>
+          <div className="screenshot-wrapper mt-4">
             <img src={subLessonId === '3d-part-1' ? partMenu1 : partMenu2} alt="3D Part Menu" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
           </div>
         </div>
@@ -92,39 +92,39 @@ const PartLesson: React.FC<PartLessonProps> = ({
         <div className="lesson-card">
           {subLessonId === '3d-part-1' && (
             <div className="tab-pane fade-in">
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <span className="step-label">Select <strong>Create 3D Part</strong> from the icon menu.</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <span className="step-label">Select a single entity &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginTop: "-2.5rem" }}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" style={{ width: "800px" }} />
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">4</span>
                   <span className="step-label">The created 3D Part will appear in the tree view.</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '300px' }} />
                 </div>
               </div>
@@ -136,7 +136,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-number"><Info size={16} /></span>
                   <span className="step-label">Material Description</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" style={{ height: '350px', width: '1200px' }} />
                 </div>
               </div>
@@ -145,39 +145,39 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
           {subLessonId === '3d-part-2' && (
             <div className="tab-pane fade-in">
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <span className="step-label">Select <strong>Change 3D Part Name</strong> from the icon menu.</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <span className="step-label">Select an entity or Right-click on the 3D Space.</span>
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" style={{ width: '800px' }} />
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
                 <div className="step-header">
                   <span className="step-number">4</span>
                   <span className="step-label">Update both 3D and 2D names automatically by selecting <strong>Yes</strong>.</span>
                 </div>
-                <div>
+                <div className="screenshot-wrapper mt-4">
                   <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" style={{ width: '800px' }} />
                 </div>
               </div>

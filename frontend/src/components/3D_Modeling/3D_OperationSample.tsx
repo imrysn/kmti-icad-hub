@@ -154,16 +154,11 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
     <div className="course-lesson-container" ref={containerRef}>
       {/* Sticky Progress Bar */}
-
       <div className="lesson-progress-container">
-
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-
       </div>
-
       <section className="lesson-intro">
-
-        <h3 className="section-title">
+        <h4 className="section-title">
           {isSample1 ? 'Operation sample (1)' : isSample2 ? 'Operation sample (2)' : isSample3 ? 'Operation sample (3)' : isSample4 ? 'Operation sample (4)' : 'Operation sample (5)'}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             if (isSample1) speak(opSample1Steps);
@@ -174,869 +169,440 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
           }}
             onStop={stop}
           />
-        </h3>
+        </h4>
         {isSample1 ? (
-
-          <div className="instruction-box" /* sanitized: marginTop: '1.5rem' */>
-
-            <div>
-
+          <div className="instruction-box">
+            <div className="screenshot-wrapper mt-4">
               <img src={mainDrawing} alt="3D Modeling Samples" className="software-screenshot screenshot-wide" />
-
             </div>
-
           </div>
-        ) : isSample2 ? (
-
-          <p className="p-flush">
-
-          </p>
         ) : (
-
-          <div className="instruction-box" /* sanitized: marginTop: '1.5rem' */> <h4 className="section-title" style={{ marginRight: '42px' }}>3D Modeling Using 2D Sketch, Key Groove, Retainer Ring Groove</h4>
-
-            <div style={{ marginTop: '1.5rem' }}>
+          <div className="instruction-box">
+            <h4 className="section-title">3D Modeling Using 2D Sketch, Key Groove, Retainer Ring Groove</h4>
+            <div className="screenshot-wrapper mt-4">
               <img src={isSample4 ? mainDrawing4 : mainDrawing3} alt={isSample4 ? "Sample 4 Technical Drawing" : "Sample 3 Technical Drawing"} className="software-screenshot screenshot-wide" />
-
             </div>
-
-            <p className="p-flush">Let us try this drawing for example:
-            </p>
-
+            <p className="p-flush mt-4">Let us try this drawing for example:</p>
           </div>
         )}
-
       </section>
 
       <div className="lesson-grid single-card">
-
-        <div className="lesson-card">
+        <div className="lesson-card tab-content">
           {isSample1 ? (
-
-            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '240px' }}>Here is the step-by-step procedure of creating 3d model</h4>
-              {/* STEP 1 */}
-
+            <div className="tab-pane">
+              <div className="card-header">
+                <h4>STEP-BY-STEP PROCEDURE</h4>
+              </div>
               <div className={`${getStepClass('s1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-
-                <div className="step-header"> <span className="step-number">
-                  1 </span> <span className="step-label">Open a new drawing: Go to <strong className="text-highlight">File &gt; New</strong></span>
-
+                <div className="step-header">
+                  <span className="step-number">1</span>
+                  <span className="step-label">Open a new drawing: Go to <strong className="text-highlight">File &gt; New</strong></span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <p className="p-flush">Save the drawing: <strong className="text-highlight">File &gt; Save As</strong> &gt; Use drawing number as File Name &gt; Press <strong className="text-highlight">Save</strong>.
-                  </p>
-
-                  <p className="p-flush">*Check
-
-                    if Normal or Mirror Part (See page 37)
-                  </p>
-
+                <div className="step-description">
+                  <p className="p-flush">Save the drawing: <strong className="text-highlight">File &gt; Save As</strong> &gt; Use drawing number as File Name &gt; Press <strong className="text-highlight">Save</strong>.</p>
+                  <p className="text-caption mt-2">*Check if Normal or Mirror Part</p>
                 </div>
-
               </div>
+
               {/* STEP 2 */}
-
               <div className={`${getStepClass('s1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-
-                <div className="step-header"> <span className="step-number">
-                  2 </span> <span className="step-label">Arrange Box</span>
-
+                <div className="step-header">
+                  <span className="step-number">2</span>
+                  <span className="step-label">Arrange Box</span>
                 </div>
-
-                <div className="flex-row-center--wrap">
-
-                  <div>
-
-                    <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
-
+                <div className="step-description">
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot screenshot-medium" style={{ width: '400px' }} />
                   </div>
-
-                  <div className="step-description">
-
-                    <p className="p-flush"><strong>INPUT:</strong>
-                    </p> <ul className="interaction-list--plain"> <li>Depth = <strong className="text-highlight">16mm</strong></li> <li>Width = <strong className="text-highlight">100mm</strong></li> <li>Height = <strong className="text-highlight">210mm</strong></li> <li>Coordinates <strong className="text-highlight">(0,0,0)</strong></li> </ul>
-
+                  <div className="info-box mt-4">
+                    <p className="p-flush"><strong>INPUT:</strong></p>
+                    <ul className="interaction-list--plain mt-2">
+                      <li>Depth = <strong className="text-highlight">16mm</strong></li>
+                      <li>Width = <strong className="text-highlight">100mm</strong></li>
+                      <li>Height = <strong className="text-highlight">210mm</strong></li>
+                      <li>Coordinates <strong className="text-highlight">(0,0,0)</strong></li>
+                    </ul>
                   </div>
-
                 </div>
-
               </div>
+
               {/* STEP 3 */}
-
               <div className={`${getStepClass('s1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-
-                <div className="step-header"> <span className="step-number">
-                  3 </span> <span className="step-label">Select and Arrange Machine Part</span>
-
+                <div className="step-header">
+                  <span className="step-number">3</span>
+                  <span className="step-label">Select and Arrange Machine Part</span>
                 </div>
-
-                <div /* sanitized: paddingLeft: '2.5rem' */>
-
+                <div className="screenshot-wrapper mt-4">
                   <img src={machinePartTool} alt="Select and Arrange Machine Part" className="software-screenshot screenshot-large" />
-
                 </div>
-
               </div>
+
               {/* STEP 4 */}
-
               <div className={`${getStepClass('s1-4')} ${currentIndex === 3 ? 'reading-active' : ''}`}>
-
-                <div className="step-header"> <span className="step-number">
-                  4 </span> <span className="step-label">Point the hole on the face where the hole is located.</span>
-
+                <div className="step-header">
+                  <span className="step-number">4</span>
+                  <span className="step-label">Point the hole on the target face.</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <div className="flex-row-center">
-
-                        <p className="p-flush">Press <strong className="text-highlight">無変換 + Q</strong> to make the tool change its orientation.
-                        </p>
-
-                      </div>
-
-                      <div className="flex-row-center">
-
-                        <p className="p-flush">Click on the center
-
-                          <img src={centerTool} alt="Center Tool" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-                        </p>
-
-                      </div>
-
-                      <div className="flex-row-center">
-
-                        <p className="p-flush">Left-click on the selected point &gt; <strong className="text-highlight">GO</strong>
-                          <img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-                        </p>
-                      </div>
-                      <br />
-                    </div>
-
-                    <div>
-
-                      <img src={opSample1} alt="Operation Sample 1 Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '400px' }} />
-
-                    </div>
-
+                <div className="step-description">
+                  <ul className="interaction-list--plain mt-4">
+                    <li>Press <strong className="text-highlight">無変換 + Q</strong> to change orientation.</li>
+                    <li>Click on the center point <img src={centerTool} alt="Center Tool" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></li>
+                    <li>Left-click &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left Click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></li>
+                  </ul>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={opSample1} alt="Operation Sample 1 Result" className="software-screenshot screenshot-medium" style={{ width: '400px' }} />
                   </div>
-
                 </div>
-
               </div>
+
               {/* STEP 5 */}
-
               <div className={`${getStepClass('s1-5')} ${currentIndex === 4 ? 'reading-active' : ''}`}>
-
-                <div className="step-header"> <span className="step-number">
-                  5 </span> <span className="step-label">Select the hole component &gt; <strong className="text-highlight">GO</strong>. Move it to the specified location.</span>
-
+                <div className="step-header">
+                  <span className="step-number">5</span>
+                  <span className="step-label">Move to the specified location.</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div>
-
-                      <img src={moveTool} alt="Move Component Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-
-                    </div>
-
-                    <div /* sanitized: flex: 1 */>
-                      <br />
-                      <p className="p-flush"><strong>INPUT:</strong>
-                      </p> <ul className="interaction-list"> <li>MOVELENGX = <strong className="text-highlight">0</strong></li> <li>MOVELENGY = <strong className="text-highlight">183mm</strong></li> <li>MOVELENGZ = <strong className="text-highlight">0</strong></li> </ul>
-
-                    </div>
-
-                    <div>
-
-                      <img src={opSample1Move} alt="Move Component Result" className="software-screenshot screenshot-small" style={{ marginLeft: '1rem', width: '150px' }} />
-
-                    </div>
-
+                <div className="step-description">
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={moveTool} alt="Move Component Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
-
+                  <div className="info-box mt-4">
+                    <p className="p-flush"><strong>INPUT:</strong></p>
+                    <ul className="interaction-list mt-2">
+                      <li>MOVELENGX = <strong className="text-highlight">0</strong></li>
+                      <li>MOVELENGY = <strong className="text-highlight">183mm</strong></li>
+                      <li>MOVELENGZ = <strong className="text-highlight">0</strong></li>
+                    </ul>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={opSample1Move} alt="Move Component Result" className="software-screenshot screenshot-small" style={{ width: '150px' }} />
+                  </div>
                 </div>
-
               </div>
-
             </div>
           ) : subLessonId === 'op-sample-2' ? (
-
-            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '510px' }}>Samples of 3d modeling of parts</h4>
-              {/* STEP 6 */}
-
+            <div className="tab-pane">
+              <div className="card-header">
+                <h4>SAMPLES OF 3D MODELING</h4>
+              </div>
               <div className={getStepClass('s2-6')}>
-
-                <div className="step-header"> <span className="step-number">
-                  6 </span> <span className="step-label">For making long hole details, first create a tool entity.</span>
-
+                <div className="step-header">
+                  <span className="step-number">6</span>
+                  <span className="step-label">Create a tool entity for long hole details.</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <p className="p-flush"><strong>Arrange Box</strong>
-                      </p>
-
-                      <p className="p-flush"><strong>INPUT:</strong>
-                      </p> <ul className="interaction-list"> <li>Depth = <strong className="text-highlight">16mm</strong></li> <li>Width = <strong className="text-highlight">14mm</strong></li> <li>Height = <strong className="text-highlight">38mm</strong></li> </ul>
-
-                      <p className="p-flush">Position the tool entity on the location to be cut then use <strong className="text-highlight">Subtract</strong>.
-                      </p>
-                      <br />
-                    </div>
-
-                    <div>
-
-                      <img src={subtractResult} alt="Subtract Result" className="software-screenshot screenshot-large" style={{ marginLeft: '4rem', width: '560px' }} />
-
-                    </div>
-
+                <div className="step-description">
+                  <div className="info-box mt-4">
+                    <p className="p-flush"><strong>Arrange Box INPUT:</strong></p>
+                    <ul className="interaction-list mt-2">
+                      <li>Depth = <strong className="text-highlight">16mm</strong></li>
+                      <li>Width = <strong className="text-highlight">14mm</strong></li>
+                      <li>Height = <strong className="text-highlight">38mm</strong></li>
+                    </ul>
+                    <p className="p-flush mt-4">Position and use <strong className="text-highlight">Subtract</strong>.</p>
                   </div>
-
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={subtractResult} alt="Subtract Result" className="software-screenshot screenshot-large" style={{ width: '560px' }} />
+                  </div>
                 </div>
-
               </div>
+
               {/* STEP 7 */}
-
               <div className={getStepClass('s2-7')}>
-
-                <div className="step-header"> <span className="step-number">
-                  7 </span> <span className="step-label">Fillet Edge</span>
-
+                <div className="step-header">
+                  <span className="step-number">7</span>
+                  <span className="step-label">Fillet Edge</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <div>
-
-                        <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" style={{ height: '230px' }} />
-
-                      </div>
-
-                      <p className="p-flush">Set Radius = <strong className="text-highlight"> 7mm</strong>
-                      </p>
-
-                      <p className="p-flush">Pick all the edges to be filleted &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-                      </p>
-                      <br />
-                    </div>
-
-                    <div>
-
-                      <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" style={{ marginLeft: '1rem', width: '650px' }} />
-
-                    </div>
-
+                <div className="step-description">
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={filletTool} alt="Fillet Tool" className="software-screenshot screenshot-small" style={{ height: '230px' }} />
                   </div>
-
+                  <div className="info-box mt-4">
+                    <p className="p-flush">Set Radius = <strong className="text-highlight"> 7mm</strong></p>
+                    <p className="p-flush">Pick all the edges &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></p>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
+                  </div>
                 </div>
-
               </div>
+
               {/* STEP 8 */}
-
               <div className={getStepClass('s2-8')}>
-
-                <div className="step-header"> <span className="step-number">
-                  8 </span> <span className="step-label">Copy Component</span>
-
+                <div className="step-header">
+                  <span className="step-number">8</span>
+                  <span className="step-label">Copy Component</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <div>
-
-                        <img src={copyTool} alt="Copy Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-
-                      </div>
-                      <br />
-                      <br />
-                    </div>
-
-                    <div>
-
-                      <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ marginLeft: '1rem', width: '750px' }} />
-
-                    </div>
-
+                <div className="step-description">
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={copyTool} alt="Copy Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
-
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ width: '750px' }} />
+                  </div>
                 </div>
-
               </div>
+
               {/* STEP 9 */}
-
               <div className={getStepClass('s2-9')}>
-
-                <div className="step-header"> <span className="step-number">
-                  9 </span> <span className="step-label">Chamfer Edge</span>
-
+                <div className="step-header">
+                  <span className="step-number">9</span>
+                  <span className="step-label">Chamfer Edge</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <div>
-
-                        <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-
-                      </div>
-
-                      <p className="p-flush">Set Chamfer Length = <strong className="text-highlight">20mm</strong>
-                      </p>
-
-                      <p className="p-flush">Select all edges to be chamfered &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-                      </p>
-
-                    </div>
-
-                    <div>
-
-                      <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-small" style={{ marginLeft: '1rem', width: '160px' }} />
-
-                    </div>
-
+                <div className="step-description">
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
-
+                  <div className="info-box mt-4">
+                    <p className="p-flush">Set Chamfer Length = <strong className="text-highlight">20mm</strong></p>
+                    <p className="p-flush">Select all edges &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></p>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={chamferResult} alt="Chamfer Result" className="software-screenshot screenshot-small" style={{ width: '160px' }} />
+                  </div>
                 </div>
-
               </div>
+
               {/* STEP 10 */}
-
               <div className={getStepClass('s2-10')}>
-
-                <div className="step-header"> <span className="step-number">
-                  10 </span> <span className="step-label">Create 3D Part Name</span>
-
+                <div className="step-header">
+                  <span className="step-number">10</span>
+                  <span className="step-label">Create 3D Part Name</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <div>
-
-                        <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-
-                      </div>
-
-                      <p className='p-flush'>Select the entity &gt; <strong className="text-highlight">GO</strong>
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-                      </p>
-
-                      <p className='p-flush'>Enter the 3D Part Name
-                      </p>
-
-                    </div>
-
-                    <div>
-
-                      <img src={enterPartName} alt="Enter Part Name" className="software-screenshot screenshot-meduim" style={{ height: '400px', width: '400px' }} />
-
-                    </div>
-
+                <div className="step-description">
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={createPartTool} alt="Create Part Tool" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
                   </div>
-
+                  <div className="info-box mt-4">
+                    <p className='p-flush'>Select entity &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></p>
+                    <p className='p-flush mt-2'>Enter the 3D Part Name</p>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={enterPartName} alt="Enter Part Name" className="software-screenshot screenshot-meduim" style={{ height: '400px', width: '400px' }} />
+                  </div>
                 </div>
-
               </div>
+
               {/* STEP 11 */}
-
               <div className={getStepClass('s2-11')}>
-
-                <div className="step-header"> <span className="step-number">
-                  11 </span> <span className="step-label">Check properties of Top 3D Part</span>
-
+                <div className="step-header">
+                  <span className="step-number">11</span>
+                  <span className="step-label">Check properties of Top 3D Part</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div>
-
-                      <img src={propertiesWindow} alt="Properties Window" className="software-screenshot screenshot-meduim" style={{ width: '695px', height: '300px' }} />
-
-                    </div>
-
-                  </div>
-
+                <div className="screenshot-wrapper mt-4">
+                  <img src={propertiesWindow} alt="Properties Window" className="software-screenshot screenshot-meduim" style={{ width: '695px', height: '300px' }} />
                 </div>
-
               </div>
+
               {/* STEP 12 */}
-
               <div className={getStepClass('s2-12')}>
-
-                <div className="step-header"> <span className="step-number">
-                  12 </span> <span className="step-label">Set all necessary information (Material, Layer, Color)</span>
-
+                <div className="step-header">
+                  <span className="step-number">12</span>
+                  <span className="step-label">Set all necessary information (Material, Layer, Color)</span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div className="flex-row-center--wrap">
-
-                    <div>
-
-                      <img src={layerInfo} alt="Layer Information" className="software-screenshot screenshot-large" />
-
-                    </div>
-
-                  </div>
-
+                <div className="screenshot-wrapper mt-4">
+                  <img src={layerInfo} alt="Layer Information" className="software-screenshot screenshot-large" />
                 </div>
-
               </div>
-              {/* STEP 13 */}
-
-              <div className={getStepClass('s2-13')}>
-
-                <div className="step-header"> <span className="step-number">
-                  13 </span> <span className="step-label">Save the file <strong className="text-highlight">File &gt; Save</strong></span>
-
-                </div>
-
-              </div>
-
             </div>
           ) : isSample3 ? (
-
-            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '240px' }}>Here is the step-by-step procedure of creating 3d model</h4>
-
+            <div className="tab-pane">
+              <div className="card-header">
+                <h4>STEP-BY-STEP PROCEDURE</h4>
+              </div>
               <div className={getStepClass('s3-1')}>
-
-                <div className="step-header"> <span className="step-number">
-                  1 </span> <span className="step-label">Open a new drawing: Go to <strong className="text-highlight">File &gt; New</strong></span>
-
+                <div className="step-header">
+                  <span className="step-number">1</span>
+                  <span className="step-label">Open a new drawing: Go to <strong className="text-highlight">File &gt; New</strong></span>
                 </div>
-
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <p className="p-flush">Save the drawing: <strong className="text-highlight">File &gt; Save As</strong> &gt; Use drawing number as File Name &gt; Press <strong className="text-highlight">Save</strong>.
-                  </p>
-
-                  <p className="p-flush">*Check
-
-                    if Normal or Mirror Part (See page 37)
-                  </p>
-
+                <div className="step-description">
+                  <p className="p-flush">Save the drawing: <strong className="text-highlight">File &gt; Save As</strong> &gt; Use drawing number as File Name &gt; Press <strong className="text-highlight">Save</strong>.</p>
+                  <p className="text-caption mt-2">*Check if Normal or Mirror Part</p>
                 </div>
-
               </div>
+
               {/* STEP 2 */}
-
-              <div className={getStepClass('s3-2')} style={{ marginTop: "-4rem" }}>
-
-                <div className="step-header"> <span className="step-number" style={{ marginTop: "1rem" }}>
-                  2 </span> <span className="step-label" style={{ marginTop: "2rem" }}>In order to create this part, it must be done by segments. Segments must be attach together after modeling.</span>
-
+              <div className={getStepClass('s3-2')}>
+                <div className="step-header">
+                  <span className="step-number">2</span>
+                  <span className="step-label">Create the part by segments and join them later.</span>
+                </div>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={segmentOverview} alt="Segments Overview" className="software-screenshot screenshot-wide" />
                 </div>
 
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div /* sanitized: marginTop: '1.5rem' */>
-
-                    <img src={segmentOverview} alt="Segments Overview" className="software-screenshot screenshot-wide" />
-
+                <div className="tool-block mt-8">
+                  <h4 className="section-title">Segment A</h4>
+                  <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong>. Create 3 cylinders and <strong className="text-highlight">[UNION]</strong>.</p>
+                  <div className="info-box mt-4">
+                    <ul className="interaction-list--plain">
+                      <li>Cylinder 1: <strong className="text-highlight">Dia=20mm, H=3.65mm (0,0,0)</strong></li>
+                      <li>Cylinder 2: <strong className="text-highlight">Dia=19mm, H=1.35mm</strong></li>
+                      <li>Cylinder 3: <strong className="text-highlight">Dia=20mm, H=64.5mm</strong></li>
+                    </ul>
                   </div>
-
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={segmentAResult} alt="Segment A Result" className="software-screenshot screenshot-large" />
+                  </div>
                 </div>
 
-                <div className="flex-row">
-                  {/* SEGMENT A */}
-
-                  <div > <h4 className="section-title" style={{ marginRight: '766px' }}>Segment A</h4>
-
-                    <div className="flex-row-center">
-
-                      <span className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong>
-                      </span>
-
-                    </div>
-
-                    <div className="flex-row-center">
-
-                      <span className="p-flush">Create 3 cylinders to make the retainer ring groove &gt; <strong className="text-highlight">[UNION]</strong>
-                      </span>
-
-                    </div> <ul className="interaction-list--plain"> <li>Cylinder 1: <strong className="text-highlight">Diameter = 20mm, Height = 3.65mm, Coordinates (0,0,0)</strong></li> <li>Cylinder 2: <strong className="text-highlight">Diameter = 19mm, Height = 1.35mm</strong></li> <li>Cylinder 3: <strong className="text-highlight">Diameter = 20mm, Height = 64.5mm</strong></li> </ul>
-
-                    <div className="flex-row-center">
-
-                      <div>
-
-                        <img src={segmentAResult} alt="Segment A Result" className="software-screenshot screenshot-large" />
-
-                      </div>
-
-                    </div>
-
+                <div className="tool-block mt-8">
+                  <h4 className="section-title">Segment B</h4>
+                  <p className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong> (Dia=30mm, H=22.25mm).</p>
+                  <p className="p-flush mt-2">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment A.</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" style={{ width: '330px' }} />
                   </div>
-                  {/* SEGMENT B */}
-
-                  <div > <h4 className="section-title" style={{ marginRight: '766px', marginTop: "1.5rem" }}>Segment B</h4>
-
-                    <div className="flex-row-center">
-
-                      <span className="p-flush">Use <strong className="text-highlight">Arrange Cylinder</strong>
-                      </span>
-
-                    </div>
-
-                    <p className="p-flush">INPUT:
-                    </p> <ul className="interaction-list--plain"> <li>Diameter = <strong className="text-highlight">30mm</strong></li> <li>Height = <strong className="text-highlight">22.25mm</strong></li> </ul>
-
-                    <div className="flex-row-center">
-
-                      <span className="p-flush">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment A
-                      </span>
-                      <br />
-                    </div>
-
-                    <div>
-
-                      <img src={segmentBResult} alt="Segment B Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '330px', marginTop: "1rem" }} />
-
-                    </div>
-
-                  </div>
-
                 </div>
-
               </div>
-
             </div>
           ) : isSample4 ? (
-
             <div className="tab-pane">
-
-              <div className={getStepClass('s4-1')} style={{ marginTop: "-2rem" }}>
-
-                <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment C</h4>
-
+              <div className={getStepClass('s4-1')}>
+                <div className="tool-block">
+                  <h4 className="section-title">Segment C</h4>
+                  <p className="p-flush">2D Sketch is recommended to get required dimensions precisely.</p>
+                  <p className="text-highlight mt-4" style={{ color: "red", fontWeight: "bold" }}>Open Work Plane</p>
+                  <p className="p-flush mt-2">Use <strong className="text-highlight">Center</strong> &gt; Place at end of Segment B.</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={workPlaneImg} alt="Open Work Plane" className="software-screenshot screenshot-small" style={{ width: '200px' }} />
+                  </div>
                 </div>
 
-                <div /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <span className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required dimensions precisely. dimensions enclosed in parentheses are close but not exact with the original dimension.
-                  </span>
-
-                  <div className="flex-row">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <p className="p-flush" style={{ color: "red", fontWeight: "bold", fontSize: "1.2rem" }}>Open Work Plane
-                      </p>
-
-                      <span className="p-flush">Use <strong className="text-highlight">Center</strong> &gt; Place at end of Segment B
-                      </span>
-
-                      <div>
-
-                        <img src={workPlaneImg} alt="Open Work Plane" className="software-screenshot screenshot-small" style={{ marginLeft: '0rem', width: '200px', marginTop: "1rem" }} />
-
-                      </div>
-
-                    </div>
-                    <br />
-                    <div /* sanitized: flex: 1 */>
-
-                      <span className="p-flush">Sketch half of segment C (For revolving)
-                      </span> <br />
-
-                      <span className="p-flush">*These are the dimensions that must be prioritized.
-                      </span>
-
-                      <div>
-
-                        <img src={sketchImg} alt="Sketch half of Segment C" className="software-screenshot screenshot-medium" style={{ marginLeft: '0rem', width: '400px', marginTop: "0.5rem" }} />
-
-                      </div>
-
-                    </div>
-
+                <div className="tool-block mt-8">
+                  <p className="p-flush">Sketch half of segment C (For revolving).</p>
+                  <p className="text-caption mt-2">*These are the dimensions that must be prioritized.</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={sketchImg} alt="Sketch half of Segment C" className="software-screenshot screenshot-medium" style={{ width: '400px' }} />
                   </div>
-                  <br /><br />
-
-                  <div className="flex-row-center">
-
-                    <div /* sanitized: flex: 1 */>
-
-                      <div className="step-header" style={{ marginLeft: "0rem" }}> <span className="step-label">Use <strong className="text-highlight">Revolve (2D &gt;&gt; 3D)</strong></span>
-
-                      </div>
-                      <br />
-                      <div>
-
-                        <img src={revolveImg} alt="Revolve Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '0rem', width: '300px', marginTop: "-1rem" }} />
-
-                      </div>
-
-                    </div>
-                    <br />
-                    <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment D</h4>
-
-                      <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Arrange Cylinder</strong></span>
-
-                      </div> <ul className="interaction-list--plain">
-
-                        <p className="p-flush">INPUT:
-                        </p> <li>Diameter = 20mm</li> <li>Height = 32.5mm</li> </ul>
-
-                      <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment C</span>
-
-                      </div>
-                      <br />
-                      <div>
-
-                        <img src={segmentDResult} alt="Segment D Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '350px' }} />
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
                 </div>
 
-              </div>
+                <div className="tool-block mt-8">
+                  <div className="step-header">
+                    <span className="step-label">Use <strong className="text-highlight">Revolve (2D &gt;&gt; 3D)</strong></span>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={revolveImg} alt="Revolve Result" className="software-screenshot screenshot-medium" style={{ width: '300px' }} />
+                  </div>
+                </div>
 
-              <div className="section-divider">
+                <div className="tool-block mt-8">
+                  <h4 className="section-title">Segment D</h4>
+                  <div className="step-header">
+                    <span className="step-label">Use <strong className="text-highlight">Arrange Cylinder</strong> (Dia=20mm, H=32.5mm).</span>
+                  </div>
+                  <div className="step-header mt-2">
+                    <span className="step-label">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment C.</span>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={segmentDResult} alt="Segment D Result" className="software-screenshot screenshot-medium" style={{ width: '350px' }} />
+                  </div>
+                </div>
               </div>
 
               <div className={getStepClass('s4-2')}>
-
-                <div > <h4 className="section-title" style={{ marginRight: '755px' }}>Segment E</h4>
-
-                </div>
-
-                <div className="step-description">
-
-                  <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Arrange Cylinder</strong></span>
-
-                  </div> <ul className="interaction-list--plain">
-
-                    <p className="p-flush">INPUT:
-                    </p> <li>Diameter = 20mm</li> <li>Height = 32.5mm</li> </ul>
-
-                  <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment D</span>
-
+                <div className="tool-block mt-8">
+                  <h4 className="section-title">Segment E</h4>
+                  <div className="step-header">
+                    <span className="step-label">Use <strong className="text-highlight">Arrange Cylinder</strong> (Dia=20mm, H=32.5mm).</span>
                   </div>
-
-                  <div>
-
-                    <img src={segmentEResult} alt="Segment E Result" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '350px' }} />
-
+                  <div className="step-header mt-2">
+                    <span className="step-label">Use <strong className="text-highlight">Center tool</strong> &gt; Attach to Segment D.</span>
                   </div>
-
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={segmentEResult} alt="Segment E Result" className="software-screenshot screenshot-medium" style={{ width: '350px' }} />
+                  </div>
                 </div>
-
               </div>
-
-              <div className="section-divider">
-              </div>
-              {/* JOIN ALL SEGMENTS */}
 
               <div className={getStepClass('s4-3')}>
-
-                <div className="step-header"> <span className="step-number">
-                  3 </span> <span className="step-label">JOIN ALL SEGMENTS &gt; Use UNION</span>
-
+                <div className="step-header">
+                  <span className="step-number">3</span>
+                  <span className="step-label">JOIN ALL SEGMENTS &gt; Use UNION</span>
                 </div>
-
               </div>
-
-              <div className="section-divider">
-              </div>
-              {/* FOR KEY GROOVE */}
 
               <div className={getStepClass('s4-4')}>
-
-                <div className="step-header"> <span className="step-number">
-                  4 </span> <span className="step-label">For Key Groove</span>
-
+                <div className="step-header">
+                  <span className="step-number">4</span>
+                  <span className="step-label">For Key Groove</span>
                 </div>
-
-                <div className="flex-row">
-
-                  <div /* sanitized: flex: 1 */>
-
-                    <div className="step-header"> <span className="step-label">Create the tool entity first</span>
-
-                    </div>
-
-                    <div className="step-header"> <span className="step-label">Use <strong className="text-highlight">Arrange Box</strong></span>
-
-                    </div> <ul className="interaction-list--plain">
-
-                      <p className="p-flush">INPUT:
-                      </p> <li>Depth = 6mm</li> <li>Width = 3.5mm</li> <li>Height = 43mm</li> </ul>
-
-                    <div>
-
-                      <img src={keyGrooveBox} alt="Key Groove Box Tool" className="software-screenshot screenshot-medium" style={{ marginLeft: '2rem', width: '350px' }} />
-
-                    </div>
-                    <br />
-                    <br />
-
+                <div className="step-description">
+                  <div className="info-box mt-4">
+                    <p className="p-flush"><strong>Create tool entity: Arrange Box</strong></p>
+                    <ul className="interaction-list--plain mt-2">
+                      <li>Depth = 6mm, Width = 3.5mm, Height = 43mm</li>
+                    </ul>
                   </div>
-
-                  <div /* sanitized: flex: 1 */>
-
-                    <div className="step-header">
-
-                    </div>
-
-                    <div>
-                      <span style={{ fontSize: '1.4rem', marginLeft: "3rem" }}>Position the tool entity </span>
-
-                      <img src={keyGroovePos} alt="Position the tool entity" className="software-screenshot screenshot-medium" style={{ marginLeft: '2rem', width: '600px' }} />
-
-                    </div>
-
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={keyGrooveBox} alt="Key Groove Box Tool" className="software-screenshot screenshot-medium" style={{ width: '350px' }} />
                   </div>
-
+                  <div className="screenshot-wrapper mt-8">
+                    <p className="p-flush">Position the tool entity</p>
+                    <img src={keyGroovePos} alt="Position the tool entity" className="software-screenshot screenshot-medium" style={{ width: '600px' }} />
+                  </div>
                 </div>
-
               </div>
-
             </div>
           ) : isSample5 ? (
-
-            <div className="tab-pane"> <h4 className="section-title" style={{ marginRight: '590px' }}>Final finishing operations</h4>
-              {/* STEP 5 */}
-
-              <div className={getStepClass('s5-5')}>
-
-                <div className="step-header"> <span className="step-number">
-                  5 </span> <span className="step-label">Subtract the tool entity</span>
-
-                </div>
-
-                <div className="flex-row">
-
-                  <div /* sanitized: flex: 1 */>
-
-                    <div className="step-header">
-
-                    </div>
-
-                    <div>
-
-                      <img src={keyGrooveSubtractResult} alt="Subtract Key Groove" className="software-screenshot screenshot-medium" style={{ marginLeft: '2rem', width: '350px' }} />
-
-                    </div>
-
-                  </div>
-
-                  <div /* sanitized: flex: 1 */>
-
-                    <div className="step-header"> <span className="step-label">Add Fillet on the key groove</span>
-
-                    </div>
-
-                    <div className="step-description">
-
-                      <p className="p-flush">INPUT: <strong className="text-highlight">Radius = 3mm</strong>
-                      </p>
-
-                    </div>
-
-                    <div>
-
-                      <img src={keyGrooveFilletResult} alt="Fillet Key Groove" className="software-screenshot screenshot-large" style={{ marginLeft: '1rem', width: '600px' }} />
-
-                    </div>
-
-                  </div>
-
-                </div>
-
+            <div className="tab-pane">
+              <div className="card-header">
+                <h4>FINAL FINISHING OPERATIONS</h4>
               </div>
-              {/* STEP 6 */}
+              <div className={getStepClass('s5-5')}>
+                <div className="step-header">
+                  <span className="step-number">5</span>
+                  <span className="step-label">Subtract the tool entity</span>
+                </div>
+                <div className="step-description">
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={keyGrooveSubtractResult} alt="Subtract Key Groove" className="software-screenshot screenshot-medium" style={{ width: '350px' }} />
+                  </div>
+                  <div className="info-box mt-8">
+                    <p className="p-flush"><strong>Add Fillet on key groove: Radius = 3mm</strong></p>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={keyGrooveFilletResult} alt="Fillet Key Groove" className="software-screenshot screenshot-large" style={{ width: '600px' }} />
+                  </div>
+                </div>
+              </div>
 
               <div className={getStepClass('s5-6')}>
-
-                <div className="step-header"> <span className="step-number">
-                  6 </span> <span className="step-label">Add all Fairings (Chamfer and Fillet)</span>
-
+                <div className="step-header">
+                  <span className="step-number">6</span>
+                  <span className="step-label">Add all Fairings (Chamfer and Fillet)</span>
                 </div>
-
-                <div>
-
-                  <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" style={{ marginLeft: '1rem', width: '350px' }} />
-
+                <div className="screenshot-wrapper mt-4">
+                  <img src={finalPartFairing} alt="Final Part Fairing" className="software-screenshot screenshot-medium" style={{ width: '350px' }} />
                 </div>
-
               </div>
 
               <div className={getStepClass('s5-7')}>
-
-                <div className="step-header"> <span className="step-number">
-                  7 </span> <span className="step-label">Create 3D Part Name</span>
-
+                <div className="step-header">
+                  <span className="step-number">7</span>
+                  <span className="step-label">Create 3D Part Name</span>
                 </div>
-
               </div>
-              {/* STEP 8 */}
 
               <div className={getStepClass('s5-8')}>
-
-                <div className="step-header"> <span className="step-number">
-                  8 </span> <span className="step-label">Check the properties of the Top 3D Part</span>
-
+                <div className="step-header">
+                  <span className="step-number">8</span>
+                  <span className="step-label">Check the properties of the Top 3D Part</span>
                 </div>
-
               </div>
-              {/* STEP 9 */}
 
               <div className={getStepClass('s5-9')}>
-
-                <div className="step-header"> <span className="step-number">
-                  9 </span> <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
-
+                <div className="step-header">
+                  <span className="step-number">9</span>
+                  <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
                 </div>
-
               </div>
 
               <div className={getStepClass('s5-10')}>
-
-                <div className="step-header"> <span className="step-number">
-                  10 </span> <span className="step-label">Go to <strong className="text-highlight">File &gt; Save</strong> to save the file.</span>
-
+                <div className="step-header">
+                  <span className="step-number">10</span>
+                  <span className="step-label">Go to <strong className="text-highlight">File &gt; Save</strong> to save the file.</span>
                 </div>
-
               </div>
-
             </div>
           ) : (
 

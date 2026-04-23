@@ -59,48 +59,51 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
+        <h4 className="section-title">
           {isPart1 ? 'Loading of parasolid' : 'Parasolid export & edit'}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? importSteps : editSteps)} onStop={stop} />
-        </h3>
+        </h4>
         {isPart1 && (
-          <>
-            <p className="p-flush">Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.</p>
-            <div className="instruction-box">
-              <div>
-                <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "16rem" }} />
-              </div>
+          <div className="instruction-box">
+            <p className="p-flush">Tools used to import and export parasolid data, and edit B-Rep solid. This tool is used for creating 3D Purchase Parts.</p>
+            <div className="screenshot-wrapper mt-4">
+              <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "16rem" }} />
             </div>
-          </>
+          </div>
         )}
       </section>
 
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {isPart1 ? (
-            <div className="fade-in">
-              <h3 className="section-title" style={{ marginRight: '900px' }}>Import</h3>
-              <div className={`${getStepClass('p1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+          {isPart1 ? (            <div className="fade-in">
+              <div className="card-header">
+                <h4>IMPORT</h4>
+              </div>
+              <div className={getStepClass('p1-1')}>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
                 </div>
-                <div>
-                  <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass('p1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={getStepClass('p1-2')}>
                 <div className="step-header">
                   <span className="step-number">2</span>
-                  <span className="step-label" style={{ marginTop: "1.3rem" }}>The Parasolid Link dialog box will appear. User will be able to browse folders which contain parasolid files to be imported on ICAD.</span>
+                  <span className="step-label">The Parasolid Link dialog box will appear. Browse to folders containing parasolid files.</span>
                 </div>
-                <div>
-                  <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass('p1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginTop: "-3rem" }}>
+              <div className={getStepClass('p1-3')}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">
@@ -108,41 +111,47 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', verticalAlign: 'middle', margin: '0 4px' }} />
                   </span>
                 </div>
-                <span className="p-flush">The Name change dialog box will appear &gt; Pick Cancel</span>
-                <span className="p-flush" style={{ marginTop: "-1rem" }}>All Part names of purchase parts must be release on the tree view.</span>
-                <div
-                >
-                  <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" style={{ width: '690px' }} />
+                <div className="step-description">
+                  <p className="p-flush">The Name change dialog box will appear &gt; Pick <strong className="text-highlight">Cancel</strong></p>
+                  <p className="text-caption mt-2">*All Part names of purchase parts must be released on the tree view.</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" style={{ width: '690px' }} />
+                  </div>
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="fade-in">
-              <h3 className="section-title" style={{ marginRight: '625px' }}>4.) Lighten B-Rep Solid</h3>
-              <br />
-              <span className="p-flush">Use this tool to lighten up the file size.</span>
 
-              <div className={`${getStepClass('p2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginTop: "-1rem" }}>
+          ) : (            <div className="fade-in">
+              <div className="card-header">
+                <h4>LIGHTEN B-REP SOLID</h4>
+              </div>
+              <p className="p-flush mb-4">Use this tool to lighten up the file size.</p>
+
+              <div className={getStepClass('p2-1')}>
                 <div className="step-header">
                   <span className="step-number">1</span>
                   <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
                 </div>
-                <div>
-                  <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
+                  </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass('p2-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={getStepClass('p2-2')}>
                 <div className="step-header">
                   <span className="step-number">2</span>
-                  <span className="step-label">A dialog box will appear. Select No form changes &gt; <strong className="text-highlight">OK</strong></span>
+                  <span className="step-label">A dialog box will appear. Select <strong className="text-highlight">No form changes</strong> &gt; <strong className="text-highlight">OK</strong></span>
                 </div>
-                <div>
-                  <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
+                  </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass('p2-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={getStepClass('p2-3')}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">
@@ -150,46 +159,46 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
                   </span>
                 </div>
-                <span className="p-flush">Check the message pane to see if the process is successful</span>
-                <div>
-                  <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" style={{ height: '45px' }} />
+                <div className="step-description">
+                  <p className="p-flush">Check the message pane to see if the process is successful</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" style={{ height: '45px' }} />
+                  </div>
                 </div>
               </div>
 
-              <div className="section-divider" />
-
-              <div className={`${getStepClass('p2-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} style={{ marginTop: "-1.5rem" }}>
+              <div className={getStepClass('p2-4')}>
                 <div className="step-header">
                   <span className="step-number">5</span>
                   <span className="step-label">Save the part</span>
                 </div>
-                <span className="p-flush" style={{ marginTop: "-1rem" }}>Go to <strong>File &gt; Save As &gt; Use the Purchase part code as File name.</strong></span>
+                <div className="step-description">
+                  <p className="p-flush">Go to <strong className="text-highlight">File &gt; Save As &gt; Use the Purchase part code as File name.</strong></p>
+                </div>
               </div>
 
-              <div className="section-divider" />
-
-              <div className={`${getStepClass('p2-5')} ${currentIndex === 4 ? 'reading-active' : ''}`} style={{ marginTop: "-2rem" }}>
+              <div className={getStepClass('p2-5')}>
                 <div className="step-header">
                   <span className="step-number">6</span>
                   <span className="step-label">Set all important information of the part</span>
                 </div>
                 <div className="step-description">
-                  <span className="p-flush">Other way to add comment to the Part</span>
-                  <ul className="interaction-list--plain">
-                    <li><strong>1.)</strong> Right-click the Top 3D Part on the tree view</li>
-                    <li><strong>2.)</strong> Select Properties. The Property dialog box will appear.</li>
-                    <li><strong>3.)</strong> Enter the comment for the specific part &gt; Press OK</li>
+                  <p className="p-flush">Other way to add comment to the Part:</p>
+                  <ul className="interaction-list mt-2">
+                    <li>Right-click the Top 3D Part on the tree view</li>
+                    <li>Select <strong className="text-highlight">Properties</strong>. The Property dialog box will appear.</li>
+                    <li>Enter the comment for the specific part &gt; Press <strong className="text-highlight">OK</strong></li>
                   </ul>
-                  <div style={{ marginTop: '1.5rem' }}>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" style={{ height: '300px' }} />
                   </div>
-                  <br />
-                  <div style={{ marginTop: '1.5rem' }}>
+                  <div className="screenshot-wrapper mt-8">
                     <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" style={{ width: '950px' }} />
                   </div>
                 </div>
               </div>
             </div>
+
           )}
 
           <div className="lesson-navigation">

@@ -102,7 +102,7 @@ interface PropertiesLessonProps {
         )}{" "}
         {isProperties1 && activeTab === "color" && (
           <div className="instruction-box">
-            <div>
+            <div className="screenshot-wrapper mt-4">
               <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot screenshot-small" />
             </div>
           </div>
@@ -117,80 +117,60 @@ interface PropertiesLessonProps {
               {" "}
               {activeTab === "color" && (
                 <div className="tab-pane fade-in">
-                  <h3 className="section-title" style={{ marginRight: "735px", marginLeft: "auto" }}>Change color</h3>
+                  <h4 className="section-title">Change color</h4>
                   <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                     <div className="step-header">
-                      {" "}
-                      <span className="step-number"> 1 </span>{" "}
-                      <span className="step-label">
-                        Select{" "}
-                        <strong className="text-highlight">Change Color</strong>{" "}
-                        from the icon menu.
-                      </span>
+                      <span className="step-number"> 1 </span>
+                      <span className="step-label">Select <strong className="text-highlight">Change Color</strong> from the icon menu.</span>
                     </div>
-
-                    <div className="flex-row-center--wrap">
-                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    <div className="screenshot-wrapper">
+                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot screenshot-small" />
                     </div>
                   </div>
 
-                  <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
+                  <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                     <div className="step-header">
-                      {" "}
-                      <span className="step-number">
-
-                        2
-                      </span>{" "}
-                      <span className="step-label" >
-                        Select either{" "}
-                        <strong className="text-highlight">Entity</strong> or{" "}
-                        <strong className="text-highlight">Face</strong>
-                      </span>
+                      <span className="step-number">2</span>
+                      <span className="step-label">Select either <strong className="text-highlight">Entity</strong> or <strong className="text-highlight">Face</strong></span>
                     </div>
 
                     <div className="tool-block">
-                      <div className="flex-row-wrap">
+                      <div className="flex-row-wrap" style={{ gap: '2rem' }}>
                         <div className="flex-1">
-                          {" "}
-                          <h4 className="section-title" style={{ marginRight: "820px" }}>Entity</h4>
-                          <div className="step-header">
-                            {" "}
-                            <span className="step-label" style={{ marginTop: "1rem" }}>
-                              Pick a color &gt; Select the solid entity
-                            </span>
+                          <h4 className="section-title">Entity</h4>
+                          <div className="step-header mt-4">
+                            <span className="step-label">Pick a color &gt; Select the solid entity</span>
                           </div>
                           <div className="step-description">
-                            <span className="p-flush">
-                              The entire solid entity will change its color.
-                            </span>
+                            <p className="p-flush">The entire solid entity will change its color.</p>
                           </div>
                         </div>
-
                         <div className="flex-1">
-                          <br />
-
-                          <span style={{ fontSize: '1.5rem', marginLeft: "10rem" }}>CHANGE COLOR (ENTITY):</span>
-                          <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-medium" style={{ width: ' 600px', marginTop: '10px' }} />
-
-
+                          <p className="text-highlight"><strong>CHANGE COLOR (ENTITY):</strong></p>
+                          <div className="screenshot-wrapper mt-2">
+                            <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot screenshot-medium" />
+                          </div>
                         </div>
                       </div>
-                      <div className="flex-row-center--wrap" style={{ gap: '2rem', marginTop: '3rem' }}>
-                        <div className="flex-1" style={{ minWidth: '300px' }}>
-                          <h4 className="section-title" style={{ marginRight: "836px" }}>Face</h4>
-                          <div className="step-header">
+
+                      <div className="flex-row-wrap mt-12" style={{ gap: '2rem' }}>
+                        <div className="flex-1">
+                          <h4 className="section-title">Face</h4>
+                          <div className="step-header mt-4">
                             <span className="step-label">
                               Pick a color &gt; Select surface to be changed &gt; <strong className="text-highlight">GO</strong>
-                              <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ height: '24px', verticalAlign: 'middle', margin: '0 4px' }} />
+                              <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
                             </span>
                           </div>
                           <div className="step-description">
-                            <span className="p-flush">Only selected faces/surfaces will change its color.</span>
-                          </div> <br />
+                            <p className="p-flush">Only selected faces/surfaces will change its color.</p>
+                          </div>
                         </div>
-                        <div className="flex-1" style={{ minWidth: '300px' }}>
-                          <span style={{ fontSize: '1.5rem', marginLeft: "10rem" }}>CHANGE COLOR (FACE):</span>
-                          <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" style={{ maxWidth: '600px', height: 'auto' }} />
+                        <div className="flex-1">
+                          <p className="text-highlight"><strong>CHANGE COLOR (FACE):</strong></p>
+                          <div className="screenshot-wrapper mt-2">
+                            <img src={changeColorFace} alt="Change Color Face" className="software-screenshot screenshot-medium" />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -199,199 +179,144 @@ interface PropertiesLessonProps {
               )}{" "}
               {activeTab === "layer" && (
                 <div className="tab-pane fade-in">
-                  <h3 className="section-title" style={{ marginRight: "730px" }}>Change layer</h3>
+                  <h4 className="section-title">Change layer</h4>
 
                   <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                     <div className="step-header">
-                      {" "}
-                      <span className="step-number">
-
-                        1
-                      </span>{" "}
-                      <span className="step-label">
-                        Select{" "}
-                        <strong className="text-highlight" >Change Layer</strong>{" "}
-                        from the icon menu.
-                      </span>
+                      <span className="step-number">1</span>
+                      <span className="step-label">Select <strong className="text-highlight" >Change Layer</strong> from the icon menu.</span>
                     </div>
-
-                    <div>
-                      <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    <div className="screenshot-wrapper">
+                      <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot screenshot-small" />
                     </div>
                   </div>
 
                   <div className={`${getStepClass("layer-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                     <div className="step-header">
-                      {" "}
-                      <span className="step-number">
-
-                        2
-                      </span>{" "}
-                      <span className="step-label">
-                        Specify the layer on the item entry.
-                      </span>
+                      <span className="step-number">2</span>
+                      <span className="step-label">Specify the layer on the item entry.</span>
                     </div>
-
-                    <div className="flex-row-center--wrap">
-                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" style={{ height: '50px', width: '800px' }} />
+                    <div className="screenshot-wrapper">
+                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot screenshot-large" />
                     </div>
                   </div>
 
                   <div className={`${getStepClass("layer-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                     <div className="step-header">
-                      {" "}
-                      <span className="step-number">
-
-                        3
-                      </span>{" "}
-                      <span className="step-label">
-                        Click on the solid entity.
-                      </span>
+                      <span className="step-number">3</span>
+                      <span className="step-label">Click on the solid entity.</span>
                     </div>
                   </div>
 
                   <div className="section-divider"></div>
 
-                  <h3 className="section-title" style={{ marginRight: "34rem" }}>Layer designation of 3D parts</h3>
+                  <h4 className="section-title">Layer designation of 3D parts</h4>
 
                   <div className="tool-block">
-                    {" "}
-                    <br />
-                    <h4 className="section-title" style={{ marginRight: "800px" }}>Layer 1</h4>{" "}
+                    <h4 className="section-title mt-4">Layer 1</h4>
                     <ul className="interaction-list--plain">
-                      {" "}
-                      <li>
-                        All common parts need to be fabricated or machined
-                      </li>{" "}
-                      <li>
-                        Parts that undergo Annealing, Shot blasting, Annealing
-                        Shot blasting
-                      </li>{" "}
-                      <li>Covers for purchase parts (No mechanism)</li>{" "}
-                      <li>All parts must be color white</li>{" "}
+                      <li>All common parts need to be fabricated or machined</li>
+                      <li>Parts that undergo Annealing, Shot blasting, Annealing Shot blasting</li>
+                      <li>Covers for purchase parts (No mechanism)</li>
+                      <li>All parts must be color white</li>
                     </ul>
-                    <div>
+                    <div className="screenshot-wrapper mt-4">
                       <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
 
                   <div className="tool-block">
-                    {" "}
-                    <h4 className="section-title" style={{ marginRight: "790px" }}>Layer 2</h4>{" "}
+                    <h4 className="section-title">Layer 2</h4>
                     <ul className="interaction-list--plain">
-                      {" "}
-                      <li>
-                        Fabricated parts/Machined parts with color/paint
-                      </li>{" "}
-                      <li>Safety Cover - Yellow (No. 4)</li>{" "}
+                      <li>Fabricated parts/Machined parts with color/paint</li>
+                      <li>Safety Cover - Yellow (No. 4)</li>
                     </ul>
-                    <div>
-                      <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" style={{ height: '290px' }} />
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" />
                     </div>
-                    <br />
-                    <span className="step-description text-center">
-                      {" "}
+                    <p className="text-caption mt-4">
                       Safety color applies to covers for machine guarding such
                       as chain, belt and gear drive power transmission system.
-                    </span>
+                    </p>
                   </div>
 
-                  <div className="tool-block" style={{ marginTop: "-4rem" }}>
-                    {" "}
+                  <div className="tool-block">
                     <ul className="interaction-list--plain">
-                      {" "}
-                      <li>Parts that does not need to be painted</li>{" "}
-                      <li>All Stainless Steel (SUS) - white (No.1)</li>{" "}
-                      <li>Acrylic - white (No.1)</li>{" "}
+                      <li>Parts that does not need to be painted</li>
+                      <li>All Stainless Steel (SUS) - white (No.1)</li>
+                      <li>Acrylic - white (No.1)</li>
                     </ul>
-                    <div>
-                      <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" /> <br />
-                      <span style={{ fontSize: '1.5rem', marginLeft: "2rem" }}>ACRYLIC</span>
-                      <span style={{ fontSize: '1.5rem', marginLeft: "21rem" }}>POINTER</span>
-
-                    </div>{" "}
-                    <h4 className="text-error text-center" /* sanitized: marginTop: '1.5rem' */>
-                      <br />
-                      {" "}
-                      Red paint only on the pointer{" "}
-                    </h4>
+                    <div className="flex-row-wrap mt-4" style={{ gap: '1rem' }}>
+                      <div className="flex-1 text-center">
+                        <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot screenshot-wide" />
+                        <div className="flex-row-center mt-2" style={{ gap: '10rem' }}>
+                          <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>ACRYLIC</span>
+                          <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>POINTER</span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-error text-center mt-4">
+                      <strong>Red paint only on the pointer</strong>
+                    </p>
                   </div>
 
-                  <div className="tool-block" style={{ marginTop: "-4rem" }}>
-                    <div className="flex-row-wrap">
+                  <div className="tool-block">
+                    <div className="flex-row-wrap" style={{ gap: '2rem' }}>
                       <div className="flex-1">
-                        <span className="font-semibold mb-2">
-                          Materials with Color codes on the material list
-                        </span>
-                        <p>
-                          <strong>Examples:</strong>
-                        </p>{" "}
+                        <p className="font-semibold mb-2">Materials with Color codes on the material list</p>
+                        <p><strong>Examples:</strong></p>
                         <ul className="interaction-list--plain">
-                          {" "}
-                          <li>MC Nylon - Blue (No.5)</li>{" "}
-                          <li>Urethane - (No.18)</li>{" "}
-                          <li>Rubber - Black (No.16)</li>{" "}
-                          <li>New Light - White (No.1)</li>{" "}
+                          <li>MC Nylon - Blue (No.5)</li>
+                          <li>Urethane - (No.18)</li>
+                          <li>Rubber - Black (No.16)</li>
+                          <li>New Light - White (No.1)</li>
                         </ul>
                       </div>
-
                       <div className="flex-1">
-                        <div>
+                        <div className="screenshot-wrapper">
                           <img src={propertiesMaterialImg} alt="Properties Material" className="software-screenshot screenshot-large" />
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="tool-block" style={{ marginTop: "-3rem" }}>
-                    <div className="flex-row-wrap">
+                  <div className="tool-block">
+                    <div className="flex-row-wrap" style={{ gap: '2rem' }}>
                       <div className="flex-1">
-                        {" "}
                         <ul className="interaction-list--plain">
-                          {" "}
-                          <li>
-                            Fabricated parts/Machined parts with{" "}
-                            <strong className="text-error">
-                              Heat Treatment
-                            </strong>
-                          </li>{" "}
-                          <li>
-                            Preheat/ heated surface coating part - white (No.1)
-                          </li>{" "}
-                          <li>Isonite, Ionite, Parsonite - Gray (No. 8)</li>{" "}
-                          <li>
-                            Parkerizing, Manganese Phosphate - Black (No. 16)
-                          </li>{" "}
+                          <li>Fabricated parts/Machined parts with <strong className="text-error">Heat Treatment</strong></li>
+                          <li>Preheat/ heated surface coating part - white (No.1)</li>
+                          <li>Isonite, Ionite, Parsonite - Gray (No. 8)</li>
+                          <li>Parkerizing, Manganese Phosphate - Black (No. 16)</li>
                         </ul>
                       </div>
-
                       <div className="flex-1">
-                        <div>
+                        <div className="screenshot-wrapper">
                           <img src={isoniteManganeseImg} alt="Heat Treatment Parts" className="software-screenshot screenshot-large" />
-                          <span style={{ fontSize: '1.8rem', marginLeft: "6rem" }}>ISONITE</span>
-                          <span style={{ fontSize: '1.8rem', marginLeft: "15rem" }}>MANGANESE</span> <br />
-                          <span style={{ fontSize: '1.8rem', marginLeft: "28rem" }}>PHOSPHATE</span>
+                        </div>
+                        <div className="flex-row-center mt-2" style={{ gap: '4rem' }}>
+                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>ISONITE</span>
+                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>MANGANESE PHOSPHATE</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className={`tool-block ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: "-4rem" }}>
-                    {" "}
-                    <h4 className="section-title" style={{ marginRight: "780px" }}>Layer 3</h4>{" "}
+
+                  <div className={`tool-block ${currentIndex === 3 ? "reading-active" : ""}`}>
+                    <h4 className="section-title">Layer 3</h4>
                     <ul className="interaction-list--plain">
-                      {" "}
-                      <li>Purchase Parts (Include stud bolt)</li>{" "}
-                      <li>Purchase Parts with Additional Process</li>{" "}
-                      <li>Use manufacturer standard color</li>{" "}
+                      <li>Purchase Parts (Include stud bolt)</li>
+                      <li>Purchase Parts with Additional Process</li>
+                      <li>Use manufacturer standard color</li>
                     </ul>
-                    <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
-                      <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" style={{ maxWidth: '850px', height: 'auto' }} />
-                      <div className="flex-row-center--wrap" style={{ gap: '2rem', width: '100%', marginTop: '1rem' }}>
-                        <span style={{ fontSize: '1.2rem', marginLeft: "2rem", fontWeight: 800 }}>MOTOR</span>
-                        <span style={{ fontSize: '1.2rem', marginLeft: "10rem", fontWeight: 800 }}>ENCODER</span>
-                        <span style={{ fontSize: '1.2rem', marginLeft: "10rem", fontWeight: 800 }}>CHAIN & SPROCKET</span>
-                      </div>
+                    <div className="screenshot-wrapper mt-4">
+                      <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
+                    </div>
+                    <div className="flex-row-center mt-4" style={{ gap: '8rem' }}>
+                      <span className="text-highlight" style={{ fontWeight: 'bold' }}>MOTOR</span>
+                      <span className="text-highlight" style={{ fontWeight: 'bold' }}>ENCODER</span>
+                      <span className="text-highlight" style={{ fontWeight: 'bold' }}>CHAIN & SPROCKET</span>
                     </div>
                   </div>
                 </div>
@@ -399,147 +324,90 @@ interface PropertiesLessonProps {
             </>
           ) : (
             <div className="fade-in">
-              <h3 className="section-title" style={{ marginRight: "780px" }}>Information</h3>
+              <h4 className="section-title">Information</h4>
 
               <div className="tool-block">
-                <div className="flex-row-wrap">
-                  <div className="flex-column">
-                    {" "}
-                    {/* Item 1 */}
-                    <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
-                      <div className="step-header">
-                        {" "}
-                        <span className="step-number">
-
-                          1
-                        </span>
-                        <div className="flex-row-center">
-                          <img src={information1} alt="Coordinates" style={{ width: '35px' }} />{" "}
-                          <span className="step-label">
-                            Pick a point to display coordinates from the origin.
-                          </span>
-                        </div>
+                <div className="flex-column">
+                  <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+                    <div className="step-header">
+                      <span className="step-number">1</span>
+                      <div className="flex-row-center" style={{ gap: '0.5rem' }}>
+                        <img src={information1} alt="Coordinates" style={{ width: '35px' }} />
+                        <span className="step-label">Pick a point to display coordinates from the origin.</span>
                       </div>
-
-                      <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <span className="p-flush">
-                          Displays coordinates of a point from the origin
-                        </span>
-
-                        <div>
-                          <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
-                        </div>
+                    </div>
+                    <div className="step-description">
+                      <p className="p-flush">Displays coordinates of a point from the origin</p>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={infoPointImg} alt="Information Point Coordinates" className="software-screenshot screenshot-medium" />
                       </div>
-                    </div>{" "}
-                    {/* Item 2 */}
-                    <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
-                      <div className="step-header">
-                        {" "}
-                        <span className="step-number">
-
-                          2
+                    </div>
+                  </div>
+                  <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+                    <div className="step-header">
+                      <span className="step-number">2</span>
+                      <div className="flex-row-center" style={{ gap: '0.5rem' }}>
+                        <img src={information2} alt="Length" style={{ width: '35px', height: '35px' }} />
+                        <span className="step-label">
+                          Pick an edge &gt; <strong className="text-highlight">GO</strong>
+                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
+                          to measure length.
                         </span>
-                        <div className="flex-row-center">
-                          <img src={information2} alt="Length" style={{ width: '35px', height: '35px' }} />{" "}
-                          <span className="step-label">
-                            Pick an edge &gt;{" "}
-                            <strong className="text-highlight">GO</strong>
-                            <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', verticalAlign: 'middle', margin: '0 4px', marginTop: "-1.8rem" }} />{" "}
-                            to measure length.
-                          </span>
-                        </div>
                       </div>
-
-                      <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <span className="p-flush">
-                          Measures the length of an edge
-                        </span>
-
-                        <div>
-                          <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
-                        </div>
+                    </div>
+                    <div className="step-description">
+                      <p className="p-flush">Measures the length of an edge</p>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={infoEdgeImg} alt="Information Edge Length" className="software-screenshot screenshot-medium" />
                       </div>
-                    </div>{" "}
-                    {/* Item 3 */}
-                    <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: "-2rem" }}>
-                      <div className="step-header">
-                        {" "}
-                        <span className="step-number">
-
-                          3
-                        </span>
-                        <div className="flex-row-center">
-                          <img src={information3} alt="Distance" style={{ width: '35px', height: '35px' }} />{" "}
-                          <span className="step-label">
-                            Pick first point/edge &gt; Pick second point/edge to
-                            measure distance.
-                          </span>
-                        </div>
+                    </div>
+                  </div>
+                  <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+                    <div className="step-header">
+                      <span className="step-number">3</span>
+                      <div className="flex-row-center" style={{ gap: '0.5rem' }}>
+                        <img src={information3} alt="Distance" style={{ width: '35px', height: '35px' }} />
+                        <span className="step-label">Pick first point/edge &gt; Pick second point/edge to measure distance.</span>
                       </div>
-
-                      <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <span className="p-flush">
-                          Measures the distance between two points or edges
-                        </span>
-
-                        <div>
-                          <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
-                        </div>
+                    </div>
+                    <div className="step-description">
+                      <p className="p-flush">Measures the distance between two points or edges</p>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={infoPointEdgeImg} alt="Information Distance" className="software-screenshot screenshot-medium" />
                       </div>
-                    </div>{" "}
-                    {/* Item 4 */}
-                    <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginTop: "-2resm" }}>
-                      <div className="step-header">
-                        {" "}
-                        <span className="step-number">
-
-                          4
-                        </span>
-                        <div className="flex-row-center">
-                          <img src={information4} alt="Angle" style={{ width: '35px', height: '35px' }} />{" "}
-                          <span className="step-label">
-                            Pick 2 edges OR 3 points to measure angle.
-                          </span>
-                        </div>
+                    </div>
+                  </div>
+                  <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+                    <div className="step-header">
+                      <span className="step-number">4</span>
+                      <div className="flex-row-center" style={{ gap: '0.5rem' }}>
+                        <img src={information4} alt="Angle" style={{ width: '35px', height: '35px' }} />
+                        <span className="step-label">Pick 2 edges OR 3 points to measure angle.</span>
                       </div>
-
-                      <div className="step-description" style={{ marginBottom: "-1rem" }}/* sanitized: paddingLeft: '2.5rem' */>
-                        <span className="p-flush" >
-                          Measures the angle between two edges or three points
-                        </span>
-
-                        <div>
-                          <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" style={{ height: '120px', marginTop: "1rem" }} />
-                        </div>
+                    </div>
+                    <div className="step-description">
+                      <p className="p-flush">Measures the angle between two edges or three points</p>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={infoAngleImg} alt="Information Angle" className="software-screenshot screenshot-medium" />
                       </div>
-                    </div>{" "}
-                    {/* Item 5 */}
-                    <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} style={{ marginTop: "-1rem" }}>
-                      <div className="step-header">
-                        {" "}
-                        <span className="step-number">
-
-                          5
+                    </div>
+                  </div>
+                  <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`}>
+                    <div className="step-header">
+                      <span className="step-number">5</span>
+                      <div className="flex-row-center" style={{ gap: '0.5rem' }}>
+                        <img src={information5} alt="Entity Info" style={{ width: '35px', height: '35px' }} />
+                        <span className="step-label">
+                          Pick the solid entity &gt; <strong className="text-highlight">GO</strong>
+                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" />
+                          to display information.
                         </span>
-                        <div className="flex-row-center">
-                          <img src={information5} alt="Entity Info" style={{ width: '35px', height: '35px' }} />{" "}
-                          <span className="step-label">
-                            Pick the solid entity &gt;{" "}
-                            <strong className="text-highlight">GO</strong>
-                            <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', verticalAlign: 'middle', margin: '0 4px', marginTop: "-1.8rem" }} />{" "}
-                            to display information.
-                          </span>
-                        </div>
                       </div>
-
-                      <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-                        <span className="p-flush">
-                          Displays the informations about the selected entity
-                        </span>
-
-                        <div>
-                          <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" style={{ marginTop: "1rem" }} />
-                        </div>
+                    </div>
+                    <div className="step-description">
+                      <p className="p-flush">Displays the informations about the selected entity</p>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={infoEntityImg} alt="Information Entity" className="software-screenshot screenshot-medium" />
                       </div>
                     </div>
                   </div>

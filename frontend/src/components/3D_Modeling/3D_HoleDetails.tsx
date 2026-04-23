@@ -55,15 +55,12 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
-          Creating hole details on parts
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(holeSteps)} onStop={stop} />
-        </h3>
+        <h4 className="section-title">Creating hole details on parts</h4>
         <p className="p-flush">
           We have standard tools for creating holes such as drill holes, tapping holes and counterbores on the parts.
         </p>
-        <div>
-          <div>
+        <div className="instruction-box">
+          <div className="screenshot-wrapper mt-4">
             <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" style={{ height: '250px' }} />
           </div>
         </div>
@@ -73,6 +70,10 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
         <div className="lesson-card tab-content">
           <div className="tab-content-area">
             <div className="tab-pane">
+              <div className="card-header">
+                <h4>HOLE DETAILS</h4>
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(holeSteps)} onStop={stop} />
+              </div>
               <div className={`${getStepClass("hole-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">1</span>
@@ -81,13 +82,13 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   </span>
                 </div>
                 <div className="step-description">
-                  <div>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" style={{ height: '120px' }} />
                   </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ marginInline: "-0.2rem", marginTop: "-2.5rem", marginBottom: "-0.9rem" }}>
+              <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">2</span>
                   <span className="step-label">
@@ -95,13 +96,13 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   </span>
                 </div>
                 <div className="step-description">
-                  <div>
+                  <div className="screenshot-wrapper mt-4">
                     <img src={listTools} alt="List of available tools" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
+              <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">3</span>
                   <span className="step-label">
@@ -110,7 +111,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                 </div>
               </div>
 
-              <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginInline: "-0.2rem", marginTop: "-3rem", marginBottom: "-0.9rem" }}>
+              <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
                 <div className="step-header">
                   <span className="step-number">4</span>
                   <span className="step-label">
@@ -119,19 +120,18 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
                   </span>
                 </div>
                 <div className="step-description">
-                  <div>
-                    <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-wide" style={{ height: '250px' }} />
+                  <div className="screenshot-wrapper">
+                    <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-medium" />
                   </div>
                 </div>
               </div>
-              <br />
 
-              <div className="info-box">
+              <div className="info-box mt-8">
                 <p className="p-flush">
-                  <strong className="text-highlight">Note:</strong> <span>Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.</span> </p>
-
-                <div>
-                  <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" style={{ height: '250px' }} />
+                  <strong className="text-highlight">Note:</strong> Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.
+                </p>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot" />
                 </div>
               </div>
             </div>

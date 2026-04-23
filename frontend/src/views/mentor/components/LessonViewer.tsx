@@ -359,16 +359,31 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '2d-normal-mirror': (id) => <NormalMirrorPartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const exactMatch = activeLessonId ? registry[activeLessonId] : null;
                 if (exactMatch) return exactMatch();
 
+                // Try exact match in prefixRegistry first (for lessons with dashes in name but no sub-lesson suffix)
+                if (activeLessonId && typeof prefixRegistry[activeLessonId] === 'function') {
+                  return prefixRegistry[activeLessonId](activeLessonId);
+                }
+
                 const prefix = activeLessonId?.includes('-') 
                   ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-')) 
                   : activeLessonId;
 
-                if (prefix && activeLessonId) return prefixRegistry[prefix](activeLessonId);
+                if (prefix && activeLessonId && typeof prefixRegistry[prefix] === 'function') {
+                  return prefixRegistry[prefix](activeLessonId);
+                }
 
                 // Check for dynamic DB content as primary fallback
                 if (dbContent.length > 0) {
@@ -395,33 +410,22 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 }
 
                 if (is2DDrawingCourse) {
-                  switch (activeLessonId) {
-                    case '2d-keyway': return <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-part-note': return <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-machining-symbol': return <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-welding-symbol': return <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-surface-coating': return <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-weight-computation': return <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-revision-code': return <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    case '2d-standard-library': return <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
-                    default:
-                      return (
-                        <div className="content-2d-placeholder">
-                          <BookOpen size={48} strokeWidth={1.5} />
-                          <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
-                          <p className="content-2d-placeholder__text">Content will be available soon.</p>
+                  return (
+                    <div className="content-2d-placeholder">
+                      <BookOpen size={48} strokeWidth={1.5} />
+                      <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
+                      <p className="content-2d-placeholder__text">Content will be available soon.</p>
 
-                          <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
-                            <button className="nav-button" onClick={goToPrevLesson}>
-                              <ChevronLeft size={18} /> Previous
-                            </button>
-                            <button className="nav-button next" onClick={handleNextAction}>
-                              {nextLabel} <ChevronRight size={18} />
-                            </button>
-                          </div>
-                        </div>
-                      );
-                  }
+                      <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
+                        <button className="nav-button" onClick={goToPrevLesson}>
+                          <ChevronLeft size={18} /> Previous
+                        </button>
+                        <button className="nav-button next" onClick={handleNextAction}>
+                          {nextLabel} <ChevronRight size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  );
                 }
 
                 return (
