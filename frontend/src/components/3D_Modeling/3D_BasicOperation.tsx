@@ -117,6 +117,10 @@ import sketchIcon from '../../assets/3D_Image_File/basic_operation4_sketch.png';
 
 import sketch1 from '../../assets/3D_Image_File/basic_operation4_sketch.png';
 
+import sketchResultImg from '../../assets/3D_Image_File/basic_operation4_sketch1.jpg';
+
+import sketchIntroImg from '../../assets/3D_Image_File/basic_operation_(3)_sketch.jpg';
+
 import extrudeRevolveMenu from '../../assets/3D_Image_File/basic_operation4_extrude_revolve.png';
 
 import extrudeOneSide from '../../assets/3D_Image_File/basic_operation4_extrusion_oneside.png';
@@ -129,7 +133,9 @@ import revolveIcon from '../../assets/3D_Image_File/basic_operation4_revolve.png
 
 import revolveP1 from '../../assets/3D_Image_File/basic_operation4_revolve_p1.png';
 
-import showHideMenu from '../../assets/3D_Image_File/basic_operation4_show_hide.png';
+import revolveP2 from '../../assets/3D_Image_File/basic_operation4_revolve_p2.png';
+
+import showHideMenu from '../../assets/3D_Image_File/basic_operation4_show_hide.jpg';
 
 import showHideEntity from '../../assets/3D_Image_File/basic_operation4_show_hide_entity.png';
 
@@ -178,20 +184,22 @@ import keyEntryArea from '../../assets/3D_Image_File/basic_operation1_key_entry_
 /* ────────────────────────────────────────────────────────────────────────── */
 /* ── Basic Operation (1): Creating Basic Shapes ── */
 
-interface SubLessonProps { onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
+interface SubLessonProps { 
+  subLessonId: string;
+  onNextLesson?: () => void; 
+  onPrevLesson?: () => void; 
+  nextLabel?: string; 
+}
 
-const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>('cylinder');
+const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>(() => {
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'cylinder';
+  });
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
 
-  // Use core hook for scroll tracking and TTS
-  const {
-    scrollProgress,
-    containerRef,
-    speak,
-    stop,
-    isSpeaking,
-    currentIndex
-  } = useLessonCore(`basic-op-1-${activeTab}`);
+  useEffect(() => {
+    localStorage.setItem(`${subLessonId}-tab`, activeTab);
+  }, [subLessonId, activeTab]);
 
   const cylinderSteps = [
     "Step 1: Select Arrange Cylinder from the icon menu.",
@@ -223,7 +231,6 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
     "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
   ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
   const tabs = [
     { id: 'cylinder', label: 'Cylinder' },
     { id: 'box', label: 'Box' },
@@ -242,344 +249,343 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
   };
 
   return (
-
     <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
-
       <div className="lesson-progress-container">
-
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
-        ))}
-
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
-          Creating basic shapes
-        </h3>
-        <p>When creating a 3D model, always start with the <strong>Front View</strong>.
-        </p>
-
-        <div className="intro-image-container">
-          <img src={threeDView} alt="3D View" className="software-screenshot screenshot-medium" />
+        <h3 className="section-title">Creating Basic Shapes</h3>
+        <p className="p-flush">When creating a 3D model, always start with the <strong className="text-highlight">Front View</strong>.</p>
+        <div className="screenshot-wrapper mt-8">
+          <img src={threeDView} alt="3D View" className="software-screenshot" style={{width: '350px'}} />
         </div>
-
-        <div className="instruction-box">
-
-          <p>On the command menu: <strong>[Arrange Solid]</strong> &gt; <strong>[Select Y Orientation]</strong>
-          </p>
-
-          <div className="flex-row-center--wrap">
-
-            <div className="screenshot-wrapper">
-              <img src={cmdMenu} alt="Command Menu" className="software-screenshot screenshot-small" style={{ width: '180px', height: 'auto' }} />
-            </div>
-
+        <div className="instruction-box mt-8">
+          <p className="p-flush mb-4">On the command menu: <strong className="text-highlight">[Arrange Solid] &gt; [Select Y Orientation]</strong></p>
+          <div className="screenshot-wrapper">
+            <img src={cmdMenu} alt="Command Menu" className="software-screenshot" style={{ width: '200px', marginTop: "1rem" }} />
           </div>
-
         </div>
-
       </section>
 
       <div className="lesson-grid single-card">
-        {/* CYLINDER */}
         {activeTab === 'cylinder' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>CYLINDER</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(cylinderSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(cylinderSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Cylinder</strong> from the icon menu.</span>
-              </div>
-              <div className="step-description">
-                <div>
-                  <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
-                </div>
-              </div>
-            </div>
-
-            <div className={`${getStepClass('b1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header" > <span className="step-number">
-                2 </span> <span className="step-label">On the bottom left corner, the <strong className="text-highlight">item entry</strong> can be located.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select  <strong className="red-text"> Arrange Cylinder </strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot screenshot-wide" style={{ width: '850px', height: 'auto' }} />
+                  <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot" style={{ width: '550px', marginBottom: "-3rem" }} />
                 </div>
-                <p className="p-flush">Specify the diameter and height of cylinder on the item entry.</p>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">On the bottom left corner, the item entry can be located.</span>
               </div>
               <div className="step-description">
-                <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
+                <div className="screenshot-wrapper">
+                  <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot" style={{ width: '850px' , marginTop: "-1rem"}} />
+                </div>
+                <p className="p-flush mt-4 text-highlight" style={{ marginBottom: "-2rem"}}>Specify the diameter and height of cylinder on the item entry.</p>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={keyEntry} alt="Key Entry" className="software-screensho" style={{ height: '60px',  marginBottom: "-3rem"}} />
+                </div>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot screenshot-large" style={{ height: '370px' }} />
+              <div className="screenshot-wrapper mt-8">
+                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot" style={{ height: '500px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* BOX */}
+
         {activeTab === 'box' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>BOX</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boxSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boxSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b1b-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Box</strong> from the icon menu.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Arrange Box</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" style={{ width: '550px', marginBottom: "-3rem"}} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1b-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Specify the <strong className="text-highlight">depth, width and height</strong> of the box on the item entry.</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Specify the depth, width and height of the box on the item entry.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot screenshot-wide" style={{ width: '900px', marginBottom: "-3rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1b-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number" >
-                3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">In the Key Entry Area, enter the coordinates for the position (origin).</span>
               </div>
               <div className="step-description">
-                <div>
+                <div className="screenshot-wrapper">
                   <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
                 </div>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" style={{ width: '800px' }} />
+              <div className="screenshot-wrapper mt-8">
+                <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* POLYGON */}
+
         {activeTab === 'polygon' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>POLYGON</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(polygonSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(polygonSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b1p-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Polygonal Prism</strong> from the icon menu.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Arrange Polygonal Prism</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot screenshot-medium" style={{ width: '450px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot screenshot-medium" style={{ width: '450px', marginBottom: "-3rem"}} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1p-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot screenshot-wide" style={{ width: '900px', marginBottom: "-3rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1p-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">In the Key Entry Area, enter the coordinates for the position (origin).</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
+                <div className="screenshot-wrapper">
+                  <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: '60px', marginBottom: "-3rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" style={{ width: '800px' }} />
+              <div className="screenshot-wrapper mt-8">
+                <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* CONE */}
+
         {activeTab === 'cone' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>CONE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(coneSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(coneSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b1c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Cone</strong> from the icon menu.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Arrange Cone</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" style={{ width: '550px', marginBottom: "-3rem"  }} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry.</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label" style={{marginTop: "2rem"}}>Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot screenshot-wide" style={{ width: '850px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot screenshot-wide" style={{ width: '900px', marginBottom: "-3rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">On the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">On the Key Entry Area, enter the coordinates for the position (origin).</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={keyEntry} alt="Key Entry" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
+                <div className="screenshot-wrapper">
+                  <img src={keyEntry} alt="Key Entry Cone" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
                 </div>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" style={{ width: '400px' }} />
+              <div className="screenshot-wrapper mt-8">
+                <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" style={{ width: '500px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* TORUS */}
+
         {activeTab === 'torus' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>TORUS</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(torusSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(torusSteps)} onStop={stop} />
             </div>
 
-            {/* <div className={`${getStepClass('b1t-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}  > */}
-            <div className={`${getStepClass('b1t-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Arrange Torus</strong> from the icon menu.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Arrange Torus</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" style={{ width: '550px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" style={{ width: '550px', marginBottom: "-3rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1t-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Specify the section diameter, path radius, and turn angle.</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Specify the outer diameter, inner diameter and height on the item entry.</span>
               </div>
               <div className="step-description">
-                <div>
-                  <img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot screenshot-wide" style={{ width: '900px', marginBottom: "-3rem"  }} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b1t-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the position (origin).</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">In the Key Entry Area, enter the coordinates for the position (origin).</span>
               </div>
               <div className="step-description">
-                <div>
+                <div className="screenshot-wrapper">
                   <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
                 </div>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large" />
+              <div className="screenshot-wrapper mt-8">
+                <img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large" style={{ width: '500px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
 
@@ -587,19 +593,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
     </div>
   );
-}; /* ── Basic Operation (2): Move, Rotate, Copy, Mirror, Delete ── */
+};
 
-const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('move');
+const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>(() => {
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'move';
+  });
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
 
-  const {
-    scrollProgress,
-    containerRef,
-    speak,
-    stop,
-    isSpeaking,
-    currentIndex
-  } = useLessonCore(`basic-op-2-${activeTab}`);
+  useEffect(() => {
+    localStorage.setItem(`${subLessonId}-tab`, activeTab);
+  }, [subLessonId, activeTab]);
 
   const moveSteps = [
     "Step 1: Select Move from the icon menu.",
@@ -639,7 +643,6 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
     "Step 2: Left-click on the entity to delete."
   ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
   const tabs = [
     { id: 'move', label: 'Move' },
     { id: 'rotate', label: 'Rotate' },
@@ -660,408 +663,604 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
   };
 
   return (
-
     <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
-
       <div className="lesson-progress-container">
-
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
-        ))}
-
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title" style={{ marginRight: '200px' }}>Move, rotate, copy, mirror, delete</h3>
-
-        <div className="instruction-box">
-
-          <div>
-
-            <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '180px', height: 'auto' }} />
-
-          </div>
-
+        <h3 className="section-title">Move, Rotate, Copy, Mirror, Delete</h3>
+        <p className="p-flush">Use these tools to reposition, duplicate, or remove entities from your workspace.</p>
+        <div className="screenshot-wrapper mt-8">
+          <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '180px' }} />
         </div>
-
       </section>
 
       <div className="lesson-grid single-card">
-        {/* MOVE */}
         {activeTab === 'move' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>MOVE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(moveSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(moveSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b2m-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
               <div className="step-header">
-                <span className="step-number">1</span>
-                <span className="step-label">Select <strong className="text-highlight">Move</strong> from the icon menu.</span>
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Move</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
+                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b2m-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginBottom: "-5rem" }}>
               <div className="step-header">
-                <span className="step-number">2</span>
-                <span className="step-label">Left-click on the entity to be moved &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                <span className="step-number">2 </span>
+                <span className="step-label" style={{ marginBottom: "1.5rem" }}>Left-click on the entity to be move &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 5px'}} />
                 </span>
               </div>
-
-              <div className="step-description">
-              </div>
-
             </div>
 
-            <div className={`${getStepClass('b2m-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className="section-divider"></div>
 
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">Specify the movement distance on the <strong className="text-highlight">X, Y, and Z-axis</strong> on the item entry. Press Enter.</span>
-
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Specify the distance on the <strong className="text-highlight">X, Y and Z-axis</strong> on the item entry &gt; Press Enter.</span>
               </div>
-
               <div className="step-description">
-
-                <div>
-
-                  <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot screenshot-wide" />
-
+                <div className="screenshot-wrapper">
+                  <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
                 </div>
-
-                <p className="step-label">Or after step 2, select a point on the entity then left-click on the desired location.
-                </p>
-
+                <p className="p-flush mt-4 text-highlight">Or after step 2, select a point on the entity then left-click on the desired location.</p>
               </div>
-
             </div>
 
-            <div>
+            <div className="section-divider"></div>
 
-              <div className="card-header"><h4>RESULT</h4>
+            <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="screenshot-wrapper mt-8">
+                <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-wide" />
               </div>
-
-              <div>
-
-                <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-large" />
-
-              </div>
-
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* ROTATE */}
+
         {activeTab === 'rotate' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>ROTATE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b2r-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }} >
-
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Rotate</strong> from the icon menu.</span>
-
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Rotate</strong> from the icon menu.</span>
               </div>
-
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                <div>
-
-                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
-
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
                 </div>
-
-              </div>
-
-            </div>
-
-            <div className={`${getStepClass('b2r-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number" >
-                2 </span> <span className="step-label">Left-click on the entity to be rotate &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
               </div>
             </div>
 
-            <div className={`${getStepClass('b2r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">Select 2-points to set the axis of rotation.</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginBottom: "-5rem" }}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label" style={{ marginBottom: "1.5rem" }}> Left-click on the entity to be rotate &gt; <strong className="text-highlight">GO</strong>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 4px' }} />
+                </span>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Select 2-points to set the <strong className="text-highlight">axis of rotation</strong>.</span>
               </div>
               <div className="step-description">
-                <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot screenshot-medium" style={{ width: '630px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot screenshot-medium" style={{ width: '730px', marginBottom: "-3rem" }} />
+                </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b2r-4')} ${currentIndex === 3 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                4 </span> <span className="step-label">Specify the desired angle of rotation on the item entry &gt; Press Enter</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">4 </span>
+                <span className="step-label">Specify the desired <strong className="text-highlight">angle</strong> on the item entry &gt; Press Enter.</span>
               </div>
               <div className="step-description">
-                <img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-large" style={{ width: '530px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-medium" style={{ width: '530px' }} />
+                </div>
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* MIRROR */}
+
         {activeTab === 'mirror' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>MIRROR</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b2mir-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Mirror</strong> from the icon menu.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="text-highlight">Mirror</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
-                <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '190px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
+                </div>
               </div>
             </div>
 
-            <div className={`${getStepClass('b2mir-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Left-click on the entity to be mirror &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginBottom: "-5rem" }}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label" style={{ marginBottom: "1.5rem" }}>Left-click on the entity to be mirror &gt; <strong className="text-highlight">GO</strong>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 4px' }} />
+                </span>
               </div>
             </div>
 
-            <div className={`${getStepClass('b2mir-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label" style={{ marginTop: "1.5rem" }}>Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
+              <div className="screenshot-wrapper mt-8">
+                <img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-large" style={{ width: '700px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* COPY */}
+
         {activeTab === 'copy' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
-              <h4>COPY COMPONENT</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(copySteps)}
-                onStop={stop}
-              />
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>COPY</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(copySteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b2c-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Copy</strong> from the icon menu.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Copy</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
-                <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
-              </div>
-            </div>
-
-            <div className={`${getStepClass('b2c-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Left-click on the entity to be copy &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
-              </div>
-            </div>
-
-            <div className={`${getStepClass('b2c-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">Specify the distance on the <strong className="text-highlight">X, Y and Z-axis</strong> and the <strong className="text-highlight">number of copies</strong> needed &gt; Press Enter.</span>
-              </div>
-              <div className="step-description">
-                <div className="flex-row-center--wrap">
-                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: '100px' }} />
+                <div className="screenshot-wrapper">
+                  <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', marginBottom: "-4rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className="tool-block">
-              <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ maxWidth: '600px', height: 'auto' }} />
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} style={{ marginBottom: "-5rem" }}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Left-click on the entity to be copy &gt; <strong className="text-highlight">GO</strong>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 4px' }} />
+                </span>
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            <div className="section-divider"></div>
 
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Specify the distance on the <strong className="text-highlight">X, Y and Z-axis</strong> and the <strong className="text-highlight">number of copies</strong> needed &gt; Press Enter.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: "100px" }} />
+                </div>
+              </div>
             </div>
 
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="screenshot-wrapper mt-8">
+                <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ maxWidth: '600px' }} />
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+            </div>
           </div>
         )}
-        {/* ROTATE COPY */}
+
         {activeTab === 'rotateCopy' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>ROTATE COPY</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b2rc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Same as rotate tool but makes a rotated duplicate of the entity.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Same as rotate tool but makes a rotated duplicate of the entity.</span>
               </div>
               <div className="step-description">
-                <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+                </div>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
+              <div className="screenshot-wrapper mt-8">
+                <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large" style={{ width: '700px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* MIRROR COPY */}
+
         {activeTab === 'mirrorCopy' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>MIRROR COPY</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b2mc-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Same as mirror tool but makes a mirror duplicate of the entity.</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Same as mirror tool but makes a mirror duplicate of the entity.</span>
               </div>
               <div className="step-description">
-                <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                <div className="screenshot-wrapper">
+                  <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+                </div>
               </div>
             </div>
 
-            <div className="tool-block">
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper">
-                <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
+              <div className="screenshot-wrapper mt-8">
+                <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large" style={{ width: '700px' }} />
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* DELETE */}
+
         {activeTab === 'delete' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>DELETE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(deleteSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(deleteSteps)} onStop={stop} />
             </div>
 
-            <div className={`${getStepClass('b2d-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Delete</strong> from the icon menu.</span>
-              </div>
-              <div className={`${getStepClass('b2d-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                <div className="step-header"> <span className="step-number">
-                  2 </span> <span className="step-label">Left-click on the entity to delete.</span>
-                </div>
-                <div className="step-description">
-                  <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" style={{ width: '300px', height: 'auto' }} />
-                </div>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} style={{ marginBottom: "-5rem" }}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="text-highlight">Delete</strong> from the icon menu.</span>
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+            <div className="section-divider"></div>
 
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Left-click on the entity to <strong className="text-highlight">delete</strong>.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" style={{ width: '300px' }} />
+                </div>
+              </div>
             </div>
 
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+            </div>
           </div>
         )}
-
       </div>
-
     </div>
   );
-}; /* ── Basic Operation (3): Sketch / Extrude / Revolve / Show-Hide / Stretch / Resize ── */
+};
 
-const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState<'sketchExtrude' | 'showHide' | 'stretch' | 'resize'>('sketchExtrude');
+const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'sketch' | 'extrude' | 'revolve'>(() => {
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'sketch';
+  });
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
 
-  const {
-    scrollProgress,
-    containerRef,
-    speak,
-    stop,
-    isSpeaking,
-    currentIndex
-  } = useLessonCore(`basic-op-3-${activeTab}`);
+  useEffect(() => {
+    localStorage.setItem(`${subLessonId}-tab`, activeTab);
+  }, [subLessonId, activeTab]);
 
   const sketchSteps = [
-    "Step 1: Sketch tools allow you to create lines, circles, and arcs in 3D space to form the base sections for your models.",
-    "Step 2: After sketching, use Extrude to create solids by specifying the height and perimeter.",
-    "Step 3: Revolve allows you to create solids by rotating a sketch around a specified axis."
+    "Step 1: Sketch tools allow you to create lines, circles, and arcs in 3D space to form the base sections for your models."
   ];
+
+  const extrudeSteps = [
+    "Step 1: Select Extrude from the icon menu.",
+    "Step 2: Select the perimeter of the sketch to be extruded and click GO. A hatch will appear.",
+    "Step 3: Specify the height of the extrusion on the item entry or workspace.",
+    "Step 4: Press ENTER to finalize."
+  ];
+
+  const revolveSteps = [
+    "Step 1: Select Revolve from the icon menu.",
+    "Step 2: Select the perimeter and click GO.",
+    "Step 3: Select the axis of rotation and click GO to create the revolved solid."
+  ];
+
+  const tabs = [
+    { id: 'sketch', label: 'SKETCH' },
+    { id: 'extrude', label: 'EXTRUDE' },
+    { id: 'revolve', label: 'REVOLVE' }
+  ];
+
+  const handleNext = () => {
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
+  };
+
+  const handlePrev = () => {
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
+  };
+
+  return (
+    <div className="course-lesson-container" ref={containerRef}>
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
+
+      <div className="lesson-tabs">
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+      </div>
+
+      <section className="lesson-intro">
+        {activeTab === 'sketch' ? (
+          <>
+            <h3 className="section-title">Sketch</h3>
+            <p className="p-flush">Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.</p>
+            <div className="screenshot-wrapper mt-8">
+              <img src={sketchIntroImg} alt="Sketch Intro" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
+            </div>
+          </>
+        ) : (
+          <>
+            <h3 className="section-title">Extrude and Revolve</h3>
+            <p className="p-flush">Tools use to create solids from sketch in the 3D space.</p>
+            <div className="screenshot-wrapper mt-8">
+              <img src={extrudeRevolveMenu} alt="Extrude and Revolve Intro" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
+            </div>
+          </>
+        )}
+      </section>
+
+      <div className="lesson-grid single-card">
+        {activeTab === 'sketch' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header card-sub-header">
+              <h4>SKETCH</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sketchSteps)} onStop={stop} />
+            </div>
+            <p className="p-flush" style={{ marginTop: "-2rem" }}> Tool used to create lines.</p>
+
+            <div className="step-description">
+              <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">
+                  <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="step-description" style={{ marginTop: "3rem"}}>
+              <div className="screenshot-wrapper mt-4">
+                <img src={sketchResultImg} alt="Sketch Result" className="software-screenshot" style={{ width: "600px" }} />
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'extrude' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header card-sub-header">
+              <h4>EXTRUDE</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(extrudeSteps)} onStop={stop} />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Extrude</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description" style={{ marginTop: "1rem" }}>
+                <div className="mt-6" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                  <div className="screenshot-wrapper">
+                    <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
+                    <span style={{ marginLeft: "6rem", fontSize: "1.2rem" }}> EXTRUSION (ONE SIDE)</span>
+                  </div>
+                  <div className="screenshot-wrapper">
+                    <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
+                    <span style={{ marginLeft: "6rem", fontSize: "1.2rem" }}>EXTRUSION (BOTH SIDES)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Select the perimeter of the sketch to be extruded &gt; <strong className="text-highlight">GO</strong></span>
+              </div>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginBottom: "-1rem", marginTop: "-1rem" }}>* A hatch will appear indicating the specified area.</p>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} >
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Specify the height of the extrusion. Can also be set on the item entry.</span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} >
+              <div className="step-header">
+                <span className="step-number">4 </span>
+                <span className="step-label">Press ENTER</span>
+              </div>
+
+              <div className="step-description">
+                <div className="screenshot-wrapper mt-4">
+                  <img src={revolveP1} alt="Extrude Result" className="software-screenshot" style={{width: "600px", marginTop: "2rem"}} />
+                </div>
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+
+
+        )}
+
+        {activeTab === 'revolve' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header card-sub-header">
+              <h4>REVOLVE</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(revolveSteps)} onStop={stop} />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Revolve</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper mt-4" style={{ marginTop: "1rem" }}>
+                  <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot" style={{ width: '280px', marginBottom: "-3rem" }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginBottom: "2rem"}}>
+                <span className="step-number">2 </span>
+                <span className="step-label">Select the perimeter of the sketch to be revolve &gt; GO</span>
+              </div>
+            
+
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Select the axis of rotation (pick points or edge) &gt; GO</span>
+              </div>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginBottom: "-1rem", marginTop: "-1rem" }}>* A hatch will appear including the specified area to be revolved.</p>
+
+              <div className="step-description" style={{ marginTop: "3rem"}}>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={revolveP2} alt="Revolve Result" className="software-screenshot" style={{ "width": "600px" }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ── Basic Operation (4): Show/Hide / Stretch / Resize ── */
+
+
+const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'showHide' | 'stretch' | 'resize'>(() => {
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'showHide';
+  });
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
+
+  useEffect(() => {
+    localStorage.setItem(`${subLessonId}-tab`, activeTab);
+  }, [subLessonId, activeTab]);
 
   const showHideSteps = [
     "Step 1: Select Show/Hide from the icon menu.",
@@ -1081,9 +1280,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
     "Step 3: Specify the scale factor on the item entry to scale the solid entity up or down."
   ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
   const tabs = [
-    { id: 'sketchExtrude', label: 'Sketch / Extrude / Revolve' },
     { id: 'showHide', label: 'Show/Hide' },
     { id: 'stretch', label: 'Stretch' },
     { id: 'resize', label: 'Resize' }];
@@ -1099,512 +1296,267 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
   };
 
   return (
-
     <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
-
       <div className="lesson-progress-container">
-
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
-        ))}
-
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
       </div>
 
-      <section className="lesson-intro">
-        <h3 className="section-title">Sketch / Extrude / Revolve / Show-hide / Stretch / Resize</h3>
-
-      </section>
       {activeTab === 'showHide' && (
-
-        <div className="instruction-box">
-
-          <div
-            className="card-header">
-            <h4>SHOW / HIDE</h4>
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(showHideSteps)}
-              onStop={stop}
-            />
+        <section className="lesson-intro">
+          <h3 className="section-title">Show / Hide Entities</h3>
+          <p className="p-flush">Tools use to switch between displaying and hiding entities.</p>
+          <div className="screenshot-wrapper mt-8">
+            <img src={showHideMenu} alt="Show/Hide Intro" className="software-screenshot screenshot-small" style={{ width: '192px' }} />
           </div>
-
-          <p>Tools use to switch between displaying and hiding entities.
-          </p> <br />
-          <div className="flex-row-center--wrap">
-
-            <div>
-
-              <img src={showHideMenu} alt="Show/Hide Menu" className="software-screenshot screenshot-small" style={{ width: '192px', height: 'auto' }} />
-
-            </div>
-
-          </div>
-
-        </div>
+        </section>
       )}
 
       <div className="lesson-grid single-card">
-        {/* SKETCH / EXTRUDE / REVOLVE */}
-        {activeTab === 'sketchExtrude' && (
-
-          <div className="lesson-card tab-content" >
-
-            <div
-              className="card-header">
-              <h4>SKETCH / EXTRUDE / REVOLVE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sketchSteps)}
-                onStop={stop}
-              />
+        {activeTab === 'showHide' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>SHOW / HIDE ENTITY</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(showHideSteps)} onStop={stop} />
             </div>
-
-            <div className="intro-image-container">
-              <img src={sketch1} alt="Sketch Overview" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
-            </div>
-
-            <div className={`${getStepClass('b3s-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.</span>
-              </div>
-              <div className="step-description">
-                <div className="flex-row-wrap">
-                  <div className="flex-row">
-                    <div className="screenshot-wrapper">
-                      <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
-                    </div>
-                  </div>
-                  <div className="flex-col-right">
-                    <div> <ArrowDown size={32} color="var(--primary-red)" strokeWidth={2.5} /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="card-header card-sub-header"><h4>EXTRUDE/REVOLVE</h4></div>
-            <p className="lesson-subtitle">Tool use to create solids from sketch in the 3D space</p>
-
 
             <div className="instruction-step">
-              <div className="screenshot-wrapper">
-                <img src={extrudeRevolveMenu} alt="Extrude Revolve Menu" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
-              </div>
-            </div>
-            {/* EXTRUDE */}
-
-            <div className="section-divider">
-
-              <div className="flex-row extrude-section-layout">
-
-                <div className="flex-1">
-
-                  <div className="card-header card-sub-header"><h4>EXTRUDE</h4>
-                  </div>
-
-                  <div className={`${getStepClass('b3e-1')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                    <div className="step-header"> <span className="step-number">
-                      1 </span> <span className="step-label">Select Extrude from the icon menu.</span>
-                    </div>
-                    <div className="step-description">
-                      <div className="flex-row">
-                        <div>
-                          <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
-                          <p className="p-flush"><strong>EXTRUSION (ONE SIDE):</strong></p>
-                        </div>
-                        <div className="mt-4">
-                          <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
-                          <p className="p-flush"><strong>EXTRUSION (BOTH SIDE):</strong></p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={`${getStepClass('b3e-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                    <div className="step-header"> <span className="step-number">
-                      2 </span> <span className="step-label">Select the perimeter of the sketch to be extrude &gt; GO</span>
-                    </div>
-                    <div className="step-description">
-                      <p className="p-flush">* A hatch will appear indicating the specified area to be extruded.</p>
-                    </div>
-                  </div>
-
-                  <div className={`${getStepClass('b3e-3')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                    <div className="step-header"> <span className="step-number">
-                      3 </span> <span className="step-label">Specify the height of extrusion. Can also be set on the item entry.</span>
-                    </div>
-                  </div>
-
-                  <div className={`${getStepClass('b3e-4')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                    <div className="step-header"> <span className="step-number">
-                      4 </span> <span className="step-label">Press <strong className="text-highlight">ENTER</strong>.</span>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="flex-col-start result-preview-box">
-
-                  <div className="flex-col-center">
-
-                    <div > <ArrowDown size={32} color="var(--primary-red)" strokeWidth={2.5} />
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="section-divider">
-
-              <div className="card-header card-sub-header"><h4>REVOLVE</h4>
-              </div>
-
-              <div className="flex-row revolve-section-layout">
-
-                <div className="flex-1">
-
-                  <div className={`${getStepClass('b3r-1')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                    <div className="step-header"> <span className="step-number">
-                      1 </span> <span className="step-label">Select <strong className="text-highlight">Revolve</strong> from the icon menu.</span>
-                    </div>
-                    <div className="step-description">
-                      <div className="screenshot-wrapper">
-                        <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={`${getStepClass('b3r-2')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                    <div className="step-header"> <span className="step-number">
-                      2 </span> <span className="step-label">Select the perimeter of the sketch to be revolve &gt; GO</span>
-                    </div>
-                    <div className="step-description">
-                    </div>
-                  </div>
-
-                  <div className={`${getStepClass('b3r-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                    <div className="step-header"> <span className="step-number">
-                      3 </span> <span className="step-label">Select the axis of rotation (pick points or edge) &gt; GO</span>
-                    </div>
-                    <div className="step-description">
-                      <p className="p-flush">A hatch will appear indicating the specified area to be revolve</p>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="flex-col-start result-preview-box">
-
-                  <div>
-
-                    <img src={revolveP1} alt="Revolve P1" className="software-screenshot screenshot-mmedium" />
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
-            </div>
-
-          </div>
-        )}
-        {/* SHOW / HIDE */}
-        {activeTab === 'showHide' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
-              <h4>SHOW / HIDE ENTITY</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(showHideSteps)}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={getStepClass('b3sh-1')}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Show/Hide</strong> from the icon menu.</span>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Show/Hide</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" style={{ width: '280px', height: 'auto' }} />
+                  <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className={getStepClass('b3sh-2')}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Select the entities for showing/hiding &gt; GO</span>
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Select the enteties for showing/hiding &gt; GO </span>
               </div>
-              <div className={getStepClass('b3sh13')} style={{ marginInline: "-0.2rem", marginTop: "-3.9rem", marginBottom: "-0.9rem" }}>
-
-                <div className="step-header"> <span className="step-number">
-                  1 </span> <span className="step-label">Select <strong className="text-highlight">Show/Hide Drafting Entity</strong> from the icon menu.</span>
-
-                </div>
-
-                <div>
-
-                  <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-icon--flush screenshot-small" style={{ width: '280px', height: 'auto' }} />
-
-                </div>
-
-              </div>
-              <div className={getStepClass('b3sh12')} style={{ marginInline: "-0.2rem", marginTop: "-2rem", marginBottom: "-0.9rem" }}>
-
-                <div className="step-header"> <span className="step-number">
-                  2 </span> <span className="step-label">Right-click to show/hide all drafting entities.</span>
-
-                </div>
-
-                <span>Drafting Entities includes:</span>
-                <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                  <div>
-
-                    <img src={draftingEntitiesTable} alt="Drafting Entities Diagram" className="software-screenshot screenshot-large img-mt-sm" />
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div className="card-header" style={{ marginTop: "-0.5rem" }}><h4>HIDE UNSELECTED ENTITY</h4>
-
-              </div>
-
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                <div className="flex-row" style={{ marginTop: "-2rem" }}>
-
-                  <div className="flex-1">
-
-                    <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-icon--flush" style={{ width: '280px', height: 'auto' }} />
-                    <br />
-                    <p className="step-label"> 1. Select Hide Unselected Entity From the icon menu.</p>
-                    <span className="step-label">2. Select all entities to be retain GO
-
-                      <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-
-                    </span>
-
-                    <p className="step-label">All unselected entities will be hidden</p>
-                    <div className="image-wrapper-">
-
-                      <br />
-
-                    </div>
-
-                  </div>
-
-                  <div className="flex-no-shrink">
-
-                    <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium flex-no-shrink" style={{ width: '750px', height: 'auto' }} />
-
-                  </div>
-
-                </div>
-
-              </div>
-
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            <div className="section-divider"></div>
 
+            <div className="card-header card-sub-header">
+              <h4>SHOW/HIDE DRAFTING ENTITY</h4>
             </div>
 
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Show/Hide Drafting Entity</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem"  }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Right-click to show/hide all drafting entities. </span>
+              </div>
+              <p className="p-flush" style={{marginLeft: "3rem", marginTop: "-1rem"}}>Drafting Entities include:</p>
+                <div className="screenshot-wrapper">
+                  <img src={draftingEntitiesTable} alt="Drafting Entities Diagram" className="software-screenshot screenshot-large" />
+                </div>
+        
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className="card-header card-sub-header">
+              <h4>HIDE UNSELECTED ENTITY</h4>
+            </div>
+
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="text-highlight">Hide Unselected Entity</strong>.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem" }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Select entities to retain &gt; <strong className="text-highlight">GO</strong></span>
+              </div>
+              <div className="step-description">
+                <p className="p-flush" style={{marginLeft: "3rem", marginTop: "-1rem"}}>All unselected entities will be hidden.</p>
+                <div className="screenshot-wrapper" style={{marginTop: "2rem"}}>
+                  <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium" style={{ width: '750px' }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
           </div>
         )}
-        {/* STRETCH */}
+
         {activeTab === 'stretch' && (
-
-          <div className="lesson-card tab-content" >
-
-            <div
-              className="card-header">
-              <h4>STRETCH/SHAPE/CUT</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(stretchSteps)}
-                onStop={stop}
-              />
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>STRETCH / SHAPE / CUT</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(stretchSteps)} onStop={stop} />
             </div>
 
-            <div className={getStepClass('b3st-1')} style={{ marginInline: "-0.2rem", marginTop: "-5rem", marginBottom: "-0.9rem" }}>
-
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Stretch</strong> from the menu.</span>
-
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="text-highlight">Stretch</strong> from the menu.</span>
               </div>
-
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                <div>
-
-                  <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
-
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
                 </div>
-
               </div>
-
             </div>
 
-            <div className={getStepClass('b3st-2')} style={{ marginInline: "-0.2rem", marginTop: "-4rem", marginBottom: "-0.9rem" }}>
+            <div className="section-divider"></div>
 
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Select the face to be stretch &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
-
-
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 4px' }} />
+                </span>
               </div>
-
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-              </div>
-
             </div>
 
-            <div className={getStepClass('b3st-3')} style={{ marginInline: "-0.2rem", marginTop: "-5.5rem", marginBottom: "-0.9rem" }}>
+            <div className="section-divider"></div>
 
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">Specify the desired length of the solid entity on the item entry.</span>
-
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Specify desired length on the item entry.</span>
               </div>
-
-              <span>Also works for circular surfaces.</span>
-
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                <div className="flex-row">
-
-                  <div className="flex-1">
-
-                    <div>
-
-                      <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" style={{ width: '800px', height: 'auto' }} />
-
-                    </div>
-                    <br />
-
-                  </div>
-
+              <div className="step-description">
+                <p className="p-flush opacity-80 text-sm mb-4">* Also works for circular surfaces.</p>
+                <div className="screenshot-wrapper">
+                  <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" style={{ width: '800px' }} />
                 </div>
-
-                <div className="flex-no-shrink">
-                  <br />
-                  <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" style={{ width: '650px', height: 'auto' }} />
-
+                <div className="screenshot-wrapper mt-8">
+                  <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
                 </div>
-
               </div>
-
             </div>
 
-            <div className="section-divider" />
+            <div className="section-divider"></div>
 
-            <div className="tool-block">
-              <div className="flex-row-center" style={{ gap: '1rem' }}>
-                <h4 className="section-title">Or</h4>
-              </div>
-              <div className={`${getStepClass('b3st-2')}`}>
-                <div className="step-header"> <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', verticalAlign: 'middle', margin: '0 4px' }} /> &gt; Left-click on the 3D Space.</span>
-                </div>
-                <div className="step-header"> <span className="step-label">A linear scale will appear on the 3D space. Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale.</span>
+            <div className="instruction-card glass-panel p-6">
+              <h4 className="text-highlight mb-4">ALTERNATIVE METHOD</h4>
+              <div className="instruction-step">
+                <div className="step-header">
+                  <span className="step-label">Select face &gt; <strong className="text-highlight">GO</strong> &gt; Left-click on 3D Space.</span>
                 </div>
                 <div className="step-description">
-                  <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" style={{ width: '700px', height: 'auto' }} />
+                  <p className="p-flush mt-4">A linear scale will appear. Specify length &gt; Press Enter.</p>
+                  <div className="screenshot-wrapper mt-6">
+                    <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" style={{ width: '700px' }} />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-        {/* RESIZE */}
+
         {activeTab === 'resize' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>RESIZE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(resizeSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(resizeSteps)} onStop={stop} />
             </div>
 
-            <div className={getStepClass('b3rez-1')}>
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select <strong className="text-highlight">Resize</strong> from the menu.</span>
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="text-highlight">Resize</strong> from the menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', height: 'auto' }} />
+                  <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
                 </div>
               </div>
             </div>
 
-            <div className={getStepClass('b3rez-2')}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">Select the entity for resizing &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Select entity &gt; <strong className="text-highlight">GO</strong>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 4px' }} />
+                </span>
               </div>
             </div>
 
-            <div className={getStepClass('b3rez-3')}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">Using resize allows the user to scale up or scale down the size of the solid entity.</span>
+            <div className="section-divider"></div>
+
+            <div className="instruction-step">
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Specify scale on the item entry &gt; Left-click on 3D Space.</span>
               </div>
               <div className="step-description">
-                <p className="p-flush">Specify the scale on the item entry &gt; Left-click on the 3D Space</p>
-                <div className="flex-row-center--wide">
+                <div className="flex-row-center--wrap mt-6" style={{ gap: '2rem' }}>
                   <div className="screenshot-wrapper">
-                    <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" style={{ width: '250px', height: 'auto' }} />
+                    <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
                   </div>
-                  <div className="mt-8">
-                    <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" style={{ width: '750px', height: 'auto' }} />
+                  <div className="screenshot-wrapper">
+                    <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" style={{ width: '750px' }} />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-
       </div>
-
-    </div >
+    </div>
   );
-}; /* ── Basic Operation (4): Arrange Machine Part / Shape Steels ── */
+}; /* ── Basic Operation (5): Shape Steels ── */
 
-const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState<'shapeSteels'>('shapeSteels');
+const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'shapeSteels'>(() => {
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'shapeSteels';
+  });
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
 
-  const {
-    scrollProgress,
-    containerRef,
-    speak,
-    stop,
-    isSpeaking,
-    currentIndex
-  } = useLessonCore(`basic-op-4-${activeTab}`);
+  useEffect(() => {
+    localStorage.setItem(`${subLessonId}-tab`, activeTab);
+  }, [subLessonId, activeTab]);
 
   const shapeSteelsSteps = [
     "Step 1: Select Arrange Machine Part from the icon menu.",
@@ -1612,114 +1564,95 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
     "Step 3: In the Key Entry Area, enter the coordinates for the position point or origin point."
   ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
   const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
 
   return (
-
     <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
-
       <div className="lesson-progress-container">
-
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>
-        ))}
-
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
       </div>
+
+      <section className="lesson-intro">
+        <h3 className="section-title">Shape Steels</h3>
+        <p className="p-flush">Working with complex structural steel profiles and machine parts.</p>
+      </section>
 
       <div className="lesson-grid single-card">
         {activeTab === 'shapeSteels' && (
-
-          <div className="lesson-card tab-content">
-
-            <div
-              className="card-header">
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
               <h4>CREATING SHAPE STEELS</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(shapeSteelsSteps)}
-                onStop={stop}
-              />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(shapeSteelsSteps)} onStop={stop} />
             </div>
 
             <div className="instruction-step">
-
-              <div>
-
-                <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot screenshot-medium" style={{ height: '225px' }} />
-
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot screenshot-medium" style={{ height: '225px' }} />
+                </div>
+                <p className="p-flush mt-6"><strong className="text-highlight">Shape Steels includes:</strong></p>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
-
-              <p className="p-flush"><strong className="text-highlight">Shape Steels includes:</strong>
-              </p>
-
-              <div>
-
-                <img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot screenshot-wide" />
-
-              </div>
-
             </div>
 
-            <div className="section-divider">
-            </div>
+            <div className="section-divider"></div>
 
-            <div className={`${getStepClass('b4ss-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-
-              <div className="step-header"> <span className="step-number">
-                1 </span> <span className="step-label">Select the <strong className="text-highlight">Arrange Machine Part</strong> from the icon menu.</span>
-
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="text-highlight">Arrange Machine Part</strong> from the icon menu.</span>
               </div>
-
-              <div className="step-description" /* sanitized: paddingLeft: '2.5rem' */>
-
-                <div>
-
+              <div className="step-description">
+                <div className="screenshot-wrapper">
                   <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
-
                 </div>
-
-              </div>
-
-            </div>
-
-            <div className={`${getStepClass('b4ss-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                2 </span> <span className="step-label">The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK</span>
-              </div>
-              <div className="step-description">
-                <img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window" className="software-screenshot screenshot-wide" />
               </div>
             </div>
 
-            <div className={`${getStepClass('b4ss-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-              <div className="step-header"> <span className="step-number">
-                3 </span> <span className="step-label">in the Key Entry Area, enter the coordinates for the position (origin point)</span>
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Provide specifications in the window &gt; <strong className="text-highlight">OK</strong></span>
               </div>
               <div className="step-description">
-                <div className="flex-row-center--wrap">
-                  <div className="flex-1">
-                    <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
-                  </div>
+                <div className="screenshot-wrapper">
+                  <img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window" className="software-screenshot screenshot-wide" />
                 </div>
-                <div className="mt-8">
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">In the <strong className="text-highlight">Key Entry Area</strong>, enter the coordinates for the origin point.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
+                </div>
+                <div className="screenshot-wrapper mt-8">
                   <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ height: '400px' }} />
                 </div>
               </div>
             </div>
 
-            <div className="lesson-navigation"> <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button> <button className="nav-button next" onClick={onNextLesson}>Next Lesson <ChevronRight size={18} /></button>
-
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
-
           </div>
         )}
-
       </div>
-
     </div>
   );
 };
@@ -1727,21 +1660,22 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson,
 
 interface BasicOperationLessonProps { subLessonId: string; onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
 
-const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel
-}) => {
+const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
   switch (subLessonId) {
     case 'basic-op-1':
-
-      return <BasicOperation1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; case 'basic-op-2':
-
-      return <BasicOperation2 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; case 'basic-op-3':
-
-      return <BasicOperation3 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; case 'basic-op-4':
-
-      return <BasicOperation4 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />; default:
-
-      return <BasicOperation1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+      return <BasicOperation1 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+    case 'basic-op-2':
+      return <BasicOperation2 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+    case 'basic-op-3':
+      return <BasicOperation3 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+    case 'basic-op-4':
+      return <BasicOperation4 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+    case 'basic-op-5':
+      return <BasicOperation5 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+    default:
+      return <BasicOperation1 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
   }
 };
 
-export default BasicOperationLesson; 
+export { BasicOperation1, BasicOperation2, BasicOperation3, BasicOperation4, BasicOperation5, BasicOperationLesson };
+export default BasicOperationLesson;

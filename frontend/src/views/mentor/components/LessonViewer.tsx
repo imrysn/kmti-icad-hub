@@ -324,7 +324,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 const registry: Record<string, () => React.ReactNode> = {
                   'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'origin': () => <div className="origin-lesson-container"><OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} /></div>,
+                  'origin': () => <div className="origin-lesson-container"><OriginLesson subLessonId={activeLessonId} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} /></div>,
                   'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };

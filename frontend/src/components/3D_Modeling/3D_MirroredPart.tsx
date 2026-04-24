@@ -64,138 +64,139 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
         <p className="p-flush">{isMirrored1 ? "Based on KEMCO Standard" : ""}</p>
       </section>
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
+        <div className="lesson-card tab-content fade-in">
           {isMirrored1 ? (
-            <div className="tab-pane fade-in">
+            <div className="fade-in">
               <div className="card-header">
-                <h4>MIRRORED PARTS (1)</h4>
+                <h4>MIRRORED PARTS CLASSIFICATION</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrored1Steps)} onStop={stop} />
               </div>
+
               <div className={`${getStepClass("mp1-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <span className="step-label">NORMAL PARTS</span>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">Parts that are exactly the same as the original part if you create a mirror copy of it. No changes will be recognized.</p>
-                  <p className="p-flush">Normal parts have drawing number with <strong className="text-highlight">N</strong>.</p>
-                  <div className="drawing-number-box">RTXXXXXX<strong>N</strong>01</div>
-                  <p className="p-flush">Here is an example of a normal part.</p>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-medium" style={{ width: '700px' }} />
+                  <p className="p-flush">Parts that are exactly the same as the original after mirroring. They use the suffix <strong className="text-highlight">N</strong> in the drawing number.</p>
+                  <div className="drawing-number-box mt-8">RTXXXXXX<strong>N</strong>01</div>
+                  <div className="screenshot-wrapper mt-8">
+                    <img src={normalPartA} alt="Normal Part Example" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`${getStepClass("mp1-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <span className="step-label">MIRROR PARTS</span>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">Parts that are symmetrically the same.</p>
-                  <p className="p-flush">Mirror parts have drawing number with <strong className="text-highlight">A</strong> and <strong className="text-highlight">B</strong>.</p>
-                  <div className="flex-column gap-2 mt-4">
+                  <p className="p-flush">Symmetrically opposite parts, labeled <strong className="text-highlight">A</strong> (Original) and <strong className="text-highlight">B</strong> (Mirror).</p>
+                  <div className="flex-row-wrap mt-8" style={{ gap: '1rem' }}>
                     <div className="drawing-number-box">RTXXXXX<strong>A</strong>01</div>
                     <div className="drawing-number-box">RTXXXXX<strong>B</strong>01</div>
                   </div>
-                  <ul className="interaction-list--plain mt-4">
-                    <li>Mirror Parts <strong className="text-highlight">A</strong> are the original part.</li>
-                    <li>Mirror Parts <strong className="text-highlight">B</strong> are the mirror copy of Mirror Parts A.</li>
-                    <li>Mirror Parts B cannot exist without Mirror Parts A.</li>
-                  </ul>
-                  <p className="p-flush mt-4"><strong>Note:</strong> If there are no existing part to be mirrored, use <strong>A</strong> when naming the part.</p>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot screenshot-large" style={{ width: '700px' }} />
+                  <div className="instruction-box mt-8">
+                    <p className="p-flush">Mirror Part <strong className="text-highlight">B</strong> cannot exist without Mirror Part <strong className="text-highlight">A</strong>.</p>
+                  </div>
+                  <div className="screenshot-wrapper mt-8">
+                    <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
 
+              <div className="section-divider"></div>
+
               <div className={`${getStepClass("mp1-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">Use Mirror copy tool on the icon menu.</span>
+                  <span className="step-number">3 </span>
+                  <span className="step-label">IDENTIFICATION</span>
                 </div>
                 <div className="step-description">
+                  <p className="p-flush">Use the <strong className="text-highlight">Mirror Copy</strong> tool. If features or hole locations change, it is a Mirror Part.</p>
                   <div className="screenshot-wrapper mt-4">
-                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-medium" style={{ height: '80px' }} />
+                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot screenshot-small" style={{ height: '80px' }} />
                   </div>
-                  <div className="info-box mt-4">
-                    <p className="p-flush"><strong>Place mirror copy over the original part.</strong></p>
-                    <ul className="interaction-list--plain mt-2">
-                      <li>If there are no changes or the part details are all exactly the same, it is a Normal Part.</li>
-                      <li>If there are changes that can be recognize like hole location, cutouts or fairings, it is a Mirror Part.</li>
-                    </ul>
-                    <p className="p-flush mt-4"><strong>NOTE:</strong> Be careful in identifying parts because it affects drawing number assignment.</p>
-                    <p className="p-flush mt-2"><strong>NOTE:</strong> Watch for <strong>Mirror Image</strong> notes on reference drawings.</p>
+                  <div className="instruction-box instruction-box--warning mt-8">
+                    <p className="p-flush"><strong>TIP:</strong> Watch for <strong className="text-highlight">Mirror Image</strong> notes on reference drawings.</p>
                   </div>
-                  <div className="screenshot-wrapper mt-4">
+                  <div className="screenshot-wrapper mt-8">
                     <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot screenshot-small" style={{ height: '80px' }} />
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="tab-pane fade-in">
+            <div className="fade-in">
               <div className="card-header">
                 <h4>MIRRORING PROCEDURE</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrored2Steps)} onStop={stop} />
               </div>
+
               <div className={`${getStepClass("mp2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
-                  <span className="step-label">Identify the proper location of origin of the part.</span>
+                  <span className="step-number">1 </span>
+                  <span className="step-label">Identify the proper location of the <strong className="text-highlight">origin</strong>.</span>
                 </div>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-large" style={{ width: '650px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`${getStepClass("mp2-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">After doing 3D modeling of the part, Save it as <strong>Part A</strong></span>
+                  <span className="step-number">2 </span>
+                  <span className="step-label">Complete Part A and save it.</span>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`${getStepClass("mp2-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">In doing the 3D model of the mirror part, Part A must be saved to another file as Part B.</span>
+                  <span className="step-number">3 </span>
+                  <span className="step-label">Save a copy of Part A as <strong className="text-highlight">Part B</strong>.</span>
                 </div>
               </div>
 
+              <div className="section-divider"></div>
+
               <div className={`${getStepClass("mp2-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
                 <div className="step-header">
-                  <span className="step-number">4</span>
-                  <span className="step-label">Use mirror to convert the 3D Model of Part A to Part B.</span>
+                  <span className="step-number">4 </span>
+                  <span className="step-label">Use the <strong className="text-highlight">Mirror</strong> tool to convert model.</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
+                  <div className="screenshot-wrapper">
                     <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
                   </div>
-                  <p className="p-flush mt-4">Pick 3 points consecutively from the Part, <strong>starting from the origin.</strong></p>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot screenshot-medium" style={{ height: '350px', width: '500px' }} />
+                  <p className="p-flush mt-4">Pick 3 points consecutively starting <strong className="text-highlight">from the origin</strong>.</p>
+                  <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot screenshot-medium" />
+                    </div>
+                    <div className="screenshot-wrapper">
+                      <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-medium" />
+                    </div>
                   </div>
-                  <p className="p-flush mt-4">After doing the command, this will be the outcome as Part B.</p>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={pick3PointsPartA} alt="Picking Points on Part A" className="software-screenshot screenshot-large" style={{ height: '350px', width: '550px' }} />
+                  <div className="instruction-box instruction-box--warning mt-8">
+                    <p className="p-flush">The Origin of Part B must remain in the <strong className="text-highlight">same relative location</strong> as Part A.</p>
                   </div>
-                  <p className="p-flush mt-4"><strong>Note:</strong> The <strong>Origin Part B</strong> must be at the <strong>same location as in Part A.</strong></p>
                 </div>
               </div>
             </div>
           )}
 
-
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

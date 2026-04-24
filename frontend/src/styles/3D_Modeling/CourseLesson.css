@@ -533,3 +533,18 @@
   background: rgba(99, 102, 241, 0.05);
   color: var(--primary);
 }
+
+/* --- Highlight Text Styles --- */
+.red-bold {
+  color: #ff3131;
+  font-weight: 800;
+}
+
+.red-text {
+  color: #ff3131;
+}
+
+.small-text {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}

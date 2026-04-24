@@ -24,24 +24,24 @@ export type Lesson = {
 export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'interface',
-    title: 'iCAD Interface',
+    title: 'iCAD Window Structure',
     content: ['Window Structure', 'Command menus', 'Hierarchical tree view', '3D viewport', 'UI placement', 'modeling environment', 'software layout'],
     children: [
-      { id: 'interface', title: 'iCAD Window Interface', content: ['hotspots', 'interactive diagram', 'functional areas', 'navigation'] },
+      { id: 'interface', title: 'iCAD Window Structure', content: ['hotspots', 'interactive diagram', 'functional areas', 'navigation'] },
     ],
     quiz: {
-      title: 'iCAD Interface Competency',
+      title: 'iCAD Window Structure Competency',
       description: 'Comprehensive assessment of window structure, command locations, and functional interface zones.',
       questions: [
         { id: 'q1', text: 'Identify the specific UI element where a user would look to confirm the filename of the project they are currently editing.', options: ['Status bar', 'Title bar', 'Tool bar', 'Menu bar'], correctAnswer: 1, explanation: 'The Title bar at the very top of the window displays the software name and the current project filename.' },
         { id: 'q2', text: 'When a user needs to input precise numerical coordinates for a specific operation, which interface area is dedicated to this task?', options: ['Message Pane', 'Item Entry', 'Key Entry', 'Workspace'], correctAnswer: 2, explanation: 'Key Entry is the specific field used for direct numerical coordinate input (X, Y, Z).' },
         { id: 'q3', text: 'Name the navigation panel that provides a hierarchical display of 3D components and assemblies within the current drawing.', options: ['Icon Menu', 'Command Menu', 'Tree view', 'Status bar'], correctAnswer: 2, explanation: 'The Tree view (or Parts List) shows the structural hierarchy of the model and its history.' },
         { id: 'q4', text: 'A designer needs to access the "Information" or "Set" categories. Which part of the interface houses these specific drop-down menus?', options: ['Tool Bar', 'Command Menu', 'Menu bar', 'Icon Menu'], correctAnswer: 2, explanation: 'The Menu bar contains high-level text menus like File, Edit, Information, and Set.' },
-        { id: 'q5', text: 'How does the ICAD interface visually distinguish critical error messages from standard operational feedback?', options: ['Error messages appear in the Command Menu rather than the Message Pane', 'Errors are highlighted in red text within the Message Pane', 'The Title bar flashes when a coordinate error occurs in Key Entry', 'Error messages are only displayed within the Item Entry field'], correctAnswer: 1, explanation: 'The Message Pane uses color coding (typically red) to signal errors or warnings to the user.' },
+        { id: 'q5', text: 'How does the iCAD software visually distinguish critical error messages from standard operational feedback?', options: ['Error messages appear in the Command Menu rather than the Message Pane', 'Errors are highlighted in red text within the Message Pane', 'The Title bar flashes when a coordinate error occurs in Key Entry', 'Error messages are only displayed within the Item Entry field'], correctAnswer: 1, explanation: 'The Message Pane uses color coding (typically red) to signal errors or warnings to the user.' },
         { id: 'q6', text: 'Which interface component is described as being primarily optimized for 2D functional commands?', options: ['Icon Menu', 'Command Menu', 'Workspace', 'Tool Bar'], correctAnswer: 1, explanation: 'The Command Menu is a text-based hierarchy often optimized for 2D operations and legacy command access.' },
         { id: 'q7', text: 'What is the primary functional difference between the Icon Menu and the Tool Bar?', options: ['The Icon Menu is for 2D, while the Tool Bar is for 3D', 'The Tool Bar can be toggled between visible and hidden states, while the Icon Menu contains 3D modeling commands', 'The Icon Menu handles coordinate entry, while the Tool Bar handles file management', 'The Tool Bar is for assembly operations, while the Icon Menu is for part naming'], correctAnswer: 1, explanation: 'Toolbars are customizable/toggleable strips of icons, whereas the Icon Menu is a fixed region containing core modeling tools.' },
         { id: 'q8', text: 'Scenario: A user is attempting to run a command that requires entering a specific text string and a set of parameters. They are currently looking at the 3D model in the Workspace. Which specific area should they navigate to for typing in these required characters to execute the command?', options: ['Key Entry', 'Item Entry', 'Title Bar', 'Status Bar'], correctAnswer: 1, explanation: 'The Item Entry (or Message Bar) is the primary location for entering command parameters and text-based values.' },
-        { id: 'q9', text: 'Scenario: You are performing complex 3D Modeling and Assembly operations. According to the window structure, in which specific central region of the ICAD interface will these visual manipulations and modeling tasks take place?', options: ['Workspace', 'Command Menu', 'Tree View', 'Message Pane'], correctAnswer: 0, explanation: 'The Workspace is the large central 3D viewport where all modeling and visual manipulation occurs.' },
+        { id: 'q9', text: 'Scenario: You are performing complex 3D Modeling and Assembly operations. According to the window structure, in which specific central region of the iCAD interface will these visual manipulations and modeling tasks take place?', options: ['Workspace', 'Command Menu', 'Tree View', 'Message Pane'], correctAnswer: 0, explanation: 'The Workspace is the large central 3D viewport where all modeling and visual manipulation occurs.' },
         { id: 'q10', text: 'Scenario: A trainee is looking for a specific modeling shortcut. They are told that the command is not currently visible on the "Icon Menu." Based on the lesson, where is the most logical alternative location they should check to find additional modeling options?', options: ['Status Bar', 'Title Bar', 'Command menu', 'Message Pane'], correctAnswer: 2, explanation: 'The Command Menu provides a comprehensive tree-based alternative to the Icon Menu for finding any available system command.' }
       ]
     }
@@ -51,7 +51,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     title: 'Tool Bars',
     content: ['File', 'New', 'Open', 'Save', 'Print', '2D View', 'Previous View', 'Switch Views', 'Next View', 'Switch Display', 'Projection Method', 'Switch Dimensions', 'Screen Operations', 'Zoom Area', 'Zoom In/Out', 'Zoom to Fit', 'Re-Display', '3D View', 'Top', 'Front', 'Right', 'Left', 'Back', 'Bottom', 'Plane', 'Isometric', 'User Views', 'Edit', 'Undo', 'Redo', 'Shading', 'Frame', 'Hidden Lines', 'Wireframe', 'Section Display', 'Open Work Plane', 'Switch Section Display', '2D Standard Screen', 'Standard Range', 'System Information', 'Line Type', 'Color', 'Layer', 'Scale', 'Grid', 'Screen Memory', 'Entry Control', 'Entity Selection', 'Coordinate Entry', 'AP', 'Magnet Tools'],
     children: [
-      { id: 'toolbars', title: 'iCAD Toolbars', content: ['toolbar explorer', 'functional groups', 'quick access'] },
+      { id: 'toolbars', title: 'iCAD Tool Bars', content: ['toolbar explorer', 'functional groups', 'quick access'] },
     ],
     quiz: {
       title: 'Tool Bars Mastery',
@@ -101,8 +101,9 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     children: [
       { id: 'basic-op-1', title: 'Basic Operation (1)', content: ['Cylinder', 'Box', 'Polygon', 'Cone', 'Torus'] },
       { id: 'basic-op-2', title: 'Basic Operation (2)', content: ['Move', 'Rotate', 'Mirror', 'Copy', 'Rotate Copy', 'Mirror Copy', 'Delete'] },
-      { id: 'basic-op-3', title: 'Basic Operation (3)', content: ['Move', 'Rotate', 'Mirror', 'Copy'] },
-      { id: 'basic-op-4', title: 'Basic Operation (4)', content: ['Delete'] },
+      { id: 'basic-op-3', title: 'Basic Operation (3)', content: ['Sketch', 'Extrude', 'Revolve'] },
+      { id: 'basic-op-4', title: 'Basic Operation (4)', content: ['Show/Hide', 'Stretch', 'Resize'] },
+      { id: 'basic-op-5', title: 'Basic Operation (5)', content: ['Shape Steels'] },
     ],
     quiz: {
       title: 'Basic iCAD Operations',

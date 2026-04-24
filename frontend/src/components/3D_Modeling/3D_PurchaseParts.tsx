@@ -49,8 +49,13 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card">
-          <div className="tab-pane fade-in">
+        <div className="lesson-card tab-content">
+          <div className="fade-in">
+            <div className="card-header">
+              <h4>{isPart1 ? "WORKFLOW OVERVIEW" : "SERVER UPLOAD PROTOCOL"}</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(purchaseSteps)} onStop={stop} />
+            </div>
+
             <div className="screenshot-wrapper">
               <img
                 src={isPart1 ? purchasePartsFlowchart : uploadingFlowchart}
@@ -61,12 +66,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
