@@ -7,7 +7,7 @@ import { ReadAloudButton } from "../ReadAloudButton";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 /* Fairing Assets */
-import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.png';
+import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.jpg';
 import chamferEntry from '../../assets/3D_Image_File/fairing_chamfer_1.png';
 import chamferResult from '../../assets/3D_Image_File/fairing_chamfer_2.png';
 import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.png';

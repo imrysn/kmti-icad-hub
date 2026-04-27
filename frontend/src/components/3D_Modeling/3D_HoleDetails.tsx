@@ -55,14 +55,12 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
       </div>
 
       <section className="lesson-intro">
-        <h4 className="section-title">Creating hole details on parts</h4>
+        <h3 className="section-title">Creating Hole Details on Parts</h3>
         <p className="p-flush">
           We have standard tools for creating holes such as drill holes, tapping holes and counterbores on the parts.
         </p>
-        <div className="instruction-box">
-          <div className="screenshot-wrapper mt-4">
-            <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" style={{ height: '250px' }} />
-          </div>
+        <div className="screenshot-wrapper mt-4">
+          <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" style={{ height: '180px' }} />
         </div>
       </section>
 
@@ -80,61 +78,57 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             </div>
             <div className="step-description">
               <div className="screenshot-wrapper">
-                <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" style={{ height: '120px' }} />
+                <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-1rem" }} />
               </div>
             </div>
           </div>
 
-          <div className="section-divider"></div>
+ 
 
           <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">2 </span>
-              <span className="step-label">A window will appear showing the list of available tools.</span>
+              <span className="step-label">A window will appear showing the list of tools available.</span>
             </div>
             <div className="step-description">
               <div className="screenshot-wrapper">
-                <img src={listTools} alt="List of available tools" className="software-screenshot screenshot-wide" />
+                <img src={listTools} alt="List of available tools" className="software-screenshot" style={{ width: '900px', marginBottom: "-2rem"}} />
               </div>
             </div>
           </div>
 
-          <div className="section-divider"></div>
+       
 
           <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
-            <div className="step-header">
+            <div className="step-header" style={{ marginBottom: "-2rem"}}>
               <span className="step-number">3 </span>
-              <span className="step-label">After setting the specifications, click <strong className="text-highlight">OK</strong>.</span>
+              <span className="step-label">After setting the specifications, click OK</span>
             </div>
           </div>
 
-          <div className="section-divider"></div>
+         
 
           <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
             <div className="step-header">
               <span className="step-number">4 </span>
-              <span className="step-label">Click the location of the hole &gt; <strong className="text-highlight">GO</strong>
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 4px' }} />
+              <span className="step-label" style={{ marginTop: "-1rem"}}>Click the location of the hole on the solid entity &gt; GO
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px' }} /> to create the cut.
               </span>
             </div>
             <div className="step-description">
               <div className="screenshot-wrapper">
-                <img src={holeResult} alt="Hole Creation Result" className="software-screenshot screenshot-medium" />
+                <img src={holeResult} alt="Hole Creation Result" className="software-screenshot" style={{ width: '900px', marginTop: "1rem"}} />
               </div>
             </div>
           </div>
-
-          <div className="section-divider"></div>
-
-          <div className="instruction-step">
-            <div className="card-header"><h4>THREADED HOLE STANDARD</h4></div>
-            <div className="step-description mt-4">
-              <p className="p-flush mb-4">
-                <strong className="text-highlight">IMPORTANT:</strong> Tapped holes must be painted <span style={{ color: '#4ade80', fontWeight: 'bold' }}>Green</span> to indicate they are threaded and to distinguish them from drill holes.
+        
+            <div className="instruction-box" style={{ marginTop: '0rem' }}>
+              <p className="p-flush">
+                <strong className="red-text">Note:</strong> Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.
               </p>
-              <div className="screenshot-wrapper">
-                <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" />
-              </div>
+            </div>
+            <div className="screenshot-wrapper">
+              <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" />
             </div>
           </div>
 
@@ -143,7 +137,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
-      </div>
+
     </div>
   );
 };

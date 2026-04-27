@@ -125,7 +125,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: '2d-3d',
     title: '2D > 3D',
-    children: Array.from({ length: 3 }, (_, i) => ({ id: `2d-3d-${i + 1}`, title: `2D > 3D (${i + 1})` })),
+    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-3d-${i + 1}`, title: `2D > 3D (${i + 1})` })),
     quiz: {
       title: '2D to 3D Conversion Workflow',
       description: 'Understanding the KEMCO methodology for solid generation from orthographic geometry.',
@@ -172,8 +172,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     title: 'Boolean',
     content: ['Boolean Operations', 'Union', 'Subtract', 'Intersect', 'Separate Entity', 'joining 3D entities', 'cutout', 'intersecting product', 'reverse boolean', 'CSG solid', 'Target entity', 'Tool entity'],
     children: [
-      { id: 'boolean-1', title: 'Boolean (1) - Union & Subtract', content: ['merging parts', 'cutting out'] },
-      { id: 'boolean-2', title: 'Boolean (2) - Intersect & Separate', content: ['intersection product', 'de-union'] },
+      { id: 'boolean-1', title: 'Boolean Operations (Union / Subtract / Intersect / Separate)', content: ['merging parts', 'cutting out', 'intersection product', 'de-union'] },
     ],
     quiz: {
       title: 'Boolean Operations in iCAD',
@@ -197,8 +196,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     title: 'Component',
     content: ['Move Component', 'Copy Component', 'Mirror Component', 'Rotate Component', 'Repeat Copy', 'Delete Component', 'distance', 'number of copies', 'axis of rotation', 'angle of rotation', 'mirror plane', 'drill holes', 'cutouts'],
     children: [
-      { id: 'component-1', title: 'Component (1) - Move, Copy, Mirror, Rotate', content: ['repositioning', 'duplication'] },
-      { id: 'component-2', title: 'Component (2) - Repeat Copy, Delete', content: ['bulk removal', 'sequential duplication'] },
+      { id: 'component-1', title: 'Component', content: ['repositioning', 'duplication', 'bulk removal'] },
     ],
     quiz: {
       title: 'iCAD Component Management',
