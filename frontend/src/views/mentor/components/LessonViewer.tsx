@@ -139,6 +139,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     
     // Fetch dynamic content if available
     const fetchDbContent = async () => {
+      if (!activeLessonId) return;
       setIsDbLoading(true);
       try {
         const res = await api.get(`/courses/lesson/${activeLessonId}/content?t=${Date.now()}`);

@@ -103,8 +103,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Select <strong className="text-highlight">Create 3D Part</strong> from the icon menu.</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -129,8 +131,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Fill up the required information in the window.</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" />
+                  <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -143,8 +147,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">The created 3D Part will appear in the tree view.</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '300px' }} />
+                  <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -157,8 +163,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">MATERIAL DESCRIPTION REFERENCE</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" />
+                  <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -176,8 +184,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Select <strong className="text-highlight">Change 3D Part Name</strong> from the menu.</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -199,8 +209,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Edit the information in the dialog box.</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" />
+                  <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -213,8 +225,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <span className="step-label">Update both 3D and 2D names by selecting <strong className="text-highlight">Yes</strong>.</span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
+                  <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
+                    <div className="screenshot-wrapper">
+                      <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" style={{ height: '200px' }} />
+                    </div>
                   </div>
                 </div>
               </div>
