@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Brain, GraduationCap } from 'lucide-react';
-import { IntelligenceChatbot } from '../admin/components/IntelligenceChatbot';
+import { Brain, GraduationCap } from 'lucide-react'; import { IntelligenceChatbot } from '../admin/components/IntelligenceChatbot';
 import MentorMode from '../mentor/MentorMode';
 
 import '../../styles/AssistantMode.css';
@@ -16,19 +15,15 @@ const AssistantMode: React.FC = () => {
     return (
         <div className="assistant-mode-container">
             <nav className="assistant-tabs">
-                <button 
-                    className={`assistant-tab-btn ${activeTab === 'assistant' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('assistant')}
+                <button className={`assistant-tab-btn ${activeTab === 'assistant' ? 'active' : ''}`} onClick={() => setActiveTab('assistant')}
                 >
                     <Brain size={18} />
                     <span>Intelligence Assistant</span>
                 </button>
-                <button 
-                    className={`assistant-tab-btn ${activeTab === 'training' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('training')}
+                <button className={`assistant-tab-btn ${activeTab === 'training' ? 'active' : ''}`} onClick={() => setActiveTab('training')}
                 >
                     <GraduationCap size={18} />
-                    <span>Training Review</span>
+                    <span>iCAD Manuals and Standard</span>
                 </button>
             </nav>
 
@@ -37,7 +32,7 @@ const AssistantMode: React.FC = () => {
                     <IntelligenceChatbot />
                 ) : (
                     <div className="assistant-training-wrapper">
-                        <MentorMode />
+                        <MentorMode isEmployeeSide={true} />
                     </div>
                 )}
             </div>

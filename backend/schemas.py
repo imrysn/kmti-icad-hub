@@ -35,6 +35,18 @@ class CourseProgress(BaseModel):
     user_id: str
     progress_percentage: float
 
+class LessonProgress(BaseModel):
+    lesson_id: str
+    course_id: str
+    is_completed: bool = False
+    score: Optional[float] = None
+    completed_at: Optional[datetime] = None
+
+class QuizSubmission(BaseModel):
+    course_id: str
+    lesson_id: str
+    score: float  # Percentage 0-100
+
 # Authentication Schemas
 
 # Chat / Intelligence Node Schemas
@@ -144,11 +156,6 @@ class ForgotPasswordRequest(BaseModel):
     """Schema for forgot password request"""
     username_or_email: str
 
-class Token(BaseModel):
-    """Schema for JWT token response"""
-    access_token: str
-    token_type: str = "bearer"
-
 class UserResponse(BaseModel):
     """Schema for user information response"""
     id: int
@@ -162,3 +169,9 @@ class UserResponse(BaseModel):
     
     class Config:
         from_attributes = True
+
+class Token(BaseModel):
+    """Schema for JWT token response"""
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse

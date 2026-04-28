@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey
 from sqlalchemy.sql import func
 try:
     from .database import Base
@@ -20,7 +20,9 @@ class QuizScore(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(String(100), index=True)
     course_id = Column(String(100), index=True)
+    lesson_id = Column(String(100), index=True)
     score = Column(Float)
+    attempts_count = Column(Integer, default=1)
     completed_at = Column(DateTime, nullable=True)
 
 class MediaMetadata(Base):
@@ -131,4 +133,17 @@ class QueryCache(Base):
     hit_count = Column(Integer, default=0)                     # Times this cache entry was served
     created_at = Column(DateTime, default=func.now(), index=True)
     expires_at = Column(DateTime, nullable=False, index=True)  # TTL expiry
+
+
+class SavedSnippet(Base):
+    """Personal notebook entries for trainees to save key insights"""
+    __tablename__ = "saved_snippets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True, nullable=False) # FK to users.id
+    content = Column(String(8000), nullable=False)        # The clipped text
+    source = Column(String(200), nullable=True)           # E.g. "AI Response", "2D Keyway Lesson"
+    tags = Column(String(500), nullable=True)             # Optional tags for categorization
+    created_at = Column(DateTime, default=func.now(), index=True)
+
 

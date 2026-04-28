@@ -1,6 +1,5 @@
 import React from 'react';
-import { BookOpen, PlayCircle } from 'lucide-react';
-import { Course } from '../../../types';
+import { BookOpen, PlayCircle } from 'lucide-react'; import { Course } from '../../../types';
 import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
 
 interface CourseSelectorProps {
@@ -34,24 +33,23 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({ courses, loading
     }
 
     return (
-        <div className="mentor-mode">
+        <div className="mentor-mode course-selector-view animate-fade-in">
             <div className="mentor-header">
-                <BookOpen size={32} />
-                <h1>Mentor Mode</h1>
-                <p>Select a structured path to begin your training</p>
+                <BookOpen size={48} className="lesson-intro-icon course-welcome-icon" />
+                <h1>Welcome to iCAD Hub</h1>
+                <p>Select your learning path to begin the deep dive</p>
             </div>
             <div className="course-selection">
                 <div className="course-grid">
                     {courses.map((course) => (
-                        <div
-                            key={course.id}
-                            className="course-card"
-                            onClick={() => setSelectedCourse(course)}
+                        <div key={course.id} className="course-card" onClick={() => setSelectedCourse(course)}
                         >
-                            <h3>{course.title}</h3>
+                            <div className="card-header">
+                                <h3>{course.title}</h3>
+                            </div>
                             <p>{course.description}</p>
-                            <button className="btn-primary">
-                                Start Learning <PlayCircle size={18} />
+                            <button className="primary">
+                                Launch Module <PlayCircle size={18} />
                             </button>
                         </div>
                     ))}

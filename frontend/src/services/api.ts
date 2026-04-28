@@ -4,6 +4,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -12,7 +13,7 @@ const api = axios.create({
 // Request interceptor to add JWT token to headers
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('access_token');
+        const token = sessionStorage.getItem('access_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -33,9 +34,14 @@ api.interceptors.response.use(
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user');
-            window.location.href = '/'; // Redirect to login
+            console.warn('Authentication failure - clearing session and redirecting');
+            sessionStorage.removeItem('access_token');
+            sessionStorage.removeItem('user');
+            
+            // Avoid redundant reloads if already redirecting
+            if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
+                window.location.href = '/'; 
+            }
         }
         return Promise.reject(error);
     }

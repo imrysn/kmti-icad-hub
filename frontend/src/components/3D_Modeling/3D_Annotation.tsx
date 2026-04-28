@@ -1,353 +1,168 @@
-/**
- * 3D_Annotation.tsx — Annotation lessons
- */
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Edit3, Box, CheckCircle2, Zap } from 'lucide-react';
-import '../../styles/3D_Modeling/CourseLesson.css';
+/** * 3D_Interference.tsx * Interference Check lesson */
 
-import '../../styles/3D_Modeling/CourseLesson.css';
+import React from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLessonCore } from "../../hooks/useLessonCore";
+import { ReadAloudButton } from "../ReadAloudButton";
+import "../../styles/3D_Modeling/CourseLesson.css";
 
-// Annotation (1) Assets
-import annotationImg from '../../assets/3D_Image_File/annotation.jpg';
-import linearDimensionImg from '../../assets/3D_Image_File/linear_dimension.jpg';
-import diameterDimensionImg from '../../assets/3D_Image_File/diameter_dimension.jpg';
-import angularDimensionImg from '../../assets/3D_Image_File/angular_dimension.jpg';
-import notesLeaderLinesImg from '../../assets/3D_Image_File/notes_leader_lines.jpg';
-import characterStringsImg from '../../assets/3D_Image_File/character_strings.jpg';
+/* Assets */
+import leftClick from "../../assets/3D_Image_File/left_click.png";
+import interfCheckIcon from "../../assets/3D_Image_File/interf_check.png";
+import interfCommandMenu from "../../assets/3D_Image_File/interf_command_menu.png";
+import interferenceResult from "../../assets/3D_Image_File/interference.png";
+import listInterfIcon from "../../assets/3D_Image_File/list_all_detected_interf.png";
+import listDisplayWindow from "../../assets/3D_Image_File/list_display_window.png";
+import interferenceCheckImg from "../../assets/3D_Image_File/interference_check.png";
 
-import leftClick from '../../assets/3D_Image_File/left_click.jpg';
-
-// Note Entry Images
-import noteStringEntryImg from '../../assets/3D_Image_File/note_string_entry_window.jpg';
-import textEntryImg from '../../assets/3D_Image_File/text_entry_window.jpg';
-
-// Annotation (2) Assets
-import editDimensionImg from '../../assets/3D_Image_File/edit_dimension_characters_window.jpg';
-import changePropertiesWindowImg from '../../assets/3D_Image_File/change_properties_window.jpg';
-import changesDraftingEntityImg from '../../assets/3D_Image_File/annotation(2)_edits_drafting.jpg';
-import changesPositionDraftingEntitiesImg from '../../assets/3D_Image_File/changes_position_drafting_entities.jpg';
-import collectiveDimensionImg from '../../assets/3D_Image_File/annotation(2)_dimension.jpg';
-import annotation2Img from '../../assets/3D_Image_File/angular_dimension1.jpg';
-import changesDraftingEntity2Img from '../../assets/3D_Image_File/annotation11.jpg';
-
-interface AnnotationLessonProps {
-  subLessonId?: string;
+interface InterferenceLessonProps {
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
-const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'annotation-1', onNextLesson, onPrevLesson }) => {
-  const isAnnotation1 = subLessonId === 'annotation-1';
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex
+  } = useLessonCore('interference');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const element = containerRef.current;
-      const totalHeight = element.scrollHeight - element.clientHeight;
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
+  const interferenceSteps = [
+    "Step 1: Select Interference Check from the icon menu.",
+    "Step 2: On the command menu, unselect High-speed detection for a thorough check.",
+    "Step 3: Select specific entities and click GO. A dialog will show the number of detected interferences. Alternatively, right-click the 3D space to check the entire drawing.",
+    "Step 4: Analyze countermeasures to fix the parts. Use Undo or Ctrl Z to remove the red CGS solid highlighting the interference.",
+    "Step 5 (List Tool): Select the list tool from the icon menu and click GO.",
+    "Step 6 (Display): The List Display window will appear, showing all interfering parts for your review."
+  ];
 
-    const currentContainer = containerRef.current;
-    if (currentContainer) {
-      currentContainer.addEventListener('scroll', handleScroll);
-      handleScroll();
-    }
-
-    return () => {
-      if (currentContainer) {
-        currentContainer.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, [subLessonId]);
-
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps(prev => {
-      const next = new Set(prev);
-      if (next.has(stepId)) next.delete(stepId);
-      else next.add(stepId);
-      return next;
-    });
-  };
-
-  const getStepClass = (stepId: string) => {
-    return `instruction-step interactive ${completedSteps.has(stepId) ? 'completed' : ''}`;
-  };
-
-  const handleNext = () => {
-    if (onNextLesson) onNextLesson();
-  };
-
-  const handlePrev = () => {
-    if (onPrevLesson) onPrevLesson();
-  };
+  const getStepClass = (stepId: string) => "instruction-step";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
-        <div
-          className="lesson-progress-bar"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>      <section className="lesson-intro">
-        <h3><Box size={28} className="lesson-intro-icon" /> ANNOTATION</h3>
-        <p>Tools use to create drafting entities such as dimension text and notes.</p>
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
 
-        {isAnnotation1 && (
-          <div className="instruction-box">
-            <div className="image-wrapper-flush">
-              <img
-                src={isAnnotation1 ? annotationImg : annotation2Img}
-                alt={isAnnotation1 ? "Annotation Tool Menu" : "Annotation Dimension Result"}
-                className={isAnnotation1 ? "software-screenshot screenshot-small" : "software-screenshot screenshot-medium"}
-              />
-            </div>
+      <section className="lesson-intro">
+        <h3 className="section-title">
+          Interference check
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} />
+        </h3>
+        <p className="p-flush">
+          Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling.
+        </p>
+        <p className="step-label">These following tools are used to detect interferences on the 3D Modeling.</p>
+        <div className="instruction-box">
+          <div>
+            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ width: '12rem' }} />
           </div>
-        )}
+        </div>
       </section>
 
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="lesson-content fade-in">
-            {isAnnotation1 ? (
-              <div className="fade-in">
+          <div className="card-header">
+            <h4>Interference Check Tool</h4>
+          </div>
 
-                <div className="flex-row-wrap" style={{ gap: '2rem' }}>
-                  {/* Left Column */}
-                  <div className="flex-1" style={{ minWidth: '300px' }}>
+          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+            <div className="step-header">
+              <span className="step-number">1</span>
+              <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
+            </div>
+            <div className="step-description">
+              <div>
+                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" style={{ height: '180px' }} />
+              </div>
+            </div>
+          </div>
 
-                    {/* Item 1 */}
-                    <div className={getStepClass('anno1-1')} onClick={() => toggleStep('anno1-1')} style={{ marginBottom: '2.5rem' }}>
-                      <p className="p-flush"><strong>Creates linear dimension</strong></p>
-                      <div className="image-wrapper-flush" style={{ display: 'inline-block', marginBottom: '1rem' }}>
-                        <img src={linearDimensionImg} alt="Linear Dimension" className="software-screenshot screenshot-small" />
-                      </div>
-                    </div>
+          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+            <div className="step-header">
+              <span className="step-number">2</span>
+              <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
+            </div>
+            <div className="step-description">
+              <div>
+                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" style={{ height: '280px' }} />
+              </div>
+            </div>
+          </div>
 
-
-                    {/* Item 2 */}
-                    <div className={getStepClass('anno1-2')} onClick={() => toggleStep('anno1-2')} style={{ marginBottom: '2.5rem' }}>
-                      <div className="step-header">
-                        <span className={`step-number ${completedSteps.has('anno1-2') ? 'completed' : ''}`}>
-                          {completedSteps.has('anno1-2') ? <CheckCircle2 size={16} /> : '2'}
-                        </span>
-                        <span className="step-label">Select the edge of the circle up to be measured.</span>
-                      </div>
-                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                        <div className="image-wrapper-flush" style={{ display: 'inline-block', marginBottom: '1rem' }}>
-                          <img src={diameterDimensionImg} alt="Diameter Dimension" className="software-screenshot screenshot-small" />
-                        </div>
-                      </div>
-                      <div className="step-header">
-                        <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to position the circular dimension.</span>
-                      </div>
-                    </div>
-
-                    {/* Item 3 */}
-                    <div className={getStepClass('anno1-3')} onClick={() => toggleStep('anno1-3')} style={{ marginBottom: '2.5rem' }}>
-                      <div className="step-header">
-                        <span className={`step-number ${completedSteps.has('anno1-3') ? 'completed' : ''}`}>
-                          {completedSteps.has('anno1-3') ? <CheckCircle2 size={16} /> : '3'}
-                        </span>
-                        <span className="step-label">Select edges of the angle to be measured.</span>
-                      </div>
-                      <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                        <div className="image-wrapper-flush" style={{ display: 'inline-block', marginBottom: '1rem' }}>
-                          <img src={angularDimensionImg} alt="Angular Dimension" className="software-screenshot screenshot-small" />
-                        </div>
-                      </div>
-                      <div className="step-header">
-                        <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to position the angular dimension.</span>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-                <div className="section-divider"></div>
-
-                {/* Bottom Row spanning full width */}
-                <div style={{ marginTop: '0' }}>
-                  {/* Item 4 */}
-                  <div className={getStepClass('anno1-4')} onClick={() => toggleStep('anno1-4')} style={{ marginBottom: '2.5rem' }}>
-                    <div className="step-header">
-                      <span className={`step-number ${completedSteps.has('anno1-4') ? 'completed' : ''}`}>
-                        {completedSteps.has('anno1-4') ? <CheckCircle2 size={16} /> : '4'}
-                      </span>
-                      <span className="step-label">Pick any edge of the entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
-                    </div>
-                    <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                      <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
-                        <img src={notesLeaderLinesImg} alt="Notes with Leader Lines" className="software-screenshot" style={{ width: '190px', padding: '0.2rem' }} />
-                      </div>
-                    </div>
-                    <div className="step-header">
-                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click to show the <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Note String Entry window</strong>.</span>
-                    </div>
-                    <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                      <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '300px' }}>
-                        <img src={noteStringEntryImg} alt="Note String Entry Window" className="software-screenshot screenshot-wide" />
-                      </div>
-                    </div>
-                    <div className="step-header">
-                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Enter the note &gt; Press OK</span>
-                    </div>
-                    <div className="step-header">
-                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to place the note.</span>
-                    </div>
-                  </div>
-
-                  {/* Item 5 */}
-                  <div className={getStepClass('anno1-5')} onClick={() => toggleStep('anno1-5')} style={{ marginBottom: '2.5rem' }}>
-                    <div className="step-header">
-                      <span className={`step-number ${completedSteps.has('anno1-5') ? 'completed' : ''}`}>
-                        {completedSteps.has('anno1-5') ? <CheckCircle2 size={16} /> : '5'}
-                      </span>
-                      <span className="step-label">Left-click on the 3D Space show the <strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Text Entry window</strong>.</span>
-                    </div>
-                    <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                      <div className="image-wrapper-flush" style={{ margin: 0, marginBottom: '1rem', display: 'inline-block' }}>
-                        <img src={characterStringsImg} alt="Character Strings" className="software-screenshot" style={{ width: '190px', padding: '0.2rem' }} />
-                      </div>
-                      <div className="image-wrapper-flush" style={{ marginTop: '0.5rem', marginBottom: '0.5rem', maxWidth: '300px' }}>
-                        <img src={textEntryImg} alt="Text Entry Window" className="software-screenshot screenshot-wide" />
-                      </div>
-                    </div>
-                    <div className="step-header">
-                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Enter the note &gt; Press OK</span>
-                    </div>
-                    <div className="step-header">
-                      <span className="step-label" style={{ paddingLeft: '2.5rem' }}>Left-click on the 3D Space to place the note.</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ marginTop: '2rem' }}>
-
-                </div>
-              </div>) : (
-              <div className="fade-in">
-
-                <div className="tool-block" style={{ gap: '2rem', padding: '0', background: 'transparent' }}>
-                  {/* Item 1 */}
-                  <p className="p-flush"><strong>Creates dimensions for 3D entities collectively</strong></p>
-                  <div className="image-wrapper-flush" style={{ marginBottom: '2rem', marginTop: '1rem' }}>
-                    <img src={annotation2Img} alt="Collective Dimension Result" className="software-screenshot screenshot-medium" />
-                  </div>
-                  <div className={getStepClass('anno2-1')} onClick={() => toggleStep('anno2-1')} style={{ marginBottom: '2.5rem' }}>
-                    <div className="flex-row-wrap" style={{ gap: '2rem' }}>
-                      <div className="flex-1">
-                        <div className="step-header" style={{ marginBottom: '1rem' }}>
-                          <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
-                            {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
-                          </span>
-
-                          <span className="step-label" style={{ marginTop: '-1rem' }}>Select entity &gt; GO <img src={leftClick} alt="Left Click" className="software-screenshot screenshot-click" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '0.5rem' }} /></span>
-                        </div>
-
-                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                          <p className="p-flush" style={{ fontWeight: 'bold', marginTop: '1rem' }}>
-                            *Dimensions will generate automatically (length, width, height, hole details, hole pitches).
-                          </p>
-                        </div>
-                      </div>
-                      <div className="image-wrapper-flush" style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={collectiveDimensionImg} alt="Collectively Creates Dimension" className="software-screenshot screenshot-medium" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Item 2 */}
-                  <p className="p-flush" style={{ marginBottom: '1rem' }}><strong>Edits drafting entity characters</strong></p>
-                  <div className="image-wrapper-flush" style={{ marginBottom: '0.5rem', display: 'inline-block', marginLeft: '2.5rem' }}>
-                    <img src={changesDraftingEntityImg} alt="Edits Drafting Entity Characters" className="software-screenshot screenshot-small" />
-                  </div>
-                  <div className={getStepClass('anno2-1')} onClick={() => toggleStep('anno2-1')} style={{ marginBottom: '2.5rem' }}>
-                    <div className="flex-row-wrap" style={{ gap: '2rem' }}>
-                      <div className="flex-1">
-                        <div className="step-header" style={{ marginBottom: '1rem' }}>
-                          <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
-                            {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
-                          </span>
-                          <span className="step-label">Select drafting entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
-                        </div>
-
-                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                          <div className="step-header" style={{ marginBottom: '1rem', border: 'none', background: 'transparent', padding: 0 }}>
-                            <span className="step-label"><strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Edit Dimension Characters window</strong> will appear.</span>
-                          </div>
-                          <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0 }}>
-                            <span className="step-label">After editing the dimension characters, Press OK.</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="image-wrapper-flush" style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={editDimensionImg} alt="Edit Dimension Characters Window" className="software-screenshot screenshot-large" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Item 3 */}
-                  <p className="p-flush" style={{ marginBottom: '1rem' }}><strong>Changes the attributes of a drafting entity</strong></p>
-                  <div className="image-wrapper-flush" style={{ marginBottom: '0.5rem', display: 'inline-block', marginLeft: '2.5rem' }}>
-                    <img src={changesDraftingEntity2Img} alt="Changes Draft Entity Attribute" className="software-screenshot screenshot-small" />
-                  </div>
-                  <div className={getStepClass('anno2-1')} onClick={() => toggleStep('anno2-1')} style={{ marginBottom: '2.5rem' }}>
-                    <div className="flex-row-wrap" style={{ gap: '2rem' }}>
-                      <div className="flex-1">
-                        <div className="step-header" style={{ marginBottom: '1rem' }}>
-                          <span className={`step-number ${completedSteps.has('anno2-1') ? 'completed' : ''}`}>
-                            {completedSteps.has('anno2-1') ? <CheckCircle2 size={16} /> : '1'}
-                          </span>
-                          <span className="step-label">Select drafting entity &gt; GO <img src={leftClick} alt="Left click" className="software-screenshot screenshot-click--inline" style={{ verticalAlign: 'middle', marginLeft: '0.25rem' }} /></span>
-                        </div>
-
-                        <div className="step-description" style={{ paddingLeft: '2.5rem' }}>
-                          <div className="step-header" style={{ marginBottom: '1rem', border: 'none', background: 'transparent', padding: 0 }}>
-                            <span className="step-label"><strong className="text-highlight" style={{ color: 'var(--primary-red)' }}>Change Properties window</strong> will appear.</span>
-                          </div>
-                          <div className="step-header" style={{ border: 'none', background: 'transparent', padding: 0 }}>
-                            <span className="step-label">After changing the properties, Press OK</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="image-wrapper-flush" style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={changePropertiesWindowImg} alt="Change Properties Window" className="software-screenshot screenshot-large" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Item 4 */}
-
-                  <span className="step-label" style={{ marginBottom: '1rem' }}>Changes the positions of drafting entities</span>
-                </div>
-                <div className="step-description">
-                  <div className="image-wrapper-flush" style={{ display: 'inline-block' }}>
-                    <img src={changesPositionDraftingEntitiesImg} alt="Changes Position Tool" className="software-screenshot screenshot-small" />
-                  </div>
-                </div>
-
-
-
-                <div style={{ marginTop: '2rem' }}>
-
+          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+            <div className="step-header">
+              <span className="step-number">3</span>
+              <span className="step-label">
+                Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong>
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+              </span>
+            </div>
+            <div className="step-description">
+              <p className="step-label">A dialog box will appear showing the number of detected interferences.</p>
+              <div>
+                <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
+              </div>
+              <div className="info-box">
+                <div className="step-header">
+                  <span className="step-label">
+                    <strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.
+                  </span>
                 </div>
               </div>
-            )}
+            </div>
+          </div>
+
+          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+            <div className="step-header">
+              <span className="step-number">4</span>
+              <span className="step-label">
+                Analyze possible countermeasures to remove the interference on the parts. To remove the red CGS solid, use Undo or Ctrl+Z
+              </span>
+            </div>
+          </div>
+
+          <div className="section-divider"></div>
+
+          <div className="instruction-box">
+            <p className="step-label"><strong>Tool use to display the list of all detected interferences.</strong></p> <br />
+            <div>
+              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
+            </div>
+          </div>
+
+          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`}>
+            <div className="step-header">
+              <span className="step-number">1</span>
+              <span className="step-label">
+                Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong>
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+              </span>
+            </div>
+          </div>
+
+          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`}>
+            <div className="step-header">
+              <span className="step-number">2</span>
+              <span className="step-label">The List Display window will appear showing all interfering parts.</span>
+            </div>
+            <div className="step-description">
+              <div>
+                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
+              </div>
+            </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={handleNext}>
-              {isAnnotation1 ? 'Next' : 'Next Lesson'} <ChevronRight size={18} />
+            <button className="nav-button" onClick={onPrevLesson}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={onNextLesson}>
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -356,4 +171,4 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ subLessonId = 'anno
   );
 };
 
-export default AnnotationLesson;
+export default InterferenceLesson;

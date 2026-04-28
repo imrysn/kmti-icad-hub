@@ -11,11 +11,9 @@ class AIService:
         self.default_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
         self.models_to_try = [
             self.default_model,
-            "models/gemini-2.5-flash",
-            "models/gemini-2.5-pro",
-            "models/gemini-3.1-flash-lite-preview",
-            "models/gemini-3-flash-preview",
-            "gemini-1.5-flash"
+            "gemini-2.0-flash-exp",
+            "gemini-1.5-flash",
+            "gemini-1.5-pro",
         ]
         # Remove duplicates and empty strings
         self.models_to_try = list(dict.fromkeys([m for m in self.models_to_try if m]))
@@ -33,7 +31,7 @@ class AIService:
     ) -> AsyncGenerator[str, None]:
         client = self._get_client()
         if not client:
-            yield "(Gemini API Key missing or invalid)"
+            yield "❌ Connection Error: AI Mentor configuration is incomplete. Please contact your system administrator."
             return
 
         last_err = None
@@ -64,7 +62,7 @@ class AIService:
                 continue
         
         if last_err:
-            yield f"\n\n(Error: All models failed. {str(last_err)})"
+            yield "\n\n⚠️ The AI Mentor is currently unavailable due to a connectivity issue. Please try again in a few moments or refer to your technical manual in the meantime."
 
     def generate_content(
         self, 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Users, CheckCircle2, Database, Activity, HelpCircle } from 'lucide-react';
-import { SystemStats } from '../../../services/adminService';
+import { Users, CheckCircle2, Database, Activity, HelpCircle } from 'lucide-react'; import { SystemStats } from '../../../services/adminService';
 
 interface SystemAnalyticsProps {
     stats: SystemStats;
@@ -19,10 +18,10 @@ export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
 }) => {
     // Heatmap color logic
     const getHeatmapColor = (count: number) => {
-        if (count > 50) return '#4f46e5'; // Indigo-600
-        if (count > 20) return '#6366f1'; // Indigo-500
-        if (count > 5)  return '#818cf8'; // Indigo-400
-        return '#c7d2fe'; // Indigo-200
+        if (count > 50) return 'rgba(99, 102, 241, 0.6)';  // Heavy activity
+        if (count > 20) return 'rgba(99, 102, 241, 0.4)';  // Medium activity
+        if (count > 5)  return 'rgba(99, 102, 241, 0.2)';  // Light activity
+        return 'rgba(148, 163, 184, 0.1)';              // Idle
     };
 
     return (
@@ -110,12 +109,7 @@ export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
                     </div>
                     <div className="heatmap-grid">
                         {heatmap.map((item, idx) => (
-                            <div 
-                                key={idx} 
-                                className="heatmap-cell"
-                                style={{ backgroundColor: getHeatmapColor(item.count) }}
-                                title={`Course: ${item.course_id} - ${item.count} active users`}
-                            >
+                            <div key={idx} className="heatmap-cell" style={{ backgroundColor: getHeatmapColor(item.count) }} title={`Course: ${item.course_id} - ${item.count} active users`}>
                                 {item.course_id.toUpperCase()}
                             </div>
                         ))}

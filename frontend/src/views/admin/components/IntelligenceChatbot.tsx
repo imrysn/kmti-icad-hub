@@ -1,20 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { adminService } from '../../../services/adminService';
-import { ConfirmationModal } from '../../../components/ConfirmationModal';
-import { ImageLightbox, FilePreviewModal } from './Overlays';
-import { feedbackService, ChatSource, ImagePayload } from '../../../services/searchService';
+import { adminService } from '../../../services/adminService'; import { ConfirmationModal } from '../../../components/ConfirmationModal';
+import { ImageLightbox, FilePreviewModal } from './Overlays'; import { feedbackService, ChatSource, ImagePayload } from '../../../services/searchService';
 
 // Refactored Components
-import { ChatSidebar } from './chatbot/ChatSidebar';
-import { MessageList } from './chatbot/MessageList';
-import { SourcesPanel } from './chatbot/SourcesPanel';
-import { ChatInput } from './chatbot/ChatInput';
+import { ChatSidebar } from './chatbot/ChatSidebar'; import { MessageList } from './chatbot/MessageList';
+import { SourcesPanel } from './chatbot/SourcesPanel'; import { ChatInput } from './chatbot/ChatInput';
 
 // Custom Hooks
-import { useChatSessions } from './chatbot/useChatSessions';
-import { useSpeech } from './chatbot/useSpeech';
-import { useImagePaste } from './chatbot/useImagePaste';
-import { useChatStream } from './chatbot/useChatStream';
+import { useChatSessions } from './chatbot/useChatSessions'; import { useSpeech } from './chatbot/useSpeech';
+import { useImagePaste } from './chatbot/useImagePaste'; import { useChatStream } from './chatbot/useChatStream';
 
 // Types
 import { ChatEntry, StoredSession, LightboxImage } from './chatbot/types';
@@ -23,14 +17,8 @@ import '../../../styles/IntelligenceChatbot.css';
 
 export const IntelligenceChatbot: React.FC = () => {
     // State for common UI elements
-    const [chatInput, setChatInput] = useState('');
-    const [forcedLanguage, setForcedLanguage] = useState<'en-US' | 'ja-JP' | 'fil-PH'>('en-US');
-    const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
-    const [showScrollBtn, setShowScrollBtn] = useState(false);
-    const [liveMessage, setLiveMessage] = useState('');
-    const [previewFile, setPreviewFile] = useState<string | null>(null);
-    const [lightboxImages, setLightboxImages] = useState<LightboxImage[]>([]);
-    const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [chatInput, setChatInput] = useState(''); const [forcedLanguage, setForcedLanguage] = useState<'en-US' | 'ja-JP' | 'fil-PH'>('en-US'); const [copiedIdx, setCopiedIdx] = useState<number | null>(null); const [showScrollBtn, setShowScrollBtn] = useState(false);
+    const [liveMessage, setLiveMessage] = useState(''); const [previewFile, setPreviewFile] = useState<string | null>(null); const [lightboxImages, setLightboxImages] = useState<LightboxImage[]>([]); const [lightboxIndex, setLightboxIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +54,7 @@ export const IntelligenceChatbot: React.FC = () => {
     const { sessions, setSessions, activeSessionId, setActiveSessionId, updateSessionMessages, deleteSession, clearAllSessions } = useChatSessions(showModal);
     const { currentlyReadingIdx, speakText } = useSpeech(forcedLanguage);
     const { selectedImages, setSelectedImages, handlePaste, removeSelectedImage } = useImagePaste(showModal);
-    
+
     const scrollToBottom = useCallback(() => {
         setTimeout(() => {
             const chatMessages = document.querySelector('.chat-messages');
@@ -263,6 +251,8 @@ export const IntelligenceChatbot: React.FC = () => {
         }
     }, [sessions, setSessions]);
 
+
+
     const switchSession = useCallback((id: string) => {
         setActiveSessionId(id);
         const session = sessions.find(s => s.id === id);
@@ -276,81 +266,31 @@ export const IntelligenceChatbot: React.FC = () => {
                 {liveMessage}
             </div>
 
-            <ChatSidebar
-                sessions={sessions}
-                activeSessionId={activeSessionId}
-                onNewChat={createNewSession}
-                onSwitchSession={switchSession}
-                onDeleteSession={(id, e) => { e.stopPropagation(); deleteSession(id); }}
+            <ChatSidebar sessions={sessions} activeSessionId={activeSessionId} onNewChat={createNewSession} onSwitchSession={switchSession} onDeleteSession={(id, e) => { e.stopPropagation(); deleteSession(id); }}
                 onClearAll={handleClearAll}
             />
 
             <div className="chatbot-main">
-                <MessageList
-                    chatHistory={chatHistory}
-                    activeSessionId={activeSessionId}
-                    currentlyReadingIdx={currentlyReadingIdx}
-                    copiedIdx={copiedIdx}
-                    regeneratingIdx={regeneratingIdx}
-                    isThinking={isThinking}
-                    showScrollBtn={showScrollBtn}
-                    onScroll={handleScroll}
-                    scrollToBottom={scrollToBottom}
-                    onSpeak={speakText}
-                    onCopy={copyToClipboard}
-                    onFeedback={handleFeedback}
-                    onOpenLightbox={openLightbox}
-                    onRetry={handleRetry}
-                    onRegenerate={handleRegenerate}
-                    onBranch={handleBranch}
-                    onSuggestionClick={handleSuggestionClick}
-                />
+                <MessageList chatHistory={chatHistory} activeSessionId={activeSessionId} currentlyReadingIdx={currentlyReadingIdx} copiedIdx={copiedIdx} regeneratingIdx={regeneratingIdx} isThinking={isThinking} showScrollBtn={showScrollBtn} onScroll={handleScroll} scrollToBottom={scrollToBottom} onSpeak={speakText} onCopy={copyToClipboard} onFeedback={handleFeedback} onOpenLightbox={openLightbox} onRetry={handleRetry} onRegenerate={handleRegenerate} onBranch={handleBranch} onSuggestionClick={handleSuggestionClick} />
 
-                <SourcesPanel 
-                    sources={latestSources} 
-                    onOpenImage={openLightbox} 
-                    onOpenFile={openFile} 
-                />
+                <SourcesPanel sources={latestSources} onOpenImage={openLightbox} onOpenFile={openFile} />
 
-                <ChatInput
-                    input={chatInput}
-                    setInput={setChatInput}
-                    selectedImages={selectedImages}
-                    removeImage={removeSelectedImage}
-                    onPaste={handlePaste}
-                    onSubmit={handleSubmit}
-                    isThinking={isThinking}
-                    forcedLanguage={forcedLanguage}
-                    setForcedLanguage={setForcedLanguage}
-                />
+                <ChatInput input={chatInput} setInput={setChatInput} selectedImages={selectedImages} removeImage={removeSelectedImage} onPaste={handlePaste} onSubmit={handleSubmit} isThinking={isThinking} forcedLanguage={forcedLanguage} setForcedLanguage={setForcedLanguage} onClearAll={handleClearAll} />
             </div>
 
             {lightboxOpen && (
-                <ImageLightbox
-                    images={lightboxImages}
-                    initialIndex={lightboxIndex}
-                    onClose={() => setLightboxOpen(false)}
+                <ImageLightbox images={lightboxImages} initialIndex={lightboxIndex} onClose={() => setLightboxOpen(false)}
                 />
             )}
 
             {previewFile && (
-                <FilePreviewModal
-                    filename={previewFile}
-                    onClose={() => setPreviewFile(null)}
+                <FilePreviewModal filename={previewFile} onClose={() => setPreviewFile(null)}
                     onDownload={(f) => adminService.downloadKBFile(f)}
                     onPreview={(f) => adminService.previewKBFile(f)}
                 />
             )}
 
-            <ConfirmationModal
-                isOpen={modalConfig.isOpen}
-                title={modalConfig.title}
-                message={modalConfig.message}
-                type={modalConfig.type}
-                confirmText={modalConfig.type === 'danger' ? 'Clear Everything' : 'Got it'}
-                onConfirm={modalConfig.onConfirm}
-                onCancel={closeModal}
-            />
+            <ConfirmationModal isOpen={modalConfig.isOpen} title={modalConfig.title} message={modalConfig.message} type={modalConfig.type} confirmText={modalConfig.type === 'danger' ? 'Clear Everything' : 'Got it'} onConfirm={modalConfig.onConfirm} onCancel={closeModal} />
         </div>
     );
 };

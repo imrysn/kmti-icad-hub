@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
-import { XCircle } from 'lucide-react';
-import { authService, User } from '../../services/authService';
-import { adminService, SystemStats, TraineeProgress, SystemAuditLog } from '../../services/adminService';
-import { useUI } from '../../context/UIContext';
-import '../../styles/AdminMode.css';
-
-// Components
-import ErrorBoundary from '../../components/ErrorBoundary';
+import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom'; import { XCircle } from 'lucide-react';
+import { authService, User } from '../../services/authService'; import { adminService, SystemStats, TraineeProgress, SystemAuditLog } from '../../services/adminService';
+import { useUI } from '../../context/UIContext'; 
+import '../../styles/AdminMode.css'; 
+// Components 
+import ErrorBoundary from '../../components/ErrorBoundary'; 
 import { AdminSidebar } from './components/AdminSidebar';
-import { AdminHeader } from './components/AdminHeader';
-import { SystemAnalytics } from './components/SystemAnalytics';
-import { UserManagement } from './components/UserManagement';
-import { PerformanceDirectory } from './components/PerformanceDirectory';
-import { TraineeDetail } from './components/TraineeDetail';
-import { AuditLogs } from './components/AuditLogs';
-import { KnowledgeManagement } from './components/KnowledgeManagement';
-import { IntelligenceChatbot } from './components/IntelligenceChatbot';
-import { BroadcastCenter } from './components/BroadcastCenter';
-import { UserModal } from './components/UserModal';
+import { AdminHeader } from './components/AdminHeader'; import { SystemAnalytics } from './components/SystemAnalytics';
+import { UserManagement } from './components/UserManagement'; import { PerformanceDirectory } from './components/PerformanceDirectory';
+import { TraineeDetail } from './components/TraineeDetail'; import { AuditLogs } from './components/AuditLogs';
+import { KnowledgeManagement } from './components/KnowledgeManagement'; import { IntelligenceChatbot } from './components/IntelligenceChatbot';
+import { BroadcastCenter } from './components/BroadcastCenter'; import { UserModal } from './components/UserModal';
+import { parseBackendError } from '../../utils/errorUtils';
 
 export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'logs';
 
@@ -30,18 +23,11 @@ export const AdminMode: React.FC = () => {
     // Derive active tab from URL path
     const pathParts = location.pathname.split('/');
     const activeTab = (pathParts[pathParts.length - 1] as AdminTab) || 'overview';
-    const [stats, setStats] = useState<SystemStats | null>(null);
-    const [users, setUsers] = useState<User[]>([]);
-    const [progress, setProgress] = useState<TraineeProgress[]>([]);
-    const [logs, setLogs] = useState<SystemAuditLog[]>([]);
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null);
-    const [heatmap, setHeatmap] = useState<{course_id: string, count: number}[]>([]);
-
-    // User CRUD state
+    const [stats, setStats] = useState<SystemStats | null>(null); const [users, setUsers] = useState<User[]>([]); const [progress, setProgress] = useState<TraineeProgress[]>([]); const [logs, setLogs] = useState<SystemAuditLog[]>([]); const [currentUser, setCurrentUser] = useState<User | null>(null); const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null); const [searchQuery, setSearchQuery] = useState('');
+    const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null); 
+    const [heatmap, setHeatmap] = useState<{course_id: string, count: number}[]>([]); 
+    // User CRUD state 
     const [isUserModalOpen, setIsUserModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
@@ -75,7 +61,7 @@ export const AdminMode: React.FC = () => {
                 setLogs(l);
             }
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to load data.');
+            setError(parseBackendError(err, 'Failed to load data.'));
         } finally {
             setLoading(false);
         }
@@ -92,7 +78,7 @@ export const AdminMode: React.FC = () => {
             const updated = await authService.toggleUserStatus(userId);
             setUsers((prev: User[]) => prev.map(u => u.id === updated.id ? { ...u, is_active: updated.is_active } : u));
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to update user status.');
+            setError(parseBackendError(err, 'Failed to update user status.'));
         }
     };
 
@@ -109,7 +95,7 @@ export const AdminMode: React.FC = () => {
             setUsers((prev: User[]) => prev.filter(u => u.id !== userId));
             if (activeTab === 'overview') fetchData();
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to delete user.');
+            setError(parseBackendError(err, 'Failed to delete user.'));
         }
     };
 
@@ -127,7 +113,6 @@ export const AdminMode: React.FC = () => {
         }
     };
 
-
     const handleExport = async (userId?: number) => {
         try {
             await adminService.downloadProgressExport(userId);
@@ -143,18 +128,10 @@ export const AdminMode: React.FC = () => {
 
     return (
         <div className="admin-layout">
-            <AdminSidebar 
-                currentUser={currentUser} 
-            />
+            <AdminSidebar currentUser={currentUser} />
 
             <main className="admin-main">
-                <AdminHeader 
-                    activeTab={activeTab}
-                    stats={stats} 
-                    selectedTrainee={selectedTrainee} 
-                    fetchData={fetchData} 
-                    loading={loading} 
-                />
+                <AdminHeader activeTab={activeTab} stats={stats} selectedTrainee={selectedTrainee} fetchData={fetchData} loading={loading} />
 
                 <div className="page-content">
                     {error && (
@@ -164,31 +141,16 @@ export const AdminMode: React.FC = () => {
                     )}
 
                     <Routes>
-                        <Route path="overview" element={
-                            <ErrorBoundary>
+                        <Route path="overview" element={ <ErrorBoundary>
                                 {stats && (
                                     <div className="dashboard-scrollable">
-                                        <SystemAnalytics 
-                                            stats={stats} 
-                                            cpuLoad={cpuLoad} 
-                                            memoryUsage={memoryUsage} 
-                                            sysStatus={sysStatus} 
-                                            heatmap={heatmap}
-                                        />
+                                        <SystemAnalytics stats={stats} cpuLoad={cpuLoad} memoryUsage={memoryUsage} sysStatus={sysStatus} heatmap={heatmap} />
                                     </div>
                                 )}
                             </ErrorBoundary>
                         } />
-                        <Route path="users" element={
-                            <ErrorBoundary>
-                                <UserManagement 
-                                    users={users} 
-                                    currentUser={currentUser} 
-                                    searchQuery={searchQuery} 
-                                    setSearchQuery={setSearchQuery} 
-                                    handleToggleStatus={handleToggleStatus} 
-                                    handleDeleteUser={handleDeleteUser} 
-                                    onAddUser={() => {
+                        <Route path="users" element={ <ErrorBoundary>
+                                <UserManagement users={users} currentUser={currentUser} searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleToggleStatus={handleToggleStatus} handleDeleteUser={handleDeleteUser} onAddUser={() => {
                                         setSelectedUser(null);
                                         setIsUserModalOpen(true);
                                     }}
@@ -199,19 +161,11 @@ export const AdminMode: React.FC = () => {
                                 />
                             </ErrorBoundary>
                         } />
-                        <Route path="progress" element={
-                            <ErrorBoundary>
+                        <Route path="progress" element={ <ErrorBoundary>
                                 {!selectedTrainee ? (
-                                    <PerformanceDirectory 
-                                        progress={progress} 
-                                        setSelectedTrainee={setSelectedTrainee} 
-                                    />
+                                    <PerformanceDirectory progress={progress} setSelectedTrainee={setSelectedTrainee} />
                                 ) : (
-                                    <TraineeDetail 
-                                        selectedTrainee={selectedTrainee} 
-                                        setSelectedTrainee={setSelectedTrainee} 
-                                        onExport={handleExport}
-                                    />
+                                    <TraineeDetail selectedTrainee={selectedTrainee} setSelectedTrainee={setSelectedTrainee} onExport={handleExport} />
                                 )}
                             </ErrorBoundary>
                         } />
@@ -230,9 +184,7 @@ export const AdminMode: React.FC = () => {
             </main>
             <BroadcastCenter />
 
-            <UserModal 
-                isOpen={isUserModalOpen}
-                onClose={() => setIsUserModalOpen(false)}
+            <UserModal isOpen={isUserModalOpen} onClose={() => setIsUserModalOpen(false)}
                 onSave={handleSaveUser}
                 user={selectedUser}
             />

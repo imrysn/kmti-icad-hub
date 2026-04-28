@@ -1,6 +1,5 @@
 import React from 'react';
-import { Search } from 'lucide-react';
-import { SearchResultSkeleton } from '../../../components/SkeletonComponents';
+import { Search } from 'lucide-react'; import { SearchResultSkeleton } from '../../../components/SkeletonComponents';
 
 interface SearchSpotlightProps {
     query: string;
@@ -22,12 +21,7 @@ export const SearchSpotlight: React.FC<SearchSpotlightProps> = ({ query, setQuer
                 <Search size={24} />
             </div>
             <label htmlFor="assistant-search" className="visually-hidden">Search knowledge base</label>
-            <input
-                id="assistant-search"
-                type="text"
-                placeholder="Ask a technical question..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+            <input id="assistant-search" type="text" placeholder="Ask a technical question..." value={query} onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
                 autoFocus
                 className="spotlight-input"

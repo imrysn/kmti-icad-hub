@@ -1,5 +1,4 @@
-import { useState, useCallback } from 'react';
-import { chatService, ImagePayload, ChatSource } from '../../../../services/searchService';
+import { useState, useCallback } from 'react'; import { chatService, ImagePayload, ChatSource } from '../../../../services/searchService';
 import { ChatEntry, StoredSession } from './types';
 
 interface UseChatStreamProps {

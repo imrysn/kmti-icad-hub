@@ -34,12 +34,14 @@ export interface User {
 export interface TokenResponse {
     access_token: string;
     token_type: string;
+    user: User;
 }
 
 // Shared Axios instance — reuses the same interceptors as api.ts so that
 // 401 handling, token injection, and base URL config are all in one place.
 const authApi = axios.create({
     baseURL: API_BASE_URL,
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -47,7 +49,7 @@ const authApi = axios.create({
 
 // Add Bearer token to every request
 authApi.interceptors.request.use((config) => {
-    const token = localStorage.getItem('access_token');
+    const token = sessionStorage.getItem('access_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -64,9 +66,13 @@ authApi.interceptors.response.use(
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user');
-            window.location.href = '/';
+            console.warn('Authentication failure - clearing session and redirecting');
+            sessionStorage.removeItem('access_token');
+            sessionStorage.removeItem('user');
+            
+            if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
+                window.location.href = '/';
+            }
         }
         return Promise.reject(error);
     }
@@ -78,7 +84,8 @@ export const authService = {
      */
     async login(credentials: LoginCredentials): Promise<TokenResponse> {
         const response = await authApi.post<TokenResponse>('/auth/login', credentials);
-        localStorage.setItem('access_token', response.data.access_token);
+        sessionStorage.setItem('access_token', response.data.access_token);
+        sessionStorage.setItem('user', JSON.stringify(response.data.user));
         return response.data;
     },
 
@@ -95,7 +102,7 @@ export const authService = {
      */
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
-        localStorage.setItem('user', JSON.stringify(response.data));
+        sessionStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     },
 
@@ -126,32 +133,42 @@ export const authService = {
     },
 
     /**
-     * Logout - clear stored credentials
+     * Get lesson progress for a specific course
      */
-    logout(): void {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('user');
+    async getLessonProgress(course_id: string): Promise<any[]> {
+        const response = await authApi.get<any[]>(`/auth/progress/${course_id}`);
+        return response.data;
+    },
+
+    /**
+     * Submit a quiz score for a specific lesson
+     */
+    async submitQuiz(data: { course_id: string, lesson_id: string, score: number }): Promise<any> {
+        const response = await authApi.post<any>('/auth/submit-quiz', data);
+        return response.data;
+    },
+
+    /**
+     * Logout and clear local storage
+     */
+    logout() {
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('user');
+        window.location.href = '/login';
     },
 
     /**
      * Check if user is authenticated
      */
     isAuthenticated(): boolean {
-        return !!localStorage.getItem('access_token');
+        return !!sessionStorage.getItem('access_token');
     },
 
     /**
-     * Get stored user from localStorage
+     * Get stored user information
      */
     getStoredUser(): User | null {
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-            try {
-                return JSON.parse(userStr);
-            } catch {
-                return null;
-            }
-        }
-        return null;
-    },
+        const user = sessionStorage.getItem('user');
+        return user ? JSON.parse(user) : null;
+    }
 };

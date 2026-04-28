@@ -37,7 +37,9 @@ export interface TraineeProgress {
     }[];
     quizzes_history: {
         course_id: string;
+        lesson_id: string;
         score: number;
+        attempts_count: number;
         completed_at: string | null;
     }[];
 }

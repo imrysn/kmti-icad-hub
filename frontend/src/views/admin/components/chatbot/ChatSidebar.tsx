@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import { MessageSquare, Trash2 } from 'lucide-react';
-import { StoredSession } from './types';
+import { MessageSquare, Trash2 } from 'lucide-react'; import { StoredSession } from './types';
 
 interface ChatSidebarProps {
     sessions: StoredSession[];
@@ -40,10 +39,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
             <div className="sessions-list" role="list">
                 {sessions.length === 0 && <p className="no-sessions">No conversations yet</p>}
                 {sessions.map(session => (
-                    <div
-                        key={session.id}
-                        className={`session-item ${activeSessionId === session.id ? 'active' : ''}`}
-                        onClick={() => onSwitchSession(session.id)}
+                    <div key={session.id} className={`session-item ${activeSessionId === session.id ? 'active' : ''}`} onClick={() => onSwitchSession(session.id)}
                         role="listitem"
                         tabIndex={0}
                         aria-label={`Chat session: ${session.title}`}
@@ -54,9 +50,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
                             <span className="session-title">{session.title}</span>
                             <span className="session-date">{formatDate(session.createdAt)}</span>
                         </div>
-                        <button
-                            className="session-delete"
-                            onClick={(e) => onDeleteSession(session.id, e)}
+                        <button className="session-delete" onClick={(e) => onDeleteSession(session.id, e)}
                             aria-label={`Delete conversation ${session.title}`}
                         >
                             <Trash2 size={13} />

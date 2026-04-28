@@ -1,6 +1,5 @@
 import React from 'react';
-import { Search, Shield, User as UserIcon, Trash2, Edit2, UserPlus } from 'lucide-react';
-import { User } from '../../../services/authService';
+import { Search, Shield, User as UserIcon, Trash2, Edit2, UserPlus } from 'lucide-react'; import { User } from '../../../services/authService';
 
 interface UserManagementProps {
     users: User[];
@@ -34,11 +33,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
             <div className="toolbar">
                 <div className="search-box">
                     <Search size={16} color="#94a3b8" />
-                    <input 
-                        type="text" 
-                        placeholder="Search by name, email, or role..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                    <input type="text" placeholder="Search by name, email, or role..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
                 <button className="add-user-btn" onClick={onAddUser}>
@@ -85,24 +80,18 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                                 <td>{new Date(u.created_at || '').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                                 <td className="actions-cell">
                                     <div className="action-buttons">
-                                        <button 
-                                            className="action-icon-btn edit-btn"
-                                            onClick={() => onEditUser(u)}
+                                        <button className="action-icon-btn edit-btn" onClick={() => onEditUser(u)}
                                             title="Edit User"
                                         >
                                             <Edit2 size={14} />
                                         </button>
-                                        <button 
-                                            className="action-icon-btn toggle-btn"
-                                            onClick={() => handleToggleStatus(u.id)}
+                                        <button className="action-icon-btn toggle-btn" onClick={() => handleToggleStatus(u.id)}
                                             disabled={u.id === currentUser?.id}
                                             title={u.is_active ? 'Deactivate' : 'Activate'}
                                         >
                                             {u.is_active ? 'Revoke' : 'Permit'}
                                         </button>
-                                        <button 
-                                            className="action-icon-btn delete-btn"
-                                            onClick={() => handleDeleteUser(u.id)}
+                                        <button className="action-icon-btn delete-btn" onClick={() => handleDeleteUser(u.id)}
                                             disabled={u.id === currentUser?.id}
                                             title="Delete User"
                                         >

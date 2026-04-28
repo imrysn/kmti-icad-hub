@@ -1,95 +1,234 @@
-/* Copy of CourseLesson.css for 2D Drawing */
-@import '../MentorMode.css';
+/* ==========================================================================
+   CourseLesson.css - Midnight Aurora Edition
+   Provides a high-energy, engaging, and premium "Study Mode" aesthetic.
+   ========================================================================== */
 
 .course-lesson-container {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  animation: fadeInSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  padding-bottom: 8rem;
+  max-width: 1000px;
+  width: 95%;
+  margin: 2rem auto 0;
 }
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Lesson Header & Intro Overhaul --- */
 
 .lesson-intro {
-  margin-bottom: 2rem;
+  text-align: left;
+  padding: 3rem 4rem;
+  margin-bottom: 3rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.4s ease;
 }
 
-.lesson-intro h3 {
+/* Inner glow effect for premium feel */
+.lesson-intro::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.lesson-intro h3.section-title {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-white);
+  margin: 0;
+  letter-spacing: -0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  border: none;
+  padding: 0;
+  text-transform: none;
+  text-align: left;
+}
+
+.lesson-intro h3.section-title .tts-button {
+  margin-left: auto;
+}
+
+
+.lesson-intro .p-flush {
+  font-size: 1.15rem;
+  color: var(--text-main);
+  /* High contrast for intro text */
+  max-width: 850px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.section-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+[data-theme='dark'] .section-description {
+  color: var(--text-main);
+  /* Ensure it's bright enough over glass backgrounds */
+}
+
+/* Light mode specific refinements */
+[data-theme='light'] .lesson-intro {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.12);
+}
+
+
+/* --- Standardized Headers & Spacing --- */
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+  /* Matching iCAD sidebar indicators */
+  text-transform: none;
+  /* Changed from uppercase to allow Sentence Case */
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 1.75rem;
-  color: var(--text-main);
-  margin: 0 0 1rem 0;
 }
 
-.lesson-intro-icon {
-  color: var(--primary);
+.section-title::before {
+  content: '';
+  width: 5px;
+  height: 1.2em;
+  /* Proportional to font size */
+  background: var(--primary);
+  border-radius: 2px;
+  box-shadow: none;
+  /* Remove neon glow for professional industrial look */
 }
 
-.lesson-grid {
-  display: grid;
-  gap: 1.5rem;
+.tool-block {
+  margin-bottom: 3.5rem;
 }
 
-.single-card {
-  grid-template-columns: 1fr;
-}
+/* --- Lesson Cards --- */
 
 .lesson-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.tab-button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-weight: 600;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-
-.tab-button.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
-}
-
-.lesson-navigation {
+  background: #ffffff;
+  /* Page-style background for maximum document readability */
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 3rem;
   display: flex;
-  justify-content: space-between;
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+  flex-direction: column;
+  gap: 2.5rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  color: #1e293b;
+  /* Dark text for light card */
 }
 
-.nav-button {
+[data-theme='dark'] .lesson-card {
+  background: #111827;
+  /* Deep Obsidian background for high-contrast dark mode */
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  color: var(--text-white);
+}
+
+[data-theme='dark'] .card-header h4 {
+  color: var(--text-white);
+}
+
+[data-theme='dark'] .lesson-card .step-label {
+  color: var(--text-white);
+}
+
+
+.card-header h4 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.2s;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
+  gap: 0.75rem;
 }
 
-.nav-button:hover:not(:disabled) {
-  background: var(--bg-hover);
+/* --- Layout Utilities --- */
+
+.flex-row {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
 }
 
-.nav-button.next {
-  background: var(--primary);
-  color: white;
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.image-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.info-box {
+  flex: 1;
+  min-width: 300px;
+  background: rgba(99, 102, 241, 0.04);
+  border-left: 4px solid var(--primary);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .info-box {
+  background: rgba(255, 255, 255, 0.03);
   border-color: var(--primary);
 }
 
-.nav-button.next:hover {
-  background: var(--primary-dark);
+.info-box p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.info-box p:last-child {
+  margin-bottom: 0;
 }
 
 /* --- Steps & Instructions --- */
@@ -97,55 +236,487 @@
 .instruction-step {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
+  background: transparent;
+  padding: 1.5rem 0;
+  border: none;
+  transition: all 0.3s ease;
 }
 
 .step-header {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 1rem;
 }
 
 .step-number {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: var(--primary-soft);
-  color: var(--primary);
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  color: white;
   font-weight: 800;
-  font-size: 0.85rem;
-  border-radius: 50%;
+  font-size: 0.9rem;
+  border-radius: 10px;
   flex-shrink: 0;
+  box-shadow: 0 4px 10px var(--color-primary-glow);
 }
 
 .step-label {
-  flex: 1;
-  font-size: 0.95rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.4;
+  color: var(--text-main);
+  /* Theme-aware fallback */
 }
 
-.instruction-step.interactive {
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
-  padding: 1rem;
-  margin: -1rem;
+.lesson-card .step-label {
+  color: #1e293b;
+  /* Locked to dark for light cards */
+}
+
+/* --- Image Formatting --- */
+
+.image-wrapper {
+  background: #ffffff;
+  /* White canvas background for document-style screenshots */
+  padding: 1.25rem;
   border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: inline-block;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.instruction-step.interactive:hover {
-  background: var(--bg-surface);
-  transform: translateX(4px);
+/* Flush version for smaller icon-based snippets like toolbars */
+.image-wrapper-flush {
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  /* Minimal padding for spacing */
+  margin: 4px 0;
 }
 
-.step-number.completed {
+[data-theme='light'] .image-wrapper,
+[data-theme='light'] .image-wrapper-flush {
+  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05);
+}
+
+/* Luminescent Indigo theme specifically for Dark Mode to match Midnight Aurora aesthetics */
+[data-theme='dark'] .image-wrapper,
+[data-theme='dark'] .image-wrapper-flush {
+  background: rgba(238, 242, 255, 0.92);
+  /* Luminescent Indigo 50 tint */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  /* Match var(--primary) indigo */
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1);
+}
+
+.software-screenshot {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.5s ease;
+}
+
+.software-screenshot.screenshot-small {
+  max-width: 320px !important;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+}
+
+.screenshot-medium {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+}
+
+.screenshot-wide {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+}
+
+/* --- UX Enhancement: Progress Bar --- */
+
+.lesson-progress-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--bg-dark);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.lesson-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+  box-shadow: 0 0 15px var(--color-primary-glow);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* --- Navigation --- */
+
+.lesson-navigation {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 3rem;
+  margin-top: 2rem;
+}
+
+.nav-button {
+  background: var(--glass-bg);
+  color: var(--text-white);
+  border: 1px solid var(--glass-border);
+  padding: 1rem 2rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px var(--color-primary-glow);
+  color: #ffffff;
+}
+
+.nav-button.next {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+}
+
+/* --- Instruction Box & Alerts --- */
+
+.instruction-box,
+.alert-box {
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-left: 5px solid var(--primary);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  color: var(--text-main);
+}
+
+[data-theme='dark'] .instruction-box,
+[data-theme='dark'] .alert-box {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-white);
+}
+
+.alert-box.warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+  border-left-color: var(--warning);
+}
+
+/* Hide multipliers from screenshots in dark mode for cleaner look */
+.software-screenshot {
+  filter: brightness(1.1) contrast(1.05);
+}
+
+/* --- Image Size Manipulation Utilities --- */
+.img-small {
+  max-width: 300px !important;
+  width: 100%;
+  height: auto;
+}
+
+.img-medium {
+  max-width: 600px !important;
+  width: 100%;
+  height: auto;
+}
+
+.img-large {
+  max-width: 900px !important;
+  width: 100%;
+  height: auto;
+}
+
+.img-full {
+  width: 100% !important;
+  height: auto;
+}
+
+.img-bleed {
+  width: calc(100% + 6rem) !important;
+  max-width: none !important;
+  margin-left: -3rem;
+  margin-right: -3rem;
+  border-radius: 0;
+}
+
+/* Percentage widths */
+.w-25 {
+  width: 25% !important;
+}
+
+.w-50 {
+  width: 50% !important;
+}
+
+.w-75 {
+  width: 75% !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+/* --- Highlighting for Reading --- */
+.instruction-step.reading-active {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    inset 0 0 2px rgba(255, 255, 255, 0.05);
+  border-left: 6px solid var(--primary);
+  transform: translateY(-5px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 2rem;
+}
+
+[data-theme='dark'] .instruction-step.reading-active {
+  background: #0d1117;
+  border-left-color: var(--primary);
+}
+
+.instruction-step.reading-active p {
+  color: #f8fafc;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0;
+}
+
+[data-theme='light'] .instruction-step.reading-active {
+  background: rgba(99, 102, 241, 0.04);
+}
+
+/* --- Lesson Tabs & Navigation Pill --- */
+
+.lesson-tabs {
+  display: flex;
+  justify-content: center;
+  /* Center the tabs */
+  gap: 0.5rem;
+  padding: 0.6rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  width: fit-content;
+  margin: 0 auto 2.5rem;
+  /* Center horizontally and add bottom spacing */
+  backdrop-filter: blur(var(--glass-blur));
+  position: sticky;
+  top: 1rem;
+  /* Stick to top with some breathing room */
+  z-index: 100;
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    0 0 20px var(--color-primary-glow);
+  animation: fadeInDown 0.6s ease-out, pulseGlow 4s infinite alternate;
+}
+
+/* New Glowing Halo Effect */
+.lesson-tabs::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% auto;
+  border-radius: 100px;
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(8px);
+  animation: shine 6s linear infinite;
+}
+
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 10px var(--color-primary-glow);
+  }
+
+  to {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 25px var(--color-primary-glow);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-button {
+  padding: 0.5rem 1.75rem;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab-button:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-white);
+  transform: translateY(-1px);
+}
+
+.tab-button.active {
   background: var(--primary);
   color: white;
-  box-shadow: 0 0 0 4px var(--primary-soft);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px var(--color-primary-glow);
+  transform: scale(1.05);
 }
 
-/* Add more shared styles as needed */
+[data-theme='light'] .lesson-tabs {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(99, 102, 241, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1);
+}
+
+[data-theme='light'] .tab-button:hover:not(.active) {
+  background: rgba(99, 102, 241, 0.05);
+  color: var(--primary);
+}
+
+/* --- Highlight Text Styles --- */
+.red-bold {
+  color: #ff3131;
+  font-weight: 800;
+}
+
+.red-text {
+  color: #ff3131;
+}
+
+.small-text {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* --- Lesson Table Styles --- */
+.lesson-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 2rem 0;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+}
+
+.lesson-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-family: var(--font-main);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  min-width: 800px;
+  /* Ensures horizontal scroll on narrow screens */
+}
+
+.lesson-table th,
+.lesson-table td {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--glass-border);
+  text-align: center;
+}
+
+.lesson-table th:first-child,
+.lesson-table td:first-child {
+  white-space: nowrap;
+  text-align: left;
+  padding-left: 1.5rem;
+}
+
+.lesson-table thead th {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  border-bottom: 2px solid var(--primary);
+}
+
+.lesson-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.04);
+  transition: background 0.2s ease;
+}
+
+.lesson-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Color specific cells if needed */
+.lesson-table th:last-child,
+.lesson-table td:last-child {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+[data-theme='light'] .lesson-table-container {
+  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.15);
+}
+
+[data-theme='light'] .lesson-table thead th {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+[data-theme='light'] .lesson-table td {
+  color: #1e293b;
+}

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 const ChatBot = () => {
-    const [messages, setMessages] = useState<{ role: string, content: string }[]>([]);
-    const [input, setInput] = useState('');
+    const [messages, setMessages] = useState<{ role: string, content: string }[]>([]); const [input, setInput] = useState('');
 
     const sendMessage = () => {
         // Placeholder logic

@@ -243,6 +243,7 @@
     align-items: center;
     gap: 0.6rem;
     min-width: 0;
+    flex: 1;
 }
 
 .fpm-ext-badge {
@@ -263,6 +264,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1;
+    min-width: 100px;
 }
 
 .fpm-actions {
@@ -399,7 +402,14 @@
 }
 
 .fpm-error {
-    color: var(--color-error, #ef4444);
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    text-align: center;
+    line-height: 1.5;
 }
 
 .fpm-spinner {
@@ -481,7 +491,93 @@
     font-style: italic;
 }
 
-/* Scrollbars inside preview */
-.fpm-table-wrapper::-webkit-scrollbar { width: 5px; height: 5px; }
-.fpm-table-wrapper::-webkit-scrollbar-thumb { background: var(--border-color, #e2e8f0); border-radius: 10px; }
-.fpm-table-wrapper::-webkit-scrollbar-thumb:hover { background: var(--color-gray-300, #cbd5e1); }
+/* ── Dark Mode Overrides ────────────────────────────────────── */
+
+[data-theme='dark'] .file-preview-modal {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme='dark'] .fpm-header {
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme='dark'] .fpm-filename {
+    color: #f1f5f9;
+}
+
+[data-theme='dark'] .fpm-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+}
+
+[data-theme='dark'] .fpm-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #f1f5f9;
+}
+
+[data-theme='dark'] .fpm-btn-close:hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+    color: #ef4444 !important;
+}
+
+[data-theme='dark'] .fpm-tabs,
+[data-theme='dark'] .fpm-search-bar {
+    background: transparent;
+    border-bottom-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme='dark'] .fpm-tab {
+    color: #64748b;
+}
+
+[data-theme='dark'] .fpm-tab:hover {
+    color: #94a3b8;
+}
+
+[data-theme='dark'] .fpm-tab.active {
+    color: #818cf8;
+    border-bottom-color: #818cf8;
+}
+
+[data-theme='dark'] .fpm-search {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+}
+
+[data-theme='dark'] .fpm-table th {
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+    border-right-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme='dark'] .fpm-table td {
+    border-bottom-color: rgba(255, 255, 255, 0.04);
+    border-right-color: rgba(255, 255, 255, 0.04);
+    color: #cbd5e1;
+}
+
+[data-theme='dark'] .fpm-table tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme='dark'] .fpm-row-num {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-right-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme='dark'] .fpm-table-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .fpm-error {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.25);
+    color: #f87171;
+}

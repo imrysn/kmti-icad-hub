@@ -10,10 +10,10 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
 from dotenv import load_dotenv
-from pathlib import Path
-_env_path = Path(__file__).resolve().parents[2] / ".env"
-load_dotenv(dotenv_path=_env_path)
 
+# Load environment variables from the backend directory
+env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
+load_dotenv(dotenv_path=env_path)
 # JWT configuration
 # SECRET_KEY MUST be set in the environment. Never use a hardcoded fallback.
 SECRET_KEY = os.getenv("SECRET_KEY")

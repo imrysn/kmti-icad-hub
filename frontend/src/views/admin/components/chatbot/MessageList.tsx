@@ -1,8 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { Brain, ArrowDown } from 'lucide-react';
-import { MessageBubble } from './MessageBubble';
-import { ChatEntry } from './types';
-import { ChatFrontier } from './ChatFrontier';
+import { Brain, ArrowDown } from 'lucide-react'; import { MessageBubble } from './MessageBubble';
+import { ChatEntry } from './types'; import { ChatFrontier } from './ChatFrontier';
 
 interface MessageListProps {
     chatHistory: ChatEntry[];
@@ -59,23 +57,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             )}
 
             {chatHistory.map((msg, idx) => (
-                <MessageBubble
-                    key={idx}
-                    msg={msg}
-                    idx={idx}
-                    sessionId={activeSessionId}
-                    currentlyReadingIdx={currentlyReadingIdx}
-                    copiedIdx={copiedIdx}
-                    regeneratingIdx={regeneratingIdx}
-                    onSpeak={onSpeak}
-                    onCopy={onCopy}
-                    onFeedback={onFeedback}
-                    onOpenLightbox={onOpenLightbox}
-                    onRetry={onRetry}
-                    onRegenerate={onRegenerate}
-                    onBranch={onBranch}
-                    onSuggestionClick={onSuggestionClick}
-                />
+                <MessageBubble key={idx} msg={msg} idx={idx} sessionId={activeSessionId} currentlyReadingIdx={currentlyReadingIdx} copiedIdx={copiedIdx} regeneratingIdx={regeneratingIdx} onSpeak={onSpeak} onCopy={onCopy} onFeedback={onFeedback} onOpenLightbox={onOpenLightbox} onRetry={onRetry} onRegenerate={onRegenerate} onBranch={onBranch} onSuggestionClick={onSuggestionClick} />
             ))}
 
             {/* Generic thinking dots only if no assistant bubble is already in history */}

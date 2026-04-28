@@ -26,8 +26,7 @@ npm run electron:dev
 # Navigate to project root
 cd C:\Users\Enduser\.gemini\antigravity\scratch\kmti-icad-hub
 
-# Activate virtual environment (if needed)
-.\backend\venv\Scripts\Activate.ps1
+# Activate virtual environment (if needed).\backend\venv\Scripts\Activate.ps1
 
 # Start backend server
 python -m uvicorn backend.main:app --reload
@@ -100,3 +99,10 @@ cd frontend
 rm -rf node_modules
 npm install
 ```
+
+### PowerShell Execution Policy Error
+If you see an error like `File ...npm.ps1 cannot be loaded because running scripts is disabled`, run this command in PowerShell:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+```
+Then try your command again.
