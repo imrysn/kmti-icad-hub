@@ -67,14 +67,14 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content fade-in">
           <div className="card-header">
-            <h4>HOLE DETAILS PROCEDURE</h4>
+            <h4>HOLE DETAILS</h4>
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(holeSteps)} onStop={stop} />
           </div>
 
           <div className={`${getStepClass("hole-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <div className="step-header">
               <span className="step-number">1 </span>
-              <span className="step-label">Select <strong className="text-highlight">Arrange Machine Part</strong> from the icon menu.</span>
+              <span className="step-label">Select <strong className="red-text">Arrange Machine Parts</strong> from the icon menu.</span>
             </div>
             <div className="step-description">
               <div className="screenshot-wrapper">

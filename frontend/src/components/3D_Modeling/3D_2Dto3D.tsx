@@ -103,7 +103,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(workPlaneSteps)} onStop={stop} />
             </div>
             <p className="p-flush" style={{ marginTop: "-2rem" }}>3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension.</p>
-            <p className="p-flush" style={{ marginTop: "-2rem" }}>To create 2D plane on the 3D dimension, use <strong className="text-highlight">Open Work Plane</strong> from the toolbar.</p>
+            <p className="p-flush" style={{ marginTop: "-2rem" }}>To create 2D plane on the 3D dimension, use <strong className="red-text">Open Work Plane</strong> from the toolbar.</p>
             <div className="flex-row-center--wrap" style={{ justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '2rem' }}>
 
               <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
@@ -186,7 +186,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">2D &gt; 3D</h3>
+        <h3 className="section-title">Extrude, Revolve, Spiral</h3>
         <p className="p-flush">These are the tools use for extruding 2D sketches to 3D Solid Entities.</p>
         <p className="p-flush" style={{ marginTop: "-2rem"}}> Most commonly used tools are the following: </p>
         <div className="screenshot-wrapper">
@@ -223,7 +223,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
               <div className="step-description">
                 <span className="p-flush" style={{ marginLeft: "3rem"}}>A hatch will appear to show that the sketch is an enclosed figure &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px'}} />
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px'}} />
                 </span>
 
                 <div className="screenshot-wrapper" style={{ marginTop: "2rem"}}>
@@ -235,8 +235,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header" style={{ marginTop: "-2rem"}}>
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginBottom: "1rem"}}>Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px' }} />
+                <span className="step-label" style={{ marginBottom: "1.5rem"}}>Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
             </div>
@@ -291,8 +291,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "-1rem"}}>Pick the cross-section to be revolved &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px' }} />
+                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Pick the cross-section to be revolved &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
                <span className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem"}}>A hatch will appear to show that the sketch is an enclosed figure</span>
@@ -301,13 +301,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header" style={{ marginTop: "-2rem"}} >
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1rem"}}>Select the <strong className="text-highlight">axis of rotation</strong> &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px' }} />
+                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the <strong className="text-highlight">axis of rotation</strong> &gt; <strong className="text-highlight">GO</strong>
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
             </div>
-
- 
 
             <div className="instruction-step">
               <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
