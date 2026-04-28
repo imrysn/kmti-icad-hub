@@ -10,10 +10,11 @@ import { AdminHeader } from './components/AdminHeader'; import { SystemAnalytics
 import { UserManagement } from './components/UserManagement'; import { PerformanceDirectory } from './components/PerformanceDirectory';
 import { TraineeDetail } from './components/TraineeDetail'; import { AuditLogs } from './components/AuditLogs';
 import { KnowledgeManagement } from './components/KnowledgeManagement'; import { IntelligenceChatbot } from './components/IntelligenceChatbot';
+import { AssessmentManagement } from './components/AssessmentManagement';
 import { BroadcastCenter } from './components/BroadcastCenter'; import { UserModal } from './components/UserModal';
 import { parseBackendError } from '../../utils/errorUtils';
 
-export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'logs';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'assessments' | 'logs';
 
 export const AdminMode: React.FC = () => {
     const navigate = useNavigate();
@@ -165,12 +166,18 @@ export const AdminMode: React.FC = () => {
                                 {!selectedTrainee ? (
                                     <PerformanceDirectory progress={progress} setSelectedTrainee={setSelectedTrainee} />
                                 ) : (
-                                    <TraineeDetail selectedTrainee={selectedTrainee} setSelectedTrainee={setSelectedTrainee} onExport={handleExport} />
+                                    <TraineeDetail 
+                                        selectedTrainee={selectedTrainee} 
+                                        setSelectedTrainee={setSelectedTrainee} 
+                                        onExport={handleExport} 
+                                        onRefresh={fetchData} 
+                                    />
                                 )}
                             </ErrorBoundary>
                         } />
                         <Route path="intelligence" element={<ErrorBoundary><KnowledgeManagement /></ErrorBoundary>} />
                         <Route path="chatbot" element={<ErrorBoundary><IntelligenceChatbot /></ErrorBoundary>} />
+                        <Route path="assessments" element={<ErrorBoundary><AssessmentManagement /></ErrorBoundary>} />
                         <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />
                         <Route path="/" element={<Navigate to="overview" replace />} />
                     </Routes>

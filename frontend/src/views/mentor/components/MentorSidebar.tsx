@@ -239,11 +239,14 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                      ${moduleStatus.isLocked ? 'locked' : ''}
                                 `}
                                         onClick={() => {
-                                            if (lesson.children) {
+                                            if (lesson.children && lesson.children.length > 1) {
                                                 toggleExpand(lesson.id);
                                             } else {
                                                 if (!moduleStatus.isLocked) {
-                                                    setActiveLessonId(lesson.id);
+                                                    const targetId = (lesson.children && lesson.children.length === 1) 
+                                                        ? lesson.children[0].id 
+                                                        : lesson.id;
+                                                    setActiveLessonId(targetId);
                                                 }
                                             }
                                         }}
@@ -258,7 +261,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                     className="lesson-progress-static"
                                                 />
                                                 <div className="lesson-icon-inner">
-                                                    {lesson.children ? (
+                                                    {lesson.children && lesson.children.length > 1 ? (
                                                         expandedIds.has(lesson.id) ? <ChevronDown size={14} /> : <ChevronRight size={14} />
                                                     ) : (
                                                         moduleStatus.isSelfCompleted ? (
@@ -283,7 +286,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                         )}
                                     </div>
 
-                                    {lesson.children && expandedIds.has(lesson.id) && (
+                                    {lesson.children && lesson.children.length > 1 && expandedIds.has(lesson.id) && (
                                         <div className={`sub-lesson-list ${!sidebarOpen ? 'collapsed-dots' : ''}`}>
                                             {lesson.children.map((child: Lesson, index: number) => (
                                                 <div 

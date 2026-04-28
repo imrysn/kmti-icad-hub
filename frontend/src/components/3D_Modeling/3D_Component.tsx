@@ -1,6 +1,6 @@
-/** * 3D_Component.tsx – Component operations lessons (1 and 2) */
+/** * 3D_Component.tsx – Component operations lessons (Consolidated) */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ChevronLeft,
   ChevronRight
@@ -34,226 +34,466 @@ import mirrorCopyIcon from '../../assets/3D_Image_File/component2_mirror_copy.pn
 import mirrorCopyResult from '../../assets/3D_Image_File/component2_mirror_copy_2.png';
 import deleteIcon from '../../assets/3D_Image_File/component2_delete.png';
 
-interface SubLessonProps { onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
+interface ComponentLessonProps { 
+  subLessonId: string; 
+  onNextLesson?: () => void; 
+  onPrevLesson?: () => void; 
+  nextLabel?: string; 
+}
 
-const Component1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate'>('move');
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`component-1-${activeTab}`);
+const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'repeat' | 'rotateCopy' | 'mirrorCopy' | 'delete'>(() => {
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'move';
+  });
+
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
+
+  useEffect(() => {
+    localStorage.setItem(`${subLessonId}-tab`, activeTab);
+  }, [subLessonId, activeTab]);
 
   const moveSteps = ["Step 1: Select Move Component from the icon menu.", "Step 2: Select the component to move and click GO.", "Step 3: Specify the movement distance on the X, Y, and Z axes on the item entry then press Enter."];
   const copySteps = ["Step 1: Select Copy Component from the icon menu.", "Step 2: Select the component to copy and click GO.", "Step 3: Specify the distance and the number of copies needed then press Enter."];
   const mirrorSteps = ["Step 1: Select Mirror Component from the icon menu.", "Step 2: Select the components to be mirrored and click GO.", "Step 3: Select 3 points to set the mirror plane or left-click on a face."];
   const rotateSteps = ["Step 1: Select Rotate Component from the icon menu.", "Step 2: Select the component to rotate and click GO.", "Step 3: Select 2 points to set the axis of rotation.", "Step 4: Specify the desired angle of rotation on the item entry then press Enter."];
-
-  const tabs = [{ id: 'move', label: 'Move' }, { id: 'copy', label: 'Copy' }, { id: 'mirror', label: 'Mirror' }, { id: 'rotate', label: 'Rotate' }];
-  const handleNext = () => { const i = tabs.findIndex(t => t.id === activeTab); if (i < tabs.length - 1) setActiveTab(tabs[i + 1].id as any); else if (onNextLesson) onNextLesson(); };
-  const handlePrev = () => { const i = tabs.findIndex(t => t.id === activeTab); if (i > 0) setActiveTab(tabs[i - 1].id as any); else if (onPrevLesson) onPrevLesson(); };
-
-  return (
-    <div className="course-lesson-container" ref={containerRef}>
-      <div className="lesson-progress-container">
-        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-      </div>
-      <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
-      </div>
-      <section className="lesson-intro">
-        <h3 className="section-title" style={{ marginRight: '375px' }}>Move/copy/delete component</h3>
-        <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
-        <div className="instruction-box">
-          <div><img src={componentMenu} alt="Component Operation Menu" className="software-screenshot screenshot-small" style={{ width: '200px' }} /></div>
-        </div>
-      </section>
-      <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
-          <div className="tab-content-area">
-            {activeTab === 'move' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>MOVE COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(moveSteps)} onStop={stop} /></div>
-                <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">1</span><span className="step-label">Select <strong className="text-highlight">Move Component</strong> from the icon menu.</span></div>
-                  <div><img src={moveIcon} alt="Move Component Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">2</span><span className="step-label">Select the component to be move &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px' }} /></span></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">3</span><span className="step-label">Specify the movement distance on the X, Y and Z-axis on the item entry &gt; Press <strong className="text-highlight">Enter</strong></span></div>
-                  <div><img src={moveEntry} alt="Move Item Entry" className="software-screenshot screenshot-large" style={{ width: '500px' }} /></div>
-                </div>
-                <div className="tool-block"><h4 className="section-title" style={{ marginRight: "1000px" }}>Result</h4><div><img src={moveResult} alt="Move Result" className="software-screenshot screenshot-medium" style={{ width: '400px' }} /></div></div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
-              </div>
-            )}
-            {activeTab === 'copy' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>COPY COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(copySteps)} onStop={stop} /></div>
-                <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">1</span><span className="step-label">Select <strong className="text-highlight">Copy Component</strong> from the icon menu.</span></div>
-                  <div><img src={copyIcon} alt="Copy Component Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">2</span><span className="step-label">Select the component to be copy &gt; <strong className="text-highlight">GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px' }} /></span></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">3</span><span className="step-label">Specify the distance and number of copies needed &gt; Press <strong className="text-highlight">Enter</strong></span></div>
-                  <div><img src={copyFinal} alt="Copy Result" className="software-screenshot screenshot-large" style={{ width: '670px' }} /></div>
-                  <br />
-                </div>
-                <div className="tool-block"><h4 className="section-title" style={{ marginRight: '810px' }}>Result</h4><div><img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-medium" style={{ width: '360px' }} /></div></div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
-              </div>
-            )}
-            {activeTab === 'mirror' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>MIRROR COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorSteps)} onStop={stop} /></div>
-                <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">1</span><span className="step-label">Select <strong className="text-highlight">Mirror Component</strong> from the icon menu.</span></div>
-                  <div><img src={mirrorIcon} alt="Mirror Component Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">2</span><span className="step-label">Select components to be mirror &gt; <strong className="text-highlight">GO</strong></span></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">3</span><span className="step-label">Select 3-points to set the mirror plane or left-click on a face.</span></div>
-                  <div><img src={mirrorResult} alt="Mirror Result" className="software-screenshot screenshot-medium" style={{ width: '400px' }} /></div>
-                </div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
-              </div>
-            )}
-            {activeTab === 'rotate' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>ROTATE COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateSteps)} onStop={stop} /></div>
-                <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">1</span><span className="step-label">Select <strong className="text-highlight">Rotate Component</strong> from the icon menu.</span></div>
-                  <div><img src={rotateIcon} alt="Rotate Component Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">2</span><span className="step-label">Select component to be rotate &gt; <strong className="text-highlight">GO</strong></span></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">3</span><span className="step-label">Select 2-points to set the axis of rotation.</span></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">4</span><span className="step-label">Specify the angle of rotation on the item entry &gt; Press <strong className="text-highlight">Enter</strong></span></div>
-                  <div><img src={rotateEntry} alt="Rotate Entry" className="software-screenshot screenshot-large" style={{ width: '650px' }} /></div>
-                </div>
-                <div className="tool-block"><h4 className="section-title" style={{ marginRight: "1000px" }}>Result</h4><div><img src={rotateResult} alt="Rotate Result" className="software-screenshot screenshot-medium" style={{ width: '550px' }} /></div></div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Component2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState<'repeat' | 'rotateCopy' | 'mirrorCopy' | 'delete'>('repeat');
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(`component-2-${activeTab}`);
-
   const repeatSteps = ["Step 1: Select Repeat Copy Tool from the menu.", "Step 2: Select the component to be duplicated and click GO."];
   const rotateCopySteps = ["Step 1: Select Rotate Component from the icon menu.", "Step 2: Select the component to rotate and click GO.", "Step 3: Select 2 points to set the axis of rotation.", "Step 4: Specify the desired angle of rotation on the item entry then press Enter."];
   const mirrorCopySteps = ["Mirror Copy: Use to create a duplicate by mirror movement. Same procedure as Mirror Component."];
   const deleteSteps = ["Step 1: Select Delete Component from the icon menu.", "Step 2: Select the components manually or in bulk that you wish to remove."];
 
-  const tabs = [{ id: 'repeat', label: 'Repeat Copy' }, { id: 'rotateCopy', label: 'Rotate Copy' }, { id: 'mirrorCopy', label: 'Mirror Copy' }, { id: 'delete', label: 'Delete' }];
-  const handleNext = () => { const i = tabs.findIndex(t => t.id === activeTab); if (i < tabs.length - 1) setActiveTab(tabs[i + 1].id as any); else if (onNextLesson) onNextLesson(); };
-  const handlePrev = () => { const i = tabs.findIndex(t => t.id === activeTab); if (i > 0) setActiveTab(tabs[i - 1].id as any); else if (onPrevLesson) onPrevLesson(); };
+  const tabs = [
+    { id: 'move', label: 'Move' },
+    { id: 'copy', label: 'Copy' },
+    { id: 'mirror', label: 'Mirror' },
+    { id: 'rotate', label: 'Rotate' },
+    { id: 'repeat', label: 'Repeat Copy' },
+    { id: 'rotateCopy', label: 'Rotate Copy' },
+    { id: 'mirrorCopy', label: 'Mirror Copy' },
+    { id: 'delete', label: 'Delete' }
+  ];
+
+  const handleNext = () => { 
+    const i = tabs.findIndex(t => t.id === activeTab); 
+    if (i < tabs.length - 1) setActiveTab(tabs[i + 1].id as any); 
+    else if (onNextLesson) onNextLesson(); 
+  };
+
+  const handlePrev = () => { 
+    const i = tabs.findIndex(t => t.id === activeTab); 
+    if (i > 0) setActiveTab(tabs[i - 1].id as any); 
+    else if (onPrevLesson) onPrevLesson(); 
+  };
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+      <div className="lesson-tabs" style={{ width: '900px', margin: '0 auto' }}>
+        {tabs.map(tab => (
+          <button 
+            key={tab.id} 
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} 
+            onClick={() => setActiveTab(tab.id as any)}
+            style={{ flex: 1, textAlign: 'center', padding: '0.5rem 0.6rem' }}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
+
       <section className="lesson-intro">
-        <h3 className="section-title" style={{ marginRight: '330px' }}>Repeat copy / Delete component</h3>
-        <p className="p-flush">These tools are used to change the position, duplicate or delete components such as drill holes, cutouts, components of merged entities.</p>
-        <div className="instruction-box">
-          <div><img src={componentMenu} alt="Component Operation Menu" className="software-screenshot screenshot-small" style={{ width: '200px' }} /></div>
+        <h3 className="section-title">Move / Copy / Delete Component</h3>
+        <p className="p-flush">These tools use to change the position, duplicate or delete components such as drill holes, cutouts, components or merged entities. </p>
+        <div>
+          <img src={componentMenu} alt="Component Operations Menu" className="software-screenshot" style={{ height: '350px' }} />
         </div>
       </section>
-      <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
-          <div className="tab-content-area">
-            {activeTab === 'repeat' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>REPEAT COPY COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(repeatSteps)} onStop={stop} /></div>
-                <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">1</span><span className="step-label">Select Repeat Copy Tool</span></div>
-                  <div><img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">2</span><span className="step-label">Select component to be copied &gt; <strong className="text-highlight">GO</strong></span></div>
-                  <div><img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot screenshot-wide" style={{ width: '805px' }} /></div>
-                </div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
-              </div>
-            )}
-            {activeTab === 'rotateCopy' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>ROTATE COPY COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)} onStop={stop} /></div>
-                <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">1</span><span className="step-label">Select <strong className="text-highlight">Rotate Component</strong> from the icon menu.</span></div>
-                  <div><img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">2</span><span className="step-label">Select component/s to be rotated &gt; <strong className="text-highlight">GO</strong></span></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">3</span><span className="step-label">Select 2 points to set the axis of rotation.</span></div>
-                  <div><img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot screenshot-wide" style={{ width: '700px' }} /></div>
-                </div>
-                <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">4</span><span className="step-label">Specify the angle of rotation on the item entry &gt; Press <strong className="text-highlight">Enter</strong></span></div>
-                  <div><img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot screenshot-wide" style={{ width: '800px' }} /></div>
-                </div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
-              </div>
-            )}
-            {activeTab === 'mirrorCopy' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>MIRROR COPY COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)} onStop={stop} /></div>
-                <div><img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
-                <br />
-                <br />
-                <br />
 
-                <div><img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot screenshot-large" style={{ width: '650px' }} /></div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button></div>
+      <div className="lesson-grid single-card">
+        {activeTab === 'move' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>MOVE COMPONENT</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(moveSteps)} onStop={stop} />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Move Component</strong> from the icon menu.</span>
               </div>
-            )}
-            {activeTab === 'delete' && (
-              <div className="fade-in">
-                <div className="card-header"><h4>DELETE COMPONENT</h4><ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(deleteSteps)} onStop={stop} /></div>
-                <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">1</span><span className="step-label">Select <strong className="text-highlight">Delete Component</strong> from the icon menu.</span></div>
-                  <div><img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} /></div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={moveIcon} alt="Move Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}} />
                 </div>
-                <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                  <div className="step-header"><span className="step-number">2</span><span className="step-label">Select components to be deleted.</span></div>
-                </div>
-                <div className="lesson-navigation"><button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button><button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button></div>
               </div>
-            )}
+            </div>
+
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginBottom: '-2rem' }}>
+                <span className="step-number">2 </span>
+               <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component to be move &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Specify the movement distance on the X,Y and Z-axis on the item entry. Press Enter</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={moveEntry} alt="Move Entry" className="software-screenshot" style={{ width: '900px'}} />
+                </div>
+              </div>
+            </div>
+
+              <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">
+                   <img src={moveResult} alt="Move Result" className="software-screenshot" style={{ width: '700px'}} />
+                </div>
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
           </div>
-        </div>
+        )}
+
+        {activeTab === 'copy' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>COPY COMPONENT</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(copySteps)} onStop={stop} />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Copy Component</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={copyIcon} alt="Copy Component Icon" className="software-screensho" style={{ width: '200px', marginBottom: '-3rem'}} />
+                </div>
+              </div>
+            </div>
+
+             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginBottom: '-2rem' }}>
+                <span className="step-number">2 </span>
+               <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component to be copy &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">3 </span>
+                <span className="step-label">Specidy the distance on the X,Y and Z-axis and the number of copies needed &gt; Press Enter</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={copyFinal} alt="Copy Final" className="software-screenshot" style={{ width: '900px'}} />
+                </div>
+              </div>
+            </div>
+
+              <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">
+                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot" style={{ width: '700px'}} />
+                </div>
+              </div>
+            </div>
+
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'mirror' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>MIRROR COMPONENT</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorSteps)} onStop={stop} />
+            </div>
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use to move/relocate a component by mirror movement. </p>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Mirror Component</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={mirrorIcon} alt="Mirror Component Icon" className="software-screenshot screenshot-small" style={{ width: '200px', marginBottom: '-3rem'}}  />
+                </div>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header" >
+                <span className="step-number">2 </span>
+                <span className="step-label">Select the components to be mirror &gt; GO</span>
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginTop: '-4rem' }}>
+                <span className="step-number">3 </span>
+                <span className="step-label" style={{marginTop: "2rem"}}>Select 3 points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
+              </div>
+            </div>
+
+             <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">
+                   <img src={mirrorResult} alt="Mirror Result" className="software-screenshot"  style={{ width: '700px'}}/>
+                </div>
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'rotate' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>ROTATE COMPONENT</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateSteps)} onStop={stop} />
+            </div>
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use to move/relocate a component by rotating on an axis.</p>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Rotate Component</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={rotateIcon} alt="Rotate Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}} />
+                </div>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginBottom: '-2rem' }}>
+                <span className="step-number">2 </span>
+                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component to be rotate &gt; GO
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginBottom: '-3rem' }}>
+                <span className="step-number">3 </span>
+                <span className="step-label">Select 2-points to set the axis of rotation.</span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">4 </span>
+                <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={rotateEntry} alt="Rotate Entry" className="software-screenshot" style={{ width: '900px'}} />
+                </div>
+              </div>
+            </div>
+
+            <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">
+                <img src={rotateResult} alt="Rotate Result" className="software-screenshot" style={{ width: '700px'}} />
+                </div>
+              </div>
+            </div>
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'repeat' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>REPEAT COPY COMPONENT</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(repeatSteps)} onStop={stop} />
+            </div>
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for continuos duplication of component.</p>
+
+           
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot" style={{ width: '200px'}} />
+                </div>
+              </div>
+          
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot" style={{ width: '900px'}}/>
+                </div>
+              </div>
+          
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'rotateCopy' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>ROTATE COPY</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)} onStop={stop} />
+            </div>
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use to create a duplicate of a component by rotating on an axis.</p>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Rotate Copy</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}}/>
+                </div>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginBottom: '-2rem' }}>
+                <span className="step-number">2 </span>
+                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component/s to be rotated &gt; GO
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="step-header" style={{ marginBottom: '-3rem' }}>
+                <span className="step-number">3 </span>
+                <span className="step-label">Select 2 points to set the axis of rotation.</span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">4 </span>
+                <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter</span>
+              </div>
+               <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot" style={{ width: '900px', marginBottom: '-3rem'}}  />
+                </div>
+              </div>
+            </div>
+
+             <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">
+                   <img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot" style={{ width: '900px'}} />
+                </div>
+              </div>
+            </div>
+
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'mirrorCopy' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>MIRROR COPY</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)} onStop={stop} />
+            </div>
+
+            <div className="instruction-step">
+              <p className="p-flush text-highlight mb-8">Creates a duplicate by mirroring across a plane. Uses the same procedure as Mirror Component.</p>
+              <div className="screenshot-wrapper">
+                <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+              </div>
+              <div className="screenshot-wrapper mt-8">
+                <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot screenshot-medium" />
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'delete' && (
+          <div className="lesson-card tab-content fade-in">
+            <div className="card-header">
+              <h4>DELETE COMPONENT</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(deleteSteps)} onStop={stop} />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="text-highlight">Delete Component</strong> from the icon menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Select the components to be removed.</span>
+              </div>
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
-};
-
-interface ComponentLessonProps { subLessonId: string; onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
-
-const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
-  if (subLessonId === 'component-1') {
-    return <Component1 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
-  }
-  return <Component2 onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
 };
 
 export default ComponentLesson;

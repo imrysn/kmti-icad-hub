@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
 from ..models import UserProgress
-from ..schemas import Course, CourseList, CourseProgress
+from ..schemas import CourseList, CourseProgress, CourseResponse
 
 class CourseService:
     def get_available_courses(self) -> CourseList:
         # In a real app, this might fetch from a DB
         courses = [
-            Course(id="1", title="iCAD Operation Manual 3D Modeling", description="Basic functions and tools."),
-            Course(id="2", title="iCAD Operation Manual 2D Drawing ", description="Complex 3D modeling techniques.")
+            CourseResponse(id=1, title="3D Modeling", description="Basic functions and tools.", course_type="3D_Modeling", order=0),
+            CourseResponse(id=2, title="2D Drawing", description="Precision drafting.", course_type="2D_Drawing", order=1)
         ]
         return CourseList(courses=courses)
 

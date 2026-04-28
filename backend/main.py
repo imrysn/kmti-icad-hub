@@ -1,16 +1,15 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # Load environment variables from the project root
-_env_path = Path(__file__).resolve().parents[1] / ".env"
-load_dotenv(dotenv_path=_env_path)
+load_dotenv(find_dotenv())
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from .database import engine, Base
-from .routers import auth, admin, chat, lessons
+from .routers import auth, admin, chat, lessons, quizzes
 
 # Create database tables on startup
 Base.metadata.create_all(bind=engine)
@@ -46,6 +45,7 @@ app.include_router(auth.router)
 app.include_router(admin.router)
 app.include_router(chat.router)
 app.include_router(lessons.router)
+app.include_router(quizzes.router)
 
 @app.get("/")
 def read_root():

@@ -59,133 +59,141 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
+        <h4 className="section-title">
           {isPart1 ? 'Loading of parasolid' : 'Parasolid export & edit'}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? importSteps : editSteps)} onStop={stop} />
-        </h3>
+        </h4>
         {isPart1 && (
-          <>
-            <p className="p-flush">Tools use to import and export parasolid data, and edit B-Rep solid. This tool is use for creating 3D Purchase Parts.</p>
-            <div className="instruction-box">
-              <div>
-                <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "16rem" }} />
-              </div>
+          <div className="instruction-box">
+            <p className="p-flush">Tools used to import and export parasolid data, and edit B-Rep solid. This tool is used for creating 3D Purchase Parts.</p>
+            <div className="screenshot-wrapper mt-4">
+              <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "16rem" }} />
             </div>
-          </>
+          </div>
         )}
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card">
+        <div className="lesson-card tab-content">
           {isPart1 ? (
             <div className="fade-in">
-              <h3 className="section-title" style={{ marginRight: '900px' }}>Import</h3>
-              <div className={`${getStepClass('p1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className="card-header">
+                <h4>IMPORT PROCEDURE</h4>
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(importSteps)} onStop={stop} />
+              </div>
+
+              <div className={getStepClass('p1-1')}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
                 </div>
-                <div>
-                  <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={importIcon} alt="Import Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass('p1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className="section-divider"></div>
+
+              <div className={getStepClass('p1-2')}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">The Parasolid Link dialog box will appear. User will be able to browse folders which contain parasolid files to be imported on ICAD.</span>
+                  <span className="step-number">2 </span>
+                  <span className="step-label">Browse for files in the <strong className="text-highlight">Parasolid Link</strong> dialog.</span>
                 </div>
-                <div>
-                  <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass('p1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="section-divider"></div>
+
+              <div className={getStepClass('p1-3')}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
+                  <span className="step-number">3 </span>
                   <span className="step-label">
-                    Press OK after selecting the parasolid file &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
+                    Select file &gt; OK &gt; <strong className="text-highlight">GO</strong>
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', margin: '0 4px' }} />
                   </span>
                 </div>
-                <p className="p-flush">The Name change dialog box will appear &gt; Pick Cancel</p>
-                <p className="p-flush">All Part names of purchase parts must be release on the tree view.</p>
-                <div
-                >
-                  <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" style={{ width: '690px' }} />
+                <div className="step-description">
+                  <p className="p-flush">When the Name Change dialog appears &gt; Click <strong className="text-highlight">Cancel</strong>.</p>
+                  <div className="instruction-box mt-4">
+                    <p className="p-flush"><strong>TIP:</strong> Purchase part names must be released on the tree view.</p>
+                  </div>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
             </div>
           ) : (
             <div className="fade-in">
-              <h3 className="section-title" style={{ marginRight: '625px' }}>4.) Lighten B-Rep Solid</h3>
-              <br />
-              <p className="p-flush">Use this tool to lighten up the file size.</p>
-
-              <div className={`${getStepClass('p2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                <div className="step-header">
-                  <span className="step-number">1</span>
-                  <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
-                </div>
-                <div>
-                  <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
-                </div>
+              <div className="card-header">
+                <h4>LIGHTEN B-REP SOLID</h4>
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(editSteps)} onStop={stop} />
               </div>
+              <p className="p-flush mb-8">Optimize the B-Rep solid to reduce overall file size.</p>
 
-              <div className={`${getStepClass('p2-2')} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={getStepClass('p2-1')}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">A dialog box will appear. Select No form changes &gt; <strong className="text-highlight">OK</strong></span>
-                </div>
-                <div>
-                  <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
-                </div>
-              </div>
-
-              <div className={`${getStepClass('p2-3')} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">
-                    Select the purchase part &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-                  </span>
-                </div>
-                <p className="p-flush">Check the message pane to see if the process is successful</p>
-                <div>
-                  <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" style={{ height: '45px' }} />
-                </div>
-              </div>
-
-              <div className="section-divider" />
-
-              <div className={`${getStepClass('p2-4')} ${currentIndex === 3 ? 'reading-active' : ''}`}>
-                <div className="step-header">
-                  <span className="step-number">5</span>
-                  <span className="step-label">Save the part</span>
-                </div>
-                <p className="p-flush">Go to <strong>File &gt; Save As &gt; Use the Purchase part code as File name.</strong></p>
-              </div>
-
-              <div className="section-divider" />
-
-              <div className={`${getStepClass('p2-5')} ${currentIndex === 4 ? 'reading-active' : ''}`}>
-                <div className="step-header">
-                  <span className="step-number">6</span>
-                  <span className="step-label">Set all important information of the part</span>
+                  <span className="step-number">1 </span>
+                  <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the menu.</span>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">Other way to add comment to the Part</p>
-                  <ul className="interaction-list--plain">
-                    <li><strong>1.)</strong> Right-click the Top 3D Part on the tree view</li>
-                    <li><strong>2.)</strong> Select Properties. The Property dialog box will appear.</li>
-                    <li><strong>3.)</strong> Enter the comment for the specific part &gt; Press OK</li>
-                  </ul>
-                  <div style={{ marginTop: '1.5rem' }}>
-                    <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" style={{ height: '300px' }} />
+                  <div className="screenshot-wrapper">
+                    <img src={lightenBrepIcon} alt="Lighten B-rep Solid Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
                   </div>
-                  <br />
-                  <div style={{ marginTop: '1.5rem' }}>
-                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" style={{ height: '400px', width: '700px' }} />
+                </div>
+              </div>
+
+              <div className="section-divider"></div>
+
+              <div className={getStepClass('p2-2')}>
+                <div className="step-header">
+                  <span className="step-number">2 </span>
+                  <span className="step-label">Select <strong className="text-highlight">No form changes</strong> &gt; OK.</span>
+                </div>
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot screenshot-medium" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="section-divider"></div>
+
+              <div className={getStepClass('p2-3')}>
+                <div className="step-header">
+                  <span className="step-number">3 </span>
+                  <span className="step-label">
+                    Select purchase part &gt; <strong className="text-highlight">GO</strong>
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 4px' }} />
+                  </span>
+                </div>
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot screenshot-medium" style={{ height: '45px' }} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="section-divider"></div>
+
+              <div className={getStepClass('p2-5')}>
+                <div className="step-header">
+                  <span className="step-number">4 </span>
+                  <span className="step-label">Set Part Properties & Information</span>
+                </div>
+                <div className="step-description">
+                  <p className="p-flush">Right-click top part &gt; <strong className="text-highlight">Properties</strong> &gt; Enter comments.</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
+                  </div>
+                  <div className="screenshot-wrapper mt-8">
+                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
               </div>
@@ -193,12 +201,8 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

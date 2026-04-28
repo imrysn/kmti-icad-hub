@@ -1,10 +1,9 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # Load environment variables from the project root
-_env_path = Path(__file__).resolve().parents[2] / ".env"
-load_dotenv(dotenv_path=_env_path)
+load_dotenv(find_dotenv())
 
 import hashlib
 import json

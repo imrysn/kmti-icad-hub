@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
@@ -34,7 +34,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          <span>iCAD Window Interface</span>
+          <span>iCAD Window Structure</span>
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps)} onStop={stop} />
         </h3>
         <p className="section-description">
@@ -42,17 +42,20 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
         </p>
       </section>
 
-      <div className="lesson-content-main animate-in">
-        <InteractiveImageMap imageSrc={icadWindowStructure} />
-        
-        <div className="lesson-navigation">
-          <button className="nav-button" onClick={onPrevLesson} disabled={!onPrevLesson}>
-            <ChevronLeft size={18} /> Previous Lesson
-          </button>
+      <div className="lesson-grid single-card">
+        <div className="lesson-card tab-content fade-in">
+          <div className="card-header">
+            <h3>iCAD Window Structure Overview</h3>
+            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps)} onStop={stop} />
+          </div>
+          <p className="p-flush mb-8">Hover over the pulsing hotspots to learn about each area of the iCAD interface.</p>
 
-          <button className="nav-button next" onClick={onNextLesson} disabled={!onNextLesson}>
-            {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-          </button>
+          <InteractiveImageMap imageSrc={icadWindowStructure} />
+
+          <div className="lesson-navigation">
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+          </div>
         </div>
       </div>
     </div>

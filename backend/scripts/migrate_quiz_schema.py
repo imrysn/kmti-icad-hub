@@ -1,11 +1,9 @@
 from sqlalchemy import create_engine, text
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-from pathlib import Path
-# Load database config
-_env_path = Path(__file__).resolve().parents[1] / ".env"
-load_dotenv(dotenv_path=_env_path)
+# Load environment variables from the project root
+load_dotenv(find_dotenv())
 
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"
 

@@ -7,7 +7,7 @@ interface QuizModalProps {
   isOpen: boolean;
   onClose: () => void;
   quiz: Quiz;
-  onComplete: (score: number) => void;
+  onComplete: (score: number, answers?: any[]) => void;
   onSuccessContinue?: () => void;
 }
 
@@ -43,6 +43,13 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   if (!quiz || !quiz.questions) return null;
 
   const currentQuestion = quiz.questions[currentIdx];
+  
+  // Normalize question fields (handle both hardcoded and DB versions)
+  const qText = currentQuestion.text;
+  const qOptions = (currentQuestion as any).options || JSON.parse((currentQuestion as any).options_json || '[]');
+  const qCorrect = (currentQuestion as any).correctAnswer !== undefined ? (currentQuestion as any).correctAnswer : (currentQuestion as any).correct_answer;
+  const qExplanation = (currentQuestion as any).explanation;
+
   const progress = (answers.length / quiz.questions.length) * 100;
   const isLastQuestion = currentIdx === quiz.questions.length - 1;
 
@@ -69,14 +76,31 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       } else {
         // Calculate final score correctly based on all answers
         const correctCount = answers.reduce((acc, ans, idx) => {
-          return ans === quiz.questions[idx].correctAnswer ? acc + 1 : acc;
+          const qIdx = quiz.questions[idx];
+          const correct = (qIdx as any).correctAnswer !== undefined ? (qIdx as any).correctAnswer : (qIdx as any).correct_answer;
+          return ans === correct ? acc + 1 : acc;
         }, 0);
         
         // Final score calculation
         const finalScore = (correctCount / quiz.questions.length) * 100;
+        
+        // Prepare detailed analytics
+        const detailedAnswers = answers.map((ans, idx) => {
+          const qObj = quiz.questions[idx];
+          const correct = (qObj as any).correctAnswer !== undefined 
+            ? (qObj as any).correctAnswer 
+            : (qObj as any).correct_answer;
+          
+          return {
+            question_id: (qObj as any).id,
+            chosen_option: ans,
+            is_correct: ans === correct
+          };
+        });
+
         setScore(finalScore);
         setIsFinished(true);
-        onComplete(finalScore);
+        onComplete(finalScore, detailedAnswers);
       }
     }
   };
@@ -118,7 +142,10 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                     <div className="quiz-progress-segments">
                       {quiz.questions.map((_, idx) => {
                         const isAnswered = idx < answers.length;
-                        const isCorrect = isAnswered && answers[idx] === quiz.questions[idx].correctAnswer;
+                        const correctIdx = (quiz.questions[idx] as any).correctAnswer !== undefined 
+                            ? (quiz.questions[idx] as any).correctAnswer 
+                            : (quiz.questions[idx] as any).correct_answer;
+                        const isCorrect = isAnswered && answers[idx] === correctIdx;
                         const isActive = idx === currentIdx;
                         
                         let statusClass = 'pending';
@@ -144,17 +171,17 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                   </div>
 
                   {/* Question Card */}
-                  <div className="question-card">
+                    <div className="question-card">
                     <div className="question-header">
-                      <p className="question-text">{currentQuestion.text}</p>
+                      <p className="question-text">{qText}</p>
                       <div className="tts-btn" onClick={handleSpeak} role="button" aria-label="Speak Question">
                         <Volume2 size={24} />
                       </div>
                     </div>
 
                     <div className="options-container">
-                      {currentQuestion.options.map((option, idx) => (
-                        <div key={idx} className={`quiz-option-btn ${ selectedOpt === idx ? 'active' : '' } ${ isAnswerChecked && idx === currentQuestion.correctAnswer ? 'correct' : '' } ${ isAnswerChecked && selectedOpt === idx && idx !== currentQuestion.correctAnswer ? 'wrong' : '' } ${ isAnswerChecked && selectedOpt !== idx ? 'dimmed' : '' }`} onClick={() => handleSelect(idx)}
+                      {qOptions.map((option: string, idx: number) => (
+                        <div key={idx} className={`quiz-option-btn ${ selectedOpt === idx ? 'active' : '' } ${ isAnswerChecked && idx === qCorrect ? 'correct' : '' } ${ isAnswerChecked && selectedOpt === idx && idx !== qCorrect ? 'wrong' : '' } ${ isAnswerChecked && selectedOpt !== idx ? 'dimmed' : '' }`} onClick={() => handleSelect(idx)}
                         >
                           <span className="option-indicator">{String.fromCharCode(65 + idx)}</span>
                           <span className="option-text">{option}</span>

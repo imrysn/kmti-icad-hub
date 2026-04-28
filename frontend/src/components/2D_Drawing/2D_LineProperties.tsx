@@ -161,7 +161,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     </div>
                   </div>
 
-                  <div className="lesson-table-container">
+                  <div className="lesson-table-container" style={{ marginTop: "4rem" }}>
                     <table className="lesson-table">
                       <thead>
                         <tr>
@@ -430,17 +430,10 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       </div>
                     </div>
 
-                    <div className="info-box" style={{
-                      position: "absolute",
-                      top: "50rem",
-                      right: "45px",
-                      width: "430px",
-                      height: "170px",
-                      zIndex: 1,
-                      boxShadow: "var(--shadow-lg)"
-                    }}>
+                    <div className="info-box" style={{ marginTop: "2rem" }}>
                       <p className="p-flush red-text">
-                        <strong>Note:</strong> Be careful when choosing which line will be picked first because the center line is always base on L1. <br />
+                        <strong>Note:</strong> </p>
+                      <p>Be careful when choosing which line will be picked first because the center line is always base on L1. <br />
                         The standard properties for centerline are already applied of this command is used.
                       </p>
                     </div>

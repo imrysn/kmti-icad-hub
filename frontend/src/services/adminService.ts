@@ -52,6 +52,27 @@ export interface SystemAuditLog {
     created_at: string;
 }
 
+export interface Quiz {
+    id: number;
+    slug: string;
+    title: string;
+    description: string;
+    course_type: string;
+    created_at: string;
+    updated_at: string;
+    questions?: Question[];
+}
+
+export interface Question {
+    id: number;
+    quiz_id: number;
+    text: string;
+    options_json: string;
+    correct_answer: number;
+    explanation: string;
+    order: number;
+}
+
 export const adminService = {
     async getStats(): Promise<SystemStats> {
         const response = await api.get('/admin/stats');
@@ -177,5 +198,56 @@ export const adminService = {
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
+    },
+
+    // Assessment Management
+    async getQuizzes(): Promise<Quiz[]> {
+        const response = await api.get('/admin/quizzes');
+        return response.data;
+    },
+
+    async getQuizDetail(quizId: number): Promise<Quiz> {
+        const response = await api.get(`/admin/quizzes/${quizId}`);
+        return response.data;
+    },
+
+    async createQuiz(data: Partial<Quiz>): Promise<Quiz> {
+        const response = await api.post('/admin/quizzes', data);
+        return response.data;
+    },
+
+    async updateQuiz(quizId: number, data: Partial<Quiz>): Promise<Quiz> {
+        const response = await api.put(`/admin/quizzes/${quizId}`, data);
+        return response.data;
+    },
+
+    async deleteQuiz(quizId: number): Promise<void> {
+        await api.delete(`/admin/quizzes/${quizId}`);
+    },
+
+    async createQuestion(quizId: number, data: Partial<Question>): Promise<Question> {
+        const response = await api.post(`/admin/quizzes/${quizId}/questions`, data);
+        return response.data;
+    },
+
+    async updateQuestion(questionId: number, data: Partial<Question>): Promise<Question> {
+        const response = await api.put(`/admin/questions/${questionId}`, data);
+        return response.data;
+    },
+
+    async deleteQuestion(questionId: number): Promise<void> {
+        await api.delete(`/admin/questions/${questionId}`);
+    },
+
+    async reopenAssessment(userId: number, quizSlug: string): Promise<void> {
+        await api.post('/admin/reopen-assessment', null, { params: { user_id: userId, quiz_slug: quizSlug } });
+    },
+
+    async reopenAllAssessments(userId: number, courseType?: string): Promise<void> {
+        await api.post('/admin/reopen-all-assessments', null, { params: { user_id: userId, course_type: courseType } });
+    },
+
+    async closeAllAssessments(userId: number, courseType?: string): Promise<void> {
+        await api.post('/admin/close-all-assessments', null, { params: { user_id: userId, course_type: courseType } });
     }
 };

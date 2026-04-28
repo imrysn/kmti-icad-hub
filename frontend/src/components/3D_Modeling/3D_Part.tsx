@@ -82,115 +82,148 @@ const PartLesson: React.FC<PartLessonProps> = ({
         </h3>
         <p className="p-flush">{currentLesson.description}</p>
         <div className="instruction-box">
-          <div>
+          <div className="screenshot-wrapper mt-4">
             <img src={subLessonId === '3d-part-1' ? partMenu1 : partMenu2} alt="3D Part Menu" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
           </div>
         </div>
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card">
-          {subLessonId === '3d-part-1' && (
-            <div className="tab-pane fade-in">
+        <div className="lesson-card tab-content">
+          {subLessonId === '3d-part-1' ? (
+            <div className="fade-in">
+              <div className="card-header">
+                <h4>STEP-BY-STEP PROCEDURE</h4>
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
+              </div>
+
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
-                  <span className="step-label">Select <strong>Create 3D Part</strong> from the icon menu.</span>
+                  <span className="step-number">1 </span>
+                  <span className="step-label">Select <strong className="text-highlight">Create 3D Part</strong> from the icon menu.</span>
                 </div>
-                <div>
-                  <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  </div>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">Select a single entity &gt; <strong>GO</strong> <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} /></span>
+                  <span className="step-number">2 </span>
+                  <span className="step-label">
+                    Select a single entity &gt; <strong className="text-highlight">GO</strong>
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 4px' }} />
+                  </span>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">A window will appear showing the informations to fill-up.</span>
+                  <span className="step-number">3 </span>
+                  <span className="step-label">Fill up the required information in the window.</span>
                 </div>
-                <div>
-                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" style={{ height: '300px', width: '200px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">4</span>
+                  <span className="step-number">4 </span>
                   <span className="step-label">The created 3D Part will appear in the tree view.</span>
                 </div>
-                <div>
-                  <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '300px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot screenshot-large" style={{ height: '300px' }} />
+                  </div>
                 </div>
               </div>
 
-              <div className="section-divider" />
+              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number"><Info size={16} /></span>
-                  <span className="step-label">Material Description</span>
+                  <span className="step-number"><Info size={16} /> </span>
+                  <span className="step-label">MATERIAL DESCRIPTION REFERENCE</span>
                 </div>
-                <div>
-                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" style={{ height: '350px', width: '1200px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
             </div>
-          )}
+          ) : (
+            <div className="fade-in">
+              <div className="card-header">
+                <h4>STEP-BY-STEP PROCEDURE</h4>
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
+              </div>
 
-          {subLessonId === '3d-part-2' && (
-            <div className="tab-pane fade-in">
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">1</span>
-                  <span className="step-label">Select <strong>Change 3D Part Name</strong> from the icon menu.</span>
+                  <span className="step-number">1 </span>
+                  <span className="step-label">Select <strong className="text-highlight">Change 3D Part Name</strong> from the menu.</span>
                 </div>
-                <div>
-                  <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
+                  </div>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
-                  <span className="step-label">Select an entity or Right-click on the 3D Space.</span>
+                  <span className="step-number">2 </span>
+                  <span className="step-label">Select an entity or <strong className="text-highlight">Right-click</strong> on the 3D space.</span>
                 </div>
               </div>
+
+              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
-                  <span className="step-label">A window will appear showing the informations to fill-up.</span>
+                  <span className="step-number">3 </span>
+                  <span className="step-label">Edit the information in the dialog box.</span>
                 </div>
-                <div>
-                  <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" style={{ width: '800px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
 
+              <div className="section-divider"></div>
+
               <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
                 <div className="step-header">
-                  <span className="step-number">4</span>
-                  <span className="step-label">Update both 3D and 2D names automatically by selecting <strong>Yes</strong>.</span>
+                  <span className="step-number">4 </span>
+                  <span className="step-label">Update both 3D and 2D names by selecting <strong className="text-highlight">Yes</strong>.</span>
                 </div>
-                <div>
-                  <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" style={{ width: '800px' }} />
+                <div className="step-description">
+                  <div className="screenshot-wrapper">
+                    <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
