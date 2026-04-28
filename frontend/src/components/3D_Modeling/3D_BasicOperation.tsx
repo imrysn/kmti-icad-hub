@@ -248,7 +248,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -273,13 +273,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       <div className="lesson-grid single-card">
         {activeTab === 'cylinder' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>CYLINDER</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(cylinderSteps)} onStop={stop} />
             </div>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select  <strong className="red-text"> Arrange Cylinder </strong> from the icon menu.</span>
@@ -337,7 +337,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'box' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>BOX</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boxSteps)} onStop={stop} />
@@ -400,7 +400,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'polygon' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>POLYGON</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(polygonSteps)} onStop={stop} />
@@ -463,7 +463,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'cone' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>CONE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(coneSteps)} onStop={stop} />
@@ -526,7 +526,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'torus' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>TORUS</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(torusSteps)} onStop={stop} />
@@ -662,7 +662,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -681,7 +681,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       <div className="lesson-grid single-card">
         {activeTab === 'move' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>MOVE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(moveSteps)} onStop={stop} />
@@ -742,7 +742,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'rotate' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>ROTATE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateSteps)} onStop={stop} />
@@ -807,7 +807,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'mirror' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>MIRROR</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorSteps)} onStop={stop} />
@@ -862,7 +862,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'copy' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>COPY</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(copySteps)} onStop={stop} />
@@ -922,7 +922,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'rotateCopy' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>ROTATE COPY</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)} onStop={stop} />
@@ -957,7 +957,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'mirrorCopy' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>MIRROR COPY</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)} onStop={stop} />
@@ -992,7 +992,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'delete' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>DELETE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(deleteSteps)} onStop={stop} />
@@ -1074,7 +1074,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -1105,7 +1105,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       <div className="lesson-grid single-card">
         {activeTab === 'sketch' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header card-sub-header">
               <h4>SKETCH</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sketchSteps)} onStop={stop} />
@@ -1134,7 +1134,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'extrude' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header card-sub-header">
               <h4>EXTRUDE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(extrudeSteps)} onStop={stop} />
@@ -1199,7 +1199,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'revolve' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header card-sub-header">
               <h4>REVOLVE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(revolveSteps)} onStop={stop} />
@@ -1301,7 +1301,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -1334,13 +1334,13 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       <div className="lesson-grid single-card">
         {activeTab === 'showHide' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>SHOW / HIDE ENTITY</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(showHideSteps)} onStop={stop} />
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Show/Hide</strong> from the icon menu.</span>
@@ -1354,7 +1354,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{marginBottom: "1rem"}}>Select the enteties for showing/hiding &gt; GO 
@@ -1369,7 +1369,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4>SHOW/HIDE DRAFTING ENTITY</h4>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Show/Hide Drafting Entity</strong> from the icon menu.</span>
@@ -1383,7 +1383,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label">Right-click to show/hide all drafting entities. </span>
@@ -1431,7 +1431,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4>HIDE UNSELECTED ENTITY</h4>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="text-highlight">Hide Unselected Entity</strong>.</span>
@@ -1445,7 +1445,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{marginBottom: "1rem"}}>Select entities to retain &gt; <strong className="text-highlight">GO</strong>
@@ -1468,13 +1468,13 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'stretch' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>STRETCH / SHAPE / CUT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(stretchSteps)} onStop={stop} />
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="text-highlight">Stretch</strong> from the menu.</span>
@@ -1488,7 +1488,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{marginBottom: "1rem"}}>Select face &gt; <strong className="text-highlight">GO</strong>
@@ -1498,7 +1498,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
 
-            <div className="instruction-step" style={{marginTop: "-4rem"}}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginTop: "-4rem"}}>
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label">Specify desired length on the item entry.</span>
@@ -1518,7 +1518,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div>
               <h4 className="text-highlight mb-4">OR</h4>
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-label">Select face &gt; <strong className="text-highlight">GO  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px'}} /></strong> &gt; Left-click on 3D Space.</span>
                 </div>
@@ -1540,13 +1540,13 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'resize' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>RESIZE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(resizeSteps)} onStop={stop} />
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="text-highlight">Resize</strong> from the icon menu.</span>
@@ -1560,7 +1560,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{marginBottom: "1.5rem"}}>Select entity &gt; <strong className="text-highlight">GO</strong>
@@ -1570,7 +1570,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
 
-            <div className="instruction-step" style={{marginTop: "-3rem"}}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginTop: "-3rem"}}>
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label">Specify scale on the item entry &gt; Left-click on 3D Space.</span>
@@ -1617,7 +1617,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -1636,7 +1636,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       <div className="lesson-grid single-card">
         {activeTab === 'shapeSteels' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>Shape Steels Includes:</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(shapeSteelsSteps)} onStop={stop} />

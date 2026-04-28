@@ -70,7 +70,7 @@ interface PropertiesLessonProps {
   const infoSteps = ["Step 1: Coordinates. Pick a point to display its position from the origin.", "Step 2: Length. Pick an edge and click GO to measure it.", "Step 3: Distance. Pick two points or edges to measure the gap between them.", "Step 4: Angle. Pick two edges or three points to calculate the angle.", "Step 5: Entity Info. Pick a solid and click GO to see all technical information."];
 
   const getStepClass = (stepId: string) => "instruction-step"; const handleNext = () => { if (isProperties1) { if (activeTab === "color") setActiveTab("layer"); else if (onNextLesson) onNextLesson(); } else { if (onNextLesson) onNextLesson(); } }; const handlePrev = () => { if (isProperties1) { if (activeTab === "layer") setActiveTab("color"); else if (onPrevLesson) onPrevLesson(); } else { if (onPrevLesson) onPrevLesson(); } }; return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       {" "}
       {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
@@ -125,7 +125,7 @@ interface PropertiesLessonProps {
                   <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(colorSteps)} onStop={stop} />
                 </div>
 
-                <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                   <div className="step-header">
                     <span className="step-number">1 </span>
                     <span className="step-label">Select <strong className="text-highlight">Change Color</strong> from the icon menu.</span>
@@ -139,7 +139,7 @@ interface PropertiesLessonProps {
 
                 <div className="section-divider"></div>
 
-                <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                   <div className="step-header">
                     <span className="step-number">2 </span>
                     <span className="step-label">Select either <strong className="text-highlight">Entity</strong> or <strong className="text-highlight">Face</strong>.</span>
@@ -182,7 +182,7 @@ interface PropertiesLessonProps {
                   <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(layerSteps)} onStop={stop} />
                 </div>
 
-                <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                   <div className="step-header">
                     <span className="step-number">1 </span>
                     <span className="step-label">Select <strong className="text-highlight">Change Layer</strong> from the icon menu.</span>
@@ -196,7 +196,7 @@ interface PropertiesLessonProps {
 
                 <div className="section-divider"></div>
 
-                <div className={`${getStepClass("layer-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("layer-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                   <div className="step-header">
                     <span className="step-number">2 </span>
                     <span className="step-label">Specify the <strong className="text-highlight">target layer</strong> on the item entry.</span>
@@ -264,7 +264,7 @@ interface PropertiesLessonProps {
             </div>
 
             <div className="tool-block">
-              <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Coordinates: Pick a point to see position from origin.</span>
@@ -278,7 +278,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Length: Pick an edge &gt; <strong className="text-highlight">GO</strong> to measure.</span>
@@ -292,7 +292,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Distance: Pick two entities to measure the gap.</span>
@@ -306,7 +306,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Angle: Pick 2 edges or 3 points to calculate angle.</span>
@@ -320,7 +320,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">5 </span>
                   <span className="step-label">Entity Info: Pick a solid &gt; <strong className="text-highlight">GO</strong> for full details.</span>

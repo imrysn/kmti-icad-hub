@@ -34,7 +34,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
   const isPart1 = subLessonId === "purchase-parts-1";
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -49,7 +49,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
+        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`} data-reading-index="0">
           <div className="fade-in">
             <div className="card-header">
               <h4>{isPart1 ? "WORKFLOW OVERVIEW" : "SERVER UPLOAD PROTOCOL"}</h4>

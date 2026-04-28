@@ -15,7 +15,7 @@ import { ChatEntry, StoredSession, LightboxImage } from './chatbot/types';
 
 import '../../../styles/IntelligenceChatbot.css';
 
-export const IntelligenceChatbot: React.FC = () => {
+export const IntelligenceChatbot: React.FC<{ lessonId?: string }> = ({ lessonId }) => {
     // State for common UI elements
     const [chatInput, setChatInput] = useState(''); const [forcedLanguage, setForcedLanguage] = useState<'en-US' | 'ja-JP' | 'fil-PH'>('en-US'); const [copiedIdx, setCopiedIdx] = useState<number | null>(null); const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [liveMessage, setLiveMessage] = useState(''); const [previewFile, setPreviewFile] = useState<string | null>(null); const [lightboxImages, setLightboxImages] = useState<LightboxImage[]>([]); const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -52,7 +52,7 @@ export const IntelligenceChatbot: React.FC = () => {
 
     // Initialize Hooks
     const { sessions, setSessions, activeSessionId, setActiveSessionId, updateSessionMessages, deleteSession, clearAllSessions } = useChatSessions(showModal);
-    const { currentlyReadingIdx, speakText } = useSpeech(forcedLanguage);
+    const { currentlyReadingIdx, currentCharIndex, speakText } = useSpeech(forcedLanguage);
     const { selectedImages, setSelectedImages, handlePaste, removeSelectedImage } = useImagePaste(showModal);
 
     const scrollToBottom = useCallback(() => {
@@ -71,7 +71,8 @@ export const IntelligenceChatbot: React.FC = () => {
         scrollToBottom,
         setLiveMessage,
         showModal,
-        updateSessionMessages
+        updateSessionMessages,
+        lessonId
     });
 
     // Alert Override
@@ -220,7 +221,7 @@ export const IntelligenceChatbot: React.FC = () => {
         const imagesToSubmit = [...selectedImages];
         setSelectedImages([]);
 
-        handleStream(trimmed, imagesToSubmit, targetSessionId, isNewSession, [...historyForStream, userMsg]);
+        handleStream(trimmed, imagesToSubmit, targetSessionId, isNewSession, [...historyForStream, userMsg], lessonId);
     }, [chatInput, selectedImages, isThinking, activeSessionId, chatHistory, handleStream, setActiveSessionId, setSelectedImages, setSessions]);
 
     const handleFeedback = useCallback(async (sessionId: string, msgIdx: number, rating: 'up' | 'down') => {
@@ -271,7 +272,7 @@ export const IntelligenceChatbot: React.FC = () => {
             />
 
             <div className="chatbot-main">
-                <MessageList chatHistory={chatHistory} activeSessionId={activeSessionId} currentlyReadingIdx={currentlyReadingIdx} copiedIdx={copiedIdx} regeneratingIdx={regeneratingIdx} isThinking={isThinking} showScrollBtn={showScrollBtn} onScroll={handleScroll} scrollToBottom={scrollToBottom} onSpeak={speakText} onCopy={copyToClipboard} onFeedback={handleFeedback} onOpenLightbox={openLightbox} onRetry={handleRetry} onRegenerate={handleRegenerate} onBranch={handleBranch} onSuggestionClick={handleSuggestionClick} />
+                <MessageList chatHistory={chatHistory} activeSessionId={activeSessionId} currentlyReadingIdx={currentlyReadingIdx} currentCharIndex={currentCharIndex} copiedIdx={copiedIdx} regeneratingIdx={regeneratingIdx} isThinking={isThinking} showScrollBtn={showScrollBtn} onScroll={handleScroll} scrollToBottom={scrollToBottom} onSpeak={speakText} onCopy={copyToClipboard} onFeedback={handleFeedback} onOpenLightbox={openLightbox} onRetry={handleRetry} onRegenerate={handleRegenerate} onBranch={handleBranch} onSuggestionClick={handleSuggestionClick} />
 
                 <SourcesPanel sources={latestSources} onOpenImage={openLightbox} onOpenFile={openFile} />
 

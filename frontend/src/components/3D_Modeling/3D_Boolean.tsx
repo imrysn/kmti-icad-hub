@@ -98,7 +98,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -134,7 +134,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               </div>
               <p className="p-flush" style={{ marginTop: "-2rem" }}>Tool for joining 3D entities into a single entity.</p>
 
-              <div className={`${getStepClass("bl1u-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl1u-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="red-text">Union</strong> from the icon menu.</span>
@@ -146,7 +146,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("bl1u-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl1u-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label" style={{ marginTop: "-1rem" }}>Select all 3D entities for joining &gt; <strong className="text-highlight">GO</strong>
@@ -175,7 +175,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               </div>
               <p className="p-flush" style={{ marginTop: "-2rem" }} >Tool for creating cutouts on 3D entities.</p>
 
-              <div className={`${getStepClass("bl1s-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl1s-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="red-text">Subtract</strong> from the icon menu.</span>
@@ -187,7 +187,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("bl1s-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl1s-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">First, select the Target entity.</span>
@@ -207,7 +207,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("bl1s-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl1s-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select <strong className="text-highlight">tool entities</strong> &gt; <strong className="text-highlight">GO</strong>
@@ -250,7 +250,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <p className="p-flush" style={{ marginTop: "-2rem" }}>Tool that creates an entity from the intersection of two overlapping entities.</p>
 
-              <div className={`${getStepClass("bl2i-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl2i-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="red-text">Intersect</strong> from the icon menu.</span>
@@ -262,7 +262,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("bl2i-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl2i-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the intersecting entities &gth; GO
@@ -303,7 +303,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("bl2s-1")} ${currentIndex === 0 || currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl2s-1")} ${currentIndex === 0 || currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the desired components to be seperate from the solid entity &gt; GO
@@ -338,7 +338,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
               </div>
-              <div className={`${getStepClass("bl2s-2")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl2s-2")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header" style={{marginBottom: "1rem"}}>
                   <span className="step-number">2 </span>
                   <span className="step-label">Separated components will be displayed in a form of CSG solid. Select OK</span>

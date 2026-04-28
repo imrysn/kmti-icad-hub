@@ -41,7 +41,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
   const tabs = [{ id: "holeDetails", label: "Hole Details" }];
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -71,7 +71,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(holeSteps)} onStop={stop} />
           </div>
 
-          <div className={`${getStepClass("hole-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("hole-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <div className="step-header">
               <span className="step-number">1 </span>
               <span className="step-label">Select <strong className="text-highlight">Arrange Machine Part</strong> from the icon menu.</span>
@@ -85,7 +85,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
  
 
-          <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
             <div className="step-header">
               <span className="step-number">2 </span>
               <span className="step-label">A window will appear showing the list of tools available.</span>
@@ -99,7 +99,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
        
 
-          <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header" style={{ marginBottom: "-2rem"}}>
               <span className="step-number">3 </span>
               <span className="step-label">After setting the specifications, click OK</span>
@@ -108,7 +108,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
          
 
-          <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
               <span className="step-number">4 </span>
               <span className="step-label" style={{ marginTop: "-1rem"}}>Click the location of the hole on the solid entity &gt; GO

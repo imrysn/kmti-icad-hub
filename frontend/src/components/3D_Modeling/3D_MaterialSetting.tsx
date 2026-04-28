@@ -51,7 +51,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -81,7 +81,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(material1Steps)} onStop={stop} />
             </div>
 
-            <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="text-highlight">Set Material</strong> from the icon menu.</span>
@@ -95,7 +95,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label">Select the entity/entities &gt; <strong className="text-highlight">GO</strong>
@@ -106,7 +106,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label">Select the material from the list &gt; <strong className="text-highlight">OK</strong></span>
@@ -121,7 +121,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}>
+            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">4 </span>
                 <span className="step-label">Confirm the selection in the dialog &gt; <strong className="text-highlight">OK</strong></span>
@@ -136,7 +136,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`}>
+            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
               <div className="step-header">
                 <span className="step-number">5 </span>
                 <span className="step-label">To change material, select <strong className="text-highlight">Set Material</strong> again &gt; <strong className="text-highlight">OK</strong> to overwrite.</span>

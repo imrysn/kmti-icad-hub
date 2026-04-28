@@ -43,7 +43,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
   const getStepClass = (stepId: string) => "instruction-step";
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -69,7 +69,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} />
           </div>
 
-          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <div className="step-header">
               <span className="step-number">1 </span>
               <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
@@ -83,7 +83,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
             <div className="step-header">
               <span className="step-number">2 </span>
               <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
@@ -97,7 +97,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header">
               <span className="step-number">3 </span>
               <span className="step-label">Select entities &gt; <strong className="text-highlight">GO</strong>
@@ -117,7 +117,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
               <span className="step-number">4 </span>
               <span className="step-label">Analyze countermeasures. Use <strong className="text-highlight">Undo</strong> or <strong className="text-highlight">Ctrl+Z</strong> to remove highlighting.</span>
@@ -138,7 +138,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
             <div className="step-header">
               <span className="step-number">5 </span>
               <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong>
@@ -149,7 +149,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`}>
+          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
             <div className="step-header">
               <span className="step-number">6 </span>
               <span className="step-label">The <strong className="text-highlight">List Display</strong> window will appear showing all interfering parts.</span>

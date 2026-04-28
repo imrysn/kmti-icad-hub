@@ -66,7 +66,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
   const currentLesson = LESSON_DATA[subLessonId] || { title: '3D PART', steps: [], description: '' };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -97,7 +97,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Create 3D Part</strong> from the icon menu.</span>
@@ -111,7 +111,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">
@@ -123,7 +123,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Fill up the required information in the window.</span>
@@ -137,7 +137,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">The created 3D Part will appear in the tree view.</span>
@@ -151,7 +151,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number"><Info size={16} /> </span>
                   <span className="step-label">MATERIAL DESCRIPTION REFERENCE</span>
@@ -170,7 +170,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Change 3D Part Name</strong> from the menu.</span>
@@ -184,7 +184,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Select an entity or <strong className="text-highlight">Right-click</strong> on the 3D space.</span>
@@ -193,7 +193,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Edit the information in the dialog box.</span>
@@ -207,7 +207,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Update both 3D and 2D names by selecting <strong className="text-highlight">Yes</strong>.</span>

@@ -33,7 +33,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
   ];
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -55,7 +55,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(annotationSteps)} onStop={stop} />
           </div>
 
-          <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <div className="step-header">
               <span className="step-number">1 </span>
               <span className="step-label">Select the <strong className="text-highlight">Drafting</strong> tab from the main menu.</span>
@@ -69,7 +69,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
           <div className="section-divider"></div>
 
-          <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
             <div className="step-header">
               <span className="step-number">2 </span>
               <span className="step-label">Choose specific tools like <strong className="text-highlight">Dimension</strong>, <strong className="text-highlight">Note</strong>, or <strong className="text-highlight">Geometric Tolerance</strong>.</span>
@@ -78,7 +78,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
           <div className="section-divider"></div>
 
-          <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header">
               <span className="step-number">3 </span>
               <span className="step-label">Apply 3D dimensions directly to the model.</span>
@@ -92,7 +92,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
           <div className="section-divider"></div>
 
-          <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
               <span className="step-number">4 </span>
               <span className="step-label">Use <strong className="text-highlight">Edit Drafting Element</strong> to modify existing annotations.</span>
