@@ -24,7 +24,7 @@ export type Lesson = {
 export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'interface',
-    title: 'iCAD Window Structure',
+    title: 'ICAD Interface',
     content: ['Window Structure', 'Command menus', 'Hierarchical tree view', '3D viewport', 'UI placement', 'modeling environment', 'software layout'],
     children: [
       { id: 'interface', title: 'iCAD Window Structure', content: ['hotspots', 'interactive diagram', 'functional areas', 'navigation'] },
@@ -99,11 +99,11 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     title: 'Basic Operation',
     content: ['Creating Basic Shapes', 'Move', 'Rotate', 'Copy', 'Mirror', 'Delete', 'Cylinder', 'Box', 'Polygon', 'Cone', 'Torus', 'prism', 'coordinate entry', 'angle of rotation', 'mirror plane'],
     children: [
-      { id: 'basic-op-1', title: 'Basic Operation (1)', content: ['Cylinder', 'Box', 'Polygon', 'Cone', 'Torus'] },
-      { id: 'basic-op-2', title: 'Basic Operation (2)', content: ['Move', 'Rotate', 'Mirror', 'Copy', 'Rotate Copy', 'Mirror Copy', 'Delete'] },
-      { id: 'basic-op-3', title: 'Basic Operation (3)', content: ['Sketch', 'Extrude', 'Revolve'] },
-      { id: 'basic-op-4', title: 'Basic Operation (4)', content: ['Show/Hide', 'Stretch', 'Resize'] },
-      { id: 'basic-op-5', title: 'Basic Operation (5)', content: ['Shape Steels'] },
+      { id: 'basic-op-1', title: 'Basic Shapes', content: ['Cylinder', 'Box', 'Polygon', 'Cone', 'Torus'] },
+      { id: 'basic-op-2', title: 'Move, Rotate, Copy, Mirror, Delete', content: ['Move', 'Rotate', 'Mirror', 'Copy', 'Rotate Copy', 'Mirror Copy', 'Delete'] },
+      { id: 'basic-op-3', title: 'Sketch, Extrude/Revolve', content: ['Sketch', 'Extrude', 'Revolve'] },
+      { id: 'basic-op-4', title: 'Show/Hide, Stretch, Resize', content: ['Show/Hide', 'Stretch', 'Resize'] },
+      { id: 'basic-op-5', title: 'Shape Steels', content: ['Shape Steels'] },
     ],
     quiz: {
       title: 'Basic iCAD Operations',
@@ -125,7 +125,10 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: '2d-3d',
     title: '2D > 3D',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `2d-3d-${i + 1}`, title: `2D > 3D (${i + 1})` })),
+    children: [
+      { id: '2d-3d-1', title: '2D > 3D', content: [] },
+      { id: '2d-3d-2', title: 'Extrude, Revolve, Spiral', content: [] },
+    ],
     quiz: {
       title: '2D to 3D Conversion Workflow',
       description: 'Understanding the KEMCO methodology for solid generation from orthographic geometry.',
@@ -242,7 +245,9 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: '3d-part',
     title: '3D Part',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `3d-part-${i + 1}`, title: `3D Part (${i + 1})` })),
+    children: [
+      { id: '3d-part-1', title: '3D Part', content: ['Create 3D Part', 'Change 3D Part Name'] }
+    ],
     quiz: {
       title: '3D Part Management',
       description: 'Understanding naming protocols, synchronization, and modification history.',
@@ -263,7 +268,9 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'material',
     title: 'Material Setting',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `material-${i + 1}`, title: `Material Setting (${i + 1})` })),
+    children: [
+      { id: 'material-1', title: 'Material Setting', content: ['Set Material', 'Unlisted Materials'] }
+    ],
     quiz: {
       title: 'iCAD Material & Weight Logic',
       description: 'Understanding physical properties in the KEMCO iCAD workflow.',

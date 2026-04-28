@@ -248,8 +248,9 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header" >
                 <span className="step-number">2 </span>
-                <span className="step-label">Select the components to be mirror &gt; GO</span>
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the components to be mirror &gt; GO
+                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </span>
               </div>
             </div>
 
@@ -345,7 +346,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               <h4>REPEAT COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(repeatSteps)} onStop={stop} />
             </div>
-            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for continuos duplication of component.</p>
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for continuous duplication of component.</p>
 
            
               <div className="step-description">
@@ -354,12 +355,13 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </div>
               </div>
           
-              <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot" style={{ width: '900px'}}/>
+             <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">  <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot" style={{ width: '900px'}}/>
                 </div>
               </div>
-          
+            </div>
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
@@ -371,7 +373,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         {activeTab === 'rotateCopy' && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>ROTATE COPY</h4>
+              <h4>ROTATE COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)} onStop={stop} />
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use to create a duplicate of a component by rotating on an axis.</p>
@@ -379,7 +381,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
               <div className="step-header">
                 <span className="step-number">1 </span>
-                <span className="step-label">Select <strong className="red-text">Rotate Copy</strong> from the icon menu.</span>
+                <span className="step-label">Select <strong className="red-text">Rotate Copy Component</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
@@ -436,17 +438,23 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         {activeTab === 'mirrorCopy' && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>MIRROR COPY</h4>
+              <h4>MIRROR COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)} onStop={stop} />
             </div>
-
-            <div className="instruction-step">
-              <p className="p-flush text-highlight mb-8">Creates a duplicate by mirroring across a plane. Uses the same procedure as Mirror Component.</p>
+           <p className="p-flush" style={{ marginTop: "-2rem" }}>Use to create a duplicate of a component by mirror movement.</p>
+            
+             
               <div className="screenshot-wrapper">
-                <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+                <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot" style={{ width: '200px'}} />
               </div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot screenshot-medium" />
+           <span style={{ marginTop: "-2rem" }}>Same procedure with Mirror Component</span>
+
+           <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                <div className="screenshot-wrapper">
+                <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot" style={{ width: '900px'}} />
+                </div>
               </div>
             </div>
 
@@ -467,21 +475,19 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
               <div className="step-header">
                 <span className="step-number">1 </span>
-                <span className="step-label">Select <strong className="text-highlight">Delete Component</strong> from the icon menu.</span>
+                <span className="step-label">Select <strong className="red-text">Delete Component</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+                  <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}} />
                 </div>
               </div>
             </div>
 
-            <div className="section-divider"></div>
-
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label">Select the components to be removed.</span>
+                <span className="step-label">Select the components to be deleted.</span>
               </div>
             </div>
 

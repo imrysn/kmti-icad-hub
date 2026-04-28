@@ -32,20 +32,11 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          <span>iCAD Window Structure</span>
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps)} onStop={stop} />
-        </h3>
-        <p className="section-description">
-          Explore the core workspace of iCAD. Select a pulsing hotspot on the interface diagram to learn about its specific functions.
-        </p>
-      </section>
 
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content fade-in">
           <div className="card-header">
-            <h3>iCAD Window Structure Overview</h3>
+            <h3>ICAD WINDOW STRUCTURE</h3>
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps)} onStop={stop} />
           </div>
           <p className="p-flush mb-8">Hover over the pulsing hotspots to learn about each area of the iCAD interface.</p>

@@ -123,16 +123,12 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 </div>
               </div>
 
-              <div className="section-divider"></div>
-
               <div className="instruction-step">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Right-click to show the <strong className="text-highlight">current location</strong> of the origin.</span>
                 </div>
               </div>
-
-              <div className="section-divider"></div>
 
               <div className="instruction-step">
                 <div className="step-header">
@@ -141,16 +137,12 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 </div>
               </div>
 
-              <div className="section-divider"></div>
-
               <div className="instruction-step">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Left-click on a 2nd point to set the X-axis.</span>
                 </div>
               </div>
-
-              <div className="section-divider"></div>
 
               <div className="instruction-step">
                 <div className="step-header">

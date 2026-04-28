@@ -134,7 +134,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               </div>
               <p className="p-flush" style={{ marginTop: "-2rem" }}>Tool for joining 3D entities into a single entity.</p>
 
-              <div className={`${getStepClass("bl1u-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl1u-1")} ${currentIndex === 0 ? "reading-active" : ""}`} style={{ marginBottom:"-2rem"}}>
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="red-text">Union</strong> from the icon menu.</span>
@@ -146,18 +146,23 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("bl1u-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl1u-2")} ${currentIndex === 1 ? "reading-active" : ""}`}  >
                 <div className="step-header">
                   <span className="step-number">2 </span>
-                  <span className="step-label" style={{ marginTop: "-1rem" }}>Select all 3D entities for joining &gt; <strong className="text-highlight">GO</strong>
+                  <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select all 3D entities for joining &gt; GO
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
-                <div className="step-description">
-                  <div className="screenshot-wrapper">
+
+                <div className="section-divider" style={{ margin: "1rem" }}></div>
+                  <div className="instruction-step">
+                  <div className="card-header"><h4>RESULT</h4></div>
+                  <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                     <img src={select3D} alt="Select 3D entities" className="software-screenshot" style={{ width: '900px', marginTop: "1rem" }} />
                   </div>
                 </div>
+
+              
               </div>
 
               <div className="lesson-navigation">
@@ -214,12 +219,15 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
-                <div className="step-description">
-                  <p className="p-flush" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>Tool entities will disappear and become cutouts after subtraction.</p>
-                  <div className="screenshot-wrapper">
-                    <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot" style={{ width: '900px', marginTop: "2rem" }} />
-                  </div>
+                
+                <div className="section-divider" style={{ margin: "0.5rem" }}></div>
+
+                 <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                  <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot" style={{ width: '900px', marginTop: "2rem" }} />
                 </div>
+              </div>
               </div>
 
               <div className="step-description mt-4">
@@ -228,10 +236,16 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <div className="screenshot-wrapper">
                     <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "1rem", marginTop: "1rem" }} />
                   </div>
-                  <div className="screenshot-wrapper">
-                    <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-medium" style={{ height: 'auto', width: '900px' }} />
-                  </div>
+
+                  <div className="section-divider" style={{ margin: "2rem" }}></div>
+
+               <div className="instruction-step">
+                  <div className="card-header"><h4>RESULT</h4></div>
+                <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                  <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-medium" style={{ height: 'auto', width: '900px' }} />
                 </div>
+              </div>
+              </div>
               </div>
 
               <div className="lesson-navigation">
@@ -248,9 +262,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(intersectSteps)} onStop={stop} />
               </div>
 
-              <p className="p-flush" style={{ marginTop: "-2rem" }}>Tool that creates an entity from the intersection of two overlapping entities.</p>
+              <p className="p-flush" style={{ marginTop: "-2rem" }}>Tool that creates entity of the product of two intersecting entities.</p>
 
-              <div className={`${getStepClass("bl2i-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl2i-1")} ${currentIndex === 0 ? "reading-active" : ""}`} style={{ marginBottom:"-2rem"}}>
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="red-text">Intersect</strong> from the icon menu.</span>
@@ -262,21 +276,27 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`${getStepClass("bl2i-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`${getStepClass("bl2i-2")} ${currentIndex === 1 ? "reading-active" : ""}`} >
                 <div className="step-header">
                   <span className="step-number">2 </span>
-                  <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the intersecting entities &gth; GO
+                  <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the intersecting entities &gt; GO
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
+
                 <div className="step-description">
                   <p className="p-flush" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>Intersecting entities will not disappear after the process.</p>
+                  
+                   <div className="instruction-step">
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                   <div className="screenshot-wrapper">
                     <img src={intersectingEntities} alt="Intersecting Entities Result" className="software-screenshot" style={{ width: '900px', marginTop: '1rem' }} />
                   </div>
                 </div>
               </div>
-
+            </div>
+          </div>
               <div className="lesson-navigation">
                 <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
                 <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
@@ -291,7 +311,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(separateSteps)} onStop={stop} />
               </div>
 
-              <p className="p-flush" style={{ marginTop: "-2rem" }}>Tool used to reverse boolean operations by creating CSG solid.</p>
+              <p className="p-flush" style={{ marginTop: "-2rem" }}>Tool use to reverse boolean operations by creating CSG solid.</p>
 
               <div>
                 <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
