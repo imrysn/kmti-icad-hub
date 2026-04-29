@@ -52,12 +52,19 @@
   letter-spacing: -0.03em;
 }
 
-.content-detail p {
+.content-detail p, .hotspot-description {
   margin: 0;
   font-size: 1rem;
   line-height: 1.6;
   color: var(--text-main);
   opacity: 0.8;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hotspot-description.lesson-karaoke-wrapper {
+  opacity: 1;
 }
 
 .content-empty {
@@ -75,12 +82,11 @@
 
 /* --- Center Image Stage --- */
 .image-stage {
-  padding: 3rem;
+  padding: 1rem;
   background: var(--bg-surface);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid var(--glass-border);
 }
 
 [data-theme='light'] .image-stage {
@@ -105,8 +111,8 @@
 /* --- Hotspots & Tooltips --- */
 .hotspot-node {
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   transform: translate(-50%, -50%);
   z-index: 100;
   cursor: pointer;
@@ -116,9 +122,8 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: var(--primary);
+  background: none;
   border: 2px solid white;
-  box-shadow: 0 0 15px var(--color-primary-glow);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
 }
@@ -137,16 +142,15 @@
 
 .hotspot-node:hover .hotspot-trigger,
 .hotspot-node.active .hotspot-trigger {
-  transform: scale(1.25);
-  background: var(--secondary);
-  box-shadow: 0 0 20px var(--color-secondary-glow);
+  transform: scale(1.5);
+  border-color: #6366f1;
 }
 
 .hotspot-node.selected .hotspot-trigger {
   transform: scale(1.25);
-  background: var(--secondary);
   border-width: 2px;
-  box-shadow: 0 0 20px var(--color-secondary-glow);
+  background-color: #6366f1;
+  border-color:#6366f1;
 }
 
 .pulse-ring {
@@ -244,4 +248,45 @@
 
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* --- TTS Mini Toggle --- */
+.tts-mini-toggle {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-dim);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.tts-mini-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.tts-mini-toggle.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--color-primary-glow);
+  animation: mini-pulse 1.5s infinite;
+}
+
+@keyframes mini-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+.interactive-map-wrapper.is-speaking .hotspot-node.selected .pulse-ring {
+  background: var(--primary);
+  animation: pulse-ring 1s infinite;
 }

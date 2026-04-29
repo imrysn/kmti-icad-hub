@@ -38,7 +38,8 @@ async def chat_with_intelligence_node(
         request.session_id,
         [{"data": img.data, "mime": img.mime} for img in request.images] if request.images else None,
         request.language,
-        request.is_regeneration
+        request.is_regeneration,
+        request.current_lesson_id
     )
     elapsed_ms = int((time.time() - t_start) * 1000)
 
@@ -98,7 +99,8 @@ async def chat_stream_with_intelligence_node(
                 request.history, 
                 [{"data": img.data, "mime": img.mime} for img in request.images] if request.images else None,
                 request.language,
-                request.is_regeneration
+                request.is_regeneration,
+                request.current_lesson_id
             ):
                 if chunk["type"] == "content":
                     full_answer += chunk["delta"]

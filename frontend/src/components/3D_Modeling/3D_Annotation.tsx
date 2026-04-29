@@ -1,27 +1,21 @@
-/** * 3D_Interference.tsx * Interference Check lesson */
-
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
-import leftClick from "../../assets/3D_Image_File/left_click.png";
-import interfCheckIcon from "../../assets/3D_Image_File/interf_check.png";
-import interfCommandMenu from "../../assets/3D_Image_File/interf_command_menu.png";
-import interferenceResult from "../../assets/3D_Image_File/interference.png";
-import listInterfIcon from "../../assets/3D_Image_File/list_all_detected_interf.png";
-import listDisplayWindow from "../../assets/3D_Image_File/list_display_window.png";
-import interferenceCheckImg from "../../assets/3D_Image_File/interference_check.png";
+import draftingMenu from "../../assets/3D_Image_File/annotation.png";
+import dimensionExample from "../../assets/3D_Image_File/annotation2_dimension.png";
+import editDraftingTool from "../../assets/3D_Image_File/annotation2_edits_drafting.png";
 
-interface InterferenceLessonProps {
+interface AnnotationLessonProps {
   nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
-const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const {
     scrollProgress,
     containerRef,
@@ -29,141 +23,90 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
     stop,
     isSpeaking,
     currentIndex
-  } = useLessonCore('interference');
+  } = useLessonCore('annotation');
 
-  const interferenceSteps = [
-    "Step 1: Select Interference Check from the icon menu.",
-    "Step 2: On the command menu, unselect High-speed detection for a thorough check.",
-    "Step 3: Select specific entities and click GO. A dialog will show the number of detected interferences. Alternatively, right-click the 3D space to check the entire drawing.",
-    "Step 4: Analyze countermeasures to fix the parts. Use Undo or Ctrl Z to remove the red CGS solid highlighting the interference.",
-    "Step 5 (List Tool): Select the list tool from the icon menu and click GO.",
-    "Step 6 (Display): The List Display window will appear, showing all interfering parts for your review."
+  const annotationSteps = [
+    "Step 1: Select the Drafting tab from the main menu to access 3D annotation tools.",
+    "Step 2: Choose specific annotation tools such as Dimension, Note, or Geometric Tolerance from the command groups.",
+    "Step 3: Apply 3D dimensions directly to the entity by selecting edges or points. These dimensions remain visible in the 3D workspace.",
+    "Step 4: Use the Edit Drafting Element tool to modify the text, size, or properties of existing annotations."
   ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
-
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
-          Interference check
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} />
-        </h3>
+        <h4 className="section-title">
+          3D Annotation & Drafting
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(annotationSteps)} onStop={stop} />
+        </h4>
         <p className="p-flush">
-          Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling.
+          Annotations in 3D modeling are used to provide dimensions, notes, and technical specifications directly on the 3D entity. This information is critical for manufacturing and assembly.
         </p>
-        <p className="step-label">These following tools are used to detect interferences on the 3D Modeling.</p>
-        <div className="instruction-box">
-          <div>
-            <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ width: '12rem' }} />
-          </div>
-        </div>
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card">
+        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
           <div className="card-header">
-            <h4>Interference Check Tool</h4>
+            <h4>DRAFTING TOOLS PROCEDURE</h4>
+            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(annotationSteps)} onStop={stop} />
           </div>
 
-          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
+              <span className="step-number">1 </span>
+              <span className="step-label">Select the <strong className="text-highlight">Drafting</strong> tab from the main menu.</span>
             </div>
             <div className="step-description">
-              <div>
-                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot screenshot-medium" style={{ height: '180px' }} />
+              <div className="screenshot-wrapper">
+                <img src={draftingMenu} alt="Drafting Menu" className="software-screenshot screenshot-small" style={{ height: '300px' }} />
               </div>
-            </div>
-          </div>
-
-          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
-            <div className="step-header">
-              <span className="step-number">2</span>
-              <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
-            </div>
-            <div className="step-description">
-              <div>
-                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot screenshot-wide" style={{ height: '280px' }} />
-              </div>
-            </div>
-          </div>
-
-          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
-            <div className="step-header">
-              <span className="step-number">3</span>
-              <span className="step-label">
-                Select specific entities to check interferences &gt; <strong className="text-highlight">GO</strong>
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-              </span>
-            </div>
-            <div className="step-description">
-              <p className="step-label">A dialog box will appear showing the number of detected interferences.</p>
-              <div>
-                <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot screenshot-wide" />
-              </div>
-              <div className="info-box">
-                <div className="step-header">
-                  <span className="step-label">
-                    <strong>OR</strong> Right-click on the 3D Space to check the entire drawing for interferences.
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
-            <div className="step-header">
-              <span className="step-number">4</span>
-              <span className="step-label">
-                Analyze possible countermeasures to remove the interference on the parts. To remove the red CGS solid, use Undo or Ctrl+Z
-              </span>
             </div>
           </div>
 
           <div className="section-divider"></div>
 
-          <div className="instruction-box">
-            <p className="step-label"><strong>Tool use to display the list of all detected interferences.</strong></p> <br />
-            <div>
-              <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot screenshot-small" style={{ height: '180px' }} />
+          <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+            <div className="step-header">
+              <span className="step-number">2 </span>
+              <span className="step-label">Choose specific tools like <strong className="text-highlight">Dimension</strong>, <strong className="text-highlight">Note</strong>, or <strong className="text-highlight">Geometric Tolerance</strong>.</span>
             </div>
           </div>
 
-          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`}>
-            <div className="step-header">
-              <span className="step-number">1</span>
-              <span className="step-label">
-                Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong>
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', verticalAlign: 'middle', margin: '0 4px' }} />
-              </span>
-            </div>
-          </div>
+          <div className="section-divider"></div>
 
-          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header">
-              <span className="step-number">2</span>
-              <span className="step-label">The List Display window will appear showing all interfering parts.</span>
+              <span className="step-number">3 </span>
+              <span className="step-label">Apply 3D dimensions directly to the model.</span>
             </div>
             <div className="step-description">
-              <div>
-                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot screenshot-wide" />
+              <div className="screenshot-wrapper">
+                <img src={dimensionExample} alt="3D Dimension Example" className="software-screenshot screenshot-medium" style={{ height: '400px' }} />
+              </div>
+            </div>
+          </div>
+
+          <div className="section-divider"></div>
+
+          <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+            <div className="step-header">
+              <span className="step-number">4 </span>
+              <span className="step-label">Use <strong className="text-highlight">Edit Drafting Element</strong> to modify existing annotations.</span>
+            </div>
+            <div className="step-description">
+              <div className="screenshot-wrapper">
+                <img src={editDraftingTool} alt="Edit Drafting Tool" className="software-screenshot screenshot-small" />
               </div>
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
@@ -171,4 +114,4 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
   );
 };
 
-export default InterferenceLesson;
+export default AnnotationLesson;

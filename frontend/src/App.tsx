@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, Settings, User as UserIcon } from 'lucide-react';
+import { LogOut, Settings, User as UserIcon, RefreshCw } from 'lucide-react';
 
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -37,13 +37,20 @@ function App() {
   useEffect(() => {
     if (isAuthenticated && user && location.pathname === '/') {
       const role = user.role.toLowerCase().trim();
-      if (role === 'admin') {
-        navigate('/admin');
-      } else if (role === 'employee') {
-        navigate('/assistant');
-      } else {
-        navigate('/mentor');
+      const savedCourseId = localStorage.getItem('kmti_selectedCourseId');
+      
+      // If we have a saved course, don't auto-redirect to the root of the role
+      if (savedCourseId && location.pathname === '/') {
+         navigate('/mentor');
+         return;
       }
+       if (role === 'admin') {
+         navigate('/admin');
+       } else if (role === 'employee') {
+         navigate('/assistant');
+       } else {
+         navigate('/mentor');
+       }
     }
   }, [isAuthenticated, user, location.pathname, navigate]);
 
@@ -135,6 +142,19 @@ function App() {
                   title="Logout"
                 >
                   <LogOut size={20} className="theme-toggle-icon" />
+                </button>
+
+                <div className="header-divider" />
+                
+                <button
+                  onClick={() => {
+                    // Force a hard reload to bust any JS/CSS caching
+                    window.location.reload();
+                  }}
+                  className="theme-toggle-btn"
+                  title="Refresh Page Content"
+                >
+                  <RefreshCw size={18} className="theme-toggle-icon" />
                 </button>
 
                 <div className="header-divider" />

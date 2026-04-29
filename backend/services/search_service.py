@@ -1,10 +1,9 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # Load environment variables from the project root
-_env_path = Path(__file__).resolve().parents[2] / ".env"
-load_dotenv(dotenv_path=_env_path)
+load_dotenv(find_dotenv())
 
 import hashlib
 import json
@@ -25,14 +24,15 @@ class SearchService:
         self.engine = engine
         # No persistent db session — use per-request context managers instead
 
-    def search_knowledge_base(self, query: str) -> SearchResponse:
+    def search_knowledge_base(self, query: str, lesson_id: str = None) -> SearchResponse:
         """
         Search knowledge base and attach multimedia assets.
         This implements the Multimedia RAG concept.
         Each call opens and closes its own DB session to prevent connection leaks.
         """
         # Get text results from RAG engine
-        raw_results = self.engine.search(query)
+        search_query = f"{lesson_id.replace('-', ' ')} {query}" if lesson_id else query
+        raw_results = self.engine.search(search_query)
 
         source_ids = [r['id'] for r in raw_results]
 
@@ -139,7 +139,8 @@ class ChatService:
             print(f"[Cache] Write error: {e}")
 
     async def chat(self, message: str, history: List[ChatMessage] = None, session_id: str = None, 
-                   images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False) -> dict:
+                   images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False,
+                   current_lesson_id: str = None) -> dict:
         """RAG-grounded chat using AIService."""
         # Step 1: Cache check
         query_hash = self._make_cache_key(message, language, images)
@@ -149,7 +150,8 @@ class ChatService:
                 return cached
 
         # Step 2: Retrieve context
-        search_response = self.search.search_knowledge_base(message)
+        # Bias search with lesson context if available
+        search_response = self.search.search_knowledge_base(message, current_lesson_id)
         sources = search_response.results
 
         if not sources:
@@ -161,19 +163,20 @@ class ChatService:
             }
 
         # Step 3: Build Prompt
-        system_prompt, user_prompt, context_text = self._build_prompts(message, history, sources, language, is_regeneration)
+        system_prompt, user_prompt, context_text = self._build_prompts(message, history, sources, language, is_regeneration, current_lesson_id)
 
         # Step 4: Call AIService
         answer = ai_service.generate_content(system_prompt, user_prompt, images)
         if answer is None:
             answer = self._fallback_summary(message, sources)
+            suggestions = self._fallback_suggestions(sources)
+        else:
+            suggestions = self._generate_suggestions(message, answer, context_text)
 
         serialized_sources = [s.model_dump() for s in sources[:5]]
 
         if not history and not is_regeneration and answer:
             self._set_cache(query_hash, message, answer, serialized_sources)
-
-        suggestions = self._generate_suggestions(message, answer, context_text) if answer else []
 
         return {
             "answer": answer,
@@ -183,9 +186,10 @@ class ChatService:
         }
 
     async def chat_stream(self, message: str, history: List[ChatMessage] = None, 
-                           images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False):
+                           images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False,
+                           current_lesson_id: str = None):
         """Streaming version of chat using AIService."""
-        search_response = self.search.search_knowledge_base(message)
+        search_response = self.search.search_knowledge_base(message, current_lesson_id)
         sources = search_response.results
         serialized_sources = [s.model_dump() for s in sources[:5]]
 
@@ -194,14 +198,28 @@ class ChatService:
             yield {"type": "end", "sources": [], "suggestions": []}
             return
 
-        system_prompt, user_prompt, context_text = self._build_prompts(message, history, sources, language, is_regeneration)
+        system_prompt, user_prompt, context_text = self._build_prompts(message, history, sources, language, is_regeneration, current_lesson_id)
 
         full_answer = ""
-        async for chunk in ai_service.generate_content_stream(system_prompt, user_prompt, images):
-            full_answer += chunk
-            yield {"type": "content", "delta": chunk}
+        try:
+            async for chunk in ai_service.generate_content_stream(system_prompt, user_prompt, images):
+                if chunk == "(Gemini API Key missing or invalid)":
+                    # If we get the 'missing key' message, trigger fallback
+                    full_answer = self._fallback_summary(message, sources)
+                    yield {"type": "content", "delta": full_answer}
+                    break
+                full_answer += chunk
+                yield {"type": "content", "delta": chunk}
+        except Exception as e:
+            print(f"[Chat] Stream error: {e}")
+            if not full_answer:
+                full_answer = self._fallback_summary(message, sources)
+                yield {"type": "content", "delta": full_answer}
 
-        suggestions = self._generate_suggestions(message, full_answer, context_text) if full_answer else []
+        if full_answer and "Gemini API is currently disabled" not in full_answer and "unavailable" not in full_answer.lower():
+            suggestions = self._generate_suggestions(message, full_answer, context_text)
+        else:
+            suggestions = self._fallback_suggestions(sources)
         yield {
             "type": "end", 
             "full_answer": full_answer,
@@ -209,7 +227,8 @@ class ChatService:
             "suggestions": suggestions
         }
 
-    def _build_prompts(self, message: str, history: List[ChatMessage], sources: list, language: str, is_regeneration: bool):
+    def _build_prompts(self, message: str, history: List[ChatMessage], sources: list, language: str, 
+                       is_regeneration: bool, current_lesson_id: str = None):
         """Helper to construct system and user prompts uniformly."""
         pruned_history = self._prune_history(history or [])
         context_text = "\n\n".join([f"[{idx+1}] Source: {s.source}\nContent: {s.content}" for idx, s in enumerate(sources[:5])])
@@ -226,14 +245,17 @@ class ChatService:
 
         reg_text = "\n\nCRITICAL: This is a REGENERATION request. Provide a DIFFERENT approach/explanation." if is_regeneration else ""
 
+        lesson_context = f"\n\nCONTEXT: The trainee is currently studying the lesson: '{current_lesson_id.replace('-', ' ').title()}'. Prioritize information relevant to this topic if the user asks ambiguous questions like 'how do I do this?'." if current_lesson_id else ""
+        
         system_prompt = (
-            "You are the iCAD Technical Instructor. Answer comprehensively using the provided context as your foundation.\n\n"
+            "You are the iCAD Technical Instructor. Answer comprehensively using the provided context as your foundation.\n"
+            "Your tone is professional, expert, and encouraging. You are a mentor, not just a search engine.\n\n"
             "STRICT GUIDELINES:\n"
-            "1. GROUNDED & HELPFUL: Use the provided context to explain concepts. If a direct answer isn't present, synthesize a helpful explanation based on related info in the context. Only state you don't know if the context is entirely irrelevant.\n"
+            "1. GROUNDED & HELPFUL: Use the provided context to explain concepts. If a direct answer isn't present, synthesize a helpful explanation based on related info in the context. Be proactive—if you see a 'Note' or 'Warning' in the documentation, mention it.\n"
             "2. CITATIONS: Use [1], [2], etc. immediately after sentences that use info from a source. Match the indices from the context.\n"
-            "3. STRUCTURE: Use Markdown. Bold key terms for clarity.\n"
-            "4. ENGAGEMENT: End your response by asking if the explanation was helpful or if the user needs further clarification.\n"
-            f"5. LANGUAGE: Respond in {target_lang}."
+            "3. STRUCTURE: Use Markdown. Use bullet points for steps. Bold key technical terms (e.g., **Constraints**, **Keyway**, **BOM**).\n"
+            "4. ENGAGEMENT: End your response with a follow-up question that encourages the trainee to apply what they've learned.\n"
+            f"5. LANGUAGE: Respond in {target_lang}.{lesson_context}"
             f"{reg_text}"
         )
 
@@ -268,11 +290,142 @@ class ChatService:
         return None
 
     def _fallback_summary(self, query: str, sources) -> str:
-        top = sources[0]
-        return (
-            f"{top.content}\n\n"
-            "⚠️ Note: AI analysis is currently unavailable. Displaying raw data from the manual above."
-        )
+        """Provide a structured, casual summary using 'THE AUTHENTIC COLLABORATOR' persona."""
+        if not sources:
+            return (
+                "### I'D LOVE TO DIG INTO THAT...\n\n"
+                "But honestly? It's not in my current records. 😅 \n\n"
+                "> **Note:** Since my Gemini connection is a bit shaky right now, I'm relying purely on what's indexed.\n\n"
+                "---\n\n"
+                "**Next Step:** Try checking the standard operating procedures or rephrasing your query to be more general!"
+            )
+            
+        # --- Small Talk / Self-Awareness Layer ---
+        small_talk_patterns = {
+            "name": "I'm the **iCAD Technical Instructor's assistant!** 🎓 My main AI brain is taking a quick rest (Gemini API is unavailable), but I've got the manual right here in front of me.",
+            "how are you": "I'm doing great! Just keeping an eye on the technical documentation while the main AI system is resting.",
+            "who are you": "I'm the **iCAD Technical Instructor!** At least, the offline version of him. I'm here to help you find what you need in our knowledge base.",
+            "hello": "Hello! 👋 Glad to see you here. How can I help you with your iCAD training today?",
+            "hi": "Hi there! 👋 How can I assist you with your project while the main AI is offline?",
+            "help": "I'm here to help! My high-level AI brain is currently offline, but I can still search through all the technical tips and routines in our system.",
+            "thanks": "You're very welcome! Happy to help you with the technical details. Let me know if you need anything else! 😊",
+            "thank you": "No problem at all! It's my job to make sure you have the facts. Anything else on your mind?",
+            "bye": "Goodbye! 👋 Hope those technical insights were helpful. See you next time!",
+            "goodbye": "See you later! Don't hesitate to come back if you hit a technical snag in iCAD.",
+            "cool": "Glad you think so! I try to keep the technical knowledge as accessible as possible. 🚀",
+            "awesome": "Indeed! Technology is pretty amazing. What else can I look up for you?",
+            "wow": "I know, right? The technical depth of iCAD is quite impressive. 🎓"
+        }
+        
+        lower_query = query.lower().strip()
+        for key, response in small_talk_patterns.items():
+            if key in lower_query:
+                return f"### HEY THERE!\n\n{response}\n\n---\n\n**Try asking:** Anything about 2D Drawing, 3D Modeling, or BOM management!"
+
+        # Persona logic: Wit + Empathy-Candor + Instruction-style rephrasing
+        summary = "### ALRIGHT, I'VE DUG AROUND FOR YOU...\n\n"
+        summary += f"My standard AI personality is currently taking a coffee break (Gemini API is unavailable), but I've found some specific records for **'{query}'** that should keep you moving. 🚀\n\n"
+        
+        summary += "> **Instructor Note:** I'm pulling these details directly from the source. No AI fluff, just the facts you need to know.\n\n"
+        summary += "----\n\n"
+        
+        # Assertive instructor lead-ins
+        lead_ins = [
+            "For **{topic}**, remember that {info}",
+            "Keep in mind for **{topic}**: {info}",
+            "Pro Tip for **{topic}**: {info}",
+            "Heads up regarding **{topic}**: {info}"
+        ]
+        
+        # Filter sources by score threshold to avoid irrelevant noise
+        # RRF scores with k=60 start around 0.016. 
+        # A threshold of 0.015 ensures it was at least a top result in one search.
+        relevant_sources = [s for s in sources if getattr(s, 'score', 0) > 0.015]
+        
+        if not relevant_sources:
+            return (
+                "### I'D LOVE TO DIG INTO THAT...\n\n"
+                f"I've searched the logs for **'{query}'**, but I couldn't find a direct match in my current records. 😅 \n\n"
+                "> **Note:** Since my Gemini connection is a bit shaky right now, I'm being extra cautious not to give you unrelated advice.\n\n"
+                "---\n\n"
+                "**Next Step:** Try rephrasing your query with more specific technical terms, or check the help menus directly!"
+            )
+
+        last_topic = None
+        for i, source in enumerate(relevant_sources[:3]):
+            content = source.content if hasattr(source, 'content') else ""
+            meta = source.metadata or {}
+            
+            # --- Heuristic Data Analyzer ---
+            # Split pipe-separated string and clean parts
+            parts = [p.strip() for p in content.split('|') if p.strip()]
+            
+            # 1. Identify Main Topic
+            main_topic = meta.get('main_topic') or (parts[0] if parts else 'Technical Detail')
+            # Clean up topic (remove parenthetical numbers like (4) if repetitive)
+            clean_topic = main_topic.split('(')[0].strip()
+            
+            # 2. Identify Instructional Content
+            # We favor the 'instruction' metadata, or the longest part of the pipe-separated string
+            primary_info = meta.get('instruction') or ''
+            if len(primary_info) < 15 and parts:
+                primary_info = max(parts, key=lambda p: len(p.split()))
+            
+            # 3. Format as Casual Conversation with Topic Grouping
+            if primary_info and len(primary_info) > 15:
+                # Auto-format lists/notes if detected
+                if "Notes:" in primary_info:
+                    primary_info = primary_info.replace("Notes:", "\n**Notes:**\n")
+                
+                # Grouping Logic: Only show header if topic changed
+                if clean_topic != last_topic:
+                    if last_topic is not None:
+                        summary += "---\n\n" # Separator between DIFFERENT topics
+                    summary += f"## {clean_topic}\n\n"
+                
+                # Use assertive instructor lead-in
+                lead_in = lead_ins[i % len(lead_ins)].format(topic=clean_topic, info=primary_info)
+                summary += f"{lead_in}\n\n"
+                last_topic = clean_topic
+            else:
+                if clean_topic != last_topic:
+                    if last_topic is not None:
+                        summary += "---\n\n"
+                    summary += f"## {clean_topic}\n\n"
+                summary += f"{content}\n\n"
+                last_topic = clean_topic
+                
+        summary += "---\n\n"
+        summary += "### NEXT STEP\n"
+        summary += "Scan those points to see if they address your needs. If not, try checking back in a few minutes when I'm 'fully conscious' again!"
+        
+        return summary
+
+    def _fallback_suggestions(self, sources) -> List[str]:
+        """Generate static suggestions from source metadata when Gemini is offline."""
+        if not sources:
+            return ["Tell me about 2D Drawing", "How do I start a 3D Part?", "What is BOM management?"]
+        
+        suggestions = []
+        topics = set()
+        for s in sources[:5]:
+            meta = s.metadata or {}
+            topic = meta.get('main_topic') or meta.get('lesson_id')
+            if topic and topic not in topics:
+                clean_topic = str(topic).split('(')[0].strip().replace('-', ' ').title()
+                if len(clean_topic) > 3:
+                    suggestions.append(f"Tell me more about {clean_topic}")
+                    topics.add(topic)
+            if len(suggestions) >= 3:
+                break
+        
+        # Fillers if we don't have enough
+        fillers = ["Show me technical tips", "How do I use this Hub?", "Tell me about quizzes"]
+        for f in fillers:
+            if len(suggestions) < 3:
+                suggestions.append(f)
+        
+        return suggestions[:3]
 
 
 chat_service = ChatService(search_service)

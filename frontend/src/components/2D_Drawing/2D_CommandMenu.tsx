@@ -142,7 +142,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
                       <div className="info-box" style={{
                         position: "absolute",
-                        top: "285px",
+                        top: "22rem",
                         right: "1px",
                         width: "510px",
                         margin: 0,

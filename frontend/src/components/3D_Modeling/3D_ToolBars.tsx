@@ -1,5 +1,3 @@
-/** * 3D_ToolBars.tsx — Tool Bars lesson */
-
 import React from "react";
 import { ChevronLeft, ChevronRight, Save, Monitor, Layers, ZoomIn, Box, Compass, Edit2, Sun, Scissors, Layout, Info, Cpu, MousePointer2 } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -28,7 +26,7 @@ const ICAD_TOOLBARS = [
   { id: "switch-display", title: "Switch Display", description: "Contains Change Projection Method, Switch Dimensions", features: ["Projection Method", "Switch Dimensions"], imageSrc: tbSwitchDisplay, icon: <Layers size={18} /> },
   { id: "screen-ops", title: "Screen Operations", description: "Contains Set Zoom Area, Zoom In/Out, Zoom to Fit, Re-Display, Previous Zoom", features: ["Zoom Area", "Zoom In/Out", "Zoom to Fit", "Re-Display"], imageSrc: tbScreenOps, icon: <ZoomIn size={18} /> },
   { id: "3d-view", title: "3D View", description: "Contains Top, Front, Right, Left, Back, Bottom, Set a Plane, Set using 3-Points", features: ["Top/Front/Right", "Isometric", "Set Plane", "3-Points"], imageSrc: tb3dView, icon: <Box size={18} /> },
-  { id: "user-views", title: "User Views", description: "Contains User View 1,2,3,4 (ISOMETRIC VIEW)", features: ["User View 1", "User View 2", "User View 3", "User View 4"], imageSrc: tbUserViews, icon: <Compass size={18} /> },
+  { id: "user-views", title: "User Views", description: "Contains User View 1, 2, 3, 4 (ISOMETRIC VIEWS)", features: ["User View 1", "User View 2", "User View 3", "User View 4"], imageSrc: tbUserViews, icon: <Compass size={18} /> },
   { id: "edit", title: "Edit", description: "Contains Undo, Redo", features: ["Undo", "Redo"], imageSrc: tbEdit, icon: <Edit2 size={18} /> },
   { id: "shading", title: "Shading", description: "Contains Shading, Shading with Frame, Hidden Lines Removed, Wireframe", features: ["Shading", "Shading w/ Frame", "Hidden Lines", "Wireframe"], imageSrc: tbShading, icon: <Sun size={18} /> },
   { id: "section", title: "Section Display", description: "Contains Open Work Plane, Switch to Section Display", features: ["Open Work Plane", "Switch Section Display"], imageSrc: tbSectionDisplay, icon: <Scissors size={18} /> },
@@ -50,41 +48,44 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
     containerRef,
     speak,
     stop,
-    isSpeaking
+    isSpeaking,
+    currentIndex,
+    currentCharIndex
   } = useLessonCore('toolbars');
 
   const toolbarNarration = [
-    "iCAD Toolbars: Explore the various toolbars available in iCAD. Each toolbar provides quick access to specific functional groups.",
-    "Functional Areas: From File management and 2D/3D View controls to Shading, System Information, and Entry Control, these toolbars form the core of your modeling workflow.",
-    "Navigation: Use the explorer below to click through each toolbar category and see its specific features and tools."
+    "iCAD Toolbars: The software features a comprehensive set of toolbars optimized for both 2D and 3D operations. Each toolbar is designed to provide quick access to essential modeling commands.",
+    "Interactive Explorer: Use the interactive toolbar explorer below to see detailed information about each icon group, including File management, View controls, Shading options, and System settings.",
+    ...ICAD_TOOLBARS.map(t => `${t.title}: ${t.description}`)
   ];
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking && currentIndex < 2 ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          <span>iCAD Toolbars</span>
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration)} onStop={stop} />
-        </h3>
-        <p className="section-description">
-          Explore the various toolbars available in iCAD. Each toolbar provides quick access to specific sets of functions and tools.
-        </p>
-      </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card">
-          <ToolbarExplorer toolbars={ICAD_TOOLBARS} />
+        <div
+          className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`}
+          data-reading-index="0"
+        >
+          <div className="card-header">
+            <h3>Toolbar Explorer</h3>
+            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration, 0)} onStop={stop} />
+          </div>
+          <p className="p-flush mb-8">Click through the categories below to explore the function of each toolbar icon group.</p>
+
+          <ToolbarExplorer
+            toolbars={ICAD_TOOLBARS}
+            externalIndex={currentIndex - 2}
+            externalCharIndex={currentCharIndex}
+          />
+
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous Lesson
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

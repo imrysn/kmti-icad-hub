@@ -6,6 +6,7 @@ interface MessageListProps {
     chatHistory: ChatEntry[];
     activeSessionId: string | null;
     currentlyReadingIdx: number | null;
+    currentCharIndex: number;
     copiedIdx: number | null;
     regeneratingIdx: number | null;
     isThinking: boolean;
@@ -26,6 +27,7 @@ export const MessageList: React.FC<MessageListProps> = ({
     chatHistory,
     activeSessionId,
     currentlyReadingIdx,
+    currentCharIndex,
     copiedIdx,
     regeneratingIdx,
     isThinking,
@@ -57,7 +59,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             )}
 
             {chatHistory.map((msg, idx) => (
-                <MessageBubble key={idx} msg={msg} idx={idx} sessionId={activeSessionId} currentlyReadingIdx={currentlyReadingIdx} copiedIdx={copiedIdx} regeneratingIdx={regeneratingIdx} onSpeak={onSpeak} onCopy={onCopy} onFeedback={onFeedback} onOpenLightbox={onOpenLightbox} onRetry={onRetry} onRegenerate={onRegenerate} onBranch={onBranch} onSuggestionClick={onSuggestionClick} />
+                <MessageBubble key={idx} msg={msg} idx={idx} sessionId={activeSessionId} currentlyReadingIdx={currentlyReadingIdx} currentCharIndex={currentCharIndex} copiedIdx={copiedIdx} regeneratingIdx={regeneratingIdx} onSpeak={onSpeak} onCopy={onCopy} onFeedback={onFeedback} onOpenLightbox={onOpenLightbox} onRetry={onRetry} onRegenerate={onRegenerate} onBranch={onBranch} onSuggestionClick={onSuggestionClick} />
             ))}
 
             {/* Generic thinking dots only if no assistant bubble is already in history */}

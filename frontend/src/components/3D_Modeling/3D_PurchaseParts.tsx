@@ -23,7 +23,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     containerRef,
     speak,
     stop,
-    isSpeaking
+    isSpeaking,
+    currentIndex
   } = useLessonCore(subLessonId);
 
   const purchaseSteps = [
@@ -34,38 +35,40 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
   const isPart1 = subLessonId === "purchase-parts-1";
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
+        <h4 className="section-title">
           {isPart1
             ? "Purchase part 3d modeling"
             : "Sample flow chart for uploading purchase parts on the server"}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(purchaseSteps)} onStop={stop} />
-        </h3>
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? [purchaseSteps[0]] : [purchaseSteps[1]])} onStop={stop} />
+        </h4>
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card">
-          <div className="tab-pane fade-in">
-            <div>
+        <div className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+          <div className="fade-in">
+            <div className="card-header">
+              <h4>{isPart1 ? "WORKFLOW OVERVIEW" : "SERVER UPLOAD PROTOCOL"}</h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? [purchaseSteps[0]] : [purchaseSteps[1]])} onStop={stop} />
+            </div>
+
+            <div className="screenshot-wrapper">
               <img
                 src={isPart1 ? purchasePartsFlowchart : uploadingFlowchart}
                 alt={isPart1 ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
-                className="software-screenshot screenshot-wide" style={{ width: "600px", height: "auto", marginLeft: "auto", marginRight: "auto" }} />
+                className="software-screenshot screenshot-wide"
+              />
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

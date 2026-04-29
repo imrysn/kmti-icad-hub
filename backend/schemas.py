@@ -15,19 +15,25 @@ class SearchResult(BaseModel):
     content: str
     source: str
     score: Optional[float] = None
+    metadata: Optional[dict] = None
     media: Optional[List[MediaAsset]] = None  # Linked multimedia assets
 
 class SearchResponse(BaseModel):
     query: str
     results: List[SearchResult]
 
-class Course(BaseModel):
-    id: str
+class CourseResponse(BaseModel):
+    id: int
     title: str
-    description: str
+    description: Optional[str] = None
+    course_type: str
+    order: int
+
+    class Config:
+        from_attributes = True
 
 class CourseList(BaseModel):
-    courses: List[Course]
+    courses: List[CourseResponse]
 
 class CourseProgress(BaseModel):
     course_id: str
@@ -41,10 +47,16 @@ class LessonProgress(BaseModel):
     score: Optional[float] = None
     completed_at: Optional[datetime] = None
 
+class QuestionAttemptCreate(BaseModel):
+    question_id: int
+    chosen_option: int
+    is_correct: bool
+
 class QuizSubmission(BaseModel):
     course_id: str
     lesson_id: str
     score: float  # Percentage 0-100
+    answers: Optional[List[QuestionAttemptCreate]] = []
 
 # Authentication Schemas
 
@@ -65,6 +77,7 @@ class ChatRequest(BaseModel):
     images: Optional[List[ImagePayload]] = [] # Support up to 3 images
     language: Optional[str] = "en-US"
     is_regeneration: Optional[bool] = False # PHASE 3: Flag to bypass cache and vary response
+    current_lesson_id: Optional[str] = None # Support contextual biasing for Mentor Mode
     
     # PHASE 1 FIX #5: Backend validation for image upload limit
     @field_validator("images")
@@ -174,3 +187,105 @@ class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+# Curriculum / Assessment Schemas
+
+class QuestionBase(BaseModel):
+    text: str
+    options_json: str  # JSON list of strings
+    correct_answer: int
+    explanation: Optional[str] = None
+    order: int = 0
+
+class QuestionCreate(QuestionBase):
+    pass
+
+class QuestionUpdate(BaseModel):
+    text: Optional[str] = None
+    options_json: Optional[str] = None
+    correct_answer: Optional[int] = None
+    explanation: Optional[str] = None
+    order: Optional[int] = None
+
+class QuestionResponse(QuestionBase):
+    id: int
+    quiz_id: int
+
+    class Config:
+        from_attributes = True
+
+class QuizBase(BaseModel):
+    slug: str
+    title: str
+    description: Optional[str] = None
+    course_type: str
+
+class QuizCreate(QuizBase):
+    pass
+
+class QuizUpdate(BaseModel):
+    slug: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    course_type: Optional[str] = None
+
+class QuizResponse(QuizBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+    questions: Optional[List[QuestionResponse]] = []
+
+
+# --- Curriculum Management ---
+
+class CourseCreate(BaseModel):
+    title: str
+    description: Optional[str] = None
+    course_type: str
+    order: int = 0
+
+class LessonBase(BaseModel):
+    course_id: int
+    parent_id: Optional[int] = None
+    title: str
+    slug: str
+    order: int = 0
+    is_published: bool = True
+
+class LessonCreate(LessonBase):
+    pass
+
+class LessonResponse(LessonBase):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+class LessonContentBase(BaseModel):
+    lesson_id: int
+    content_type: str # "text", "image", "video", "bullet_list"
+    data: str
+    order: int = 0
+
+class LessonContentCreate(LessonContentBase):
+    pass
+
+class LessonContentResponse(LessonContentBase):
+    id: int
+    class Config:
+        from_attributes = True
+
+# --- Analytics ---
+
+class QuestionAttemptResponse(BaseModel):
+    id: int
+    user_id: int
+    quiz_id: int
+    question_id: int
+    chosen_option: int
+    is_correct: bool
+    attempted_at: datetime
+
+    class Config:
+        from_attributes = True

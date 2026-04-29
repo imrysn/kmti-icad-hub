@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Brain, GraduationCap } from 'lucide-react'; import { IntelligenceChatbot } from '../admin/components/IntelligenceChatbot';
 import MentorMode from '../mentor/MentorMode';
 
@@ -10,7 +10,13 @@ import '../../styles/AssistantMode.css';
  * - Training Review: Refresher training from Mentor Mode
  */
 const AssistantMode: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<'assistant' | 'training'>('assistant');
+    const [activeTab, setActiveTab] = useState<'assistant' | 'training'>(() => {
+        return (localStorage.getItem('assistant-active-tab') as any) || 'assistant';
+    });
+
+    useEffect(() => {
+        localStorage.setItem('assistant-active-tab', activeTab);
+    }, [activeTab]);
 
     return (
         <div className="assistant-mode-container">

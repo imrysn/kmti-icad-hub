@@ -147,3 +147,78 @@ class SavedSnippet(Base):
     created_at = Column(DateTime, default=func.now(), index=True)
 
 
+class Quiz(Base):
+    """Definition of a quiz associated with a lesson/course"""
+    __tablename__ = "quizzes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    slug = Column(String(100), unique=True, index=True)  # Links to curriculum lesson ID
+    title = Column(String(200), nullable=False)
+    description = Column(String(500))
+    course_type = Column(String(50))  # e.g., "2D_Drawing", "3D_Modeling"
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+
+class Question(Base):
+    """Individual quiz question"""
+    __tablename__ = "questions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    quiz_id = Column(Integer, ForeignKey("quizzes.id", ondelete="CASCADE"), nullable=False)
+    text = Column(String(1000), nullable=False)
+    options_json = Column(String(2000), nullable=False)  # JSON-encoded list of strings
+    correct_answer = Column(Integer, nullable=False)     # Index (0-based)
+    explanation = Column(String(1000))
+    order = Column(Integer, default=0)                   # For manual sorting
+
+
+class Course(Base):
+    """Top-level curriculum categories (2D, 3D, etc.)"""
+    __tablename__ = "courses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False)
+    description = Column(String(500))
+    course_type = Column(String(50), unique=True) # e.g., "2D_Drawing", "3D_Modeling"
+    order = Column(Integer, default=0)
+
+
+class Lesson(Base):
+    """Hierarchical curriculum lessons"""
+    __tablename__ = "lessons"
+
+    id = Column(Integer, primary_key=True, index=True)
+    course_id = Column(Integer, ForeignKey("courses.id", ondelete="CASCADE"), nullable=False)
+    parent_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=True)
+    title = Column(String(200), nullable=False)
+    slug = Column(String(100), unique=True, index=True) # The ID used in the app routing
+    order = Column(Integer, default=0)
+    is_published = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=func.now())
+
+
+class LessonContent(Base):
+    """Modular content blocks within a lesson"""
+    __tablename__ = "lesson_contents"
+
+    id = Column(Integer, primary_key=True, index=True)
+    lesson_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=False)
+    content_type = Column(String(50)) # "text", "image", "video", "bullet_list"
+    data = Column(String(10000)) # Using large String for content
+    order = Column(Integer, default=0)
+
+
+class QuestionAttempt(Base):
+    """Detailed logs of quiz attempts for learning analytics"""
+    __tablename__ = "question_attempts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    quiz_id = Column(Integer, ForeignKey("quizzes.id"), nullable=False)
+    question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
+    chosen_option = Column(Integer) # Index selected by user
+    is_correct = Column(Boolean)
+    attempted_at = Column(DateTime, default=func.now())
+
+

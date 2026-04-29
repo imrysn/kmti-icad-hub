@@ -6,7 +6,7 @@ import { useTTS } from "../../hooks/useTTS";
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Surface Coating */
 
-import surfaceCoatingTableImg from "../../assets/2D_Image_File/2D_surface_coating.jpg";
+
 
 import specialNotesImg from "../../assets/2D_Image_File/2D_surface_coating_special_notes.png";
 
@@ -88,8 +88,84 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             {" "}
             {/* Surface Coating Table Section */}
             <div className="lesson-section">
-              <div>
-                <img src={surfaceCoatingTableImg} alt="Surface Coating Specification Table" className="software-screenshot screenshot-wide" />
+              <div className="lesson-table-container">
+                <table className="lesson-table">
+                  <thead>
+                    <tr>
+                      <th>Kind of Process</th>
+                      <th>Indication of Drawing</th>
+                      <th>Applicable Material</th>
+                      <th>Purpose</th>
+                      <th>Characteristics</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Hard Chromate */}
+                    <tr>
+                      <td rowSpan={2}>Hard Chromate</td>
+                      <td>硬質クロームメッキ施工</td>
+                      <td rowSpan={2}>S45C, STKM16A, SNCM447, etc.</td>
+                      <td rowSpan={2}>Roller Shaft, Shaft, Shoe, etc.</td>
+                      <td rowSpan={2}>
+                        <strong>ADVANTAGE:</strong><br/>
+                        • Good for Anti-corrosion.<br/>
+                        • Good for Anti-Friction.<br/>
+                        • Good for Decoration.<br/>
+                        • Less friction coefficient.<br/>
+                        • Hard chromate can coat specific area.<br/><br/>
+                        <strong>RECOMMEND:</strong><br/>
+                        • After hard chromate, thermal refining, polishing and buffing must done. (Give specific dimension before and after the process.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>plating thickness (one side over 0.03mm.)</td>
+                    </tr>
+
+                    {/* Chrome Plating */}
+                    <tr>
+                      <td>Chrome Plating</td>
+                      <td>クロームメッキ施工</td>
+                      <td>All material, Brass material, etc.</td>
+                      <td>Handle, Any tools, etc.</td>
+                      <td>
+                        <strong>ADVANTAGE:</strong><br/>
+                        • Good for Anti-corrosion.<br/>
+                        • Good for decoration.
+                      </td>
+                    </tr>
+
+                    {/* Nickel Plating */}
+                    <tr>
+                      <td>Nickel Plating</td>
+                      <td>ニッケルメッキ施工</td>
+                      <td>All material, Brass material, etc.</td>
+                      <td>Lever, Bearing cover, Name plate, Reader ring, etc.</td>
+                      <td>
+                        <strong>ADVANTAGE:</strong><br/>
+                        • Good for Anti-corrosion.<br/>
+                        • Good for decoration.<br/>
+                        • Low-cost process<br/><br/>
+                        <strong>RECOMMEND:</strong><br/>
+                        • Apply before chromate process.<br/>
+                        • After the Nickel chromate process no ned to check its thickness.<br/>
+                        • Fitting gap for reade ring must be 0.1~0.2mm.
+                      </td>
+                    </tr>
+
+                    {/* Colored Plating */}
+                    <tr>
+                      <td>Colored Plating (Dipping)</td>
+                      <td>有色クロメイト施工</td>
+                      <td>All material, Brass matrial, etc.</td>
+                      <td>Electrical Bracket, Any tools, etc.</td>
+                      <td>
+                        <strong>ADVANTAGE:</strong><br/>
+                        • Good for Anti-corrosion.<br/>
+                        • Low-cost process.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
             <div className="section-divider"></div>{" "}

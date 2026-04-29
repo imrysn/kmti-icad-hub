@@ -6,7 +6,7 @@ import { useTTS } from "../../hooks/useTTS";
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Weight Computation */
 
-import gravityTableImg from "../../assets/2D_Image_File/2D_material_weight_computation.jpg";
+
 
 import plateExImg from "../../assets/2D_Image_File/2D_material_weight_computation_plate.jpg";
 
@@ -98,13 +98,38 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               <span className="step-label">Material Weight Computation</span>
             </div>
             <div className="lesson-section">
-              <div>
-                <img src={gravityTableImg} alt="Material Specific Gravity Reference Table" className="software-screenshot screenshot-wide" />
+              <div className="lesson-table-container">
+                <table className="lesson-table">
+                  <thead>
+                    <tr>
+                      <th rowSpan={2}>MATERIAL</th>
+                      <th colSpan={2}>SPECIFIC GRAVITY</th>
+                    </tr>
+                    <tr>
+                      <th>g/cm<sup style={{ fontSize: "1rem" }}>3</sup></th>
+                      <th>kg/m<sup style={{ fontSize: "1rem" }}>3</sup></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>SS400</td><td>7.85</td><td>7850</td></tr>
+                    <tr><td>S45C</td><td>7.84</td><td>7840</td></tr>
+                    <tr><td>STKM</td><td>7.85</td><td>7850</td></tr>
+                    <tr><td>SPCC</td><td>7.85</td><td>7850</td></tr>
+                    <tr><td>SCM440</td><td>7.84</td><td>7840</td></tr>
+                    <tr><td>RUBBER</td><td>7.00</td><td>7000</td></tr>
+                    <tr><td>URATHANE RUBBER</td><td>1.20</td><td>1200</td></tr>
+                    <tr><td>NEW LIGHT</td><td>0.92</td><td>920</td></tr>
+                    <tr><td>MC NYLON</td><td>1.15</td><td>1150</td></tr>
+                    <tr><td>ACRYLIC</td><td>1.20</td><td>1200</td></tr>
+                    <tr><td>STKR400</td><td>7.85</td><td>7850</td></tr>
+                    <tr><td>SHAPE STEEL</td><td>7.85</td><td>7850</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>{" "}
             {/* a. Plate Section */}
             <div className="lesson-section">
-              <div className="step-header" style={{ marginBottom: "1rem" }}>
+              <div className="step-header" style={{ marginBottom: "1rem", marginTop: "2rem" }}>
                 <span className="step-number">a.</span>
                 <span className="step-label">Plate (L × W × H × SG)</span>
               </div>
@@ -119,7 +144,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                     {" "}
                     Dimension is always in millimeter.
                     <br /> Convert to meter upon computation.
-                    <br /> Use specific gravity with unit kg/m³ and follow the
+                    <br /> Use specific gravity with unit kg/m<sup>3</sup> and follow the
                     given formula.
                   </p>
                 </div>
@@ -143,7 +168,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                     Dimension is always in millimeter.
                     <br /> Radius or Diameter needs to convert in meter upon
                     computation.
-                    <br /> Use specific gravity with unit kg/m³ and follow the
+                    <br /> Use specific gravity with unit kg/m<sup>3</sup> and follow the
                     given formula.
                   </p>
                 </div>
@@ -178,13 +203,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                       1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
                     </div>
                     <div style={{ marginBottom: "0.8rem" }}>
-                      2. Cross sectional area needs to convert in m² first.
+                      2. Cross sectional area needs to convert in m<sup>2</sup> first.
                     </div>
                     <div style={{ marginBottom: "0.8rem" }}>
-                      3. To skip computation of cross sectional area from cm² to m², just move 4 decimal places to the left.
+                      3. To skip computation of cross sectional area from cm<sup>2</sup> to m<sup>2</sup>, just move 4 decimal places to the left.
                     </div>
                     <div style={{ marginBottom: "0.8rem" }}>
-                      4. Use specific gravity with unit kg/m³ and follow the given formula.
+                      4. Use specific gravity with unit kg/m<sup>3</sup> and follow the given formula.
                     </div>
                   </div>
                 </div>
@@ -208,13 +233,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                       1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
                     </div>
                     <div style={{ marginBottom: "0.8rem" }}>
-                      2. Cross sectional area needs to convert in m² first.
+                      2. Cross sectional area needs to convert in m<sup>2</sup> first.
                     </div>
                     <div style={{ marginBottom: "0.8rem" }}>
-                      3. To skip computation of cross sectional area from cm² to m², just move 4 decimal places to the left.
+                      3. To skip computation of cross sectional area from cm<sup>2</sup> to m<sup>2</sup>, just move 4 decimal places to the left.
                     </div>
                     <div style={{ marginBottom: "0.8rem" }}>
-                      4. Use specific gravity with unit kg/m³ and follow the given formula.
+                      4. Use specific gravity with unit kg/m<sup>3</sup> and follow the given formula.
                     </div>
                   </div>
                 </div>

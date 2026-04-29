@@ -30,6 +30,7 @@ interface MessageBubbleProps {
     idx: number;
     sessionId: string | null;
     currentlyReadingIdx: number | null;
+    currentCharIndex: number;
     copiedIdx: number | null;
     regeneratingIdx: number | null;
     onSpeak: (text: string, idx: number) => void;
@@ -47,6 +48,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
     idx, 
     sessionId, 
     currentlyReadingIdx, 
+    currentCharIndex,
     copiedIdx, 
     regeneratingIdx, 
     onSpeak, 
@@ -63,6 +65,32 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
 
     // Show a skeleton or just the avatar while waiting for first tokens
     const isEmptyAssistant = msg.role === 'assistant' && !msg.content && !isRegenerating && !msg.isError;
+
+    const isSpeaking = currentlyReadingIdx === idx;
+
+    // Word-by-word highlighter for Karaoke effect
+    const KaraokeText = ({ text, currentIndex }: { text: string; currentIndex: number }) => {
+        const words = text.split(/(\s+)/);
+        let charAcc = 0;
+        
+        return (
+            <span className="karaoke-text-wrapper">
+                {words.map((word, i) => {
+                    const start = charAcc;
+                    charAcc += word.length;
+                    // We check if the current character index falls within this word
+                    const isActive = currentIndex >= start && currentIndex < charAcc;
+                    const isPast = currentIndex >= charAcc;
+                    
+                    return (
+                        <span key={i} className={`karaoke-word ${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}>
+                            {word}
+                        </span>
+                    );
+                })}
+            </span>
+        );
+    };
 
     // Citations Parser: Convert [1], [2] to superscripts
     const renderContent = (content: any) => {
@@ -105,15 +133,25 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
 
                 {!isRegenerating && (
                     <>
-                        <ReactMarkdown 
-                            remarkPlugins={[remarkGfm]} 
-                            components={{ 
-                                // Use code component for citations or just post-process the text 
-                                p: ({ children }) => <p>{renderContent(children as any)}</p>
-                            }}
-                        >
-                            {msg.content}
-                        </ReactMarkdown>
+                        <div className={`message-body ${isSpeaking ? 'is-speaking' : ''}`}>
+                            {isSpeaking ? (
+                                <div className="karaoke-container">
+                                    <KaraokeText 
+                                        text={msg.content.replace(/\[\d+\]/g, '').replace(/\*\*/g, '').replace(/\*/g, '')} 
+                                        currentIndex={currentCharIndex} 
+                                    />
+                                </div>
+                            ) : (
+                                <ReactMarkdown 
+                                    remarkPlugins={[remarkGfm]} 
+                                    components={{ 
+                                        p: ({ children }) => <p>{renderContent(children as any)}</p>
+                                    }}
+                                >
+                                    {msg.content}
+                                </ReactMarkdown>
+                            )}
+                        </div>
                         {isEmptyAssistant && (
                             <div className="bubble-content thinking inline" aria-label="Assistant is typing">
                                 <span></span><span></span><span></span>

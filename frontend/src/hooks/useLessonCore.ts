@@ -9,7 +9,7 @@ export const useLessonCore = (subLessonId: string) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // TTS integration
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+  const { speak, stop, isSpeaking, currentIndex, currentCharIndex } = useTTS();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,12 +49,36 @@ export const useLessonCore = (subLessonId: string) => {
     };
   }, [subLessonId, stop]);
 
+  // Auto-scroll logic for TTS
+  useEffect(() => {
+    if (isSpeaking && currentIndex >= 0) {
+      const targetSection = document.querySelector(`[data-reading-index="${currentIndex}"]`);
+      if (targetSection) {
+        // Use a more refined scroll logic
+        const rect = targetSection.getBoundingClientRect();
+        const isVisible = (
+          rect.top >= 100 && 
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) - 100
+        );
+
+        // Only scroll if not already comfortably visible
+        if (!isVisible) {
+          targetSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+        }
+      }
+    }
+  }, [isSpeaking, currentIndex]);
+
   return {
     scrollProgress,
     containerRef,
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   };
 };

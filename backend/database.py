@@ -3,11 +3,10 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-# Load environment variables from the backend directory
-env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
-load_dotenv(dotenv_path=env_path)
+# Load environment variables from the project root
+load_dotenv(find_dotenv())
 # Determine database URL based on configuration
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"
 

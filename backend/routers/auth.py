@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User, SystemLog, QuizScore, UserProgress
+from ..models import User, SystemLog, QuizScore, UserProgress, QuestionAttempt, Quiz
 from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
@@ -297,7 +297,20 @@ def submit_quiz_score(
     
     db.commit()
     
-    # Optional: Update overall UserProgress percentage
-    # (Implementation omitted for now, could calculate based on total lessons)
+    # Save individual question attempts for analytics
+    if submission.answers:
+        # Find the quiz ID by slug (lesson_id in submission matches slug in Quiz)
+        quiz = db.query(Quiz).filter(Quiz.slug == submission.lesson_id).first()
+        if quiz:
+            for ans in submission.answers:
+                attempt = QuestionAttempt(
+                    user_id=current_user.id,
+                    quiz_id=quiz.id,
+                    question_id=ans.question_id,
+                    chosen_option=ans.chosen_option,
+                    is_correct=ans.is_correct
+                )
+                db.add(attempt)
+            db.commit()
     
     return {"message": "Score submitted successfully", "score": submission.score, "passed": submission.score >= 80.0}
