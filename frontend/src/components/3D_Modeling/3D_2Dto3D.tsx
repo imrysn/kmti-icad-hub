@@ -188,7 +188,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
       <section className="lesson-intro">
         <h3 className="section-title">Extrude, Revolve, Spiral</h3>
         <p className="p-flush">These are the tools use for extruding 2D sketches to 3D Solid Entities.</p>
-        <p className="p-flush" style={{ marginTop: "-2rem"}}> Most commonly used tools are the following: </p>
+        <p className="p-flush" style={{ marginTop: "-2rem" }}> Most commonly used tools are the following: </p>
         <div className="screenshot-wrapper">
           <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-small" style={{ height: '225px' }} />
         </div>
@@ -201,8 +201,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className="card-header">
               <h4>EXTRUDE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(extrudeSteps)} onStop={stop} />
-            </div>  
-            <p className="p-flush" style={{ marginTop: "-2rem"}}>Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.</p>
+            </div>
+            <p className="p-flush" style={{ marginTop: "-2rem" }}>Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.</p>
 
             <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <div className="step-header">
@@ -217,37 +217,37 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <div className="step-header" style={{ marginBottom: "-2rem"}}>
+              <div className="step-header" style={{ marginBottom: "-2rem" }}>
                 <span className="step-number">2 </span>
                 <span className="step-label">Pick the cross-section to be extruded. </span>
               </div>
               <div className="step-description">
-                <span className="p-flush" style={{ marginLeft: "3rem"}}>A hatch will appear to show that the sketch is an enclosed figure &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px'}} />
+                <span className="p-flush" style={{ marginLeft: "3rem" }}>A hatch will appear to show that the sketch is an enclosed figure &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
 
-                <div className="screenshot-wrapper" style={{ marginTop: "2rem"}}>
-                  <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot" style={{ width: '600px'}}/>
+                <div className="screenshot-wrapper" style={{ marginTop: "2rem" }}>
+                  <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot" style={{ width: '600px' }} />
                 </div>
-              </div>  
+              </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="step-header" style={{ marginTop: "-2rem"}}>
+              <div className="step-header" style={{ marginTop: "-2rem" }}>
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginBottom: "1.5rem"}}>Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO
+                <span className="step-label" style={{ marginBottom: "1.5rem" }}>Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
             </div>
 
- 
+
 
             <div className={`instruction-box instruction-box--warning ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <p className="p-flush" style={{ marginBottom: "1rem"}}>A dialog box will appear asking if after extrusion, the work plane will be deleted or not.</p>
-               <p className="p-flush" style={{ marginBottom: "1rem"}}>Select OK to delete the work plane.</p>
+              <p className="p-flush" style={{ marginBottom: "1rem" }}>A dialog box will appear asking if after extrusion, the work plane will be deleted or not.</p>
+              <p className="p-flush" style={{ marginBottom: "1rem" }}>Select OK to delete the work plane.</p>
               <p className="red-text" ><strong>Note: Deleting the work plane will delete all the sketch made on the plane. <br />Be careful, this process cannot be undone.</strong></p>
-              <p className="p-flush" style={{ marginTop: "1rem"}}>Select Cancel to keep the work plane together with all the 2D sketches. </p>
+              <p className="p-flush" style={{ marginTop: "1rem" }}>Select Cancel to keep the work plane together with all the 2D sketches. </p>
             </div>
 
 
@@ -255,7 +255,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                  <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot" style={{ width: '600px'}} />
+                  <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot" style={{ width: '600px' }} />
                 </div>
               </div>
             </div>
@@ -274,7 +274,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4>REVOLVE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(revolveStepsTTS)} onStop={stop} />
             </div>
-            <p className="p-flush" style={{ marginTop: "-2rem"}}>Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.</p>
+            <p className="p-flush" style={{ marginTop: "-2rem" }}>Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.</p>
 
             <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <div className="step-header">
@@ -291,17 +291,17 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Pick the cross-section to be revolved &gt; GO
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Pick the cross-section to be revolved &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
-               <span className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem"}}>A hatch will appear to show that the sketch is an enclosed figure</span>
+              <span className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>A hatch will appear to show that the sketch is an enclosed figure</span>
             </div>
 
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="step-header" style={{ marginTop: "-2rem"}} >
+              <div className="step-header" style={{ marginTop: "-2rem" }} >
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the <strong className="text-highlight">axis of rotation</strong> &gt; <strong className="text-highlight">GO</strong>
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the <strong className="text-highlight">axis of rotation</strong> &gt; <strong className="text-highlight">GO</strong>
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
@@ -310,7 +310,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className="instruction-step">
               <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
               <div className="screenshot-wrapper mt-8">
-                <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot" style={{ width: '950px', height: '350px', marginTop: "1rem"}} />
+                <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot" style={{ width: '950px', height: '350px', marginTop: "1rem" }} />
               </div>
             </div>
 
@@ -328,7 +328,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4>SPIRAL FORM</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(spiralSteps)} onStop={stop} />
             </div>
-             <p className="p-flush" style={{ marginTop: "-2rem"}}>Creates a 3D spiral form from a section form created on a 2D sketch.</p>
+            <p className="p-flush" style={{ marginTop: "-2rem" }}>Creates a 3D spiral form from a section form created on a 2D sketch.</p>
 
             <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <div className="step-header">
@@ -337,7 +337,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" style={{ height: 'auto', width: '900px', marginBottom: "-2rem"}} />
+                  <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
                 </div>
               </div>
             </div>
@@ -349,22 +349,22 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-2rem"}} />
-                </div> 
+                  <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-2rem" }} />
+                </div>
               </div>
               <span className="p-flush" style={{ marginBottom: "1.5rem" }}> Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO
-                 <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                </span>
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+              </span>
             </div>
 
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="step-header" style={{ marginTop: "-2rem"}}>
+              <div className="step-header" style={{ marginTop: "-2rem" }}>
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1rem"}}>Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO 
+                <span className="step-label" style={{ marginTop: "-1rem" }}>Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px' }} />
                 </span>
               </div>
-              <div className="instruction-box" style={{ marginTop: "2rem"}}>
+              <div className="instruction-box" style={{ marginTop: "2rem" }}>
                 <p className="p-flush"> <strong className="red-text">Note:</strong> Pitch must be greater than thickness.</p>
               </div>
 

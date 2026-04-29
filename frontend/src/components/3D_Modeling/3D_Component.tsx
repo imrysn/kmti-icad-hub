@@ -34,11 +34,11 @@ import mirrorCopyIcon from '../../assets/3D_Image_File/component2_mirror_copy.pn
 import mirrorCopyResult from '../../assets/3D_Image_File/component2_mirror_copy_2.png';
 import deleteIcon from '../../assets/3D_Image_File/component2_delete.png';
 
-interface ComponentLessonProps { 
-  subLessonId: string; 
-  onNextLesson?: () => void; 
-  onPrevLesson?: () => void; 
-  nextLabel?: string; 
+interface ComponentLessonProps {
+  subLessonId: string;
+  onNextLesson?: () => void;
+  onPrevLesson?: () => void;
+  nextLabel?: string;
 }
 
 const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
@@ -72,16 +72,16 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     { id: 'delete', label: 'Delete' }
   ];
 
-  const handleNext = () => { 
-    const i = tabs.findIndex(t => t.id === activeTab); 
-    if (i < tabs.length - 1) setActiveTab(tabs[i + 1].id as any); 
-    else if (onNextLesson) onNextLesson(); 
+  const handleNext = () => {
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i < tabs.length - 1) setActiveTab(tabs[i + 1].id as any);
+    else if (onNextLesson) onNextLesson();
   };
 
-  const handlePrev = () => { 
-    const i = tabs.findIndex(t => t.id === activeTab); 
-    if (i > 0) setActiveTab(tabs[i - 1].id as any); 
-    else if (onPrevLesson) onPrevLesson(); 
+  const handlePrev = () => {
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i > 0) setActiveTab(tabs[i - 1].id as any);
+    else if (onPrevLesson) onPrevLesson();
   };
 
   return (
@@ -91,9 +91,9 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
       </div>
       <div className="lesson-tabs" style={{ width: '900px', margin: '0 auto' }}>
         {tabs.map(tab => (
-          <button 
-            key={tab.id} 
-            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} 
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
             onClick={() => setActiveTab(tab.id as any)}
             style={{ flex: 1, textAlign: 'center', padding: '0.5rem 0.6rem' }}
           >
@@ -125,7 +125,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={moveIcon} alt="Move Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}} />
+                  <img src={moveIcon} alt="Move Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
@@ -134,7 +134,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
-               <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component to be move &gt; GO
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component to be move &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
@@ -147,16 +147,16 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={moveEntry} alt="Move Entry" className="software-screenshot" style={{ width: '900px'}} />
+                  <img src={moveEntry} alt="Move Entry" className="software-screenshot" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
 
-              <div className="instruction-step">
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                   <img src={moveResult} alt="Move Result" className="software-screenshot" style={{ width: '700px'}} />
+                  <img src={moveResult} alt="Move Result" className="software-screenshot" style={{ width: '700px' }} />
                 </div>
               </div>
             </div>
@@ -182,15 +182,15 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={copyIcon} alt="Copy Component Icon" className="software-screensho" style={{ width: '200px', marginBottom: '-3rem'}} />
+                  <img src={copyIcon} alt="Copy Component Icon" className="software-screensho" style={{ width: '200px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
 
-             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
-               <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component to be copy &gt; GO
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component to be copy &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
@@ -203,16 +203,16 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={copyFinal} alt="Copy Final" className="software-screenshot" style={{ width: '900px'}} />
+                  <img src={copyFinal} alt="Copy Final" className="software-screenshot" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
 
-              <div className="instruction-step">
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot" style={{ width: '700px'}} />
+                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot" style={{ width: '700px' }} />
                 </div>
               </div>
             </div>
@@ -240,7 +240,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={mirrorIcon} alt="Mirror Component Icon" className="software-screenshot screenshot-small" style={{ width: '200px', marginBottom: '-3rem'}}  />
+                  <img src={mirrorIcon} alt="Mirror Component Icon" className="software-screenshot screenshot-small" style={{ width: '200px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
@@ -248,8 +248,8 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header" >
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the components to be mirror &gt; GO
-                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the components to be mirror &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
             </div>
@@ -257,15 +257,15 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
               <div className="step-header" style={{ marginTop: '-4rem' }}>
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{marginTop: "2rem"}}>Select 3 points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
+                <span className="step-label" style={{ marginTop: "2rem" }}>Select 3 points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
               </div>
             </div>
 
-             <div className="instruction-step">
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                   <img src={mirrorResult} alt="Mirror Result" className="software-screenshot"  style={{ width: '700px'}}/>
+                  <img src={mirrorResult} alt="Mirror Result" className="software-screenshot" style={{ width: '700px' }} />
                 </div>
               </div>
             </div>
@@ -292,7 +292,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={rotateIcon} alt="Rotate Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}} />
+                  <img src={rotateIcon} alt="Rotate Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
@@ -300,8 +300,8 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component to be rotate &gt; GO
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component to be rotate &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
             </div>
@@ -320,7 +320,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={rotateEntry} alt="Rotate Entry" className="software-screenshot" style={{ width: '900px'}} />
+                  <img src={rotateEntry} alt="Rotate Entry" className="software-screenshot" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
@@ -329,7 +329,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                <img src={rotateResult} alt="Rotate Result" className="software-screenshot" style={{ width: '700px'}} />
+                  <img src={rotateResult} alt="Rotate Result" className="software-screenshot" style={{ width: '700px' }} />
                 </div>
               </div>
             </div>
@@ -348,17 +348,17 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for continuous duplication of component.</p>
 
-           
-              <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot" style={{ width: '200px'}} />
-                </div>
+
+            <div className="step-description">
+              <div className="screenshot-wrapper">
+                <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
               </div>
-          
-             <div className="instruction-step">
+            </div>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">  <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot" style={{ width: '900px'}}/>
+                <div className="screenshot-wrapper">  <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
@@ -385,7 +385,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}}/>
+                  <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
@@ -393,8 +393,8 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the component/s to be rotated &gt; GO
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component/s to be rotated &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
             </div>
@@ -411,18 +411,18 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-number">4 </span>
                 <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter</span>
               </div>
-               <div className="step-description">
+              <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot" style={{ width: '900px', marginBottom: '-3rem'}}  />
+                  <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot" style={{ width: '900px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
 
-             <div className="instruction-step">
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                   <img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot" style={{ width: '900px'}} />
+                  <img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
@@ -441,19 +441,19 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               <h4>MIRROR COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)} onStop={stop} />
             </div>
-           <p className="p-flush" style={{ marginTop: "-2rem" }}>Use to create a duplicate of a component by mirror movement.</p>
-            
-             
-              <div className="screenshot-wrapper">
-                <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot" style={{ width: '200px'}} />
-              </div>
-           <span style={{ marginTop: "-2rem" }}>Same procedure with Mirror Component</span>
+            <p className="p-flush" style={{ marginTop: "-2rem" }}>Use to create a duplicate of a component by mirror movement.</p>
 
-           <div className="instruction-step">
+
+            <div className="screenshot-wrapper">
+              <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
+            </div>
+            <span style={{ marginTop: "-2rem" }}>Same procedure with Mirror Component</span>
+
+            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot" style={{ width: '900px'}} />
+                  <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
@@ -479,7 +479,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}} />
+                  <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>

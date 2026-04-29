@@ -78,9 +78,9 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
       <div className="lesson-tabs">
         {tabs.map((tab) => (
-          <button 
-            key={tab.id} 
-            className={`tab-button ${activeTab === tab.id ? "active" : ""}`} 
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
             onClick={() => setActiveTab(tab.id as any)}
           >
             {tab.label}
@@ -198,7 +198,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <h4>MATERIAL THAT ARE NOT INCLUDED ON ICAD MATERIAL</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(material2Steps)} onStop={stop} />
               </div>
-      
+
               <div className="screenshot-wrapper">
                 <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
               </div>
@@ -208,7 +208,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className="screenshot-wrapper mt-8">
                 <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
               </div>
-           
+
               <div className="section-divider"></div>
 
               <div className="instruction-step">

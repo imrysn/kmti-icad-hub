@@ -65,27 +65,15 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section
-        className={`lesson-intro ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`}
-        data-reading-index="0"
-      >
-        <h3 className="section-title">
-          <span>iCAD Tool Bars</span>
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration, 0)} onStop={stop} />
-        </h3>
-        <p className="section-description">
-          Explore the various toolbars available in iCAD. Each toolbar provides quick access to specific sets of functions and tools.
-        </p>
-      </section>
 
       <div className="lesson-grid single-card">
         <div
-          className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 1 ? 'reading-active' : ''}`}
-          data-reading-index="1"
+          className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`}
+          data-reading-index="0"
         >
           <div className="card-header">
             <h3>Toolbar Explorer</h3>
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration, 1)} onStop={stop} />
+            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration, 0)} onStop={stop} />
           </div>
           <p className="p-flush mb-8">Click through the categories below to explore the function of each toolbar icon group.</p>
 
