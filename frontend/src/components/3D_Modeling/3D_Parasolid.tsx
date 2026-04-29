@@ -53,12 +53,12 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
   const isPart1 = subLessonId === 'parasolid-1';
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
+      <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
         <h4 className="section-title">
           {isPart1 ? 'Loading of parasolid' : 'Parasolid export & edit'}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? importSteps : editSteps)} onStop={stop} />
@@ -74,7 +74,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
+        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
           {isPart1 ? (
             <div className="fade-in">
               <div className="card-header">
@@ -82,7 +82,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(importSteps)} onStop={stop} />
               </div>
 
-              <div className={getStepClass('p1-1')}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
@@ -96,7 +96,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={getStepClass('p1-2')}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Browse for files in the <strong className="text-highlight">Parasolid Link</strong> dialog.</span>
@@ -110,7 +110,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={getStepClass('p1-3')}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">
@@ -137,7 +137,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
               </div>
               <p className="p-flush mb-8">Optimize the B-Rep solid to reduce overall file size.</p>
 
-              <div className={getStepClass('p2-1')}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the menu.</span>
@@ -151,7 +151,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={getStepClass('p2-2')}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Select <strong className="text-highlight">No form changes</strong> &gt; OK.</span>
@@ -165,7 +165,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={getStepClass('p2-3')}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">
@@ -182,7 +182,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={getStepClass('p2-5')}>
+              <div className={`instruction-step ${currentIndex === 3 || currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Set Part Properties & Information</span>

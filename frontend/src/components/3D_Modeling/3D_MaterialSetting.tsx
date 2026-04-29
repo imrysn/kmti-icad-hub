@@ -107,7 +107,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
       <div className="lesson-grid single-card">
         <div className="fade-in">
           {activeTab === 'set' && (
-            <div className="lesson-card tab-content">
+            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
               <div className="card-header">
                 <h4>MATERIAL SETTING PROCEDURE</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(material1Steps)} onStop={stop} />
@@ -193,25 +193,25 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           )}
 
           {activeTab === 'unlisted' && (
-            <div className="lesson-card tab-content">
+            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
               <div className="card-header">
                 <h4>MATERIAL THAT ARE NOT INCLUDED ON ICAD MATERIAL</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(material2Steps)} onStop={stop} />
               </div>
 
-              <div className="screenshot-wrapper">
-                <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
-              </div>
-              <div className="instruction-box instruction-box--warning mt-8">
-                <p className="p-flush"> On ICAD, <strong className="red-text">S35C</strong> is not included on the material list. In this case, we can use <strong className="red-text">S45C</strong> as material on 3D. In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is used as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same. </p>
-              </div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
+              <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+                <div className="screenshot-wrapper">
+                  <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
+                </div>
+                <div className="instruction-box instruction-box--warning mt-8">
+                  <p className="p-flush"> On ICAD, <strong className="red-text">S35C</strong> is not included on the material list. In this case, we can use <strong className="red-text">S45C</strong> as material on 3D. In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is used as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same. </p>
+                </div>
+                <div className="screenshot-wrapper mt-8">
+                  <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
 
-              <div className="section-divider"></div>
-
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="card-header"><h4>Other materials that are not on ICAD Material List include: </h4></div>
                 <div className="lesson-table-container" style={{ marginTop: "2rem", marginLeft: "3rem", maxWidth: "800px" }}>
                   <table className="lesson-table">

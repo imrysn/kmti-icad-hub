@@ -157,7 +157,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
+      <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
         <h4 className="section-title">
           {isSample1 ? 'Operation sample (1)' : isSample2 ? 'Operation sample (2)' : isSample3 ? 'Operation sample (3)' : isSample4 ? 'Operation sample (4)' : 'Operation sample (5)'}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
@@ -188,7 +188,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
+        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
           {isSample1 ? (
             <div className="fade-in">
               <div className="card-header">
@@ -196,7 +196,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample1Steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass('s1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Open a new drawing: Go to <strong className="text-highlight">File &gt; New</strong></span>
@@ -211,7 +211,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">ARRANGE BOX</span>
@@ -228,7 +228,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Select and <strong className="text-highlight">Arrange Machine Part</strong></span>
@@ -242,7 +242,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s1-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Point the hole on the target face.</span>
@@ -262,7 +262,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s1-5')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">5 </span>
                   <span className="step-label">Move to specified location.</span>
@@ -287,7 +287,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample2Steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass('s2-6')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">6 </span>
                   <span className="step-label">Create tool entity for long hole.</span>
@@ -304,7 +304,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s2-7')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">7 </span>
                   <span className="step-label">FILLET EDGE</span>
@@ -324,7 +324,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s2-8')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">8 </span>
                   <span className="step-label">COPY COMPONENT</span>
@@ -341,7 +341,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s2-9')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">9 </span>
                   <span className="step-label">CHAMFER EDGE</span>
@@ -361,7 +361,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s2-10')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">10 </span>
                   <span className="step-label">CREATE 3D PART</span>
@@ -378,7 +378,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s2-11')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
+              <div className={`instruction-step ${currentIndex === 5 || currentIndex === 6 || currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="step-header">
                   <span className="step-number">11 </span>
                   <span className="step-label">Check Properties & Information</span>
@@ -403,7 +403,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample3Steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass('s3-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Open and Save drawing as Drawing Number.</span>
@@ -412,7 +412,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s3-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 1 || currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Create part by SEGMENTS.</span>
@@ -450,7 +450,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample4Steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass('s4-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="tool-block">
                   <div className="card-header"><h4>SEGMENT C</h4></div>
                   <p className="p-flush">Sketch half profile for <strong className="text-highlight">Revolving</strong>.</p>
@@ -472,7 +472,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s4-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="tool-block">
                   <div className="card-header"><h4>SEGMENT D & E</h4></div>
                   <p className="p-flush">Attach cylinders using <strong className="text-highlight">Center Tool</strong>.</p>
@@ -489,16 +489,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={getStepClass('s4-3')}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">JOIN ALL SEGMENTS &gt; <strong className="text-highlight">UNION</strong></span>
                 </div>
-              </div>
-
-              <div className="section-divider"></div>
-
-              <div className={`${getStepClass('s4-4')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                <div className="section-divider"></div>
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">FOR KEY GROOVE</span>
@@ -523,7 +519,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample5Steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass('s5-5')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">5 </span>
                   <span className="step-label">SUBTRACT TOOL ENTITY</span>
@@ -543,7 +539,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s5-6')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">6 </span>
                   <span className="step-label">ADD ALL FAIRINGS</span>
@@ -557,7 +553,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('s5-7')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">7 </span>
                   <span className="step-label">CREATE 3D PART & SAVE</span>

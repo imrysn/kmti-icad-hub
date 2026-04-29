@@ -23,7 +23,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     containerRef,
     speak,
     stop,
-    isSpeaking
+    isSpeaking,
+    currentIndex
   } = useLessonCore(subLessonId);
 
   const purchaseSteps = [
@@ -44,16 +45,16 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
           {isPart1
             ? "Purchase part 3d modeling"
             : "Sample flow chart for uploading purchase parts on the server"}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(purchaseSteps)} onStop={stop} />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? [purchaseSteps[0]] : [purchaseSteps[1]])} onStop={stop} />
         </h4>
       </section>
 
       <div className="lesson-grid single-card">
-        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`} data-reading-index="0">
+        <div className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
           <div className="fade-in">
             <div className="card-header">
               <h4>{isPart1 ? "WORKFLOW OVERVIEW" : "SERVER UPLOAD PROTOCOL"}</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(purchaseSteps)} onStop={stop} />
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isPart1 ? [purchaseSteps[0]] : [purchaseSteps[1]])} onStop={stop} />
             </div>
 
             <div className="screenshot-wrapper">

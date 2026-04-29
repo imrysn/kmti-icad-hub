@@ -34,7 +34,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
     "Step 1: Select Arrange Machine Part from the icon menu.",
     "Step 2: A window will appear showing the list of available tools, such as drill holes and counterbores.",
     "Step 3: After setting the desired specifications, click OK.",
-    "Step 4: Click the location of the hole on the solid entity and click GO to create the cut."
+    "Step 4: Click the location of the hole on the solid entity and click GO to create the cut.",
+    "Note: Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes."
   ];
 
   const getStepClass = (stepId: string) => "instruction-step";
@@ -65,7 +66,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content fade-in">
+        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
           <div className="card-header">
             <h4>HOLE DETAILS</h4>
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(holeSteps)} onStop={stop} />
@@ -122,12 +123,12 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             </div>
           </div>
 
-          <div className="instruction-box" style={{ marginTop: '0rem' }}>
+          <div className={`instruction-box ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: '0rem' }}>
             <p className="p-flush">
               <strong className="red-text">Note:</strong> Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.
             </p>
           </div>
-          <div className="screenshot-wrapper">
+          <div className={`screenshot-wrapper ${currentIndex === 4 ? "reading-active" : ""}`}>
             <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" />
           </div>
         </div>

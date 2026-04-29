@@ -110,7 +110,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="fade-in">
           {activeTab === 'create' && (
-            <div className="lesson-card tab-content">
+            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
               <div className="card-header">
                 <h4>CREATE 3D PART</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(createSteps)} onStop={stop} />
@@ -187,7 +187,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
           )}
 
           {activeTab === 'change' && (
-            <div className="lesson-card tab-content">
+            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
               <div className="card-header mt-8">
                 <h4>CHANGE 3D PART NAME</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(changeSteps)} onStop={stop} />
@@ -239,10 +239,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                     <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
-              </div>
 
-              <div className="instruction-box" style={{ marginTop: "2rem" }}>
-                <p className="p-flush"><strong className='red-text'>Note:</strong>  <br /> All 3D Part Names and 2D part names must always match each other. Differences on the 3D and 2D part name will cut the link</p>
+                <div className="instruction-box" style={{ marginTop: "2rem" }}>
+                  <p className="p-flush"><strong className='red-text'>Note:</strong>  <br /> All 3D Part Names and 2D part names must always match each other. Differences on the 3D and 2D part name will cut the link</p>
+                </div>
               </div>
 
               <div className="lesson-navigation">

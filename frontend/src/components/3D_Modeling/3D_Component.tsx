@@ -112,13 +112,13 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
 
       <div className="lesson-grid single-card">
         {activeTab === 'move' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>MOVE COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(moveSteps)} onStop={stop} />
             </div>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Move Component</strong> from the icon menu.</span>
@@ -131,7 +131,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             </div>
 
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component to be move &gt; GO
@@ -140,7 +140,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label">Specify the movement distance on the X,Y and Z-axis on the item entry. Press Enter</span>
@@ -152,7 +152,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
@@ -169,13 +169,13 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         )}
 
         {activeTab === 'copy' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(copySteps)} onStop={stop} />
             </div>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Copy Component</strong> from the icon menu.</span>
@@ -187,7 +187,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component to be copy &gt; GO
@@ -196,7 +196,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label">Specidy the distance on the X,Y and Z-axis and the number of copies needed &gt; Press Enter</span>
@@ -208,7 +208,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
@@ -226,14 +226,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         )}
 
         {activeTab === 'mirror' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>MIRROR COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorSteps)} onStop={stop} />
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use to move/relocate a component by mirror movement. </p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Mirror Component</strong> from the icon menu.</span>
@@ -245,7 +245,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header" >
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the components to be mirror &gt; GO
@@ -254,14 +254,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header" style={{ marginTop: '-4rem' }}>
                 <span className="step-number">3 </span>
                 <span className="step-label" style={{ marginTop: "2rem" }}>Select 3 points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.</span>
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
@@ -278,14 +278,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         )}
 
         {activeTab === 'rotate' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>ROTATE COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateSteps)} onStop={stop} />
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use to move/relocate a component by rotating on an axis.</p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Rotate Component</strong> from the icon menu.</span>
@@ -297,7 +297,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component to be rotate &gt; GO
@@ -306,14 +306,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header" style={{ marginBottom: '-3rem' }}>
                 <span className="step-number">3 </span>
                 <span className="step-label">Select 2-points to set the axis of rotation.</span>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">4 </span>
                 <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter</span>
@@ -325,7 +325,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
@@ -341,7 +341,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         )}
 
         {activeTab === 'repeat' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>REPEAT COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(repeatSteps)} onStop={stop} />
@@ -349,13 +349,28 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for continuous duplication of component.</p>
 
 
-            <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className="step-header">
+                <span className="step-number">1 </span>
+                <span className="step-label">Select <strong className="red-text">Repeat Copy Tool</strong> from the menu.</span>
+              </div>
+              <div className="step-description">
+                <div className="screenshot-wrapper">
+                  <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
+                </div>
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className="step-header">
+                <span className="step-number">2 </span>
+                <span className="step-label">Select the component to be duplicated &gt; GO
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </span>
+              </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">  <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot" style={{ width: '900px' }} />
@@ -371,14 +386,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         )}
 
         {activeTab === 'rotateCopy' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>ROTATE COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(rotateCopySteps)} onStop={stop} />
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use to create a duplicate of a component by rotating on an axis.</p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Rotate Copy Component</strong> from the icon menu.</span>
@@ -390,7 +405,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header" style={{ marginBottom: '-2rem' }}>
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the component/s to be rotated &gt; GO
@@ -399,14 +414,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header" style={{ marginBottom: '-3rem' }}>
                 <span className="step-number">3 </span>
                 <span className="step-label">Select 2 points to set the axis of rotation.</span>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">4 </span>
                 <span className="step-label">Specify the desired angle of rotation on the item entry. Press Enter</span>
@@ -418,7 +433,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
@@ -436,7 +451,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         )}
 
         {activeTab === 'mirrorCopy' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>MIRROR COPY COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrorCopySteps)} onStop={stop} />
@@ -444,12 +459,12 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <p className="p-flush" style={{ marginTop: "-2rem" }}>Use to create a duplicate of a component by mirror movement.</p>
 
 
-            <div className="screenshot-wrapper">
-              <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
-            </div>
-            <span style={{ marginTop: "-2rem" }}>Same procedure with Mirror Component</span>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className="screenshot-wrapper">
+                <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
+              </div>
+              <span style={{ marginTop: "-2rem" }}>Same procedure with Mirror Component</span>
 
-            <div className="instruction-step">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
@@ -466,13 +481,13 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
         )}
 
         {activeTab === 'delete' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>DELETE COMPONENT</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(deleteSteps)} onStop={stop} />
             </div>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Delete Component</strong> from the icon menu.</span>
@@ -484,7 +499,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label">Select the components to be deleted.</span>

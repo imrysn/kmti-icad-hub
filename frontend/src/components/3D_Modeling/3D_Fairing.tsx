@@ -99,14 +99,14 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
       <div className="lesson-grid single-card">
         {activeTab === 'chamfer' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>CHAMFER</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(chamferSteps)} onStop={stop} />
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for creating chamfer dimensions.</p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Chamfer edge</strong> from the icon menu.</span>
@@ -118,7 +118,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label">Specify chamfer length on the item entry.</span>
@@ -130,7 +130,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the edge to be chamfered &gt; GO
@@ -143,12 +143,13 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   <strong className="red-text">Note:</strong> Several edges can be chamfered all at once.
                 </p>
               </div>
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="section-divider" style={{ margin: "1rem" }}></div>
-              <div className="instruction-step">
-                <div className="card-header"><h4>RESULT</h4></div>
-                <div className="screenshot-wrapper mt-8">
-                  <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="screenshot-wrapper mt-8">
+                <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -160,7 +161,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
         )}
 
         {activeTab === 'fillet' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>FILLET</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(filletSteps)} onStop={stop} />
@@ -169,7 +170,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
 
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Fillet edge</strong> from the icon menu.</span>
@@ -182,7 +183,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
             </div>
 
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label">Specify fillet radius on the item entry.</span>
@@ -196,7 +197,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the edge to be fillet &gt; <strong className="text-highlight">GO</strong>
@@ -210,7 +211,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="screenshot-wrapper mt-8">
                 <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" style={{ width: '360px' }} />
@@ -225,7 +226,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
         )}
 
         {activeTab === 'shell' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>SHELL</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(shellSteps)} onStop={stop} />
@@ -233,7 +234,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for hollowing solid entities using the specified wall thickness.</p>
 
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Shell</strong> from the icon menu.</span>
@@ -245,7 +246,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the two endfaces of the solid entity &gt; GO
@@ -259,7 +260,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>Specify thickness on item entry &gt; double GO
@@ -275,7 +276,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className="section-divider"></div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="screenshot-wrapper mt-8">
                 <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" style={{ width: '490px' }} />

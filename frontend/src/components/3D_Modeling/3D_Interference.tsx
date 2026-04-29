@@ -63,13 +63,13 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content fade-in">
+        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
           <div className="card-header">
             <h4>INTERFERENCE CHECK PROCEDURE</h4>
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} />
           </div>
 
-          <div className={`${getStepClass("i1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <div className="step-header">
               <span className="step-number">1 </span>
               <span className="step-label">Select <strong className="text-highlight">Interference Check</strong> from the icon menu.</span>
@@ -83,7 +83,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+          <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
             <div className="step-header">
               <span className="step-number">2 </span>
               <span className="step-label">On the command menu, unselect <strong className="text-highlight">High-speed detection</strong>.</span>
@@ -97,7 +97,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+          <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header">
               <span className="step-number">3 </span>
               <span className="step-label">Select entities &gt; <strong className="text-highlight">GO</strong>
@@ -117,7 +117,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+          <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
               <span className="step-number">4 </span>
               <span className="step-label">Analyze countermeasures. Use <strong className="text-highlight">Undo</strong> or <strong className="text-highlight">Ctrl+Z</strong> to remove highlighting.</span>
@@ -126,8 +126,14 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className="instruction-step">
+          <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
             <div className="card-header"><h4>DETECTION LIST TOOL</h4></div>
+            <div className="step-header">
+              <span className="step-number">5 </span>
+              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong>
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 4px' }} />
+              </span>
+            </div>
             <div className="step-description mt-4">
               <p className="p-flush mb-4">Displays a list of all detected interferences for detailed review.</p>
               <div className="screenshot-wrapper">
@@ -138,18 +144,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className="section-divider"></div>
 
-          <div className={`${getStepClass("li1")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-            <div className="step-header">
-              <span className="step-number">5 </span>
-              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong>
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 4px' }} />
-              </span>
-            </div>
-          </div>
-
-          <div className="section-divider"></div>
-
-          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
+          <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
             <div className="step-header">
               <span className="step-number">6 </span>
               <span className="step-label">The <strong className="text-highlight">List Display</strong> window will appear showing all interfering parts.</span>

@@ -49,7 +49,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
       </section>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content fade-in">
+        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
           <div className="card-header">
             <h4>DRAFTING TOOLS PROCEDURE</h4>
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(annotationSteps)} onStop={stop} />

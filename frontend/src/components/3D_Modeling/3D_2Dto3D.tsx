@@ -87,7 +87,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -97,26 +97,29 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
       <div className="lesson-grid single-card">
         {activeTab === 'workPlane' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>2D &gt; 3D</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(workPlaneSteps)} onStop={stop} />
             </div>
-            <p className="p-flush" style={{ marginTop: "-2rem" }}>3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension.</p>
-            <p className="p-flush" style={{ marginTop: "-2rem" }}>To create 2D plane on the 3D dimension, use <strong className="red-text">Open Work Plane</strong> from the toolbar.</p>
-            <div className="flex-row-center--wrap" style={{ justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '2rem' }}>
-
-              <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
-                <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" style={{ width: "8rem" }} />
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <p className="p-flush">3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension.</p>
+              <p className="p-flush">To create 2D plane on the 3D dimension, use <strong className="red-text">Open Work Plane</strong> from the toolbar.</p>
+              <div className="flex-row-center--wrap" style={{ justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '2rem' }}>
+                <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
+                  <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" style={{ width: "8rem" }} />
+                </div>
+              </div>
+              <div className="screenshot-wrapper">
+                <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" />
               </div>
             </div>
 
-            <div className="screenshot-wrapper">
-              <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" />
-            </div>
-            <span> Use to rotate the work plane to X-Y Plane, X-Z, Plane or Y-Z Plane.</span>
-            <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
-              <img src={openWorkPlaneImg2} alt="Open Work Plane Orientation" className="software-screenshot" style={{ width: '10rem' }} />
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <span> Use to rotate the work plane to X-Y Plane, X-Z, Plane or Y-Z Plane.</span>
+              <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
+                <img src={openWorkPlaneImg2} alt="Open Work Plane Orientation" className="software-screenshot" style={{ width: '10rem' }} />
+              </div>
             </div>
 
             <div className="lesson-navigation">
@@ -127,14 +130,16 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         )}
 
         {activeTab === 'commandMenu' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>COMMAND MENU</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(menuSteps)} onStop={stop} />
             </div>
-            <p className="p-flush mb-8" style={{ marginTop: "-2rem" }}>Most tools used for sketching on the work plane can be found on the command menu.</p>
-            <div className="screenshot-wrapper">
-              <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide" style={{ height: '545px', marginTop: "2rem" }} />
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <p className="p-flush mb-8">Most tools used for sketching on the work plane can be found on the command menu.</p>
+              <div className="screenshot-wrapper">
+                <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide" style={{ height: '545px', marginTop: "2rem" }} />
+              </div>
             </div>
 
             <div className="lesson-navigation">
@@ -177,7 +182,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
   const handlePrev = () => { const i = tabs.findIndex((t) => t.id === activeTab); if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson(); };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -197,7 +202,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
       <div className="lesson-grid single-card">
         {/* EXTRUDE */}
         {activeTab === "extrude" && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>EXTRUDE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(extrudeSteps)} onStop={stop} />
@@ -269,7 +274,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
         {/* REVOLVE */}
         {activeTab === "revolve" && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>REVOLVE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(revolveStepsTTS)} onStop={stop} />
@@ -323,7 +328,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
         {/* SPIRAL */}
         {activeTab === "spiral" && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>SPIRAL FORM</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(spiralSteps)} onStop={stop} />

@@ -119,7 +119,7 @@ interface PropertiesLessonProps {
         {isProperties1 ? (
           <>
             {activeTab === "color" && (
-              <div className="lesson-card tab-content fade-in">
+              <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
                 <div className="card-header">
                   <h4>CHANGE COLOR</h4>
                   <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(colorSteps)} onStop={stop} />
@@ -176,7 +176,7 @@ interface PropertiesLessonProps {
             )}
 
             {activeTab === "layer" && (
-              <div className="lesson-card tab-content fade-in">
+              <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
                 <div className="card-header">
                   <h4>CHANGE LAYER</h4>
                   <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(layerSteps)} onStop={stop} />
@@ -210,41 +210,43 @@ interface PropertiesLessonProps {
 
                 <div className="section-divider"></div>
 
-                <div className="tool-block">
-                  <div className="card-header"><h4>LAYER 1: COMMON PARTS</h4></div>
-                  <div className="step-description">
-                    <ul className="list-flush">
-                      <li>Fabricated/Machined parts and Annealed parts.</li>
-                      <li>Standard machine color is <strong className="text-highlight">WHITE</strong>.</li>
-                    </ul>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot screenshot-wide" />
+                <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+                  <div className="tool-block">
+                    <div className="card-header"><h4>LAYER 1: COMMON PARTS</h4></div>
+                    <div className="step-description">
+                      <ul className="list-flush">
+                        <li>Fabricated/Machined parts and Annealed parts.</li>
+                        <li>Standard machine color is <strong className="text-highlight">WHITE</strong>.</li>
+                      </ul>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot screenshot-wide" />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="tool-block mt-8">
-                  <div className="card-header"><h4>LAYER 2: PAINTED PARTS</h4></div>
-                  <div className="step-description">
-                    <ul className="list-flush">
-                      <li>Safety covers and guards (Safety Yellow - No. 4).</li>
-                      <li>Materials with specific color codes (MC Nylon, Urethane, etc.).</li>
-                    </ul>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" />
+                  <div className="tool-block mt-8">
+                    <div className="card-header"><h4>LAYER 2: PAINTED PARTS</h4></div>
+                    <div className="step-description">
+                      <ul className="list-flush">
+                        <li>Safety covers and guards (Safety Yellow - No. 4).</li>
+                        <li>Materials with specific color codes (MC Nylon, Urethane, etc.).</li>
+                      </ul>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot screenshot-wide" />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="tool-block mt-8">
-                  <div className="card-header"><h4>LAYER 3: PURCHASE PARTS</h4></div>
-                  <div className="step-description">
-                    <ul className="list-flush">
-                      <li>Motors, Encoders, Chain & Sprockets, Bolts.</li>
-                      <li>Use manufacturer standard colors.</li>
-                    </ul>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
+                  <div className="tool-block mt-8">
+                    <div className="card-header"><h4>LAYER 3: PURCHASE PARTS</h4></div>
+                    <div className="step-description">
+                      <ul className="list-flush">
+                        <li>Motors, Encoders, Chain & Sprockets, Bolts.</li>
+                        <li>Use manufacturer standard colors.</li>
+                      </ul>
+                      <div className="screenshot-wrapper mt-4">
+                        <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -257,14 +259,14 @@ interface PropertiesLessonProps {
             )}
           </>
         ) : (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>INFORMATION TOOLS</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(infoSteps)} onStop={stop} />
             </div>
 
             <div className="tool-block">
-              <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Coordinates: Pick a point to see position from origin.</span>
@@ -278,7 +280,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Length: Pick an edge &gt; <strong className="text-highlight">GO</strong> to measure.</span>
@@ -292,7 +294,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Distance: Pick two entities to measure the gap.</span>
@@ -306,7 +308,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Angle: Pick 2 edges or 3 points to calculate angle.</span>
@@ -320,7 +322,7 @@ interface PropertiesLessonProps {
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
+              <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">5 </span>
                   <span className="step-label">Entity Info: Pick a solid &gt; <strong className="text-highlight">GO</strong> for full details.</span>
