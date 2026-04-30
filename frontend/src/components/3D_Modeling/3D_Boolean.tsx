@@ -332,7 +332,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{marginTop: "-3rem"}}>
                 <div className="step-header" style={{ marginTop: "2rem", marginBottom: "1rem" }}>
                   <span className="step-number">2 </span>
                   <span className="step-label">Separated components will be displayed in a form of CSG solid. Select OK.
@@ -355,7 +355,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <p className="p-flush" style={{ marginTop: "1rem" }}> This tool is use to separate all components from the solid entity.</p>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{marginTop: "-2rem"}}>
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">3 </span>
                   <span className="step-label">Select the solid entity &gt; GO to separate all components at once. Then select OK</span>

@@ -69,12 +69,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
         <button className={`tab-button ${activeTab === 'part2' ? 'active' : ''}`} onClick={() => setActiveTab('part2')}>SERVER UPLOAD PROTOCOL</button>
       </div>
 
-      <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
-        <h3 className="section-title">
-          {activeTab === 'part1' ? "Purchase Part 3D Modeling" : "Sample Flow Chart for Uploading Purchase Parts"}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak([purchaseSteps[activeTab === 'part1' ? 0 : 1]])} onStop={stop} />
-        </h3>
-      </section>
+
 
       <div className="lesson-grid single-card">
         <div className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">

@@ -138,8 +138,6 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className="section-divider"></div>
-
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
@@ -150,9 +148,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                     <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot" style={{ marginBottom: '-2rem' }} />
                   </div>
                 </div>
-              </div>
-
-              <div className="section-divider"></div>
+              </div>  
 
               <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
@@ -165,8 +161,6 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
@@ -213,8 +207,6 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className="section-divider"></div>
-
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
@@ -226,8 +218,6 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">

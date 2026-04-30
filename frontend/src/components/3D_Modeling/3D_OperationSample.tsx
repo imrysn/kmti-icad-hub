@@ -60,7 +60,7 @@ interface OperationSampleLessonProps {
 }
 
 const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLessonId = 'op-sample-1', onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState<'sample1' | 'sample2' | 'sample3' | 'sample4' | 'sample5'>(() => {
+  const [activeTab, setActiveTab] = useState<'sample1' | 'sample2'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'sample1';
   });
 
@@ -78,66 +78,42 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
   }, [activeTab, subLessonId]);
 
   const opSample1Steps = [
-    "Step 1: Open a new drawing via File, New. Save it using the drawing number as the file name. Always verify if it's a Normal or Mirror part before starting modeling.",
-    "Step 2: Create the base using Arrange Box. Input dimensions: 16mm depth, 100mm width, and 210mm height at the origin point.",
-    "Step 3: Select Arrange Machine Part from the menu to prepare for adding specialized features like holes.",
-    "Step 4: Place the hole component on the target face. Use the non-conversion plus Q shortcut to change orientation, then left-click and select GO to finalize placement.",
-    "Step 5: Select the hole component and use the Move tool. Set the Y-movement to 183mm to reach its precise technical location.",
-    "Step 6: To create long hole details, first arrange a box as a tool entity with 14 by 38mm dimensions. Position it and use the Subtract command to cut the shape.",
-    "Step 7: Apply a Fillet Edge with a 7mm radius. Select all required edges and click GO to smooth the transitions.",
-    "Step 8: Use the Copy Component tool to duplicate your finished features across the part where required.",
-    "Step 9: Apply a Chamfer Edge for final deburring and technical finishing.",
-    "Step 10: Finalize by selecting Create 3D Part and entering the standard drawing name.",
-    "Step 11: Set the 3D Properties to ensure correct metadata and drafting coordination."
+    "Step 1: Open a new drawing. Go to File, New. Save the drawing as the File Name. Check if Normal or Mirror Part. Press Save.",
+    "Step 2: Use Arrange Box. Input Depth 16mm, Width 100mm, Height 210mm at Coordinates 0,0,0.",
+    "Step 3: Select and Arrange Machine Part using the standard KEM holes.",
+    "Step 4: Point the hole on the face. Press Muhenkan plus Q to orient it, select the center point, and left-click GO.",
+    "Step 5: Use Move Component on the hole. Input MOVELENGY 183mm to move it to the correct location.",
+    "Step 6: For making long hole details, first create a tool entity. Arrange a Box 16 by 14 by 38mm. Position it and use subtract to create the cut.",
+    "Step 7: Apply FilletEdge with a 7mm radius. Pick all the edges to be filleted and click GO.",
+    "Step 8: Use Copy Component to duplicate the slot features. Input the specific X and Y movements.",
+    "Step 9: Apply Chamfer Edge with a 20mm length. Select the edges and click GO.",
+    "Step 10: Create 3D PartName. Select the entity, click GO, and enter the part name.",
+    "Step 11: Check the properties of the Top 3D Part. Delete command artifacts and add comments.",
+    "Step 12: Set all necessary informations like Material, Layer, and Color.",
+    "Step 13: Save the file via File, Save."
   ];
 
   const opSample2Steps = [
-    "Step 1: Open and Save drawing as Drawing Number.",
-    "Step 2: Create part by segments (A, B, C, D, and E) following technical coordinates.",
-    "Step 3: Use the Boolean Union tool to join all segments into a single unified solid body.",
-    "Step 4: Arrange a tool entity box for the keyway and precisely position it on the shaft face.",
-    "Step 5: Use the Boolean Subtract tool to cut the keyway profile and add fillets.",
-    "Step 6: Apply final fairing and surface grinding symbols as per drafting standards.",
-    "Step 7: Finalize by selecting Create 3D Part and saving via the File menu."
-  ];
-
-  const opSample3Steps = [
-    "Step 1: Open and Save drawing as Drawing Number.",
-    "Step 2: Create part by SEGMENTS. Review the overview to understand the A, B, C, D, and E arrangement.",
-    "Step 3: Model Segment A using Arrange Cylinder and Union. C1: 20x3.65, C2: 19x1.35, C3: 20x64.5.",
-    "Step 4: Model Segment B (30mm Dia x 22.25mm H) and attach it using the Center Tool.",
-    "Step 5: Combine all segments into the final shaft assembly."
-  ];
-
-  const opSample4Steps = [
-    "Step 1: Create Segment C by sketching the half profile on the Work Plane and then Revolving.",
-    "Step 2: Attach Segments D and E using the Center Tool to finalize the shaft backbone.",
-    "Step 3: Join all segments using the Boolean UNION tool.",
-    "Step 4: For the Key Groove, create a Tool Solid (Box: 6x3.5x43) and position it precisely on the face.",
-    "Step 5: Perform the subtraction to create the final keyway profile."
-  ];
-
-  const opSample5Steps = [
-    "Step 1: Apply final fairings. Set Fillet Radius to 3mm for the keyway and internal edges.",
-    "Step 2: Perform the Subtract operation for the tool entity and add any remaining fillets.",
-    "Step 3: Finalize all fairings and review the assembly with all neighboring parts.",
-    "Step 4: Save the completed 3D part and verify all drafting properties."
+    "Step 1: Open a new drawing. Go to File, New. Save the drawing as the File Name. Check if Normal or Mirror Part. Press Save.",
+    "Step 2: Create the part by segments. Segments must be attached together after modeling. Model Segments A, B, C, D, and E using Arrange Cylinder, Work Plane, and Revolve operations.",
+    "Step 3: Join all segments. Use UNION.",
+    "Step 4: For Key Groove: Create the tool entity first. Use Arrange Box with Depth 6mm, Width 3.5mm, and Height 43mm. Position the tool entity.",
+    "Step 5: Subtract the tool entity. Add Fillet on the key groove with Radius 3mm.",
+    "Step 6: Add all Fairings including Chamfer and Fillet.",
+    "Step 7: Create 3D Part Name.",
+    "Step 8: Check the properties of the Top 3D Part.",
+    "Step 9: Set all necessary informations such as Material, Layer, and Color.",
+    "Step 10: Save the file via File, Save."
   ];
 
   const handleNext = () => {
     if (activeTab === 'sample1') setActiveTab('sample2');
-    else if (activeTab === 'sample2') setActiveTab('sample3');
-    else if (activeTab === 'sample3') setActiveTab('sample4');
-    else if (activeTab === 'sample4') setActiveTab('sample5');
     else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
-    if (activeTab === 'sample5') setActiveTab('sample4');
-    else if (activeTab === 'sample4') setActiveTab('sample3');
-    else if (activeTab === 'sample3') setActiveTab('sample2');
-    else if (activeTab === 'sample2') setActiveTab('sample1');
+    if (activeTab === 'sample2') setActiveTab('sample1');
     else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -151,168 +127,424 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
       </div>
 
       <div className="lesson-tabs">
-        <button className={`tab-button ${activeTab === 'sample1' ? 'active' : ''}`} onClick={() => setActiveTab('sample1')}>SAMPLE 1 (BRACKET)</button>
-        <button className={`tab-button ${activeTab === 'sample2' ? 'active' : ''}`} onClick={() => setActiveTab('sample2')}>SAMPLE 2 (SHAFT)</button>
-        <button className={`tab-button ${activeTab === 'sample3' ? 'active' : ''}`} onClick={() => setActiveTab('sample3')}>SAMPLE 3 (SEGMENTS)</button>
-        <button className={`tab-button ${activeTab === 'sample4' ? 'active' : ''}`} onClick={() => setActiveTab('sample4')}>SAMPLE 4 (REVOLVE)</button>
-        <button className={`tab-button ${activeTab === 'sample5' ? 'active' : ''}`} onClick={() => setActiveTab('sample5')}>SAMPLE 5 (FINISHING)</button>
+        <button className={`tab-button ${activeTab === 'sample1' ? 'active' : ''}`} onClick={() => setActiveTab('sample1')}>OPERATION SAMPLE 1</button>
+        <button className={`tab-button ${activeTab === 'sample2' ? 'active' : ''}`} onClick={() => setActiveTab('sample2')}>OPERATION SAMPLE 2</button>
       </div>
+
+      <section className={`lesson-intro mt-4 ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
+        <h3 className="section-title" style={{ textTransform: 'uppercase' }}>
+          {activeTab === 'sample1' ? 'SAMPLE OF 3D MODELING OF PARTS' :
+           '3D MODELING USING 2D SKETCH, KEY GROOVE, RETAINER RING GROOVE'}
+        </h3>
+        {activeTab === 'sample1' && (
+          <div className="screenshot-wrapper mt-4">
+            <img src={mainDrawing} alt="Bracket Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
+          </div>
+        )}
+        {activeTab === 'sample2' && (
+          <div className="screenshot-wrapper mt-4">
+            <img src={mainDrawing2} alt="Shaft Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
+          </div>
+        )}
+      </section>
 
       <div className="lesson-grid single-card">
         {activeTab === 'sample1' && (
           <div className="lesson-card tab-content fade-in">
-            <div className="card-header">
-              <h4>OPERATION SAMPLE (1) - BRACKET</h4>
+            <div className="card-header" style={{ marginBottom: "2rem" }}>
+              <h4>HERE IS THE STEP-BY-STEP PROCEDURE OF CREATING 3D MODEL</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample1Steps)} onStop={stop} />
             </div>
-            
-            <div className="instruction-box">
-              <div className="screenshot-wrapper mt-4">
-                <img src={mainDrawing} alt="Bracket Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
+
+            {/* Step 1 */}
+            <div className={`${getStepClass('s1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">1</span>
+                <span className="step-label">Open a new drawing</span>
+              </div>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Go to File &gt; New</p>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Save the drawing</p>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name.</p>
+              <p className="p-flush red-text" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Check if Normal or Mirror Part (See page 37)</p>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Press Save</p>
+            </div>
+
+            {/* Step 2 */}
+            <div className={`${getStepClass('s1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{marginTop: "-3rem"}}>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">2 </span>
+                <span className="step-label">Arrange Box</span>
+              </div>
+              <div className="flex-row-wrap" style={{ gap: '2rem', marginLeft: "3rem" }}>
+                <div>
+                  <div className="screenshot-wrapper mb-4">
+                    <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot" style={{ height: '300px' }} />
+                  </div>
+                  <div style={{ marginTop: "-7rem"}}>
+                  <p className="p-flush">INPUT: Depth = 16mm</p>
+                  <p className="p-flush" style={{ paddingLeft: '3.7rem' }}>Width = 100mm</p>
+                  <p className="p-flush" style={{ paddingLeft: '3.7rem' }}>Height = 210mm</p>
+                  <p className="p-flush" style={{ paddingLeft: '3.7rem' }}>Coordinates (0,0,0)</p>
+                </div>
+                </div>
               </div>
             </div>
 
-            <div className="section-divider"></div>
-
-            {/* Steps 1-5 */}
-            <div className={`${getStepClass('s1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-              <div className="step-header"><span className="step-number">1</span><span className="step-label">Open a new drawing &gt; Save as Drawing Number.</span></div>
-            </div>
-            <div className={`${getStepClass('s1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
-              <div className="step-header"><span className="step-number">2</span><span className="step-label">Create Base: <strong>Arrange Box</strong> (16 x 100 x 210) at Origin.</span></div>
-              <div className="screenshot-wrapper mt-4"><img src={arrangeBoxTool} alt="Arrange Box" className="software-screenshot" style={{width: '250px'}} /></div>
-            </div>
-            <div className={`${getStepClass('s1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
-              <div className="step-header"><span className="step-number">3</span><span className="step-label">Select <strong>Arrange Machine Part</strong>.</span></div>
-            </div>
-            <div className={`${getStepClass('s1-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="step-header"><span className="step-number">4</span><span className="step-label">Place Hole &gt; Use <strong>Muhenkan + Q</strong> for orientation.</span></div>
-            </div>
-            <div className={`${getStepClass('s1-5')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="step-header"><span className="step-number">5</span><span className="step-label">Move Hole: Y-pos = <strong>183.00mm</strong>.</span></div>
+            {/* Step 3 */}
+            <div className={`${getStepClass('s1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginTop: "-2rem"}}>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">3</span>
+                <span className="step-label">Select and Arrange Machine Part</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div className="screenshot-wrapper mb-4">
+                  <img src={machinePartTool} alt="Machine Part Tool" className="software-screenshot" style={{ width: '900px' }} />
+                </div>
+              </div>
             </div>
 
-            {/* Steps 6-11 */}
-            <div className="section-divider"></div>
-            <div className={`${getStepClass('s1-6')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="step-header"><span className="step-number">6</span><span className="step-label">Long Hole: <strong>Arrange Box</strong> (14 x 38) &gt; <strong>Subtract</strong>.</span></div>
-              <div className="screenshot-wrapper mt-4"><img src={subtractResult} alt="Subtract Result" className="software-screenshot" style={{width: '500px'}} /></div>
+            {/* Step 4 */}
+            <div className={`${getStepClass('s1-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{marginTop: "-2rem"}}>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">4</span>
+                <span className="step-label">Point the hole on the face where the hole is located.</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                  <p className="p-flush">Press </p>
+                  <img src={pressQIcon} alt="Muhenkan + Q" style={{ height: '30px', margin: '0 0.5rem' }} />
+                  <p className="p-flush"> to make the tool change its orientation.</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                  <p className="p-flush">Click on the center point </p>
+                  <img src={centerTool} alt="Center Tool" style={{ height: '20px', margin: '0 0.5rem' }} />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                  <p className="p-flush">Left-click on the selected point &gt; GO </p>
+                  <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                </div>
+                <div className="screenshot-wrapper">
+                  <img src={opSample1} alt="Placed Hole" className="software-screenshot" style={{ height: '300px' }} />
+                </div>
+              </div>
             </div>
-            <div className={`${getStepClass('s1-7')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="step-header"><span className="step-number">7</span><span className="step-label">Fillet Edge: Radius = <strong>7mm</strong>.</span></div>
-              <div className="screenshot-wrapper mt-4"><img src={filletResult} alt="Fillet Result" className="software-screenshot" style={{width: '400px'}} /></div>
+
+            {/* Step 5 */}
+            <div className={`${getStepClass('s1-5')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "-2rem"}}>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">5</span>
+                <span className="step-label">Move Component</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div className="screenshot-wrapper mb-4">
+                  <img src={moveTool} alt="Move Tool" className="software-screenshot" style={{ height: '100px' }} />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                  <p className="p-flush">Select the hole component &gt; GO </p>
+                  <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                </div>
+                <p className="p-flush">INPUT: MOVELENGX = 0</p>
+                <p className="p-flush" style={{ paddingLeft: '4rem' }}>MOVELENGY = 183mm</p>
+                <p className="p-flush" style={{ paddingLeft: '4rem' }}>MOVELENGZ = 0</p>
+              </div>
+              <div className="screenshot-wrapper">
+                  <img src={opSample1Move} alt="Move Hole" className="software-screenshot" style={{ height: '300px', marginLeft: "25rem", marginTop: "-20rem" }} />
+                </div>
             </div>
-            <div className={`${getStepClass('s1-8')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-              <div className="step-header"><span className="step-number">8</span><span className="step-label"><strong>Copy Component</strong> tool.</span></div>
+
+            {/* Step 6 */}
+            <div className={`${getStepClass('s1-6')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">6</span>
+                <span className="step-label">For making long hole details, first create a tool entity.</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <p className="p-flush">Arrange Box</p>
+                <p className="p-flush">INPUT: Depth = 16mm</p>
+                <p className="p-flush" style={{ paddingLeft: '3.9rem' }}>Width = 14mm</p>
+                <p className="p-flush" style={{ paddingLeft: '3.9rem' }}>Height = 38mm</p>
+                <p className="p-flush mt-4">Position the tool entity on the location to be cut</p>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', marginTop: '-3rem' }}>
+                  <p className="p-flush">Use subtract to create the cut. </p>
+                  <div className="screenshot-wrapper" style={{ marginLeft: '1rem', padding: '0.2rem', marginTop: "4rem" }}>
+                    <img src={booleanSubtractIcon} alt="Subtract Tool" className="software-screenshot" style={{ height: '80px' }} />
+                  </div>
+                </div>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={subtractResult} alt="Subtract Result" className="software-screenshot" style={{ height: '300px' }} />
+                </div>
+              </div>
             </div>
-            <div className={`${getStepClass('s1-9')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
-              <div className="step-header"><span className="step-number">9</span><span className="step-label"><strong>Chamfer Edge</strong>.</span></div>
+
+            {/* Step 7 */}
+            <div className={`${getStepClass('s1-7')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">7</span>
+                <span className="step-label">FilletEdge</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div className="screenshot-wrapper mb-4">
+                  <img src={filletTool} alt="Fillet Tool" className="software-screenshot" style={{ height: '150px', marginBottom: "1rem" }} />
+                </div>
+                <p className="p-flush">SetRadius = 7mm</p>
+                <div style={{ display: 'flex', alignItems: 'center'}}>
+                  <p className="p-flush">Pick all the edges to be filleted &gt; GO </p>
+                  <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                </div>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={filletResult} alt="Fillet Result" className="software-screenshot" style={{ height: '300px', marginTop: "1rem" }} />
+                </div>
+              </div>
             </div>
-            <div className={`${getStepClass('s1-10')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9">
-              <div className="step-header"><span className="step-number">10</span><span className="step-label"><strong>Create 3D Part</strong>.</span></div>
+
+            {/* Step 8 */}
+            <div className={`${getStepClass('s1-8')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">8</span>
+                <span className="step-label">Copy Component</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div className="screenshot-wrapper mb-4">
+                  <img src={copyTool} alt="Copy Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
+                </div>
+                <div className="screenshot-wrapper mt-4 mb-4">
+                  <img src={copyResult} alt="Copy Result" className="software-screenshot" style={{ width: '900px' }} />
+                </div>
+               
+              </div>
             </div>
-            <div className={`${getStepClass('s1-11')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10">
-              <div className="step-header"><span className="step-number">11</span><span className="step-label">Set <strong>3D Properties</strong>.</span></div>
+
+            {/* Step 9 */}
+            <div className={`${getStepClass('s1-9')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">9</span>
+                <span className="step-label">Chamfer Edge</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div className="screenshot-wrapper mb-4">
+                  <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
+                </div>
+                <p className="p-flush">SetChamfer Length = 20mm</p>
+                <div style={{ display: 'flex', alignItems: 'center'}}>
+                  <p className="p-flush">Select all edges to be chamfered &gt; GO </p>
+                  <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                </div>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={chamferResult} alt="Chamfer Result" className="software-screenshot" style={{ height: '300px', marginTop: "1rem" }} />
+                </div>
+              </div>
             </div>
+
+            {/* Step 10 */}
+            <div className={`${getStepClass('s1-10')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">10</span>
+                <span className="step-label">Create 3D PartName</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div className="screenshot-wrapper mb-4">
+                  <img src={createPartTool} alt="Create Part Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center'}}>
+                  <p className="p-flush">Select the entity &gt; GO </p>
+                  <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                </div>
+                <p className="p-flush">Enter the 3D Part Name</p>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={enterPartName} alt="Enter Part Name" className="software-screenshot" style={{ width: '300px', marginTop: "1rem"   }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Step 11 */}
+            <div className={`${getStepClass('s1-11')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">11</span>
+                <span className="step-label">Check the properties of the Top 3D Part</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={propertiesWindow} alt="Properties Window" className="software-screenshot" style={{ width: '900px' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Step 12 */}
+            <div className={`${getStepClass('s1-12')} ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">12</span>
+                <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={layerInfo} alt="Layer Information" className="software-screenshot" style={{ width: "900px" }} />
+                  </div>
+              </div>
+            </div>
+
+            {/* Step 13 */}
+            <div className={`${getStepClass('s1-13')} ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12"  style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">13</span>
+                <span className="step-label">Save the file</span>
+              </div>
+              <div style={{ marginLeft: "3rem" }}>
+                <p className="p-flush">File &gt; Save</p>
+              </div>
+            </div>
+
           </div>
         )}
 
         {activeTab === 'sample2' && (
           <div className="lesson-card tab-content fade-in">
-            <div className="card-header">
-              <h4>OPERATION SAMPLE (2) - SHAFT</h4>
+            <div className="card-header" style={{ marginBottom: "2rem" }}>
+              <h4>LET US TRY THIS DRAWING SAMPLE</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample2Steps)} onStop={stop} />
             </div>
 
-            <div className="instruction-box">
-              <div className="content-placeholder" style={{ padding: '2rem', textAlign: 'center', opacity: 0.6 }}>
-                <p>Technical drawing for Sample 2 (Shaft) will be provided soon.</p>
+            {/* Step 1 */}
+            <div className={`${getStepClass('s2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0" style={{marginBottom: "-3rem", marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">1</span>
+                <span className="step-label">Open a new drawing</span>
+              </div>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Go to File &gt; New</p>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Save the drawing</p>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name &gt; Press Save</p>
+              <p className="p-flush red-text" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>*Check if Normal or Mirror Part(See Mirrored Part lesson tab)</p>
+            </div>
+
+            {/* Step 2 */}
+            <div className={`${getStepClass('s2-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{marginTop: "-3rem"}}>
+              <div className="step-header" style={{ marginBottom: "1rem" }}>
+                <span className="step-number">2</span>
+                <span className="step-label" style={{marginTop: "2rem"}}>In order to create this part, it must be done by segments. Segments must be attach together after modeling.</span>
+              </div>
+              <div className="screenshot-wrapper mt-4">
+                <img src={segmentOverview} alt="Segment Overview" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
+              </div>
+
+              {/* Segments A and B */}
+              <div className="flex-row-wrap mt-8" style={{ gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
+                <div style={{ flex: "1", marginBottom: "3rem"}}>  
+                  <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT A</u></p>
+                  <p className="p-flush red-text" style={{ marginTop: "1rem" }}>Use Arrange Cylinder</p>
+                  <p className="p-flush" style={{ marginTop: "0rem" }}>Create 3 cylinders to make the retainer ring groove &gt; [UNION]</p>
+                  <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 1: Diameter = 20mm    Height= 3.65mm    Coordinates (0,0,0)</p>
+                  <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 2: Diameter = 19mm    Height= 1.35mm</p>
+                  <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 3: Diameter = 20mm    Height= 64.5mm</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={segmentAResult} alt="Segment A" className="software-screenshot" style={{ width: "900px", height: "auto", marginTop: "1rem"}} />
+                  </div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT B</u></p>
+                  <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Use Arrange Cylinder</p>
+                  <p className="p-flush">INPUT: Diameter = 30mm</p>
+                  <p className="p-flush" style={{marginLeft: "3.5rem"}}>Height = 22.25mm</p>
+                  <p className="p-flush" style={{marginLeft: "3.5rem"}}>Use Center tool &gt; Attach to Segment A</p>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={segmentBResult} alt="Segment B" className="software-screenshot" style={{ width: "500px", height: "auto", marginTop: "1rem", marginBottom: "2rem"}} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Segment C */}
+              <div className="mt-8">
+                <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT C</u></p>
+                <p className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required<br />dimensions precisely. Dimensions enclosed in parentheses are close but not exact with the original dimension.</p>
+                <div className="screenshot-wrapper mt-4">
+                  <img src={mainDrawing3} alt="Segment C Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "400px", marginTop: "1rem", marginBottom: "2rem" }}  />
+                </div>
+                
+                <div className="screenshot-wrapper mt-4">
+                  <img src={workPlaneImg} alt="Work Plane" className="software-screenshot" style={{ width: "900px", marginBottom: "2rem" }} />
+                </div>
+
+                  <div className="screenshot-wrapper">
+                    <img src={revolveImg} alt="Revolve Result" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
+                  </div>            
               </div>
             </div>
 
-            <div className="section-divider"></div>
-
-            <div className={`${getStepClass('s2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-              <div className="step-header"><span className="step-number">1</span><span className="step-label">Open & Save drawing.</span></div>
-            </div>
-            <div className={`${getStepClass('s2-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
-              <div className="step-header"><span className="step-number">2</span><span className="step-label">Create Segments A-E. (See detailed tabs for segments).</span></div>
-            </div>
-            <div className={`${getStepClass('s2-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
-              <div className="step-header"><span className="step-number">3</span><span className="step-label">Use <strong>Boolean Union</strong> to join all parts.</span></div>
-              <div className="screenshot-wrapper mt-4"><img src={unionTool} alt="Union Tool" className="software-screenshot" style={{width: '200px'}} /></div>
-            </div>
-            <div className={`${getStepClass('s2-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="step-header"><span className="step-number">4</span><span className="step-label">Arrange <strong>Keyway Box</strong> (6 x 3.5 x 43).</span></div>
-            </div>
-            <div className={`${getStepClass('s2-5')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="step-header"><span className="step-number">5</span><span className="step-label"><strong>Boolean Subtract</strong> keyway.</span></div>
-            </div>
-            <div className={`${getStepClass('s2-6')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="step-header"><span className="step-number">6</span><span className="step-label">Apply final fairing and symbols.</span></div>
-            </div>
-            <div className={`${getStepClass('s2-7')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="step-header"><span className="step-number">7</span><span className="step-label">Finalize 3D Part.</span></div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'sample3' && (
-          <div className="lesson-card tab-content fade-in">
-            <div className="card-header">
-              <h4>SAMPLE 3 - SHAFT SEGMENTS</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample3Steps)} onStop={stop} />
-            </div>
-            <div className="instruction-box">
-              <img src={segmentOverview} alt="Segment Overview" className="software-screenshot" style={{width: '900px'}} />
-            </div>
-            <div className="section-divider"></div>
-            <div className={`${getStepClass('s3-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
-              <div className="step-header"><span className="step-number">3</span><span className="step-label">Segment A: C1: 20x3.65, C2: 19x1.35, C3: 20x64.5.</span></div>
-              <img src={segmentAResult} alt="Segment A" className="software-screenshot mt-4" style={{width: '900px'}} />
-            </div>
-            <div className={`${getStepClass('s3-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="step-header"><span className="step-number">4</span><span className="step-label">Segment B: 30 Dia x 22.25 H. Use <strong>Center Tool</strong>.</span></div>
-              <img src={segmentBResult} alt="Segment B" className="software-screenshot mt-4" style={{width: '400px'}} />
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'sample4' && (
-          <div className="lesson-card tab-content fade-in">
-            <div className="card-header">
-              <h4>SAMPLE 4 - REVOLVE & KEY GROOVE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample4Steps)} onStop={stop} />
-            </div>
-            <div className={`${getStepClass('s4-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-              <div className="step-header"><span className="step-number">1</span><span className="step-label">Segment C: Sketch on Work Plane and <strong>Revolve</strong>.</span></div>
-              <div style={{display: 'flex', gap: '2rem', marginTop: '1rem'}}>
-                <img src={workPlaneImg} alt="Work Plane" className="software-screenshot" style={{width: '200px'}} />
-                <img src={sketchImg} alt="Sketch" className="software-screenshot" style={{width: '400px'}} />
+            {/* Step 3 */}
+            <div className={`${getStepClass('s2-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">3</span>
+                <span className="step-label">Join all segments. &gt; Use <span className="red-text">UNION</span></span>
               </div>
             </div>
-            <div className="section-divider"></div>
-            <div className={`${getStepClass('s4-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="step-header"><span className="step-number">4</span><span className="step-label">Key Groove: Tool Box (6 x 3.5 x 43).</span></div>
-              <img src={keyGroovePos} alt="Key Groove Positioning" className="software-screenshot mt-4" style={{width: '900px'}} />
-            </div>
-          </div>
-        )}
 
-        {activeTab === 'sample5' && (
-          <div className="lesson-card tab-content fade-in">
-            <div className="card-header">
-              <h4>SAMPLE 5 - FINAL FINISHING</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(opSample5Steps)} onStop={stop} />
+            {/* Step 4 */}
+            <div className={`${getStepClass('s2-4')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>
+              <div className="step-header">
+                <span className="step-number">4</span>
+                <span className="step-label">For Key Groove</span>
+              </div>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Create the tool entity first</p>
+              <div className="screenshot-wrapper mt-4">
+                <img src={keyGrooveBox} alt="Key Groove Box" className="software-screenshot" style={{ width: "900px" }} />
+              </div>
             </div>
-            <div className={`${getStepClass('s5-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-              <div className="step-header"><span className="step-number">1</span><span className="step-label">Final Fairings: Radius = <strong>3mm</strong>.</span></div>
-              <img src={keyGrooveFilletResult} alt="Fillet Result" className="software-screenshot mt-4" style={{width: '900px'}} />
+
+            {/* Step 5 */}
+            <div className={`${getStepClass('s2-5')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4"  style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">5</span>
+                <span className="step-label">Subtract the tool entity</span>
+              </div>
+              <div className="flex-row-wrap mt-4" style={{ gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
+                <div style={{ flex: 1 }}>
+                  <div className="screenshot-wrapper mt-4">
+                    <img src={keyGrooveSubtractResult} alt="Key Groove Subtract" className="software-screenshot" style={{ width: "900px" }} />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="section-divider"></div>
-            <div className={`${getStepClass('s5-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
-              <div className="step-header"><span className="step-number">3</span><span className="step-label">Final Review.</span></div>
-              <img src={finalPartFairing} alt="Final Part" className="software-screenshot mt-4" style={{width: '500px'}} />
+
+            {/* Step 6 */}
+            <div className={`${getStepClass('s2-6')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">6</span>
+                <span className="step-label">Add all Fairings (Chamfer and Fillet)</span>
+              </div>
+              <div className="screenshot-wrapper mt-4">
+                <img src={finalPartFairing} alt="Final Part" className="software-screenshot" style={{ width: "900px" }} />
+              </div>
+            </div>
+
+            {/* Step 7 */}
+            <div className={`${getStepClass('s2-7')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">7</span>
+                <span className="step-label">Create 3D Part Name</span>
+              </div>
+            </div>
+
+            {/* Step 8 */}
+            <div className={`${getStepClass('s2-8')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">8</span>
+                <span className="step-label">Check the properties of the Top 3D Part</span>
+              </div>
+            </div>
+
+            {/* Step 9 */}
+            <div className={`${getStepClass('s2-9')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">9</span>
+                <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
+              </div>
+            </div>
+
+            {/* Step 10 */}
+            <div className={`${getStepClass('s2-10')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{marginTop: "-2rem"}}>
+              <div className="step-header">
+                <span className="step-number">10</span>
+                <span className="step-label">Save the file</span>
+              </div>
+              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>File &gt; Save</p>
             </div>
           </div>
         )}
@@ -320,7 +552,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
         <div className="lesson-navigation">
           <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
           <button className="nav-button next" onClick={handleNext}>
-            {activeTab === 'sample5' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+            {activeTab === 'sample2' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
           </button>
         </div>
       </div>

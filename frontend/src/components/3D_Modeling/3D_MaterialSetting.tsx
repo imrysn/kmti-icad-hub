@@ -132,16 +132,15 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
-                  <span className="step-label">Select the entity/entities &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 4px' }} />
+                  <span className="step-label" style={{ marginTop: "-1.5em" }}>Select the entity/entities &gt; <strong className="text-highlight">GO</strong>
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               {/* Step 3 */}
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{marginTop: "-2rem"}}>
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Select the material from the list &gt; <strong className="text-highlight">OK</strong></span>
@@ -149,12 +148,10 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="step-description">
                   <p className="p-flush mb-4">The window displays the material notation, specific gravity, and default color. Use <strong className="text-highlight">White</strong> for materials without a specific color code.</p>
                   <div className="screenshot-wrapper">
-                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot screenshot-wide" />
+                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot" style={{ width: '900px', marginTop: "1rem" }} />
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider"></div>
 
               {/* Step 4 */}
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
@@ -169,8 +166,6 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider"></div>
 
               {/* Step 5 */}
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
@@ -201,13 +196,13 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
               <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="screenshot-wrapper">
-                  <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" />
+                  <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" style={{marginBottom: "1rem"}}/>
                 </div>
                 <div className="instruction-box instruction-box--warning mt-8">
                   <p className="p-flush"> On ICAD, <strong className="red-text">S35C</strong> is not included on the material list. In this case, we can use <strong className="red-text">S45C</strong> as material on 3D. In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is used as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same. </p>
                 </div>
                 <div className="screenshot-wrapper mt-8">
-                  <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" />
+                  <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" style={{marginTop: "1rem"}} />
                 </div>
               </div>
 

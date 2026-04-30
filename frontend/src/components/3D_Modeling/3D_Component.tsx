@@ -364,7 +364,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label">Select the component to be duplicated &gt; GO
+                <span className="step-label" style={{marginTop: "-1.5rem"}}>Select the component to be duplicated &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
@@ -463,7 +463,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
               <div className="screenshot-wrapper">
                 <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
               </div>
-              <span style={{ marginTop: "-2rem" }}>Same procedure with Mirror Component</span>
+              <span style={{ marginTop: "2rem" }}>Same procedure with Mirror Component</span>
 
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
