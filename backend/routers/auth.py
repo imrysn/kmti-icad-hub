@@ -281,17 +281,21 @@ def submit_quiz_score(
         # Increment attempt counter
         existing_score.attempts_count = (existing_score.attempts_count or 0) + 1
         
-        # Update score only if the new one is higher
+        # Update best score only if the new one is higher
         if submission.score > existing_score.score:
             existing_score.score = submission.score
             existing_score.completed_at = datetime.now(timezone.utc)
     else:
+        now = datetime.now(timezone.utc)
         new_score = QuizScore(
             user_id=str(current_user.id),
             course_id=submission.course_id,
             lesson_id=submission.lesson_id,
             score=submission.score,
-            completed_at=datetime.now(timezone.utc)
+            first_attempt_score=submission.score,
+            attempts_count=1,
+            completed_at=now,
+            first_attempt_at=now
         )
         db.add(new_score)
     
@@ -308,7 +312,8 @@ def submit_quiz_score(
                     quiz_id=quiz.id,
                     question_id=ans.question_id,
                     chosen_option=ans.chosen_option,
-                    is_correct=ans.is_correct
+                    is_correct=ans.is_correct,
+                    seconds_spent=ans.seconds_spent
                 )
                 db.add(attempt)
             db.commit()

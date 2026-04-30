@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Search, Plus, Edit2, Trash2, ChevronRight, ChevronLeft, Save, X, CheckCircle2, AlertCircle, List, FileText } from 'lucide-react';
 import { adminService, Quiz, Question } from '../../../services/adminService';
 import { useUI } from '../../../context/UIContext';
 import { useNotification } from '../../../context/NotificationContext';
-import { ICAD_2D_LESSONS, ICAD_3D_LESSONS } from '../../mentor/mentorConstants';
+import { useLessons } from '../../../hooks/useLessons';
 import '../../../styles/AssessmentManagement.css';
 
 export const AssessmentManagement: React.FC = () => {
@@ -61,6 +61,10 @@ export const AssessmentManagement: React.FC = () => {
             localStorage.removeItem('kmti_adminSelectedQuizId');
         }
     }, [selectedQuiz]);
+    
+    // Fetch lessons for ordering
+    const { lessons: currentLessons } = useLessons(assessmentTab === '3D_Modeling' ? 1 : 2);
+    
     const [isEditingQuiz, setIsEditingQuiz] = useState(false);
     const [isEditingQuestion, setIsEditingQuestion] = useState(false);
     const [currentQuiz, setCurrentQuiz] = useState<Partial<Quiz>>({});
@@ -229,10 +233,18 @@ export const AssessmentManagement: React.FC = () => {
         }
     };
 
-    // Define the canonical orders based on mentorConstants
-    const drawingOrder = ICAD_2D_LESSONS.map(l => l.id);
-    const modelingOrder = ICAD_3D_LESSONS.map(l => l.id);
-    const globalOrder = [...drawingOrder, ...modelingOrder];
+    // Define the canonical orders based on DB lessons
+    const globalOrder = useMemo(() => {
+        const ids: string[] = [];
+        const traverse = (list: any[]) => {
+            list.forEach(l => {
+                ids.push(l.id);
+                if (l.children) traverse(l.children);
+            });
+        };
+        traverse(currentLessons);
+        return ids;
+    }, [currentLessons]);
 
     const filteredQuizzes = quizzes
         .filter(q => {
@@ -253,8 +265,7 @@ export const AssessmentManagement: React.FC = () => {
         });
 
     const getOrderDisplay = (quiz: Quiz) => {
-        const orderList = quiz.course_type === '2D_Drawing' ? drawingOrder : modelingOrder;
-        const index = orderList.indexOf(quiz.slug);
+        const index = globalOrder.indexOf(quiz.slug);
         return index !== -1 ? `#${index + 1}` : null;
     };
 

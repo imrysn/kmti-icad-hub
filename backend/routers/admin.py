@@ -129,15 +129,28 @@ def get_all_trainee_progress(
                 "course_id": q.course_id,
                 "lesson_id": q.lesson_id,
                 "score": q.score,
+                "first_attempt_score": q.first_attempt_score,
                 "attempts_count": q.attempts_count,
-                "completed_at": q.completed_at
+                "completed_at": q.completed_at,
+                "first_attempt_at": q.first_attempt_at
             } for q in user_scores
         ]
         
-        # Calculate average score in memory
+        # Calculate Weighted Mastery Index
+        # Formula: (Best Score) * Efficiency Factor
+        # Efficiency Factor: 1.0 (1-2 attempts), 0.9 (3-5), 0.75 (6-9), 0.6 (10+)
+        weighted_scores = []
+        for q in user_scores:
+            efficiency_factor = 1.0
+            if q.attempts_count > 9: efficiency_factor = 0.6
+            elif q.attempts_count >= 6: efficiency_factor = 0.75
+            elif q.attempts_count >= 3: efficiency_factor = 0.9
+            
+            weighted_scores.append(q.score * efficiency_factor)
+            
         avg_score = 0
-        if user_scores:
-            avg_score = sum(q.score for q in user_scores) / len(user_scores)
+        if weighted_scores:
+            avg_score = sum(weighted_scores) / len(weighted_scores)
         
         results.append({
             "id": user.id,
@@ -145,7 +158,8 @@ def get_all_trainee_progress(
             "full_name": user.full_name,
             "last_login": user.last_login,
             "completed_lessons": len(user_progress),
-            "average_score": round(float(avg_score), 1),
+            "average_score": round(float(avg_score), 1), # This is now the Weighted Mastery Index
+            "raw_average_score": round(float(sum(q.score for q in user_scores) / len(user_scores)), 1) if user_scores else 0,
             "lessons_history": lessons,
             "quizzes_history": quizzes
         })
@@ -1108,4 +1122,59 @@ def get_question_performance(db: Session = Depends(get_db), admin: User = Depend
         })
     
     return sorted(results, key=lambda x: x["accuracy"])
+
+
+@router.get("/trainee/{user_id}/attempts/{quiz_slug}")
+def get_trainee_quiz_attempts(
+    user_id: int,
+    quiz_slug: str,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
+    """Get detailed question-by-question attempts for a trainee in a specific quiz"""
+    # 1. Find the quiz
+    quiz = db.query(Quiz).filter(Quiz.slug == quiz_slug).first()
+    if not quiz:
+        raise HTTPException(status_code=404, detail="Quiz not found")
+        
+    # 2. Get questions for this quiz
+    questions = db.query(Question).filter(Question.quiz_id == quiz.id).order_by(Question.order).all()
+    
+    # 3. Get all attempts for this user and quiz
+    attempts = db.query(QuestionAttempt).filter(
+        QuestionAttempt.user_id == user_id,
+        QuestionAttempt.quiz_id == quiz.id
+    ).order_by(QuestionAttempt.attempted_at.desc()).all()
+    
+    # Map latest attempts to question IDs
+    attempts_map = {}
+    for a in attempts:
+        if a.question_id not in attempts_map:
+            attempts_map[a.question_id] = a
+    
+    results = []
+    for q in questions:
+        attempt = attempts_map.get(q.id)
+        
+        # Parse options safely
+        try:
+            options = json.loads(q.options_json) if q.options_json else []
+        except:
+            options = []
+            
+        results.append({
+            "question_text": q.text,
+            "explanation": q.explanation,
+            "options": options,
+            "correct_answer_index": q.correct_answer,
+            "user_answer_index": attempt.chosen_option if attempt else None,
+            "is_correct": attempt.is_correct if attempt else False,
+            "seconds_spent": attempt.seconds_spent if attempt else 0,
+            "attempted_at": attempt.attempted_at if attempt else None
+        })
+        
+    return {
+        "quiz_title": quiz.title,
+        "attempts": results
+    }
 

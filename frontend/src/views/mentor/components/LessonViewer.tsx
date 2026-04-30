@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
 import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2 } from 'lucide-react'; import { Course } from '../../../types';
 import { useUI } from '../../../context/UIContext'; import { useAuth } from '../../../hooks/useAuth';
-import { Lesson, Quiz as QuizType } from '../mentorConstants'; import { QuizModal } from './QuizModal';
+import { Lesson } from '../mentorConstants'; import { QuizModal } from './QuizModal';
+import { authService } from '../../../services/authService';
 import api from '../../../services/api';
 import { IntelligenceChatbot } from '../../admin/components/IntelligenceChatbot';
 
@@ -62,8 +63,7 @@ interface LessonViewerProps {
   setSidebarOpen: (open: boolean) => void;
   setSelectedCourse: (course: Course | null) => void;
   getActiveLessonTitle: (lessons: Lesson[], id: string) => string;
-  ICAD_2D_LESSONS: Lesson[];
-  ICAD_3D_LESSONS: Lesson[];
+  lessons: Lesson[];
   completedLessons: string[];
   onLessonComplete: (id?: string) => void;
   isEmployeeSide?: boolean;
@@ -80,8 +80,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   setSidebarOpen,
   setSelectedCourse,
   getActiveLessonTitle,
-  ICAD_2D_LESSONS,
-  ICAD_3D_LESSONS,
+  lessons,
   completedLessons,
   onLessonComplete,
   isEmployeeSide = false
@@ -93,7 +92,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
 
   // Chatbot Resizer & Toggle State
-  const [isChatbotOpen, setIsChatbotOpen] = useState(true);
+  const isTrainee = user?.role === 'trainee';
+  const [isChatbotOpen, setIsChatbotOpen] = useState(!isTrainee);
   const [chatbotWidth, setChatbotWidth] = useState(300);
   const [dbContent, setDbContent] = useState<any[]>([]);
   const [isDbLoading, setIsDbLoading] = useState(false);
@@ -139,6 +139,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     
     // Fetch dynamic content if available
     const fetchDbContent = async () => {
+      if (!activeLessonId) return;
+      
       setIsDbLoading(true);
       try {
         const res = await api.get(`/courses/lesson/${activeLessonId}/content?t=${Date.now()}`);
@@ -150,10 +152,12 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       }
     };
     
-    fetchDbContent();
+    if (activeLessonId) {
+      fetchDbContent();
+    }
     
     // Restore quiz state for this lesson if it was open
-    const savedShowQuiz = localStorage.getItem(`kmti_showQuiz_${activeLessonId}`);
+    const savedShowQuiz = localStorage.getItem(authService.getStorageKey(`showQuiz_${activeLessonId}`));
     if (savedShowQuiz === 'true') {
       // Re-fetch quiz data if we're restoring the session
       const restoreQuiz = async () => {
@@ -197,7 +201,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   // Persist showQuiz state
   useEffect(() => {
     if (activeLessonId) {
-      localStorage.setItem(`kmti_showQuiz_${activeLessonId}`, showQuiz.toString());
+      localStorage.setItem(authService.getStorageKey(`showQuiz_${activeLessonId}`), showQuiz.toString());
     }
   }, [showQuiz, activeLessonId]);
 
@@ -213,7 +217,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     }
   };
 
-  const lessons = is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS;
+    // Use the passed lessons prop
   const findParentAndQuiz = (): { parent: Lesson; isLastSub: boolean } | null => {
     for (const lesson of lessons) {
       if (lesson.id === activeLessonId) {
@@ -288,14 +292,16 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   return (
     <main className="main-content-viewer">
       <div className="sticky-lesson-controls" style={{ justifyContent: 'flex-end', gap: '0.75rem' }}>
-        <button
-          className="exit-course-btn"
-          style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-main)', display: 'flex', alignItems: 'center' }}
-          onClick={() => setIsChatbotOpen(!isChatbotOpen)}
-        >
-          <Brain size={16} style={{ marginRight: '0.5rem' }} />
-          {isChatbotOpen ? 'CLOSE AI' : 'ASSISTANT'}
-        </button>
+        {!isTrainee && (
+          <button
+            className="exit-course-btn"
+            style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-main)', display: 'flex', alignItems: 'center' }}
+            onClick={() => setIsChatbotOpen(!isChatbotOpen)}
+          >
+            <Brain size={16} style={{ marginRight: '0.5rem' }} />
+            {isChatbotOpen ? 'CLOSE AI' : 'ASSISTANT'}
+          </button>
+        )}
         <button className="exit-course-btn" onClick={handleExitCourse}>
           EXIT COURSE
         </button>
@@ -452,8 +458,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
             {/* Premium Quiz Modal */}
             {hasQuiz && (activeQuiz || parentResult?.parent?.quiz) && (
-              <QuizModal isOpen={showQuiz} onClose={() => setShowQuiz(false)}
+              <QuizModal 
+                isOpen={showQuiz} 
+                onClose={() => setShowQuiz(false)}
                 quiz={activeQuiz || parentResult?.parent?.quiz}
+                lessonId={parentResult.parent.id}
                 onComplete={handleQuizComplete}
                 onSuccessContinue={handleQuizSuccessContinue}
               />
@@ -462,7 +471,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
         </div> {/* End of lesson-scroll-area */}
 
-        {isChatbotOpen && (
+        {!isTrainee && isChatbotOpen && (
           <>
             <div
               className="chatbot-resizer"

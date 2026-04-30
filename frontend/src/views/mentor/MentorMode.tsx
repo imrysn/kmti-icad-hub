@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
-import { Lesson, ICAD_2D_LESSONS, ICAD_3D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
+import { useLessons } from '../../hooks/useLessons';
+import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
 
 // Extracted Components
 import { CourseSelector } from './components/CourseSelector'; import { MentorSidebar } from './components/MentorSidebar';
@@ -35,16 +36,71 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const [isRestored, setIsRestored] = useState(false);
     const lastCourseIdRef = useRef<string | null>(null);
 
+    // Prerequisite State (3D Completion for 2D Course)
+    const [is3DCompleted, setIs3DCompleted] = useState(false);
+    const [isCheckingPrereq, setIsCheckingPrereq] = useState(true);
+
+    // Count completable 3D modules once
+    const completable3DCount = useMemo(() => {
+        let count = 0;
+        const traverse = (list: Lesson[]) => {
+            list.forEach(l => {
+                if (l.quiz) count++;
+                if (l.children) traverse(l.children);
+            });
+        };
+        traverse(ICAD_3D_LESSONS);
+        return count;
+    }, []);
+
+    // Auth info for bypass
+    const user = authService.getStoredUser();
+    const canBypass = isEmployeeSide || user?.role === 'admin' || user?.role === 'employee';
+
     // Derived stable state
-    const currentLessons = useMemo(() => is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS, [is2DDrawingCourse]);
+    const { lessons: dbLessons, loading: lessonsLoading, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
+
+    const currentLessons = useMemo(() => {
+        if (!selectedCourse) return [];
+        if (is2DDrawingCourse) return ICAD_2D_LESSONS;
+        if (selectedCourse.id.toString() === '1') return ICAD_3D_LESSONS;
+        return dbLessons;
+    }, [selectedCourse, is2DDrawingCourse, dbLessons]);
+
+    const allLessonIds = useMemo(() => {
+        const ids: string[] = [];
+        const traverse = (list: Lesson[]) => {
+            list.forEach(l => {
+                if (l.children && l.children.length > 0) {
+                    traverse(l.children);
+                } else {
+                    ids.push(l.id);
+                }
+            });
+        };
+        traverse(currentLessons);
+        return ids.length > 0 ? ids : dbLessonIds;
+    }, [currentLessons, dbLessonIds]);
+
+    const completableModuleIds = useMemo(() => {
+        const ids: string[] = [];
+        const traverse = (list: Lesson[]) => {
+            list.forEach(l => {
+                if (l.quiz) ids.push(l.id);
+                if (l.children && l.children.length > 0) traverse(l.children);
+            });
+        };
+        traverse(currentLessons);
+        return ids.length > 0 ? ids : dbCompletableIds;
+    }, [currentLessons, dbCompletableIds]);
 
     // Initial Session Restoration (once courses are available)
     useEffect(() => {
         if (!loading && courses.length > 0 && !isRestored) {
-            const savedCourseId = localStorage.getItem('kmti_selectedCourseId');
-            const savedLessonId = localStorage.getItem('kmti_activeLessonId');
-            const savedExpanded = localStorage.getItem('kmti_expandedIds');
-            const savedSidebar = localStorage.getItem('kmti_sidebarOpen');
+            const savedCourseId = localStorage.getItem(authService.getStorageKey('selectedCourseId'));
+            const savedLessonId = localStorage.getItem(authService.getStorageKey('activeLessonId'));
+            const savedExpanded = localStorage.getItem(authService.getStorageKey('expandedIds'));
+            const savedSidebar = localStorage.getItem(authService.getStorageKey('sidebarOpen'));
 
             if (savedCourseId) {
                 console.log('Restoring course from storage:', savedCourseId);
@@ -66,33 +122,51 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         }
     }, [courses, loading, isRestored]);
 
+    // Prerequisite Check (3D Completion)
+    useEffect(() => {
+        const checkPrereq = async () => {
+            if (canBypass) {
+                setIs3DCompleted(true);
+                setIsCheckingPrereq(false);
+                return;
+            }
+
+            try {
+                // Course ID '1' is 3D Modeling
+                const progress = await authService.getLessonProgress('1');
+                const completedCount = progress.filter((p: any) => p.is_completed).length;
+                
+                // Mark as completed if all quizzes are passed
+                setIs3DCompleted(completedCount >= completable3DCount && completable3DCount > 0);
+            } catch (err) {
+                console.error('Failed to check 3D prerequisite:', err);
+            } finally {
+                setIsCheckingPrereq(false);
+            }
+        };
+
+        if (authService.isAuthenticated()) {
+            checkPrereq();
+        }
+    }, [completable3DCount, canBypass]);
+
     // Session Persistence Sync (Save to LocalStorage)
     useEffect(() => {
         if (isRestored) {
             if (selectedCourse) {
-                localStorage.setItem('kmti_selectedCourseId', selectedCourse.id);
-                localStorage.setItem('kmti_activeLessonId', activeLessonId);
-                localStorage.setItem('kmti_expandedIds', JSON.stringify(Array.from(expandedIds)));
-                localStorage.setItem('kmti_sidebarOpen', sidebarOpen.toString());
+                localStorage.setItem(authService.getStorageKey('selectedCourseId'), selectedCourse.id);
+                localStorage.setItem(authService.getStorageKey('activeLessonId'), activeLessonId);
+                localStorage.setItem(authService.getStorageKey('expandedIds'), JSON.stringify(Array.from(expandedIds)));
+                localStorage.setItem(authService.getStorageKey('sidebarOpen'), sidebarOpen.toString());
             } else {
                 // Clear persistence if we manually return to course selector
-                localStorage.removeItem('kmti_selectedCourseId');
-                localStorage.removeItem('kmti_activeLessonId');
-                localStorage.removeItem('kmti_expandedIds');
-                localStorage.removeItem('kmti_sidebarOpen');
+                localStorage.removeItem(authService.getStorageKey('selectedCourseId'));
+                localStorage.removeItem(authService.getStorageKey('activeLessonId'));
+                localStorage.removeItem(authService.getStorageKey('expandedIds'));
+                localStorage.removeItem(authService.getStorageKey('sidebarOpen'));
             }
         }
     }, [selectedCourse, activeLessonId, expandedIds, sidebarOpen, isRestored]);
-
-    // Derived stable state for lessons (for navigation)
-    const allLessonIds = useMemo(() => currentLessons.flatMap((l: Lesson) =>
-        l.children ? l.children.map((c: { id: string }) => c.id) : [l.id]
-    ), [currentLessons]);
-
-    // Progressable units (Modules with quizzes)
-    const completableModuleIds = useMemo(() => 
-        currentLessons.filter(l => !!l.quiz).map(l => l.id),
-    [currentLessons]);
 
     // Filter completions to only include valid modules for this specific course
     const relevantCompletedCount = useMemo(() => 
@@ -253,7 +327,14 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Render Composition
     if (loading || error || !selectedCourse) {
         return (
-            <CourseSelector courses={courses} loading={loading} error={error} setSelectedCourse={setSelectedCourse} />
+            <CourseSelector 
+                courses={courses} 
+                loading={loading || isCheckingPrereq} 
+                error={error} 
+                setSelectedCourse={setSelectedCourse} 
+                is3DCompleted={is3DCompleted}
+                canBypass={canBypass}
+            />
         );
     }
 
@@ -276,9 +357,25 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     totalLessons={completableModuleIds.length} 
                     completedLessonsCount={relevantCompletedCount}
                     averageScore={averageScore} 
+                    lessons={currentLessons}
                 />
 
-                <LessonViewer is2DDrawingCourse={is2DDrawingCourse} activeLessonId={activeLessonId} currentLessonIndex={currentLessonIndex} allLessonIdsLength={allLessonIds.length} goToNextLesson={goToNextLesson} goToPrevLesson={goToPrevLesson} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} setSelectedCourse={setSelectedCourse} getActiveLessonTitle={getActiveLessonTitle} ICAD_2D_LESSONS={ICAD_2D_LESSONS} ICAD_3D_LESSONS={ICAD_3D_LESSONS} completedLessons={completedLessons} onLessonComplete={fetchProgress} isEmployeeSide={isEmployeeSide} />
+                <LessonViewer 
+                    is2DDrawingCourse={is2DDrawingCourse} 
+                    activeLessonId={activeLessonId} 
+                    currentLessonIndex={currentLessonIndex} 
+                    allLessonIdsLength={allLessonIds.length} 
+                    goToNextLesson={goToNextLesson} 
+                    goToPrevLesson={goToPrevLesson} 
+                    sidebarOpen={sidebarOpen} 
+                    setSidebarOpen={setSidebarOpen} 
+                    setSelectedCourse={setSelectedCourse} 
+                    getActiveLessonTitle={getActiveLessonTitle} 
+                    lessons={currentLessons} 
+                    completedLessons={completedLessons} 
+                    onLessonComplete={fetchProgress} 
+                    isEmployeeSide={isEmployeeSide} 
+                />
             </div>
         </div>
     );
