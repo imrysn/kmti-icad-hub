@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Info, Play } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // --- Assets ---
-import pointerColor from '../../assets/3D_Image_File/standard1pointer_color.png';
-import pointerColorVGroove from '../../assets/3D_Image_File/standard1_pointer_color_vgroove.png';
 import scale2D from '../../assets/3D_Image_File/standard1_scale_2d.png';
 import scale3D from '../../assets/3D_Image_File/standard1_scale_3d.png';
 import scalePointer from '../../assets/3D_Image_File/standard1_scale_pointer.png';
@@ -45,6 +43,17 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
   onNextLesson,
   onPrevLesson
   , nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<"pointer" | "scale">(() => {
+    if (subLessonId !== 'standard-1') return 'pointer';
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'pointer';
+  });
+
+  useEffect(() => {
+    if (subLessonId === 'standard-1') {
+      localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    }
+  }, [subLessonId, activeTab]);
+
   const {
     scrollProgress,
     containerRef,
@@ -52,9 +61,34 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     stop,
     isSpeaking,
     currentIndex
-  } = useLessonCore(subLessonId);
+  } = useLessonCore(subLessonId === 'standard-1' ? `${subLessonId}-${activeTab}` : subLessonId);
 
   const getStepClass = (stepId: string) => "instruction-step";
+
+  const pointerSteps = [
+    "Scale Pointer: Apply these details to both 3D modeling and 2D detailing. The image shows the standard pointer dimensions.",
+    "V-Groove Pointer: Another type of scale pointer uses a V-groove. Ensure this is applied consistently on both 3D and 2D drawings."
+  ];
+
+  const scaleSteps = [
+    "Scale Specifications: On 3D models, text and graduations must be black. On 2D drawings, use yellow for text and skin color for linear graduations."
+  ];
+
+  const handleNext = () => {
+    if (subLessonId === 'standard-1' && activeTab === 'pointer') {
+      setActiveTab('scale');
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+  };
+
+  const handlePrev = () => {
+    if (subLessonId === 'standard-1' && activeTab === 'scale') {
+      setActiveTab('pointer');
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+  };
 
   // --- Content Mapping ---
   const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
@@ -106,8 +140,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
       <section className="lesson-intro">
         <h3 className="section-title">
-          {currentLesson.title}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)}
+          {subLessonId === 'standard-1' ? (activeTab === 'pointer' ? 'Scale Pointer' : 'Scale') : currentLesson.title}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(subLessonId === 'standard-1' ? (activeTab === 'pointer' ? pointerSteps : scaleSteps) : currentLesson.steps)}
             onStop={stop}
           />
         </h3>
@@ -116,77 +150,91 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
         )}
       </section>
 
+      {subLessonId === 'standard-1' && (
+        <div className="lesson-tabs">
+          <button 
+            className={`tab-button ${activeTab === 'pointer' ? 'active' : ''}`}
+            onClick={() => setActiveTab('pointer')}
+          >
+            SCALE POINTER
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'scale' ? 'active' : ''}`}
+            onClick={() => setActiveTab('scale')}
+          >
+            SCALE
+          </button>
+        </div>
+      )}
+
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content">
           {subLessonId === 'standard-1' && (
             <div className="fade-in">
-              <div className="card-header">
-                <h4>SCALE POINTER STANDARDS</h4>
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
-              </div>
-
-              <div className={`${getStepClass("s1-1")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
-                <div className="step-header">
-                  <span className="step-number">1 </span>
-                  <span className="step-label">Apply dimensions to both <strong className="text-highlight">3D Modeling</strong> and <strong className="text-highlight">2D Detailing</strong>.</span>
-                </div>
-                <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                  <div className="screenshot-wrapper">
-                    <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-medium" />
+              {activeTab === 'pointer' && (
+                <>
+                  <div className="card-header">
+                    <h4>SCALE POINTER</h4>
+                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(pointerSteps)} onStop={stop} />
                   </div>
-                  <div className="flex-1">
-                    <p className="p-flush"><strong>Pointer Color:</strong></p>
-                    <p className="p-flush text-highlight" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Red #3</p>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={pointerColor} alt="Pointer Color 3D" className="software-screenshot screenshot-small" />
+
+                  <div className={`${getStepClass("s1-1")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+                    <div className="step-header">
+                      <span className="step-number">1 </span>
+                      <span className="step-label">Based on the image. We must apply it on <strong className='red-text'>3D Modeling</strong> and <strong className='red-text'> 2D Detailing</strong></span>
+                    </div>
+                    <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                      <div className="screenshot-wrapper">
+                        <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot screenshot-medium" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="section-divider"></div>
+                  <div className="section-divider"></div>
 
-              <div className={`${getStepClass("s1-2")} ${currentIndex === 1 ? 'reading-active' : ''}`}>
-                <div className="step-header">
-                  <span className="step-number">2 </span>
-                  <span className="step-label">For <strong className="text-highlight">V-groove</strong> pointers, apply the same standard on 3D and 2D.</span>
-                </div>
-                <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                  <div className="screenshot-wrapper">
-                    <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-medium" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="p-flush"><strong>Pointer Color:</strong></p>
-                    <p className="p-flush text-highlight" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Red #3</p>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-small" />
+                  <div className={`${getStepClass("s1-2")} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                    <div className="step-header">
+                      <span className="step-number">2 </span>
+                      <span className="step-label"><strong className="text-highlight">Another type of </strong><strong className='red-text'>Scale Pointer</strong> is by putting <strong className='red-text'>V-Groove</strong> . We must also apply this on <strong className='red-text'>3D</strong> and <strong className='red-text'> 2D</strong></span>
+                    </div>
+                    <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                      <div className="screenshot-wrapper">
+                        <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-medium" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </>
+              )}
 
-              <div className="section-divider"></div>
+              {activeTab === 'scale' && (
+                <>
+                  <div className="card-header">
+                    <h4>SCALE</h4>
+                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(scaleSteps)} onStop={stop} />
+                  </div>
 
-              <div className={`${getStepClass("s1-3")} ${currentIndex === 2 ? 'reading-active' : ''}`}>
-                <div className="step-header">
-                  <span className="step-number">3 </span>
-                  <span className="step-label">SCALE SPECIFICATIONS</span>
-                </div>
-                <div className="step-description">
-                  <div className="info-box mb-8">
-                    <ul className="list-flush">
-                      <li>On <strong className="text-highlight">3D</strong>: Text and linear graduations must be <strong className="text-highlight">Black</strong>.</li>
-                      <li>On <strong className="text-highlight">2D</strong>: Text must be <strong className="text-highlight">Yellow #4</strong>, linear graduations must be <strong className="text-highlight">Skin Color #15</strong>.</li>
-                    </ul>
+                  <div className={`${getStepClass("s1-3")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+                    <div className="step-header">
+                      <span className="step-number">1 </span>
+                      <span className="step-label">SCALE</span>
+                    </div>
+                    <div className="step-description">
+                      <div className="info-box mb-8">
+                        <ul className="list-flush">
+                          <li>On <strong className="text-highlight">3D</strong>, Text and linear graduations of scale are <strong className='red-text'>black</strong></li>
+                          <li>On <strong className="text-highlight">2D</strong>, Text must be <strong className='red-text'> Yellow #4</strong> and linear graduations of scale must be <strong className="red-text">Skin Color #15</strong>.</li>
+                        </ul>
+                      </div>
+                      <div className="screenshot-wrapper">
+                        <img src={scale2D} alt="Scale in 2D" className="software-screenshot" style={{width: "900px"}} />
+                      </div>
+                      <div className="screenshot-wrapper mt-8">
+                        <img src={scale3D} alt="Scale in 3D" className="software-screenshot" style={{marginTop: "1rem", width: "900px"}} />
+                      </div>
+                    </div>
                   </div>
-                  <div className="screenshot-wrapper">
-                    <img src={scale2D} alt="Scale in 2D" className="software-screenshot screenshot-wide" />
-                  </div>
-                  <div className="screenshot-wrapper mt-8">
-                    <img src={scale3D} alt="Scale in 3D" className="software-screenshot screenshot-wide" />
-                  </div>
-                </div>
-              </div>
+                </>
+              )}
             </div>
           )}
 
@@ -485,8 +533,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

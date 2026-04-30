@@ -291,7 +291,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'properties',
     title: 'Properties',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `properties-${i + 1}`, title: `Properties (${i + 1})` })),
+    children: [{ id: 'properties-1', title: 'Properties' }],
     quiz: {
       title: 'Structural Properties & BOM Metadata',
       description: 'Mastering color coding, naming conventions, and documentation properties.',
@@ -351,7 +351,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'purchase-parts',
     title: '3D Purchase Parts',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `purchase-parts-${i + 1}`, title: `3D Purchase Parts (${i + 1})` })),
+    children: [{ id: 'purchase-parts-1', title: '3D Purchase Parts' }],
     quiz: {
       title: '3D Purchase Parts & STEP Handling',
       description: 'Understanding manual-based workflows for vendor data and external solids.',
@@ -371,8 +371,8 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   },
   {
     id: 'parasolid', // cspell:disable-line
-    title: 'Loading Parasolid', // cspell:disable-line
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `parasolid-${i + 1}`, title: `Loading Parasolid (${i + 1})` })), // cspell:disable-line
+    title: 'Loading of Parasolid', // cspell:disable-line
+    children: [{ id: 'parasolid-1', title: 'Loading Parasolid' }], // cspell:disable-line
     quiz: {
       title: 'Parasolid Kernel Logic',
       description: 'Understanding the mathematical engine driving the iCAD workspace.',
@@ -393,7 +393,9 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'op-sample',
     title: 'Operation Sample',
-    children: Array.from({ length: 5 }, (_, i) => ({ id: `op-sample-${i + 1}`, title: `Operation Sample (${i + 1})` })),
+    children: [
+      { id: 'op-sample-1', title: 'Operation Sample' }
+    ], // cspell:disable-line
     quiz: {
       title: 'Full Workflow Integration Sample',
       description: 'Applying manual-based workflows to finished industrial assemblies.',
