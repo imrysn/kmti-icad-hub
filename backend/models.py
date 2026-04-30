@@ -21,9 +21,11 @@ class QuizScore(Base):
     user_id = Column(String(100), index=True)
     course_id = Column(String(100), index=True)
     lesson_id = Column(String(100), index=True)
-    score = Column(Float)
+    score = Column(Float)  # Best score achieved
+    first_attempt_score = Column(Float, nullable=True)
     attempts_count = Column(Integer, default=1)
-    completed_at = Column(DateTime, nullable=True)
+    completed_at = Column(DateTime, nullable=True) # Time of best score
+    first_attempt_at = Column(DateTime, nullable=True)
 
 class MediaMetadata(Base):
     """Links Excel knowledge base entries to multimedia assets"""
@@ -219,6 +221,7 @@ class QuestionAttempt(Base):
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
     chosen_option = Column(Integer) # Index selected by user
     is_correct = Column(Boolean)
+    seconds_spent = Column(Integer, default=0) # Time taken to answer
     attempted_at = Column(DateTime, default=func.now())
 
 

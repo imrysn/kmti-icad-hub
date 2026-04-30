@@ -29,7 +29,8 @@ export interface TraineeProgress {
     full_name: string;
     last_login: string | null;
     completed_lessons: number;
-    average_score: number;
+    average_score: number; // Weighted Mastery Index
+    raw_average_score?: number;
     lessons_history: {
         course_id: string;
         percentage: number;
@@ -39,8 +40,10 @@ export interface TraineeProgress {
         course_id: string;
         lesson_id: string;
         score: number;
+        first_attempt_score?: number;
         attempts_count: number;
         completed_at: string | null;
+        first_attempt_at?: string | null;
     }[];
 }
 
@@ -249,5 +252,10 @@ export const adminService = {
 
     async closeAllAssessments(userId: number, courseType?: string): Promise<void> {
         await api.post('/admin/close-all-assessments', null, { params: { user_id: userId, course_type: courseType } });
+    },
+
+    async getTraineeQuizAttempts(userId: number, quizSlug: string): Promise<any> {
+        const response = await api.get(`/admin/trainee/${userId}/attempts/${quizSlug}`);
+        return response.data;
     }
 };

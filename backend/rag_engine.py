@@ -18,8 +18,11 @@ class RAGEngine:
         
         Args:
             persist_directory: Path to store ChromaDB data. 
-                              If None, defaults to 'vector_db' inside the backend folder.
+                              If None, checks VECTOR_DB_PATH env or defaults to 'vector_db'.
         """
+        if persist_directory is None:
+            persist_directory = os.getenv("VECTOR_DB_PATH")
+            
         if persist_directory is None:
             # Standardize on absolute path relative to this file
             base_dir = os.path.dirname(os.path.abspath(__file__))

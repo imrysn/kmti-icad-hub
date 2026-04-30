@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, Settings, User as UserIcon, RefreshCw } from 'lucide-react';
+import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff } from 'lucide-react';
 
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -13,6 +13,7 @@ import { BroadcastBanner } from './components/BroadcastBanner';
 import { NotificationSystem } from './components/NotificationSystem';
 import WindowControls from './components/WindowControls';
 import ThemeToggle from './components/ThemeToggle';
+import { getSystemStatus } from './services/api';
 
 import './styles/App.css';
 
@@ -20,6 +21,21 @@ function App() {
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // System Status
+  const [dbStatus, setDbStatus] = useState({ db_mode: 'mysql', nas_reachable: true });
+
+  const fetchStatus = async () => {
+    const status = await getSystemStatus();
+    setDbStatus(status);
+  };
+
+  useEffect(() => {
+    fetchStatus();
+    // Check status every 2 minutes
+    const interval = setInterval(fetchStatus, 120000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Theme Management
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
@@ -105,6 +121,13 @@ function App() {
             {/* 1. BRANDING (Left) */}
             <div className="header-left">
               <div className="app-title">KMTI iCAD Hub</div>
+              
+              {!dbStatus.nas_reachable && (
+                <div className="status-badge local-mode" title="NAS Connection Lost - Progress stored on Server PC">
+                  <WifiOff size={14} />
+                  <span>Local Mode</span>
+                </div>
+              )}
             </div>
 
             {/* 2. NAVIGATION (Center) */}

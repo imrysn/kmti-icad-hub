@@ -22,7 +22,7 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
                             </div>
                             <div className="mastery-score">
                                 <span className="val">{p.average_score}%</span>
-                                <span className="lab">Score</span>
+                                <span className="lab">Mastery Index</span>
                             </div>
                         </div>
                         <div className="card-metrics">

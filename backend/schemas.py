@@ -51,6 +51,7 @@ class QuestionAttemptCreate(BaseModel):
     question_id: int
     chosen_option: int
     is_correct: bool
+    seconds_spent: int = 0
 
 class QuizSubmission(BaseModel):
     course_id: str

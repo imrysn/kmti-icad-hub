@@ -11,7 +11,8 @@ const ProgressCircle: React.FC<{ percentage: number; size?: number; strokeWidth?
 }) => {
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
-    const offset = circumference - (percentage / 100) * circumference;
+    const safePercentage = isNaN(percentage) ? 0 : Math.max(0, Math.min(100, percentage));
+    const offset = circumference - (safePercentage / 100) * circumference;
 
     return (
         <div className={`progress-circle-container ${className}`} style={{ width: size, height: size }}>
@@ -58,6 +59,7 @@ interface MentorSidebarProps {
     totalLessons: number;
     completedLessonsCount: number;
     averageScore: number;
+    lessons: Lesson[];
 }
 
 export const MentorSidebar: React.FC<MentorSidebarProps> = ({
@@ -75,14 +77,15 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     isEmployeeSide = false,
     totalLessons,
     completedLessonsCount,
-    averageScore
+    averageScore,
+    lessons
 }) => {
     // Search State
     const [isSearchOpen, setIsSearchOpen] = useState(false); const [searchTerm, setSearchTerm] = useState('');
     const searchInputRef = useRef<HTMLInputElement>(null);
 
     // Lessons list based on course type
-    const lessons = is2DDrawingCourse ? ICAD_2D_LESSONS : ICAD_3D_LESSONS;
+    // Lessons are now passed as props
 
     // Recursive Deep Filtering Logic with Multi-word support & Inheritance
     const searchTerms = useMemo(() => 
@@ -228,7 +231,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             const isParentCompleted = moduleStatus.isSelfCompleted;
 
                             // Calculate progress percentage for children
-                            const subLessonProgress = lesson.children 
+                             const subLessonProgress = (lesson.children && lesson.children.length > 0)
                                ? (isParentCompleted ? 100 : (lesson.children.filter(c => completedLessons.includes(c.id)).length / lesson.children.length) * 100)
                                : (moduleStatus.isSelfCompleted ? 100 : 0);
 

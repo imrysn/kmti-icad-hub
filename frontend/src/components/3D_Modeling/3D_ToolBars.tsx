@@ -36,6 +36,8 @@ const ICAD_TOOLBARS = [
   { id: "entry-control", title: "Entry Control", description: "The method for entity selection and coordinate entry can be specified", features: ["Entity Selection", "Coordinate Entry", "AP/Magnet Tools"], imageSrc: tbEntryControl, icon: <MousePointer2 size={18} /> },
 ];
 
+import { KaraokeLessonText } from "../KaraokeLessonText";
+
 interface ToolBarsLessonProps {
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -54,34 +56,47 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
   } = useLessonCore('toolbars');
 
   const toolbarNarration = [
-    "iCAD Toolbars: The software features a comprehensive set of toolbars optimized for both 2D and 3D operations. Each toolbar is designed to provide quick access to essential modeling commands.",
-    "Interactive Explorer: Use the interactive toolbar explorer below to see detailed information about each icon group, including File management, View controls, Shading options, and System settings.",
+    "The software features a comprehensive set of toolbars optimized for both 2D and 3D operations. Each toolbar is designed to provide quick access to essential modeling commands.",
+    "Use the interactive toolbar explorer below to see detailed information about each icon group, including File management, View controls, Shading options, and System settings.",
     ...ICAD_TOOLBARS.map(t => `${t.title}: ${t.description}`)
   ];
 
   return (
-    <div className={`course-lesson-container ${isSpeaking && currentIndex < 2 ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-
-      <div className="lesson-grid single-card">
+      {/* Main Interactive Stage */}
+      <div className="lesson-grid interactive-layout single-card">
         <div
-          className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`}
+          className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}
           data-reading-index="0"
         >
           <div className="card-header">
-            <h3>Toolbar Explorer</h3>
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration, 0)} onStop={stop} />
+             <div className="header-with-icon">
+                <div className="icon-box"><Layout size={18} /></div>
+                <h3>Toolbar Explorer</h3>
+             </div>
+             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration, 0)} onStop={stop} />
           </div>
-          <p className="p-flush mb-8">Click through the categories below to explore the function of each toolbar icon group.</p>
 
-          <ToolbarExplorer
-            toolbars={ICAD_TOOLBARS}
-            externalIndex={currentIndex - 2}
-            externalCharIndex={currentCharIndex}
-          />
+          <div className="compact-intro-area">
+            <KaraokeLessonText 
+              text={toolbarNarration[0]} 
+              isActive={isSpeaking && currentIndex === 0} 
+              currentCharIndex={currentCharIndex} 
+              className="p-flush"
+            />
+          </div>
+
+          <div className="interactive-stage-container">
+            <ToolbarExplorer
+              toolbars={ICAD_TOOLBARS}
+              externalIndex={currentIndex - 2}
+              externalCharIndex={currentCharIndex}
+            />
+          </div>
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>

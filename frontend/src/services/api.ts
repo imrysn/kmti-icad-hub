@@ -29,7 +29,6 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         // Token expired or invalid - clear auth and redirect to login
-        // Skip redirect for login attempts so UI can show error message
         const isLoginRequest = error.config.url?.includes('login');
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
@@ -38,7 +37,6 @@ api.interceptors.response.use(
             sessionStorage.removeItem('access_token');
             sessionStorage.removeItem('user');
             
-            // Avoid redundant reloads if already redirecting
             if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
                 window.location.href = '/'; 
             }
@@ -49,6 +47,17 @@ api.interceptors.response.use(
 
 export default api;
 export { api };
+
+// Get system status (DB mode, NAS reachability)
+export const getSystemStatus = async () => {
+    try {
+        const response = await api.get('/api/v1/system/status');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching system status:', error);
+        return { status: 'offline', db_mode: 'unknown', nas_reachable: false };
+    }
+};
 
 // Search knowledge base
 export const searchKnowledgeBase = async (query: string) => {
@@ -65,5 +74,11 @@ export const getCourses = async () => {
 // Get user progress for a course
 export const getUserProgress = async (courseId: string, userId: string) => {
     const response = await api.get(`/courses/${courseId}/progress/${userId}`);
+    return response.data;
+};
+
+// Get hierarchical lessons for a specific course
+export const getCourseLessons = async (courseId: string | number) => {
+    const response = await api.get(`/courses/${courseId}/lessons`);
     return response.data;
 };

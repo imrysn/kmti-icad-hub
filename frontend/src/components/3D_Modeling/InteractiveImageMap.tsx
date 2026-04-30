@@ -40,14 +40,7 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
 }) => {
   const { speak, stop, isSpeaking: isInternalSpeaking, currentCharIndex: internalCharIndex } = useTTS();
   
-  const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(() => {
-    const saved = localStorage.getItem('interactive-map-selected');
-    if (saved) {
-      const id = parseInt(saved, 10);
-      return HOTSPOTS.find(h => h.id === id) || null;
-    }
-    return null;
-  });
+  const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
 
   const isGlobalSpeaking = externalIndex >= 0;
   const isAnySpeaking = isInternalSpeaking || isGlobalSpeaking;
@@ -64,13 +57,11 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
 
   useEffect(() => {
     if (selectedHotspot) {
-      localStorage.setItem('interactive-map-selected', selectedHotspot.id.toString());
       /* Auto-speak only if NOT already being controlled by external index */
       if (!isGlobalSpeaking) {
         speak([`${selectedHotspot.label}: ${selectedHotspot.description}`]);
       }
     } else {
-      localStorage.removeItem('interactive-map-selected');
       if (!isGlobalSpeaking) stop();
     }
   }, [selectedHotspot, speak, stop, isGlobalSpeaking]);

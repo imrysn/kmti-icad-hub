@@ -152,9 +152,25 @@ export const authService = {
      * Logout and clear local storage
      */
     logout() {
+        // Clear session specific items from localStorage
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('kmti_') || key.startsWith('assistant-') || key.startsWith('properties-')) {
+                localStorage.removeItem(key);
+            }
+        });
+        
         sessionStorage.removeItem('access_token');
         sessionStorage.removeItem('user');
         window.location.href = '/login';
+    },
+
+    /**
+     * Get a user-prefixed storage key for state isolation
+     */
+    getStorageKey(baseKey: string): string {
+        const user = this.getStoredUser();
+        const uid = user?.id ?? 'guest';
+        return `kmti_u${uid}_${baseKey}`;
     },
 
     /**

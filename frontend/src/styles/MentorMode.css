@@ -117,6 +117,88 @@
   z-index: 1;
 }
 
+/* ── Locked Course Card ────────────────────────────────────── */
+
+.course-card.locked {
+  cursor: not-allowed;
+  opacity: 0.8;
+  filter: grayscale(0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.course-card.locked:hover {
+  transform: none;
+  box-shadow: var(--shadow-card);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.course-card.locked::after {
+  display: none;
+}
+
+.locked-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 10;
+  border-radius: var(--radius-lg);
+  color: var(--text-white);
+  animation: fadeIn 0.3s ease;
+  padding: 2rem;
+  text-align: center;
+}
+
+.locked-overlay span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fbbf24;
+}
+
+.locked-hint {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6) !important;
+  margin-top: 0.5rem;
+}
+
+.lock-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  padding: 0.4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+}
+
+.course-card button.disabled {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  cursor: not-allowed;
+}
+
 /* ── Layout Core ─────────────────────────────────────────────── */
 
 .course-view-container {
