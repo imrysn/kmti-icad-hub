@@ -113,7 +113,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(importSteps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass('p1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0" style={{ marginBottom:"-2rem"}}>
+              <div className={`${getStepClass('p1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
@@ -125,9 +125,9 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
-              <div className={`${getStepClass('p1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginBottom:"-2rem"}}>
+
+              <div className={`${getStepClass('p1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">The <strong className="text-highlight">Parasolid Link</strong> dialog box will appear.</span>
@@ -140,19 +140,19 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
-              <div className={`${getStepClass('p1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom:"-2rem"}}>
+
+              <div className={`${getStepClass('p1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
-                  <span className="step-label">
+                  <span className="step-label" style={{marginTop: "-1.5rem"}}>
                     Select file &gt; OK &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '35px', margin: '0 4px' }} />
+                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">When the Name Change dialog appears &gt; Click <strong className="text-highlight">Cancel</strong>.</p>
-                  <div className="instruction-box mt-4">
+                  <p className="p-flush" style={{marginBottom: "2rem"}}>When the Name Change dialog appears &gt; Click <strong className="text-highlight">Cancel</strong>.</p>
+                  <div className="instruction-box mt-4" style={{marginBottom: "2rem"}}>
                     <p className="p-flush"><strong>TIP:</strong> Purchase part names must be released on the tree view.</p>
                   </div>
                   <div className="screenshot-wrapper mt-4">
@@ -169,7 +169,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
               </div>
               <p className='p-flush' style={{ marginTop: "-2rem" }}>Optimize the B-Rep solid to reduce overall file size.</p>
 
-              <div className={`${getStepClass('p2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0" style={{ marginBottom:"-2rem"}}>
+              <div className={`${getStepClass('p2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
@@ -197,23 +197,21 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('p2-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom:"-2rem"}}>
+              <div className={`${getStepClass('p2-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
-                  <span className="step-label">
+                  <span className="step-label" style={{marginTop: "-1.5rem"}}>
                     Select the purchase part &gt; <strong className="text-highlight">GO</strong>
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">Check the message pane to verify success.</p>
+                  <p className="p-flush" style={{marginLeft: "3rem", marginTop: "-1rem", marginBottom: "1rem"}}>Check the message pane to verify success.</p>
                   <div className="screenshot-wrapper mt-4">
                     <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot" style={{ width: "450px", marginBottom: "1rem"}} />
                   </div>
                 </div>
               </div>
-
-              <div className="section-divider"></div>
 
               <div className={`${getStepClass('p2-4')} ${currentIndex === 3 || currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
@@ -221,7 +219,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <span className="step-label">Set Part Properties & Information</span>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">Right-click top part &gt; <strong className="text-highlight">Properties</strong> &gt; Enter comments.</p>
+                  <p className="p-flush" style={{marginLeft: "3rem", marginTop: "-1rem", marginBottom: "1rem"}}>Right-click top part &gt; <strong className="text-highlight">Properties</strong> &gt; Enter comments.</p>
                   <div className="screenshot-wrapper mt-4">
                     <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
                   </div>

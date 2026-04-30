@@ -122,10 +122,10 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className={`${getStepClass("li-intro")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
             <div className="card-header"><h4>DETECTION LIST TOOL</h4></div>
-            <div className="step-header">
+            <div className="step-header" style={{marginTop: "2rem"}}>
               <span className="step-number">5 </span>
-              <span className="step-label">Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong>
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 4px' }} />
+              <span className="step-label" style={{marginTop: "-1.5rem"}} >Select the list tool on the icon menu &gt; <strong className="text-highlight">GO</strong>
+                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
               </span>
             </div>
             <div className="step-description mt-4">

@@ -312,7 +312,9 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'annotation',
     title: 'Annotation',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `annotation-${i + 1}`, title: `Annotation (${i + 1})` })),
+    children: [
+      { id: 'annotation-1', title: 'Annotation (1)' }
+    ],
     quiz: {
       title: '3D Annotation & MBD Principles',
       description: 'Understanding technical labeling and Product Manufacturing Information (PMI).',
@@ -416,7 +418,9 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'mirrored',
     title: 'Mirrored Part',
-    children: Array.from({ length: 2 }, (_, i) => ({ id: `mirrored-${i + 1}`, title: `Mirrored Part (${i + 1})` })),
+    children: [
+      { id: 'mirrored-1', title: 'Mirrored Part (1)' }
+    ],
     quiz: {
       title: 'Mirror Symmetry & LH/RH Logic',
       description: 'Understanding Chiral geometry and associative symmetry in iCAD.',
@@ -437,7 +441,11 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'standard',
     title: 'Standard',
-    children: Array.from({ length: 8 }, (_, i) => ({ id: `standard-${i + 1}`, title: `Standard (${i + 1})` })),
+    children: [ 
+      { id: 'standard-1', title: 'Scale Pointer' },
+      { id: 'standard-4', title: 'Screw' },
+      { id: 'standard-6', title: 'Bolt Length ' },
+    ],
     quiz: {
       title: 'iCAD Standard Library & JIS Compliance',
       description: 'Mastering the usage of standardized industrial hardware and components.',

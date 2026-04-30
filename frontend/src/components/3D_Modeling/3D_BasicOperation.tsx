@@ -409,7 +409,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "2rem" }}>Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.</span>
+                <span className="step-label">Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">

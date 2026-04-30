@@ -117,7 +117,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <span> Use to rotate the work plane to X-Y Plane, X-Z, Plane or Y-Z Plane.</span>
-              <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
+              <div className="screenshot-wrapper" style={{ marginTop: "1rem" }}>
                 <img src={openWorkPlaneImg2} alt="Open Work Plane Orientation" className="software-screenshot" style={{ width: '10rem' }} />
               </div>
             </div>
@@ -135,8 +135,8 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4>COMMAND MENU</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(menuSteps)} onStop={stop} />
             </div>
+            <p className="p-flush mb-8" style={{marginTop: "-2rem"}}>Most tools used for sketching on the work plane can be found on the command menu.</p>
             <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-              <p className="p-flush mb-8">Most tools used for sketching on the work plane can be found on the command menu.</p>
               <div className="screenshot-wrapper">
                 <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide" style={{ height: '545px', marginTop: "2rem" }} />
               </div>
