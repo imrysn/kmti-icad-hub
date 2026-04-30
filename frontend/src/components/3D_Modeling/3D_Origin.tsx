@@ -31,7 +31,8 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     containerRef,
     speak,
     stop,
-    isSpeaking
+    isSpeaking,
+    currentIndex
   } = useLessonCore(`${subLessonId}-${activeTab}`);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -88,19 +89,23 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
       </div>
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
+        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
           {activeTab === "projections" ? (
             <div className="fade-in"> 
               <div className="card-header"> 
                 <h4>ORIGIN</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA.projections.steps)} onStop={stop} />
               </div>
-              <p className="p-flush">
-                A point where the coordinates of the X, Y and Z-axis are <strong className="text-highlight">(0, 0, 0)</strong>. It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.
-              </p>
-              <p className="red-text" style={{marginBottom: "3rem", marginTop: "1rem"}}> <strong>※ The origin must be in the same position 3D and 2D </strong></p>  
-              <div className="screenshot-wrapper mt-8">
-                <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide" />
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                <p className="p-flush">
+                  A point where the coordinates of the X, Y and Z-axis are <strong className="text-highlight">(0, 0, 0)</strong>. It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.
+                </p>
+              </div>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                <p className="red-text" style={{marginBottom: "3rem", marginTop: "1rem"}}> <strong>※ The origin must be in the same position 3D and 2D </strong></p>  
+                <div className="screenshot-wrapper mt-8">
+                  <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
             </div>
           ) : (
@@ -111,7 +116,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
               </div>
               <p className="p-flush" style={{marginBottom: "2rem"}}> Use this tool to set or modify the location of the origin.</p>
 
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select the <strong className="red-text">Change 3D Part layout</strong> from the icon menu.</span>
@@ -123,28 +128,36 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 </div>
               </div>
 
-              <div className="instruction-step">
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Right-click to show the <strong className="text-highlight">current location</strong> of the origin.</span>
                 </div>
               </div>
 
-              <div className="instruction-step">
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Left-click on the point of the desired new location of origin.</span>
                 </div>
               </div>
 
-              <div className="instruction-step">
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Left-click on a 2nd point to set the X-axis.</span>
                 </div>
               </div>
 
-              <div className="instruction-step">
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">5 </span>
                   <span className="step-label">Left-click on a 3rd point to set the Y-axis.</span>

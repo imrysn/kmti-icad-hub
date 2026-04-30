@@ -77,7 +77,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -92,64 +92,65 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
         <h3 className="section-title">Fairing</h3>
         <div>
           <div className="screenshot-wrapper mt-4">
-            <img src={chamferIcon} alt="Fairing Menu" className="software-screenshot" style={{ height: '350px'}} />
+            <img src={chamferIcon} alt="Fairing Menu" className="software-screenshot" style={{ height: '350px' }} />
           </div>
         </div>
       </section>
 
       <div className="lesson-grid single-card">
         {activeTab === 'chamfer' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>CHAMFER</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(chamferSteps)} onStop={stop} />
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for creating chamfer dimensions.</p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Chamfer edge</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot" style={{ width: '200px', marginBottom: '-2rem'}}/>
+                  <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot" style={{ width: '200px', marginBottom: '-2rem' }} />
                 </div>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label">Specify chamfer length on the item entry.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={chamferResult} alt="Chamfer Process" className="software-screenshot" style={{ width: '900px', marginBottom: '-2rem'}} />
+                  <img src={chamferResult} alt="Chamfer Process" className="software-screenshot" style={{ width: '900px', marginBottom: '-2rem' }} />
                 </div>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the edge to be chamfered &gt; GO
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the edge to be chamfered &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
 
               <div className="instruction-box" style={{ marginTop: '2rem' }}>
-              <p className="p-flush">
-                <strong className="red-text">Note:</strong> Several edges can be chamfered all at once.
-              </p>
-            </div>
-<div className="section-divider" style={{ margin: "1rem" }}></div>
-            <div className="instruction-step">
-              <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot" style={{ width: '900px'}} />
+                <p className="p-flush">
+                  <strong className="red-text">Note:</strong> Several edges can be chamfered all at once.
+                </p>
               </div>
             </div>
+
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className="section-divider" style={{ margin: "1rem" }}></div>
+              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="screenshot-wrapper mt-8">
+                <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot" style={{ width: '900px' }} />
+              </div>
             </div>
 
             <div className="lesson-navigation">
@@ -160,57 +161,57 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
         )}
 
         {activeTab === 'fillet' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>FILLET</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(filletSteps)} onStop={stop} />
             </div>
-<p className='p-flush' style={{ marginTop: "-2rem" }}>Use for rounding specified corners.</p>
-            
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for rounding specified corners.</p>
 
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Fillet edge</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={filletIcon} alt="Fillet Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem'}} />
+                  <img src={filletIcon} alt="Fillet Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
 
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <span className="step-label">Specify fillet radius on the item entry.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot" style={{ width: '500px', marginBottom: '-3rem'}} />
+                  <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot" style={{ width: '500px', marginBottom: '-3rem' }} />
                 </div>
               </div>
             </div>
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the edge to be fillet &gt; <strong className="text-highlight">GO</strong>
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the edge to be fillet &gt; <strong className="text-highlight">GO</strong>
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
               <div className="instruction-box" style={{ marginTop: '2rem' }}>
-              <p className="p-flush">
-                <strong className="red-text">Note:</strong> Several edges can be fillet all at once.
-              </p>
+                <p className="p-flush">
+                  <strong className="red-text">Note:</strong> Several edges can be fillet all at once.
+                </p>
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="screenshot-wrapper mt-8">
                 <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" style={{ width: '360px' }} />
@@ -225,44 +226,44 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
         )}
 
         {activeTab === 'shell' && (
-          <div className="lesson-card tab-content fade-in">
+          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header">
               <h4>SHELL</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(shellSteps)} onStop={stop} />
             </div>
-             <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for hollowing solid entities using the specified wall thickness.</p>
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Use for hollowing solid entities using the specified wall thickness.</p>
 
 
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <span className="step-label">Select <strong className="red-text">Shell</strong> from the icon menu.</span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={shellIcon} alt="Shell Icon" className="software-screenshot" style={{ width: '200px'}}/>
+                  <img src={shellIcon} alt="Shell Icon" className="software-screenshot" style={{ width: '200px' }} />
                 </div>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Select the two endfaces of the solid entity &gt; GO
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the two endfaces of the solid entity &gt; GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" style={{ width: '500px'}} />
+                  <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" style={{ width: '500px' }} />
                 </div>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem"}}>Specify thickness on item entry &gt; double GO 
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Specify thickness on item entry &gt; double GO
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
               </div>
@@ -275,7 +276,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className="section-divider"></div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="screenshot-wrapper mt-8">
                 <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" style={{ width: '490px' }} />

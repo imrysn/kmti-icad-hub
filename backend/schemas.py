@@ -15,6 +15,7 @@ class SearchResult(BaseModel):
     content: str
     source: str
     score: Optional[float] = None
+    metadata: Optional[dict] = None
     media: Optional[List[MediaAsset]] = None  # Linked multimedia assets
 
 class SearchResponse(BaseModel):
@@ -76,6 +77,7 @@ class ChatRequest(BaseModel):
     images: Optional[List[ImagePayload]] = [] # Support up to 3 images
     language: Optional[str] = "en-US"
     is_regeneration: Optional[bool] = False # PHASE 3: Flag to bypass cache and vary response
+    current_lesson_id: Optional[str] = None # Support contextual biasing for Mentor Mode
     
     # PHASE 1 FIX #5: Backend validation for image upload limit
     @field_validator("images")

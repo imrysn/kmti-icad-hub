@@ -469,7 +469,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
               onMouseDown={handleMouseDown}
             />
             <aside className="lesson-chatbot-sidebar" style={{ width: `${chatbotWidth}px` }}>
-              <IntelligenceChatbot />
+              <IntelligenceChatbot lessonId={activeLessonId} />
             </aside>
           </>
         )}

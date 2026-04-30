@@ -51,12 +51,12 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
   const isMirrored1 = subLessonId === "mirrored-1";
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
+      <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
         <h3 className="section-title">
           {isMirrored1 ? "Mirrored parts (1)" : "3d modeling of mirror parts"}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(isMirrored1 ? mirrored1Steps : mirrored2Steps)} onStop={stop} />
@@ -64,7 +64,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
         <p className="p-flush">{isMirrored1 ? "Based on KEMCO Standard" : ""}</p>
       </section>
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content fade-in">
+        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
           {isMirrored1 ? (
             <div className="fade-in">
               <div className="card-header">
@@ -72,7 +72,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrored1Steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass("mp1-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">NORMAL PARTS</span>
@@ -88,7 +88,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("mp1-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">MIRROR PARTS</span>
@@ -110,7 +110,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("mp1-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">IDENTIFICATION</span>
@@ -136,7 +136,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(mirrored2Steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass("mp2-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Identify the proper location of the <strong className="text-highlight">origin</strong>.</span>
@@ -150,7 +150,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("mp2-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Complete Part A and save it.</span>
@@ -159,7 +159,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("mp2-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Save a copy of Part A as <strong className="text-highlight">Part B</strong>.</span>
@@ -168,7 +168,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("mp2-4")} ${currentIndex === 3 ? "reading-active" : ""}`}>
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Use the <strong className="text-highlight">Mirror</strong> tool to convert model.</span>

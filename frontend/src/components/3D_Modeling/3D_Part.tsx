@@ -23,8 +23,8 @@ interface PartLessonProps {
 const PartLesson: React.FC<PartLessonProps> = ({
   subLessonId = '3d-part-1',
   onNextLesson,
-  onPrevLesson, 
-  nextLabel 
+  onPrevLesson,
+  nextLabel
 }) => {
   const [activeTab, setActiveTab] = useState<"create" | "change">(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'create';
@@ -74,16 +74,16 @@ const PartLesson: React.FC<PartLessonProps> = ({
   };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
       <div className="lesson-tabs">
         {tabs.map((tab) => (
-          <button 
-            key={tab.id} 
-            className={`tab-button ${activeTab === tab.id ? "active" : ""}`} 
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
             onClick={() => setActiveTab(tab.id as any)}
           >
             {tab.label}
@@ -97,11 +97,11 @@ const PartLesson: React.FC<PartLessonProps> = ({
         </h3>
         <div>
           <div className="screenshot-wrapper mt-4">
-            <img 
-              src={activeTab === 'create' ? partMenu2 : partMenu2} 
-              alt={activeTab === 'create' ? "3D Part Menu" : "Change 3D Part Menu"} 
-              className="software-screenshot screenshot-small" 
-              style={{ height: '200px' }} 
+            <img
+              src={activeTab === 'create' ? partMenu2 : partMenu2}
+              alt={activeTab === 'create' ? "3D Part Menu" : "Change 3D Part Menu"}
+              className="software-screenshot screenshot-small"
+              style={{ height: '200px' }}
             />
           </div>
         </div>
@@ -110,14 +110,14 @@ const PartLesson: React.FC<PartLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="fade-in">
           {activeTab === 'create' && (
-            <div className="lesson-card tab-content">
+            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
               <div className="card-header">
                 <h4>CREATE 3D PART</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(createSteps)} onStop={stop} />
               </div>
               <p className='p-flush' style={{ marginTop: "-2rem" }}>Tool use to name 3D parts and provide information. <br /> 3D part name must always be set since it is a vital part for the 2D Detailing.</p>
 
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="red-text">Create 3D Part</strong> from the icon menu.</span>
@@ -129,28 +129,32 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header" style={{ marginBottom: '-2rem' }}>
                   <span className="step-number">2 </span>
-                  <span className="step-label" style={{ marginTop:"-1.5rem"}}> Select a single entity &gt; GO
+                  <span className="step-label" style={{ marginTop: "-1.5rem" }}> Select a single entity &gt; GO
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">A window will appear showing the informations to fill-up.</span>
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
-                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot" style={{ marginBottom: '-2rem'}} />
+                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot" style={{ marginBottom: '-2rem' }} />
                   </div>
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">All created 3D Part will appear on the tree view.</span>
@@ -164,13 +168,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-label">MATERIAL DESCRIPTION</span>
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
-                    <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot" style={{ width: '900px'}} />
+                    <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot" style={{ width: '900px' }} />
                   </div>
                 </div>
               </div>
@@ -183,14 +187,14 @@ const PartLesson: React.FC<PartLessonProps> = ({
           )}
 
           {activeTab === 'change' && (
-            <div className="lesson-card tab-content">
+            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
               <div className="card-header mt-8">
                 <h4>CHANGE 3D PART NAME</h4>
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(changeSteps)} onStop={stop} />
               </div>
               <p className='p-flush' style={{ marginTop: "-2rem" }}>Tool use to Changes 3D part names, drawing names (of external 3D parts), and comments.</p>
 
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Select <strong className="text-highlight">Change 3D Part Name</strong> from the menu.</span>
@@ -202,26 +206,30 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header" style={{ marginBottom: '-2rem' }}>
                   <span className="step-number">2 </span>
                   <span className="step-label">Select an entity or Right-click on the 3D space.</span>
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Edit the information in the dialog box.</span>
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
-                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot" style={{width: '900px'}}/>
+                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot" style={{ width: '900px' }} />
                   </div>
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`}>
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">4 </span>
                   <span className="step-label">Update both 3D and 2D names by selecting <strong className="text-highlight">Yes</strong>.</span>
@@ -231,10 +239,10 @@ const PartLesson: React.FC<PartLessonProps> = ({
                     <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
                   </div>
                 </div>
-              </div>
 
-              <div className="instruction-box" style={{marginTop: "2rem"}}>
-                <p className="p-flush"><strong className='red-text'>Note:</strong>  <br /> All 3D Part Names and 2D part names must always match each other. Differences on the 3D and 2D part name will cut the link</p>
+                <div className="instruction-box" style={{ marginTop: "2rem" }}>
+                  <p className="p-flush"><strong className='red-text'>Note:</strong>  <br /> All 3D Part Names and 2D part names must always match each other. Differences on the 3D and 2D part name will cut the link</p>
+                </div>
               </div>
 
               <div className="lesson-navigation">

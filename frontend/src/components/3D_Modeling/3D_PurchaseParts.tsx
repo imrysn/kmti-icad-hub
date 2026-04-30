@@ -18,8 +18,8 @@ interface PurchasePartsLessonProps {
 }
 
 const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId = "purchase-parts-1", onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem(`${subLessonId}-tab`) || 'part1';
+  const [activeTab, setActiveTab] = useState<'part1' | 'part2'>(() => {
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'part1';
   });
 
   const {
@@ -27,7 +27,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     containerRef,
     speak,
     stop,
-    isSpeaking
+    isSpeaking,
+    currentIndex
   } = useLessonCore(`${subLessonId}-${activeTab}`);
 
   useEffect(() => {
@@ -58,21 +59,28 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
   ];
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
       <div className="lesson-tabs">
-        <button className={`tab-button ${activeTab === 'part1' ? 'active' : ''}`} onClick={() => setActiveTab('part1')}>PURCHASE PARTS </button>
-        <button className={`tab-button ${activeTab === 'part2' ? 'active' : ''}`} onClick={() => setActiveTab('part2')}>UPLOADING PURCHASE PARTS</button>
+        <button className={`tab-button ${activeTab === 'part1' ? 'active' : ''}`} onClick={() => setActiveTab('part1')}>PURCHASE PARTS MODELING</button>
+        <button className={`tab-button ${activeTab === 'part2' ? 'active' : ''}`} onClick={() => setActiveTab('part2')}>SERVER UPLOAD PROTOCOL</button>
       </div>
 
+      <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
+        <h3 className="section-title">
+          {activeTab === 'part1' ? "Purchase Part 3D Modeling" : "Sample Flow Chart for Uploading Purchase Parts"}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak([purchaseSteps[activeTab === 'part1' ? 0 : 1]])} onStop={stop} />
+        </h3>
+      </section>
+
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
+        <div className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
           <div className="fade-in">
             <div className="card-header">
-              <h4>{activeTab === 'part1' ? "PURCHASE PART 3D MODELING" : <>SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS <br /> ON THE SERVER</>}</h4>
+              <h4>{activeTab === 'part1' ? "WORKFLOW OVERVIEW" : "SERVER UPLOAD PROTOCOL"}</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak([purchaseSteps[activeTab === 'part1' ? 0 : 1]])} onStop={stop} />
             </div>
 

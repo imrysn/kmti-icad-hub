@@ -1,21 +1,13 @@
-/** * 3D_Properties.tsx  EProperties lessons */
+/** * 3D_Properties.tsx – Properties lessons */
 
-import React, { useState, useEffect, useRef } from "react";
-
-import {
-  ChevronLeft,
-  ChevronRight,
-  Sliders,
-  Space,
-  Zap
-} from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Properties (1) Assets */
 import changeColorIcon from "../../assets/3D_Image_File/change_color.png";
-import changePropertiesWindow from "../../assets/3D_Image_File/change_properties_window.png";
 import changeColorEntity from "../../assets/3D_Image_File/change_color_entity.png";
 import changeColorFace from "../../assets/3D_Image_File/change_color_face.png";
 import changeLayerIcon from "../../assets/3D_Image_File/change_layer.png";
@@ -35,8 +27,6 @@ import information2 from "../../assets/3D_Image_File/information2.png";
 import information3 from "../../assets/3D_Image_File/information3.png";
 import information4 from "../../assets/3D_Image_File/information4.png";
 import information5 from "../../assets/3D_Image_File/information5.png";
-
-/* Properties (2) Additional Assets */
 import infoPointImg from "../../assets/3D_Image_File/properties2_information_point.png";
 import infoEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
 import infoPointEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
@@ -45,18 +35,17 @@ import infoEntityImg from "../../assets/3D_Image_File/properties2_information_en
 import propertiesLayerImg from "../../assets/3D_Image_File/changelayer.jpg";
 
 interface PropertiesLessonProps {
-  nextLabel?: string; 
-  subLessonId?: string; 
-  onNextLesson?: () => void; 
+  nextLabel?: string;
+  subLessonId?: string;
+  onNextLesson?: () => void;
   onPrevLesson?: () => void;
-} 
+}
 
 const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "properties-1", onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"color" | "layer" | "info">(() => {
     return (localStorage.getItem('properties-tab') as any) || "color";
   });
 
-  // Use core hook for scroll tracking and TTS
   const {
     scrollProgress,
     containerRef,
@@ -70,23 +59,41 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     localStorage.setItem('properties-tab', activeTab);
   }, [activeTab]);
 
-  const colorSteps = ["Step 1: Select Change Color from the icon menu.", "Step 2: Choose either Entity or Face. For Entity, pick a color and select the solid to change everything. For Face, pick a color and select specific surfaces, then click GO."];
-  const layerSteps = ["Step 1: Select Change Layer from the icon menu.", "Step 2: Specify the target layer number on the item entry.", "Step 3: Click on the solid entity to move it to that layer.", "Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."];
-  const infoSteps = ["Step 1: Coordinates. Pick a point to display its position from the origin.", "Step 2: Length. Pick an edge and click GO to measure it.", "Step 3: Distance. Pick two points or edges to measure the gap between them.", "Step 4: Angle. Pick two edges or three points to calculate the angle.", "Step 5: Entity Info. Pick a solid and click GO to see all technical information."];
+  const colorSteps = [
+    "Step 1: Select Change Color from the icon menu.",
+    "Step 2: Choose either Entity or Face. For Entity, pick a color and select the solid to change everything. For Face, pick a color and select specific surfaces, then click GO."
+  ];
 
-  const getStepClass = (stepId: string) => "instruction-step"; 
+  const layerSteps = [
+    "Step 1: Select Change Layer from the icon menu.",
+    "Step 2: Specify the target layer number on the item entry.",
+    "Step 3: Click on the solid entity to move it to that layer.",
+    "Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."
+  ];
 
-  const handleNext = () => { 
-    if (activeTab === "color") setActiveTab("layer"); 
+  const infoSteps = [
+    "Step 1: Coordinates. Pick a point to display its position from the origin.",
+    "Step 2: Length. Pick an edge and click GO to measure it.",
+    "Step 3: Distance. Pick two points or edges to measure the gap between them.",
+    "Step 4: Angle. Pick two edges or three points to calculate the angle.",
+    "Step 5: Entity Info. Pick a solid and click GO to see all technical information."
+  ];
+
+  const handleNext = () => {
+    if (activeTab === "color") setActiveTab("layer");
     else if (activeTab === "layer") setActiveTab("info");
-    else if (onNextLesson) onNextLesson(); 
-  }; 
+    else if (onNextLesson) onNextLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  const handlePrev = () => { 
+  const handlePrev = () => {
     if (activeTab === "info") setActiveTab("layer");
-    else if (activeTab === "layer") setActiveTab("color"); 
-    else if (onPrevLesson) onPrevLesson(); 
-  }; 
+    else if (activeTab === "layer") setActiveTab("color");
+    else if (onPrevLesson) onPrevLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const getStepClass = (stepId: string) => "instruction-step";
 
   const tabs = [
     { id: "color", label: "Change Color" },
@@ -95,8 +102,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
   ];
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -113,7 +119,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
         ))}
       </div>
 
-            <div className="lesson-grid single-card">
+      <div className="lesson-grid single-card">
         {activeTab === "color" && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
@@ -122,10 +128,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
             </div>
             <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">1 </span>
-                    <span className="step-label">Select <strong className="red-text">Change Color</strong> from the icon menu.</span>
+                    <span className="step-label">Select <strong className="text-highlight">Change Color</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
                     <div className="screenshot-wrapper">
@@ -134,19 +140,19 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   </div>
                 </div>
 
-                <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                   <div className="step-header" style={{ marginBottom: "2rem", alignItems: 'flex-start' }}>
                     <span className="step-number">2 </span>
-                    <span className="step-label">Select either <strong className="red-text">Entity</strong> or <strong className="red-text">Face</strong></span>
+                    <span className="step-label">Select either <strong className="text-highlight">Entity</strong> or <strong className="text-highlight">Face</strong></span>
                   </div>
 
                   <div className="tool-block mt-8">
                     <div className="card-header"><h4>&gt; Entity </h4></div>
                     <div className="step-description" style={{ marginTop: "1rem" }}>
-                      <span className="p-flush">The entire solid entity will change its color.</span>
+                      <p className="p-flush">The entire solid entity will change its color.</p>
                     </div>
                     <div className="step-description" style={{ marginBottom: "2rem" }}>
-                      <span className="p-flush">Pick a color &gt; Select the solid entity</span>
+                      <p className="p-flush">Pick a color &gt; Select the solid entity</p>
                     </div>
                     <div className="card-header" style={{ marginLeft: "6rem", marginBottom: "1rem" }}><h4>CHANGE COLOR (ENTITY)</h4></div>
                     <div className="screenshot-wrapper mt-4">
@@ -157,12 +163,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   <div className="tool-block mt-8">
                     <div className="card-header"><h4>&gt; Face </h4></div>
                     <div className="step-description" style={{ marginTop: "1rem" }}>
-                      <span className="p-flush">Only <strong className="text-highlight">selected faces/surfaces</strong> will change its color</span>
+                      <p className="p-flush">Only <strong className="text-highlight">selected faces/surfaces</strong> will change its color</p>
                     </div>
                     <div className="step-description" style={{ marginBottom: "2rem" }}>
-                      <span className="p-flush">Pick a color &gt; Select surface to be changed &gt; GO
+                      <p className="p-flush">Pick a color &gt; Select surface to be changed &gt; GO
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 20px' }} />
-                      </span>
+                      </p>
                     </div>
                     <div className="card-header" style={{ marginLeft: "6rem", marginBottom: "1rem" }}><h4>CHANGE COLOR (FACE)</h4></div>
                     <div className="screenshot-wrapper mt-4">
@@ -176,11 +182,6 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot" style={{ height: "400px", width: "auto" }} />
               </div>
             </div>
-
-            <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
-            </div>
           </div>
         )}
 
@@ -193,10 +194,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`} style={{ marginBottom: "1rem" }}>
+                <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginBottom: "1rem" }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number" style={{ marginTop: '0.25rem' }}>1 </span>
-                    <span className="step-label" style={{ marginTop: "0.5rem" }}>Select <strong className="red-text">Change Layer</strong> from the icon menu.</span>
+                    <span className="step-number">1 </span>
+                    <span className="step-label">Select <strong className="text-highlight">Change Layer</strong> from the icon menu.</span>
                   </div>
                   <div className="step-description">
                     <div className="screenshot-wrapper">
@@ -205,10 +206,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   </div>
                 </div>
 
-                <div className={`${getStepClass("layer-2")} ${currentIndex === 1 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("layer-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number" style={{ marginTop: '0.25rem' }}>2 </span>
-                    <span className="step-label" style={{ marginTop: "0.5rem" }}>Specify the layer on the item entry.</span>
+                    <span className="step-number">2 </span>
+                    <span className="step-label">Specify the <strong className="text-highlight">target layer</strong> on the item entry.</span>
                   </div>
                   <div className="step-description">
                     <div className="screenshot-wrapper">
@@ -217,10 +218,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   </div>
                 </div>
 
-                <div className={`${getStepClass("layer-3")} ${currentIndex === 2 ? "reading-active" : ""}`}>
+                <div className={`${getStepClass("layer-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number" style={{ marginTop: '0.25rem' }}>3 </span>
-                    <span className="step-label" style={{ marginTop: "0.5rem" }}>Click on the solid entity</span>
+                    <span className="step-number">3 </span>
+                    <span className="step-label">Click on the solid entity to move it to that layer.</span>
                   </div>
                 </div>
               </div>
@@ -232,15 +233,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
             <div className="section-divider"></div>
 
-            <div className="tool-block">
+            <div className={`${getStepClass("layer-designations")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
               <div className="card-header" style={{ marginBottom: "2rem" }}><h4>LAYER DESIGNATION OF 3D PARTS</h4></div>
               <div className="card-header"><h4>LAYER 1</h4></div>
               <div className="step-description">
                 <ul className="list-flush">
                   <li>All common parts need to be fabricated or machined.</li>
-                  <li>Parts that undergo <strong className="text-highlight">Annealing</strong>, <strong className="text-highlight">Shot blasting</strong>, <strong className="text-highlight">Annealing Shot blasting</strong></li>
-                  <li>Covers for purchase parts (No mechanism)</li>
-                  <li>All parts must be color white</li>
+                  <li>Parts that undergo <strong className="text-highlight">Annealing</strong>, <strong className="text-highlight">Shot blasting</strong>, or <strong className="text-highlight">Annealing Shot blasting</strong>.</li>
+                  <li>Covers for purchase parts (No mechanism).</li>
+                  <li>All parts must be color <strong className="text-highlight">White (No. 1)</strong>.</li>
                 </ul>
                 <div className="screenshot-wrapper mt-4">
                   <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot" style={{ width: '900px' }} />
@@ -252,42 +253,42 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <div className="card-header"><h4>LAYER 2</h4></div>
               <div className="step-description">
                 <ul className="list-flush">
-                  <li>Fabricated parts/Machined parts with color/paint</li>
-                  <li>Safety Cover - <strong className="text-highlight">Yellow (No. 4)</strong></li>
+                  <li>Fabricated/Machined parts with specific color/paint requirements.</li>
+                  <li>Safety Covers - <strong className="text-highlight">Yellow (No. 4)</strong>.</li>
                 </ul>
                 <div className="screenshot-wrapper mt-4">
                   <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot" style={{ width: '900px', marginBottom: "1rem" }} />
                 </div>
-                <span className="p-flush">
-                  Safety color applies to covers for machine guarding such as chain, belt and gear drive power transmission system.
-                </span>
+                <p className="p-flush">
+                  Safety color applies to covers for machine guarding such as chain, belt and gear drive power transmission systems.
+                </p>
 
                 <ul className="list-flush" style={{ marginTop: "4rem" }}>
-                  <li>Parts that does not need to be painted</li>
-                  <li>All Stainless Steel (SUS) - <strong className="text-highlight">White (No. 1)</strong></li>
-                  <li>Acrylic - white (No.1)</li>
+                  <li>Parts that do not need to be painted.</li>
+                  <li>All Stainless Steel (SUS) - <strong className="text-highlight">White (No. 1)</strong>.</li>
+                  <li>Acrylic - <strong className="text-highlight">White (No. 1)</strong>.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4" >
+                <div className="screenshot-wrapper mt-4" style={{ position: 'relative' }}>
                   <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot" style={{ maxWidth: '600px', height: 'auto', marginBottom: "1rem" }} />
                   <p className="red-text" style={{
                     position: 'absolute',
-                    top: '115rem',
-                    left: '42rem',
+                    bottom: '2rem',
+                    right: '2rem',
                     fontWeight: 700,
-                    whiteSpace: 'nowrap',
                     margin: 0
                   }}>*Red paint only on the pointer</p>
                 </div>
 
-                <div className="card-header" style={{ marginLeft: "2.5rem", marginBottom: "5rem" }}><h4>ACRYLIC</h4> <h4 style={{ marginLeft: "14rem" }}>POINTER</h4></div>
+                <div className="card-header" style={{ marginBottom: "5rem", display: 'flex', justifyContent: 'space-around' }}>
+                  <h4>ACRYLIC</h4> <h4>POINTER</h4>
+                </div>
 
                 <div className="section-divider"></div>
 
                 <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginTop: '1.5rem' }}>
                   <div style={{ flex: 1 }}>
-                    <span className="p-flush"> Materials with Color codes on the material list</span>
-                    <div><span className="p-flush" style={{ fontWeight: '700' }}>Examples:</span></div>
-
+                    <p className="p-flush">Materials with color codes on the material list:</p>
+                    <p className="p-flush" style={{ fontWeight: '700' }}>Examples:</p>
                     <ul className="list-flush">
                       <li>MC Nylon - <strong className="text-highlight">Blue (No. 5)</strong></li>
                       <li>Urethane - <strong className="text-highlight">(No. 18)</strong></li>
@@ -295,29 +296,30 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <li>New Light - <strong className="text-highlight">White (No. 1)</strong></li>
                     </ul>
                   </div>
-
                   <div className="screenshot-wrapper" style={{ flex: '0 0 auto', margin: 0 }}>
                     <img src={propertiesMaterialImg} alt="Material List Color Codes" className="software-screenshot" style={{ height: "auto", width: "480px" }} />
                   </div>
                 </div>
+
                 <div className="section-divider" style={{ marginTop: '4rem' }}></div>
 
                 <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginTop: '2rem' }}>
                   <div style={{ flex: 1 }}>
                     <ul className="list-flush" style={{ margin: 0 }}>
-                      <li>Fabricated parts/Machined parts with <strong className="text-highlight" style={{ color: "red" }}>Heat Treatment</strong></li>
-                      <li>Preheat/ heated surface coating part - <strong className="text-highlight">white (No. 1)</strong></li>
-                      <li>Isonite, Ionite, Parsonite - <strong className="text-highlight">Gray (No. 8)</strong></li>
-                      <li>Parkerizing, Manganese Phosphate - <strong className="text-highlight">Black (No. 16)</strong></li>
+                      <li>Fabricated/Machined parts with <strong className="text-highlight" style={{ color: "var(--accent-red)" }}>Heat Treatment</strong>.</li>
+                      <li>Preheat/heated surface coating parts - <strong className="text-highlight">White (No. 1)</strong>.</li>
+                      <li>Isonite, Ionite, Parsonite - <strong className="text-highlight">Gray (No. 8)</strong>.</li>
+                      <li>Parkerizing, Manganese Phosphate - <strong className="text-highlight">Black (No. 16)</strong>.</li>
                     </ul>
                   </div>
-
                   <div className="screenshot-wrapper" style={{ flex: '0 0 auto', margin: 0 }}>
                     <img src={isoniteManganeseImg} alt="Heat Treated Parts" className="software-screenshot" style={{ height: 'auto', width: '400px' }} />
                   </div>
                 </div>
-
-                <div className="card-header"><span style={{ marginLeft: "36rem", fontWeight: '700' }}>ISONITE</span> <span style={{ marginLeft: "8.5rem", fontWeight: '700', marginTop: "1rem" }}>MANGANESE PHOSPHATE</span></div>
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-around', marginTop: '1rem' }}>
+                  <span style={{ fontWeight: '700' }}>ISONITE</span> 
+                  <span style={{ fontWeight: '700' }}>MANGANESE PHOSPHATE</span>
+                </div>
               </div>
             </div>
 
@@ -325,19 +327,14 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <div className="card-header"><h4>LAYER 3</h4></div>
               <div className="step-description">
                 <ul className="list-flush">
-                  <li>Purchase Parts (Include stud bolt)</li>
-                  <li>Purchase Parts with Additional Process</li>
-                  <li>Use manufacturer standard color</li>
+                  <li>Purchase Parts (including stud bolts).</li>
+                  <li>Purchase Parts with Additional Processing.</li>
+                  <li>Use manufacturer standard colors.</li>
                 </ul>
                 <div className="screenshot-wrapper mt-4">
                   <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
                 </div>
               </div>
-            </div>
-
-            <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -348,13 +345,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <h4>INFORMATION TOOLS</h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(infoSteps)} onStop={stop} />
             </div>
-            <p className='p-flush' style={{ marginTop: "-2rem" }}>Displays information about the clicked entities (coordinates, length, distance, angle, and entity information)</p>
+            <p className='p-flush' style={{ marginTop: "-2rem" }}>Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information).</p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginTop: '1rem' }}>
-              {/* Left Column */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 {/* Coordinates */}
-                <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`} style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information1} alt="Coord icon" style={{ width: '42px', marginTop: '0.25rem' }} />
                     <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
@@ -368,7 +364,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
 
                 {/* Length */}
-                <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information2} alt="Length icon" style={{ width: '42px', marginTop: '0.25rem' }} />
                     <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
@@ -382,7 +378,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
 
                 {/* Distance */}
-                <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information3} alt="Distance icon" style={{ width: '42px', marginTop: '0.25rem' }} />
                     <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
@@ -396,10 +392,9 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
               </div>
 
-              {/* Right Column */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 {/* Angle */}
-                <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information4} alt="Angle icon" style={{ width: '42px', marginTop: '0.25rem' }} />
                     <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
@@ -414,11 +409,11 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
 
                 {/* Entity Info */}
-                <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information5} alt="Entity icon" style={{ width: '42px', marginTop: '0.25rem' }} />
                     <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Displays the informations about the selected entity <br />
+                      Displays the information about the selected entity <br />
                       <span className="text-highlight">&gt; Pick the solid entity &gt; GO</span> <img src={leftClick} alt="click" style={{ width: '28px', verticalAlign: 'middle', marginLeft: '4px' }} />
                     </div>
                   </div>
@@ -428,13 +423,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
               </div>
             </div>
-
-            <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
-            </div>
           </div>
         )}
+
+        <div className="lesson-navigation">
+          <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+          <button className="nav-button next" onClick={handleNext}>
+            {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+          </button>
+        </div>
       </div>
     </div>
   );

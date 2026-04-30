@@ -71,7 +71,8 @@ export const chatService = {
         sessionId?: string, 
         images: ImagePayload[] = [], 
         language: string = "en-US",
-        isRegeneration: boolean = false
+        isRegeneration: boolean = false,
+        currentLessonId?: string
     ): Promise<ChatResponse> {
         const response = await api.post('/chat', { 
             message, 
@@ -79,7 +80,8 @@ export const chatService = {
             session_id: sessionId,
             images,
             language,
-            is_regeneration: isRegeneration
+            is_regeneration: isRegeneration,
+            current_lesson_id: currentLessonId
         });
         return response.data;
     },
@@ -92,6 +94,7 @@ export const chatService = {
             images: ImagePayload[];
             language: string;
             is_regeneration?: boolean;
+            current_lesson_id?: string;
         },
         onChunk: (chunk: { type: string; delta?: string; sources?: ChatSource[]; suggestions?: string[]; log_id?: number }) => void
     ): Promise<void> {
@@ -110,7 +113,8 @@ export const chatService = {
                 session_id: payload.session_id,
                 images: payload.images,
                 language: payload.language,
-                is_regeneration: payload.is_regeneration
+                is_regeneration: payload.is_regeneration,
+                current_lesson_id: payload.current_lesson_id
             })
         });
 

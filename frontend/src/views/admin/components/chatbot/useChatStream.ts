@@ -9,6 +9,7 @@ interface UseChatStreamProps {
     showModal: (title: string, message: string, type: 'confirm' | 'danger' | 'info') => void;
     updateSessionMessages: (id: string, messages: ChatEntry[]) => void;
     forcedLanguage: string;
+    lessonId?: string;
 }
 
 export const useChatStream = ({
@@ -18,7 +19,8 @@ export const useChatStream = ({
     setLiveMessage,
     showModal,
     updateSessionMessages,
-    forcedLanguage
+    forcedLanguage,
+    lessonId
 }: UseChatStreamProps) => {
     const [isThinking, setIsThinking] = useState(false);
     const [latestSources, setLatestSources] = useState<ChatSource[]>([]);
@@ -29,7 +31,8 @@ export const useChatStream = ({
         selectedImages: ImagePayload[], 
         targetSessionId: string, 
         isNew: boolean,
-        history: ChatEntry[]
+        history: ChatEntry[],
+        currentLessonId?: string
     ) => {
         const imagesToSubmit = [...selectedImages];
         setIsThinking(true);
@@ -44,7 +47,8 @@ export const useChatStream = ({
                     history: history.map(m => ({ role: m.role, content: m.content })),
                     session_id: targetSessionId,
                     images: imagesToSubmit,
-                    language: forcedLanguage
+                    language: forcedLanguage,
+                    current_lesson_id: currentLessonId || lessonId
                 },
                 (chunk) => {
                     setSessions(prev => prev.map(s => {

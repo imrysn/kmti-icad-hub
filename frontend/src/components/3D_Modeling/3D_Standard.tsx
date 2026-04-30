@@ -9,6 +9,7 @@ import scale2D from '../../assets/3D_Image_File/standard1_scale_2d.png';
 import scale3D from '../../assets/3D_Image_File/standard1_scale_3d.png';
 import scalePointer from '../../assets/3D_Image_File/standard1_scale_pointer.png';
 import scalePointerVGroove from '../../assets/3D_Image_File/standard1_scale_pointer_vgroove.png';
+import pointerColorVGroove from '../../assets/3D_Image_File/standard1_pointer_color_vgroove,,.png'; // Restored
 import gasDischarge from '../../assets/3D_Image_File/standard2_gas_discharge.png';
 import oilGroove from '../../assets/3D_Image_File/standard2_oil_groove.png';
 import sprocketNote from '../../assets/3D_Image_File/standard2_sprocket.png';
@@ -66,12 +67,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
   const getStepClass = (stepId: string) => "instruction-step";
 
   const pointerSteps = [
-    "Scale Pointer: Apply these details to both 3D modeling and 2D detailing. The image shows the standard pointer dimensions.",
-    "V-Groove Pointer: Another type of scale pointer uses a V-groove. Ensure this is applied consistently on both 3D and 2D drawings."
+    "Step 1: Scale Pointer: Apply standard dimensions to both 3D modeling and 2D detailing. The image shows the required pointer geometry.",
+    "Step 2: V-Groove Pointer: For V-groove pointers, apply the same standard on 3D and 2D. The pointer color must be Red #3."
   ];
 
   const scaleSteps = [
-    "Scale Specifications: On 3D models, text and graduations must be black. On 2D drawings, use yellow for text and skin color for linear graduations."
+    "Step 1: Scale Specifications: On 3D models, text and linear graduations must be Black. On 2D drawings, text must be Yellow #4, and linear graduations must be Skin Color #15."
   ];
 
   const handleNext = () => {
@@ -93,11 +94,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
   // --- Content Mapping ---
   const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
     'standard-1': {
-      title: 'Scale Pointer',
+      title: 'Scale Pointer & Scale',
       steps: [
-        "Scale Pointer: Apply these details to both 3D modeling and 2D detailing. The image shows the standard pointer dimensions.",
-        "V-Groove Pointer: Another type of scale pointer uses a V-groove. Ensure this is applied consistently on both 3D and 2D drawings.",
-        "Scale Specifications: On 3D models, text and graduations must be black. On 2D drawings, use yellow for text and skin color for linear graduations."
+        "Scale Pointer: Apply standard dimensions to both 3D modeling and 2D detailing. The image shows the required pointer geometry.",
+        "V-Groove Pointer: For V-groove pointers, apply the same standard on 3D and 2D. The pointer color must be Red #3.",
+        "Scale Specifications: On 3D models, text and linear graduations must be Black. On 2D drawings, text must be Yellow #4, and linear graduations must be Skin Color #15."
       ]
     },
     'standard-2': {
@@ -133,21 +134,18 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
   const currentLesson = LESSON_DATA[subLessonId] || { title: `STANDARD (${subLessonId})`, steps: [] };
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
+      <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
         <h3 className="section-title">
-          {subLessonId === 'standard-1' ? (activeTab === 'pointer' ? 'Scale Pointer' : 'Scale') : currentLesson.title}
+          {subLessonId === 'standard-1' ? (activeTab === 'pointer' ? 'Scale Pointer Standards' : 'Scale Specifications') : currentLesson.title}
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(subLessonId === 'standard-1' ? (activeTab === 'pointer' ? pointerSteps : scaleSteps) : currentLesson.steps)}
             onStop={stop}
           />
         </h3>
-        {currentLesson.steps.length === 0 && (
-          <p className="p-flush">Other KEMCO standard components and design conventions.</p>
-        )}
       </section>
 
       {subLessonId === 'standard-1' && (
@@ -168,7 +166,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
       )}
 
       <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content">
+        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
           {subLessonId === 'standard-1' && (
             <div className="fade-in">
               {activeTab === 'pointer' && (
@@ -178,10 +176,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(pointerSteps)} onStop={stop} />
                   </div>
 
-                  <div className={`${getStepClass("s1-1")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass("s1-1")} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                     <div className="step-header">
                       <span className="step-number">1 </span>
-                      <span className="step-label">Based on the image. We must apply it on <strong className='red-text'>3D Modeling</strong> and <strong className='red-text'> 2D Detailing</strong></span>
+                      <span className="step-label">Apply dimensions to both <strong className="text-highlight">3D Modeling</strong> and <strong className="text-highlight">2D Detailing</strong>.</span>
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
                       <div className="screenshot-wrapper">
@@ -192,14 +190,21 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                   <div className="section-divider"></div>
 
-                  <div className={`${getStepClass("s1-2")} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass("s1-2")} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-header">
                       <span className="step-number">2 </span>
-                      <span className="step-label"><strong className="text-highlight">Another type of </strong><strong className='red-text'>Scale Pointer</strong> is by putting <strong className='red-text'>V-Groove</strong> . We must also apply this on <strong className='red-text'>3D</strong> and <strong className='red-text'> 2D</strong></span>
+                      <span className="step-label">For <strong className="text-highlight">V-groove</strong> pointers, apply the same standard on 3D and 2D.</span>
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
                       <div className="screenshot-wrapper">
                         <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot screenshot-medium" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="p-flush"><strong>Pointer Color:</strong></p>
+                        <p className="p-flush text-highlight" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Red #3</p>
+                        <div className="screenshot-wrapper mt-4">
+                          <img src={pointerColorVGroove} alt="V-groove Color 3D" className="software-screenshot screenshot-small" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -209,20 +214,20 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
               {activeTab === 'scale' && (
                 <>
                   <div className="card-header">
-                    <h4>SCALE</h4>
+                    <h4>SCALE SPECIFICATIONS</h4>
                     <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(scaleSteps)} onStop={stop} />
                   </div>
 
-                  <div className={`${getStepClass("s1-3")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+                  <div className={`${getStepClass("s1-3")} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                     <div className="step-header">
                       <span className="step-number">1 </span>
-                      <span className="step-label">SCALE</span>
+                      <span className="step-label">Visual standards for Scale text and graduations.</span>
                     </div>
                     <div className="step-description">
                       <div className="info-box mb-8">
                         <ul className="list-flush">
-                          <li>On <strong className="text-highlight">3D</strong>, Text and linear graduations of scale are <strong className='red-text'>black</strong></li>
-                          <li>On <strong className="text-highlight">2D</strong>, Text must be <strong className='red-text'> Yellow #4</strong> and linear graduations of scale must be <strong className="red-text">Skin Color #15</strong>.</li>
+                          <li>On <strong className="text-highlight">3D</strong>: Text and linear graduations must be <strong className="text-highlight">Black</strong>.</li>
+                          <li>On <strong className="text-highlight">2D</strong>: Text must be <strong className="text-highlight">Yellow #4</strong>, and linear graduations must be <strong className="text-highlight">Skin Color #15</strong>.</li>
                         </ul>
                       </div>
                       <div className="screenshot-wrapper">
@@ -245,7 +250,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass("s2-1")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Add one <strong className="text-highlight">ρE Drill hole</strong> per square pipe for gas discharge.</span>
@@ -262,7 +267,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("s2-2")} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Manufacturing depth for <strong className="text-highlight">Oil Grooves</strong> should be 1.5mm.</span>
@@ -284,7 +289,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("s2-3")} ${currentIndex === 2 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <span className="step-label">Include the <strong className="text-highlight">safety color note</strong> in 2D sprocket details.</span>
@@ -305,7 +310,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass("s3-1")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Actual sprocket teeth remain <strong className="text-highlight">unpainted</strong>.</span>
@@ -322,7 +327,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("s3-2")} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Sprocket <strong className="text-highlight">Keyway</strong> location standards.</span>
@@ -351,7 +356,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <p className="p-flush mb-8">Follow the Kusakabe standard codes for screws and structural components.</p>
                 <div className="screenshot-wrapper">
                   <img src={screwStandard1} alt="Kusakabe Screw Codes 1" className="software-screenshot screenshot-wide" />
@@ -370,16 +375,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <h4 className="section-title">Hardware Symbols</h4>
                 <div className="screenshot-wrapper">
                   <img src={hardwareSymbolStandard} alt="Hardware Symbols" className="software-screenshot screenshot-wide" />
                 </div>
-              </div>
-
-              <div className="section-divider"></div>
-
-              <div className="instruction-step">
+                <div className="section-divider"></div>
                 <h4 className="section-title">Bolt Hole Diameter Table</h4>
                 <div className="screenshot-wrapper">
                   <img src={boltHoleStandard} alt="Bolt Hole Diameters" className="software-screenshot screenshot-wide" />
@@ -395,7 +396,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass("s6-1")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Bolt Length Calculation</span>
@@ -412,7 +413,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("s6-2")} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Standard Bolting Setup</span>
@@ -447,7 +448,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass("s7-1")} ${currentIndex === 0 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="step-header">
                   <span className="step-number">1 </span>
                   <span className="step-label">Slotted holes always require a <strong className="text-highlight">Flat Washer (FW)</strong>.</span>
@@ -470,7 +471,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass("s7-2")} ${currentIndex === 1 ? 'reading-active' : ''}`}>
+              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">Standard <strong className="text-highlight">Connections</strong> for C-Channels and Dual Drills.</span>
@@ -500,7 +501,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
               </div>
 
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <div className="flex-row-wrap mb-8" style={{ gap: '2rem' }}>
                   <div className="flex-1 instruction-box">
                     <p className="p-flush"><strong className="text-highlight">SGP White:</strong> For fluids (Oil, Air, Coolant). Use <strong className="text-highlight">Red</strong> in 3D.</p>
@@ -522,13 +523,6 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-
-          {!Object.keys(LESSON_DATA).includes(subLessonId) && (
-            <div className="content-placeholder">
-              <Play size={48} className="content-placeholder_icon" />
-              <p>Content for <strong>{subLessonId}</strong> will be provided soon.</p>
             </div>
           )}
 
