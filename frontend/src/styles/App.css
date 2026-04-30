@@ -324,3 +324,18 @@
     transform: translate(10vw, 15vh) scale(1.2);
   }
 }
+
+/* ── Quiz Mode Lock ─────────────────────────────────────────── */
+
+.quiz-mode-active .app-header {
+  filter: blur(12px) grayscale(0.5);
+  pointer-events: none;
+  opacity: 0.6;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-5px); /* Subtle lift to show it's "away" */
+}
+
+.quiz-mode-active .app-content {
+  /* Prevent interaction with anything outside the quiz if needed, 
+     though the modal overlay usually handles this. */
+}

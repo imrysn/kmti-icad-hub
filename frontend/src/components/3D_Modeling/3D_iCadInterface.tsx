@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { ChevronLeft, ChevronRight, Layout, Info, MousePointer2, Zap } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import InteractiveImageMap from "./InteractiveImageMap";
 import icadWindowStructure from "../../assets/3D_Image_File/icad_window_structure.png";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -24,7 +25,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
   } = useLessonCore('interface');
 
   const interfaceSteps = [
-    "iCAD Window Structure: The workspace is divided into several key functional areas designed for maximum modeling efficiency.",
+    "The workspace is divided into several key functional areas designed for maximum modeling efficiency.",
     "Navigation and Commands: Use the pulsing hotspots on the diagram to explore the specific purpose of the command menus, the hierarchical tree view, and the primary 3D viewport where your designs come to life.",
     "Title bar: Displays the name of the program and typically the name of the currently active document.",
     "Menu bar: Contains drop down menus such as File, View, Information, Set, Tool, Window and Help.",
@@ -38,29 +39,70 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
     "Message Pane: Displays messages related to operations. Messages displayed in red are error messages."
   ];
 
+  const interfaceAreas = [
+    { id: 1, name: 'Title Bar' },
+    { id: 2, name: 'Menu Bar' },
+    { id: 3, name: 'Command Menu' },
+    { id: 4, name: 'Tree View' },
+    { id: 5, name: 'Workspace' },
+    { id: 6, name: 'Icon Menu' },
+    { id: 7, name: 'Item Entry' },
+    { id: 8, name: 'Key Entry' },
+    { id: 9, name: 'Tool Bar' },
+    { id: 10, name: 'Message Pane' },
+  ];
+
   return (
-    <div className={`course-lesson-container ${isSpeaking && currentIndex < 2 ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-
-      <div className="lesson-grid single-card">
-        <div 
-          className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`}
+      {/* Main Interactive Stage */}
+      <div className="lesson-grid interactive-layout single-card">
+        <div
+          className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}
           data-reading-index="0"
         >
           <div className="card-header">
-            <h3>iCAD Window Structure Overview</h3>
+            <div className="header-with-icon">
+              <div className="icon-box"><Layout size={18} /></div>
+              <h3>iCAD Window Structure</h3>
+            </div>
             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps, 0)} onStop={stop} />
           </div>
-          <p className="p-flush mb-8">Hover over the pulsing hotspots to learn about each area of the iCAD interface.</p>
 
-          <InteractiveImageMap 
-            imageSrc={icadWindowStructure} 
-            externalIndex={currentIndex - 2} 
-            externalCharIndex={currentCharIndex}
-          />
+          <div className="compact-intro-area">
+            <KaraokeLessonText
+              text={interfaceSteps[0]}
+              isActive={isSpeaking && currentIndex === 0}
+              currentCharIndex={currentCharIndex}
+              className="p-flush"
+            />
+          </div>
+
+          <div className="interactive-stage-container">
+            <InteractiveImageMap
+              imageSrc={icadWindowStructure}
+              externalIndex={currentIndex - 2}
+              externalCharIndex={currentCharIndex}
+            />
+          </div>
+
+          <div className="quick-select-grid">
+            <p className="grid-label">QUICK ACCESS AREAS</p>
+            <div className="chips-container">
+              {interfaceAreas.map((area) => (
+                <div
+                  key={area.id}
+                  className={`area-chip ${currentIndex - 2 === area.id - 1 ? 'active' : ''}`}
+                >
+                  <span className="chip-index">{area.id}</span>
+                  <span className="chip-name">{area.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>

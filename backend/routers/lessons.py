@@ -9,11 +9,11 @@ from ..auth.dependencies import get_current_user
 router = APIRouter(prefix="/courses", tags=["Curriculum & Progress"])
 
 @router.get("/", response_model=CourseList)
-def get_courses(current_user: User = Depends(get_current_user)):
+def get_courses(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """
     Get list of available courses. Requires authentication.
     """
-    return course_service.get_available_courses()
+    return course_service.get_available_courses(db)
 
 @router.get("/{course_id}/progress/{user_id}", response_model=CourseProgress)
 def get_progress(course_id: str, user_id: str, db: Session = Depends(get_db),
@@ -22,6 +22,13 @@ def get_progress(course_id: str, user_id: str, db: Session = Depends(get_db),
     Get user progress for a specific course. Requires authentication.
     """
     return course_service.get_user_progress(db, course_id, user_id)
+
+@router.get("/{course_id}/lessons")
+def get_course_lessons(course_id: int, db: Session = Depends(get_db)):
+    """
+    Fetch hierarchical lesson list for a specific course.
+    """
+    return course_service.get_course_lessons(db, course_id)
 
 @router.get("/lesson/{slug}/content")
 def get_lesson_content(slug: str, db: Session = Depends(get_db)):

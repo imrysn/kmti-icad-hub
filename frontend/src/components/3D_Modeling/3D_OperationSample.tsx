@@ -8,7 +8,7 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 
 /* Shared Assets */
 import leftClick from '../../assets/3D_Image_File/left_click.png';
-import pressQIcon from '../../assets/3D_Image_File/press_q.png';
+// press_q.png removed — asset deleted in current HEAD
 import booleanSubtractIcon from '../../assets/3D_Image_File/boolean1_subtract.png';
 import centerTool from '../../assets/3D_Image_File/center_tool.png';
 
@@ -35,7 +35,7 @@ import layerInfo from '../../assets/3D_Image_File/materials_layer.png';
 import fileMenu from '../../assets/3D_Image_File/tool_bars_file.png';
 
 /* Operation Sample (2-5) Assets */
-import mainDrawing2 from '../../assets/3D_Image_File/operation_sample_2.jpg';
+// operation_sample_2.jpg removed — asset deleted in current HEAD
 import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.png';
 import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.png';
 import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segment_a.png';
@@ -225,8 +225,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             <div className="instruction-box">
-              <div className="screenshot-wrapper mt-4">
-                <img src={mainDrawing2} alt="Shaft Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
+              <div className="content-placeholder" style={{ padding: '2rem', textAlign: 'center', opacity: 0.6 }}>
+                <p>Technical drawing for Sample 2 (Shaft) will be provided soon.</p>
               </div>
             </div>
 

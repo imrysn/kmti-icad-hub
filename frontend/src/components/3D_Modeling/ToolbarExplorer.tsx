@@ -36,9 +36,7 @@ const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({
     externalCharIndex = 0
 }) => {
   const { speak, stop, isSpeaking: isInternalSpeaking, currentCharIndex: internalCharIndex } = useTTS();
-  const [selectedId, setSelectedId] = useState<string>(() => {
-    return localStorage.getItem('toolbar-explorer-selected-id') || toolbars[0]?.id || "";
-  });
+  const [selectedId, setSelectedId] = useState<string>(toolbars[0]?.id || "");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isGlobalSpeaking = externalIndex >= 0;
@@ -52,9 +50,6 @@ const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({
     }
   }, [externalIndex, toolbars]);
 
-  useEffect(() => {
-    localStorage.setItem('toolbar-explorer-selected-id', selectedId);
-  }, [selectedId]);
 
   const activeToolbar =
     toolbars.find((t) => t.id === selectedId) || toolbars[0];

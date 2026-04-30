@@ -32,7 +32,7 @@ import infoEdgeImg from "../../assets/3D_Image_File/properties2_information_poin
 import infoPointEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
 import infoAngleImg from "../../assets/3D_Image_File/properties2_information_angle.png";
 import infoEntityImg from "../../assets/3D_Image_File/properties2_information_entity.png";
-import propertiesLayerImg from "../../assets/3D_Image_File/changelayer.jpg";
+import propertiesLayerImg from "../../assets/3D_Image_File/change_layer.png";
 
 interface PropertiesLessonProps {
   nextLabel?: string;
