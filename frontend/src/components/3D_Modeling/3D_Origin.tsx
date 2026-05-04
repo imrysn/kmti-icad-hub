@@ -45,18 +45,17 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     projections: {
       title: 'ORIGIN',
       subtitle: "A point where the coordinates of the X,Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.",
-      steps: [
-        "※ The origin must be in the same position 3D and 2D"
-      ]
+      importantNotes: "※ The origin must be in the same position 3D and 2D"
     },
     layout: {
       title: 'CHANGE 3D PART LAYOUT',
       subtitle: "Use this tool to set the location of origin.",
       steps: [
-        "Step 1: Right-click to show the current location of the origin.",
-        "Step 2: Left-click on the point of the desired new location of origin.",
-        "Step 3: Left-click on a 2nd point to set the X-axis.",
-        "Step 4: Left-click on a 3rd point to set the Y-axis. The XY-plane will be front view."
+        "Step 1: Select the Change 3D Part Layout from the icon menu.",
+        "Step 2: Right-click to show the current location of the origin.",
+        "Step 3: Left-click on the point of the desired new location of origin.",
+        "Step 4: Left-click on a 2nd point to set the X-axis.",
+        "Step 5: Left-click on a 3rd point to set the Y-axis. The XY-plane will be front view."
       ]
     }
   };
@@ -112,7 +111,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   currentCharIndex={currentCharIndex}
                 />
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-                  speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps]);
+                  speak([LESSON_DATA.projections.title, LESSON_DATA.projections.subtitle, LESSON_DATA.projections.importantNotes]);
                 }} onStop={stop} />
               </div>
 
@@ -129,7 +128,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 <div className="red-text" style={{marginBottom: "2rem", marginTop: "1rem"}}>
                   <KaraokeLessonText
                     as="p"
-                    text={currentLesson.steps[0]}
+                    text={LESSON_DATA.projections.importantNotes}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -151,7 +150,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   currentCharIndex={currentCharIndex}
                 />
                 <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-                  speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps]);
+                  speak([LESSON_DATA.layout.title, LESSON_DATA.layout.subtitle, ...LESSON_DATA.layout.steps]);
                 }} onStop={stop} />
               </div>
 
@@ -170,7 +169,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Right-click to show the current location of the origin."
+                    text='Select the Change 3D Part Layout from the icon menu.'
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -190,7 +189,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Left-click on the point of the desired new location of origin."
+                    text="Right-click to show the current location of the origin."
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -205,7 +204,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Left-click on a 2nd point to set the X-axis."
+                    text="Left-click on the point of the desired new location of origin."
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -220,8 +219,23 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Left-click on a 3rd point to set the Y-axis."
+                    text="Left-click on a 2nd point to set the X-axis."
                     isActive={isSpeaking && currentIndex === 5}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+              <div className="section-divider"></div>
+
+              <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
+                <div className="step-header">
+                  <span className="step-number">5 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Left-click on a 3rd point to set the Y-axis."
+                    isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
@@ -230,7 +244,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                     className="p-flush"
                     style={{marginLeft:"3rem", marginBottom: "3rem"}}
                     text="The XY-plane will be front view."
-                    isActive={isSpeaking && currentIndex === 5}
+                    isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                   <div className="screenshot-wrapper mt-4" style={{marginLeft: "3rem"}}>
