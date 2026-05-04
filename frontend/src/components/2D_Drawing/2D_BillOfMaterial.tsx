@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import { ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Bill of Material */
@@ -36,10 +36,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
   subLessonId = "1",
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(subLessonId);
 
   const bom1Steps = [
     "Part Drawing BOM: Displays material, specifications, and weights at the upper right of the template. Follow the template selection workflow and generate the BOM via the Excel interface as shown."
@@ -59,32 +56,6 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
     "Post-Insertion: Review the BOM after it's placed in iCAD. If text overflows, use the Edit Attribute command, select the affected row, and adjust the width and interval ratio in the dialog box."
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, [subLessonId]);
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -94,24 +65,22 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          16. Bill Of
-          Material (BOM)
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          16. Bill Of Material (BOM)
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (subLessonId === "1") speak(bom1Steps);
-            else if (subLessonId === "2") speak(bom2Steps);
-            else if (subLessonId === "3") speak(bom3Steps);
-            else if (subLessonId === "4") speak(bom4Steps);
+            const introTitle = "16. Bill Of Material (BOM)";
+            const introSubtitle = "Displays part information particularly material, part specifications and weights. Located at upper right portion of the template.";
+            const currentSteps = subLessonId === "1" ? bom1Steps :
+                                subLessonId === "2" ? bom2Steps :
+                                subLessonId === "3" ? bom3Steps : bom4Steps;
+            speak([introTitle, introSubtitle, ...currentSteps]);
           }}
             onStop={stop}
           />
         </h3>
 
-        <p className="lesson-subtitle">
-          {" "}
-          Displays part informations particularly material, part specifications
-          and weights.
+        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+          Displays part information particularly material, part specifications and weights.
           <br /> Located at upper right portion of the template.
         </p>
       </section>
@@ -122,7 +91,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* a. Part drawing Section */}
-              <div className="lesson-section">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">a.</span>
                   <span className="step-label">Part drawing</span>
@@ -143,7 +112,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               </div>
               <div className="section-divider"></div>
               {/* c. Section */}
-              <div className="lesson-section">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">c.</span>
 
@@ -170,7 +139,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* d. Excel operations for parts */}
-              <div className="lesson-section">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">d.</span>
 
@@ -199,7 +168,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               </div>
               <div className="section-divider"></div>{" "}
               {/* b. Assembly drawing Section */}
-              <div className="lesson-section">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">b.</span>
                   <span className="step-label">Assembly drawing</span>
@@ -240,7 +209,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* Assembly Extended Section */}
-              <div className="lesson-section">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="flex-col">
                   <div>
                     <img src={bomAssemblyDrawing2Img} alt="Standard Assembly BOM Grouping and Numbering Gaps" className="software-screenshot screenshot-wide" /* sanitized: width: '100%' */ />
@@ -249,7 +218,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
               </div>
               <div className="section-divider"></div>{" "}
               {/* 17. Additional Information */}
-              <section className="lesson-section">
+              <section className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">17.</span>
                   <span className="step-label">Additional Information</span>
@@ -272,7 +241,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* Bill of Material after inserting Section */}
-              <div className="lesson-section">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 {" "}
                 <h4 style={{ marginBottom: "2rem" }}> Bill of Material after inserting on ICAD data </h4>
                 <div>

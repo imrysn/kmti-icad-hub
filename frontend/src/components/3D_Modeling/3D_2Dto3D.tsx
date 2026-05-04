@@ -1,5 +1,3 @@
-/** * 3D_2Dto3D.tsx — 2D > 3D lessons (1 through 2) */
-
 import React, { useState, useEffect, useRef } from "react";
 
 import {
@@ -10,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* 2D > 3D (1) Assets */
@@ -49,7 +48,8 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore(`2d-3d-1-${activeTab}`);
 
   useEffect(() => {
@@ -75,6 +75,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onNextLesson) {
       onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
@@ -84,10 +85,14 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onPrevLesson) {
       onPrevLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const introTitle = "2D to 3D";
+  const introSubtitle = "3D modeling can be done by sketching on a 2D sketch using a plane on the 3D dimension.";
+
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -95,16 +100,42 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => setActiveTab(tab.id as any)} > {tab.label} </button>))}
       </div>
 
+      <section className="lesson-intro">
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text={introTitle}
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const steps = activeTab === 'workPlane' ? workPlaneSteps : menuSteps;
+            speak([introTitle, introSubtitle, ...steps]);
+          }} onStop={stop} />
+        </h3>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
+      </section>
+
       <div className="lesson-grid single-card">
         {activeTab === 'workPlane' && (
-          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+          <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>2D &gt; 3D</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(workPlaneSteps)} onStop={stop} />
             </div>
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-              <p className="p-flush">3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension.</p>
-              <p className="p-flush">To create 2D plane on the 3D dimension, use <strong className="red-text">Open Work Plane</strong> from the toolbar.</p>
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <KaraokeLessonText
+                as="p"
+                className="p-flush"
+                text="Work Plane: 3D modeling can be done by sketching on a 2D sketch using a plane on the 3D dimension. Use Open Work Plane from the toolbar to start."
+                isActive={isSpeaking && currentIndex === 2}
+                currentCharIndex={currentCharIndex}
+              />
               <div className="flex-row-center--wrap" style={{ justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '2rem' }}>
                 <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
                   <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" style={{ width: "8rem" }} />
@@ -115,8 +146,13 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
-              <span> Use to rotate the work plane to X-Y Plane, X-Z, Plane or Y-Z Plane.</span>
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+              <KaraokeLessonText
+                as="span"
+                text="Step 2: Use the tools shown to rotate the work plane to X-Y, X-Z, or Y-Z orientations."
+                isActive={isSpeaking && currentIndex === 3}
+                currentCharIndex={currentCharIndex}
+              />
               <div className="screenshot-wrapper" style={{ marginTop: "1rem" }}>
                 <img src={openWorkPlaneImg2} alt="Open Work Plane Orientation" className="software-screenshot" style={{ width: '10rem' }} />
               </div>
@@ -130,13 +166,19 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         )}
 
         {activeTab === 'commandMenu' && (
-          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+          <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>COMMAND MENU</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(menuSteps)} onStop={stop} />
             </div>
-            <p className="p-flush mb-8" style={{marginTop: "-2rem"}}>Most tools used for sketching on the work plane can be found on the command menu.</p>
-            <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+            <KaraokeLessonText
+              as="p"
+              className="p-flush mb-8"
+              style={{marginTop: "-2rem"}}
+              text="Command Menu: Most tools for sketching on the work plane, like those for extruding 2D sketches into 3D solid entities, can be found on this menu."
+              isActive={isSpeaking && currentIndex === 2}
+              currentCharIndex={currentCharIndex}
+            />
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="screenshot-wrapper">
                 <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide" style={{ height: '545px', marginTop: "2rem" }} />
               </div>
@@ -166,7 +208,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore(`2d-3d-2-${activeTab}`);
 
   useEffect(() => {
@@ -178,11 +221,30 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
   const spiralSteps = ["Step 1: First, create your 2D sketch for the spiral form.", "Step 2: Select Spiral Form from the menu. Pick the cross-section and click GO.", "Step 3: Specify the pitch in the item entry. Pitch must be greater than thickness. Click GO.", "Step 4: Select the ends of the rotational axis for the spiral length, then click GO."];
 
   const tabs = [{ id: "extrude", label: "Extrude" }, { id: "revolve", label: "Revolve" }, { id: "spiral", label: "Spiral" },];
-  const handleNext = () => { const i = tabs.findIndex((t) => t.id === activeTab); if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson(); };
-  const handlePrev = () => { const i = tabs.findIndex((t) => t.id === activeTab); if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson(); };
+  const handleNext = () => { 
+    const i = tabs.findIndex((t) => t.id === activeTab); 
+    if (i < tabs.length - 1) { 
+      setActiveTab(tabs[i + 1].id as any); 
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  const handlePrev = () => { 
+    const i = tabs.findIndex((t) => t.id === activeTab); 
+    if (i > 0) { 
+      setActiveTab(tabs[i - 1].id as any); 
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const introTitle = "Extrude, Revolve, Spiral";
+  const introSubtitle = "These are the tools use for extruding 2D sketches to 3D Solid Entities.";
 
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -191,9 +253,26 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">Extrude, Revolve, Spiral</h3>
-        <p className="p-flush">These are the tools use for extruding 2D sketches to 3D Solid Entities.</p>
-        <p className="p-flush" style={{ marginTop: "-2rem" }}> Most commonly used tools are the following: </p>
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text={introTitle}
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const steps = activeTab === 'extrude' ? extrudeSteps :
+                           activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
+            speak([introTitle, introSubtitle, ...steps]);
+          }} onStop={stop} />
+        </h3>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
         <div className="screenshot-wrapper">
           <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-small" style={{ height: '225px' }} />
         </div>
@@ -202,17 +281,22 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
       <div className="lesson-grid single-card">
         {/* EXTRUDE */}
         {activeTab === "extrude" && (
-          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+          <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>EXTRUDE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(extrudeSteps)} onStop={stop} />
             </div>
             <p className="p-flush" style={{ marginTop: "-2rem" }}>Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.</p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">1 </span>
-                <span className="step-label">Select <strong className="red-text">Extrude</strong> from the icon menu.</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Select Extrude from the icon menu."
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
@@ -221,42 +305,54 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
               <div className="step-header" style={{ marginBottom: "-2rem" }}>
                 <span className="step-number">2 </span>
-                <span className="step-label">Pick the cross-section to be extruded. </span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Pick the cross-section to be extruded. A hatch will appear to show it is an enclosed figure. Click GO."
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
               <div className="step-description">
-                <span className="p-flush" style={{ marginLeft: "3rem" }}>A hatch will appear to show that the sketch is an enclosed figure &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                </span>
-
                 <div className="screenshot-wrapper" style={{ marginTop: "2rem" }}>
                   <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot" style={{ width: '600px' }} />
                 </div>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
               <div className="step-header" style={{ marginTop: "-2rem" }}>
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginBottom: "1.5rem" }}>Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                </span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  style={{ marginBottom: "1.5rem" }}
+                  text="Specify the height on the item entry, press Enter, then click GO."
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
             </div>
 
 
 
-            <div className={`instruction-box instruction-box--warning ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <p className="p-flush" style={{ marginBottom: "1rem" }}>A dialog box will appear asking if after extrusion, the work plane will be deleted or not.</p>
-              <p className="p-flush" style={{ marginBottom: "1rem" }}>Select OK to delete the work plane.</p>
+            <div className={`instruction-box instruction-box--warning ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
+              <KaraokeLessonText
+                as="p"
+                className="p-flush"
+                style={{ marginBottom: "1rem" }}
+                text="Instruction: A dialog box will appear asking to delete the work plane. OK deletes the plane and all sketches permanently. Cancel keeps them."
+                isActive={isSpeaking && currentIndex === 5}
+                currentCharIndex={currentCharIndex}
+              />
               <p className="red-text" ><strong>Note: Deleting the work plane will delete all the sketch made on the plane. <br />Be careful, this process cannot be undone.</strong></p>
-              <p className="p-flush" style={{ marginTop: "1rem" }}>Select Cancel to keep the work plane together with all the 2D sketches. </p>
             </div>
 
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
@@ -274,17 +370,22 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
         {/* REVOLVE */}
         {activeTab === "revolve" && (
-          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+          <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>REVOLVE</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(revolveStepsTTS)} onStop={stop} />
             </div>
             <p className="p-flush" style={{ marginTop: "-2rem" }}>Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.</p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">1 </span>
-                <span className="step-label">Select <strong className="red-text">Revolve</strong> from the icon menu.</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Select Revolve from the icon menu."
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
@@ -293,26 +394,35 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Pick the cross-section to be revolved &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                </span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  style={{ marginTop: "-1.5rem" }}
+                  text="Pick the cross-section to be revolved. Ensure it is enclosed by checking for the hatch. Click GO."
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <span className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>A hatch will appear to show that the sketch is an enclosed figure</span>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
               <div className="step-header" style={{ marginTop: "-2rem" }} >
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1.5rem" }}>Select the <strong className="text-highlight">axis of rotation</strong> &gt; <strong className="text-highlight">GO</strong>
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                </span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  style={{ marginTop: "-1.5rem" }}
+                  text="Select the axis of rotation and click GO."
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
               <div className="screenshot-wrapper mt-8">
                 <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot" style={{ width: '950px', height: '350px', marginTop: "1rem" }} />
@@ -328,17 +438,22 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
         {/* SPIRAL */}
         {activeTab === "spiral" && (
-          <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+          <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>SPIRAL FORM</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(spiralSteps)} onStop={stop} />
             </div>
             <p className="p-flush" style={{ marginTop: "-2rem" }}>Creates a 3D spiral form from a section form created on a 2D sketch.</p>
 
-            <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">1 </span>
-                <span className="step-label">First do the sketch.</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="First, create your 2D sketch for the spiral form."
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
@@ -347,32 +462,36 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label">Select <strong className="red-text">Spiral Form</strong> from the icon menu.</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Select Spiral Form from the menu. Pick the cross-section and click GO."
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
                   <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-2rem" }} />
                 </div>
               </div>
-              <span className="p-flush" style={{ marginBottom: "1.5rem" }}> Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-              </span>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
               <div className="step-header" style={{ marginTop: "-2rem" }}>
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{ marginTop: "-1rem" }}>Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px' }} />
-                </span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  style={{ marginTop: "-1.1rem" }}
+                  text="Specify the pitch in the item entry. Pitch must be greater than thickness. Click GO."
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <div className="instruction-box" style={{ marginTop: "2rem" }}>
-                <p className="p-flush"> <strong className="red-text">Note:</strong> Pitch must be greater than thickness.</p>
-              </div>
-
               <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
                   <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-wide" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
@@ -380,10 +499,16 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+            <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
               <div className="step-header">
                 <span className="step-number">4 </span>
-                <span className="step-label">Select the ends of the length of the spiral along the axis of rotation. Then GO</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Select the ends of the rotational axis for the spiral length, then click GO."
+                  isActive={isSpeaking && currentIndex === 5}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
@@ -392,7 +517,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
             </div>
 
-            <div className="instruction-step">
+            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>RESULT</h4></div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import { ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -18,42 +18,13 @@ interface BalloonLessonProps {
 const BalloonLesson: React.FC<BalloonLessonProps> = ({
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore('2d-balloon');
 
   const balloonSteps = [
     "Part Drawing: Select the part balloon command. Click L1 on the part, then P1 to locate the balloon. Note that balloons should not overlap with lines or dimensions.",
     "Assembly Drawing: Select the add balloon command from the icon menu to annotate your assembly drawings."
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -63,18 +34,24 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           18. Balloon
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(balloonSteps)}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const introTitle = "18. Balloon";
+            const introSubtitle = "Annotating parts and assembly drawings with automated and manual balloon callouts.";
+            speak([introTitle, introSubtitle, ...balloonSteps]);
+          }}
             onStop={stop}
           />
         </h3>
+        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+          Annotating parts and assembly drawings with automated and manual balloon callouts.
+        </p>
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           {" "}
-          <div className={`lesson-section ${currentIndex === 0 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header" style={{ marginBottom: "2rem" }}>
               <span className="step-number">a.</span>
               <span className="step-label">Part drawing</span>
@@ -100,7 +77,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
               </div>
             </div>
           </div>{" "}
-          <div className={`lesson-section ${currentIndex === 1 ? "reading-active" : ""}`}>
+          <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header" style={{ marginBottom: "2rem" }}>
               <span className="step-number">b.</span>
               <span className="step-label">Assembly drawing</span>

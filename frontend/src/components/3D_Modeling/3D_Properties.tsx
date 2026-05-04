@@ -1,9 +1,8 @@
-/** * 3D_Properties.tsx – Properties lessons */
-
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Properties (1) Assets */
@@ -52,7 +51,8 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore(`${subLessonId}-${activeTab}`);
 
   useEffect(() => {
@@ -101,11 +101,36 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     { id: "info", label: "Information" },
   ];
 
+  const introTitle = "PROPERTIES";
+  const introSubtitle = "Learn how to manage object properties, including color, layer designations, and technical information.";
+
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
+
+      <section className="lesson-intro">
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text={introTitle}
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const currentSteps = activeTab === "color" ? colorSteps : activeTab === "layer" ? layerSteps : infoSteps;
+            speak([introTitle, introSubtitle, ...currentSteps]);
+          }} onStop={stop} />
+        </h3>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
+      </section>
 
       <div className="lesson-tabs">
         {tabs.map(tab => (
@@ -124,14 +149,19 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>CHANGE COLOR</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(colorSteps)} onStop={stop} />
             </div>
             <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+                <div className={`${getStepClass("color-1")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">1 </span>
-                    <span className="step-label">Select <strong className="text-highlight">Change Color</strong> from the icon menu.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Select Change Color from the icon menu."
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="step-description">
                     <div className="screenshot-wrapper">
@@ -140,10 +170,16 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   </div>
                 </div>
 
-                <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+                <div className={`${getStepClass("color-2")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                   <div className="step-header" style={{ marginBottom: "2rem", alignItems: 'flex-start' }}>
                     <span className="step-number">2 </span>
-                    <span className="step-label">Select either <strong className="text-highlight">Entity</strong> or <strong className="text-highlight">Face</strong></span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Choose either Entity or Face. For Entity, pick a color and select the solid to change everything. For Face, pick a color and select specific surfaces, then click GO."
+                      isActive={isSpeaking && currentIndex === 3}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
 
                   <div className="tool-block mt-8">
@@ -189,15 +225,20 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>CHANGE LAYER</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(layerSteps)} onStop={stop} />
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginBottom: "1rem" }}>
+                <div className={`${getStepClass("layer-1")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginBottom: "1rem" }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">1 </span>
-                    <span className="step-label">Select <strong className="text-highlight">Change Layer</strong> from the icon menu.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Select Change Layer from the icon menu."
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="step-description">
                     <div className="screenshot-wrapper">
@@ -206,10 +247,16 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   </div>
                 </div>
 
-                <div className={`${getStepClass("layer-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+                <div className={`${getStepClass("layer-2")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">2 </span>
-                    <span className="step-label">Specify the <strong className="text-highlight">target layer</strong> on the item entry.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Specify the target layer number on the item entry."
+                      isActive={isSpeaking && currentIndex === 3}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="step-description">
                     <div className="screenshot-wrapper">
@@ -218,10 +265,16 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   </div>
                 </div>
 
-                <div className={`${getStepClass("layer-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+                <div className={`${getStepClass("layer-3")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">3 </span>
-                    <span className="step-label">Click on the solid entity to move it to that layer.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Click on the solid entity to move it to that layer."
+                      isActive={isSpeaking && currentIndex === 4}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                 </div>
               </div>
@@ -233,8 +286,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
             <div className="section-divider"></div>
 
-            <div className={`${getStepClass("layer-designations")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <div className="card-header" style={{ marginBottom: "2rem" }}><h4>LAYER DESIGNATION OF 3D PARTS</h4></div>
+            <div className={`${getStepClass("layer-designations")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
+              <div className="card-header" style={{ marginBottom: "2rem" }}>
+                <KaraokeLessonText
+                  as="h4"
+                  text="Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."
+                  isActive={isSpeaking && currentIndex === 5}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
               <div className="card-header"><h4>LAYER 1</h4></div>
               <div className="step-description">
                 <ul className="list-flush">
@@ -343,20 +403,23 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
               <h4>INFORMATION TOOLS</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(infoSteps)} onStop={stop} />
             </div>
             <p className='p-flush' style={{ marginTop: "-2rem" }}>Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information).</p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginTop: '1rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 {/* Coordinates */}
-                <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-1")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information1} alt="Coord icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Displays coordinates of a point from the origin <br />
-                      <span className="text-highlight">&gt; Pick a point</span>
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Step 1: Coordinates. Pick a point to display its position from the origin."
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
                     <img src={infoPointImg} alt="Coordinates" className="software-screenshot" style={{ width: '100%' }} />
@@ -364,13 +427,17 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
 
                 {/* Length */}
-                <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-2")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information2} alt="Length icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Measures the length of an edge <br />
-                      <span className="text-highlight">&gt; Pick an edge &gt; GO</span> <img src={leftClick} alt="click" style={{ width: '28px', verticalAlign: 'middle', marginLeft: '4px' }} />
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Step 2: Length. Pick an edge and click GO to measure it."
+                      isActive={isSpeaking && currentIndex === 3}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
                     <img src={infoEdgeImg} alt="Length" className="software-screenshot" style={{ width: '100%' }} />
@@ -378,13 +445,17 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
 
                 {/* Distance */}
-                <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-3")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information3} alt="Distance icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Measures the distance between two points or edges <br />
-                      <span className="text-highlight">&gt; Pick first point/edge &gt; Pick second point/edge</span>
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Step 3: Distance. Pick two points or edges to measure the gap between them."
+                      isActive={isSpeaking && currentIndex === 4}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
                     <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot" style={{ width: '100%' }} />
@@ -394,14 +465,17 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 {/* Angle */}
-                <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-4")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information4} alt="Angle icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Measures the angle between two edges or three points <br />
-                      <span className="text-highlight">&gt; Pick 2 edges</span> <br />
-                      <span className="text-highlight">&gt; Pick 3 points</span>
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Step 4: Angle. Pick two edges or three points to calculate the angle."
+                      isActive={isSpeaking && currentIndex === 5}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
                     <img src={infoAngleImg} alt="Angle" className="software-screenshot" style={{ width: '100%' }} />
@@ -409,13 +483,17 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
 
                 {/* Entity Info */}
-                <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-5")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information5} alt="Entity icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Displays the information about the selected entity <br />
-                      <span className="text-highlight">&gt; Pick the solid entity &gt; GO</span> <img src={leftClick} alt="click" style={{ width: '28px', verticalAlign: 'middle', marginLeft: '4px' }} />
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Step 5: Entity Info. Pick a solid and click GO to see all technical information."
+                      isActive={isSpeaking && currentIndex === 6}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
                     <img src={infoEntityImg} alt="Entity Info" className="software-screenshot" style={{ width: '100%' }} />
@@ -438,3 +516,4 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 };
 
 export default PropertiesLesson;
+

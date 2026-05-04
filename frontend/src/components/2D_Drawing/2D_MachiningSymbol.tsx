@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import { ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Machining Symbol */
@@ -21,42 +21,12 @@ interface MachiningSymbolLessonProps {
 const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore('2d-machining-symbol');
 
   const machiningSteps = [
     "Machining Symbols: Select the required machining symbol from the menu. Note that symbols in parentheses indicate the part must be machined before welding, as post-weld machining would be impossible.",
     "Surface Condition: Refer to the Machining Surface Condition table for specific roughness values and finish requirements standard for KEMCO parts."
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -66,23 +36,25 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           Machining Symbol
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(machiningSteps)}
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const introTitle = "Machining Symbol";
+            const introSubtitle = "Understanding machining symbols and surface condition requirements to ensure precision parts and required surface finishes.";
+            speak([introTitle, introSubtitle, ...machiningSteps]);
+          }}
             onStop={stop}
           />
         </h3>
 
-        <p className="lesson-subtitle">
-          {" "}
+        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
           Understanding machining symbols and surface condition requirements to
           ensure precision parts and required surface finishes.
         </p>
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
+          <div className={`flex-col ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
             {" "}
             {/* 12. Machining Symbols - Title Header */}
             <div>
@@ -104,7 +76,7 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
                 welding will be impossible.</p>
             </div>
           </div>
-          <div className="lesson-section">
+          <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header" style={{ marginBottom: "2rem" }}>
               <span className="step-number">a.</span>
               <span className="step-label">Machining Surface Condition</span>

@@ -1,9 +1,8 @@
-/** * 3D_Parasolid.tsx – Loading Parasolid lessons */
-
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 /* Assets */
@@ -36,7 +35,8 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore(`${subLessonId}-${activeTab}`);
 
   React.useEffect(() => {
@@ -60,11 +60,13 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
   const handleNext = () => {
     if (activeTab === 'import') setActiveTab('edit');
     else if (onNextLesson) onNextLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
     if (activeTab === 'edit') setActiveTab('import');
     else if (onPrevLesson) onPrevLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const getStepClass = (stepId: string) => "instruction-step";
@@ -74,8 +76,11 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     { id: 'edit', label: 'Lighten B-Rep Solid' },
   ];
 
+  const introTitle = activeTab === 'import' ? 'Loading of Parasolid Data' : 'Parasolid Export & Edit';
+  const introSubtitle = "Tools used to import and export parasolid data, and edit B-Rep solid for 3D Purchase Parts.";
+
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -91,32 +96,49 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
         ))}
       </div>
 
-      <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
-        <h3 className="section-title">
-          {activeTab === 'import' ? 'Loading of Parasolid Data' : 'Parasolid Export & Edit'}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(activeTab === 'import' ? importSteps : editSteps)} onStop={stop} />
+      <section className="lesson-intro">
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text={introTitle}
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const steps = activeTab === 'import' ? importSteps : editSteps;
+            speak([introTitle, introSubtitle, ...steps]);
+          }} onStop={stop} />
         </h3>
-        <div>
-          <p className="p-flush">Tools used to import and export parasolid data, and edit B-Rep solid. This tool is used for creating 3D Purchase Parts.</p>
-          <div className="screenshot-wrapper mt-4">
-            <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "250px", marginTop: "1rem" }} />
-          </div>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
+        <div className="screenshot-wrapper mt-4">
+          <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "250px", marginTop: "1rem" }} />
         </div>
       </section>
 
       <div className="lesson-grid single-card">
-        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+        <div className="lesson-card tab-content fade-in">
           {activeTab === 'import' ? (
             <div className="fade-in">
               <div className="card-header">
                 <h4>IMPORT PROCEDURE</h4>
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(importSteps)} onStop={stop} />
               </div>
 
-              <div className={`${getStepClass('p1-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`${getStepClass('p1-1')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">1 </span>
-                  <span className="step-label">Select <strong className="text-highlight">Import</strong> from the icon menu.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Select Import from the icon menu."
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -127,13 +149,18 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
 
 
-              <div className={`${getStepClass('p1-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`${getStepClass('p1-2')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">2 </span>
-                  <span className="step-label">The <strong className="text-highlight">Parasolid Link</strong> dialog box will appear.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="The Parasolid Link dialog will appear. Browse to the folders containing your parasolid files."
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
-                  <p className="p-flush">Browse for folders which contain parasolid files to be imported.</p>
                   <div className="screenshot-wrapper mt-4">
                     <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot" style={{width: "900px"}} />
                   </div>
@@ -142,19 +169,19 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
 
 
-              <div className={`${getStepClass('p1-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className={`${getStepClass('p1-3')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">3 </span>
-                  <span className="step-label" style={{marginTop: "-1.5rem"}}>
-                    Select file &gt; OK &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                  </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    style={{marginTop: "-1.5rem"}}
+                    text="After selecting your file, click OK then GO. When the Name Change dialog appears, click Cancel to release part names on the tree view."
+                    isActive={isSpeaking && currentIndex === 4}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
-                  <p className="p-flush" style={{marginBottom: "2rem"}}>When the Name Change dialog appears &gt; Click <strong className="text-highlight">Cancel</strong>.</p>
-                  <div className="instruction-box mt-4" style={{marginBottom: "2rem"}}>
-                    <p className="p-flush"><strong>TIP:</strong> Purchase part names must be released on the tree view.</p>
-                  </div>
                   <div className="screenshot-wrapper mt-4">
                     <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
                   </div>
@@ -165,14 +192,19 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
             <div className="fade-in">
               <div className="card-header">
                 <h4>LIGHTEN B-REP SOLID</h4>
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(editSteps)} onStop={stop} />
               </div>
               <p className='p-flush' style={{ marginTop: "-2rem" }}>Optimize the B-Rep solid to reduce overall file size.</p>
 
-              <div className={`${getStepClass('p2-1')} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`${getStepClass('p2-1')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">1 </span>
-                  <span className="step-label">Select <strong className="text-highlight">Lighten B-rep Solid</strong> from the icon menu.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Select Lighten B-rep Solid from the menu to reduce file size."
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -183,10 +215,16 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('p2-2')} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`${getStepClass('p2-2')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">2 </span>
-                  <span className="step-label">A dialog box will appear. Select <strong className="text-highlight">No form changes</strong> &gt; OK</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="In the dialog box, select No form changes and click OK."
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -197,29 +235,50 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className="section-divider"></div>
 
-              <div className={`${getStepClass('p2-3')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className={`${getStepClass('p2-3')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">3 </span>
-                  <span className="step-label" style={{marginTop: "-1.5rem"}}>
-                    Select the purchase part &gt; <strong className="text-highlight">GO</strong>
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                  </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    style={{marginTop: "-1.5rem"}}
+                    text="Select the purchase part and click GO. Check the message pane to verify if the process was successful."
+                    isActive={isSpeaking && currentIndex === 4}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
-                  <p className="p-flush" style={{marginLeft: "3rem", marginTop: "-1rem", marginBottom: "1rem"}}>Check the message pane to verify success.</p>
                   <div className="screenshot-wrapper mt-4">
                     <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot" style={{ width: "450px", marginBottom: "1rem"}} />
                   </div>
                 </div>
               </div>
 
-              <div className={`${getStepClass('p2-4')} ${currentIndex === 3 || currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="3">
+              <div className={`${getStepClass('p2-4')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="step-header">
                   <span className="step-number">4 </span>
-                  <span className="step-label">Set Part Properties & Information</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Save the part by going to File, Save As, and using the purchase part code as the filename."
+                    isActive={isSpeaking && currentIndex === 5}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+              <div className={`${getStepClass('p2-5')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
+                <div className="step-header">
+                  <span className="step-number">5 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Set important part info by right-clicking the top 3D part on the tree view, selecting Properties, and entering your comments."
+                    isActive={isSpeaking && currentIndex === 6}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
-                  <p className="p-flush" style={{marginLeft: "3rem", marginTop: "-1rem", marginBottom: "1rem"}}>Right-click top part &gt; <strong className="text-highlight">Properties</strong> &gt; Enter comments.</p>
                   <div className="screenshot-wrapper mt-4">
                     <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot screenshot-wide" />
                   </div>
@@ -242,3 +301,4 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 };
 
 export default ParasolidLesson;
+

@@ -1,9 +1,8 @@
-/** * 3D_HoleDetails.tsx — "Creating Hole Details on Parts" Lesson */
-
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Asset Imports */
@@ -27,7 +26,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore('hole-details');
 
   const holeSteps = [
@@ -41,8 +41,11 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
   const getStepClass = (stepId: string) => "instruction-step";
   const tabs = [{ id: "holeDetails", label: "Hole Details" }];
 
+  const introTitle = "Creating Hole Details on Parts";
+  const introSubtitle = "We have standard tools for creating holes such as drill holes, tapping holes and counterbores on the parts.";
+
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -56,26 +59,45 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">Creating Hole Details on Parts</h3>
-        <p className="p-flush">
-          We have standard tools for creating holes such as drill holes, tapping holes and counterbores on the parts.
-        </p>
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text={introTitle}
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            speak([introTitle, introSubtitle, ...holeSteps]);
+          }} onStop={stop} />
+        </h3>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
         <div className="screenshot-wrapper mt-4">
           <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" style={{ height: '180px' }} />
         </div>
       </section>
 
       <div className="lesson-grid single-card">
-        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+        <div className="lesson-card tab-content fade-in">
           <div className="card-header">
             <h4>HOLE DETAILS</h4>
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(holeSteps)} onStop={stop} />
           </div>
 
-          <div className={`${getStepClass("hole-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <div className={`${getStepClass("hole-1")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header">
               <span className="step-number">1 </span>
-              <span className="step-label">Select <strong className="red-text">Arrange Machine Parts</strong> from the icon menu.</span>
+              <KaraokeLessonText
+                as="span"
+                className="step-label"
+                text="Select Arrange Machine Part from the icon menu."
+                isActive={isSpeaking && currentIndex === 2}
+                currentCharIndex={currentCharIndex}
+              />
             </div>
             <div className="step-description">
               <div className="screenshot-wrapper">
@@ -86,10 +108,16 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
 
 
-          <div className={`${getStepClass("hole-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+          <div className={`${getStepClass("hole-2")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
               <span className="step-number">2 </span>
-              <span className="step-label">A window will appear showing the list of tools available.</span>
+              <KaraokeLessonText
+                as="span"
+                className="step-label"
+                text="A window will appear showing the list of available tools, such as drill holes and counterbores."
+                isActive={isSpeaking && currentIndex === 3}
+                currentCharIndex={currentCharIndex}
+              />
             </div>
             <div className="step-description">
               <div className="screenshot-wrapper">
@@ -100,21 +128,32 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
 
 
-          <div className={`${getStepClass("hole-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+          <div className={`${getStepClass("hole-3")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
             <div className="step-header" style={{ marginBottom: "-2rem" }}>
               <span className="step-number">3 </span>
-              <span className="step-label">After setting the specifications, click OK</span>
+              <KaraokeLessonText
+                as="span"
+                className="step-label"
+                text="After setting the desired specifications, click OK."
+                isActive={isSpeaking && currentIndex === 4}
+                currentCharIndex={currentCharIndex}
+              />
             </div>
           </div>
 
 
 
-          <div className={`${getStepClass("hole-4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+          <div className={`${getStepClass("hole-4")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
             <div className="step-header">
               <span className="step-number">4 </span>
-              <span className="step-label" style={{ marginTop: "-1rem" }}>Click the location of the hole on the solid entity &gt; GO
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '32px', margin: '0 8px' }} /> to create the cut.
-              </span>
+              <KaraokeLessonText
+                as="span"
+                className="step-label"
+                style={{ marginTop: "-1rem" }}
+                text="Click the location of the hole on the solid entity and click GO to create the cut."
+                isActive={isSpeaking && currentIndex === 5}
+                currentCharIndex={currentCharIndex}
+              />
             </div>
             <div className="step-description">
               <div className="screenshot-wrapper">
@@ -123,19 +162,23 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             </div>
           </div>
 
-          <div className={`instruction-box ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: '0rem' }}>
-            <p className="p-flush">
-              <strong className="red-text">Note:</strong> Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes.
-            </p>
+          <div className={`instruction-box ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginTop: '0rem' }}>
+            <KaraokeLessonText
+              as="p"
+              className="p-flush"
+              text="Note: Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes."
+              isActive={isSpeaking && currentIndex === 6}
+              currentCharIndex={currentCharIndex}
+            />
           </div>
-          <div className={`screenshot-wrapper ${currentIndex === 4 ? "reading-active" : ""}`}>
+          <div className={`screenshot-wrapper ${currentIndex === 6 ? "reading-active" : ""}`}>
             <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" />
           </div>
         </div>
 
         <div className="lesson-navigation">
-          <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
-          <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+          <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
+          <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
         </div>
       </div>
 
@@ -144,3 +187,4 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 };
 
 export default HoleDetailsLesson;
+

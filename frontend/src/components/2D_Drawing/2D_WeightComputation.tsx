@@ -1,21 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import React from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
+
 /* Importing assets for Weight Computation */
-
-
-
 import plateExImg from "../../assets/2D_Image_File/2D_material_weight_computation_plate.jpg";
-
 import cylinderExImg from "../../assets/2D_Image_File/2D_material_weight_computation_cylinder.jpg";
-
 import shapeSteelEx1Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel.jpg";
-
 import shapeSteelEx2Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel_ex2.jpg";
-
 import pipeExImg from "../../assets/2D_Image_File/2D_material_weight_computation_square_rectangular_pipe.jpg";
 
 interface WeightComputationLessonProps {
@@ -26,11 +21,10 @@ interface WeightComputationLessonProps {
 
 const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
   onNextLesson,
-  onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
+  onPrevLesson,
+  nextLabel
+}) => {
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-weight-computation');
 
   const weightSteps = [
     "Material Weight Computation: Calculating part mass is critical for shipping and logistics. Use the specific gravity table as your primary reference for material densities.",
@@ -40,64 +34,42 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
     "Piping: For square and rectangular pipes, the same cross-sectional area principle applies. Follow the standard KEMCO formulas to ensure accurate weight estimation."
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, []);
+  const introSubtitle = "Technical formulas and examples for calculating the mass of engineering components.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
+
       <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          15. Material
-          Weight Computation
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(weightSteps)}
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text="15. MATERIAL WEIGHT COMPUTATION"
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const introTitle = "15. MATERIAL WEIGHT COMPUTATION";
+            speak([introTitle, introSubtitle, ...weightSteps]);
+          }}
             onStop={stop}
           />
         </h3>
-
-        <p className="lesson-subtitle">
-          {" "}
-          Technical formulas and examples for calculating the mass of various
-          engineering components based on material density and geometry.
-        </p>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
       </section>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="flex-col">
-            <div className="step-header" style={{ marginBottom: "1rem" }}>
-              <span className="step-number">15.</span>
-              <span className="step-label">Material Weight Computation</span>
-            </div>
-            <div className="lesson-section">
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="lesson-table-container">
                 <table className="lesson-table">
                   <thead>
@@ -106,8 +78,8 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                       <th colSpan={2}>SPECIFIC GRAVITY</th>
                     </tr>
                     <tr>
-                      <th>g/cm<sup style={{ fontSize: "1rem" }}>3</sup></th>
-                      <th>kg/m<sup style={{ fontSize: "1rem" }}>3</sup></th>
+                      <th>g/cm³</th>
+                      <th>kg/m³</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -117,7 +89,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                     <tr><td>SPCC</td><td>7.85</td><td>7850</td></tr>
                     <tr><td>SCM440</td><td>7.84</td><td>7840</td></tr>
                     <tr><td>RUBBER</td><td>7.00</td><td>7000</td></tr>
-                    <tr><td>URATHANE RUBBER</td><td>1.20</td><td>1200</td></tr>
+                    <tr><td>URATHANE</td><td>1.20</td><td>1200</td></tr>
                     <tr><td>NEW LIGHT</td><td>0.92</td><td>920</td></tr>
                     <tr><td>MC NYLON</td><td>1.15</td><td>1150</td></tr>
                     <tr><td>ACRYLIC</td><td>1.20</td><td>1200</td></tr>
@@ -126,136 +98,86 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                   </tbody>
                 </table>
               </div>
-            </div>{" "}
-            {/* a. Plate Section */}
-            <div className="lesson-section">
-              <div className="step-header" style={{ marginBottom: "1rem", marginTop: "2rem" }}>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+              <div className="step-header">
                 <span className="step-number">a.</span>
-                <span className="step-label">Plate (L × W × H × SG)</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Plate (L × W × H × SG)"
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <p className="red-text">example:</p>
-              <div className="flex-row">
-                <img src={plateExImg} alt="Plate Weight Computation Example" className="software-screenshot screenshot-wide" />
-
-                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p className="red-text"><strong>Note:</strong></p>
-
-                  <p>
-                    {" "}
-                    Dimension is always in millimeter.
-                    <br /> Convert to meter upon computation.
-                    <br /> Use specific gravity with unit kg/m<sup>3</sup> and follow the
-                    given formula.
-                  </p>
-                </div>
-              </div>
-            </div>{" "}
-            {/* b. Cylinder Section */}
-            <div className="lesson-section">
-              <div className="step-header" style={{ marginBottom: "1rem" }}>
-                <span className="step-number">b.</span>
-                <span className="step-label">Cylinder ( π × r² × L × SG) or [ ( π × d² × L × SG) / 4 ]</span>
-              </div>
-              <p className="red-text">example:</p>
-              <div className="flex-row">
-                <img src={cylinderExImg} alt="Cylinder Weight Computation Example" className="software-screenshot screenshot-wide" />
-
-                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p className="red-text"><strong>Note:</strong></p>
-
-                  <p>
-                    {" "}
-                    Dimension is always in millimeter.
-                    <br /> Radius or Diameter needs to convert in meter upon
-                    computation.
-                    <br /> Use specific gravity with unit kg/m<sup>3</sup> and follow the
-                    given formula.
-                  </p>
-                </div>
-              </div>
-            </div>{" "}
-            {/* c. Shape Steel Section */}
-            <div className="lesson-section">
-              <div className="step-header" style={{ marginBottom: "1rem" }}>
-                <span className="step-number">c.</span>
-                <span className="step-label">Shape Steel ( Cross Sectional Area × L × SG )</span>
-              </div>
-              <div className="flex-row">
-                <div className="image-column">
-                  <div className="flex-col" style={{ gap: '0.5rem' }}>
-                    <p className="red-text">example:</p>
-
-                    <img src={shapeSteelEx1Img} alt="Shape Steel C-Channel Example" className="software-screenshot screenshot-wide" />
-                  </div>
-
-                  <div className="flex-col" style={{ gap: '0.5rem', marginTop: '1rem' }}>
-                    <p className="red-text">example:</p>
-
-                    <img src={shapeSteelEx2Img} alt="Shape Steel Angle Bar Example" className="software-screenshot screenshot-wide" />
-                  </div>
-                </div>
-
-                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p className="red-text"><strong>Notes:</strong></p>
-
-                  <div style={{ padding: "0.5rem 0" }}>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
-                    </div>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      2. Cross sectional area needs to convert in m<sup>2</sup> first.
-                    </div>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      3. To skip computation of cross sectional area from cm<sup>2</sup> to m<sup>2</sup>, just move 4 decimal places to the left.
-                    </div>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      4. Use specific gravity with unit kg/m<sup>3</sup> and follow the given formula.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>{" "}
-            {/* d. Square / Rectangular Pipe Section */}
-            <div className="lesson-section">
-              <div className="step-header" style={{ marginBottom: "1rem" }}>
-                <span className="step-number">d.</span>
-                <span className="step-label">Square / Rectangular Pipe ( Cross Sectional Area × L × SG )</span>
-              </div>
-              <p className="red-text" style={{ marginBottom: "1rem" }}>example:</p>
-              <div className="flex-row">
-                <img src={pipeExImg} alt="Rectangular Pipe Example" className="software-screenshot screenshot-wide" />
-
-                <div className="info-box" style={{ width: "90%", marginLeft: "3rem" }}>
-                  <p className="red-text"><strong>Notes:</strong></p>
-
-                  <div style={{ padding: "0.5rem 0" }}>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      1. Cross sectional area refers from <span>Japan Industrial Standard (JIS)</span>.
-                    </div>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      2. Cross sectional area needs to convert in m<sup>2</sup> first.
-                    </div>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      3. To skip computation of cross sectional area from cm<sup>2</sup> to m<sup>2</sup>, just move 4 decimal places to the left.
-                    </div>
-                    <div style={{ marginBottom: "0.8rem" }}>
-                      4. Use specific gravity with unit kg/m<sup>3</sup> and follow the given formula.
-                    </div>
-                  </div>
-                </div>
+              <img src={plateExImg} alt="Plate Computation" className="software-screenshot screenshot-wide" style={{ margin: "1rem 0" }} />
+              <div className="info-box">
+                <p>Dimensions are in mm; convert to meters for computation. Use kg/m³ for specific gravity.</p>
               </div>
             </div>
-          </div>{" "}
-          {/* Navigation */}
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
+              <div className="step-header">
+                <span className="step-number">b.</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Cylinder (π × r² × L × SG)"
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+              <img src={cylinderExImg} alt="Cylinder Computation" className="software-screenshot screenshot-wide" style={{ margin: "1rem 0" }} />
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
+              <div className="step-header">
+                <span className="step-number">c.</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Shape Steel"
+                  isActive={isSpeaking && currentIndex === 5}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+              <img src={shapeSteelEx1Img} alt="Shape Steel C-Channel" className="software-screenshot screenshot-wide" style={{ margin: "1rem 0" }} />
+              <img src={shapeSteelEx2Img} alt="Shape Steel Angle" className="software-screenshot screenshot-wide" />
+              <div className="info-box" style={{ marginTop: "1rem" }}>
+                <p>Cross-sectional areas refer to JIS. Convert cm² to m² by moving decimal 4 places left.</p>
+              </div>
+            </div>
+
+            <div className="section-divider"></div>
+
+            <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
+              <div className="step-header">
+                <span className="step-number">d.</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Square / Rectangular Pipe"
+                  isActive={isSpeaking && currentIndex === 6}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+              <img src={pipeExImg} alt="Pipe Computation" className="software-screenshot screenshot-wide" />
+            </div>
+          </div>
+
           <div className="lesson-navigation">
-            {" "}
             <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
+              <ChevronLeft size={18} /> Previous
+            </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -265,6 +187,3 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
 };
 
 export default WeightComputationLesson;
-
-
-

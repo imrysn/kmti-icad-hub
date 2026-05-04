@@ -43,17 +43,21 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
   const getStepClass = (stepId: string) => "instruction-step";
 
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           Interference Check
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const introTitle = "Interference Check";
+            const introDesc = "Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling.";
+            speak([introTitle, introDesc, ...interferenceSteps]);
+          }} onStop={stop} />
         </h3>
-        <p className="p-flush">
+        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
           Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling.
         </p>
         <p className="lesson-subtitle mt-4">These following tools are used to detect interferences on the 3D Modeling.</p>
@@ -63,13 +67,12 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
       </section>
 
       <div className="lesson-grid single-card">
-        <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+        <div className="lesson-card tab-content fade-in">
           <div className="card-header">
             <h4>INTERFERENCE CHECK</h4>
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interferenceSteps)} onStop={stop} />
           </div>
 
-          <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <div className="step-header">
               <span className="step-number">1 </span>
               <span className="step-label">Select <strong className="red-text">Interference Check</strong> from the icon menu.</span>
@@ -81,7 +84,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("i2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+          <div className={`${getStepClass("i2")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
               <span className="step-number">2 </span>
               <span className="step-label">On the command menu, unselect High-speed detection.</span>
@@ -93,7 +96,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("i3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginBottom:"-2rem"}}>
+          <div className={`${getStepClass("i3")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom:"-2rem"}}>
             <div className="step-header">
               <span className="step-number">3 </span>
               <span className="step-label" style={{marginTop: "-1.5rem"}}>Select specific entities to check if there are interferences &gt; GO 
@@ -112,7 +115,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
 
-          <div className={`${getStepClass("i4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+          <div className={`${getStepClass("i4")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
             <div className="step-header">
               <span className="step-number">4 </span>
               <span className="step-label">Analyze possible countermeasures to remove the interference on the parts.</span>
@@ -120,7 +123,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <p className="p-flush mb-4" style={{marginLeft: "3rem", marginTop: "-1rem"}}>To remove the red CGS solid, use Undo or Ctrl+Z.</p>
           </div>
 
-          <div className={`${getStepClass("li-intro")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
+          <div className={`${getStepClass("li-intro")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
             <div className="card-header"><h4>DETECTION LIST TOOL</h4></div>
             <div className="step-header" style={{marginTop: "2rem"}}>
               <span className="step-number">5 </span>
@@ -137,7 +140,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
           </div>
 
 
-          <div className={`${getStepClass("li2")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
+          <div className={`${getStepClass("li2")} ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
             <div className="step-header">
               <span className="step-number">6 </span>
               <span className="step-label">The List Display window will appear showing all the 3D part names that interfere with each other.</span>
@@ -150,8 +153,8 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
@@ -160,3 +163,4 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 };
 
 export default InterferenceLesson;
+

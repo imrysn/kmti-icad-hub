@@ -431,12 +431,11 @@
 /* --- Immersive Focus Mode (Smart Reading) --- */
 
 /* Parent container state when reading is active */
-.course-lesson-container.is-reading section:not(.reading-active),
-.course-lesson-container.is-reading .lesson-card:not(.reading-active),
+.course-lesson-container.is-reading section:not(.reading-active):not(:has(.reading-active)),
+.course-lesson-container.is-reading .lesson-card:not(.reading-active):not(:has(.reading-active)),
 .course-lesson-container.is-reading .instruction-step:not(.reading-active) {
-  opacity: 0.3;
-  transform: scale(0.98);
-  pointer-events: none;
+  opacity: 0.7;
+  transform: scale(0.99);
   transition: all 0.6s ease;
 }
 

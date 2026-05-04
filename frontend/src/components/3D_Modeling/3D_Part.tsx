@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
@@ -40,7 +41,8 @@ const PartLesson: React.FC<PartLessonProps> = ({
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore(`${subLessonId}-${activeTab}`);
 
   const createSteps = [
@@ -66,15 +68,20 @@ const PartLesson: React.FC<PartLessonProps> = ({
   const handleNext = () => {
     if (activeTab === "create") setActiveTab("change");
     else if (onNextLesson) onNextLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
     if (activeTab === "change") setActiveTab("create");
     else if (onPrevLesson) onPrevLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const introTitle = activeTab === 'create' ? 'Creating 3D Part' : 'Changing 3D Part Name';
+  const introSubtitle = activeTab === 'create' ? "Tool use to name 3D parts and provide information." : "Tool use to Changes 3D part names, drawing names, and comments.";
+
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -92,9 +99,25 @@ const PartLesson: React.FC<PartLessonProps> = ({
       </div>
 
       <section className="lesson-intro">
-        <h3 className="section-title">
-          {activeTab === 'create' ? 'Creating 3D Part' : 'Creating 3D Part'}
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text={introTitle}
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const steps = activeTab === 'create' ? createSteps : changeSteps;
+            speak([introTitle, introSubtitle, ...steps]);
+          }} onStop={stop} />
         </h3>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
         <div>
           <div className="screenshot-wrapper mt-4">
             <img
@@ -110,17 +133,22 @@ const PartLesson: React.FC<PartLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="fade-in">
           {activeTab === 'create' && (
-            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
+            <div className="lesson-card tab-content">
               <div className="card-header">
                 <h4>CREATE 3D PART</h4>
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(createSteps)} onStop={stop} />
               </div>
               <p className='p-flush' style={{ marginTop: "-2rem" }}>Tool use to name 3D parts and provide information. <br /> 3D part name must always be set since it is a vital part for the 2D Detailing.</p>
 
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">1 </span>
-                  <span className="step-label">Select <strong className="red-text">Create 3D Part</strong> from the icon menu.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Select Create 3D Part from the icon menu."
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -129,19 +157,30 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header" style={{ marginBottom: '-2rem' }}>
                   <span className="step-number">2 </span>
-                  <span className="step-label" style={{ marginTop: "-1.5rem" }}> Select a single entity &gt; GO
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                  </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    style={{ marginTop: "-1.5rem" }}
+                    text="Select a single entity and click GO."
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">3 </span>
-                  <span className="step-label">A window will appear showing the informations to fill-up.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="A window will appear. Fill up the required part information."
+                    isActive={isSpeaking && currentIndex === 4}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -150,10 +189,16 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>  
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+              <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="step-header">
                   <span className="step-number">4 </span>
-                  <span className="step-label">All created 3D Part will appear on the tree view.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Once created, the 3D Part will appear in the tree view."
+                    isActive={isSpeaking && currentIndex === 5}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -162,9 +207,15 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+              <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="step-header">
-                  <span className="step-label">MATERIAL DESCRIPTION</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Step 5: Refer to the material description for notation and plate thickness standards."
+                    isActive={isSpeaking && currentIndex === 6}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -181,17 +232,22 @@ const PartLesson: React.FC<PartLessonProps> = ({
           )}
 
           {activeTab === 'change' && (
-            <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
+            <div className="lesson-card tab-content">
               <div className="card-header mt-8">
                 <h4>CHANGE 3D PART NAME</h4>
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(changeSteps)} onStop={stop} />
               </div>
               <p className='p-flush' style={{ marginTop: "-2rem" }}>Tool use to Changes 3D part names, drawing names (of external 3D parts), and comments.</p>
 
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">1 </span>
-                  <span className="step-label">Select <strong className="text-highlight">Change 3D Part Name</strong> from the menu.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Select Change 3D Part Name from the icon menu."
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -200,17 +256,29 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header" style={{ marginBottom: '-2rem' }}>
                   <span className="step-number">2 </span>
-                  <span className="step-label">Select an entity or Right-click on the 3D space.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Select an entity or right-click on the 3D space."
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">3 </span>
-                  <span className="step-label">Edit the information in the dialog box.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Edit the information in the window that appears."
+                    isActive={isSpeaking && currentIndex === 4}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -219,10 +287,16 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+              <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="step-header">
                   <span className="step-number">4 </span>
-                  <span className="step-label">Update both 3D and 2D names by selecting <strong className="text-highlight">Yes</strong>.</span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="When asked to change the 2D Part Name together with the 3D name, select Yes."
+                    isActive={isSpeaking && currentIndex === 5}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
                   <div className="screenshot-wrapper">
@@ -248,3 +322,4 @@ const PartLesson: React.FC<PartLessonProps> = ({
 };
 
 export default PartLesson;
+

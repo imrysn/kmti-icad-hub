@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import { ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Additional View (1) */
@@ -33,10 +33,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
   subLessonId = "2d-additional-view-1",
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(subLessonId);
 
   const additionalView1Steps = [
     "Cross Section View: Follow steps 1 through 4 to create a basic cross section. Note that the text height of the section name must match the dimension text height."
@@ -56,33 +53,6 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     "Trim: This is another way to eliminate unneeded parts from a view. Note that Trim cannot be applied to Detail Drawings."
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, [subLessonId]);
-
   return (
     <div className="course-lesson-container" ref={containerRef}>
       {" "}
@@ -91,19 +61,22 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          20. ADDITIONAL
-          VIEW
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          20. ADDITIONAL VIEW
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (subLessonId === "2d-additional-view-1") speak(additionalView1Steps);
-            else if (subLessonId === "2d-additional-view-2") speak(additionalView2Steps);
-            else if (subLessonId === "2d-additional-view-3") speak(additionalView3Steps);
-            else if (subLessonId === "2d-additional-view-4") speak(additionalView4Steps);
+            const introTitle = "20. ADDITIONAL VIEW";
+            const introSubtitle = "Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.";
+            const currentSteps = subLessonId === "2d-additional-view-1" ? additionalView1Steps :
+                                subLessonId === "2d-additional-view-2" ? additionalView2Steps :
+                                subLessonId === "2d-additional-view-3" ? additionalView3Steps : additionalView4Steps;
+            speak([introTitle, introSubtitle, ...currentSteps]);
           }}
             onStop={stop}
           />
         </h3>
+        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+          Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.
+        </p>
       </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
@@ -112,7 +85,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* a. Cross Section View Section */}
-              <div id="cross-section-view">
+              <div id="cross-section-view" className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">a.</span>
                   <span className="step-label">Cross Section View</span>
@@ -135,7 +108,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* b. Partial Section Section */}
-              <div id="partial-section">
+              <div id="partial-section" className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 {" "}
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">b.</span>
@@ -149,7 +122,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 </div>
               </div>{" "}
               {/* c. Detail Drawing Section */}
-              <div id="detail-drawing">
+              <div id="detail-drawing" className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 {" "}
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">c.</span>
@@ -167,7 +140,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* d. Isometric View Section */}
-              <div id="isometric-view">
+              <div id="isometric-view" className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">d.</span>
                   <span className="step-label">Isometric View</span>
@@ -177,7 +150,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                 </div>
               </div>{" "}
               {/* e. Cross-sectional depth Section */}
-              <div id="cross-sectional-depth">
+              <div id="cross-sectional-depth" className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 {" "}
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">e.</span>
@@ -198,7 +171,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
             <div className="flex-col">
               {" "}
               {/* f. Trim Section */}
-              <div id="trim-view">
+              <div id="trim-view" className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header" style={{ marginBottom: "1rem" }}>
                   <span className="step-number">f.</span>
                   <span className="step-label">Trim</span>

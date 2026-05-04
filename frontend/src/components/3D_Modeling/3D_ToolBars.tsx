@@ -61,30 +61,50 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
     ...ICAD_TOOLBARS.map(t => `${t.title}: ${t.description}`)
   ];
 
+  const introTitle = "TOOLBAR EXPLORER";
+  const introSubtitle = "Quick access to essential modeling commands optimized for 2D and 3D operations.";
+
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <section className="lesson-intro">
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          <KaraokeLessonText
+            as="span"
+            text={introTitle}
+            isActive={isSpeaking && currentIndex === 0}
+            currentCharIndex={currentCharIndex}
+          />
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            speak([introTitle, introSubtitle, ...toolbarNarration]);
+          }} onStop={stop} />
+        </h3>
+        <KaraokeLessonText
+          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+          data-reading-index="1"
+          text={introSubtitle}
+          isActive={isSpeaking && currentIndex === 1}
+          currentCharIndex={currentCharIndex}
+        />
+      </section>
+
       {/* Main Interactive Stage */}
       <div className="lesson-grid interactive-layout single-card">
-        <div
-          className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}
-          data-reading-index="0"
-        >
+        <div className="lesson-card tab-content fade-in">
           <div className="card-header">
              <div className="header-with-icon">
                 <div className="icon-box"><Layout size={18} /></div>
                 <h3>Toolbar Explorer</h3>
              </div>
-             <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(toolbarNarration, 0)} onStop={stop} />
           </div>
 
-          <div className="compact-intro-area">
+          <div className={`compact-intro-area ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <KaraokeLessonText 
               text={toolbarNarration[0]} 
-              isActive={isSpeaking && currentIndex === 0} 
+              isActive={isSpeaking && currentIndex === 2} 
               currentCharIndex={currentCharIndex} 
               className="p-flush"
             />
@@ -93,14 +113,14 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
           <div className="interactive-stage-container">
             <ToolbarExplorer
               toolbars={ICAD_TOOLBARS}
-              externalIndex={currentIndex - 2}
+              externalIndex={currentIndex - 4}
               externalCharIndex={currentCharIndex}
             />
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
@@ -109,3 +129,4 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
 };
 
 export default ToolBarsLesson;
+

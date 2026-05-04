@@ -5,21 +5,25 @@ interface KaraokeLessonTextProps {
     isActive: boolean;
     currentCharIndex: number;
     className?: string;
+    style?: React.CSSProperties;
+    as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
 }
 
 export const KaraokeLessonText: React.FC<KaraokeLessonTextProps> = ({ 
     text, 
     isActive, 
     currentCharIndex,
-    className = "" 
+    className = "",
+    style,
+    as: Tag = 'p'
 }) => {
-    if (!isActive) return <p className={className}>{text}</p>;
+    if (!isActive) return <Tag className={className} style={style}>{text}</Tag>;
 
     const words = text.split(/(\s+)/);
     let charAcc = 0;
 
     return (
-        <p className={`${className} lesson-karaoke-wrapper`}>
+        <Tag className={`${className} lesson-karaoke-wrapper`} style={style}>
             {words.map((word, i) => {
                 const start = charAcc;
                 charAcc += word.length;
@@ -35,6 +39,6 @@ export const KaraokeLessonText: React.FC<KaraokeLessonTextProps> = ({
                     </span>
                 );
             })}
-        </p>
+        </Tag>
     );
 };
