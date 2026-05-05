@@ -1329,6 +1329,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   ];
 
   const extrudeSteps = [
+    "EXTRUDE",
     "Step 1: Select Extrude from the icon menu.",
     "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
     "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
@@ -1336,6 +1337,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   ];
 
   const revolveSteps = [
+    "REVOLVE",
     "Step 1: Select Revolve from the icon menu.",
     "Step 2: Select the perimeter of the sketch to be revolve then GO",
     "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
@@ -1474,17 +1476,24 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'extrude' && (
           <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header card-sub-header">
-              <h4>EXTRUDE</h4>
+              <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                <KaraokeLessonText
+                  as="span"
+                  text="EXTRUDE"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Select Extrude from the icon menu."
-                  isActive={isSpeaking && currentIndex === 2}
+                  isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
@@ -1502,14 +1511,14 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
+            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Select the perimeter of the sketch to be extrude > GO"
-                    isActive={isSpeaking && currentIndex === 3}
+                    isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
@@ -1517,41 +1526,41 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <KaraokeLessonText
                     as="span"
                     text="A hatch will appear indicating the specified area to be extruded."
-                    isActive={isSpeaking && currentIndex === 3}
+                    isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex - 55}
                   />
                 </div>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
+            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Specify the height of extrusion. Can also be set on the item entry."
-                  isActive={isSpeaking && currentIndex === 4}
+                  isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
+            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
                 <span className="step-number">4 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Press ENTER"
-                  isActive={isSpeaking && currentIndex === 5}
+                  isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
 
               <div className="section-divider" style={{ margin: "2rem" }}></div>
 
-              <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
+              <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                   <img src={revolveP1} alt="Extrude Result" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
@@ -1571,35 +1580,42 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'revolve' && (
           <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
             <div className="card-header card-sub-header">
-              <h4>REVOLVE</h4>
+              <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                <KaraokeLessonText
+                  as="span"
+                  text="REVOLVE"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Select Revolve from the icon menu."
-                  isActive={isSpeaking && currentIndex === 2}
+                  isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper mt-4" style={{ marginTop: "1rem" }}>
-                  <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot" style={{ width: '280px', marginBottom: "-3rem" }} />
+                  <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot" style={{ width: '280px', marginBottom: "1rem" }} />
                 </div>
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
+            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header" style={{ marginBottom: "2rem" }}>
                 <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Select the perimeter of the sketch to be revolve > GO"
-                    isActive={isSpeaking && currentIndex === 3}
+                    isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
@@ -1607,13 +1623,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
 
 
-              <div className={`step-header ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+              <div className={`step-header ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <span className="step-number">3 </span>
                  <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Select the axis of rotation (pick points or edge) > GO"
-                    isActive={isSpeaking && currentIndex === 3}
+                    isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
@@ -1621,7 +1637,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <KaraokeLessonText
                     as="span"
                     text="A hatch will appear indicating the specified area to be revolved."
-                    isActive={isSpeaking && currentIndex === 4}
+                    isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex - 55}
                   />
                 </div>
@@ -1629,7 +1645,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
               <div className="section-divider" style={{ margin: "2rem" }}></div>
 
-              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+              <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                   <img src={revolveP2} alt="Revolve Result" className="software-screenshot" style={{ "width": "900px" }} />
@@ -1663,21 +1679,36 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   }, [subLessonId, activeTab]);
 
   const showHideSteps = [
+    "SHOW / HIDE ENTITY",
     "Step 1: Select Show/Hide from the icon menu.",
-    "Step 2: Select the specific entities you wish to display or hide and click GO.",
-    "Step 3: You can also use 'Show/Hide Drafting Entity' to quickly toggle all dimensions and annotations."
+    "Step 2: Select the entities for showing/hiding then GO",
+    "SHOW/HIDE DRAFTING ENTITY",
+    "Step 1: Select Show/Hide Drafting Entity from the icon menu.",
+    "Step 2: Right-click to show/hide all drafting entities.",
+    "Drafting Entities include: Dimensions, Notes and Symbols.",
+    "HIDE UNSELECTED ENTITY",
+    "Step 1: Select Hide Unselected Entity from the icon menu.",
+    "Step 2: Select all entities to be retain then GO",
+    "All unselected entities will be hidden."
   ];
 
   const stretchSteps = [
-    "Step 1: Select Stretch from the menu.",
-    "Step 2: Select the face you want to stretch and click GO.",
-    "Step 3: Specify the desired additional length on the item entry or use the linear scale in 3D space."
+    "STRETCH / SHAPE / CUT",
+    "Step 1: Select Stretch from the icon menu.",
+    "Step 2: Select the face to be stretch then GO",
+    "Step 3: Specify the desired length of the solid entity on the item entry.",
+    "Also works for circular surfaces.",
+    "OR",
+    "Select face then GO then Left-click on the 3D Space",
+    "A linear scale will appear on the 3D Space",
+    "Specify the additional length of stretch then Press Enter or Left-Click on the scale."
   ];
 
   const resizeSteps = [
-    "Step 1: Select Resize from the menu.",
-    "Step 2: Select the entity you wish to resize and click GO.",
-    "Step 3: Specify the scale factor on the item entry to scale the solid entity up or down."
+    "RESIZE",
+    "Step 1: Select Resize from the icon menu.",
+    "Step 2: Select the entity for resizing then GO.",
+    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space."
   ];
 
   const tabs = [
@@ -1765,30 +1796,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         </section>
       )}
 
-      {activeTab === 'resize' && (
-        <section className="lesson-intro">
-          <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-            <KaraokeLessonText
-              as="span"
-              text="Resize"
-              isActive={isSpeaking && currentIndex === 0}
-              currentCharIndex={currentCharIndex}
-            />
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              const introTitle = "Resize";
-              const introDesc = "Tool used to scale solid entities up or down.";
-              speak([introTitle, introDesc, ...resizeSteps]);
-            }} onStop={stop} />
-          </h3>
-          <KaraokeLessonText
-            className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-            data-reading-index="1"
-            text="Tool used to scale solid entities up or down."
-            isActive={isSpeaking && currentIndex === 1}
-            currentCharIndex={currentCharIndex}
-          />
-        </section>
-      )}
+
 
 
 
@@ -1796,55 +1804,70 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'showHide' && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>SHOW / HIDE ENTITY</h4>
+              <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                <KaraokeLessonText
+                  as="span"
+                  text="SHOW / HIDE ENTITY"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Select Show/Hide from the icon menu."
-                  isActive={isSpeaking && currentIndex === 2}
+                  isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem" }} />
+                  <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-4rem" }} />
                 </div>
               </div>
             </div>
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  style={{ marginBottom: "1.5rem" }}
-                  text="Select the specific entities you wish to display or hide and click GO."
-                  isActive={isSpeaking && currentIndex === 3}
-                  currentCharIndex={currentCharIndex}
-                />
+                <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                  <KaraokeLessonText
+                    as="span"
+                    text="Select the entities for showing/hiding > GO"
+                    isActive={isSpeaking && currentIndex === 4}
+                    currentCharIndex={currentCharIndex}
+                  />
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </div>
               </div>
             </div>
 
             <div className="card-header card-sub-header">
-              <h4>SHOW/HIDE DRAFTING ENTITY</h4>
+              <h4 className={`${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
+                <KaraokeLessonText
+                  as="span"
+                  text="SHOW/HIDE DRAFTING ENTITY"
+                  isActive={isSpeaking && currentIndex === 5}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Select Show/Hide Drafting Entity from the icon menu."
-                  isActive={isSpeaking && currentIndex === 4}
+                  isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
@@ -1857,18 +1880,18 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
+            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="You can also use 'Show/Hide Drafting Entity' to quickly toggle all dimensions and annotations."
-                  isActive={isSpeaking && currentIndex === 5}
+                  text="Right-click to show/hide all drafting entities."
+                  isActive={isSpeaking && currentIndex === 7}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Drafting Entities include:</p>
+              <p className={`p-flush ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Drafting Entities include:</p>
               <div className="lesson-table-container" style={{ marginTop: "2rem", marginLeft: "3rem", maxWidth: "800px" }}>
                 <table className="lesson-table">
                   <thead>
@@ -1908,17 +1931,24 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <div className="section-divider"></div>
 
             <div className="card-header card-sub-header">
-              <h4>HIDE UNSELECTED ENTITY</h4>
+              <h4 className={`${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9">
+                <KaraokeLessonText
+                  as="span"
+                  text="HIDE UNSELECTED ENTITY"
+                  isActive={isSpeaking && currentIndex === 9}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
+            <div className={`instruction-step ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Select Hide Unselected Entity from the icon menu."
-                  isActive={isSpeaking && currentIndex === 6}
+                  isActive={isSpeaking && currentIndex === 10}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
@@ -1931,21 +1961,21 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+            <div className={`instruction-step ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <div className="step-label" style={{ marginBottom: "1rem" }}>
+                <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select entities to retain and click GO."
-                    isActive={isSpeaking && currentIndex === 7}
+                    text="Select all entities to be retain > GO"
+                    isActive={isSpeaking && currentIndex === 11}
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
               <div className="step-description">
-                <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-2rem" }}>All unselected entities will be hidden.</p>
+                <p className={`p-flush ${currentIndex === 12 ? "reading-active" : ""}`} data-reading-index="12" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>All unselected entities will be hidden.</p>
                 <div className="screenshot-wrapper" style={{ marginTop: "2rem" }}>
                   <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
                 </div>
@@ -1962,17 +1992,24 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'stretch' && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>STRETCH / SHAPE / CUT</h4>
+              <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                <KaraokeLessonText
+                  as="span"
+                  text="STRETCH / SHAPE / CUT"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Stretch from the menu."
-                  isActive={isSpeaking && currentIndex === 2}
+                  text="Select Stretch from the icon menu."
+                  isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
@@ -1985,34 +2022,35 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  style={{ marginBottom: "1.5rem" }}
-                  text="Select the face you want to stretch and click GO."
-                  isActive={isSpeaking && currentIndex === 3}
-                  currentCharIndex={currentCharIndex}
-                />
+                <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                    <KaraokeLessonText
+                      as="span"
+                      text="Select the face to be stretch &gt; GO"
+                      isActive={isSpeaking && currentIndex === 4}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                </div>
               </div>
             </div>
 
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginTop: "-4rem" }}>
+            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginTop: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the desired additional length on the item entry or use the linear scale in 3D space."
-                  isActive={isSpeaking && currentIndex === 4}
+                  text="Specify the desired length of the solid entity on the item entry."
+                  isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
-                <p className="p-flush opacity-80 text-sm mb-4" style={{ marginLeft: "3rem", marginBottom: "2rem", marginTop: "-1rem" }}> Also works for circular surfaces.</p>
+                <p className={`p-flush opacity-80 text-sm mb-4 ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginLeft: "3rem", marginBottom: "2rem", marginTop: "-1rem" }}> Also works for circular surfaces.</p>
                 <div className="screenshot-wrapper">
                   <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" style={{ width: '900px' }} />
                 </div>
@@ -2025,22 +2063,49 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <div className="section-divider"></div>
 
             <div>
-              <h4 className="text-highlight mb-4">OR</h4>
-              <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
+              <h4 className={`text-highlight mb-4 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
+                <KaraokeLessonText
+                  as="span"
+                  text="OR"
+                  isActive={isSpeaking && currentIndex === 7}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
+              <div className={`instruction-step ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
                 <div className="step-header">
                   <div className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Select face and click GO then Left-click on 3D Space."
-                      isActive={isSpeaking && currentIndex === 5}
+                      text="Select face >  GO"
+                      isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                    <KaraokeLessonText
+                      as="span"
+                      text=" > Left-click on the 3D Space"
+                      isActive={isSpeaking && currentIndex === 8}
+                      currentCharIndex={currentCharIndex - 17}
+                    />
                   </div>
                 </div>
                 <div className="step-description">
-                  <p className="p-flush mt-4" style={{ marginTop: "-1rem" }}>A linear scale will appear on the 3D Space</p>
-                  <p className="p-flush mt-4" style={{ marginBottom: "2rem" }}>Specify the additional length of stretch &gt; Press Enter or Left-Click on the scale. </p>
+                  <p className={`p-flush mt-4 ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9" style={{ marginTop: "-1rem" }}>
+                    <KaraokeLessonText
+                      as="span"
+                      text="A linear scale will appear on the 3D Space"
+                      isActive={isSpeaking && currentIndex === 9}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </p>
+                  <p className={`p-flush mt-4 ${currentIndex === 10 ? "reading-active" : ""}`} data-reading-index="10" style={{ marginBottom: "2rem" }}>
+                    <KaraokeLessonText
+                      as="span"
+                      text="Specify the additional length of stretch > Press Enter or Left-Click on the scale."
+                      isActive={isSpeaking && currentIndex === 10}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </p>
                   <div className="screenshot-wrapper mt-6">
                     <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
                   </div>
@@ -2057,38 +2122,46 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
         {activeTab === 'resize' && (
           <div className="lesson-card tab-content fade-in">
-            <div className="card-header">
-              <h4>RESIZE</h4>
+            <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h4 className={`${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                <KaraokeLessonText
+                  as="span"
+                  text="RESIZE"
+                  isActive={isSpeaking && currentIndex === 0}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(resizeSteps)} onStop={stop} />
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
                   text="Select Resize from the icon menu."
-                  isActive={isSpeaking && currentIndex === 2}
+                  isActive={isSpeaking && currentIndex === 1}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-4rem" }} />
+                  <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem" }} />
                 </div>
               </div>
             </div>
 
             <div className="section-divider"></div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the entity for resizing and click GO."
-                    isActive={isSpeaking && currentIndex === 3}
+                    text="Select the entity for resizing > GO."
+                    isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
@@ -2097,14 +2170,14 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginTop: "-3rem" }}>
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginTop: "-4rem" }}>
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <div className="step-label" style={{ marginTop: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry then left-click on the 3D Space."
-                    isActive={isSpeaking && currentIndex === 4}
+                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space."
+                    isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
@@ -2143,9 +2216,10 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   }, [subLessonId, activeTab]);
 
   const shapeSteelsSteps = [
+    "Shape Steels Includes: C-CHANNEL, H-BEAM, I-BEAM, EQUAL ANGLE BAR, UNEQUAL ANGLE BAR, UNEQUAL SIDED ANGLE BAR",
     "Step 1: Select Arrange Machine Part from the icon menu.",
-    "Step 2: In the window that appears, select the machine part or steel type and specify the dimensions, then click OK.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position point or origin point."
+    "Step 2: The Arrange Machine Part window will appear. Select and provide the necessary specifications tehn Press OK",
+    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin point)"
   ];
 
   const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
@@ -2190,10 +2264,17 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'shapeSteels' && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>Shape Steels Includes:</h4>
+              <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                <KaraokeLessonText
+                  as="span"
+                  text="Shape Steels Includes:"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-description">
                 <div className="screenshot-wrapper">
                   <img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot" style={{ width: '900px' }} />
@@ -2201,14 +2282,14 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Arrange Machine Part from the icon menu."
-                  isActive={isSpeaking && currentIndex === 2}
+                  text="Select the Arrange Machine Part from the icon menu."
+                  isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
@@ -2219,14 +2300,14 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
                 <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="In the window that appears, select the machine part or steel type and specify the dimensions, then click OK."
-                  isActive={isSpeaking && currentIndex === 3}
+                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK"
+                  isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
@@ -2237,14 +2318,14 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
                 <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="In the Key Entry Area, enter the coordinates for the position point or origin point."
-                  isActive={isSpeaking && currentIndex === 4}
+                  text="In the Key Entry Area, enter the coordinates for the position (origin point)"
+                  isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
@@ -2255,8 +2336,17 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header"><h4>RESULT</h4></div>
+            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
+              <div className="card-header">
+                <h4 className={`${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
+                  <KaraokeLessonText
+                    as="span"
+                    text="RESULT"
+                    isActive={isSpeaking && currentIndex === 6}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
+              </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                 <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ width: '900px', height: 'auto' }} />
               </div>
