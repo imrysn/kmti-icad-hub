@@ -19,10 +19,9 @@ import textWindow from "../../assets/3D_Image_File/text_entry_window.png";
 import textResult from "../../assets/3D_Image_File/annotation1_text_entry1.png";
 import editsIcon from "../../assets/3D_Image_File/annotation2_edits_drafting.png";
 import editsWindow from "../../assets/3D_Image_File/edit_dimension_characters_window.png";
-import attrIcon from "../../assets/3D_Image_File/annotation2_drafting_entities.png";
+import attrIcon from "../../assets/3D_Image_File/annotation11.png";
 import attrWindow from "../../assets/3D_Image_File/change_properties_window.png";
 import positionIcon from "../../assets/3D_Image_File/changes_position_drafting_entities.png";
-import leftClick from "../../assets/3D_Image_File/left_click.png";
 import annotationTop from "../../assets/3D_Image_File/annotation1_top.png";
 import annotation1NoteStringEntry1 from "../../assets/3D_Image_File/annotation1_note_string_entry1.png";
 
@@ -55,21 +54,25 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
   } = useLessonCore(`annotation-${activeTab}`);
 
   const linearSteps = [
+    "CREATE LINEAR DIMENSION",
     "Step 1: Select edges to be measured.",
     "Step 2: Left-click on the 3D Space to position the linear dimension."
   ];
 
   const diameterSteps = [
+    "CREATE DIAMETER DIMENSION",
     "Step 1: Select the edge of the circle to be measured.",
     "Step 2: Left-click on the 3D Space to position the circular dimension."
   ];
 
   const angularSteps = [
+    "CREATE ANGULAR DIMENSION",
     "Step 1: Select edges to be measured.",
     "Step 2: Left-click on the 3D Space to position the angular dimension."
   ];
 
   const notesSteps = [
+    "CREATES NOTES WITH LEADER LINES",
     "Step 1: Pick any edge of the entity, then left-click.",
     "Step 2: Left-click to show the Note String Entry window.",
     "Step 3: Enter the note, then press OK.",
@@ -77,25 +80,28 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
   ];
 
   const characterSteps = [
+    "CREATE CHARACTER STRINGS",
     "Step 1: Left-click on the 3D Space to show the Text Entry window.",
     "Step 2: Enter the note, then press OK.",
     "Step 3: Left-click on the 3D Space to place the note."
   ];
 
   const editsSteps = [
+    "EDITS DRAFTING ENTITY CHARACTERS",
     "Step 1: Select drafting entity, then click GO.",
     "Step 2: Edit Dimension Characters window will appear.",
     "Step 3: After editing the dimension characters, Press OK."
   ];
 
   const attributesSteps = [
+    "CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY",
     "Step 1: Select drafting entity, then click GO.",
     "Step 2: Change Properties window will appear.",
     "Step 3: After changing the properties, Press OK."
   ];
 
   const positionSteps = [
-    "Changes the positions of drafting entities."
+    "Changes the positions of drafting entities.",
   ];
 
   const handleTabChange = (tab: AnnotationTab) => {
@@ -183,9 +189,16 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'linear' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>CREATE LINEAR DIMENSION</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="CREATE LINEAR DIMENSION"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
 
                   <div className="screenshot-wrapper mt-4 mb-4">
@@ -193,23 +206,23 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   </div>
                   <div className="flex-row-wrap">
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className={`step-header ${currentIndex === 2 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
                         <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Select edges to be measured."
-                          isActive={isSpeaking && currentIndex === 2}
+                          isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Left-click on the 3D Space to position the linear dimension."
-                          isActive={isSpeaking && currentIndex === 3}
+                          isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
@@ -226,32 +239,39 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'diameter' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>CREATES DIAMETER DIMENSION</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="CREATE DIAMETER DIMENSION"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
                   <div className="screenshot-wrapper mt-4 mb-4">
                     <img src={diameterIcon} alt="Diameter Dimension Tool" className="software-screenshot"  style={{ height: '100px', marginBottom: "2rem" }} />
                   </div>
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className={`step-header ${currentIndex === 2 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
                         <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Select the edge of the circle to be measured."
-                          isActive={isSpeaking && currentIndex === 2}
+                          isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Left-click on the 3D Space to position the circular dimension."
-                          isActive={isSpeaking && currentIndex === 3}
+                          isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
@@ -268,32 +288,39 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'angular' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>CREATES ANGULAR DIMENSION</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="CREATE ANGULAR DIMENSION"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
                   <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={angularIcon} alt="Angular Dimension Tool" className="software-screenshot"  style={{ height: '100px', marginBottom: "2rem" }} />
+                    <img src={angularIcon} alt="Angular Dimension Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
                   </div>
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className={`step-header ${currentIndex === 2 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
                         <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Select edges to be measured."
-                          isActive={isSpeaking && currentIndex === 2}
+                          isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Left-click on the 3D Space to position the angular dimension."
-                          isActive={isSpeaking && currentIndex === 3}
+                          isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
@@ -310,55 +337,62 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'notes' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>CREATES NOTES WITH LEADER LINES</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="CREATES NOTES WITH LEADER LINES"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
                   <div className="screenshot-wrapper mt-4 mb-4">
                     <img src={noteIcon} alt="Notes Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
                   </div>
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className={`step-header ${currentIndex === 2 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
                         <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Pick any edge of the entity, then left-click."
-                          isActive={isSpeaking && currentIndex === 2}
+                          isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Left-click to show the Note String Entry window."
-                          isActive={isSpeaking && currentIndex === 3}
+                          isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className="screenshot-wrapper mt-2 mb-2" style={{ marginLeft: "3rem" }}>
+                      <div className="screenshot-wrapper mt-4 mb-4" style={{ marginLeft: "3rem" }}>
                         <img src={noteWindow} alt="Note String Entry Window" className="software-screenshot" style={{ width: '400px', marginBottom: "2rem"}} />
                       </div>
-                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{marginBottom: "2rem"}}>
                         <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Enter the note, then press OK."
-                          isActive={isSpeaking && currentIndex === 4}
+                          isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{marginBottom: "2rem"}}>
                         <span className="step-number">4 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Left-click on the 3D Space to place the note."
-                          isActive={isSpeaking && currentIndex === 5}
+                          isActive={isSpeaking && currentIndex === 6}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
@@ -375,45 +409,52 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'character' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>CREATES CHARACTER STRINGS</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="CREATE CHARACTER STRINGS"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
                   <div className="screenshot-wrapper mt-4 mb-4">
                     <img src={textIcon} alt="Character Strings Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }}  />
                   </div>
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className={`step-header ${currentIndex === 2 ? "reading-active" : ""}`}>
+                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`}>
                         <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Left-click on the 3D Space to show the Text Entry window."
-                          isActive={isSpeaking && currentIndex === 2}
+                          isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className="screenshot-wrapper mt-2 mb-2" style={{ marginLeft: "3rem" }}>
+                      <div className="screenshot-wrapper mt-4 mb-4" style={{ marginLeft: "3rem" }}>
                         <img src={textWindow} alt="Text Entry Window" className="software-screenshot" style={{ width: '500px', marginBottom: "2rem"}} />
                       </div>
-                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Enter the note, then press OK."
-                          isActive={isSpeaking && currentIndex === 3}
+                          isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{marginBottom: "2rem"}}>
                         <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Left-click on the 3D Space to place the note."
-                          isActive={isSpeaking && currentIndex === 4}
+                          isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
@@ -430,42 +471,52 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'edits' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>EDITS DRAFTING ENTITY CHARACTERS</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="EDITS DRAFTING ENTITY CHARACTERS"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
                   <div className="screenshot-wrapper mt-4 mb-4">
                     <img src={editsIcon} alt="Edits Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
                   </div>
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className={`step-header ${currentIndex === 2 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
                         <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Select drafting entity, then click GO."
-                          isActive={isSpeaking && currentIndex === 2}
+                          isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
+                      <div className="screenshot-wrapper mt-4 mb-4">
+                        <img src={editsWindow} alt="Edits Window" className="software-screenshot" style={{ height: 'auto', width: '500px', marginBottom: "2rem"  }} />
+                      </div>
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Edit Dimension Characters window will appear."
-                          isActive={isSpeaking && currentIndex === 3}
+                          isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
                         <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="After editing the dimension characters, Press OK."
-                          isActive={isSpeaking && currentIndex === 4}
+                          isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
@@ -482,42 +533,52 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'attributes' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
                   <div className="screenshot-wrapper mt-4 mb-4">
                     <img src={attrIcon} alt="Attributes Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
                   </div>
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className={`step-header ${currentIndex === 2 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
                         <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Select drafting entity, then click GO."
-                          isActive={isSpeaking && currentIndex === 2}
+                          isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
+                      <div className="screenshot-wrapper mt-4 mb-4">
+                        <img src={attrWindow} alt="Attributes Window" className="software-screenshot" style={{ height: 'auto', width: '500px', marginBottom: "2rem" }} />
+                      </div>
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="Change Properties window will appear."
-                          isActive={isSpeaking && currentIndex === 3}
+                          isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{marginBottom: "2rem"}}>
                         <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
                           text="After changing the properties, Press OK."
-                          isActive={isSpeaking && currentIndex === 4}
+                          isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
@@ -534,19 +595,20 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           {activeTab === 'position' && (
             <div className="fade-in">
               <div className="card-header" style={{ marginBottom: "1rem" }}>
-                <h4>CHANGES THE POSITIONS OF DRAFTING ENTITIES</h4>
+                <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                  <KaraokeLessonText
+                    as="span"
+                    text="CHANGES THE POSITION OF DRAFTING ENTITIES"
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
               </div>
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
                   <div className="screenshot-wrapper mt-4 mb-4">
                     <img src={positionIcon} alt="Position Tool" className="software-screenshot" style={{ height: '100px'}} />
                   </div>
-                  <KaraokeLessonText
-                    as="p"
-                    text="Changes the positions of drafting entities."
-                    isActive={isSpeaking && currentIndex === 2}
-                    currentCharIndex={currentCharIndex}
-                  />
                 </div>
               </div>
             </div>

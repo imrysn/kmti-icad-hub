@@ -69,30 +69,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
         <button className={`tab-button ${activeTab === 'part2' ? 'active' : ''}`} onClick={() => setActiveTab('part2')}>SERVER UPLOAD PROTOCOL</button>
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          <KaraokeLessonText
-            as="span"
-            text={introTitle}
-            isActive={isSpeaking && currentIndex === 0}
-            currentCharIndex={currentCharIndex}
-          />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introDesc = introSubtitle;
-            const content = activeTab === 'part1' ? 
-              "Follow the technical flowchart to understand the 3D modeling workflow." : 
-              "Follow the server upload protocol to finalize parts on the server.";
-            speak([introTitle, introDesc, content]);
-          }} onStop={stop} />
-        </h3>
-        <KaraokeLessonText
-          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-          data-reading-index="1"
-          text={introSubtitle}
-          isActive={isSpeaking && currentIndex === 1}
-          currentCharIndex={currentCharIndex}
-        />
-      </section>
+
+
 
 
 
@@ -100,7 +78,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
         <div className="lesson-card tab-content fade-in">
           <div className="fade-in">
             <div className="card-header">
-              <h4>{activeTab === 'part1' ? "WORKFLOW OVERVIEW" : "SERVER UPLOAD PROTOCOL"}</h4>
+              <h4>{activeTab === 'part1' ? "PURCHASE PART 3D MODELING" : "SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS ON THE SERVER"}</h4>
             </div>
 
             <div className={`screenshot-wrapper ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{marginTop: "3rem"}}>
