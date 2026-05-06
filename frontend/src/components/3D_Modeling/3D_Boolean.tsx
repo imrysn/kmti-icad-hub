@@ -204,7 +204,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                 <div className="step-header">
                   <span className="step-number">2 </span>
-                  <span className="step-label">
+                  <span className="step-label" style={{ marginTop: "-1.5rem"}}>
                     <KaraokeLessonText
                       as="span"
                       text="Select entities to join then GO"
@@ -311,7 +311,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
                 <div className="step-header">
                   <span className="step-number">3 </span>
-                  <span className="step-label">
+                  <span className="step-label" style={{ marginTop: "-1.5rem"}}>
                     <KaraokeLessonText
                       as="span"
                       text="Select the tool entities then GO"
@@ -319,16 +319,18 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                  </span>
-                  <br />
-                  <span className="step-label">
-                    <KaraokeLessonText
-                      as="span"
-                      text="Tool entities will disappear and become components after subtraction."
-                      isActive={isSpeaking && currentIndex === 6}
-                      currentCharIndex={currentCharIndex}
-                    />
-                  </span>
+                  </span>                        
+                </div>
+                <div className="step-description">
+                  <KaraokeLessonText
+                    as="p"
+                    className={`p-flush ${currentIndex === 6 ? "reading-active" : ""}`}
+                    style={{ marginTop: "-1rem", marginLeft: "3rem" }}
+                    data-reading-index="6"
+                    text="Tool entities will disappear and become components after subtraction."
+                    isActive={isSpeaking && currentIndex === 6}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
 
                 <div className="section-divider" style={{ margin: "0.5rem" }}></div>
@@ -436,7 +438,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">   
                 <div className="step-header">
                   <span className="step-number">2 </span>
-                  <span className="step-label">
+                  <span className="step-label" style={{ marginTop: "-1.5rem"}}>
                     <KaraokeLessonText
                       as="span"
                       text="Select intersecting entities then GO"
@@ -537,7 +539,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                 <div className="step-header">
                   <span className="step-number">1 </span>
-                  <span className="step-label">
+                  <span className="step-label" style={{ marginTop: "-1.5rem"}}>
                     <KaraokeLessonText
                       as="span"
                       text="Select the desired components to be separated from the solid entity &gt; GO"
@@ -549,7 +551,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{marginTop: "-4rem"}}>
+              <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{marginTop: "-2rem"}}>
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">
@@ -588,7 +590,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               <div className={`instruction-step ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
                 <div className="step-header">
                   <span className="step-number">1 </span>
-                  <span className="step-label">
+                  <span className="step-label" style={{ marginTop: "-1.5rem"}}>
                     <KaraokeLessonText
                       as="span"
                       text="Select the solid entity &gt; GO"
@@ -600,7 +602,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
               </div>
 
-              <div className={`instruction-step ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9" style={{marginTop: "-4rem"}}>
+              <div className={`instruction-step ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9" style={{marginTop: "-2rem"}}>
                 <div className="step-header">
                   <span className="step-number">2 </span>
                   <span className="step-label">

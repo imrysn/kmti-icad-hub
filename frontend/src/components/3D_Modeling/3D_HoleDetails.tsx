@@ -34,8 +34,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
     "HOLE DETAILS",
     "Step 1: Select Arrange Machine Part from the icon menu.",
     "Step 2: A window will appear showing the list of available tools, such as drill holes and counterbores.",
-    "Step 3: After setting the desired specifications, click OK.",
-    "Step 4: Click the location of the hole on the solid entity then GO to create the cut",
+    "Step 3: After setting the specifications, click OK",
+    "Step 4: Click the location of the hole on the solid entity > GO",
     "Note: Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes."
   ];
 
@@ -156,7 +156,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
           <div className={`${getStepClass("hole-4")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
             <div className="step-header">
               <span className="step-number">4 </span>
-              <span className="step-label">
+              <span className="step-label" style={{ marginTop: "-1.5rem"}}>
                 <KaraokeLessonText
                   as="span"
                   text="Click the location of the hole on the solid entity &gt; GO"

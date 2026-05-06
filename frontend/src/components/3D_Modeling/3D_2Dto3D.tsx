@@ -608,8 +608,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 </div>  
               </div>
               <KaraokeLessonText
-                  as="span"
-                  className="step-label"
+                  as="p"
+                  className="p-flush"
+                  style={{ marginTop: "-1rem" }}
                   text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO"
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
@@ -619,7 +620,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
               <div className="step-header" style={{ marginTop: "-1rem" }}>
                 <span className="step-number">3 </span>
-                <div className="step-label">
+                <div className="step-label" style={{marginTop: "-1.5rem"}}>
                   <KaraokeLessonText
                     as="span"
                     text="Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO"
@@ -627,20 +628,20 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                  <br />
-                  <KaraokeLessonText
-                    as="span"
-                    className="red-text"
-                    style={{ fontWeight: 'bold' }}
-                    text="Note: Pitch must be greater than Thickness"
-                    isActive={isSpeaking && currentIndex === 7}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-              </div>
+                </div>   
+              </div> 
+             <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: '0rem' }}>
+                    <KaraokeLessonText
+                           as="p"
+                           className="p-flush red-text"
+                           text="Note: Pitch must be greater than Thickness."
+                           isActive={isSpeaking && currentIndex === 8}
+                           currentCharIndex={currentCharIndex}
+                         />
+                       </div>
               <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
                 <div className="screenshot-wrapper">
-                  <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-wide" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
+                  <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-wide" style={{ height: 'auto', width: '900px', marginBottom: "-2rem", marginTop: "1rem"}} />
                 </div>
               </div>
             </div>
@@ -658,7 +659,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               </div>
               <div className="step-description">
                 <div className="screenshot-wrapper">
-                  <img src={spiralRotation1} alt="Spiral Axis Selection" className="software-screenshot screenshot-medium" style={{ width: '900px', height: 'auto' }} />
+                  <img src={spiralRotation1} alt="Spiral Axis Selection" className="software-screenshot screenshot-medium" style={{ width: '700px', height: 'auto' }} />
                 </div>
               </div>
             </div>

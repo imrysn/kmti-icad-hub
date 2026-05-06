@@ -215,7 +215,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 1: Select Move Component from the icon menu."
+                    text="Select Move Component from the icon menu."
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -307,7 +307,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 1: Select Copy Component from the icon menu."
+                    text="Select Copy Component from the icon menu."
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -408,7 +408,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 1: Select Mirror Component from the icon menu."
+                    text="Select Mirror Component from the icon menu."
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -503,7 +503,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 1: Select Rotate Component from the icon menu."
+                    text="Select Rotate Component from the icon menu."
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -551,7 +551,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 4: Specify the desired angle of rotation on the item entry then press Enter."
+                    text="Specify the desired angle of rotation on the item entry then press Enter."
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -673,7 +673,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 1: Select Rotate Component from the icon menu."
+                    text="Select Rotate Component from the icon menu."
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -707,7 +707,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 3: Select 2 points to set the axis of rotation."
+                    text="Select 2 points to set the axis of rotation."
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -721,7 +721,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 4: Specify the desired angle of rotation on the item entry then press Enter."
+                    text="Specify the desired angle of rotation on the item entry then press Enter."
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -838,7 +838,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Step 1: Select Delete Component from the icon menu."
+                    text="Select Delete Component from the icon menu."
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
