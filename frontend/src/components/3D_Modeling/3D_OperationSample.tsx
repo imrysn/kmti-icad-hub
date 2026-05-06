@@ -41,7 +41,7 @@ import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plan
 import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.png';
 import keyGrooveBox from '../../assets/3D_Image_File/operation_sample4_4.png';
 import keyGrooveSubtractResult from '../../assets/3D_Image_File/operation_sample5_4_subtract_tool.png';
-// import keyGrooveFilletResult from '../../assets/3D_Image_File/operation_sample5_4_add_fillet_radius.png';
+import keyGrooveFilletResult from '../../assets/3D_Image_File/operation_sample_2.jpg';
 import finalPartFairing from '../../assets/3D_Image_File/operation_sample5_6.png';
 
 interface OperationSampleLessonProps {
@@ -70,32 +70,34 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
   }, [activeTab, subLessonId]);
 
   const opSample1Steps = [
-    "Step 1: Open a new drawing. Go to File, New. Save the drawing as the File Name. Check if Normal or Mirror Part. Press Save.",
-    "Step 2: Use Arrange Box. Input Depth 16mm, Width 100mm, Height 210mm at Coordinates 0,0,0.",
-    "Step 3: Select and Arrange Machine Part using the standard KEM holes.",
-    "Step 4: Point the hole on the face. Press Muhenkan plus Q to orient it, select the center point, and left-click GO.",
-    "Step 5: Use Move Component on the hole. Input MOVELENGY 183mm to move it to the correct location.",
-    "Step 6: For making long hole details, first create a tool entity. Arrange a Box 16 by 14 by 38mm. Position it and use subtract to create the cut.",
-    "Step 7: Apply FilletEdge with a 7mm radius. Pick all the edges to be filleted and click GO.",
-    "Step 8: Use Copy Component to duplicate the slot features. Input the specific X and Y movements.",
-    "Step 9: Apply Chamfer Edge with a 20mm length. Select the edges and click GO.",
-    "Step 10: Create 3D PartName. Select the entity, click GO, and enter the part name.",
-    "Step 11: Check the properties of the Top 3D Part. Delete command artifacts and add comments.",
-    "Step 12: Set all necessary informations like Material, Layer, and Color.",
-    "Step 13: Save the file via File, Save."
+    "PROCEDURE",
+    "Step 1: Open a new drawing",
+    "Step 2: Arrange Box",
+    "Step 3: Select and Arrange Machine Part",
+    "Step 4: Point the hole on the face where the hole is located.",
+    "Step 5: Move Component",
+    "Step 6: For making long hole details, first create a tool entity.",
+    "Step 7: FilletEdge",
+    "Step 8: Copy Component",
+    "Step 9: Chamfer Edge",
+    "Step 10: Create 3D Part Name",
+    "Step 11: Check the properties of the Top 3D Part",
+    "Step 12: Set all necessary informations (Material, Layer, Color)",
+    "Step 13: Save the file"
   ];
 
   const opSample2Steps = [
-    "Step 1: Open a new drawing. Go to File, New. Save the drawing as the File Name. Check if Normal or Mirror Part. Press Save.",
-    "Step 2: Create the part by segments. Segments must be attached together after modeling. Model Segments A, B, C, D, and E using Arrange Cylinder, Work Plane, and Revolve operations.",
-    "Step 3: Join all segments. Use UNION.",
-    "Step 4: For Key Groove: Create the tool entity first. Use Arrange Box with Depth 6mm, Width 3.5mm, and Height 43mm. Position the tool entity.",
-    "Step 5: Subtract the tool entity. Add Fillet on the key groove with Radius 3mm.",
-    "Step 6: Add all Fairings including Chamfer and Fillet.",
-    "Step 7: Create 3D Part Name.",
-    "Step 8: Check the properties of the Top 3D Part.",
-    "Step 9: Set all necessary informations such as Material, Layer, and Color.",
-    "Step 10: Save the file via File, Save."
+    "PROCEDURE",
+    "Step 1: Open a new drawing",
+    "Step 2: In order to create this part, it must be done by segments. Segments must be attach together after modeling.",
+    "Step 3: Join all segments > Use UNION",
+    "Step 4: For Key Groove",
+    "Step 5: Subtract the tool entity",
+    "Step 6: Add all Fairings (Chamfer and Fillet)",
+    "Step 7: Create 3D Part Name",
+    "Step 8: Check the properties of the Top 3D Part",
+    "Step 9: Set all necessary informations (Material, Layer, Color)",
+    "Step 10: Save the file"
   ];
 
   const handleNext = () => {
@@ -145,7 +147,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
         )}
         {activeTab === 'sample2' && (
           <div className="screenshot-wrapper mt-4">
-            <img src={mainDrawing3} alt="Shaft Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
+            <img src={keyGrooveFilletResult} alt="Shaft Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
           </div>
         )}
       </section>
@@ -153,12 +155,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
       <div className="lesson-grid single-card">
         {activeTab === 'sample1' && (
           <div className="lesson-card tab-content fade-in">
-            <div className="card-header" style={{ marginBottom: "2rem" }}>
+            <div className={`card-header ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
               <h4>PROCEDURE</h4>
             </div>
 
             {/* Step 1 */}
-            <div className={`${getStepClass('s1-1')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-1')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">1</span>
                 <span className="step-label">Open a new drawing</span>
@@ -166,12 +168,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Go to File &gt; New</p>
               <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Save the drawing</p>
               <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name.</p>
-              <p className="p-flush red-text" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Check if Normal or Mirror Part (See page 37)</p>
+              <p className="p-flush red-text" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Check if Normal or Mirror Part (See Mirrored Part lesson tab)</p>
               <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Press Save</p>
             </div>
 
             {/* Step 2 */}
-            <div className={`${getStepClass('s1-2')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{marginTop: "-3rem"}}>
+            <div className={`${getStepClass('s1-2')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "-3rem"}}>
               <div className="step-header" style={{ marginBottom: "1rem" }}>
                 <span className="step-number">2 </span>
                 <span className="step-label">Arrange Box</span>
@@ -192,7 +194,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 3 */}
-            <div className={`${getStepClass('s1-3')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
               <div className="step-header" style={{ marginBottom: "1rem" }}>
                 <span className="step-number">3</span>
                 <span className="step-label">Select and Arrange Machine Part</span>
@@ -205,14 +207,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 4 */}
-            <div className={`${getStepClass('s1-4')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-4')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{marginTop: "-2rem"}}>
               <div className="step-header" style={{ marginBottom: "1rem" }}>
                 <span className="step-number">4</span>
                 <span className="step-label">Point the hole on the face where the hole is located.</span>
               </div>
               <div style={{ marginLeft: "3rem" }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                  <p className="p-flush">Press <strong className="text-highlight">Muhenkan + Q</strong> to make the tool change its orientation.</p>
+                  <p className="p-flush">Press <strong className="text-highlight">無変換 + Q</strong> to make the tool change its orientation.</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
                   <p className="p-flush">Click on the center point </p>
@@ -229,7 +231,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 5 */}
-            <div className={`${getStepClass('s1-5')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-5')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{marginTop: "-2rem"}}>
               <div className="step-header" style={{ marginBottom: "1rem" }}>
                 <span className="step-number">5</span>
                 <span className="step-label">Move Component</span>
@@ -252,7 +254,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 6 */}
-            <div className={`${getStepClass('s1-6')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-6')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">6</span>
                 <span className="step-label">For making long hole details, first create a tool entity.</span>
@@ -276,10 +278,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 7 */}
-            <div className={`${getStepClass('s1-7')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-7')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">7</span>
-                <span className="step-label">FilletEdge</span>
+                <span className="step-label">Fillet Edge</span>
               </div>
               <div style={{ marginLeft: "3rem" }}>
                 <div className="screenshot-wrapper mb-4">
@@ -297,7 +299,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 8 */}
-            <div className={`${getStepClass('s1-8')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-8')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">8</span>
                 <span className="step-label">Copy Component</span>
@@ -314,7 +316,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 9 */}
-            <div className={`${getStepClass('s1-9')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-9')} ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">9</span>
                 <span className="step-label">Chamfer Edge</span>
@@ -323,7 +325,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <div className="screenshot-wrapper mb-4">
                   <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
                 </div>
-                <p className="p-flush">SetChamfer Length = 20mm</p>
+                <p className="p-flush">Set Chamfer Length = 20mm</p>
                 <div style={{ display: 'flex', alignItems: 'center'}}>
                   <p className="p-flush">Select all edges to be chamfered &gt; GO </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
@@ -335,10 +337,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 10 */}
-            <div className={`${getStepClass('s1-10')} ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-10')} ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">10</span>
-                <span className="step-label">Create 3D PartName</span>
+                <span className="step-label">Create 3D Part Name</span>
               </div>
               <div style={{ marginLeft: "3rem" }}>
                 <div className="screenshot-wrapper mb-4">
@@ -356,7 +358,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 11 */}
-            <div className={`${getStepClass('s1-11')} ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-11')} ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">11</span>
                 <span className="step-label">Check the properties of the Top 3D Part</span>
@@ -369,7 +371,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 12 */}
-            <div className={`${getStepClass('s1-12')} ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-12')} ${currentIndex === 14 ? 'reading-active' : ''}`} data-reading-index="14" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">12</span>
                 <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
@@ -382,7 +384,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 13 */}
-            <div className={`${getStepClass('s1-13')} ${currentIndex === 14 ? 'reading-active' : ''}`} data-reading-index="14"  style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s1-13')} ${currentIndex === 15 ? 'reading-active' : ''}`} data-reading-index="15"  style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">13</span>
                 <span className="step-label">Save the file</span>
@@ -397,12 +399,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
         {activeTab === 'sample2' && (
           <div className="lesson-card tab-content fade-in">
-            <div className="card-header" style={{ marginBottom: "2rem" }}>
+            <div className={`card-header ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
               <h4>PROCEDURE</h4>
             </div>
 
             {/* Step 1 */}
-            <div className={`${getStepClass('s2-1')} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginBottom: "-3rem", marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-1')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{marginBottom: "-3rem", marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">1</span>
                 <span className="step-label">Open a new drawing</span>
@@ -414,7 +416,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 2 */}
-            <div className={`${getStepClass('s2-2')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{marginTop: "-3rem"}}>
+            <div className={`${getStepClass('s2-2')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "-3rem"}}>
               <div className="step-header" style={{ marginBottom: "1rem" }}>
                 <span className="step-number">2</span>
                 <span className="step-label" style={{marginTop: "2rem"}}>In order to create this part, it must be done by segments. Segments must be attach together after modeling.</span>
@@ -467,15 +469,15 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 3 */}
-            <div className={`${getStepClass('s2-3')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">3</span>
-                <span className="step-label">Join all segments. &gt; Use <span className="red-text">UNION</span></span>
+                <span className="step-label">Join all segments &gt; Use <span className="red-text">UNION</span></span>
               </div>
             </div>
 
             {/* Step 4 */}
-            <div className={`${getStepClass('s2-4')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginTop: "-2rem" }}>
+            <div className={`${getStepClass('s2-4')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{ marginTop: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">4</span>
                 <span className="step-label">For Key Groove</span>
@@ -487,7 +489,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 5 */}
-            <div className={`${getStepClass('s2-5')} ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6"  style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-5')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7"  style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">5</span>
                 <span className="step-label">Subtract the tool entity</span>
@@ -502,7 +504,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 6 */}
-            <div className={`${getStepClass('s2-6')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-6')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">6</span>
                 <span className="step-label">Add all Fairings (Chamfer and Fillet)</span>
@@ -513,7 +515,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 7 */}
-            <div className={`${getStepClass('s2-7')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-7')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">7</span>
                 <span className="step-label">Create 3D Part Name</span>
@@ -521,7 +523,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 8 */}
-            <div className={`${getStepClass('s2-8')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-8')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">8</span>
                 <span className="step-label">Check the properties of the Top 3D Part</span>
@@ -529,7 +531,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 9 */}
-            <div className={`${getStepClass('s2-9')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-9')} ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">9</span>
                 <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
@@ -537,7 +539,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             </div>
 
             {/* Step 10 */}
-            <div className={`${getStepClass('s2-10')} ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{marginTop: "-2rem"}}>
+            <div className={`${getStepClass('s2-10')} ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">10</span>
                 <span className="step-label">Save the file</span>
