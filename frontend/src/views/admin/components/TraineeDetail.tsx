@@ -138,7 +138,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
         } catch (error) {
             console.error('Failed to fetch breakdown:', error);
             alert('Could not retrieve assessment breakdown.');
-        } finally {
+        } finally { 
             setLoadingBreakdownId(null);
         }
     };

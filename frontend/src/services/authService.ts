@@ -3,7 +3,7 @@ import axios from 'axios';
 // Single source of truth for the API base URL.
 // authService.ts previously hardcoded 'http://localhost:8000' — now uses the
 // shared config so VITE_API_URL is honoured in all environments.
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
 
 export interface LoginCredentials {
     username: string;

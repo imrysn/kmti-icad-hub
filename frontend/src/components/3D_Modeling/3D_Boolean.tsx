@@ -380,7 +380,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                       </h4>
                     </div>
                     <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-medium" style={{ height: 'auto', width: '900px' }} />
+                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-medium" style={{width: '900px' }} />
                     </div>
                   </div>
                 </div>

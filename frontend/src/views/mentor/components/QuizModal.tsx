@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; import { X, CheckCircle2, AlertCircle, RotateCcw, ChevronRight, Volume2, Trophy, ShieldAlert, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion'; import { X, CheckCircle2, AlertCircle, RotateCcw, ChevronRight, Trophy, ShieldAlert, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { Quiz } from '../mentorConstants'; import { useTTS } from '../../../hooks/useTTS';
+import { Quiz } from '../mentorConstants';
 import '../../../styles/mentor/QuizModal.css';
 
 interface QuizModalProps {
@@ -72,6 +72,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   const [timeLeft, setTimeLeft] = useState(120); // 120 seconds = 2 minutes
   const [durations, setDurations] = useState<number[]>([]); // Track time spent per question
   const [shuffledQuestions, setShuffledQuestions] = useState<any[]>([]);
+  const [showWarning, setShowWarning] = useState(true);
   
   // Shuffle Utility
   const shuffleArray = <T,>(array: T[]): T[] => {
@@ -83,9 +84,8 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     return shuffled;
   };
 
-  // Initialize Shuffled Questions and Options
-  useEffect(() => {
-    if (isOpen && quiz?.questions && quiz.questions.length > 0) {
+  const initQuestions = () => {
+    if (quiz?.questions && quiz.questions.length > 0) {
       const processed = quiz.questions.map(q => {
         const opts = (q as any).options || JSON.parse((q as any).options_json || '[]');
         const correct = (q as any).correctAnswer !== undefined ? (q as any).correctAnswer : (q as any).correct_answer;
@@ -103,11 +103,21 @@ export const QuizModal: React.FC<QuizModalProps> = ({
         };
       });
       
-      setShuffledQuestions(shuffleArray(processed));
+      // Shuffle all available questions and take ONLY 10 for this attempt
+      const selectedQuestions = shuffleArray(processed).slice(0, 10);
+      setShuffledQuestions(selectedQuestions);
+    }
+  };
+
+  // Initialize Shuffled Questions and Options
+  useEffect(() => {
+    if (isOpen) {
+      initQuestions();
+      setShowWarning(true);
     }
   }, [isOpen, quiz]);
 
-  const { speak, stop } = useTTS();
+
 
   const storageKey = lessonId ? `kmti_quiz_state_${lessonId}` : null;
 
@@ -124,14 +134,12 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     setDirection(0);
     setTimeLeft(120);
     setDurations([]);
+    setShowWarning(true);
+    initQuestions(); // Re-shuffle for retake
     if (storageKey) localStorage.removeItem(storageKey);
   };
 
-  const handleSpeak = () => {
-    if (quiz?.questions?.[currentIdx]) {
-      speak([quiz.questions[currentIdx].text]);
-    }
-  };
+
 
   // Question Timer Effect
   useEffect(() => {
@@ -236,7 +244,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
         resetQuiz();
       }
     } else if (isOpen) {
-      // In Dev, always reset to fresh state when opened
+      // Initialize or reset quiz state when opened
       resetQuiz();
     }
     
@@ -244,10 +252,9 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     document.documentElement.classList.toggle('quiz-mode-active', isOpen);
 
     return () => {
-      stop();
       document.documentElement.classList.remove('quiz-mode-active');
     };
-  }, [isOpen, storageKey, stop]);
+  }, [isOpen, storageKey]);
 
   // 2. Save state to storage on changes (PRODUCTION ONLY)
   useEffect(() => {
@@ -257,12 +264,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     }
   }, [currentIdx, answers, score, isOpen, storageKey, isFinished]);
 
-  // 3. Autoplay question narration when currentIdx changes
-  useEffect(() => {
-    if (isOpen && !isFinished && quiz?.questions?.[currentIdx]) {
-      handleSpeak();
-    }
-  }, [currentIdx, isOpen, isFinished, quiz]);
+
 
   // Score Count-up Effect
   useEffect(() => {
@@ -362,10 +364,43 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 <span className="quiz-badge">MODULE ASSESSMENT</span>
                 <h2 className="quiz-title">{quiz.title}</h2>
               </div>
+              {/* Only allow exit if on warning screen or finished */}
+              {(showWarning || isFinished) && (
+                <button className="quiz-close-btn" onClick={onClose} aria-label="Exit">
+                  <X size={24} />
+                </button>
+              )}
             </div>
 
             <div className="quiz-modal-content">
-              {!isFinished ? (
+              {showWarning ? (
+                <div className="quiz-warning-view">
+                  <div className="warning-card">
+                    <ShieldAlert className="warning-icon" size={80} />
+                    <h3 className="warning-title">Assessment Protocol</h3>
+                    <p className="warning-intro">Please review the rules before initiating the assessment:</p>
+                    
+                    <div className="warning-list">
+                      <div className="warning-item">
+                        <span className="warning-label">No-Exit Policy:</span>
+                        <p>Once started, you cannot exit the assessment until all questions are answered.</p>
+                      </div>
+                      <div className="warning-item">
+                        <span className="warning-label">Time Constraints:</span>
+                        <p>Each question has a strict 2-minute limit. Timeouts are marked as incorrect.</p>
+                      </div>
+                      <div className="warning-item">
+                        <span className="warning-label">Randomized Loadout:</span>
+                        <p>Questions and choices are shuffled dynamically for every attempt.</p>
+                      </div>
+                    </div>
+
+                    <button className="start-btn" onClick={() => setShowWarning(false)}>
+                      Confirm & Start Assessment <ArrowRight size={18} />
+                    </button>
+                  </div>
+                </div>
+              ) : !isFinished ? (
                 <>
                   <div className="quiz-progress-wrapper">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '0.8rem' }}>
@@ -453,9 +488,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                       >
                         <div className="question-header">
                           <p className="question-text">{qText}</p>
-                          <div className="tts-btn" onClick={handleSpeak} role="button" aria-label="Speak Question">
-                            <Volume2 size={24} />
-                          </div>
+
                         </div>
 
                         <div className="options-container">
@@ -465,7 +498,8 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                             const isWrong = isAnswerChecked && isSelected && !isCorrect;
                             
                             return (
-                              <motion.div 
+                              <motion.button 
+                                type="button"
                                 key={idx} 
                                 className={`quiz-option-btn ${ isSelected ? 'active' : '' } ${ isAnswerChecked && isCorrect ? 'correct' : '' } ${ isWrong ? 'wrong' : '' } ${ isAnswerChecked && !isSelected ? 'dimmed' : '' }`} 
                                 onClick={() => handleSelect(idx)}
@@ -477,7 +511,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                               >
                                 <span className="option-indicator">{String.fromCharCode(65 + idx)}</span>
                                 <span className="option-text">{option.text}</span>
-                              </motion.div>
+                                </motion.button>
                             );
                           })}
                         </div>
@@ -486,7 +520,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                   </div>
 
                   <div className="quiz-modal-footer">
-                    <button className={`quiz-next-btn ${isAnswerChecked ? 'checked' : ''}`} disabled={selectedOpt === null} onClick={handleAction}>
+                    <button type="button" className={`quiz-next-btn ${isAnswerChecked ? 'checked' : ''}`} disabled={selectedOpt === null} onClick={handleAction}>
                       {!isAnswerChecked ? 'Check Answer' : (isLastQuestion ? 'Finish Assessment' : 'Next Question')}
                       <ChevronRight size={18} />
                     </button>
@@ -529,15 +563,15 @@ export const QuizModal: React.FC<QuizModalProps> = ({
 
                   <div className="results-actions">
                     {passed ? (
-                      <button className="finish-btn success" onClick={onSuccessContinue || onClose}>
+                      <button type="button" className="finish-btn success" onClick={onSuccessContinue || onClose}>
                         Continue to Next Module <ArrowRight size={18} />
                       </button>
                     ) : (
                       <div className="failure-actions">
-                        <button className="finish-btn retry" onClick={resetQuiz}>
+                        <button type="button" className="finish-btn retry" onClick={resetQuiz}>
                           <RotateCcw size={18} /> Try Again
                         </button>
-                        <button className="finish-btn secondary" onClick={onClose}>
+                        <button type="button" className="finish-btn secondary" onClick={onClose}>
                           <X size={18} /> Review Lesson
                         </button>
                       </div>

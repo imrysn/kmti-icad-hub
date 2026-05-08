@@ -16,18 +16,23 @@ export const useLessonCore = (subLessonId: string) => {
       if (!containerRef.current) return;
       
       const element = containerRef.current;
-      const totalHeight = element.scrollHeight - element.clientHeight;
-      const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      if (totalHeight <= 0) {
-        // Fallback for non-scrollable containers (using window scroll)
-        const winHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (windowScrollTop / winHeight) * 100;
+      const rect = element.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      // Calculate how much of the element has been scrolled past the top of the viewport
+      // rect.top is the distance from the top of the viewport to the top of the element
+      // When at the top, rect.top is 0. As we scroll down, rect.top becomes negative.
+      const scrolled = Math.abs(rect.top);
+      const totalScrollableHeight = rect.height - viewportHeight;
+      
+      if (totalScrollableHeight > 0) {
+        const progress = (scrolled / totalScrollableHeight) * 100;
         setScrollProgress(Math.min(100, Math.max(0, progress)));
+      } else if (rect.top < 0) {
+        // If the content is shorter than the viewport but we scrolled past it
+        setScrollProgress(100);
       } else {
-        // Standard container scroll tracking
-        const progress = (element.scrollTop / totalHeight) * 100;
-        setScrollProgress(progress);
+        setScrollProgress(0);
       }
     };
 

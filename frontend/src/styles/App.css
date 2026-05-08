@@ -80,18 +80,18 @@
 
 .app-title {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--text-white);
+  color: var(--text-main);
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  opacity: 0.9;
+  opacity: 1;
 }
 
-[data-theme='light'] .app-title {
-  color: var(--text-main);
+[data-theme='dark'] .app-title {
+  color: var(--text-white);
 }
 
 .app-title::before {
@@ -334,8 +334,6 @@
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateY(-5px); /* Subtle lift to show it's "away" */
 }
-
 .quiz-mode-active .app-content {
-  /* Prevent interaction with anything outside the quiz if needed, 
-     though the modal overlay usually handles this. */
+  filter: grayscale(0.2);
 }
