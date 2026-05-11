@@ -134,6 +134,36 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
         setLoadingBreakdownId(quizSlug);
         try {
             const data = await adminService.getTraineeQuizAttempts(selectedTrainee.id, quizSlug);
+            
+            // Filter attempts to only show the LATEST attempt for each unique question
+            if (data && data.attempts && Array.isArray(data.attempts)) {
+                const uniqueAttemptsMap = new Map();
+                
+                // Sort by date or just reverse to prioritize latest if backend returns chronological
+                // We reverse to process latest first
+                const sortedAttempts = [...data.attempts].reverse();
+                
+                sortedAttempts.forEach((attempt: any) => {
+                    // Use question_id as primary key, trimmed text as fallback
+                    const key = attempt.question_id || (attempt.question_text ? attempt.question_text.trim() : null);
+                    if (key && !uniqueAttemptsMap.has(key)) {
+                        uniqueAttemptsMap.set(key, attempt);
+                    }
+                });
+                
+                // Convert back to array (these are the latest attempts for each question encountered)
+                let finalAttempts = Array.from(uniqueAttemptsMap.values());
+                
+                // Limit to 10 items (as each assessment session only serves 10 questions from the 15-question pool)
+                // We keep the 10 LATEST unique questions found
+                if (finalAttempts.length > 10) {
+                    finalAttempts = finalAttempts.slice(0, 10);
+                }
+                
+                // Restore original chronological order for display
+                data.attempts = finalAttempts.reverse();
+            }
+            
             setBreakdownData(data);
         } catch (error) {
             console.error('Failed to fetch breakdown:', error);
@@ -250,8 +280,9 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                         <h3><BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING</h3>
                         <div className="history-list">
                             {selectedTrainee.quizzes_history.filter(q => q.course_id === '1').length > 0 ? (
-                                selectedTrainee.quizzes_history
+                                [...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '1')
+                                    .sort((a, b) => new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime())
                                     .map((q, i) => (
                                         <div key={i} className="history-item evaluation-card">
                                             <div className="score-pillar-container">
@@ -328,8 +359,9 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                         <h3><FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING</h3>
                         <div className="history-list">
                             {selectedTrainee.quizzes_history.filter(q => q.course_id === '2').length > 0 ? (
-                                selectedTrainee.quizzes_history
+                                [...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '2')
+                                    .sort((a, b) => new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime())
                                     .map((q, i) => (
                                         <div key={i} className="history-item evaluation-card">
                                             <div className="score-pillar-container">
@@ -385,8 +417,31 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                     {breakdownData.quiz_title} • <span style={{ color: 'var(--color-primary)' }}>{selectedTrainee.full_name}</span>
                                 </p>
                             </div>
-                            <button onClick={() => setBreakdownData(null)} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', color: 'var(--text-main)', width: '40px', height: '40px', borderRadius: 'var(--radius-md)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: 'var(--shadow-glow)' }}>
-                                <X size={20} />
+                            <button 
+                                onClick={() => setBreakdownData(null)} 
+                                className="modal-close-btn"
+                                style={{ 
+                                    background: 'transparent', 
+                                    border: 'none', 
+                                    color: 'var(--text-dim)', 
+                                    width: '32px', 
+                                    height: '32px', 
+                                    borderRadius: 'var(--radius-md)', 
+                                    cursor: 'pointer', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center', 
+                                    transition: 'all 0.2s ease',
+                                    padding: 0
+                                }}
+                                onMouseOver={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                    e.currentTarget.style.color = 'var(--color-error)';
+                                }}
+                                onMouseOut={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                    e.currentTarget.style.color = 'var(--text-dim)';
+                                }}
+                            >
+                                <X size={24} strokeWidth={2.5} />
                             </button>
                         </div>
 

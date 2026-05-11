@@ -19,17 +19,17 @@ export const useLessonCore = (subLessonId: string) => {
       const rect = element.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       
-      // Calculate how much of the element has been scrolled past the top of the viewport
-      // rect.top is the distance from the top of the viewport to the top of the element
-      // When at the top, rect.top is 0. As we scroll down, rect.top becomes negative.
-      const scrolled = Math.abs(rect.top);
+      // Calculate how much of the element has been scrolled past the top of the viewport.
+      // When at the top of the element, rect.top is 0.
+      // As we scroll down, rect.top becomes negative.
+      // If we scroll up past the element, rect.top becomes positive.
+      const scrolled = rect.top < 0 ? Math.abs(rect.top) : 0;
       const totalScrollableHeight = rect.height - viewportHeight;
       
       if (totalScrollableHeight > 0) {
         const progress = (scrolled / totalScrollableHeight) * 100;
         setScrollProgress(Math.min(100, Math.max(0, progress)));
       } else if (rect.top < 0) {
-        // If the content is shorter than the viewport but we scrolled past it
         setScrollProgress(100);
       } else {
         setScrollProgress(0);

@@ -12,7 +12,8 @@ export const AuditLogs: React.FC<AuditLogsProps> = ({ logs }) => {
                 {logs.map(l => (
                     <div key={l.id} className={`log-entry ${l.level.toLowerCase()}`}>
                         <div className="log-time">
-                            {new Date(l.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                            <span className="date">{new Date(l.created_at).toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' })}</span>
+                            <span className="time">{new Date(l.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
                         </div>
                         <div className="log-context">
                             {l.context === 'AUTH' && <Shield size={14} />}

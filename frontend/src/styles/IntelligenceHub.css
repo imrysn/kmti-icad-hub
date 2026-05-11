@@ -19,34 +19,32 @@
 }
 
 .ih-stat-pill {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    border-left: 3px solid var(--ih-accent, #6366f1);
+    border-left: 3px solid var(--primary);
     padding: 1rem 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
     box-shadow: var(--shadow-card);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s;
 }
 
 .ih-stat-pill:hover { 
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px -5px var(--color-primary-glow);
-    border-color: var(--ih-accent, #6366f1);
+    border-color: var(--primary);
+    background: var(--bg-card);
 }
 
 .ih-stat-icon {
     width: 32px;
     height: 32px;
     border-radius: var(--radius-sm);
-    background: color-mix(in srgb, var(--ih-accent, #6366f1) 10%, transparent);
+    background: var(--bg-card);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--ih-accent, #6366f1);
+    color: var(--primary);
     flex-shrink: 0;
 }
 
@@ -78,13 +76,12 @@
 }
 
 .ih-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     box-shadow: var(--shadow-card);
-    transition: all 0.3s ease;
+    transition: all 0.2s;
 }
 
 .ih-card:hover { box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); }
@@ -147,11 +144,11 @@
 
 .ih-bar {
     width: 100%;
-    background: var(--color-accent, #6366f1);
-    border-radius: 3px 3px 0 0;
-    min-height: 3px;
-    opacity: 0.72;
-    transition: opacity 0.12s;
+    background: linear-gradient(to top, var(--primary), var(--color-primary-glow));
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    opacity: 0.85;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .ih-bar-col:hover .ih-bar { opacity: 1; }
@@ -346,10 +343,9 @@
 /* ── Logs section ───────────────────────────────────────────── */
 
 .ih-logs-section {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     overflow: hidden;
     box-shadow: var(--shadow-card);
 }
@@ -429,16 +425,16 @@
 .ih-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
 
 .ih-table th {
-    padding: 1rem 1.125rem;
-    background: rgba(15, 23, 42, 0.4);
+    padding: 0.75rem 1.125rem;
+    background: var(--bg-card);
     text-align: left;
     font-family: var(--font-heading);
     font-size: 0.65rem;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-white);
-    border-bottom: 1px solid var(--glass-border);
+    letter-spacing: 0.05em;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
     white-space: nowrap;
 }
 

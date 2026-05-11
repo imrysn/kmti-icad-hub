@@ -44,22 +44,18 @@
     max-width: 500px;
     width: auto;
     min-width: 320px;
-    background: rgba(15, 23, 42, 0.88);
-    /* Deep Slate */
-    backdrop-filter: blur(16px) saturate(200%);
-    -webkit-backdrop-filter: blur(16px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     padding: 14px 18px;
-    box-shadow: 0 12px 48px -12px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-card);
     pointer-events: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 .banner-island:hover {
@@ -70,44 +66,15 @@
 /* ── Urgency Glows ─────────────────────────────────────────── */
 
 .broadcast-banner.info .banner-island {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15), 0 12px 48px -12px rgba(0, 0, 0, 0.5);
+    border-left: 4px solid var(--primary);
 }
 
 .broadcast-banner.warning .banner-island {
-    border-color: rgba(245, 158, 11, 0.4);
-    box-shadow: 0 0 25px rgba(245, 158, 11, 0.2), 0 12px 48px -12px rgba(0, 0, 0, 0.5);
-    animation: warningPulse 2s infinite ease-in-out;
-}
-
-@keyframes warningPulse {
-
-    0%,
-    100% {
-        border-color: rgba(245, 158, 11, 0.4);
-    }
-
-    50% {
-        border-color: rgba(245, 158, 11, 0.8);
-    }
+    border-left: 4px solid var(--color-warning);
 }
 
 .broadcast-banner.critical .banner-island {
-    border-color: rgba(239, 68, 68, 0.4);
-    box-shadow: 0 0 35px rgba(239, 68, 68, 0.3), 0 12px 48px -12px rgba(0, 0, 0, 0.5);
-    animation: criticalBreath 3s infinite ease-in-out;
-}
-
-@keyframes criticalBreath {
-
-    0%,
-    100% {
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
-    }
-
-    50% {
-        box-shadow: 0 0 45px rgba(239, 68, 68, 0.5);
-        border-color: rgba(239, 68, 68, 0.8);
-    }
+    border-left: 4px solid var(--color-error);
 }
 
 /* ── Content Layout ────────────────────────────────────────── */
@@ -147,10 +114,10 @@
 }
 
 .message-text {
-    color: white;
+    color: var(--text-main);
     font-size: 0.9375rem;
     line-height: 1.5;
-    font-weight: 600;
+    font-weight: 500;
     margin: 0;
     word-break: break-word; /* Fix horizontal scroll issue */
     overflow-wrap: break-word;
