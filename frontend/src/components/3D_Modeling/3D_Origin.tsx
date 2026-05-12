@@ -11,22 +11,20 @@ import toolSelection from "../../assets/3D_Image_File/origin_change_3d_part_layo
 import interactionSteps from "../../assets/3D_Image_File/origin_change_3d_part_layout_2345.png";
 
 interface OriginLessonProps {
-  subLessonId: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
   nextLabel?: string;
 }
 
 const OriginLesson: React.FC<OriginLessonProps> = ({
-  subLessonId,
   onNextLesson,
   onPrevLesson,
   nextLabel,
 }) => {
   const [activeTab, setActiveTab] = useState<"projections" | "layout">(() => {
-    return (localStorage.getItem(`${subLessonId}-tab`) as any) || "projections";
+    return (localStorage.getItem('3d-origin-active-tab') as any) || "projections";
   });
-  
+
   const {
     scrollProgress,
     containerRef,
@@ -35,11 +33,12 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     isSpeaking,
     currentIndex,
     currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+  } = useLessonCore(`3d-origin-${activeTab}`);
 
   useEffect(() => {
-    localStorage.setItem(`${subLessonId}-tab`, activeTab);
-  }, [subLessonId, activeTab]);
+    localStorage.setItem('3d-origin-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
   const LESSON_DATA = {
     projections: {
@@ -133,9 +132,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                <div className="screenshot-wrapper">
-                  <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide" />
-                </div>
+                  <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide mt-4" />
               </div>
             </div>
           ) : (
@@ -175,16 +172,13 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-                  </div>
+                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-small mt-4" style={{ height: '200px' }} />
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-                <div className="step-header">
+                <div className="step-header" style={{marginTop: "-2rem"}}>
                   <span className="step-number">2 </span>
                   <KaraokeLessonText
                     as="span"
@@ -196,10 +190,9 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-                <div className="step-header">
+                <div className="step-header" style={{marginTop: "-1rem"}}>
                   <span className="step-number">3 </span>
                   <KaraokeLessonText
                     as="span"
@@ -211,10 +204,9 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-                <div className="step-header">
+                <div className="step-header" style={{marginTop: "-1rem"}}>
                   <span className="step-number">4 </span>
                   <KaraokeLessonText
                     as="span"
@@ -226,10 +218,9 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-                <div className="step-header">
+                <div className="step-header" style={{marginTop: "-1rem"}}>
                   <span className="step-number">5 </span>
                   <KaraokeLessonText
                     as="span"
@@ -242,14 +233,12 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 <div className="step-description">
                   <KaraokeLessonText
                     className="p-flush"
-                    style={{marginLeft:"3rem", marginBottom: "3rem"}}
+                    style={{ marginBottom: "3rem"}}
                     text="The XY-plane will be front view."
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                  <div className="screenshot-wrapper mt-4" style={{marginLeft: "3rem"}}>
-                    <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-wide" />
-                  </div>
+                    <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-medium mt-4" />
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -23,15 +24,16 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore('2d-revision-code');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-revision-code');
 
   const revisionSteps = [
-    "Revision Awareness: Revisions occur when approved drawings need modifications due to fabrication discrepancies. It's critical to track these changes for engineering history.",
-    "Revised Detail: Use the 'create delta' command to mark changes. Enter the delta character and place it near the modified feature. Remember to activate the specific local view where the change belongs.",
-    "Revision Code: Update the revision history block to provide a clear record of what was changed, by whom, and when."
+    "Revisions occur when approved drawings need modifications due to fabrication discrepancies. It's critical to track these changes for engineering history.",
+    "Use the 'create delta' command to mark changes. Enter the delta character and place it near the modified feature. Remember: local view must be activated.",
+    "Update the revision history block to provide a clear record of what was changed, by whom, and when."
   ];
 
-  const introSubtitle = "Tracking engineering changes and modifications using delta markers and history blocks.";
+  const currentTitle = "REVISION CODE AND HISTORY";
+  const currentSubtitle = "Tracking engineering changes and modifications using delta markers and history blocks.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -39,61 +41,106 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          23. REVISION CODE AND HISTORY
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "23. REVISION CODE AND HISTORY";
-            speak([introTitle, introSubtitle, ...revisionSteps]);
-          }}
-            onStop={stop}
-          />
-        </h3>
-        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-          {introSubtitle}
-        </p>
-      </section>
-
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="info-box">
-                <p className="p-flush"><strong className="red-text">Revision</strong> occurs when approved drawings require modification due to fabrication discrepancies.</p>
-              </div>
-              <img src={img1} alt="Revision Code and History Overview" className="software-screenshot screenshot-wide" style={{ marginTop: "1.5rem" }} />
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentTitle}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentTitle, currentSubtitle, ...revisionSteps])}
+                onStop={stop}
+              />
             </div>
 
-            <div className="section-divider"></div>
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentSubtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+
+
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className="step-header">
+                <span className="step-number">1</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Revision Awareness & Necessity"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+              <div className="step-description">
+                <div className="red-text mb-4">
+                  <KaraokeLessonText
+                    text={revisionSteps[0]}
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+                <img src={img1} alt="Revision History Overview" className="software-screenshot screenshot-wide" />
+              </div>
+            </div>
+
 
             <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <div className="step-header" style={{ marginBottom: "1rem" }}>
-                <span className="step-number">a.</span>
-                <span className="step-label">Revised Detail</span>
+              <div className="step-header">
+                <span className="step-number">2</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Delta Marker Placement (Revised Detail)"
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <div className="flex-row" style={{ gridTemplateColumns: '1fr 1fr', gap: "1rem" }}>
-                <img src={imgA1} alt="Revised Detail Menu" className="software-screenshot screenshot-wide" />
-                <img src={imgA2} alt="Delta Input" className="software-screenshot screenshot-medium" />
-              </div>
-              <div className="flex-row" style={{ marginTop: "1rem", gap: "1rem" }}>
-                <div className="info-box">
-                  <p>1. Setup "create delta" command.</p>
-                  <p>2. Enter delta character.</p>
-                  <p>3. Place on proper location.</p>
-                  <p className="red-text">Note: Local view must be activated.</p>
+              <div className="step-description">
+                <div className="flex-col gap-4 mb-4">
+                  <div className="flex-row gap-4">
+                    <img src={imgA1} alt="Command Menu" className="software-screenshot screenshot-wide" />
+                    <img src={imgA2} alt="Delta Input" className="software-screenshot screenshot-medium" />
+                  </div>
+                  <div className="red-text">
+                    <p><strong>Workflow:</strong> 1. Setup 'create delta' → 2. Enter character → 3. Place on location.</p>
+                    <p><strong>Requirement:</strong> Local view must be activated before placement.</p>
+                  </div>
                 </div>
-                <img src={imgA3} alt="Delta Symbol Placement" className="software-screenshot" />
+                <img src={imgA3} alt="Placement Example" className="software-screenshot screenshot-wide" />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-              <div className="step-header" style={{ marginBottom: "1rem" }}>
-                <span className="step-number">b.</span>
-                <span className="step-label">Revision Code</span>
+              <div className="step-header">
+                <span className="step-number">3</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Revision History Management"
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <img src={imgB} alt="Revision Code History Block" className="software-screenshot screenshot-wide" />
+              <div className="step-description">
+                <KaraokeLessonText
+                  className="p-flush mb-4"
+                  text={revisionSteps[2]}
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
+                <img src={imgB} alt="Revision Code History" className="software-screenshot screenshot-wide" />
+              </div>
             </div>
           </div>
 
@@ -102,7 +149,7 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -78,9 +78,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <div className="screenshot-wrapper mt-4">
-          <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large" style={{ height: '180px' }} />
-        </div>
+        <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large mt-4" style={{ height: 'auto', width: "400px" }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -108,9 +106,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               />
             </div>
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-1rem" }} />
-              </div>
+                <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
             </div>
           </div>
 
@@ -129,9 +125,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               </span>
             </div>
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={listTools} alt="List of available tools" className="software-screenshot" style={{ width: '900px', marginBottom: "-2rem" }} />
-              </div>
+                <img src={listTools} alt="List of available tools" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
             </div>
           </div>
 
@@ -167,9 +161,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               </span>
             </div>
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={holeResult} alt="Hole Creation Result" className="software-screenshot" style={{ width: '900px', marginTop: "1rem" }} />
-              </div>
+                <img src={holeResult} alt="Hole Creation Result" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
             </div>
           </div>
 
@@ -182,8 +174,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               currentCharIndex={currentCharIndex}
             />
           </div>
-          <div className={`screenshot-wrapper ${currentIndex === 7 ? "reading-active" : ""}`}>
-            <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide" />
+          <div className={`${currentIndex === 7 ? "reading-active" : ""}`}>
+            <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide mt-4" />
           </div>
         </div>
 

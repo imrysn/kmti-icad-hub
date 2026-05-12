@@ -127,14 +127,8 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 isActive={isSpeaking && currentIndex === 1}
                 currentCharIndex={currentCharIndex}
               />
-              <div className="flex-row-center--wrap" style={{ justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '0rem' , marginTop: "2rem"}}>
-                <div className="screenshot-wrapper" style={{ marginTop: "-2rem" }}>
-                  <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small" style={{ width: "10rem" }} />
-                </div>
-              </div>
-              <div className="screenshot-wrapper">
-                <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide" />
-              </div>
+                <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small mt-4" style={{ width: "10rem", marginTop: "-2rem" }} />
+              <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide mt-4" />
             </div>
 
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
@@ -144,9 +138,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 isActive={isSpeaking && currentIndex === 2}
                 currentCharIndex={currentCharIndex}
               />
-              <div className="screenshot-wrapper" style={{ marginTop: "1rem" }}>
-                <img src={openWorkPlaneImg2} alt="Open Work Plane Orientation" className="software-screenshot" style={{ width: '10rem' }} />
-              </div>
+              <img src={openWorkPlaneImg2} alt="Open Work Plane Orientation" className="software-screenshot mt-4" style={{ width: '10rem', marginTop: "1rem" }} />
             </div>
 
             <div className="lesson-navigation">
@@ -178,9 +170,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               currentCharIndex={currentCharIndex}
             />
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
-              <div className="screenshot-wrapper">
-                <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide" style={{ height: '545px', marginTop: "2rem" }} />
-              </div>
+                <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide mt-8" style={{ height: '545px', marginTop: "2rem" }} />
             </div>
 
             <div className="lesson-navigation">
@@ -305,9 +295,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
           isActive={isSpeaking && currentIndex === 2}
           currentCharIndex={currentCharIndex}
         />
-        <div className="screenshot-wrapper">
-          <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-small" style={{ height: '225px' }} />
-        </div>
+        <img src={commandMenu2} alt="Extrude Tools" className="software-screenshot screenshot-small mt-4" style={{ height: '225px' }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -346,9 +334,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot screenshot-small" style={{ height: '100px' }} />
-                </div>
+                    <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot mt-4" style={{height: 'auto', width: "200px" }} />
               </div>
             </div>
 
@@ -373,9 +359,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 </div>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper" style={{ marginTop: "2rem" }}>
-                  <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot" style={{ width: '600px' }} />
-                </div>
+                    <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot mt-8" style={{ width: '600px', marginTop: "2rem" }} />
               </div>
             </div>
 
@@ -434,9 +418,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                    <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot mt-8" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -482,9 +464,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-2rem"}} />
-                </div>
+                    <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-2rem"}} />
               </div>
             </div>  
             
@@ -538,9 +518,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   />
                 </h4>
               </div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot" style={{ width: '950px', height: '350px', marginTop: "1rem" }} />
-              </div>
+                <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot mt-8" style={{ width: '950px', height: '350px', marginTop: "1rem" }} />
             </div>
 
             <div className="lesson-navigation">
@@ -585,9 +563,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot screenshot-wide" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
-                </div>
+                    <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
               </div>
             </div>
 
@@ -603,9 +579,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "1rem" }} />
-                </div>  
+                  <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem" }} />
               </div>
               <KaraokeLessonText
                   as="p"
@@ -630,7 +604,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>   
               </div> 
-             <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: '0rem' }}>
+             <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: '1rem' }}>
                     <KaraokeLessonText
                            as="p"
                            className="p-flush red-text"
@@ -640,9 +614,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                          />
                        </div>
               <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-wide" style={{ height: 'auto', width: '900px', marginBottom: "-2rem", marginTop: "1rem"}} />
-                </div>
+                    <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-wide mt-4" style={{ height: 'auto', width: '900px', marginBottom: "-2rem", marginTop: "1rem"}} />
               </div>
             </div>
 
@@ -658,9 +630,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={spiralRotation1} alt="Spiral Axis Selection" className="software-screenshot screenshot-medium" style={{ width: '700px', height: 'auto' }} />
-                </div>
+                    <img src={spiralRotation1} alt="Spiral Axis Selection" className="software-screenshot screenshot-medium mt-4" style={{ width: '700px', height: 'auto' }} />
               </div>
             </div>
 
@@ -676,9 +646,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={spiralRotation} alt="Spiral Axis Result" className="software-screenshot screenshot-medium" />
-                </div>
+                    <img src={spiralRotation} alt="Spiral Axis Result" className="software-screenshot" style={{ height: 'auto', width: '900px' }} />
               </div>
             </div>
 

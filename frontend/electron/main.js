@@ -76,6 +76,15 @@ function createWindow() {
         mainWindow.close();
     });
 
+    ipcMain.on('open-file', (event, filePath) => {
+        const { shell } = require('electron');
+        shell.openPath(filePath).then((error) => {
+            if (error) {
+                console.error(`Failed to open file: ${error}`);
+            }
+        });
+    });
+
     // Handle permission requests
     const { session } = require('electron');
     session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {

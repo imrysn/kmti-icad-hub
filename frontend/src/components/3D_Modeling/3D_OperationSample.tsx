@@ -141,14 +141,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
           Here is the step-by-step procedure of creating 3D model.
         </p>
         {activeTab === 'sample1' && (
-          <div className="screenshot-wrapper mt-4">
-            <img src={mainDrawing} alt="Bracket Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
-          </div>
+            <img src={mainDrawing} alt="Bracket Technical Drawing" className="software-screenshot mt-4" style={{ width: "900px", height: "auto" }} />
         )}
         {activeTab === 'sample2' && (
-          <div className="screenshot-wrapper mt-4">
-            <img src={keyGrooveFilletResult} alt="Shaft Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
-          </div>
+            <img src={keyGrooveFilletResult} alt="Shaft Technical Drawing" className="software-screenshot mt-4" style={{ width: "900px", height: "auto" }} />
         )}
       </section>
 
@@ -165,11 +161,11 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">1</span>
                 <span className="step-label">Open a new drawing</span>
               </div>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Go to File &gt; New</p>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Save the drawing</p>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name.</p>
-              <p className="p-flush red-text" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Check if Normal or Mirror Part (See Mirrored Part lesson tab)</p>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Press Save</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File &gt; New</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Save the drawing</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name.</p>
+              <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Check if Normal or Mirror Part (See Mirrored Part lesson tab)</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Press Save</p>
             </div>
 
             {/* Step 2 */}
@@ -178,11 +174,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">2 </span>
                 <span className="step-label">Arrange Box</span>
               </div>
-              <div className="flex-row-wrap" style={{ gap: '2rem', marginLeft: "3rem" }}>
+              <div className="flex-row-wrap" style={{ gap: '2rem' }}>
                 <div>
-                  <div className="screenshot-wrapper mb-4">
-                    <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot" style={{ height: '300px' }} />
-                  </div>
+                  <img src={arrangeBoxTool} alt="Arrange Box Tool" className="software-screenshot mt-4 mb-4" style={{ height: '300px' }} />
                   <div style={{ marginTop: "-7rem"}}>
                   <p className="p-flush">INPUT: Depth = 16mm</p>
                   <p className="p-flush" style={{ paddingLeft: '3.7rem' }}>Width = 100mm</p>
@@ -199,10 +193,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">3</span>
                 <span className="step-label">Select and Arrange Machine Part</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                <div className="screenshot-wrapper mb-4">
-                  <img src={machinePartTool} alt="Machine Part Tool" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+              <div>
+                  <img src={machinePartTool} alt="Machine Part Tool" className="software-screenshot mt-4 mb-4" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -212,7 +204,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">4</span>
                 <span className="step-label">Point the hole on the face where the hole is located.</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
+              <div>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
                   <p className="p-flush">Press <strong className="text-highlight">無変換 + Q</strong> to make the tool change its orientation.</p>
                 </div>
@@ -224,9 +216,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <p className="p-flush">Left-click on the selected point &gt; GO </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
-                <div className="screenshot-wrapper">
-                  <img src={opSample1} alt="Placed Hole" className="software-screenshot" style={{ height: '300px' }} />
-                </div>
+                  <img src={opSample1} alt="Placed Hole" className="software-screenshot mt-4" style={{ height: '300px' }} />
               </div>
             </div>
 
@@ -236,21 +226,19 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">5</span>
                 <span className="step-label">Move Component</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                <div className="screenshot-wrapper mb-4">
-                  <img src={moveTool} alt="Move Tool" className="software-screenshot" style={{ height: '100px' }} />
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem' }}>
+                <div>
+                  <img src={moveTool} alt="Move Tool" className="software-screenshot mt-4 mb-4" style={{ height: '120px' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                    <p className="p-flush">Select the hole component &gt; GO </p>
+                    <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                  </div>
+                  <p className="p-flush">INPUT: MOVELENGX = 0</p>
+                  <p className="p-flush" style={{ paddingLeft: '4rem' }}>MOVELENGY = 183mm</p>
+                  <p className="p-flush" style={{ paddingLeft: '4rem' }}>MOVELENGZ = 0</p>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                  <p className="p-flush">Select the hole component &gt; GO </p>
-                  <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
-                </div>
-                <p className="p-flush">INPUT: MOVELENGX = 0</p>
-                <p className="p-flush" style={{ paddingLeft: '4rem' }}>MOVELENGY = 183mm</p>
-                <p className="p-flush" style={{ paddingLeft: '4rem' }}>MOVELENGZ = 0</p>
+                <img src={opSample1Move} alt="Move Hole" className="software-screenshot mt-8" style={{ width: '120px', height: 'auto' }} />
               </div>
-              <div className="screenshot-wrapper">
-                  <img src={opSample1Move} alt="Move Hole" className="software-screenshot" style={{ height: '300px', marginLeft: "25rem", marginTop: "-20rem" }} />
-                </div>
             </div>
 
             {/* Step 6 */}
@@ -259,21 +247,17 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">6</span>
                 <span className="step-label">For making long hole details, first create a tool entity.</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
+              <div>
                 <p className="p-flush">Arrange Box</p>
                 <p className="p-flush">INPUT: Depth = 16mm</p>
                 <p className="p-flush" style={{ paddingLeft: '3.9rem' }}>Width = 14mm</p>
                 <p className="p-flush" style={{ paddingLeft: '3.9rem' }}>Height = 38mm</p>
                 <p className="p-flush mt-4">Position the tool entity on the location to be cut</p>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', marginTop: '-3rem' }}>
-                  <p className="p-flush">Use subtract to create the cut. </p>
-                  <div className="screenshot-wrapper" style={{ marginLeft: '1rem', padding: '0.2rem', marginTop: "4rem" }}>
-                    <img src={booleanSubtractIcon} alt="Subtract Tool" className="software-screenshot" style={{ height: '80px' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', marginTop: '-1rem' }}>
+                    <p className="p-flush">Use subtract to create the cut. </p>
+                      <img src={booleanSubtractIcon} alt="Subtract Tool" className="software-screenshot mt-4" style={{ height: '80px', padding: '0.2rem', marginTop: "4rem" }} />
                   </div>
-                </div>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={subtractResult} alt="Subtract Result" className="software-screenshot" style={{ height: '300px' }} />
-                </div>
+                <img src={subtractResult} alt="Subtract Result" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -283,18 +267,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">7</span>
                 <span className="step-label">Fillet Edge</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                <div className="screenshot-wrapper mb-4">
-                  <img src={filletTool} alt="Fillet Tool" className="software-screenshot" style={{ height: '150px', marginBottom: "1rem" }} />
-                </div>
+              <div>
+                  <img src={filletTool} alt="Fillet Tool" className="software-screenshot mt-4 mb-4" style={{ height: '150px', marginBottom: "1rem" }} />
                 <p className="p-flush">SetRadius = 7mm</p>
                 <div style={{ display: 'flex', alignItems: 'center'}}>
                   <p className="p-flush">Pick all the edges to be filleted &gt; GO </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={filletResult} alt="Fillet Result" className="software-screenshot" style={{ height: '300px', marginTop: "1rem" }} />
-                </div>
+                <img src={filletResult} alt="Fillet Result" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
               </div>
             </div>
 
@@ -304,14 +284,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">8</span>
                 <span className="step-label">Copy Component</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                <div className="screenshot-wrapper mb-4">
-                  <img src={copyTool} alt="Copy Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
-                </div>
-                <div className="screenshot-wrapper mt-4 mb-4">
-                  <img src={copyResult} alt="Copy Result" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
-               
+              <div>
+                  <img src={copyTool} alt="Copy Tool" className="software-screenshot mt-4 mb-4" style={{ height: '100px', marginBottom: "1rem" }} />
+                  <img src={copyResult} alt="Copy Result" className="software-screenshot mt-4 mb-4" style={{ width: '900px'}} />
               </div>
             </div>
 
@@ -321,18 +296,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">9</span>
                 <span className="step-label">Chamfer Edge</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                <div className="screenshot-wrapper mb-4">
-                  <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
-                </div>
+              <div>
+                  <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot mt-4 mb-4" style={{ height: '100px', marginBottom: "1rem" }} />
                 <p className="p-flush">Set Chamfer Length = 20mm</p>
                 <div style={{ display: 'flex', alignItems: 'center'}}>
                   <p className="p-flush">Select all edges to be chamfered &gt; GO </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={chamferResult} alt="Chamfer Result" className="software-screenshot" style={{ height: '300px', marginTop: "1rem" }} />
-                </div>
+                <img src={chamferResult} alt="Chamfer Result" className="software-screenshot mt-4" style={{ height: '300px', marginTop: "1rem" }} />
               </div>
             </div>
 
@@ -342,18 +313,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">10</span>
                 <span className="step-label">Create 3D Part Name</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                <div className="screenshot-wrapper mb-4">
-                  <img src={createPartTool} alt="Create Part Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
-                </div>
+              <div>
+                  <img src={createPartTool} alt="Create Part Tool" className="software-screenshot mt-4 mb-4" style={{ height: '100px', marginBottom: "1rem" }} />
                 <div style={{ display: 'flex', alignItems: 'center'}}>
                   <p className="p-flush">Select the entity &gt; GO </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
                 <p className="p-flush">Enter the 3D Part Name</p>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={enterPartName} alt="Enter Part Name" className="software-screenshot" style={{ width: '300px', marginTop: "1rem"   }} />
-                </div>
+                <img src={enterPartName} alt="Enter Part Name" className="software-screenshot mt-4" style={{ width: '300px', marginTop: "1rem"   }} />
               </div>
             </div>
 
@@ -363,10 +330,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">11</span>
                 <span className="step-label">Check the properties of the Top 3D Part</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={propertiesWindow} alt="Properties Window" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+              <div>
+                  <img src={propertiesWindow} alt="Properties Window" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -376,10 +341,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">12</span>
                 <span className="step-label">Set all necessary informations (Material, Layer, Color)</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={layerInfo} alt="Layer Information" className="software-screenshot" style={{ width: "900px" }} />
-                  </div>
+              <div>
+                    <img src={layerInfo} alt="Layer Information" className="software-screenshot mt-4" style={{ width: "900px" }} />
               </div>
             </div>
 
@@ -389,7 +352,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">13</span>
                 <span className="step-label">Save the file</span>
               </div>
-              <div style={{ marginLeft: "3rem" }}>
+              <div>
                 <p className="p-flush">File &gt; Save</p>
               </div>
             </div>
@@ -409,10 +372,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">1</span>
                 <span className="step-label">Open a new drawing</span>
               </div>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Go to File &gt; New</p>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Save the drawing</p>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name &gt; Press Save</p>
-              <p className="p-flush red-text" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>*Check if Normal or Mirror Part(See Mirrored Part lesson tab)</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File &gt; New</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Save the drawing</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name &gt; Press Save</p>
+              <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>*Check if Normal or Mirror Part(See Mirrored Part lesson tab)</p>
             </div>
 
             {/* Step 2 */}
@@ -421,9 +384,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">2</span>
                 <span className="step-label" style={{marginTop: "2rem"}}>In order to create this part, it must be done by segments. Segments must be attach together after modeling.</span>
               </div>
-              <div className="screenshot-wrapper mt-4">
-                <img src={segmentOverview} alt="Segment Overview" className="software-screenshot" style={{ width: "900px", height: "auto" }} />
-              </div>
+              <img src={segmentOverview} alt="Segment Overview" className="software-screenshot mt-4" style={{ width: "900px", height: "auto" }} />
 
               {/* Segments A and B */}
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
@@ -434,19 +395,15 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 1: Diameter = 20mm    Height= 3.65mm    Coordinates (0,0,0)</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 2: Diameter = 19mm    Height= 1.35mm</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 3: Diameter = 20mm    Height= 64.5mm</p>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={segmentAResult} alt="Segment A" className="software-screenshot" style={{ width: "900px", height: "auto", marginTop: "1rem"}} />
-                  </div>
+                  <img src={segmentAResult} alt="Segment A" className="software-screenshot mt-4" style={{ width: "900px", height: "auto", marginTop: "1rem"}} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT B</u></p>
                   <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Use Arrange Cylinder</p>
                   <p className="p-flush">INPUT: Diameter = 30mm</p>
-                  <p className="p-flush" style={{marginLeft: "3.5rem"}}>Height = 22.25mm</p>
-                  <p className="p-flush" style={{marginLeft: "3.5rem"}}>Use Center tool &gt; Attach to Segment A</p>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={segmentBResult} alt="Segment B" className="software-screenshot" style={{ width: "500px", height: "auto", marginTop: "1rem", marginBottom: "2rem"}} />
-                  </div>
+                  <p className="p-flush">Height = 22.25mm</p>
+                  <p className="p-flush">Use Center tool &gt; Attach to Segment A</p>
+                  <img src={segmentBResult} alt="Segment B" className="software-screenshot mt-4" style={{ width: "500px", height: "auto", marginTop: "1rem", marginBottom: "2rem"}} />
                 </div>
               </div>
 
@@ -454,17 +411,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               <div className="mt-8">
                 <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT C</u></p>
                 <p className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required<br />dimensions precisely. Dimensions enclosed in parentheses are close but not exact with the original dimension.</p>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={mainDrawing3} alt="Segment C Technical Drawing" className="software-screenshot" style={{ width: "900px", height: "400px", marginTop: "1rem", marginBottom: "2rem" }}  />
-                </div>
+                <img src={mainDrawing3} alt="Segment C Technical Drawing" className="software-screenshot mt-4" style={{ width: "900px", height: "400px", marginTop: "1rem", marginBottom: "2rem" }}  />
                 
-                <div className="screenshot-wrapper mt-4">
-                  <img src={workPlaneImg} alt="Work Plane" className="software-screenshot" style={{ width: "900px", marginBottom: "2rem" }} />
-                </div>
+                <img src={workPlaneImg} alt="Work Plane" className="software-screenshot mt-4" style={{ width: "900px", marginBottom: "2rem" }} />
 
-                  <div className="screenshot-wrapper">
-                    <img src={revolveImg} alt="Revolve Result" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
-                  </div>            
+                  <img src={revolveImg} alt="Revolve Result" className="software-screenshot mt-4" style={{ width: "900px", marginTop: "2rem" }} />
+
               </div>
             </div>
 
@@ -482,10 +434,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">4</span>
                 <span className="step-label">For Key Groove</span>
               </div>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Create the tool entity first</p>
-              <div className="screenshot-wrapper mt-4">
-                <img src={keyGrooveBox} alt="Key Groove Box" className="software-screenshot" style={{ width: "900px" }} />
-              </div>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Create the tool entity first</p>
+                <img src={keyGrooveBox} alt="Key Groove Box" className="software-screenshot mt-4" style={{ width: "900px" }} />
             </div>
 
             {/* Step 5 */}
@@ -496,9 +446,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               </div>
               <div className="flex-row-wrap mt-4" style={{ gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
                 <div style={{ flex: 1 }}>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={keyGrooveSubtractResult} alt="Key Groove Subtract" className="software-screenshot" style={{ width: "900px" }} />
-                  </div>
+                    <img src={keyGrooveSubtractResult} alt="Key Groove Subtract" className="software-screenshot mt-4" style={{ width: "900px" }} />
                 </div>
               </div>
             </div>
@@ -509,9 +457,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">6</span>
                 <span className="step-label">Add all Fairings (Chamfer and Fillet)</span>
               </div>
-              <div className="screenshot-wrapper mt-4">
-                <img src={finalPartFairing} alt="Final Part" className="software-screenshot" style={{ width: "900px" }} />
-              </div>
+                <img src={finalPartFairing} alt="Final Part" className="software-screenshot mt-4" style={{ width: "900px" }} />
             </div>
 
             {/* Step 7 */}
@@ -544,7 +490,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">10</span>
                 <span className="step-label">Save the file</span>
               </div>
-              <p className="p-flush" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>File &gt; Save</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save</p>
             </div>
           </div>
         )}

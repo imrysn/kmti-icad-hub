@@ -470,11 +470,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     id: '2d-orthographic',
     title: 'Orthographic View',
     content: ['Projection', 'Third Angle', 'First Angle', 'Glass Box', 'Top View', 'Front View', 'Side View', 'principal views', 'engineering views', 'orthographic projection'],
-    children: [
-      { id: '2d-orthographic-1', title: 'Drawing Template, Orthographic View, & Scale', content: ['third angle standards'] },
-      { id: '2d-orthographic-2', title: 'Hidden Line and Tangent Line', content: ['front view definition'] },
-      { id: '2d-orthographic-3', title: 'High Precision', content: ['view alignment'] },
-    ],
     quiz: {
       title: 'iCAD Orthographic Projection Standards',
       description: 'Mastering the standards of engineering views according to JIS and KEMCO manuals.',
@@ -495,10 +490,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-command-menu',
     title: 'Command Menu',
-    children: [
-      { id: '2d-command-menu-1', title: 'Line Properties', content: ['third angle standards'] },
-      { id: '2d-command-menu-2', title: 'Active View', content: ['front view definition'] },
-    ],
     quiz: {
       title: 'iCAD 2D Command Menu Logic',
       description: 'Understanding the 2D drafting interface and core geometric toolsets.',

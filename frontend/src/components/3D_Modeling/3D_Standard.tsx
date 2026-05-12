@@ -350,13 +350,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       />
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                      <div className="screenshot-wrapper">
-                        <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot"  style={{width: "900px"}}/>
-                      </div>
+                      <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot mt-4"  style={{width: "900px"}}/>
                     </div>
                   </div>
 
-                  <div className="section-divider"></div>
 
                   <div className={`${getStepClass("s1-2")} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-header">
@@ -369,9 +366,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       />
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                      <div className="screenshot-wrapper">
-                        <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot"  style={{width: "900px"}}/>
-                      </div>
+                      <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot mt-4"  style={{width: "900px"}}/>
                     </div>
                   </div>
                 </>
@@ -400,12 +395,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className="screenshot-wrapper" style={{marginTop: "2rem"}}>
-                        <img src={scale2D} alt="Scale in 2D" className="software-screenshot" style={{width: "900px"}} />
-                      </div>
-                      <div className="screenshot-wrapper mt-8">
-                        <img src={scale3D} alt="Scale in 3D" className="software-screenshot" style={{marginTop: "2rem", width: "900px"}} />
-                      </div>
+                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot mt-8" style={{width: "900px"}} />
+                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot mt-8" style={{marginTop: "2rem", width: "900px"}} />
                     </div>
                 </>
               )}
@@ -435,9 +426,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   </div>
                 
                     <div className="step-description">
-                      <div className="screenshot-wrapper">
-                        <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot" style={{ width: "900px", marginTop: "2rem"}} />
-                      </div>
+                      <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem"}} />
                     </div>
                 </div>
               )}
@@ -473,9 +462,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           <li>In case drill hole and tap hole reach to ditch, the diameter of hole should be smaller than width of groove.</li>
                         </ul>
                       </div>
-                      <div className="screenshot-wrapper" style={{marginTop: "2rem"}}>
-                        <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot" style={{width: "900px"}} />
-                      </div>
+                      <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot mt-8" style={{width: "900px"}} />
                     </div>
                   </div>
                 </div>
@@ -504,9 +491,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     />
                   </div>
                   <div className={`step-description`}>
-                    <div className="screenshot-wrapper mt-4" style={{marginTop: "2rem"}}>
-                      <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot" style={{width: "900px", marginBottom: "2rem"}} />
-                    </div>
+                    <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot mt-8" style={{width: "900px", marginBottom: "2rem"}} />
                     
                     <div className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginBottom: "2rem"}}>
                       <KaraokeLessonText
@@ -516,9 +501,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
-                      <div className="screenshot-wrapper">
-                          <img src={sprocketColoring} alt="Sprocket Coloring Standard" className="software-screenshot" style={{marginTop: "1rem", width: "600px"}} />
-                      </div>
+                      <img src={sprocketColoring} alt="Sprocket Coloring Standard" className="software-screenshot mt-4" style={{marginTop: "1rem", width: "600px"}} />
                     </div>
 
                     <div className={`${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
@@ -529,9 +512,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
-                      <div className="screenshot-wrapper">
-                          <img src={sprocketKeywayLoc} alt="Sprocket Keyway Location Standard" className="software-screenshot" style={{marginTop: "1rem", width: "600px"}} />
-                      </div>
+                      <img src={sprocketKeywayLoc} alt="Sprocket Keyway Location Standard" className="software-screenshot mt-4" style={{marginTop: "1rem", width: "600px"}} />
                     <div className={`instruction-box ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "2rem"}}> 
                       <p className='p-flush'> <strong className='red-text'>Note:</strong></p>
                       <KaraokeLessonText
@@ -796,9 +777,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           style={{ paddingLeft: '40px'}}
                         />
                      </div>
-                      <div className="screenshot-wrapper mt-4">
-                        <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot" style={{width: "900px"}} />
-                      </div>
+                        <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot mt-4" style={{width: "900px"}} />
                     </div>
                   </div>
                 </>
@@ -854,9 +833,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Flat Washer (Hardening) - <strong className="red-text">SLOTTED</strong></p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginTop: "2rem"}}>
-                          <div className="screenshot-wrapper">
-                            <img src={pillowBlock1} alt="Pillow Block Setup 1" className="software-screenshot" style={{width: "900px", marginBottom: "2rem"}} />
-                          </div>
+                          <img src={pillowBlock1} alt="Pillow Block Setup 1" className="software-screenshot mt-8" style={{width: "900px", marginBottom: "2rem"}} />
                         </div>
                       </div>
                     </div>
@@ -869,9 +846,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
                         
-                        <div className="screenshot-wrapper mt-4">
-                          <img src={pillowBlock3} alt="Flange Setup" className="software-screenshot" style={{ width: "300px", marginTop: "2rem"}} />
-                        </div>
+                        <img src={pillowBlock3} alt="Flange Setup" className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem"}} />
                       </div>
                     </div>
                   </div>
@@ -931,9 +906,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">FlatWasher (Hardening)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={slottedThreaded} alt="Slotted Threaded Case" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={slottedThreaded} alt="Slotted Threaded Case" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
                     </div>
@@ -957,9 +930,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Hex Nut (HN1)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={slottedDrill} alt="Slotted Drill Case" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={slottedDrill} alt="Slotted Drill Case" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
                     </div>
@@ -999,9 +970,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Hex Nut (HN1)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
                     </div>
@@ -1017,9 +986,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Hex Nut (HN1)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={connectionBothDrill} alt="Dual Drill Connection" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={connectionBothDrill} alt="Dual Drill Connection" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
                     </div>
@@ -1043,11 +1010,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-description">
                       <div className="mt-8">
-                        <div style={{marginLeft: "2rem"}}>
+                        <div>
                           <p className="p-flush">a. <strong className="red-text">SGP (White)</strong></p>
-                          <p className="p-flush" style={{marginLeft: "1.5rem"}}>Apply for fluid(Oil, Air and Coolant)</p>
+                          <p className="p-flush">Apply for fluid(Oil, Air and Coolant)</p>
                           <p className="p-flush mt-2">b. <strong className="red-text">SGP (Black)</strong></p>
-                          <p className="p-flush" style={{marginLeft: "1.5rem"}}>Apply for Structural Parts/Fabricated Parts.</p>
+                          <p className="p-flush">Apply for Structural Parts/Fabricated Parts.</p>
                         </div>
                       </div>
                     </div>
@@ -1061,16 +1028,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
                         <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                           <div className="flex-1">
-                            <div className="screenshot-wrapper">
-                              <img src={sgpPipesRed} alt="SGP White Pipes" className="software-screenshot" style={{width: "500px", marginTop: "2rem", marginBottom: "1rem"}} />
-                            </div>
+                              <img src={sgpPipesRed} alt="SGP White Pipes" className="software-screenshot mt-8" style={{width: "500px", marginTop: "2rem", marginBottom: "1rem"}} />
                             <p className="p-flush mt-2">Red Colored Pipes are <strong className="red-text">SGP (White) Pipes</strong>.</p>
                             <p className="p-flush">ex. Pipes for Outfitting</p>
                           </div>
                           <div className="flex-1">
-                            <div className="screenshot-wrapper">
-                              <img src={sgpPipesYellow} alt="SGP Black Pipes" className="software-screenshot" style={{width: "300px", marginTop: "2rem", marginBottom: "1rem"}} />
-                            </div>
+                              <img src={sgpPipesYellow} alt="SGP Black Pipes" className="software-screenshot mt-8" style={{width: "300px", marginTop: "2rem", marginBottom: "1rem"}} />
                             <p className="p-flush mt-2">Yellow Colored Pipes are <strong className="red-text">SGP (Black) Pipes</strong>.</p>
                             <p className="p-flush">ex. Hand Rails</p>
                           </div>

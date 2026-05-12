@@ -153,20 +153,17 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
-                  <div className="mt-4" style={{ marginLeft: "2rem" }}>
+                  <div className="mt-4">
                     <p className="p-flush">MTXXXXX<strong className="red-text">N</strong>01</p>
                   </div>
                   
                   <div className="flex-row-wrap mt-4" style={{ gap: '2rem', alignItems: 'center' }}>
                     <p style={{ marginTop: "2rem", marginBottom: "-3rem"}} className="p-flush">Here is an example of a normal part.</p>
-                    <div className="screenshot-wrapper">
-                      <img src={normalPartA} alt="Normal Part Example" className="software-screenshot" style={{ height: "300px" }} />
-                    </div>
+                    <img src={normalPartA} alt="Normal Part Example" className="software-screenshot mt-4" style={{ height: "300px" }} />
                   </div>
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className={`card-header ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
@@ -189,7 +186,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
-                  <div className="mt-4" style={{ marginLeft: "2rem", marginTop: "1rem" }}>
+                  <div className="mt-4" style={{ marginTop: "1rem" }}>
                     <p className="p-flush">MTXXXXX<strong className="red-text">A</strong>01</p>
                     <p className="p-flush">MTXXXXX<strong className="red-text">B</strong>01</p>
                   </div>
@@ -199,13 +196,10 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <p className="p-flush red-text" >*Note: If there are no existing part to be mirrored, use A when naming the part.</p>
                     <p className="p-flush">Here is an example of mirror parts.</p>
 
-                  <div className="screenshot-wrapper mt-4 text-center">
-                    <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
-                  </div>
+                    <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot mt-4" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
                 <div className="step-description">
@@ -217,9 +211,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot" style={{ height: '60px', display: 'block', margin: '0 auto 0 0', marginTop: "1rem", marginBottom: "1rem"}} />
-                  </div>
+                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot mt-4 mb-4" style={{ height: '60px', display: 'block', margin: '0 auto 0 0', marginTop: "1rem", marginBottom: "1rem"}} />
 
                   <div className={`${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                     <KaraokeLessonText
@@ -240,9 +232,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <p className="p-flush mt-8" style={{marginBottom: "1rem"}}><strong className="red-text">※Be careful in identifying Normal and Mirror parts because it may cause trouble in assigning of drawing numbers.</strong></p>
                     <p className="p-flush mt-8" style={{marginBottom: "1rem"}}>※Be careful if you see this note on the reference drawings:</p>
                     <p className="p-flush" style={{marginBottom: "0.5rem"}}>This means <strong className="red-text">Mirror Image</strong>.</p>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot" style={{ height: '60px', display: 'block', margin: '0 auto 0 0' }} />
-                    </div>
+                    <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot mt-4" style={{ height: '60px', display: 'block', margin: '0 auto 0 0' }} />
                   </div>
                 </div>
               </div>
@@ -265,13 +255,10 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-wide" style={{ width: "600px" }} />
-                  </div>
+                    <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-wide mt-4" style={{ width: "600px" }} />
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header">
@@ -286,10 +273,9 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
-                <div className="step-header">
+                <div className="step-header" style={{ marginTop: "-2rem" }}>
                   <span className="step-number">3 </span>
                   <KaraokeLessonText
                     as="span"
@@ -301,10 +287,9 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
-                <div className="step-header">
+                <div className="step-header" style={{ marginTop: "-2rem" }}>
                   <span className="step-number">4 </span>
                   <KaraokeLessonText
                     as="span"
@@ -315,17 +300,11 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "1rem" }} />
-                  </div>
+                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot mt-4" style={{ width: "200px", marginBottom: "1rem" }} />
                    <span className="p-flush" style={{marginBottom: "1rem"}}>Pick 3 points consecutively from the Part, starting from the origin.</span>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
-                  </div>
+                    <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot mt-4" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
                   <span className="p-flush">After doing the command, this will be the outcome as Part B.</span>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={pick3PointsPartA} alt="Outcome Part B" className="software-screenshot" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
-                  </div>
+                    <img src={pick3PointsPartA} alt="Outcome Part B" className="software-screenshot mt-4" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
                   <div className="instruction-box">
                     <span className="p-flush red-text" style={{marginBottom: "1rem"}}>※ The Origin of Part B must be the same location as in Part A.</span>
                   </div>

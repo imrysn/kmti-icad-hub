@@ -31,7 +31,7 @@
   background: var(--bg-surface) !important;
   border-bottom: 1px solid var(--border-color) !important;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   z-index: 1000;
   -webkit-app-region: drag;

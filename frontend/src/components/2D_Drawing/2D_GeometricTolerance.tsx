@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -11,98 +12,174 @@ import datumImg from "../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_
 
 interface GeometricToleranceLessonProps {
   nextLabel?: string;
-  subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
-  subLessonId = "2d-geometric-tol-1",
   onNextLesson,
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore(subLessonId);
-
-  const geoTol1Steps = [
-    "Tolerance Application: Select the tolerance command from the menu. Configure the characteristics, value, and datum references in the dialog box, then place the symbol on your technical feature.",
-    "Datum Definition: Datums establish the reference points for your tolerances. Apply the datum triangle to your primary surfaces to ensure measurement consistency during fabrication."
+  const TABS = [
+    { id: '1', label: 'Tolerance Frames' },
+    { id: '2', label: 'Datum References' }
   ];
 
-  const geoTol2Steps = [
-    "Advanced Tolerancing: Use complex tolerance frames for composite requirements. Ensure all datum references (A, B, C) are clearly defined and correspond to your design intent."
-  ];
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-geometric-tol-active-tab') || TABS[0].id;
+  });
+
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-geometric-tol-${activeTab}`);
+
+  useEffect(() => {
+    localStorage.setItem('2d-geometric-tol-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
+
+  const handleNext = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrev = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
+    '2d-geometric-tol-1': {
+      title: 'GEOMETRIC TOLERANCE',
+      subtitle: 'Applying geometric tolerances and datum references to ensure precision part fabrication.',
+      steps: [
+        "Select the tolerance command from the menu. Configure the characteristics, value, and datum references in the dialog box, then place the symbol on your technical feature."
+      ]
+    },
+    '2d-geometric-tol-2': {
+      title: 'GEOMETRIC TOLERANCE',
+      subtitle: 'Applying geometric tolerances and datum references to ensure precision part fabrication.',
+      steps: [
+        "Datums establish the reference points for your tolerances. Select the datum command and place the reference triangle on the required surface or dimension line."
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[`2d-geometric-tol-${activeTab}`] || LESSON_DATA['2d-geometric-tol-1'];
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          9. GEOMETRIC TOLERANCE
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "9. GEOMETRIC TOLERANCE";
-            const introSubtitle = "Applying geometric tolerances and datum references to ensure precision part fabrication.";
-            const currentSteps = subLessonId === "2d-geometric-tol-1" ? geoTol1Steps : geoTol2Steps;
-            speak([introTitle, introSubtitle, ...currentSteps]);
-          }}
-            onStop={stop}
-          />
-        </h3>
-        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-          Applying geometric tolerances and datum references to ensure precision part fabrication.
-        </p>
-      </section>
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {subLessonId === "2d-geometric-tol-1" ? (
-            <div className="flex-col">
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">9.</span>
-                  <span className="step-label">Geometric Tolerance</span>
-                </div>
-                <div>
-                  <img src={geoTolMainImg} alt="Geometric Tolerance Dialog" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
-
-              <div className="section-divider"></div>
-
-              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">a.</span>
-                  <span className="step-label">Datum</span>
-                </div>
-                <div className="flex-col">
-                  <div className="image-wrapper-flush">
-                    <img src={datumImg} alt="Datum Triangle Application" className="software-screenshot screenshot-wide" />
-                  </div>
-                  <div className="info-box" style={{ marginTop: "1rem" }}>
-                    <p className="p-flush">Select the datum command and place the reference triangle on the required surface or dimension line.</p>
-                  </div>
-                </div>
-              </div>
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentLesson.title}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
+                onStop={stop}
+              />
             </div>
-          ) : (
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="content-placeholder">
-                <p>Advanced Tolerancing content for {subLessonId} is being prepared.</p>
-              </div>
-            </div>
-          )}
 
-          {/* Navigation */}
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentLesson.subtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+
+            <div className="flex-col tab-content fade-in">
+              {activeTab === '1' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">1</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Tolerance Frame Construction"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <KaraokeLessonText
+                      className="p-flush mb-4"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                    <img src={geoTolMainImg} alt="Tolerance Dialog" className="software-screenshot screenshot-wide" />
+                  </div>
+                </div>
+              )}
+
+              {activeTab === '2' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">1</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Datum Reference Application"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <div className="red-text mb-4">
+                      <KaraokeLessonText
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <img src={datumImg} alt="Datum Triangle" className="software-screenshot screenshot-wide" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
+            <button className="nav-button" onClick={handlePrev}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -27,6 +27,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'intelligence' && 'Intelligence Hub'} 
                     {activeTab === 'chatbot' && 'Intelligence Chatbot'}
                     {activeTab === 'logs' && 'Security Audit'}
+                    {activeTab === 'assessments' && 'Assessment Management'}
                 </h1>
                 <p className="subtitle">
                     {activeTab === 'overview' && `${stats?.users.total || '0'} active users monitored`}
@@ -35,6 +36,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'intelligence' && `Chat analytics, query monitoring & knowledge base management`}
                     {activeTab === 'chatbot' && `Ask questions grounded in the indexed knowledge base`}
                     {activeTab === 'logs' && `Detailed record of critical system security events`}
+                    {activeTab === 'assessments' && `Create and manage quizzes, questions, and evaluation criteria`}
                 </p>
             </div>
             <div className="header-actions">

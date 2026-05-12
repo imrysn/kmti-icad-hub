@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -21,14 +22,15 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore('2d-welding-symbol');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-welding-symbol');
 
   const weldingSteps = [
-    "Welding Symbols: Before adding a symbol, apply welding hatches as a visual representation. The arrow line acts as your welding torch. Keep leg lengths at sixty percent of the thinner plate thickness unless the design specifies otherwise.",
-    "Standard Notes: These are located in the upper left corner. They cover mandatory requirements like chamfering holes, deburring corners, and ensuring parts are free from dust. While the tapping note can be removed if not needed, text properties must never be altered."
+    "Before adding a symbol, apply welding hatches as a visual representation. The arrow line acts as your welding torch. Keep leg lengths at sixty percent of the thinner plate thickness unless the design specifies otherwise.",
+    "Standard notes are located in the upper left corner. They cover mandatory requirements like chamfering holes, deburring corners, and ensuring parts are free from dust. While the tapping note can be removed if not needed, text properties must never be altered."
   ];
 
-  const introSubtitle = "Procedures for applying welding symbols, hatches, and standard notes.";
+  const currentTitle = "WELDING SYMBOL / NOTES";
+  const currentSubtitle = "Procedures for applying welding symbols, hatches, and standard notes.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -36,52 +38,85 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          WELDING SYMBOL / NOTES
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "WELDING SYMBOL / NOTES";
-            speak([introTitle, introSubtitle, ...weldingSteps]);
-          }}
-            onStop={stop}
-          />
-        </h3>
-        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-          {introSubtitle}
-        </p>
-      </section>
-
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentTitle}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentTitle, currentSubtitle, ...weldingSteps])}
+                onStop={stop}
+              />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentSubtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+
+
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header">
-                <span className="step-number">13.</span>
-                <span className="step-label">Welding Symbol</span>
+                <span className="step-number">1</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Welding Symbol & Hatches"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <img src={weldingSymbolMainImg} alt="Welding Symbol Menu" className="software-screenshot screenshot-wide" />
-              <img src={weldingSymbolNotesImg} alt="Welding Hatches" className="software-screenshot screenshot-wide" style={{ margin: "2rem 0" }} />
-              <div className="info-box">
-                <p>※ Apply welding hatches first. Leg length is 60% of plate thickness (thinner side).</p>
-                <p>※ Arrow line acts as a welding torch.</p>
+              <div className="step-description">
+                <div className="red-text mb-4">
+                  <KaraokeLessonText
+                    text={weldingSteps[0]}
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+                <div className="flex-col gap-4">
+                  <img src={weldingSymbolMainImg} alt="Welding Symbol Menu" className="software-screenshot screenshot-wide" />
+                  <img src={weldingSymbolNotesImg} alt="Welding Hatches Detail" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">14.</span>
-                <span className="step-label">Notes</span>
+                <span className="step-number">2</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Standard Technical Notes"
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <p className="p-flush">Notes are located in the upper left corner.</p>
-              <div className="flex-row" style={{ marginTop: "1rem", gap: "1rem" }}>
-                <img src={standardNotesImg} alt="Standard Notes" className="software-screenshot screenshot-wide" />
-                <div className="info-box">
-                  <p className="red-text"><strong>Standard Notes:</strong></p>
-                  <p>1. Drill holes shall be chamfered.</p>
-                  <p>2. Unspecified corners slightly chamfered.</p>
-                  <p>3. Burrs and dust must not exist.</p>
+              <div className="step-description">
+                <KaraokeLessonText
+                  className="p-flush mb-4"
+                  text={weldingSteps[1]}
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
+                <div className="flex-col gap-4">
+                  <img src={standardNotesImg} alt="Standard Notes Placement" className="software-screenshot screenshot-wide" />
+                  <div className="red-text" style={{ padding: "1rem", borderLeft: "2px solid var(--primary-alpha)" }}>
+                    <p><strong>Note:</strong> Drill holes shall be chamfered, unspecified corners slightly chamfered, and all parts must be free from burrs and dust.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,7 +127,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

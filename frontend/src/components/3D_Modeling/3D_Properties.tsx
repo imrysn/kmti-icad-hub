@@ -159,9 +159,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                     />
                   </div>
                   <div className="step-description">
-                    <div className="screenshot-wrapper">
-                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot" height="150" width="150" />
-                    </div>
+                    <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot mt-4" height="150" width="150" />
                   </div>
                 </div>
 
@@ -206,10 +204,8 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    <div className="card-header" style={{ marginLeft: "6rem", marginBottom: "1rem" }}><h4>CHANGE COLOR (ENTITY)</h4></div>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot" style={{ height: 'auto', width: '500px' }} />
-                    </div>
+                    <div className="card-header" style={{ marginBottom: "1rem" }}><h4>CHANGE COLOR (ENTITY)</h4></div>
+                    <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot mt-4" style={{ height: 'auto', width: '500px' }} />
                   </div>
 
                   <div className="tool-block mt-8">
@@ -243,17 +239,13 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 20px' }} />
                       </p>
                     </div>
-                    <div className="card-header" style={{ marginLeft: "6rem", marginBottom: "1rem" }}><h4>CHANGE COLOR (FACE)</h4></div>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={changeColorFace} alt="Change Color Face" className="software-screenshot" style={{ height: 'auto', width: '500px' }} />
-                    </div>
+                    <div className="card-header" style={{ marginBottom: "1rem" }}><h4>CHANGE COLOR (FACE)</h4></div>
+                    <img src={changeColorFace} alt="Change Color Face" className="software-screenshot mt-4" style={{ height: 'auto', width: '500px' }} />
                   </div>
                 </div>
               </div>
 
-              <div className="screenshot-wrapper" style={{ flex: '0 0 auto', position: 'sticky', top: '5rem', marginTop: '2rem', padding: '15px', borderRadius: '12px' }}>
-                <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot" style={{ height: "400px", width: "auto" }} />
-              </div>
+              <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot mt-8" style={{ height: "400px", width: "auto" }} />
             </div>
           </div>
         )}
@@ -286,9 +278,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                     />
                   </div>
                   <div className="step-description">
-                    <div className="screenshot-wrapper">
-                      <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot" style={{ height: '180px', width: '180px' }} />
-                    </div>
+                    <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot mt-4" style={{ height: '180px', width: '180px' }} />
                   </div>
                 </div>
 
@@ -304,9 +294,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                     />
                   </div>
                   <div className="step-description">
-                    <div className="screenshot-wrapper">
-                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot" style={{ width: '400px', height: 'auto' }} />
-                    </div>
+                    <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot mt-4" style={{ width: '400px', height: 'auto' }} />
                   </div>
                 </div>
 
@@ -324,9 +312,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
               </div>
 
-              <div className="screenshot-wrapper" style={{ flex: '0 0 auto',top: '5rem', marginTop: '1rem', padding: '0px' }}>
-                <img src={layerImg} alt="Change Layer Properties Dialog" className="software-screenshot" style={{ height: "250px", width: "auto", marginTop: "3rem" }} />
-              </div>
+              <img src={layerImg} alt="Change Layer Properties Dialog" className="software-screenshot mt-4" style={{ height: "250px", width: "auto", marginTop: "3rem" }} />
             </div>
               <div className="card-header" style={{marginTop: "1rem"}}><h4>LAYER DESIGNATION OF 3D PARTS</h4></div>
               <div className="card-header"><h4>LAYER 1</h4></div>
@@ -337,9 +323,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   <li>Covers for purchase parts (No mechanism).</li>
                   <li>All parts must be color <strong className="text-highlight">White (No. 1)</strong>.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
 
             <div className="tool-block mt-8">
@@ -349,9 +333,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   <li>Fabricated/Machined parts with specific color/paint.</li>
                   <li>Safety Covers - <strong className="text-highlight">Yellow (No. 4)</strong>.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot" style={{ width: '900px', marginBottom: "1rem" }} />
-                </div>
+                <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "1rem" }} />
                 <p className="p-flush">
                   Safety color applies to covers for machine guarding such as chain, belt and gear drive power transmission systems.
                 </p>
@@ -361,20 +343,17 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   <li>All Stainless Steel (SUS) - <strong className="text-highlight">White (No. 1)</strong>.</li>
                   <li>Acrylic - <strong className="text-highlight">White (No. 1)</strong>.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4" style={{ position: 'relative' }}>
-                  <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot" style={{ maxWidth: '600px', height: 'auto', marginBottom: "4rem" }} />
-                  <p className="red-text" style={{
-                    position: 'absolute',
-                    bottom: '3rem',
-                    right: '-2rem',
-                    fontWeight: 700,
-                    margin: 0
-                  }}>*Red paint only on the pointer</p>
-                </div>
+                <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot mt-4" style={{ maxWidth: '600px', height: 'auto', marginBottom: "4rem" }} />
+                <p className="red-text" style={{
+                  position: 'absolute',
+                  bottom: '90rem',
+                  right: '4rem',
+                  fontWeight: 700,
+                  margin: 0
+                }}>*Red paint only on the pointer</p>
 
                   
 
-                <div className="section-divider"></div>
 
                 <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginTop: '1.5rem' }}>
                   <div style={{ flex: 1 }}>
@@ -387,12 +366,9 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <li>New Light - <strong className="text-highlight">White (No. 1)</strong></li>
                     </ul>
                   </div>
-                  <div className="screenshot-wrapper" style={{ flex: '0 0 auto', margin: 0 }}>
-                    <img src={propertiesMaterialImg} alt="Material List Color Codes" className="software-screenshot" style={{ height: "auto", width: "480px" }} />
-                  </div>
+                  <img src={propertiesMaterialImg} alt="Material List Color Codes" className="software-screenshot mt-4" style={{ height: "auto", width: "480px" }} />
                 </div>
 
-                <div className="section-divider" style={{ marginTop: '4rem' }}></div>
 
                 <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginTop: '2rem' }}>
                   <div style={{ flex: 1 }}>
@@ -403,9 +379,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <li>Parkerizing, Manganese Phosphate - <strong className="text-highlight">Black (No. 16)</strong>.</li>
                     </ul>
                   </div>
-                  <div className="screenshot-wrapper" style={{ flex: '0 0 auto', margin: 0 }}>
-                    <img src={isoniteManganeseImg} alt="Heat Treated Parts" className="software-screenshot" style={{ height: 'auto', width: '310px' }} />
-                  </div>
+                  <img src={isoniteManganeseImg} alt="Heat Treated Parts" className="software-screenshot mt-4" style={{ height: 'auto', width: '310px' }} />
                 </div>
                
               </div>
@@ -419,9 +393,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   <li>Purchase Parts with Additional Process</li>
                   <li>Use manufacturer standard colors.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
-                </div>
+                <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot mt-4 screenshot-wide" />
               </div>
             </div>
           </div>
@@ -465,9 +437,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoPointImg} alt="Coordinates" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoPointImg} alt="Coordinates" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
 
                 {/* Length */}
@@ -483,9 +453,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoEdgeImg} alt="Length" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoEdgeImg} alt="Length" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
 
                 {/* Distance */}
@@ -501,9 +469,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
               </div>
 
@@ -521,9 +487,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoAngleImg} alt="Angle" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoAngleImg} alt="Angle" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
 
                 {/* Entity Info */}
@@ -539,9 +503,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoEntityImg} alt="Entity Info" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoEntityImg} alt="Entity Info" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
               </div>
             </div>

@@ -35,14 +35,14 @@ def create_database():
             port=DB_PORT,
             user=DB_USER,
             password=DB_PASSWORD,
-            charset='latin1'
+            charset='utf8mb4'
         )
         
         print("\n✅ Connected to MySQL server!")
         
         with connection.cursor() as cursor:
             # Create database if it doesn't exist
-            cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{DB_NAME}` CHARACTER SET latin1 COLLATE latin1_swedish_ci")
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{DB_NAME}` CHARACTER SET utf8 COLLATE utf8_unicode_ci")
             print(f"✅ Database '{DB_NAME}' created successfully!")
             
             # Grant privileges (if needed)

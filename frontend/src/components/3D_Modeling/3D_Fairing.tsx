@@ -124,9 +124,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
           currentCharIndex={currentCharIndex}
         />
         <div>
-          <div className="screenshot-wrapper mt-4">
-            <img src={chamferIcon} alt="Fairing Menu" className="software-screenshot" style={{ height: '350px' }} />
-          </div>
+          <img src={chamferIcon} alt="Fairing Menu" className="software-screenshot mt-4" style={{ height: '350px' }} />
         </div>
       </section>
 
@@ -165,9 +163,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot" style={{ width: '200px', marginBottom: '-2rem' }} />
-                </div>
+                    <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-2rem' }} />
               </div>
             </div>
 
@@ -183,9 +179,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={chamferResult} alt="Chamfer Process" className="software-screenshot" style={{ width: '500px', marginBottom: '-1rem' }} />
-                </div>
+                    <img src={chamferResult} alt="Chamfer Process" className="software-screenshot mt-4" style={{ width: '500px', marginBottom: '-1rem' }} />
               </div>
             </div>
 
@@ -214,7 +208,6 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
             </div>
 
             <div className={`instruction-step ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
-              <div className="section-divider" style={{ margin: "1rem" }}></div>
               <div className="card-header">
                 <h4 className={`${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
                   <KaraokeLessonText
@@ -225,9 +218,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   />
                 </h4>
               </div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot screenshot-medium" style={{ width: '700px' }} />
-              </div>
+                <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '700px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -273,9 +264,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={filletIcon} alt="Fillet Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
-                </div>
+                    <img src={filletIcon} alt="Fillet Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
@@ -292,13 +281,10 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot" style={{ width: '500px', marginBottom: '-3rem' }} />
-                </div>
+                    <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot mt-4" style={{ width: '500px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
@@ -335,9 +321,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   />
                 </h4>
               </div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium" style={{ width: '350px' }} />
-              </div>
+                <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '350px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -382,9 +366,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={shellIcon} alt="Shell Icon" className="software-screenshot" style={{ width: '200px', marginBottom: "-1rem" }} />
-                </div>
+                    <img src={shellIcon} alt="Shell Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: "-1rem" }} />
               </div>
             </div>
 
@@ -402,9 +384,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium" style={{ width: '500px' }} />
-                </div>
+                    <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium mt-4" style={{ width: '500px' }} />
               </div>
             </div>
 
@@ -422,13 +402,10 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-wide" />
-                </div>
+                    <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-wide mt-4" />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
               <div className="card-header">
@@ -441,9 +418,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   />
                 </h4>
               </div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium" style={{ width: '490px' }} />
-              </div>
+                <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '490px' }} />
             </div>
 
             <div className="lesson-navigation">

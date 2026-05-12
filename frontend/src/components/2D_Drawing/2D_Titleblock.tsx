@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -19,15 +20,16 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore('2d-titleblock');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-titleblock');
 
   const titleBlockSteps = [
-    "Title Block Overview: The title block displays critical part information including Job Order, Drawing Number, and designer names. Ensure all fields are filled accurately for project tracking.",
-    "Data Entry Procedure: Follow the systematic approach to reflect technical data. Input the required information into the dialog and check that it appears correctly in the designated template fields.",
-    "Placement Landmarks: Position the completed title block using landmarks P1 and P2 to ensure it aligns perfectly with the standard KEMCO drawing frame."
+    "The title block displays critical part information including Job Order, Drawing Number, and designer names. Ensure all fields are filled accurately for project tracking.",
+    "Follow the systematic approach to reflect technical data. Input the required information into the dialog and check that it appears correctly in the designated template fields.",
+    "Position the completed title block using landmarks P1 and P2 to ensure it aligns perfectly with the standard KEMCO drawing frame."
   ];
 
-  const introSubtitle = "Configuring the primary information block for project tracking and part identification.";
+  const currentTitle = "TITLE BLOCK";
+  const currentSubtitle = "Configuring the primary information block for project tracking and part identification.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -35,29 +37,56 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          19. TITLE BLOCK
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "19. TITLE BLOCK";
-            speak([introTitle, introSubtitle, ...titleBlockSteps]);
-          }}
-            onStop={stop}
-          />
-        </h3>
-        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-          {introSubtitle}
-        </p>
-      </section>
-
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentTitle}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentTitle, currentSubtitle, ...titleBlockSteps])}
+                onStop={stop}
+              />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentSubtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+
+
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="info-box" style={{ marginBottom: "2rem" }}>
-                <p>Displays part information: Job Order, Drawing Number, Machine Name, Designer, and References.</p>
+              <div className="step-header">
+                <span className="step-number">1</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Title Block Definition & Overview"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <img src={titleBlock1Img} alt="Title Block Definitions" className="software-screenshot screenshot-wide" />
+              <div className="step-description">
+                <div className="red-text mb-4">
+                  <KaraokeLessonText
+                    text="Displays part information: Job Order, Drawing Number, Machine Name, Designer, and References."
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+                <img src={titleBlock1Img} alt="Title Block Definitions" className="software-screenshot screenshot-wide" />
+              </div>
             </div>
           </div>
 
@@ -66,7 +95,7 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

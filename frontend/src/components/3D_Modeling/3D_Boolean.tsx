@@ -153,9 +153,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <div className="screenshot-wrapper mt-4">
-          <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-        </div>
+        <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot" style={{ height: 'auto', width: "200px" }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -195,9 +193,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={unionIcon} alt="Union Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-1rem" }} />
-                  </div>
+                    <img src={unionIcon} alt="Union Icon" className="software-screenshot " style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
                 </div>
               </div>
 
@@ -215,7 +211,6 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </span>
                 </div>
 
-                <div className="section-divider" style={{ margin: "1rem" }}></div>
                 <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
                   <div className="card-header">
                     <h4 className={`${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
@@ -275,9 +270,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-2rem" }} />
-                  </div>
+                    <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-2rem" }} />
                 </div>
               </div>
 
@@ -301,9 +294,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                         <li><strong className="red-text">Tool Entity:</strong> Entities to be subtracted on the target entity.</li>
                       </ul>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={subtractEntity} alt="Target and Tool Entity" className="software-screenshot screenshot-medium" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
-                    </div>
+                    <img src={subtractEntity} alt="Target and Tool Entity" className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
                   </div>
                 </div>
               </div>
@@ -325,7 +316,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <KaraokeLessonText
                     as="p"
                     className={`p-flush ${currentIndex === 6 ? "reading-active" : ""}`}
-                    style={{ marginTop: "-1rem", marginLeft: "3rem" }}
+                    style={{ marginTop: "-1rem" }}
                     data-reading-index="6"
                     text="Tool entities will disappear and become components after subtraction."
                     isActive={isSpeaking && currentIndex === 6}
@@ -333,7 +324,6 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   />
                 </div>
 
-                <div className="section-divider" style={{ margin: "0.5rem" }}></div>
 
                 <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                   <div className="card-header">
@@ -362,11 +352,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   currentCharIndex={currentCharIndex}
                 />
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <div className="screenshot-wrapper">
-                    <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "1rem", marginTop: "1rem" }} />
-                  </div>
+                  <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot" style={{height: 'auto', width: "200px", marginBottom: "1rem", marginTop: "1rem" }} />
 
-                  <div className="section-divider" style={{ margin: "2rem" }}></div>
 
                   <div className={`instruction-step ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9">
                     <div className="card-header">
@@ -380,7 +367,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                       </h4>
                     </div>
                     <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot screenshot-medium" style={{width: '900px' }} />
+                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot" style={{width: '900px' }} />
                     </div>
                   </div>
                 </div>
@@ -429,9 +416,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </span>
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginBottom: "-1rem" }} />
-                  </div>
+                    <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot" style={{height: 'auto', width: "200px", marginBottom: "-1rem" }} />
                 </div>
               </div>
 
@@ -453,7 +438,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <KaraokeLessonText
                     as="p"
                     className={`p-flush ${currentIndex === 6 ? "reading-active" : ""}`}
-                    style={{ marginTop: "-1rem", marginLeft: "3rem" }}
+                    style={{ marginTop: "-1rem" }}
                     data-reading-index="6"
                     text="Intersecting entities will not disappear after the process."
                     isActive={isSpeaking && currentIndex === 6}
@@ -474,9 +459,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </h4>
                 </div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={intersectingEntities} alt="Intersecting entities" className="software-screenshot" style={{ width: '900px' }} />
-                  </div>
+                    <img src={intersectingEntities} alt="Intersecting entities" className="software-screenshot mt-8" style={{ width: '900px' }} />
                 </div>
               </div>
 
@@ -522,8 +505,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <div className="screenshot-wrapper">
-                    <img src={componentIcon} alt="Component Icon" className="software-screenshot screenshot-small" style={{ height: '100px', marginTop: "1rem" }} />
+                  <div className="flex-col">
+                    <img src={componentIcon} alt="Component Icon" className="software-screenshot" style={{height: 'auto', width: "200px"}} />
                     <KaraokeLessonText
                       as="p"
                       className="p-flush"
@@ -565,18 +548,13 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
 
                 <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                  <div className="screenshot-wrapper">
-                    <img src={componentOk} alt="Confirm Dialog" className="software-screenshot" style={{ height: 'auto', width: '350px' }} />
-                  </div>
-
-                  <div className="screenshot-wrapper">
-                    <img src={componentSeparated} alt="Separated Result" className="software-screenshot" style={{ height: 'auto', width: '400px', marginLeft: "24rem", marginTop: "-9.1rem" }} />
-                  </div>
+                  <img src={componentOk} alt="Confirm Dialog" className="software-screenshot mt-4" style={{ height: 'auto', width: '350px' }} />
+                  <img src={componentSeparated} alt="Separated Result" className="software-screenshot mt-4" style={{ height: 'auto', width: '400px' }} />
                 </div>
               </div>
 
-              <div className={`screenshot-wrapper ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7" style={{ marginTop: "-3rem", marginBottom: "2rem" }}>
-                <img src={componentSeparate} alt="Separate All Components" className="software-screenshot screenshot-small" style={{ height: '100px', marginTop: "1rem" }} />
+              <div className={`mt-4 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7" style={{ marginTop: "-3rem", marginBottom: "2rem" }}>
+                <img src={componentSeparate} alt="Separate All Components" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem"}} />
                 <KaraokeLessonText
                   as="p"
                   className="p-flush"
@@ -615,13 +593,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   </span>
                 </div>
                 <div className="step-description">
-                  <div className="flex-row-center--wrap" style={{ gap: '2rem', justifyContent: 'center' }}>
-                    <div className="screenshot-wrapper">
-                      <img src={selectOk} alt="Confirm Dialog All" className="software-screenshot screenshot-medium" style={{ height: 'auto', width: '350px' }} />
-                    </div>
-                    <div className="screenshot-wrapper">
-                      <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium" style={{ height: 'auto', width: '400px', marginLeft: "24rem", marginTop: "-9.1rem" }} />
-                    </div>
+                  <div className="flex-row-wrap" style={{ gap: '2rem' }}>
+                    <img src={selectOk} alt="Confirm Dialog All" className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '350px' }} />
+                    <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '400px' }} />
                   </div>
                 </div>
               </div>

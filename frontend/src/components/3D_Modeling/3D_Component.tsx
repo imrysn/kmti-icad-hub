@@ -191,7 +191,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
           currentCharIndex={currentCharIndex}
         />
         <div>
-          <img src={componentMenu} alt="Component Operations Menu" className="software-screenshot" style={{ height: '350px' }} />
+          <img src={componentMenu} alt="Component Operations Menu" className="software-screenshot mt-4" style={{ height: '350px' }} />
         </div>
       </section>
 
@@ -222,9 +222,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={moveIcon} alt="Move Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-2rem' }} />
-                </div>
+                    <img src={moveIcon} alt="Move Component Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-2rem' }} />
               </div>
             </div>
 
@@ -257,9 +255,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={moveEntry} alt="Move Entry" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                    <img src={moveEntry} alt="Move Entry" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -275,9 +271,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={moveResult} alt="Move Result" className="software-screenshot" style={{ width: '700px' }} />
-                </div>
+                    <img src={moveResult} alt="Move Result" className="software-screenshot mt-8" style={{ width: '700px' }} />
               </div>
             </div>
 
@@ -314,9 +308,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={copyIcon} alt="Copy Component Icon" className="software-screensho" style={{ width: '200px', marginBottom: '-2rem' }} />
-                </div>
+                    <img src={copyIcon} alt="Copy Component Icon" className="software-screensho mt-4" style={{ width: '200px', marginBottom: '-2rem' }} />
               </div>
             </div>
 
@@ -348,9 +340,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={copyFinal} alt="Copy Final" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                    <img src={copyFinal} alt="Copy Final" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -366,9 +356,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot" style={{ width: '700px' }} />
-                </div>
+                    <img src={copyDistance} alt="Copy Distance" className="software-screenshot mt-8" style={{ width: '700px' }} />
               </div>
             </div>
 
@@ -415,9 +403,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={mirrorIcon} alt="Mirror Component Icon" className="software-screenshot screenshot-small" style={{ width: '200px', marginBottom: '-3rem' }} />
-                </div>
+                    <img src={mirrorIcon} alt="Mirror Component Icon" className="software-screenshot screenshot-small mt-4" style={{ width: '200px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
@@ -462,9 +448,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={mirrorResult} alt="Mirror Result" className="software-screenshot" style={{ width: '700px' }} />
-                </div>
+                    <img src={mirrorResult} alt="Mirror Result" className="software-screenshot mt-8" style={{ width: '700px' }} />
               </div>
             </div>
 
@@ -510,9 +494,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={rotateIcon} alt="Rotate Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
-                </div>
+                    <img src={rotateIcon} alt="Rotate Component Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
@@ -558,9 +540,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={rotateEntry} alt="Rotate Entry" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                    <img src={rotateEntry} alt="Rotate Entry" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -576,9 +556,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={rotateResult} alt="Rotate Result" className="software-screenshot" style={{ width: '700px' }} />
-                </div>
+                    <img src={rotateResult} alt="Rotate Result" className="software-screenshot mt-8" style={{ width: '700px' }} />
               </div>
             </div>
             <div className="lesson-navigation">
@@ -613,9 +591,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
-                </div>
+                    <img src={repeatCopyIcon} alt="Repeat Copy Icon" className="software-screenshot mt-4" style={{ width: '200px' }} />
               </div>
             </div>
 
@@ -633,8 +609,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">  <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                    <img src={repeatCopyResult} alt="Repeat Copy Result" className="software-screenshot mt-8" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -680,9 +655,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
-                </div>
+                    <img src={rotateCopyIcon} alt="Rotate Copy Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
@@ -728,9 +701,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot" style={{ width: '900px', marginBottom: '-3rem' }} />
-                </div>
+                    <img src={rotateCopyEntry} alt="Rotate Copy Entry" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
@@ -746,9 +717,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                    <img src={rotateCopyPoints} alt="Rotate Copy Points" className="software-screenshot mt-8" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -784,9 +753,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="screenshot-wrapper">
-                <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot" style={{ width: '200px' }} />
-              </div>
+                <img src={mirrorCopyIcon} alt="Mirror Copy Icon" className="software-screenshot mt-4" style={{ width: '200px' }} />
               <KaraokeLessonText
                 as="p"
                 text="Same procedure with Mirror Component."
@@ -806,9 +773,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                <img src={mirrorCopyResult} alt="Mirror Copy Result" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -845,9 +810,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 </span>
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot" style={{ width: '200px', marginBottom: '-3rem' }} />
-                </div>
+                    <img src={deleteIcon} alt="Delete Component Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-3rem' }} />
               </div>
             </div>
 

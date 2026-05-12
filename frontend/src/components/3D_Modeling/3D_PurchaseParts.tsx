@@ -81,13 +81,12 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
               <h4>{activeTab === 'part1' ? "PURCHASE PART 3D MODELING" : "SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS ON THE SERVER"}</h4>
             </div>
 
-            <div className={`screenshot-wrapper ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{marginTop: "3rem"}}>
-              <img
+            <img
                 src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
                 alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
-                className="software-screenshot screenshot-wide"
-              />
-            </div>
+                className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
+                data-reading-index="2"
+            />
           </div>  
 
           <div className="lesson-navigation">

@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -21,15 +22,16 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore('2d-part-note');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-part-note');
 
   const noteSteps = [
-    "Part Notes: Notes are essential for providing additional technical instructions. Use them to specify process requirements that aren't captured by standard dimensions or symbols.",
-    "Assembly Applications: The note command is flexible and can be applied based on the specific purpose and manufacturing requirements of your part or assembly.",
-    "Text Command: Use the Text tool for general annotations and labels. This allows you to place custom technical references anywhere on the drawing template."
+    "Notes are essential for providing additional technical instructions. Use them to specify process requirements that aren't captured by standard dimensions or symbols.",
+    "The note command is flexible and can be applied based on the specific purpose and manufacturing requirements of your part or assembly.",
+    "Use the Text tool for general annotations and labels. This allows you to place custom technical references anywhere on the drawing template."
   ];
 
-  const introSubtitle = "Applying technical notes and custom text for detailed process instructions.";
+  const currentTitle = "PART NOTE / TEXT";
+  const currentSubtitle = "Applying technical notes and custom text for detailed process instructions.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -37,48 +39,102 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          PART NOTE / TEXT
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "PART NOTE / TEXT";
-            speak([introTitle, introSubtitle, ...noteSteps]);
-          }}
-            onStop={stop}
-          />
-        </h3>
-        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-          {introSubtitle}
-        </p>
-      </section>
-
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <img src={partNoteImg1} alt="Part Note Process Drawing" className="software-screenshot screenshot-wide" />
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentTitle}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentTitle, currentSubtitle, ...noteSteps])}
+                onStop={stop}
+              />
             </div>
 
-            <div className="section-divider"></div>
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentSubtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+
+
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className="step-header">
+                <span className="step-number">1</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Part Note Application"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+              <div className="step-description">
+                <KaraokeLessonText
+                  className="p-flush mb-4"
+                  text={noteSteps[0]}
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+                <img src={partNoteImg1} alt="Part Note Process" className="software-screenshot screenshot-wide" />
+              </div>
+            </div>
+
 
             <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <div className="flex-col">
-                <img src={partNoteImg2} alt="Part Note Assembly Reference" className="software-screenshot screenshot-wide" />
-                <div className="info-box" style={{ marginTop: "2rem" }}>
-                  <p className="red-text"><strong>Note:</strong></p>
-                  <p>Aside from the given samples, note command can be applied based on the purpose and the required process.</p>
+              <div className="step-header">
+                <span className="step-number">2</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Assembly Instruction Logic"
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+              <div className="step-description">
+                <div className="red-text mb-4">
+                  <KaraokeLessonText
+                    text={noteSteps[1]}
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
+                <img src={partNoteImg2} alt="Assembly Reference" className="software-screenshot screenshot-wide" />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-              <div className="step-header" style={{ marginBottom: "1rem" }}>
-                <span className="step-number">11.</span>
-                <span className="step-label">Text</span>
+              <div className="step-header">
+                <span className="step-number">3</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="General Text Annotation"
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <img src={textNoteImg} alt="Text Command and Configuration" className="software-screenshot screenshot-wide" />
+              <div className="step-description">
+                <KaraokeLessonText
+                  className="p-flush mb-4"
+                  text={noteSteps[2]}
+                  isActive={isSpeaking && currentIndex === 4}
+                  currentCharIndex={currentCharIndex}
+                />
+                <img src={textNoteImg} alt="Text Configuration" className="software-screenshot screenshot-wide" />
+              </div>
             </div>
           </div>
 
@@ -87,7 +143,7 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

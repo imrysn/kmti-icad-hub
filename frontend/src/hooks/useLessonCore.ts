@@ -9,7 +9,7 @@ export const useLessonCore = (subLessonId: string) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // TTS integration
-  const { speak, stop, isSpeaking, currentIndex, currentCharIndex } = useTTS();
+  const { speak, stop, isSpeaking, currentIndex, currentSentenceIndex, currentCharIndex } = useTTS();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +84,7 @@ export const useLessonCore = (subLessonId: string) => {
     stop,
     isSpeaking,
     currentIndex,
+    currentSentenceIndex,
     currentCharIndex
   };
 };

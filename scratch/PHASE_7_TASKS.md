@@ -1,0 +1,28 @@
+# Phase 7 Tasks
+
+- [x] Standardize the remaining 2D Drawing modules (ensure the legacy UI is updated to the tabbed UI format matching 2D_OrthographicView.tsx and 2D_CommandMenu.tsx without modifying the current CSS classes and Karaoke UI elements).
+    - Standardized Components:
+        - 2D_HeatTreatment.tsx
+        - 2D_GeometricTolerance.tsx
+        - 2D_Dimensioning.tsx
+        - 2D_BillOfMaterial.tsx
+        - 2D_OrthographicView.tsx
+        - 2D_AdditionalView.tsx
+        - 2D_OperalView.tsx
+        - 2D_NormalMirrorParts.tsx
+        - 2D_LineProperties.tsx
+        - 2D_StandardPart.tsx
+        - 2D_SurfaceApplication.tsx
+        - 2D_RetainingRing.tsx
+        - 2D_Balloon.tsx
+        - 2D_Titleblock.tsx
+        - 2D_Keyway.tsx
+        - 2D_PartNote.tsx
+        - 2D_MachiningSymbol.tsx
+        - 2D_WeldingSymbol.tsx
+        - 2D_SurfaceCoating.tsx
+        - 2D_WeightComputation.tsx
+        - 2D_RevisionCode.tsx
+        - 2D_StandardLibrary.tsx
+    - Refactored 3D_Origin.tsx for consistency.
+    - Updated LessonViewer.tsx to remove redundant subLessonId props.

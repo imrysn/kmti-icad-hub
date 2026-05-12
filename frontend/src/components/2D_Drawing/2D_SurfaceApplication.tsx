@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -14,32 +14,70 @@ import machining2Img from "../../assets/2D_Image_File/2D_application_surface((2)
 
 interface SurfaceApplicationLessonProps {
   nextLabel?: string;
-  subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
-  subLessonId = "2d-surface-app-1",
   onNextLesson,
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(subLessonId);
-
-  const surface1Steps = [
-    "Surface Preparation: Before coating, the material's black skin must be removed. Shotblasting is a primary method used to smooth or roughen surfaces and remove contaminants.",
-    "Shotblasting Classifications: It's commonly used for stress relief after welding and to increase fatigue resistance. For parts prone to corrosion from friction, shotblasting provides a critical protective surface."
+  const TABS = [
+    { id: 'shotblasting', label: 'Shotblasting' },
+    { id: 'machining', label: 'Machining' }
   ];
 
-  const surface2Steps = [
-    "Machining for Finish: When shotblasting isn't required, machining all sides removes the black skin to achieve desired dimensions. For polished materials where black skin isn't present, these removal processes can sometimes be skipped entirely."
-  ];
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-surface-app-active-tab') || TABS[0].id;
+  });
 
-  const introTitle = "APPLICATION OF SURFACE";
-  const introSubtitle = subLessonId === "2d-surface-app-1"
-    ? "Techniques for material black skin removal using Shotblasting."
-    : "Surface preparation using controlled machining processes.";
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-surface-app-${activeTab}`);
+
+  useEffect(() => {
+    localStorage.setItem('2d-surface-app-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
+
+  const handleNext = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrev = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
+    '2d-surface-app-shotblasting': {
+      title: 'APPLICATION OF SURFACE',
+      subtitle: 'Techniques for material black skin removal using Shotblasting.',
+      steps: [
+        "Before Surface Treatment, material black skin must be removed. Shotblasting is used for stress removal after welding, mechanical cleaning, and fatigue resistance.",
+        "Shotblasting increases corrosion resistance for parts exposed to friction and heat. Ensure all contours are properly blasted before applying final coatings."
+      ]
+    },
+    '2d-surface-app-machining': {
+      title: 'APPLICATION OF SURFACE',
+      subtitle: 'Surface preparation using controlled machining processes.',
+      steps: [
+        "If shotblasting is not necessary, machine all sides to remove black skin and achieve the final shape. For polished materials where black skin is not present, skin removal is not necessary."
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[`2d-surface-app-${activeTab}`] || LESSON_DATA['2d-surface-app-shotblasting'];
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -47,120 +85,131 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          <KaraokeLessonText
-            as="span"
-            text={introTitle}
-            isActive={isSpeaking && currentIndex === 0}
-            currentCharIndex={currentCharIndex}
-          />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const currentSteps = subLessonId === "2d-surface-app-1" ? surface1Steps : surface2Steps;
-            speak([introTitle, introSubtitle, ...currentSteps]);
-          }}
-            onStop={stop}
-          />
-        </h3>
-        <KaraokeLessonText
-          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-          data-reading-index="1"
-          text={introSubtitle}
-          isActive={isSpeaking && currentIndex === 1}
-          currentCharIndex={currentCharIndex}
-        />
-      </section>
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
-            <div className="info-box-white" style={{ marginBottom: "2rem" }}>
+          <div className="fade-in">
+            <div className="card-header">
               <KaraokeLessonText
-                text="Before Surface Treatment, material black skin must be removed via: (1) Shotblasting or (2) Machining."
-                isActive={isSpeaking && currentIndex === -1} // Not specifically highlighted but still Karaoke if needed
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentLesson.title}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
+                onStop={stop}
+              />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentLesson.subtitle}
+                isActive={isSpeaking && currentIndex === 1}
                 currentCharIndex={currentCharIndex}
               />
             </div>
 
-            {subLessonId === "2d-surface-app-1" ? (
-              <div className="flex-col">
-                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+            <div className="flex-col tab-content fade-in">
+              {activeTab === 'shotblasting' && (
+                <>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">1</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Shotblasting Purpose"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <div className="red-text mb-4">
+                        <KaraokeLessonText
+                          text={currentLesson.steps[0]}
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </div>
+                      <img src={shotblast1Img} alt="Shotblasting Application" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+                    <div className="step-header">
+                      <span className="step-number">2</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Stress Relief & Cleaning"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[1]}
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={shotblast2Img} alt="Black Skin Removal" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'machining' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
-                    <span className="step-number">1.</span>
+                    <span className="step-number">1</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Shotblasting Usage"
+                      text="Machining Preparation"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <KaraokeLessonText
-                    text="Used for stress removal after welding, mechanical cleaning, and fatigue resistance."
-                    isActive={isSpeaking && currentIndex === 2}
-                    currentCharIndex={currentCharIndex}
-                  />
-                  <img src={shotblast1Img} alt="Shotblasting Stress Relief" className="software-screenshot screenshot-wide" style={{ marginTop: "1rem" }} />
-                </div>
-
-                <div className="section-divider"></div>
-
-                <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                  <div className="step-header">
-                    <span className="step-number">b.</span>
+                  <div className="step-description">
                     <KaraokeLessonText
-                      as="span"
-                      className="step-label"
-                      text="Black Skin Removal"
-                      isActive={isSpeaking && currentIndex === 3}
+                      className="p-flush mb-4"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
+                    <div className="flex-col gap-4">
+                      <img src={machiningImg} alt="Machining All Sides" className="software-screenshot screenshot-wide" />
+                      <img src={machining2Img} alt="Polished Material Check" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
-                  <img src={shotblast2Img} alt="Black Skin Removal" className="software-screenshot screenshot-wide" style={{ marginBottom: "1rem" }} />
-                  <KaraokeLessonText
-                    text="Increases corrosion resistance for parts exposed to friction and heat."
-                    isActive={isSpeaking && currentIndex === 3}
-                    currentCharIndex={currentCharIndex}
-                  />
                 </div>
-              </div>
-            ) : subLessonId === "2d-surface-app-2" ? (
-              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-                <div className="step-header">
-                  <span className="step-number">2.</span>
-                  <KaraokeLessonText
-                    as="span"
-                    className="step-label"
-                    text="Machining"
-                    isActive={isSpeaking && currentIndex === 2}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-                <img src={machiningImg} alt="Machining Sides" className="software-screenshot screenshot-wide" style={{ margin: "1rem 0" }} />
-                <KaraokeLessonText
-                  text="If shotblasting is not necessary, machine all sides to remove black skin and achieve shape."
-                  isActive={isSpeaking && currentIndex === 2}
-                  currentCharIndex={currentCharIndex}
-                />
-                
-                <div className="section-divider"></div>
-                
-                <img src={machining2Img} alt="Polished Material" className="software-screenshot screenshot-wide" style={{ margin: "1rem 0" }} />
-                <KaraokeLessonText
-                  text="For polished materials where black skin is not present, skin removal is not necessary."
-                  isActive={isSpeaking && currentIndex === 2}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-            ) : null}
+              )}
+            </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
+            <button className="nav-button" onClick={handlePrev}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -123,14 +123,12 @@ const PartLesson: React.FC<PartLessonProps> = ({
           currentCharIndex={currentCharIndex}
         />
         <div>
-          <div className="screenshot-wrapper mt-4">
-            <img
+          <img
               src={activeTab === 'create' ? partMenu2 : partMenu2}
               alt={activeTab === 'create' ? "3D Part Menu" : "Change 3D Part Menu"}
-              className="software-screenshot screenshot-small"
-              style={{ height: '200px' }}
+              className="software-screenshot"
+              style={{ height: 'auto', width: "200px" }}
             />
-          </div>
         </div>
       </section>
 
@@ -170,9 +168,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot" style={{ height: '180px' }} />
-                  </div>
+                    <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px"}} />
                 </div>
               </div>
 
@@ -202,9 +198,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot" style={{ marginBottom: '-2rem' }} />
-                  </div>
+                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot mt-4" style={{ marginBottom: '-2rem' }} />
                 </div>
               </div>  
 
@@ -220,9 +214,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot" style={{ height: '300px' }} />
-                  </div>
+                    <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot mt-4" style={{ height: '300px' }} />
                 </div>
               </div>
 
@@ -237,9 +229,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot" style={{ width: '900px' }} />
-                  </div>
+                    <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot mt-4" style={{ width: '900px' }} />
                 </div>
               </div>
 
@@ -284,9 +274,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot" style={{ height: '180px' }} />
-                  </div>
+                    <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px"}} />
                 </div>
               </div>
 
@@ -315,9 +303,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot" style={{ width: '900px', marginBottom: "-2rem" }} />
-                  </div>
+                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
                 </div>
               </div>
 
@@ -334,9 +320,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide" />
-                  </div>
+                    <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide mt-4" />
                 </div>
 
                 <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: "2rem" }}>

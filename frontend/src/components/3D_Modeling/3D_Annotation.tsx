@@ -167,9 +167,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <div className="screenshot-wrapper mt-4">
-          <img src={annotationTop} alt="Annotation Top" className="software-screenshot" style={{ height: 'auto', width: '200px' }} />
-        </div>
+        <img src={annotationTop} alt="Annotation Top" className="software-screenshot mt-4" style={{ height: 'auto', width: '200px' }} />
       </section>
 
       <div className="lesson-tabs mt-8">
@@ -201,9 +199,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
 
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={linearIcon} alt="Linear Dimension Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
-                  </div>
+                    <img src={linearIcon} alt="Linear Dimension Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap">
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
@@ -227,9 +223,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={linearImage} alt="Linear Dimension Result" className="software-screenshot" style={{ height: '300px' }} />
-                    </div>
+                    <img src={linearImage} alt="Linear Dimension Result" className="software-screenshot mt-4" style={{ height: '300px' }} />
                   </div>
                 </div>
               </div>
@@ -250,9 +244,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={diameterIcon} alt="Diameter Dimension Tool" className="software-screenshot"  style={{ height: '100px', marginBottom: "2rem" }} />
-                  </div>
+                    <img src={diameterIcon} alt="Diameter Dimension Tool" className="software-screenshot mt-4 mb-4"  style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
@@ -265,7 +257,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
+                      <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
@@ -276,9 +268,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={diameterImage} alt="Diameter Dimension Result" className="software-screenshot" style={{ height: '300px' }} />
-                    </div>
+                    <img src={diameterImage} alt="Diameter Dimension Result" className="software-screenshot mt-4" style={{ height: '300px' }} />
                   </div>
                 </div>
               </div>
@@ -299,9 +289,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={angularIcon} alt="Angular Dimension Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
-                  </div>
+                    <img src={angularIcon} alt="Angular Dimension Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
@@ -325,9 +313,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={angularImage} alt="Angular Dimension Result" className="software-screenshot" style={{ height: '200px' }} />
-                    </div>
+                    <img src={angularImage} alt="Angular Dimension Result" className="software-screenshot mt-4" style={{ height: '200px' }} />
                   </div>
                 </div>
               </div>
@@ -348,9 +334,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={noteIcon} alt="Notes Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
-                  </div>
+                    <img src={noteIcon} alt="Notes Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
@@ -373,9 +357,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className="screenshot-wrapper mt-4 mb-4" style={{ marginLeft: "3rem" }}>
-                        <img src={noteWindow} alt="Note String Entry Window" className="software-screenshot" style={{ width: '400px', marginBottom: "2rem"}} />
-                      </div>
+                        <img src={noteWindow} alt="Note String Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '400px', marginBottom: "2rem"}} />
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{marginBottom: "2rem"}}>
                         <span className="step-number">3 </span>
                         <KaraokeLessonText
@@ -397,9 +379,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={annotation1NoteStringEntry1} alt="Angular Dimension" className="software-screenshot" style={{ width: '450px', marginBottom: "2rem"}} />
-                    </div>
+                    <img src={annotation1NoteStringEntry1} alt="Angular Dimension" className="software-screenshot mt-4" style={{ width: '450px', marginBottom: "2rem"}} />
                   </div>
                 </div>
               </div>
@@ -420,9 +400,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={textIcon} alt="Character Strings Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }}  />
-                  </div>
+                    <img src={textIcon} alt="Character Strings Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }}  />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`}>
@@ -435,9 +413,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className="screenshot-wrapper mt-4 mb-4" style={{ marginLeft: "3rem" }}>
-                        <img src={textWindow} alt="Text Entry Window" className="software-screenshot" style={{ width: '500px', marginBottom: "2rem"}} />
-                      </div>
+                        <img src={textWindow} alt="Text Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '500px', marginBottom: "2rem"}} />
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
@@ -459,9 +435,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={textResult} alt="Attributes Window" className="software-screenshot" style={{ width: '500px'}} />
-                    </div>
+                    <img src={textResult} alt="Attributes Window" className="software-screenshot mt-4" style={{ width: '500px'}} />
                   </div>
                 </div>
               </div>
@@ -482,9 +456,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={editsIcon} alt="Edits Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
-                  </div>
+                    <img src={editsIcon} alt="Edits Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px",marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
@@ -497,9 +469,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className="screenshot-wrapper mt-4 mb-4">
-                        <img src={editsWindow} alt="Edits Window" className="software-screenshot" style={{ height: 'auto', width: '500px', marginBottom: "2rem"  }} />
-                      </div>
+                        <img src={editsWindow} alt="Edits Window" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: '500px', marginBottom: "2rem"  }} />
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
@@ -521,9 +491,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={editsWindow} alt="Edits Window" className="software-screenshot" style={{ width: '900px'}} />
-                    </div>
+                    <img src={editsWindow} alt="Edits Window" className="software-screenshot mt-4" style={{ width: '900px'}} />
                   </div>
                 </div>
               </div>
@@ -544,9 +512,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={attrIcon} alt="Attributes Tool" className="software-screenshot" style={{ height: '100px', marginBottom: "2rem" }} />
-                  </div>
+                    <img src={attrIcon} alt="Attributes Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{marginBottom: "2rem"}}>
@@ -559,9 +525,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <div className="screenshot-wrapper mt-4 mb-4">
-                        <img src={attrWindow} alt="Attributes Window" className="software-screenshot" style={{ height: 'auto', width: '500px', marginBottom: "2rem" }} />
-                      </div>
+                        <img src={attrWindow} alt="Attributes Window" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: '500px', marginBottom: "2rem" }} />
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{marginBottom: "2rem"}}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
@@ -583,9 +547,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                     </div>
-                    <div className="screenshot-wrapper">
-                      <img src={attrWindow} alt="Attributes Window" className="software-screenshot" style={{ width: '500px'}} />
-                    </div>
+                    <img src={attrWindow} alt="Attributes Window" className="software-screenshot mt-4" style={{ width: '500px'}} />
                   </div>
                 </div>
               </div>
@@ -606,9 +568,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4 mb-4">
-                    <img src={positionIcon} alt="Position Tool" className="software-screenshot" style={{ height: '100px'}} />
-                  </div>
+                    <img src={positionIcon} alt="Position Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px",}} />
                 </div>
               </div>
             </div>

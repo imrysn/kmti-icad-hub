@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey, Text
 from sqlalchemy.sql import func
 try:
     from .database import Base
@@ -100,7 +100,7 @@ class ChatLog(Base):
     username = Column(String(100), index=True, nullable=False)  # Denormalized for fast queries
     session_id = Column(String(100), index=True, nullable=True) # Client session identifier
     message = Column(String(2000), nullable=False)              # User's question
-    answer = Column(String(8000), nullable=False)               # AI response
+    answer = Column(Text, nullable=False)                       # AI response
     sources_used = Column(String(1000), nullable=True)          # Comma-separated source filenames
     source_count = Column(Integer, default=0)                   # How many KB chunks were retrieved
     tokens_estimated = Column(Integer, default=0)               # Rough token count (chars / 4)
@@ -130,8 +130,8 @@ class QueryCache(Base):
     id = Column(Integer, primary_key=True, index=True)
     query_hash = Column(String(64), unique=True, index=True, nullable=False)  # SHA-256 of normalized query
     query_text = Column(String(2000), nullable=False)          # Original query for debugging
-    answer = Column(String(8000), nullable=False)
-    sources_json = Column(String(16000), nullable=True)        # JSON-serialized sources
+    answer = Column(Text, nullable=False)
+    sources_json = Column(Text, nullable=True)        # JSON-serialized sources
     hit_count = Column(Integer, default=0)                     # Times this cache entry was served
     created_at = Column(DateTime, default=func.now(), index=True)
     expires_at = Column(DateTime, nullable=False, index=True)  # TTL expiry
@@ -143,7 +143,7 @@ class SavedSnippet(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, index=True, nullable=False) # FK to users.id
-    content = Column(String(8000), nullable=False)        # The clipped text
+    content = Column(Text, nullable=False)        # The clipped text
     source = Column(String(200), nullable=True)           # E.g. "AI Response", "2D Keyway Lesson"
     tags = Column(String(500), nullable=True)             # Optional tags for categorization
     created_at = Column(DateTime, default=func.now(), index=True)
@@ -207,7 +207,7 @@ class LessonContent(Base):
     id = Column(Integer, primary_key=True, index=True)
     lesson_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=False)
     content_type = Column(String(50)) # "text", "image", "video", "bullet_list"
-    data = Column(String(10000)) # Using large String for content
+    data = Column(Text) # Using large String for content
     order = Column(Integer, default=0)
 
 

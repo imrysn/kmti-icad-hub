@@ -123,9 +123,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           currentCharIndex={currentCharIndex}
         />
         {activeTab === 'set' && (
-          <div className="screenshot-wrapper mt-4">
-            <img src={materialSettingImg} alt="Material Setting" className="software-screenshot screenshot-small" style={{ height: '350px', marginTop: "1rem" }} />
-          </div>
+            <img src={materialSettingImg} alt="Material Setting" className="software-screenshot" style={{ height: 'auto', width: "200px", marginTop: "1rem" }} />
         )}
       </section>
 
@@ -157,13 +155,10 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot" style={{ height: '100px', marginBottom: '-3rem' }} />
-                  </div>
+                    <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px", marginBottom: '-3rem' }} />
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               {/* Step 2 */}
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
@@ -200,9 +195,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                  <div className="screenshot-wrapper">
-                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot" style={{ width: '900px', marginTop: "1rem" }} />
-                  </div>
+                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
                 </div>
               </div>
 
@@ -225,9 +218,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     isActive={isSpeaking && currentIndex === 8}
                     currentCharIndex={currentCharIndex}
                   />
-                  <div className="screenshot-wrapper">
-                    <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide" style={{ marginTop: "1rem"}} />
-                  </div>
+                    <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide mt-4" style={{ marginTop: "1rem"}} />
                 </div>
               </div>
 
@@ -253,9 +244,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 </div>
                 
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium" style={{ height: '190px' }} />
-                  </div>
+                    <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium mt-4" style={{ height: '190px' }} />
                 </div>
               </div>
                
@@ -308,9 +297,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               </div>
 
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                <div className="screenshot-wrapper">
-                  <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide" style={{marginBottom: "1rem"}}/>
-                </div>
+                  <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide mt-4" style={{marginBottom: "1rem"}}/>
                 <div className="instruction-box instruction-box--warning mt-8">
                   <KaraokeLessonText
                     className="p-flush"
@@ -319,9 +306,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                <div className="screenshot-wrapper mt-8">
-                  <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide" style={{marginTop: "1rem"}} />
-                </div>
+                  <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide mt-8" style={{marginTop: "1rem"}} />
               </div>
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
@@ -335,7 +320,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     />
                   </h4>
                 </div>
-                <div className="lesson-table-container" style={{ marginTop: "2rem", marginLeft: "3rem", maxWidth: "800px" }}>
+                <div className="lesson-table-container" style={{ marginTop: "2rem", maxWidth: "900px" }}>
                   <table className="lesson-table">
                     <thead>
                       <tr>

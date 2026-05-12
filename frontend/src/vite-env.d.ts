@@ -7,5 +7,6 @@ interface Window {
     minimize: () => void;
     maximize: () => void;
     close: () => void;
+    openFile: (filePath: string) => void;
   };
 }

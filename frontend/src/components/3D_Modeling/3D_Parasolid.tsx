@@ -133,9 +133,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <div className="screenshot-wrapper mt-4">
-          <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small" style={{ width: "250px", marginTop: "1rem" }} />
-        </div>
+        <img src={loadingParasolidImg} alt="Loading Parasolid" className="software-screenshot screenshot-small mt-4" style={{ width: "250px", marginTop: "1rem" }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -158,9 +156,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={importIcon} alt="Import Parasolid Tool" className="software-screenshot" style={{ height: 'auto', width: '200px' }} />
-                  </div>
+                    <img src={importIcon} alt="Import Parasolid Tool" className="software-screenshot mt-4" style={{ height: 'auto', width: '200px', marginBottom: "-2rem"}} />
                 </div>
               </div>
 
@@ -179,9 +175,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot" style={{width: "900px"}} />
-                  </div>
+                    <img src={linkDialogImg} alt="Parasolid Link Dialog" className="software-screenshot mt-4" style={{width: "900px"}} />
                 </div>
               </div>
               <div className={`${getStepClass('p1-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
@@ -197,7 +191,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>  
                 </div>
-                 <div className={`step-label ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{marginLeft: "3rem", marginTop: "-1rem"}}>
+                 <div className={`step-label ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="The Name Change dialog box will appear > Pick Cancel"
@@ -205,7 +199,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                   </div>
-                  <div className={`step-label ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{marginLeft: "3rem", marginTop: "-1rem"}}>
+                  <div className={`step-label ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="All Part names of purchase parts must be release on the tree view."
@@ -214,9 +208,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   />
                   </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide" />
-                  </div>
+                    <img src={nameChangeDialogImg} alt="Name Change Dialog" className="software-screenshot screenshot-wide mt-4" />
                 </div>
               </div>
               
@@ -231,7 +223,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                <div className={`step-label ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{marginLeft: "3rem", marginTop: "-1rem"}}>
+                <div className={`step-label ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Go to File > Save As > Use the Purchase part code as File name."
@@ -241,7 +233,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   </div>
               </div>
 
-              <div className={`${getStepClass('p2-5')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10">
+              <div className={`${getStepClass('p2-5')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">5 </span>
                   <KaraokeLessonText
@@ -252,7 +244,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                 <div className={`step-label ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{marginLeft: "3rem", marginTop: "-1rem"}}>
+                 <div className={`step-label ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Other way to add comment to the Part."
@@ -260,7 +252,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                   </div>
-                  <div className={`step-label ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12" style={{marginLeft: "5rem", marginTop: "-1rem"}}>
+                  <div className={`step-label ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text="1.) Right-click the Top 3D Part on the tree view"
@@ -268,7 +260,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                   </div>
-                   <div className={`step-label ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{marginLeft: "5rem", marginTop: "-1rem"}}>
+                   <div className={`step-label ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text="2.) Select Properties. The Property dialog box will appear."
@@ -276,7 +268,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                   </div>
-                  <div className={`step-label ${currentIndex === 14 ? 'reading-active' : ''}`} data-reading-index="14" style={{marginLeft: "5rem", marginTop: "-1rem"}}>
+                  <div className={`step-label ${currentIndex === 14 ? 'reading-active' : ''}`} data-reading-index="14" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text="3.) Enter the comment for the specific part > Press OK"
@@ -286,12 +278,10 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   </div>
 
                   <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot" style={{marginBottom: "1rem", width: "900px"}} />
-                  </div>
-                  <div className="screenshot-wrapper mt-8">
-                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot" />
-                  </div>
+                  <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot mt-4" style={{marginBottom: "1rem", width: "900px"}} />
+
+                  <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot mt-8" />
+
                 </div>
                 </div>
             </div>
@@ -314,16 +304,13 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={lightenBrepIcon} alt="Lighten B-rep Tool" className="software-screenshot" style={{ height: 'auto', width: '200px' }} />
-                  </div>
+                    <img src={lightenBrepIcon} alt="Lighten B-rep Tool" className="software-screenshot mt-4" style={{ height: 'auto', width: '200px' }} />
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
-              <div className={`${getStepClass('p2-2')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-                <div className="step-header">
+              <div className={`${getStepClass('p2-2')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" >
+                <div className="step-header" style={{ marginTop: "-2rem" }}>
                   <span className="step-number">2 </span>
                   <KaraokeLessonText
                     as="span"
@@ -334,16 +321,13 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   />
                 </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot" style={{width: "400px"}} />
-                  </div>
+                    <img src={brepDialogImg} alt="Level Settings Dialog" className="software-screenshot mt-4" style={{width: "400px"}} />
                 </div>
               </div>
 
-              <div className="section-divider"></div>
 
               <div className={`${getStepClass('p2-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-                <div className="step-header">
+                <div className="step-header" style={{ marginTop: "-2rem" }}>
                   <span className="step-number">3 </span>
                   <KaraokeLessonText
                     as="span"
@@ -354,7 +338,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   />
                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
-                <div className={`step-label ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{marginLeft: "3rem", marginTop: "-1rem"}}>
+                <div className={`step-label ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Check the message pane to see if the process is successful."
@@ -363,14 +347,12 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   />
                   </div>
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot" style={{ width: "450px", marginBottom: "1rem"}} />
-                  </div>
+                    <img src={messagePaneImg} alt="Message Pane Success" className="software-screenshot mt-4" style={{ width: "450px", marginBottom: "1rem"}} />
                 </div>
               </div>
                 
               <div className={`${getStepClass('p2-4')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-                <div className="step-header">
+                <div className="step-header" style={{ marginTop: "-2rem" }}>
                   <span className="step-number">4 </span>
                   <KaraokeLessonText
                     as="span"
@@ -380,7 +362,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                <div className={`step-label ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{marginLeft: "3rem", marginTop: "-1rem"}}>
+                <div className={`step-label ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Go to File > Save As > Use the Purchase part code as File name."
@@ -391,7 +373,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
               </div>
 
               <div className={`${getStepClass('p2-5')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9">
-                <div className="step-header">
+                <div className="step-header" style={{ marginTop: "-2rem" }}>
                   <span className="step-number">5 </span>
                   <KaraokeLessonText
                     as="span"
@@ -401,7 +383,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                 <div className={`step-label ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{marginLeft: "3rem", marginTop: "-1rem"}}>
+                 <div className={`step-label ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{ marginTop: "-1rem", marginLeft: "3rem"}}>
                   <KaraokeLessonText
                     as="span"
                     text="Other way to add comment to the Part."
@@ -409,7 +391,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                   </div>
-                  <div className={`step-label ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{marginLeft: "5rem", marginTop: "-1rem"}}>
+                  <div className={`step-label ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text="1.) Right-click the Top 3D Part on the tree view"
@@ -417,7 +399,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                   </div>
-                   <div className={`step-label ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12" style={{marginLeft: "5rem", marginTop: "-1rem"}}>
+                   <div className={`step-label ${currentIndex === 12 ? 'reading-active' : ''}`} data-reading-index="12" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text="2.) Select Properties. The Property dialog box will appear."
@@ -425,7 +407,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                     currentCharIndex={currentCharIndex}
                   />
                   </div>
-                  <div className={`step-label ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{marginLeft: "5rem", marginTop: "-1rem"}}>
+                  <div className={`step-label ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text="3.) Enter the comment for the specific part > Press OK"
@@ -436,12 +418,9 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 </div>
                
                 <div className="step-description">
-                  <div className="screenshot-wrapper mt-4">
-                    <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot" style={{marginBottom: "1rem", width: "900px"}} />
-                  </div>
-                  <div className="screenshot-wrapper mt-8">
-                    <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot" />
-                  </div>
+                  <img src={parasolid43Img} alt="Material and Data Entry Info" className="software-screenshot mt-4" style={{marginBottom: "1rem", width: "900px"}} />
+                  <img src={otherInfoImg} alt="Other Information Reference" className="software-screenshot mt-8" />
+
                 </div>
               </div>
             )}

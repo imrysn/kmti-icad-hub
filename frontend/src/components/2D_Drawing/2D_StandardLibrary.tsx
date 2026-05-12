@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -22,14 +23,15 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex } = useLessonCore('2d-standard-library');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-standard-library');
 
   const librarySteps = [
-    "Safety Color: Use the part library to insert safety color notes for rotating or moving parts. Activate the global view, choose the safety color template, and place it on the lower right of your drawing. Note that standard machine colors don't require specific notes.",
-    "Revision History: To track changes, select the revision history template from the part library while in global view. Place it in its designated location and edit the details based on the reference instructions."
+    "Safety Color: Use the part library to insert safety color notes for rotating or moving parts. Activate the global view, choose the template, and place it on the lower right of your drawing.",
+    "Revision History: Select the revision history template from the part library while in global view. Place it in its designated location and edit the details based on reference instructions."
   ];
 
-  const introSubtitle = "Utilizing pre-defined templates for safety notes, revision history, and standard annotations.";
+  const currentTitle = "STANDARD PART LIBRARY";
+  const currentSubtitle = "Utilizing pre-defined templates for safety notes, revision history, and standard annotations.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -37,57 +39,80 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          24. STANDARD PART LIBRARY
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "24. STANDARD PART LIBRARY";
-            speak([introTitle, introSubtitle, ...librarySteps]);
-          }}
-            onStop={stop}
-          />
-        </h3>
-        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-          {introSubtitle}
-        </p>
-      </section>
-
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentTitle}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentTitle, currentSubtitle, ...librarySteps])}
+                onStop={stop}
+              />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentSubtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+
+
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <div className="step-header">
-                <span className="step-number">a.</span>
-                <span className="step-label">Safety Color</span>
+                <span className="step-number">1</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Safety Color Note Placement"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <img src={imgToolbar} alt="Library Toolbar" className="software-screenshot screenshot-medium" />
-              <div className="flex-row" style={{ marginTop: "1rem", gap: "1rem" }}>
-                <div className="info-box">
-                  <p>1. Global view must be activated.</p>
-                  <p>2. Click "part library" command.</p>
-                  <p>3. Choose "safetycolor note" template.</p>
-                  <p>4. Designated position is on the lower right portion.</p>
+              <div className="step-description">
+                <div className="flex-col gap-4 mb-4">
+                  <img src={imgToolbar} alt="Library Toolbar" className="software-screenshot screenshot-medium" />
+                  <div className="red-text">
+                    <p><strong>Requirement:</strong> Global view must be activated.</p>
+                    <p><strong>Workflow:</strong> 1. Click 'part library' → 2. Choose 'safetycolor note' → 3. Place on lower right.</p>
+                  </div>
                 </div>
-                <img src={imgSafetyColor} alt="Safety Color Template" className="software-screenshot" />
+                <img src={imgSafetyColor} alt="Safety Color Template" className="software-screenshot screenshot-wide" />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">b.</span>
-                <span className="step-label">Revision History</span>
+                <span className="step-number">2</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Revision History Template"
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-              <div className="flex-row" style={{ gap: "1rem" }}>
-                <div className="info-box">
-                  <p>1. Global view must be activated.</p>
-                  <p>2. Choose "revision history" from part library.</p>
-                  <p>3. Place on designated location and edit details.</p>
+              <div className="step-description">
+                <div className="red-text mb-4">
+                  <p><strong>Requirement:</strong> Global view must be activated.</p>
+                  <p><strong>Workflow:</strong> 1. Select 'revision history' → 2. Place on designated location → 3. Edit details.</p>
                 </div>
-                <img src={imgRevHistory1} alt="Revision History Template" className="software-screenshot" />
+                <div className="flex-col gap-4">
+                  <img src={imgRevHistory1} alt="Revision Selection" className="software-screenshot" />
+                  <img src={imgRevHistory2} alt="Revision Placement" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
-              <img src={imgRevHistory2} alt="Revision History Placement" className="software-screenshot screenshot-wide" style={{ marginTop: "1.5rem" }} />
             </div>
           </div>
 
@@ -96,7 +121,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

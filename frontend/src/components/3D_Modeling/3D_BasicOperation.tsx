@@ -302,9 +302,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
-          <div className="screenshot-wrapper mt-8">
-            <img src={threeDView} alt="3D View" className="software-screenshot" style={{ width: '350px' }} />
-          </div>
+          <img src={threeDView} alt="3D View" className="software-screenshot mt-8" style={{ width: '350px'}} />
         </div>
         <div className={`instruction-box mt-8 instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
           <KaraokeLessonText
@@ -312,9 +310,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 2}
             currentCharIndex={currentCharIndex}
           />
-          <div className="screenshot-wrapper">
-            <img src={cmdMenu} alt="Command Menu" className="software-screenshot" style={{ width: '200px', marginTop: "1rem" }} />
-          </div>
+          <img src={cmdMenu} alt="Command Menu" className="software-screenshot" style={{ width: '200px', marginTop: "1rem" }} />
         </div>
       </section>
 
@@ -345,9 +341,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot" style={{ width: '550px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot" style={{ width: '550px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -363,12 +357,10 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot" style={{ width: '850px', marginTop: "-1rem" }} />
-                </div>
+                <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot" style={{ width: '850px', marginTop: "-1rem" }} />
                 <KaraokeLessonText
                   className="p-flush mt-4 text-highlight"
-                  style={{ marginBottom: "-2rem" }}
+                  style={{ marginBottom: "1rem" }}
                   text="Specify the diameter and height of cylinder on the item entry."
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
@@ -388,17 +380,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={keyEntry} alt="Key Entry" className="software-screensho" style={{ height: '60px' }} />
-                </div>
+                <img src={keyEntry} alt="Key Entry" className="software-screensho" style={{ height: 'auto', width: '200px' }} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot" style={{ height: '500px' }} />
-              </div>
+              <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot mt-8" style={{ height: '500px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -435,9 +423,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot screenshot-medium" style={{ width: '550px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -453,9 +439,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot screenshot-wide" style={{ width: '900px', height: '50px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -471,17 +455,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
-                </div>
+                <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px" }} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
-              </div>
+              <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -518,9 +498,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot screenshot-medium" style={{ width: '450px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -536,9 +514,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot screenshot-wide" style={{ width: '900px', height: '60px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -554,17 +530,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
-                </div>
+                <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px"}} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
-              </div>
+              <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -601,9 +573,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot screenshot-medium" style={{ width: '550px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -620,9 +590,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot screenshot-wide" style={{ width: '900px', height: '70px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -638,17 +606,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={keyEntry} alt="Key Entry Cone" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
-                </div>
+                <img src={keyEntry} alt="Key Entry Cone" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px"}} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large" style={{ width: '500px' }} />
-              </div>
+              <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '500px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -685,9 +649,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot screenshot-medium" style={{ width: '550px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -703,9 +665,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot screenshot-wide" style={{ width: '900px', marginBottom: "-3rem" }} />
-                </div>
+                <img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -721,17 +681,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: '60px' }} />
-                </div>
+                <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px"}} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>PREVIEW</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large" style={{ width: '500px' }} />
-              </div>
+              <img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '500px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -855,9 +811,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <div className="screenshot-wrapper mt-8">
-          <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small" style={{ width: '180px' }} />
-        </div>
+        <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small mt-8" style={{ width: '180px' }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -886,9 +840,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-2rem" }} />
-                </div>
+                <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-2rem" }} />
               </div>
             </div>
 
@@ -919,9 +871,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
-                </div>
+                <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
                 <KaraokeLessonText
                   className="p-flush mt-4 text-highlight"
                   text="Or after step 2, select a point on the entity then left-click on the desired location."
@@ -933,9 +883,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-wide" />
-              </div>
+              <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-wide mt-8" />
             </div>
 
             <div className="lesson-navigation">
@@ -970,9 +918,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
-                </div>
+                <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
               </div>
             </div>
 
@@ -1017,16 +963,12 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
 
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
-                </div>
+                <img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
               </div>
             </div>
 
             <div className="card-header"><h4>RESULT</h4></div>
-            <div className="screenshot-wrapper mt-8">
-              <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot screenshot-medium" style={{ width: '730px', marginBottom: "-3rem" }} />
-            </div>
+            <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot" style={{ width: '900px', marginBottom: "-3rem" }} />
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
@@ -1060,9 +1002,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
-                </div>
+                <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
               </div>
             </div>
 
@@ -1097,9 +1037,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={mirrorResult} alt="Mirror Result" className="software-screenshot" style={{ width: '900px' }} />
-              </div>
+              <img src={mirrorResult} alt="Mirror Result" className="software-screenshot mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1134,9 +1072,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', marginBottom: "-2rem" }} />
-                </div>
+                <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', marginBottom: "-2rem" }} />
               </div>
             </div>
 
@@ -1167,17 +1103,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: "100px" }} />
-                </div>
+                <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: "100px" }} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large" style={{ maxWidth: '600px' }} />
-              </div>
+              <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '600px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1202,17 +1134,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>Same as rotate tool but makes a rotated duplicate of the entity.</p>
 
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
-              </div>
+              <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
             </div>
 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
-              </div>
+              <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1237,16 +1165,12 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>Same as mirror tool but makes a mirror duplicate of the entity.</p>
 
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
-              </div>
+              <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
             </div>
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>RESULT</h4></div>
-              <div className="screenshot-wrapper mt-8">
-                <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
-              </div>
+              <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1269,7 +1193,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-5rem" }}>
+            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">1 </span>
                 <KaraokeLessonText
@@ -1282,7 +1206,6 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
@@ -1296,9 +1219,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" style={{ width: '300px' }} />
-                </div>
+                <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" style={{ width: '300px' }} />
               </div>
             </div>
 
@@ -1396,9 +1317,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
-            <div className="screenshot-wrapper mt-8">
-              <img src={sketchIntroImg} alt="Sketch Intro" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
-            </div>
+            <img src={sketchIntroImg} alt="Sketch Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '280px' }} />
           </>
         ) : (
           <>
@@ -1423,9 +1342,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
-            <div className="screenshot-wrapper mt-8">
-              <img src={extrudeRevolveMenu} alt="Extrude and Revolve Intro" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
-            </div>
+            <img src={extrudeRevolveMenu} alt="Extrude and Revolve Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '280px' }} />
           </>
         )}
       </section>
@@ -1433,7 +1350,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       <div className="lesson-grid single-card">
         {activeTab === 'sketch' && (
           <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
-            <div className="card-header card-sub-header">
+            <div className="card-header mt-12">
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
@@ -1454,16 +1371,12 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="step-description">
               <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
-                <div className="screenshot-wrapper">
-                  <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
-                </div>
+                <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
               </div>
             </div>
 
             <div className="step-description" style={{ marginTop: "3rem" }}>
-              <div className="screenshot-wrapper mt-4">
-                <img src={sketchResultImg} alt="Sketch Result" className="software-screenshot" style={{ width: "600px" }} />
-              </div>
+              <img src={sketchResultImg} alt="Sketch Result" className="software-screenshot mt-4" style={{ width: "600px" }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1475,7 +1388,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
         {activeTab === 'extrude' && (
           <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
-            <div className="card-header card-sub-header">
+            <div className="card-header mt-12">
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
@@ -1499,13 +1412,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
               <div className="step-description" style={{ marginTop: "1rem" }}>
                 <div className="mt-6" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                  <div className="screenshot-wrapper">
+                  <div>
                     <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
-                    <span style={{ marginLeft: "6rem", fontSize: "1.2rem" }}> EXTRUSION (ONE SIDE)</span>
+                    <div className="text-center font-bold text-lg mt-4" style={{ marginLeft: "-8rem" }}>EXTRUSION (ONE SIDE)</div>
                   </div>
-                  <div className="screenshot-wrapper">
+                  <div>
                     <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
-                    <span style={{ marginLeft: "6rem", fontSize: "1.2rem" }}>EXTRUSION (BOTH SIDES)</span>
+                    <div className="text-center font-bold text-lg mt-4" style={{ marginLeft: "-8em" }}>EXTRUSION (BOTH SIDES)</div>
                   </div>
                 </div>
               </div>
@@ -1558,7 +1471,6 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
 
-              <div className="section-divider" style={{ margin: "2rem" }}></div>
 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
@@ -1579,7 +1491,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
         {activeTab === 'revolve' && (
           <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
-            <div className="card-header card-sub-header">
+            <div className="card-header mt-12">
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
@@ -1602,9 +1514,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper mt-4" style={{ marginTop: "1rem" }}>
-                  <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot" style={{ width: '280px', marginBottom: "1rem" }} />
-                </div>
+                <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot mt-4" style={{ width: '280px', marginBottom: "1rem" }} />
               </div>
             </div>
 
@@ -1643,7 +1553,6 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 </div>
               </div>
 
-              <div className="section-divider" style={{ margin: "2rem" }}></div>
 
               <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
@@ -1762,9 +1671,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
-          <div className="screenshot-wrapper mt-8">
-            <img src={showHideMenu} alt="Show/Hide Intro" className="software-screenshot screenshot-small" style={{ width: '192px' }} />
-          </div>
+          <img src={showHideMenu} alt="Show/Hide Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '192px' }} />
         </section>
       )}
 
@@ -1790,9 +1697,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
-          <div className="screenshot-wrapper mt-8">
-            <img src={fairingChamferImg} alt="Stretch and Shape Intro" className="software-screenshot screenshot-small" style={{ width: '192px' }} />
-          </div>
+          <img src={fairingChamferImg} alt="Stretch and Shape Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '192px' }} />
         </section>
       )}
 
@@ -1826,13 +1731,10 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-4rem" }} />
-                </div>
+                <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
@@ -1849,7 +1751,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className="card-header card-sub-header">
+            <div className="card-header mt-12">
               <h4 className={`${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <KaraokeLessonText
                   as="span"
@@ -1872,13 +1774,10 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem" }} />
-                </div>
+                <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
               <div className="step-header">
@@ -1891,8 +1790,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   currentCharIndex={currentCharIndex}
                 />
               </div>
-              <p className={`p-flush ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>Drafting Entities include:</p>
-              <div className="lesson-table-container" style={{ marginTop: "2rem", marginLeft: "3rem", maxWidth: "800px" }}>
+              <p className={`p-flush ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: "-1rem" }}>Drafting Entities include:</p>
+              <div className="lesson-table-container" style={{ marginTop: "2rem", maxWidth: "900px" }}>
                 <table className="lesson-table">
                   <thead>
                     <tr>
@@ -1928,9 +1827,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             </div>
 
-            <div className="section-divider"></div>
 
-            <div className="card-header card-sub-header">
+            <div className="card-header mt-12">
               <h4 className={`${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9">
                 <KaraokeLessonText
                   as="span"
@@ -1953,13 +1851,10 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem" }} />
-                </div>
+                <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11">
               <div className="step-header">
@@ -1975,10 +1870,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 </div>
               </div>
               <div className="step-description">
-                <p className={`p-flush ${currentIndex === 12 ? "reading-active" : ""}`} data-reading-index="12" style={{ marginLeft: "3rem", marginTop: "-1rem" }}>All unselected entities will be hidden.</p>
-                <div className="screenshot-wrapper" style={{ marginTop: "2rem" }}>
-                  <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
-                </div>
+                <p className={`p-flush ${currentIndex === 12 ? "reading-active" : ""}`} data-reading-index="12" style={{ marginTop: "-1rem" }}>All unselected entities will be hidden.</p>
+                <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -2014,13 +1907,10 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-4rem" }} />
-                </div>
+                <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
@@ -2050,17 +1940,12 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <p className={`p-flush opacity-80 text-sm mb-4 ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginLeft: "3rem", marginBottom: "2rem", marginTop: "-1rem" }}> Also works for circular surfaces.</p>
-                <div className="screenshot-wrapper">
-                  <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot screenshot-wide" style={{ width: '900px' }} />
-                </div>
-                <div className="screenshot-wrapper mt-8">
-                  <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large" style={{ width: '900px', marginTop: "2rem" }} />
-                </div>
+                <p className={`p-flush opacity-80 text-sm mb-4 ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginBottom: "2rem", marginTop: "-1rem" }}> Also works for circular surfaces.</p>
+                <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot" style={{ width: '850px', height: 'auto' }} />
+                <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large mt-8" style={{ width: '900px', marginTop: "2rem" }} />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div>
               <h4 className={`text-highlight mb-4 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
@@ -2106,9 +1991,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                       currentCharIndex={currentCharIndex}
                     />
                   </p>
-                  <div className="screenshot-wrapper mt-6">
-                    <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large" style={{ width: '900px' }} />
-                  </div>
+                  <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large mt-6" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
@@ -2146,13 +2029,10 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-5rem" }} />
-                </div>
+                <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-4rem" }} />
               </div>
             </div>
 
-            <div className="section-divider"></div>
 
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
@@ -2184,12 +2064,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
               <div className="step-description">
                 <div className="flex-row-center--wrap mt-6" style={{ gap: '2rem' }}>
-                  <div className="screenshot-wrapper">
-                    <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot screenshot-small" style={{ width: '200px' }} />
-                  </div>
-                  <div className="screenshot-wrapper">
-                    <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large" style={{ width: '900px', marginTop: "2rem" }} />
-                  </div>
+                  <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot" style={{ width: '200px', height: 'auto' }} />
+                  <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large mt-8" style={{ width: '900px', marginTop: "2rem" }} />
                 </div>
               </div>
             </div>
@@ -2255,9 +2131,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <div className="screenshot-wrapper">
-          <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot" style={{ height: '225px' }} />
-        </div>
+        <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot" style={{ height: 'auto', width: "400px" }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -2276,9 +2150,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                <img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -2294,9 +2166,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
-                </div>
+                <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
               </div>
             </div>
 
@@ -2312,9 +2182,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper">
-                  <img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window" className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
-                </div>
+                <img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window" className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
               </div>
             </div>
 
@@ -2330,9 +2198,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <div className="screenshot-wrapper" style={{ marginBottom: "2rem" }}>
-                  <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot screenshot-small" style={{ height: '50px' }} />
-                </div>
+                <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
               </div>
             </div>
 

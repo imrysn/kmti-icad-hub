@@ -63,9 +63,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
          Interferences are overlapping areas of 3D entities. These are problems that must be fix on the 3D Modeling..
         </p>
         <p className="lesson-subtitle mt-4" style={{marginTop: "-1rem"}}>These following tools are used to detect interferences on the 3D Modeling.</p>
-        <div className="screenshot-wrapper mt-4">
-          <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
-        </div>
+        <img src={interferenceResult} alt="Interference Results" className="software-screenshot screenshot-small mt-4" style={{ width: '14rem' }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -80,9 +78,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className="step-label">Select Interference Check from the icon menu.</span>
             </div>
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot" style={{ height: 'auto', width: '200px', marginBottom: "-1rem" }} />
-              </div>
+                    <img src={interfCommandMenu} alt="Interference Command Menu" className="software-screenshot mt-4" style={{ height: 'auto', width: '200px', marginBottom: "-1rem" }} />
             </div>
           </div>
 
@@ -92,9 +88,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className="step-label">On the command menu, unselect High-speed detection.</span>
             </div>
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot" style={{ height: 'auto', width: '450px', marginBottom: "-1rem"  }} />
-              </div>
+                    <img src={interfCheckIcon} alt="Interference Check Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: '450px', marginBottom: "-1rem"  }} />
             </div>
           </div>
 
@@ -106,10 +100,8 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               </span>
             </div>
             <div className="step-description">
-              <p className="p-flush mb-4" style={{marginLeft: "3rem", marginTop: "-1rem"}}>A dialog box will appear showing the number of detected interferences.</p>
-              <div className="screenshot-wrapper">
-                <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot" style={{width: "900px", marginTop: "1rem", marginBottom: "0rem"}} />
-              </div>
+              <p className="p-flush mb-4" style={{ marginTop: "-1rem" }}>A dialog box will appear showing the number of detected interferences.</p>
+                    <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot mt-4" style={{width: "900px", marginTop: "1rem", marginBottom: "0rem"}} />
               <div>
               <span className="p-flush"><strong className="text-highlight">OR</strong></span>
               </div> 
@@ -122,16 +114,14 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className="step-number">4 </span>
               <span className="step-label">Analyze possible countermeasures to remove the interference on the parts.</span>
             </div>
-              <p className="p-flush mb-4" style={{marginLeft: "3rem", marginTop: "-1rem"}}>To remove the red CGS solid, use Undo or Ctrl+Z.</p>
+              <p className="p-flush mb-4" style={{ marginTop: "-1rem" }}>To remove the red CGS solid, use Undo or Ctrl+Z.</p>
           </div>
 
           <div className={`${getStepClass("li-intro")} ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
             
             <div className="step-description mt-4">
               <span className="p-flush mb-4" style={{ marginTop: "1rem", fontWeight: "700px",}}>Tool use to display the list of all detected interferences.</span>
-              <div className="screenshot-wrapper">
-                <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot" style={{ height: 'auto', width: '200px', marginBottom: "-1rem", marginTop: "1rem" }} />
-              </div>
+                    <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: '200px', marginBottom: "-1rem", marginTop: "1rem" }} />
             </div>
           </div>
           <div className={`step-header ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{marginTop: "2rem"}}>
@@ -148,9 +138,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
               <span className="step-label">The List Display window will appear showing all the 3D part names that interfere with each other.</span>
             </div>
             <div className="step-description">
-              <div className="screenshot-wrapper">
-                <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot" style={{ width: '900px' }} />
-              </div>
+                    <img src={listDisplayWindow} alt="List Display Window" className="software-screenshot mt-4" style={{ width: '900px' }} />
             </div>
           </div>
 
