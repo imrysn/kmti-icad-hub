@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Brain, GraduationCap } from 'lucide-react'; import { IntelligenceChatbot } from '../admin/components/IntelligenceChatbot';
+import { Brain, GraduationCap, ClipboardList } from 'lucide-react'; 
+import { IntelligenceChatbot } from '../admin/components/IntelligenceChatbot';
 import MentorMode from '../mentor/MentorMode';
+import { PracticalTrainerDashboard } from '../mentor/components/PracticalTrainerDashboard';
 
 import '../../styles/AssistantMode.css';
 
@@ -10,7 +12,7 @@ import '../../styles/AssistantMode.css';
  * - Training Review: Refresher training from Mentor Mode
  */
 const AssistantMode: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<'assistant' | 'training'>(() => {
+    const [activeTab, setActiveTab] = useState<'assistant' | 'training' | 'assessment'>(() => {
         return (localStorage.getItem('assistant-active-tab') as any) || 'assistant';
     });
 
@@ -31,15 +33,22 @@ const AssistantMode: React.FC = () => {
                     <GraduationCap size={18} />
                     <span>iCAD Manuals and Standard</span>
                 </button>
+                <button className={`assistant-tab-btn ${activeTab === 'assessment' ? 'active' : ''}`} onClick={() => setActiveTab('assessment')}
+                >
+                    <ClipboardList size={18} />
+                    <span>Assessment Review</span>
+                </button>
             </nav>
 
             <div className="assistant-tab-content">
                 {activeTab === 'assistant' ? (
                     <IntelligenceChatbot />
-                ) : (
+                ) : activeTab === 'training' ? (
                     <div className="assistant-training-wrapper">
                         <MentorMode isEmployeeSide={true} />
                     </div>
+                ) : (
+                    <PracticalTrainerDashboard />
                 )}
             </div>
         </div>

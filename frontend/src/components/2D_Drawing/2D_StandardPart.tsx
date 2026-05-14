@@ -48,13 +48,13 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
   nextLabel,
 }) => {
   const TABS = [
-    { id: '1', label: 'Part 1' },
-    { id: '2', label: 'Part 2' },
-    { id: '3', label: 'Part 3' },
-    { id: '4', label: 'Part 4' },
-    { id: '5', label: 'Part 5' },
-    { id: '6', label: 'Part 6' },
-    { id: '7', label: 'Part 7' }
+    { id: '1', label: 'PCD & Thread' },
+    { id: '2', label: 'Oil Groove' },
+    { id: '3', label: 'Shaft & Key' },
+    { id: '4', label: 'Collar (1)' },
+    { id: '5', label: 'Collar (2)' },
+    { id: '6', label: 'Scale & Relief' },
+    { id: '7', label: 'Relief Detail' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {

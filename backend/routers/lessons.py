@@ -24,7 +24,7 @@ def get_progress(course_id: str, user_id: str, db: Session = Depends(get_db),
     return course_service.get_user_progress(db, course_id, user_id)
 
 @router.get("/{course_id}/lessons")
-def get_course_lessons(course_id: int, db: Session = Depends(get_db)):
+def get_course_lessons(course_id: str, db: Session = Depends(get_db)):
     """
     Fetch hierarchical lesson list for a specific course.
     """

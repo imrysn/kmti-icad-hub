@@ -33,11 +33,37 @@ class CourseService:
             progress_percentage=percentage
         )
 
-    def get_course_lessons(self, db: Session, course_id: int):
+    def get_course_lessons(self, db: Session, course_id: str):
         """Fetch lessons for a course in a hierarchical structure."""
-        from ..models import Lesson, Quiz
+        from ..models import Lesson, Quiz, AssessmentTask
         
-        # Fetch all lessons for the course
+        # Handle Special Case: Practical Assessment
+        if course_id == "practical-assessment":
+            tasks = db.query(AssessmentTask).order_by(AssessmentTask.set_number, AssessmentTask.order).all()
+            
+            # Map sets to "Parent Lessons" and tasks to "Children"
+            sets = {}
+            for t in tasks:
+                set_key = t.set_number
+                if set_key not in sets:
+                    sets[set_key] = {
+                        "id": f"set-{set_key}",
+                        "title": f"Set {set_key}",
+                        "order": set_key,
+                        "children": []
+                    }
+                
+                sets[set_key]["children"].append({
+                    "id": f"task-{t.id}",
+                    "db_id": t.id,
+                    "title": f"Task {t.task_code}: {t.title}",
+                    "order": t.order,
+                    "children": []
+                })
+            
+            return sorted(list(sets.values()), key=lambda x: x["order"])
+
+        # Default: Fetch standard lessons
         lessons = db.query(Lesson).filter(Lesson.course_id == course_id).order_by(Lesson.order).all()
         
         # Fetch all quiz slugs to identify which lessons have quizzes

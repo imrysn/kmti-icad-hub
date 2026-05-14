@@ -135,7 +135,7 @@ function App() {
 
             {/* 2. NAVIGATION (Center) */}
             <div className="header-center">
-              {user?.role === 'admin' && (
+              {user?.role === 'admin' ? (
                 <nav className="mode-switcher">
                   <button className={`mode-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
                     Mentor
@@ -145,6 +145,15 @@ function App() {
                   </button>
                   <button className={`mode-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => navigate('/admin')}>
                     Admin
+                  </button>
+                </nav>
+              ) : location.pathname.startsWith('/mentor') && (
+                <nav className="mode-switcher">
+                  <button className={`mode-btn ${new URLSearchParams(location.search).get('mode') !== 'assessment' ? 'active' : ''}`} onClick={() => navigate('/mentor?mode=manual')}>
+                    Manual
+                  </button>
+                  <button className={`mode-btn ${new URLSearchParams(location.search).get('mode') === 'assessment' ? 'active' : ''}`} onClick={() => navigate('/mentor?mode=assessment')}>
+                    Practical Assessment
                   </button>
                 </nav>
               )}

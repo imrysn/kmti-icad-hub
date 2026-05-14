@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; import { X, CheckCircle2, AlertCircle, RotateCcw, ChevronRight, Trophy, ShieldAlert, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Quiz } from '../mentorConstants';
+import { authService } from '../../../services/authService';
 import '../../../styles/mentor/QuizModal.css';
 
 interface QuizModalProps {
@@ -106,20 +107,27 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       // Shuffle all available questions and take ONLY 10 for this attempt
       const selectedQuestions = shuffleArray(processed).slice(0, 10);
       setShuffledQuestions(selectedQuestions);
+      return selectedQuestions;
     }
+    return [];
   };
 
   // Initialize Shuffled Questions and Options
   useEffect(() => {
     if (isOpen) {
-      initQuestions();
-      setShowWarning(true);
+      // If we're not restoring, we should init fresh
+      // Restoration is handled by the other useEffect
+      const saved = localStorage.getItem(storageKey || '');
+      if (!saved) {
+        initQuestions();
+        setShowWarning(true);
+      }
     }
   }, [isOpen, quiz]);
 
 
 
-  const storageKey = lessonId ? `kmti_quiz_state_${lessonId}` : null;
+  const storageKey = lessonId ? authService.getStorageKey(`quiz_state_${lessonId}`) : null;
 
   const resetQuiz = () => {
     setCurrentIdx(0);
@@ -222,20 +230,26 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     onComplete(finalScore, detailedAnswers);
   };
 
-  // 1. Initialize from storage if available (PRODUCTION ONLY)
+  // 1. Initialize from storage if available
   useEffect(() => {
-    if (isOpen && storageKey && import.meta.env.PROD) {
+    if (isOpen && storageKey) {
       const saved = localStorage.getItem(storageKey);
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          setCurrentIdx(parsed.currentIdx || 0);
-          setAnswers(parsed.answers || []);
-          setIsFinished(parsed.isFinished || false);
-          setScore(parsed.score || 0);
-          // Reset interaction states for safety
-          setSelectedOpt(null);
-          setIsAnswerChecked(false);
+          if (parsed.shuffledQuestions && parsed.shuffledQuestions.length > 0) {
+            setShuffledQuestions(parsed.shuffledQuestions);
+            setCurrentIdx(parsed.currentIdx || 0);
+            setAnswers(parsed.answers || []);
+            setIsFinished(parsed.isFinished || false);
+            setScore(parsed.score || 0);
+            setShowWarning(parsed.showWarning ?? true);
+            // Reset interaction states for safety
+            setSelectedOpt(null);
+            setIsAnswerChecked(false);
+          } else {
+            resetQuiz();
+          }
         } catch (e) {
           console.error("Failed to restore quiz state", e);
           resetQuiz();
@@ -256,13 +270,19 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     };
   }, [isOpen, storageKey]);
 
-  // 2. Save state to storage on changes (PRODUCTION ONLY)
+  // 2. Save state to storage on changes
   useEffect(() => {
-    if (isOpen && storageKey && !isFinished && import.meta.env.PROD) {
-      const state = { currentIdx, answers, score };
+    if (isOpen && storageKey && !isFinished) {
+      const state = { 
+        currentIdx, 
+        answers, 
+        score, 
+        shuffledQuestions, 
+        showWarning 
+      };
       localStorage.setItem(storageKey, JSON.stringify(state));
     }
-  }, [currentIdx, answers, score, isOpen, storageKey, isFinished]);
+  }, [currentIdx, answers, score, isOpen, storageKey, isFinished, shuffledQuestions, showWarning]);
 
 
 

@@ -38,11 +38,10 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
   nextLabel
 }) => {
   const TABS = [
-    { id: '1', label: 'Basics' },
-    { id: '2', label: 'Symbols' },
-    { id: '3', label: 'Materials' },
-    { id: '4', label: 'Positioning' },
-    { id: '5', label: 'Break Views' }
+    { id: '1', label: 'Adding Dimensions' },
+    { id: '2', label: 'Editing Dimensions' },
+    { id: '3', label: 'Part Note' },
+    { id: '4', label: 'Change Position' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -96,27 +95,19 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
       ]
     },
     '2d-dimensioning-3': {
-      title: 'DIMENSIONING',
-      subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
+      title: 'PART NOTE',
+      subtitle: 'Guidelines for adding technical notes and material specifications.',
       steps: [
-        "Grinded materials like S45C-D and SS400-D have specific tolerance levels (like h9 or h7) and surface roughness requirements based on the grinding process.",
+        "Grinded materials like S45C-D and SS400-D have specific tolerance levels and surface roughness requirements based on the grinding process.",
         "Use this tool for automatic hole detailing and quantity callouts. Select the command and click the features to place the leader notes."
       ]
     },
     '2d-dimensioning-4': {
-      title: 'DIMENSIONING',
-      subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
+      title: 'CHANGE POSITION',
+      subtitle: 'Adjusting dimension placement for clarity and alignment.',
       steps: [
         "Ensure dimensions have enough space between them. Use the change position command, click the dimension, and pick its new location.",
         "For professional drawings, align dimensions across different views. Select multiple dimensions and move them parallelly to match a reference point."
-      ]
-    },
-    '2d-dimensioning-5': {
-      title: 'DIMENSIONING',
-      subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
-      steps: [
-        "For long parts like shafts, use break views to fit the drawing on the template while maintaining scale for details. Remember to underline fake length dimensions.",
-        "You can also apply break views to isometric representations. Use reference lines to maintain the correct cutting angle."
       ]
     }
   };
@@ -438,52 +429,6 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 </div>
               )}
 
-              {activeTab === '5' && (
-                <div className="flex-col">
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header">
-                      <span className="step-number">1</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Dimension for Break Views"
-                        isActive={isSpeaking && currentIndex === 2}
-                        currentCharIndex={currentCharIndex}
-                      />
-                    </div>
-                    <div className="step-description">
-                      <KaraokeLessonText
-                        className="p-flush"
-                        text={currentLesson.steps[0]}
-                        isActive={isSpeaking && currentIndex === 2}
-                        currentCharIndex={currentCharIndex}
-                      />
-                      <img src={breakViewWorkflowImg} alt="Break View Workflow" className="software-screenshot screenshot-wide mt-4" />
-                    </div>
-                  </div>
-
-                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Isometric Break"
-                        isActive={isSpeaking && currentIndex === 3}
-                        currentCharIndex={currentCharIndex}
-                      />
-                    </div>
-                    <div className="step-description">
-                      <KaraokeLessonText
-                        className="p-flush"
-                        text={currentLesson.steps[1]}
-                        isActive={isSpeaking && currentIndex === 3}
-                        currentCharIndex={currentCharIndex}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 

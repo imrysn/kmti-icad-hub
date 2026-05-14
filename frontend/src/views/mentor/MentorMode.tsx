@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
 import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
@@ -6,6 +7,7 @@ import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; im
 // Extracted Components
 import { CourseSelector } from './components/CourseSelector'; import { MentorSidebar } from './components/MentorSidebar';
 import { LessonViewer } from './components/LessonViewer';
+import { PracticalAssessment } from './components/PracticalAssessment';
 
 import '../../styles/MentorMode.css';
 
@@ -19,6 +21,10 @@ interface MentorModeProps {
 }
 
 const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
+    // Router hooks for header mode-switcher integration
+    const location = useLocation();
+    const navigate = useNavigate();
+
     // Data Hook
     const { courses, loading, error } = useCourses();
 
@@ -38,6 +44,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Prerequisite State (3D Completion for 2D Course)
     const [is3DCompleted, setIs3DCompleted] = useState(false);
+    const [is2DCompleted, setIs2DCompleted] = useState(false);
     const [isCheckingPrereq, setIsCheckingPrereq] = useState(true);
 
     // Count completable 3D modules once
@@ -53,9 +60,40 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         return count;
     }, []);
 
+    const completable2DCount = useMemo(() => {
+        let count = 0;
+        const traverse = (list: Lesson[]) => {
+            list.forEach(l => {
+                if (l.quiz) count++;
+                if (l.children) traverse(l.children);
+            });
+        };
+        traverse(ICAD_2D_LESSONS);
+        return count;
+    }, []);
+
     // Auth info for bypass
     const user = authService.getStoredUser();
     const canBypass = isEmployeeSide || user?.role === 'admin' || user?.role === 'employee';
+
+    // Header mode-switcher integration: read ?mode=assessment from URL
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const mode = params.get('mode');
+
+        if (mode === 'assessment' && selectedCourse?.id !== 'practical-assessment') {
+            const assessmentCourse: Course = {
+                id: 'practical-assessment',
+                title: 'Practical Assessment',
+                description: 'Sequential 7-set drafting tasks in iJCAD.',
+                course_type: 'Practical',
+                order: 99
+            };
+            setSelectedCourse(assessmentCourse);
+        } else if (mode === 'manual' && selectedCourse?.id === 'practical-assessment') {
+            setSelectedCourse(null);
+        }
+    }, [location.search]);
 
     // Derived stable state
     const { lessons: dbLessons, loading: lessonsLoading, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
@@ -133,11 +171,16 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
             try {
                 // Course ID '1' is 3D Modeling
-                const progress = await authService.getLessonProgress('1');
-                const completedCount = progress.filter((p: any) => p.is_completed).length;
+                const progress3D = await authService.getLessonProgress('1');
+                const completedCount3D = progress3D.filter((p: any) => p.is_completed).length;
                 
                 // Mark as completed if all quizzes are passed
-                setIs3DCompleted(completedCount >= completable3DCount && completable3DCount > 0);
+                setIs3DCompleted(completedCount3D >= completable3DCount && completable3DCount > 0);
+
+                // Course ID '2' is 2D Drawing
+                const progress2D = await authService.getLessonProgress('2');
+                const completedCount2D = progress2D.filter((p: any) => p.is_completed).length;
+                setIs2DCompleted(completedCount2D >= completable2DCount && completable2DCount > 0);
             } catch (err) {
                 console.error('Failed to check 3D prerequisite:', err);
             } finally {
@@ -333,6 +376,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 error={error} 
                 setSelectedCourse={setSelectedCourse} 
                 is3DCompleted={is3DCompleted}
+                is2DCompleted={is2DCompleted}
                 canBypass={canBypass}
             />
         );
@@ -341,41 +385,47 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
-                <MentorSidebar 
-                    selectedCourse={selectedCourse} 
-                    is2DDrawingCourse={is2DDrawingCourse} 
-                    sidebarOpen={sidebarOpen} 
-                    setSidebarOpen={setSidebarOpen} 
-                    activeLessonId={activeLessonId} 
-                    setActiveLessonId={setActiveLessonId} 
-                    expandedIds={expandedIds} 
-                    toggleExpand={toggleExpand} 
-                    setSelectedCourse={setSelectedCourse} 
-                    completedLessons={completedLessons} 
-                    isLoadingProgress={isLoadingProgress} 
-                    isEmployeeSide={isEmployeeSide} 
-                    totalLessons={completableModuleIds.length} 
-                    completedLessonsCount={relevantCompletedCount}
-                    averageScore={averageScore} 
-                    lessons={currentLessons}
-                />
+                {selectedCourse.id !== 'practical-assessment' && (
+                    <MentorSidebar 
+                        selectedCourse={selectedCourse} 
+                        is2DDrawingCourse={is2DDrawingCourse} 
+                        sidebarOpen={sidebarOpen} 
+                        setSidebarOpen={setSidebarOpen} 
+                        activeLessonId={activeLessonId} 
+                        setActiveLessonId={setActiveLessonId} 
+                        expandedIds={expandedIds} 
+                        toggleExpand={toggleExpand} 
+                        setSelectedCourse={setSelectedCourse} 
+                        completedLessons={completedLessons} 
+                        isLoadingProgress={isLoadingProgress} 
+                        isEmployeeSide={isEmployeeSide} 
+                        totalLessons={completableModuleIds.length} 
+                        completedLessonsCount={relevantCompletedCount}
+                        averageScore={averageScore} 
+                        lessons={currentLessons}
+                    />
+                )}
 
-                <LessonViewer 
-                    is2DDrawingCourse={is2DDrawingCourse} 
-                    activeLessonId={activeLessonId} 
-                    currentLessonIndex={currentLessonIndex} 
-                    allLessonIdsLength={allLessonIds.length} 
-                    goToNextLesson={goToNextLesson} 
-                    goToPrevLesson={goToPrevLesson} 
-                    sidebarOpen={sidebarOpen} 
-                    setSidebarOpen={setSidebarOpen} 
-                    setSelectedCourse={setSelectedCourse} 
-                    getActiveLessonTitle={getActiveLessonTitle} 
-                    lessons={currentLessons} 
-                    completedLessons={completedLessons} 
-                    onLessonComplete={fetchProgress} 
-                    isEmployeeSide={isEmployeeSide} 
-                />
+                {selectedCourse.id === 'practical-assessment' ? (
+                    <PracticalAssessment onBack={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }} />
+                ) : (
+                    <LessonViewer 
+                        is2DDrawingCourse={is2DDrawingCourse} 
+                        activeLessonId={activeLessonId} 
+                        currentLessonIndex={currentLessonIndex} 
+                        allLessonIdsLength={allLessonIds.length} 
+                        goToNextLesson={goToNextLesson} 
+                        goToPrevLesson={goToPrevLesson} 
+                        sidebarOpen={sidebarOpen} 
+                        setSidebarOpen={setSidebarOpen} 
+                        setSelectedCourse={setSelectedCourse} 
+                        getActiveLessonTitle={getActiveLessonTitle} 
+                        lessons={currentLessons} 
+                        completedLessons={completedLessons} 
+                        onLessonComplete={fetchProgress} 
+                        isEmployeeSide={isEmployeeSide} 
+                    />
+                )}
             </div>
         </div>
     );

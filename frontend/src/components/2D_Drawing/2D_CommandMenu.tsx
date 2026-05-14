@@ -174,8 +174,8 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
                     <img src={linePropsImg} alt="Line Properties" className="software-screenshot screenshot-wide mt-4" />
 
-                    <div className="table-responsive mt-6">
-                      <table className="technical-table w-full">
+                    <div className="lesson-table-container mt-6">
+                      <table className="lesson-table">
                         <thead>
                           <tr>
                             <th>Application</th>

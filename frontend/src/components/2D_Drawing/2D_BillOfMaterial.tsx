@@ -31,8 +31,8 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
   const TABS = [
     { id: '1', label: 'Part Drawing' },
     { id: '2', label: 'Assembly Drawing' },
-    { id: '3', label: 'Numbering & Data' },
-    { id: '4', label: 'Refining' }
+    { id: '3', label: 'Additional Info' },
+    { id: '4', label: 'Edit Attribute' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {

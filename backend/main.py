@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from .database import engine, Base, get_db, get_db_mode
-from .routers import auth, admin, chat, lessons, quizzes
+from .routers import auth, admin, chat, lessons, quizzes, assessments
 
 # Create database tables on startup (only if SQLite, or MySQL is ready)
 try:
@@ -68,6 +68,7 @@ app.include_router(admin.router)
 app.include_router(chat.router)
 app.include_router(lessons.router)
 app.include_router(quizzes.router)
+app.include_router(assessments.router)
 
 @app.get("/")
 def read_root():

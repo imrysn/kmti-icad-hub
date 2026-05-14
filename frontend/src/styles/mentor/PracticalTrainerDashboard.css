@@ -1,0 +1,388 @@
+.trainer-dashboard {
+    padding: 1.5rem 2.5rem;
+    color: var(--text-main);
+    width: 100%;
+    background: var(--bg-surface);
+    min-height: 100vh;
+}
+
+.trainer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.header-controls .admin-sub-tabs {
+    background: transparent;
+    border-bottom: none;
+    padding: 0;
+}
+
+.header-info h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-white);
+    margin-bottom: 0.25rem;
+}
+
+.header-info p {
+    color: var(--text-dim);
+    font-size: 0.875rem;
+}
+
+.search-bar {
+    position: relative;
+    width: 300px;
+}
+
+.search-bar svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    transition: all 0.2s;
+}
+
+.search-bar input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.submissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.submission-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submission-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-glow);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.trainee-info {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.125rem;
+}
+
+.trainee-info h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.trainee-info span {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.status-badge.approved {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.status-badge.rejected {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.task-preview {
+    margin-bottom: 1.5rem;
+}
+
+.set-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.task-preview h3 {
+    margin: 0.25rem 0 0.5rem 0;
+    font-size: 1.25rem;
+}
+
+.submission-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.card-actions button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-hover);
+}
+
+.btn-primary {
+    background: var(--primary);
+    border: none;
+    color: #fff;
+}
+
+.card-actions .btn-primary {
+    flex: 0.6; /* Reduced width to prevent overlapping */
+    min-width: 100px;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+}
+
+.review-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #ef4444;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.review-task-info {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--bg-dark);
+    border-radius: 12px;
+}
+
+.review-task-info .label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.feedback-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.feedback-form label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.feedback-form textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-main);
+    resize: vertical;
+}
+
+.file-upload-area {
+    position: relative;
+}
+
+.file-upload-area input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload-area label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-dark);
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    background: var(--bg-dark);
+    display: flex;
+    gap: 1rem;
+}
+
+.modal-footer button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.85rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+}
+
+.btn-reject {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    border: 1px solid #fca5a5 !important;
+}
+
+.btn-reject:hover {
+    background: #dc2626 !important;
+    color: #fff !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.4);
+}
+
+.btn-approve {
+    background: #1a7f37 !important;
+    color: #fff !important;
+}
+
+.btn-approve:hover {
+    background: #1f9234 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(26, 127, 55, 0.4);
+}
+
+.no-submissions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem;
+    color: var(--text-dim);
+    text-align: center;
+}
+
+.no-submissions h3 {
+    margin-top: 1.5rem;
+    color: var(--text-main);
+}

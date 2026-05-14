@@ -156,6 +156,7 @@
 .nav-item:hover {
   background: var(--bg-card);
   color: var(--text-main);
+  transform: translateX(4px);
 }
 
 .nav-item.active {
@@ -506,30 +507,25 @@
 }
 
 .add-user-btn {
-  background: #238636;
-  color: white !important;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-md);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .add-user-btn:hover {
-  background: #2ea043 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(35, 134, 54, 0.2);
+    border-color: #DD4DFA !important;
+    color: #DD4DFA !important;
 }
 
-.add-user-btn:active {
-  transform: translateY(0);
-}
 
 .search-box {
   display: flex;
@@ -679,12 +675,12 @@
 }
 
 .action-icon-btn {
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  background: var(--color-white);
-  color: #64748b;
+  background: var(--bg-surface);
+  color: var(--text-dim);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -694,34 +690,23 @@
 }
 
 .action-icon-btn:hover:not(:disabled) {
-  background: var(--bg-surface);
-  color: var(--text-main);
-  border-color: var(--color-gray-300);
-}
-
-.action-icon-btn.edit-btn:hover:not(:disabled) {
-  color: var(--color-accent);
-  border-color: var(--color-accent-dim);
+  background: var(--bg-card);
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .action-icon-btn.delete-btn:hover:not(:disabled) {
   color: var(--color-error);
-  background: var(--color-error-dim);
-  border-color: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--color-error);
 }
 
 .action-icon-btn.toggle-btn {
   width: auto;
-  padding: 0 0.625rem;
-  font-size: 0.65rem;
+  padding: 0 0.875rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.action-icon-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
 }
 
 /* ── Modals ──────────────────────────────────────────────────── */
@@ -1971,7 +1956,7 @@
 .section-header h2 {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--text-white);
   margin: 0;
 }
 

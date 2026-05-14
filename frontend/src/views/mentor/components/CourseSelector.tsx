@@ -8,6 +8,7 @@ interface CourseSelectorProps {
     error: string | null;
     setSelectedCourse: (course: Course) => void;
     is3DCompleted: boolean;
+    is2DCompleted: boolean;
     canBypass: boolean;
 }
 
@@ -17,6 +18,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     error, 
     setSelectedCourse,
     is3DCompleted,
+    is2DCompleted,
     canBypass
 }) => {
     if (loading) {
@@ -48,6 +50,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                 <h1>Welcome to iCAD Hub</h1>
                 <p>Select your learning path to begin the deep dive</p>
             </div>
+
             <div className="course-selection">
                 <div className="course-grid">
                     {courses.map((course) => {

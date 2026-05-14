@@ -511,12 +511,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     id: '2d-line-props',
     title: 'Line Properties',
     content: ['Line Specifications', 'uniform specs', 'line types', 'line weights', 'Changing Colors', 'hidden lines', 'color green', 'Splines', 'partial sections', 'wave', 'curve distance', 'Center Lines', 'manual center line', 'offset value', 'Piping Center Line', 'OF Piping Assembly', 'Hierarchical Representation', 'assembly context', 'attributes', 'Layer'],
-    children: [
-      { id: '2d-line-props-1', title: 'Line Properties', content: ['line specifications', 'standard requirements'] },
-      { id: '2d-line-props-2', title: 'Changing Line Properties & Additional Lines', content: ['color dialog', 'part selection', 'spline waves'] },
-      { id: '2d-line-props-3', title: 'Center Line', content: ['center line offset', 'piping assembly'] },
-      { id: '2d-line-props-4', title: ' Representation of Parts Hierarchically', content: ['hierarchical representation', 'part detailling'] },
-    ],
     quiz: {
       title: 'The Alphabet of Lines (JIS Standards)',
       description: 'Understanding the standard line types and physical properties in KEMCO engineering.',
@@ -537,12 +531,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-dimensioning',
     title: 'Dimensioning',
-    children: [
-      { id: '2d-dimensioning-1', title: 'Adding Dimensions', content: ['dimensioning', 'adding dimensions', 'standard dimensioning', 'series dimesnion'] },
-      { id: '2d-dimensioning-2', title: 'Editing Dimensions', content: ['editing dimension', 'edit dimension characters', 'tolerance', 'chamfer', 'radius'] },
-      { id: '2d-dimensioning-3', title: 'Part Note', content: ['polished material', 'part note', 'S45C-D', 'S45C-CG', 'SS400-D'] },
-      { id: '2d-dimensioning-4', title: ' Change Position', content: ['change position', 'align dimensions', 'change dimension position', 'alignment of dimensions'] },
-    ],
     quiz: {
       title: 'Precision 2D Dimensioning Logic',
       description: 'Rules for accurate manufacturing communication and JIS compliance.',
@@ -563,15 +551,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-standard-part',
     title: 'Standard Part',
-    children: [
-      { id: '2d-standard-part-1', title: 'PCD, Thread, & Standard Parts', content: ['PCD', 'tapered thread(RC)', 'standard parts'] },
-      { id: '2d-standard-part-2', title: 'Oil Groove', content: ['oil groove', 'for flat surface', 'for circular portion', 'oil groove for flat surface', 'oil groove for circular portion'] },
-      { id: '2d-standard-part-3', title: 'Shaft and Key Plate', content: ['shaft and key plate', 'dimesnion of shaft and key plate'] },
-      { id: '2d-standard-part-4', title: 'Collar', content: ['collar', 'tolerance for collar', 'machining tolerance to be used in collar'] },
-      { id: '2d-standard-part-5', title: 'Collar - 2', content: ['collar', 'tolerance for collar', 'machining tolerance to be used in collar'] },
-      { id: '2d-standard-part-6', title: 'Scale & Relief Process', content: ['scale', 'relief process', 'standard scale',] },
-      { id: '2d-standard-part-7', title: 'Relief Process', content: ['relief process', 'four steps to show the detail on the template', 'subdrawing/library', 'load part', 'standard part', 'required template for relief process detail'] },
-    ],
     quiz: {
       title: '2D Standard Parts & Libraries',
       description: 'Understanding symbolic representation and placement of industrial hardware.',
@@ -592,10 +571,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-surface-app',
     title: 'Application of Surface',
-    children: [
-      { id: '2d-surface-app-1', title: 'Shotblasting', content: ['shotblasting', 'shotblasting for flat surface', 'shotblasting for circular portion'] },
-      { id: '2d-surface-app-2', title: 'Machining', content: ['machining', 'machining for flat surface', 'machining for circular portion'] },
-    ],
     quiz: {
       title: 'ICAD Surface Preparation and Material Processing Assessment',
       description: 'Technical requirements for removing "black skin" and applications of shotblasting and machining.',
@@ -636,10 +611,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-retaining-ring',
     title: 'Retaining Ring',
-    children: [
-      { id: '2d-retaining-ring-1', title: 'Retaining Rings-C - External', content: ['dimensioning', 'adding dimensions', 'standard dimensioning', 'series dimesnion'] },
-      { id: '2d-retaining-ring-2', title: 'Retaining Rings-C - Internal', content: ['editing dimension', 'edit dimension characters', 'tolerance', 'chamfer', 'radius'] }
-    ],
     quiz: {
       title: 'ICAD Retaining Rings and Layout Management Assessment',
       description: 'Technical engineering tables for Retaining Rings (C-Type) and proficiency in managing origin and layout settings within ICAD.',
@@ -660,10 +631,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-geometric-tol',
     title: 'Geometric Tolerance',
-    children: [
-      { id: '2d-geometric-tol-1', title: 'Geometric Tolerance', content: ['geometric tolerance', 'datum', 'tolerance value', 'tolerance symbol',] },
-      { id: '2d-geometric-tol-2', title: 'Datum', content: ['datum', 'datum feature', 'datum reference frame', 'datum shift'] }
-    ],
     quiz: {
       title: 'ICAD Geometric Dimensioning and Tolerancing (GD&T) Assessment',
       description: 'Technical proficiency in applying geometric tolerances, identifying interface components, and managing reference datums within ICAD.',
@@ -744,7 +711,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-heat-treatment',
     title: 'Heat Treatment',
-    children: Array.from({ length: 4 }, (_, i) => ({ id: `2d-heat-treatment-${i + 1}`, title: `Heat Treatment (${i + 1})` })),
     quiz: {
       title: 'ICAD Heat Treatment and Material Standards Assessment',
       description: 'Technical evaluation of heat treatment processes, material-specific hardness requirements, and Japanese (KEM Style) drawing indications.',
@@ -805,12 +771,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-bom',
     title: 'BOM',
-    children: [
-      { id: '2d-bom-1', title: 'Part drawing', content: ['how to create BOM', 'how to create BOM in 2d'] },
-      { id: '2d-bom-2', title: 'Assembly drawing', content: ['how to create assembly drawing', 'how to create assembly drawing in 2d'] },
-      { id: '2d-bom-3', title: 'Additional Information', content: ['additional information', 'parts information setting'] },
-      { id: '2d-bom-4', title: 'Edit Attribute', content: ['edit attribute', 'bill of material after inserting on iCAD data', "how to edit BOM attributes"] }
-    ],
     quiz: {
       title: 'ICAD Bill of Materials (BOM) and Additional Information Assessment',
       description: 'Technical proficiency in generating Bill of Materials, managing Excel-based data exports, and configuring drawing title blocks within the ICAD environment.',
@@ -873,12 +833,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     id: '2d-additional-view',
     title: 'Additional View',
     content: ['Auxiliary View', 'Partial View', 'True Shape', 'inclined face', 'Broken-out Section', 'View Break', 'Detail View', 'Section View', 'magnified area', 'Removed Section', 'cutting plane', 'localized details', 'view enlargement'],
-    children: [
-      { id: '2d-additional-view-1', title: 'Cross Section View', content: ['inclined surfaces', 'true shape projection'] },
-      { id: '2d-additional-view-2', title: 'Partial Section & Detail Drawing', content: ['broken-out cutouts', 'view shortening'] },
-      { id: '2d-additional-view-3', title: 'Isometric View & Cross-sectional depth', content: ['magnification', 'offset sections'] },
-      { id: '2d-additional-view-4', title: 'Trim', content: ['view trimming', 'detail view restrictions'] },
-    ],
     quiz: {
       title: 'ICAD Advanced 2D Projection and View Manipulation Assessment',
       description: 'Technical knowledge of complex 2D view generation, including sectioning, detailing, and the management of visual depth and precision in ICAD drawings.',
@@ -900,10 +854,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     id: '2d-operal-view',
     title: 'Operate View',
     content: ['Operate View', 'Operation Drawing', 'manufacturing steps', 'setup dimensions', 'stock outline', 'in-process inspection', 'machining datums', 'process sequence', 'factory station guidance'],
-    children: [
-      { id: '2d-operal-view-1', title: 'Move, Isometric, and Orthographic view', content: ['move', 'isometric view', 'orthographic view'] },
-      { id: '2d-operal-view-2', title: 'Delete View', content: ['delete view', 'delete view in 2d'] },
-    ],
     quiz: {
       title: 'ICAD View Management and Deletion Assessment',
       description: 'Technical proficiency in manipulating 2D local views, maintaining projection alignment, and executing permanent deletion protocols within the ICAD drafting environment.',
@@ -924,10 +874,6 @@ export const ICAD_2D_LESSONS: Lesson[] = [
   {
     id: '2d-normal-mirror',
     title: 'Normal/Mirror Parts',
-    children: [
-      { id: '2d-normal-mirror-1', title: 'Normal & Mirror Parts', content: ['normal parts', 'mirror parts', 'rule on how to detail a mirror parts'] },
-      { id: '2d-normal-mirror-2', title: 'Mirror command on detailing', content: ['mirror command', 'mirror parts', 'rule on how to detail a mirror parts'] }
-    ],
     quiz: {
       title: 'ICAD Standards and Advanced Detailing Assessment',
       description: 'Proficiency in hardware selection, piping standards, and the procedural rules for detailing mirrored parts within the ICAD drafting environment.',

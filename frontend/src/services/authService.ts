@@ -186,5 +186,12 @@ export const authService = {
     getStoredUser(): User | null {
         const user = sessionStorage.getItem('user');
         return user ? JSON.parse(user) : null;
+    },
+
+    /**
+     * Get stored access token
+     */
+    getToken(): string | null {
+        return sessionStorage.getItem('access_token');
     }
 };

@@ -11,10 +11,11 @@ import { UserManagement } from './components/UserManagement'; import { Performan
 import { TraineeDetail } from './components/TraineeDetail'; import { AuditLogs } from './components/AuditLogs';
 import { KnowledgeManagement } from './components/KnowledgeManagement'; import { IntelligenceChatbot } from './components/IntelligenceChatbot';
 import { AssessmentManagement } from './components/AssessmentManagement';
+import { PracticalManagement } from './components/PracticalManagement';
 import { BroadcastCenter } from './components/BroadcastCenter'; import { UserModal } from './components/UserModal';
 import { parseBackendError } from '../../utils/errorUtils';
 
-export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'assessments' | 'logs';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'assessments' | 'practical' | 'logs';
 
 export const AdminMode: React.FC = () => {
     const navigate = useNavigate();
@@ -178,6 +179,7 @@ export const AdminMode: React.FC = () => {
                         <Route path="intelligence" element={<ErrorBoundary><KnowledgeManagement /></ErrorBoundary>} />
                         <Route path="chatbot" element={<ErrorBoundary><IntelligenceChatbot /></ErrorBoundary>} />
                         <Route path="assessments" element={<ErrorBoundary><AssessmentManagement /></ErrorBoundary>} />
+                        <Route path="practical" element={<ErrorBoundary><PracticalManagement /></ErrorBoundary>} />
                         <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />
                         <Route path="/" element={<Navigate to="overview" replace />} />
                     </Routes>

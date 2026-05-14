@@ -172,7 +172,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-small mt-4" style={{ height: '200px' }} />
+                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot" style={{ height: 'auto', width: "300px" }} />
                 </div>
               </div>
 
