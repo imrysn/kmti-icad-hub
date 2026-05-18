@@ -53,29 +53,40 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
   ];
 
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <section className="lesson-intro">
+        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+          iCAD WINDOW STRUCTURE
+          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+            const introTitle = "iCAD WINDOW STRUCTURE";
+            const introDesc = "Functional areas of the workspace designed for maximum modeling efficiency.";
+            speak([introTitle, introDesc, ...interfaceSteps]);
+          }} onStop={stop} />
+        </h3>
+        <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+          Functional areas of the workspace designed for maximum modeling efficiency.
+        </p>
+      </section>
+
       {/* Main Interactive Stage */}
       <div className="lesson-grid interactive-layout single-card">
-        <div
-          className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}
-          data-reading-index="0"
-        >
+        <div className={`lesson-card tab-content fade-in ${currentIndex >= 2 ? 'reading-active' : ''}`} 
+             data-reading-index={currentIndex >= 2 && currentIndex <= 13 ? "2" : undefined}>
           <div className="card-header">
             <div className="header-with-icon">
               <div className="icon-box"><Layout size={18} /></div>
               <h3>iCAD Window Structure</h3>
             </div>
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(interfaceSteps, 0)} onStop={stop} />
           </div>
 
-          <div className="compact-intro-area">
+          <div className={`compact-intro-area ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
             <KaraokeLessonText
               text={interfaceSteps[0]}
-              isActive={isSpeaking && currentIndex === 0}
+              isActive={isSpeaking && currentIndex === 2}
               currentCharIndex={currentCharIndex}
               className="p-flush"
             />
@@ -84,7 +95,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           <div className="interactive-stage-container">
             <InteractiveImageMap
               imageSrc={icadWindowStructure}
-              externalIndex={currentIndex - 2}
+              externalIndex={currentIndex - 4}
               externalCharIndex={currentCharIndex}
             />
           </div>
@@ -95,7 +106,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
               {interfaceAreas.map((area) => (
                 <div
                   key={area.id}
-                  className={`area-chip ${currentIndex - 2 === area.id - 1 ? 'active' : ''}`}
+                  className={`area-chip ${currentIndex - 4 === area.id - 1 ? 'active' : ''}`}
                 >
                   <span className="chip-index">{area.id}</span>
                   <span className="chip-name">{area.name}</span>
@@ -105,8 +116,8 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
@@ -115,3 +126,4 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
 };
 
 export default IcadInterfaceLesson;
+

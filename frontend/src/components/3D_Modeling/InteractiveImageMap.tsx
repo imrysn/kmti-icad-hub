@@ -122,7 +122,6 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
               onMouseEnter={() => setHoveredHotspotId(hotspot.id)}
               onMouseLeave={() => setHoveredHotspotId(null)}
               onClick={() => handleHotspotClick(hotspot)}
-              data-reading-index={index + 2}
             >
               <div className="pulse-ring"></div>
               <div className="hotspot-trigger"></div>

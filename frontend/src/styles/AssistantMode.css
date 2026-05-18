@@ -5,9 +5,10 @@
 .assistant-mode-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px); /* Adjust for header height */
-  padding: 1rem 2rem;
-  background: var(--bg-surface);
+  height: calc(100vh - 120px);
+  padding: 0;
+  background: var(--bg-dark);
+  width: 100%; /* Explicitly set full width */
 }
 
 /* ── Tabs Navigation ───────────────────────────────────────── */
@@ -17,7 +18,7 @@
   gap: 1.5rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 0.1rem;
+  padding: 1rem 2rem 0.1rem; /* Added padding here instead to keep tabs aligned */
   flex-shrink: 0;
 }
 
@@ -69,9 +70,10 @@
 
 .assistant-tab-content {
   flex-grow: 1;
-  min-height: 0; /* Important for flex children scrollability */
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  width: 100%; /* Stretch to fit parent */
 }
 
 /* Ensure Chatbot layout fills the tab content height and overrides its default fixed height */

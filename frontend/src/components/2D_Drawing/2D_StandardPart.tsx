@@ -1,570 +1,656 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
+
 /* Importing assets for Standard Part Detail (1) */
-
 import pcdImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_pcd.png";
-
 import taperedThreadImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_tapered_thread.png";
-
 import standardPartDetailImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_standard_parts.jpg";
+
 /* Importing assets for Standard Part Detail (2) */
-
 import oilGroove1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(2)_oil_groove_1.png";
-
 import oilGroove2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(2)_oil_groove_2.png";
+
 /* Importing assets for Standard Part Detail (3) */
-
 import shaftKeyPlate1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_1.png";
-
 import shaftKeyPlate2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_2.jpg";
-
 import shaftKeyPlate3Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_3.png";
+
 /* Importing assets for Standard Part Detail (4) */
-
 import collarImg from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar.png";
+
 /* Importing assets for Standard Part Detail (5) */
-
 import collar1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar_1.png";
-
 import collar2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar_2.png";
+
 /* Importing assets for Standard Part Detail (6) */
-
 import scaleImg from "../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
-
 import reliefProcess1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(6)_relief_process_1.png";
-
 import reliefProcess2Img from "../../assets/2D_Image_File/2D_standard_part_detail(6)_relief_process_2.jpg";
+
 /* Importing assets for Standard Part Detail (7) */
-
 import reliefWorkflowImg from "../../assets/2D_Image_File/2D_tandard_part_detail(7)_relief_process_3.png";
-
 import reliefDialogImg from "../../assets/2D_Image_File/2D_tandard_part_detail(7)_relief_process_4.jpg";
 
 interface StandardPartLessonProps {
-  subLessonId?: string;
+  nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
-  nextLabel?: string;
 }
 
 const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
-  subLessonId,
   onNextLesson,
   onPrevLesson,
   nextLabel,
 }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
-
-  const standard1Steps = [
-    "Pitch Center Diameter: PCD is no longer used in KEMCO drawings to prevent fabrication errors. Instead, provide individual coordinates or dimensions.",
-    "Tapered Threads: For technical threads like Rc, ensure you apply the specific 2D detailing patterns shown in the template.",
-    "Data Input: On standard part templates, only modify the boxed portions. All other template details should remain unchanged."
+  const TABS = [
+    { id: '1', label: 'PCD / Tapered / Standard' },
+    { id: '2', label: 'Oil Groove' },
+    { id: '3', label: 'Shaft & Key' },
+    { id: '4', label: 'Collar' },
+    { id: '6', label: 'Scale' },
+    { id: '7', label: 'Relief Process' }
   ];
 
-  const standard2Steps = [
-    "Oil Grooves: These grooves distribute lubrication from oil holes. For flat surfaces, depth should be 1.5mm, and the groove must be wider than the accompanying drill hole. For circular portions, ensure a smooth finish designated by R to ensure proper oil flow."
-  ];
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-standard-part-active-tab') || TABS[0].id;
+  });
 
-  const standard3Steps = [
-    "Shaft and Key Plates: Follow the dimension table for shaft and key plate thickness. Ensure all cut shapes are free from burrs and use specified flat bar materials with correct width tolerances."
-  ];
-
-  const standard4Steps = [
-    "Collars: Collars are fitted on shafts to prevent sliding and serve as mechanical stoppers. Review the tolerance standards for correct fitment on your shaft designs."
-  ];
-
-  const standard5Steps = [
-    "Advanced Collars: The OST-2 collar is used with urethane rubber stoppers. This design prevents over-tightening which could distort the urethane material. Follow the provided detailing reference for OST-2 parts."
-  ];
-
-  const standard6Steps = [
-    "Scale: Adhere to JIS Z 8314 standard scales. While assembly drawings allow some flexibility, parts drawings must always use the standard KEMCO scale.",
-    "Relief Process: Used at shaft shoulders to provide tool clearance and prevent damage. This is required for shafts with surface grinding and must be clearly shown in 2D detailing."
-  ];
-
-  const standard7Steps = [
-    "Relief Workflow: To show specialized relief details, use the part library to load the Relief Process template. Place this detail within the global view of your drawing template."
-  ];
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-standard-part-${activeTab}`);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    localStorage.setItem('2d-standard-part-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
+  const handleNext = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, [subLessonId]);
+  const handlePrev = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
+    '2d-standard-part-1': {
+      title: '',
+      subtitle: '',
+      steps: [
+        "is no longer used for KEMCO drawing to avoid misreading of dimension during fabrication.",
+        "Based on the drawing, we must apply it on 2D detailing",
+        "Boxed portion of the template is the only data need to be input, other than that no detail will be change."
+      ]
+    },
+    '2d-standard-part-2': {
+      title: '',
+      subtitle: '',
+      steps: [
+        "Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole."
+      ]
+    },
+    '2d-standard-part-3': {
+      title: '',
+      subtitle: '',
+      steps: [
+        "The shape after cutting must be free from burrs. Use flat bar material. The tolerance of the width groove must be f plus zero point three over plus zero point two.",
+        "As much as possible, follow the way of detailing in this reference. Do not position the key groove below."
+      ]
+    },
+    '2d-standard-part-4': {
+      title: '',
+      subtitle: '',
+      steps: [
+        "Used in machine, fitted on a shaft to prevent sliding movement. <br /> Also serves as mechanical stopper and stroke limiters.",
+        "Can used to hold urethane rubber and serve as stopper. To avoid over press of the material during tightening that causes the urethane to distort.",
+        "As much as possible, follow the way of detailing in this reference."
+      ]
+    },
+    '2d-standard-part-6': {
+      title: '',
+      subtitle: '',
+      steps: [
+        "Follow the standard scale given by KEMCO.",
+        "On parts drawing, standard scale must be always used.",
+        "On assembly drawing, standard scale should be used, but non-standard scale can be used as a second option."
+      ]
+    },
+    '2d-standard-part-7': {
+      title: '',
+      subtitle: '',
+      steps: [
+        "Often used at the end of the shoulder portion of a shaft to provide clearance for the cutting tool and also to avoid damaging it.",
+        "There are four steps to show the detail on the template. Choose the required template and click OK."
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[`2d-standard-part-${activeTab}`] || LESSON_DATA['2d-standard-part-1'];
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          Standard Part
-          Detail{" "}
-          {subLessonId === "2d-standard-part-1"
-            ? "(1)"
-            : subLessonId === "2d-standard-part-2"
-              ? "(2)"
-              : subLessonId === "2d-standard-part-3"
-                ? "(3)"
-                : subLessonId === "2d-standard-part-4"
-                  ? "(4)"
-                  : subLessonId === "2d-standard-part-5"
-                    ? "(5)"
-                    : subLessonId === "2d-standard-part-6"
-                      ? "(6)"
-                      : subLessonId === "2d-standard-part-7"
-                        ? "(7)"
-                        : ""}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (subLessonId === "2d-standard-part-1") speak(standard1Steps);
-            else if (subLessonId === "2d-standard-part-2") speak(standard2Steps);
-            else if (subLessonId === "2d-standard-part-3") speak(standard3Steps);
-            else if (subLessonId === "2d-standard-part-4") speak(standard4Steps);
-            else if (subLessonId === "2d-standard-part-5") speak(standard5Steps);
-            else if (subLessonId === "2d-standard-part-6") speak(standard6Steps);
-            else if (subLessonId === "2d-standard-part-7") speak(standard7Steps);
-          }}
-            onStop={stop}
-          />
-        </h3>
 
-        <p className="lesson-subtitle">
-          {" "}
-          {subLessonId === "2d-standard-part-1"
-            ? "Guidelines for PCD, Tapered Threads, and Standard Part Template requirements."
-            : subLessonId === "2d-standard-part-2"
-              ? "Standardized oil groove designs for flat surfaces and circular portions."
-              : subLessonId === "2d-standard-part-3"
-                ? "Dimensional standards and detailing practices for Shafts and Key Plates."
-                : subLessonId === "2d-standard-part-4"
-                  ? "Functional applications and tolerance standards for Collars."
-                  : subLessonId === "2d-standard-part-5"
-                    ? "Advanced collar applications (OST-2) for urethane materials and stoppers."
-                    : subLessonId === "2d-standard-part-6"
-                      ? "Standard scale applications (JIS Z 8314) and relief process specifications."
-                      : subLessonId === "2d-standard-part-7"
-                        ? "Workflow for implementing specialized Relief Process templates."
-                        : "Operational standards for KEMCO part detailing."}
-        </p>
-      </section>
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {" "}
-          {subLessonId === "2d-standard-part-1" ? (
-            <div className="flex-col">
-              {" "}
-              {/* d. PCD Section */}
-              <div className="sub-section-container">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">d.</span>
-                  <span className="step-label">PCD</span>
-                </div>
-                <p className="p-flush" style={{ marginBottom: "1rem" }}>
-                  (Pitch Center Diameter) is no longer used for KEMCO drawing to avoid misreading of dimension during fabrication.
-                </p>
-                <div>
-                  <img src={pcdImg} alt="PCD Dimension Comparison" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
-              <div className="section-divider"></div>{" "}
-              {/* e. Tapered Thread (Rc) Section */}
-              <div className="sub-section-container">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">e.</span>
-                  <span className="step-label">Tapered Thread (Rc)</span>
-                </div>
-                <p className="p-flush" style={{ marginBottom: "1rem" }}>
-                  Based on the drawing, we must apply it on 2D detailing
-                </p>
-                <div>
-                  <img src={taperedThreadImg} alt="Tapered Thread 2D Detailing" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
-              <div className="section-divider"></div>{" "}
-              {/* f. Standard Parts Section */}
-              <div className="sub-section-container">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">f.</span>
-                  <span className="step-label">Standard Parts</span>
-                </div>
-                <p className="p-flush" style={{ marginBottom: "1rem" }}>
-                  Boxed portion of the template is the only data need to be
-                  input, other than that no detail will be change.
-                </p>
-                <div>
-                  <img src={standardPartDetailImg} alt="Standard Parts Template details" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
-            </div>
-          ) : subLessonId === "2d-standard-part-2" ? (
-            <div className="flex-col">
-              {" "}
-              {/* a. Oil Groove Section */}
-              <div>
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">a.</span>
-                  <span className="step-label">Oil Groove</span>
-                </div>
-                <p className="p-flush">
-                  Is a groove in the surface of a machine part that distributes
-                  lubricating oil injected through an oil hole
-                </p>
-                <div style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>
-                  <p className="red-text"><strong>※ There are two (2) kinds of oil groove</strong></p>
-                </div>{" "}
-                {/* 1. For Flat Surface */}
-                <div className="sub-section-container">
-                  <div className="step-header" style={{ marginBottom: "1rem" }}>
-                    <span className="step-number">1.</span>
-                    <span className="step-label">For Flat Surface</span>
+          <div className="fade-in">
+
+            <div className="flex-col tab-content fade-in">
+              {activeTab === '1' && (
+                <div className="flex-col">
+                  <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header" style={{marginLeft:"3rem"}}>
+                      <span className="step-number">d</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="(PCD) Pitch Center Diameter"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description" >
+                      <div className="red-text mb-4">
+                        <KaraokeLessonText
+                          text={currentLesson.steps[0]}
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </div>
+                      <img src={pcdImg} alt="PCD Elimination" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
-                  <div>
-                    <img src={oilGroove1Img} alt="Oil Groove - Flat Surface Detail and Example" className="software-screenshot screenshot-wide" />
-                  </div>{" "}
-                  <ul className="list-flush">
-                    {" "}
-                    <li>
-                      {" "}
-                      <span></span> Follow the standard detail of KEMCO for
-                      flat surface <strong>(Figure 1)</strong>.{" "}
-                    </li>{" "}
-                    <li>
-                      {" "}
-                      <span></span> Depth of grease line should be 1.5mm{" "}
-                    </li>{" "}
-                    <li>
-                      {" "}
-                      <span></span> In case of drill hole and tap hole, the
-                      diameter of the hole must be smaller than width of
-                      groove.{" "}
-                    </li>{" "}
-                  </ul>
-                </div>
-                <div className="section-divider"></div>{" "}
-                {/* 2. For Circular Portion */}
-                <div className="sub-section-container">
-                  <div className="step-header" style={{ marginBottom: "1rem" }}>
-                    <span className="step-number">2.</span>
-                    <span className="step-label">For Circular Portion</span>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+                    <div className="step-header" style={{marginLeft:"3rem"}}>
+                      <span className="step-number">e</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Tapered Threads (Rc)"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[1]}
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={taperedThreadImg} alt="Tapered Threads" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
-                  <div>
-                    <img src={oilGroove2Img} alt="Oil Groove - Circular Portion Detail and Example" className="software-screenshot screenshot-wide" />
-                  </div>{" "}
-                  <ul className="list-flush">
-                    {" "}
-                    <li>
-                      {" "}
-                      <span></span> Follow the standard detail of KEMCO for
-                      circular portion <strong>(Figure 2</strong>).{" "}
-                    </li>{" "}
-                    <li>
-                      {" "}
-                      <span></span> Compared to grooving of flat surfaces,
-                      radius 2 cannot achieve on actual.
-                      <br />
-                      But the surface should be smooth finish{" "}
-                      <strong>R (滑らかに仕上)</strong>.{" "}
-                    </li>{" "}
-                    <li>
-                      {" "}
-                      <span></span> Depth of grease line should be 1.5mm{" "}
-                    </li>{" "}
-                    <li>
-                      {" "}
-                      <span></span> In case of drill hole and tap hole, the
-                      diameter of the hole must be smaller than width of
-                      groove.{" "}
-                    </li>{" "}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ) : subLessonId === "2d-standard-part-3" ? (
-            <div className="flex-col">
-              {" "}
-              {/* b. Shaft and Key Plate Section */}
-              <div>
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">b.</span>
-                  <span className="step-label">Shaft and Key Plate</span>
-                </div>
-                <div className="sub-section-header">
-                  {" "}
-                  <p className="red-text" style={{ marginBottom: "1rem", marginTop: "1rem" }}><strong>※ Dimension of Shaft and Key Plate</strong></p>
-                </div>
-                <div>
-                  <img src={shaftKeyPlate1Img} alt="Shaft and Key Plate Dimensions Table" className="software-screenshot screenshot-wide" />
-                </div>
-                <div className="info-box" style={{ marginBottom: "2rem", marginTop: "1rem", height: "11rem" }}>
-                  <p className="red-text"><strong>Note:</strong></p>{" "}
-                  <ul className="list-flush">
-                    {" "}
-                    <li>
-                      {" "}
-                      <span></span> The shape after cutting must be free from
-                      burrs{" "}
-                    </li>{" "}
-                    <li>
-                      {" "}
-                      <span></span> Use flat bar material{" "}
-                    </li>{" "}
-                    <li>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", verticalAlign: "middle" }}>
-                        <span>The tolerance of the width groove must be</span>
-                        <img src={shaftKeyPlate2Img} alt="Tolerance callout" style={{ height: "2.5rem", width: "auto", borderRadius: "2px" }} />
-                      </span>
-                    </li>{" "}
-                  </ul>
-                </div>
-                <div className="section-divider"></div>{" "}
-                {/* Sample Drawing Section */}
-                <div className="sub-section-header">
-                  {" "}
-                  <p className="red-text" style={{ marginBottom: "1rem", marginTop: "1rem" }}><strong>※ Sample Drawing</strong></p>
-                </div>
-                <div>
-                  <img src={shaftKeyPlate3Img} alt="Sample Drawing and Isometric View" className="software-screenshot screenshot-wide" />
-                </div>{" "}
 
-                <div className="info-box" style={{ marginTop: "1rem" }}>
-                  As much as possible, follow the way of detailing in this
-                  reference. <br /> Do not position the key groove below.
-                </div>
-              </div>
-            </div>
-          ) : subLessonId === "2d-standard-part-4" ? (
-            <div className="flex-col">
-              {" "}
-              {/* c. Collar Section */}
-              <div className="sub-section-header">
-                <div className="step-header" style={{ marginBottom: "-1rem" }}>
-                  <span className="step-number">c.</span>
-                  <span className="step-label">Collar</span>
-                </div>
-              </div>
-              <div>
-                <p>
-                  Used in machine, fitted on a shaft to prevent sliding
-                  movement.
-                  <br /> Also serves as mechanical stopper and stroke limiters.
-                </p>
-              </div>
-
-              <p className="red-text" style={{ marginBottom: "1rem" }}><strong>※ Tolerances for collar</strong></p>
-
-              <div>
-                <img src={collarImg} alt="Tolerances for Collar - Example 1 and 2" className="software-screenshot screenshot-wide" />
-              </div>
-            </div>
-          ) : subLessonId === "2d-standard-part-5" ? (
-            <div className="flex-col">
-              {" "}
-              <h4 className="red-text" style={{ fontStyle: "italic" }}>Example 3.</h4>
-              <div>
-                <img src={collar1Img} alt="OST-2 Sectional View" className="software-screenshot" />
-              </div>
-              <div className="info-box">
-                {" "}
-                <ul className="list-flush">
-                  {" "}
-                  <li>
-                    <span>
-                      Can used to hold urethane rubber and serve as stopper.
-                    </span>{" "}
-                  </li>{" "}
-                  <li>
-                    <span>
-                      To avoid over press of the material during tightening that
-                      causes the urethane to distort.
-                    </span>
-                  </li>{" "}
-                </ul>
-              </div>
-              <div className="section-divider"></div>{" "}
-              <div className="sub-section-header">
-                {" "}
-                <p className="red-text"><strong>※ Sample Drawing</strong></p>
-              </div>{" "}
-
-              <div>
-                <img src={collar2Img} alt="OST-2 Sample Technical Drawing" className="software-screenshot screenshot-wide" />
-              </div>{" "}
-              <ul className="list-flush">
-                {" "}
-                <li>
-                  <span><strong>
-                    As much as possible, follow the way of detailing in this
-                    reference.
-                  </strong></span>
-                </li>
-              </ul>
-            </div>
-          ) : subLessonId === "2d-standard-part-6" ? (
-            <div className="flex-col">
-              {" "}
-              {/* g. Scale Section */}
-              <div>
-                <div className="step-header" style={{ marginBottom: "2rem" }}>
-                  <span className="step-number">g.</span>
-                  <span className="step-label">Scale</span>
-                </div>
-                <div style={{ marginBottom: "2rem" }}>
-                  <img src={scaleImg} alt="Standard Scale Table JIS Z 8314" className="software-screenshot screenshot-large" />
-                </div>{" "}
-                <ul className="list-flush">
-                  <li>
-                    <span>Follow the standard scale given by KEMCO.</span>
-                  </li>
-                  <li>
-                    <span>
-                      On parts drawing, standard scale must be always used.
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      On assembly drawing, standard scale should be used, but
-                      non-standard scale can be used as a second option.
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">h.</span>
-                  <span className="step-label">Relief process</span>
-                </div>
-                <div>
-                  <p className="p-flush">
-                    {" "}
-                    Often used at the end of the shoulder portion of a shaft to
-                    provide clearance for the cutting tool and also to avoid
-                    damaging it.
-                  </p>
-                </div>
-                <p className="red-text" style={{ marginTop: "1rem", marginBottom: "1rem" }}><strong>In 2D</strong></p>
-                <div>
-                  <img src={reliefProcess1Img} alt="Relief Process Diagram in 2D" className="software-screenshot screenshot-wide" />
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "2rem" }}>
-                  <ul className="list-flush">
-                    <li>
-                      <span>
-                        Relief process detail should be{" "}
-                        <strong>used on shaft parts</strong> <br /> with three (3)
-                        triangle and surface grinding process.
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        Relief process should be{" "}
-                        <strong>shown on 2D detailing.</strong>
-                      </span>
-                    </li>
-                  </ul>
-                  <div style={{ marginRight: "22rem", marginBottom: "2rem" }}>
-                    <img src={reliefProcess2Img} alt="Relief Symbol" style={{ width: "70px", height: "auto" }} />
+                  <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
+                    <div className="step-header" style={{marginLeft:"3rem"}}>
+                      <span className="step-number">f</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Standard Parts"
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[2]}
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={standardPartDetailImg} alt="Standard Parts" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
                 </div>
-                <div className="info-box" style={{ marginTop: "2rem" }}>
-                  <p className="red-text"><strong>Note:</strong></p>{" "}
-                  <ul className="list-flush">
+              )}
 
-                    <li>
+              {activeTab === '2' && (
+                <div className="flex-col">
+                  {/* General Description */}
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">a</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Oil Groove"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-2"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <p className="font-semibold text-red-400 mt-2" style={{ color: 'red', fontWeight: "600", margin: "0.5rem 0" }}>
+                        ※ There are two (2) kinds of oil groove
+                      </p>
+                    </div>
+                  </div>
 
-                      <span>
-                        All corners of the shaft cannot be straight by using
-                        grinding or any machining equipment.
-                      </span>{" "}
-                    </li>{" "}
-                    <li>
-                      <span>
-                        Sliding portion needs to be supplied with oil.
-                      </span>{" "}
-                    </li>{" "}
-                  </ul>
+                  {/* 1. For Flat Surface */}
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-1rem" }}>
+                    <div className="step-header"  style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">1</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="For Flat Surface"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[1]}
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      
+                      <div className="mb-4">
+                        <img src={oilGroove1Img} alt="Oil Groove Flat Detail" className="software-screenshot screenshot-wide" style={{ marginTop: "-2rem", marginBottom: "-1rem"}} />
+                      </div>
+
+                      <div className="instruction-box mt-4 mb-4">
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem"}}>●</span>
+                            <span>Follow the standard detail of KEMCO for flat surface <strong style={{ color: 'red' }}>(Figure 1)</strong>.</span>
+                          </li>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem"}}>●</span>
+                            <span>Depth of grease line should be <strong>1.5mm</strong></span>
+                          </li>``
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem"}}>●</span>
+                            <span>In case of drill hole and tap hole, the diameter of the hole must be <strong>smaller than width of groove</strong>.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. For Circular Portion */}
+                  <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: "-1rem" }}>
+                    <div className="step-header"  style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">2</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="For Circular Portion"
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[2]}
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+
+                      <div className="mb-4">
+                        <img src={oilGroove2Img} alt="Oil Groove Circular Detail" className="software-screenshot screenshot-wide" style={{ marginTop: "-2rem", marginBottom: "-1rem"}} />
+                      </div>
+
+                      <div className="instruction-box mt-4 mb-4">
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Follow the standard detail of KEMCO for circular portion <strong style={{ color: 'red' }}>(Figure 2)</strong>.</span>
+                          </li>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Compared to grooving of flat surfaces, radius 2 cannot achieve on actual. But the surface should be smooth finish <strong style={{ color: 'red' }}>R (滑らかに仕上)</strong>.</span>
+                          </li>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Depth of grease line should be <strong>1.5mm</strong></span>
+                          </li>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>In case of drill hole and tap hole, the diameter of the hole must be <strong>smaller than width of groove</strong>.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {activeTab === '3' && (
+                <div className="flex-col">
+                  {/* General section */}
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">b</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Shaft and Key Plate"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    
+                    <div className="step-description">
+                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600" }}>
+                        ※ Dimension of Shaft and Key Plate
+                      </p>
+
+                      <div className="mb-4">
+                        <img src={shaftKeyPlate1Img} alt="Shaft Key Plates Diagram" className="software-screenshot screenshot-wide mb-4" />
+                      </div>
+
+                      <div className="instruction-box mt-4 mb-4">
+                        <p style={{ color: "red", fontWeight: "bold", marginBottom: "0.5rem" }}>Note:</p>
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>The shape after cutting must be free from burrs</span>
+                          </li>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Use flat bar material</span>
+                          </li>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>The tolerance of the width groove must be <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>f <span style={{ display: "inline-block", verticalAlign: "middle", fontSize: "0.6em", lineHeight: "1.2", marginLeft: "0.1rem" }}><div style={{textAlign: "left"}}>+0.3</div><div style={{textAlign: "left"}}>+0.2</div></span></span></span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sample Drawing */}
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "1rem" }}>
+                    <div className="step-description">
+                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", marginTop: "-1rem" }}>
+                        ※ Sample Drawing
+                      </p>
+
+                      <div className="mb-4">
+                        <img src={shaftKeyPlate3Img} alt="Key Plate Sample Drawing" className="software-screenshot screenshot-wide" style={{ marginTop: "-3rem", marginBottom: "-1rem" }} />
+                      </div>
+                      
+                      <div className="instruction-box mt-4 mb-4">
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>As much as possible, follow the way of detailing in this reference.<br/>Do not position the key groove below.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              )}
+
+              {activeTab === '4' && (
+                <div className="flex-col">
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">1</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Collar"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", marginTop: "-1rem", marginBottom: "2rem" }}>
+                        ※ Tolerance for Collar
+                      </p>
+
+                      <img src={collarImg} alt="Collar Standard" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+
+                  {/* OST-2 Example 3 */}
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
+                    <div className="step-description">
+                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", fontStyle: "italic", marginTop: "-2rem", fontSize:"1.3rem", marginLeft: "1.5rem"}}>
+                        Example 3.
+                      </p>
+
+                      <div className="mb-4">
+                        <img src={collar1Img} alt="OST-2 Overview" className="software-screenshot screenshot-wide" style={{marginLeft: "1rem", marginTop: "-2rem"}} />
+                      </div>
+
+                      <div className="instruction-box mt-4 mb-4">
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Can used to hold urethane rubber and serve as stopper.</span>
+                          </li>
+                          <li style={{ display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>To avoid over press of the material during tightening that causes<br/>the urethane to distort.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sample Drawing */}
+                  <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: "1rem" }}>
+                    <div className="step-description">
+                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", marginTop: "-1rem"}}>
+                        ※ Sample Drawing
+                      </p>
+
+                      <div className="mb-4">
+                        <img src={collar2Img} alt="OST-2 Details" className="software-screenshot screenshot-wide mb-4" />
+                      </div>
+
+                      <div className="instruction-box mt-4 mb-4">
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>As much as possible, follow the way of detailing in this reference.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === '6' && (
+                <div className="flex-col">
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">g</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Scale"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <div className="mb-4">
+                        <img src={scaleImg} alt="Standard Scales" className="software-screenshot screenshot-wide" />
+                      </div>
+
+                      <div className="instruction-box mt-4 mb-4">
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Follow the standard scale given by KEMCO.</span>
+                          </li>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>On parts drawing, standard scale must be always used.</span>
+                          </li>
+                          <li style={{ display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>On assembly drawing, standard scale should be used, but non-standard<br/>scale can be used as a second option.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === '7' && (
+                <div className="flex-col">
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">h</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Relief process"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      
+                      <p className="font-semibold mb-4" style={{ color: 'red', marginTop: "1rem" }}>
+                        In 2D
+                      </p>
+
+                      <div className="mb-4">
+                        <img src={reliefProcess1Img} alt="Relief Process 2D" className="software-screenshot screenshot-wide mb-4" />
+                      </div>
+
+                      <div className="instruction-box mt-4 mb-4" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0, flex: 1 }}>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Relief process detail should be <strong style={{color: 'red'}}>used on shaft parts</strong> with three (3) triangle and surface grinding process.</span>
+                          </li>
+                          <li style={{ display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Relief process should be <strong style={{color: 'red'}}>shown on 2D detailing</strong>.</span>
+                          </li>
+                        </ul>
+                        <img 
+                          src={reliefProcess2Img} 
+                          alt="Relief Process Detailing" 
+                          style={{ width: "55px", flexShrink: 0, marginTop: "-1rem", marginRight: "-1.5rem", border: "1px solid var(--border-color)", borderRadius: "4px" }} 
+                        />
+                      </div>
+                      
+                      <div className="instruction-box mt-4 mb-4">
+                        <p style={{ color: "red", fontWeight: "bold", marginBottom: "0.5rem" }}>Note:</p>
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>All corners of the shaft cannot be straight by using grinding or any machining equipment.</span>
+                          </li>
+                          <li style={{ display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Sliding portion needs to be supplied with oil.</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Relief Workflow Steps */}
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-1rem" }}>
+                    <div className="step-description">
+                      <p className="mb-4"style={{ color: 'red' }}>
+                        ※ There are four (4) steps to show the detail on the template
+                      </p>
+
+                      <div className="mb-4">
+                        <img src={reliefWorkflowImg} alt="Relief Workflow Steps" className="software-screenshot screenshot-medium" />
+                      </div>
+
+                      <div className="mb-4 mt-4">
+                        <p className="mb-2">Choose required template (Relief process detail)</p>
+                        <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+                          <li style={{ display: "flex", alignItems: "flex-start" }}>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
+                            <span>Click <strong style={{ fontWeight: "bold" }}>OK</strong></span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="mb-4">
+                        <img src={reliefDialogImg} alt="Relief Placement" className="software-screenshot screenshot-wide" />
+                      </div>
+
+                      <p className="mt-4">
+                        <span style={{ color: 'red' }}>※</span> Designated location of relief process detail is on the global view of the drawing.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          ) : subLessonId === "2d-standard-part-7" ? (
-            <div className="flex-col">
-              {" "}
-              {/* Workflow Header */}
-              <div className="sub-section-header">
-                {" "}
-                <p className="red-text"><strong>※ There are four (4) steps to show the detail on the template</strong></p>
-              </div>{" "}
-              <div>
-                <img src={reliefWorkflowImg} alt="Relief process loading workflow" className="software-screenshot" />
-              </div>{" "}
-              <div>
-                <p>
-                  Choose required template <strong>(Relief process detail)</strong>
-                </p>
-                <ul>
-                  <li>
-                    <span>Click OK</span>
-                  </li>
-                </ul>
-              </div>
-              <div style={{ marginTop: "-1rem" }}>
-                <img src={reliefDialogImg} alt="Template selection dialogue" className="software-screenshot screenshot-large" />
-              </div>
-              <div className="sub-section-header">
-                <p className="red-text"><strong>※ Designated location of relief process detail is on the global view of the drawing.</strong></p>
-              </div>
-            </div>
-          ) : (
-            <p className="placeholder-text">
-              Content for
-              {subLessonId} is being prepared.
-            </p>
-          )}
+          </div>
+
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
+            <button className="nav-button" onClick={handlePrev}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
 export default StandardPartLesson;
-

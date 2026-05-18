@@ -1,6 +1,6 @@
 /* ============================================================
-   KMTI iCAD Hub — Midnight Aurora Design System
-   Modern, Engaging, and High-Tech Educational UI
+   KMTI iCAD Hub — GitHub-Inspired Design System
+   Clean, Professional, and Workspace-Focused UI
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..700;1,300..700&family=Outfit:ital,wght@0,400..800;1,400..800&display=swap');
@@ -10,22 +10,18 @@
   --font-main: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', sans-serif;
 
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 30px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
   --radius-full: 9999px;
 
   /* Accent Colors (Shared Base) */
-  --color-primary: #6366f1;
-  /* Indigo 500 */
-  --color-secondary: #06b6d4;
-  /* Cyan 500 */
-  --color-tertiary: #10b981;
-  /* Emerald 500 */
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
+  --color-primary: #dd4dfa;
+  --color-secondary: #57606a;
+  --color-success: #1a7f37;
+  --color-warning: #bf8700;
+  --color-error: #cf222e;
 
   --primary: var(--color-primary);
   --secondary: var(--color-secondary);
@@ -34,61 +30,71 @@
   --warning: var(--color-warning);
 }
 
-/* === DARK THEME (Midnight Aurora) === */
+/* === DARK THEME (GitHub-Inspired) === */
 [data-theme='dark'],
 :root:not([data-theme='light']) {
   color-scheme: dark;
 
-  --bg-dark: #020617;
-  --bg-surface: #0b1021;
-  --bg-card: #1a2033;
+  --bg-dark: #0d1117;
+  --bg-surface: #161b22;
+  --bg-card: #21262d;
 
-  --glass-bg: rgba(15, 23, 42, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-blur: 16px;
+  --glass-bg: #161b22;
+  --glass-border: #30363d;
+  --glass-blur: 0px;
 
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --text-main: #e6edf3;
+  --text-muted: #8b949e;
+  --text-dim: #6e7681;
   --text-white: #ffffff;
 
-  --border-color: rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(255, 255, 255, 0.2);
+  --border-color: #30363d;
+  --border-hover: #444c56;
 
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  --shadow-inner: inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-glow: none;
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-inner: none;
 
-  --color-primary-glow: rgba(99, 102, 241, 0.25);
-  --color-secondary-glow: rgba(6, 182, 212, 0.25);
+  --color-primary: #dd4dfa;
+  --color-success: #3fb950;
+  --color-warning: #d29922;
+  --color-error: #f85149;
+
+  --color-primary-glow: rgba(221, 77, 250, 0.1);
+  --color-secondary-glow: rgba(139, 148, 158, 0.1);
 }
 
-/* === LIGHT THEME (Daylight Aurora) === */
+/* === LIGHT THEME (GitHub-Inspired) === */
 [data-theme='light'] {
   color-scheme: light;
 
-  --bg-dark: #f0f7ff;
+  --bg-dark: #f6f8fa;
   --bg-surface: #ffffff;
-  --bg-card: #eef2ff;
+  --bg-card: #f3f4f6;
 
-  --glass-bg: rgba(255, 255, 255, 0.95);
-  --glass-border: rgba(99, 102, 241, 0.1);
-  --glass-blur: 24px;
+  --glass-bg: #ffffff;
+  --glass-border: #d0d7de;
+  --glass-blur: 0px;
 
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --text-dim: #94a3b8;
+  --text-main: #1f2328;
+  --text-muted: #57606a;
+  --text-dim: #6e7781;
   --text-white: #020617;
 
-  --border-color: rgba(99, 102, 241, 0.1);
-  --border-hover: rgba(99, 102, 241, 0.2);
+  --border-color: #d0d7de;
+  --border-hover: #afb8c1;
 
-  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.12);
-  --shadow-card: 0 12px 40px -10px rgba(99, 102, 241, 0.08);
-  --shadow-inner: inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+  --shadow-glow: none;
+  --shadow-card: 0 2px 8px rgba(31, 35, 40, 0.1);
+  --shadow-inner: none;
 
-  --color-primary-glow: rgba(99, 102, 241, 0.15);
-  --color-secondary-glow: rgba(6, 182, 212, 0.15);
+  --color-primary: #dd4dfa;
+  --color-success: #1a7f37;
+  --color-warning: #bf8700;
+  --color-error: #cf222e;
+
+  --color-primary-glow: rgba(221, 77, 250, 0.1);
+  --color-secondary-glow: rgba(87, 96, 106, 0.1);
 }
 
 :root {
@@ -103,6 +109,7 @@
   color: var(--text-main);
   background-color: var(--bg-dark);
 }
+
 
 /* ============================================================
    Reset & Base
@@ -128,10 +135,6 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-dark);
-  background-image:
-    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
-  background-attachment: fixed;
 }
 
 /* ============================================================
@@ -180,14 +183,7 @@ p {
    Interactive Elements
    ============================================================ */
 
-.app-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
-}
+
 
 .status-badge {
   display: flex;
@@ -218,44 +214,86 @@ p {
   100% { opacity: 1; }
 }
 
+/* --- Global Button Design System --- */
 button {
   font-family: var(--font-main);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
-  padding: 0.625rem 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 600;
+  border-radius: 12px; /* Standardized radius */
+  border: 1px solid var(--border-color);
+  padding: 0.7rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 700; /* Bolder font for premium look */
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  background: var(--glass-bg);
+  gap: 0.75rem;
+  background: var(--bg-surface);
   color: var(--text-main);
-  backdrop-filter: blur(var(--glass-blur));
+  outline: none;
 }
 
 button:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--primary);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px -10px var(--color-primary-glow);
+  background: var(--bg-card);
+  border-color: var(--border-hover);
+  transform: translateY(-2px); /* Standard lift effect */
+  box-shadow: var(--shadow-card);
 }
 
 button:active:not(:disabled) {
   transform: translateY(0);
 }
 
-button.primary {
-  background: var(--primary);
-  color: #ffffff;
-  border: none;
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(1);
 }
 
-button.primary:hover {
-  background: #4f46e5;
-  box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
+/* Primary Button (Vibrant) */
+.btn-primary {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border: none !important;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(221, 77, 250, 0.2);
+  min-width: 100%;
+  padding: 0.7rem 2rem;
+
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--bg-card) !important;
+  border: 1px solid #DD4DFA !important;
+  color: #DD4DFA !important;
+  box-shadow: 0 6px 20px rgba(221, 77, 250, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Outline Button (Secondary/Standard) */
+.btn-outline {
+  background: var(--bg-card) !important;
+  border: 1px solid #DD4DFA !important;
+  color: var(--text-main) !important;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: var(--bg-card) !important;
+  border-color: #DD4DFA !important;
+  color: #DD4DFA !important;
+}
+
+/* Ghost Button (Icon Only) */
+.btn-ghost {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-dim) !important;
+  padding: 0.5rem !important;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: rgba(221, 77, 250, 0.1) !important;
+  color: var(--primary) !important;
 }
 
 /* ============================================================
@@ -263,10 +301,9 @@ button.primary:hover {
    ============================================================ */
 
 .glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
 }
 

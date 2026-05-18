@@ -1,9 +1,8 @@
-/** * 3D_PurchaseParts.tsx – 3D Purchase Parts lessons */
-
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
@@ -28,7 +27,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore(`${subLessonId}-${activeTab}`);
 
   useEffect(() => {
@@ -38,28 +38,28 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
   const handleNext = () => {
     if (activeTab === 'part1') {
       setActiveTab('part2');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (onNextLesson) {
       onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
     if (activeTab === 'part2') {
       setActiveTab('part1');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (onPrevLesson) {
       onPrevLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const purchaseSteps = [
-    "Purchase Part 3D Modeling: Follow the technical flowchart to understand the relationship between vendor data, ICAD formatting, and final assembly integration.",
-    "Uploading Parts: Once the 3D model is finalized, follow the server upload protocol to synchronize the purchase part with the central repository for project-wide use."
-  ];
+  const introTitle = activeTab === 'part1' ? "PURCHASE PARTS MODELING" : "SERVER UPLOAD PROTOCOL";
+  const introSubtitle = activeTab === 'part1' ? 
+    "Relationship between vendor data, ICAD formatting, and assembly integration." : 
+    "Protocol for synchronizing purchase parts with the central repository.";
 
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -71,21 +71,22 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
 
 
 
+
+
+
       <div className="lesson-grid single-card">
-        <div className={`lesson-card tab-content fade-in ${isSpeaking && currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+        <div className="lesson-card tab-content fade-in">
           <div className="fade-in">
             <div className="card-header">
-              <h4>{activeTab === 'part1' ? "WORKFLOW OVERVIEW" : "SERVER UPLOAD PROTOCOL"}</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak([purchaseSteps[activeTab === 'part1' ? 0 : 1]])} onStop={stop} />
+              <h4>{activeTab === 'part1' ? "PURCHASE PART 3D MODELING" : "SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS ON THE SERVER"}</h4>
             </div>
 
-            <div className="screenshot-wrapper" style={{marginTop: "3rem"}}>
-              <img
+            <img
                 src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
                 alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
-                className="software-screenshot screenshot-wide"
-              />
-            </div>
+                className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
+                data-reading-index="2"
+            />
           </div>  
 
           <div className="lesson-navigation">
@@ -99,3 +100,4 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
 };
 
 export default PurchasePartsLesson;
+

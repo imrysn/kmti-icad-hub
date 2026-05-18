@@ -1,153 +1,163 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { ArrowLeft, ChevronLeft, ChevronRight, MoveDown } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
-/* Importing assets for Geometric Tolerance (1) */
 
+/* Importing assets for Geometric Tolerance */
 import geoTolMainImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1).png";
-
-/* Importing assets for Geometric Tolerance (2) */
-
-import geoTolStepDImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png";
-
-import datumSelectionImg from "../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png";
-
+import geoTolAddImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png";
+import datumImg from "../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png";
 
 interface GeometricToleranceLessonProps {
   nextLabel?: string;
-  subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
-  subLessonId = "2d-geometric-tol-1",
   onNextLesson,
-  onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
-
-  const geoTol1Steps = [
-    "Geometric Tolerance: This system defines the degree of accuracy required for a part. Pick the line, complete the required details in the dialog box, and click OK. Finally, set the position by clicking P2 and click GO to end the command."
+  onPrevLesson,
+  nextLabel
+}) => {
+  const TABS = [
+    { id: '1', label: 'Tolerance Frames' },
+    { id: '2', label: 'Datum References' }
   ];
 
-  const geoTol2Steps = [
-    "Tolerance Application: Follow the same process to add specific tolerances like perpendicularity. Complete the dialog and place the control frame as needed.",
-    "Datum: A datum is a fixed reference point. Select the datum command, click the reference line, and enter the datum character. Click P2 to position the indicator and GO to finish."
-  ];
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-geometric-tol-active-tab') || TABS[0].id;
+  });
+
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-geometric-tol-${activeTab}`);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    localStorage.setItem('2d-geometric-tol-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
+  const handleNext = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, [subLessonId]);
+  const handlePrev = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
+    '2d-geometric-tol-1': {
+      title: 'GEOMETRIC TOLERANCE',
+      subtitle: '',
+      steps: [
+        "A system for defining allowable engineering tolerances. It tells what degree of accuracy and precision that needs to be applied on the part."
+      ]
+    },
+    '2d-geometric-tol-2': {
+      title: 'DATUM',
+      subtitle: '',
+      steps: [
+        ""
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[`2d-geometric-tol-${activeTab}`] || LESSON_DATA['2d-geometric-tol-1'];
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          Geometric Tolerance {subLessonId === "2d-geometric-tol-1" ? "(1)" : "(2)"}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (subLessonId === "2d-geometric-tol-1") speak(geoTol1Steps);
-            else speak(geoTol2Steps);
-          }}
-            onStop={stop}
-          />
-        </h3>
 
-        <p className="lesson-subtitle">
-          {" "}
-          Principles and procedures for defining allowable engineering
-          tolerances to ensure part accuracy and precision.
-        </p>
-      </section>
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {" "}
-          {subLessonId === "2d-geometric-tol-1" ? (
-            <div className="flex-col">
-              {" "}
-              {/* Title and Definition */}
-              <div>
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">9.</span>
-                  <span className="step-label">Geometric Tolerance</span>
-                </div>
-                <p className="p-flush" style={{ marginBottom: "0rem" }}>
-                  A system for defining allowable engineering tolerances. It
-                  tells what degree of accuracy and precision that needs to be
-                  applied on the part.
-                </p>
+          <div className="fade-in">
 
-              </div>
-              {/* Top Images Row */}
-              <div className="flex-row-center">
-                <div>
-                  <img src={geoTolMainImg} alt="Geometric Tolerance Sample Drawing and Menu Selection" className="software-screenshot" />
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex-col">
-              <div>
-                <div>
-                  <img src={geoTolStepDImg} alt="Adding geometric tolerance (P3)" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
-              {/* Section 10: Datum */}
-              <div>
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">10.</span>
-                  <span className="step-label">Datum</span>
-                </div>
-                <div>
-                  <div>
-                    <img src={datumSelectionImg} alt="Datum Selection Menu" className="software-screenshot screenshot-wide" />
+            <div className="flex-col tab-content fade-in">
+              {activeTab === '1' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">9</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Geometric Tolerance"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <KaraokeLessonText
+                      className="p-flush mb-4"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                    <img src={geoTolMainImg} alt="Tolerance Dialog" className="software-screenshot screenshot-wide" />
+                    <img src={geoTolAddImg} alt="Add Stacked Geometric Tolerance" className="software-screenshot screenshot-wide mt-6" />
                   </div>
                 </div>
-              </div>
+              )}
+
+              {activeTab === '2' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">10</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Datum"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <div className="red-text mb-4">
+                      <KaraokeLessonText
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <img src={datumImg} alt="Datum Triangle" className="software-screenshot screenshot-wide" />
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+
           <div className="lesson-navigation">
-            {" "}
-            <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
-            <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
+            <button className="nav-button" onClick={handlePrev}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -157,6 +167,3 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
 };
 
 export default GeometricToleranceLesson;
-
-
-

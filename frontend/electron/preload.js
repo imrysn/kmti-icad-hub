@@ -7,5 +7,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     // Window Controls
     minimize: () => ipcRenderer.send('window-minimize'),
     maximize: () => ipcRenderer.send('window-maximize'),
-    close: () => ipcRenderer.send('window-close')
+    close: () => ipcRenderer.send('window-close'),
+    openFile: (filePath) => ipcRenderer.send('open-file', filePath),
+    downloadAndOpen: (params) => ipcRenderer.invoke('download-and-open', params)
 });

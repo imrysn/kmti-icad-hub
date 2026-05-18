@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth'; import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti_logo.png';
@@ -104,7 +104,8 @@ export const LoginView: React.FC = () => {
 
             <div className="login-brand-header">
                 <span className="login-logo-text">KMTI</span>
-                <h1 className="brand-title">ICAD MANUAL <br /> TRAINING AND ASSISTANT </h1>
+                <div className="brand-subtitle">ICAD MANUAL</div>
+                <div className="brand-subtitle">TRAINING AND ASSISTANT</div>
             </div>
 
             <div className="login-form-wrapper">
@@ -112,14 +113,18 @@ export const LoginView: React.FC = () => {
                 <form onSubmit={handleSubmit} className="glass-form">
                     <div className="input-group">
                         <label>USERNAME</label>
-                        <input type="text" name="username" value={formData.username} onChange={handleInputChange} disabled={isLoggingIn} placeholder="Enter your user name" />
+                        <div className="input-wrapper">
+                            <UserIcon className="input-icon" size={20} />
+                            <input type="text" name="username" value={formData.username} onChange={handleInputChange} disabled={isLoggingIn} placeholder="Enter username" />
+                        </div>
                     </div>
 
                     <div className="input-group">
-                        <label>Password</label>
-                        <div className="password-wrapper">
-                            <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleInputChange} disabled={isLoggingIn} placeholder="Enter your password" />
-                            <button type="button" className="password-toggle-icon" onClick={() => setShowPassword(!showPassword)}
+                        <label>PASSWORD</label>
+                        <div className="input-wrapper">
+                            <Lock className="input-icon" size={20} />
+                            <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleInputChange} disabled={isLoggingIn} placeholder="••••••••" />
+                            <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
@@ -129,7 +134,7 @@ export const LoginView: React.FC = () => {
                     {localError && <div className="local-error-msg">{localError}</div>}
 
                     <button type="submit" className="glass-login-btn" disabled={isLoggingIn}>
-                        {isLoggingIn ? 'Logging...' : 'Login'}
+                        {isLoggingIn ? 'Logging...' : 'SIGN IN'}
                     </button>
                 </form>
             </div>

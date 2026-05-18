@@ -1,186 +1,210 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
+
 /* Import images */
-
 import img2 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_2.png";
-
 import imgA1 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(2)_a_1.png";
-
 import imgA2 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(2)_a_2.png";
 
 interface NormalMirrorPartsLessonProps {
   nextLabel?: string;
-  subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
-  subLessonId = "2d-normal-mirror-1",
   onNextLesson,
-  onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
-
-  const mirror1Steps = [
-    "Definitions: Normal parts use an 'N' designation, while mirror parts are symmetrical, designated with 'A' and 'B' numbers. First, finalize the 'A' drawing completely.",
-    "Drafting Rules: Save a copy as the 'B' designation. Mirror the part in 3D, then update the 2D views. Change the right side view to a left side view, update the isometric view, and ensure the title block reflects the new drawing number."
+  onPrevLesson,
+  nextLabel
+}) => {
+  const TABS = [
+    { id: 'nomenclature', label: 'Nomenclature' },
+    { id: 'mirror-command', label: 'Mirror Command' }
   ];
 
-  const mirror2Steps = [
-    "Mirror Command: Use the dedicated mirror command for rapid 2D detailing. Select the entities and define the mirror axis to create symmetrical representations instantly."
-  ];
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-normal-mirror-active-tab') || TABS[0].id;
+  });
+
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-normal-mirror-${activeTab}`);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    localStorage.setItem('2d-normal-mirror-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
+  const handleNext = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, []);
+  const handlePrev = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
+    '2d-normal-mirror-nomenclature': {
+      title: 'NORMAL AND MIRROR PARTS',
+      subtitle: 'Designating normal and mirror parts with standardized numbering and symmetry rules.',
+      steps: [
+        "Normal parts use an 'N' designation, while mirror parts are symmetrical, designated with 'A' and 'B' numbers. First, finalize the 'A' drawing completely.",
+        "Save a copy as the 'B' designation. Mirror the part in 3D, then update the 2D views. Change side views, update isometrics, and ensure drawing numbers match."
+      ]
+    },
+    '2d-normal-mirror-mirror-command': {
+      title: 'NORMAL AND MIRROR PARTS',
+      subtitle: 'Designating normal and mirror parts with standardized numbering and symmetry rules.',
+      steps: [
+        "Use the dedicated mirror command for rapid 2D detailing. Select the entities and define the mirror axis to create symmetrical representations instantly."
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[`2d-normal-mirror-${activeTab}`] || LESSON_DATA['2d-normal-mirror-nomenclature'];
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-      </div>{" "}
-      {/* Intro Banner */}
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          22. Normal and Mirror parts
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (subLessonId === "2d-normal-mirror-1") speak(mirror1Steps);
-            else speak(mirror2Steps);
-          }}
-            onStop={stop}
-          />
-        </h3>
-      </section>
+      </div>
+
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {" "}
-          {subLessonId === "2d-normal-mirror-1" ? (
-            <div className="normal-mirror-wrapper">
-              {" "}
-              {/* Definitions */}
-              <div className="def-container">
-                <div className="def-row">
-                  <div className="def-label" style={{ marginBottom: "0.3rem" }}>
-                    {" "}
-                    <span className="red-bold" >Normal</span>
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentLesson.title}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentIndex === 0 ? currentCharIndex : -1}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
+                onStop={stop}
+              />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentLesson.subtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+
+            <div className="flex-col tab-content fade-in">
+              {activeTab === 'nomenclature' && (
+                <>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">1</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Part Nomenclature & Designation"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentIndex === 2 ? currentCharIndex : -1}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <div className="red-text mb-4">
+                        <p><strong>Normal:</strong> Example RTXXXXXX<strong>N</strong>01</p>
+                        <p><strong>Mirror parts:</strong> RTXXXXXX<strong>A</strong>01 & RTXXXXXX<strong>B</strong>01 (Symmetrical)</p>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="def-value" style={{ marginBottom: "1rem" }}>
-                    {" "}
-                    <span style={{ marginLeft: "3rem" }}>
-                      Example drawing number RTXXXXXX
-                      <span className="red-bold">N</span>01
-                    </span>
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+                    <div className="step-header">
+                      <span className="step-number">2</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Mirror Detailing Workflow"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentIndex === 3 ? currentCharIndex : -1}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[1]}
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentIndex === 3 ? currentCharIndex : -1}
+                      />
+                      <img src={img2} alt="Mirroring Toolbar" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
-                </div>
+                </>
+              )}
 
-                <div className="def-row">
-                  <div className="def-label" style={{ marginBottom: "1rem" }}>
-                    {" "}
-                    <span className="red-bold">Mirror parts</span>
+              {activeTab === 'mirror-command' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">1</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="2D Mirror Detailing Command"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentIndex === 2 ? currentCharIndex : -1}
+                    />
                   </div>
-
-                  <div className="def-value">
-                    {" "}
-                    <span style={{ marginLeft: "3rem" }}>are parts that are symmetrically the same.</span>
-                    <br />{" "}
-                    <span style={{ marginLeft: "3rem" }}>
-                      Example drawing number RTXXXXXX
-                      <span className="red-bold">A</span>01 &amp; RTXXXXXX
-                      <span className="red-bold">B</span>01
-                    </span>
-                  </div>
-                </div>
-
-                <div className="rule-title" style={{ marginTop: "2rem" }}>
-                  {" "}
-                  <span className="red-bold" >
-                    ※ Rule on how to detail a mirror parts
-                  </span>
-                </div>
-              </div>{" "}
-              {/* Main Grid Content */}
-              <div className="mirror-grid-layout">
-                {/* Upper Left & Upper Right Row */}
-                <div className="mirror-row flex-top">
-                  <div className="mirror-col left-col">
-                  </div>
-
-                  <div className="mirror-col right-col">
-                    <div>
-                      <img src={img2} alt="Toolbar" className="software-screenshot toolbar screenshot-wide" />
+                  <div className="step-description">
+                    <KaraokeLessonText
+                      className="p-flush mb-4"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentIndex === 2 ? currentCharIndex : -1}
+                    />
+                    <div className="flex-col gap-4">
+                      <img src={imgA1} alt="Mirror Command Menu" className="software-screenshot screenshot-wide" />
+                      <img src={imgA2} alt="Mirroring Operation" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
-          ) : subLessonId === "2d-normal-mirror-2" ? (
-            <div className="normal-mirror-wrapper">
-              <div className="step-header">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">a.</span>
-                  <span className="step-label">Mirror Command on detailing</span>
-                </div>
-              </div>
-              <div>
-                <img src={imgA1} alt="Mirror Command Menu" className="software-screenshot screenshot-wide" />
-              </div>
+          </div>
 
-              <div className="image-wrapper-bordered" style={{ width: '100%', marginTop: '1.5rem' }}>
-                <img src={imgA2} alt="Mirroring result" className="software-screenshot screenshot-wide" />
-              </div>
-            </div>
-          ) : (
-            <div className="content-placeholder">
-              <p>
-                Lesson content for
-                {subLessonId} will be provided soon.
-              </p>
-            </div>
-          )}{" "}
-          {/* Navigation */}
           <div className="lesson-navigation">
-            {" "}
-            <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
-            <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
+            <button className="nav-button" onClick={handlePrev}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -190,6 +214,3 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
 };
 
 export default NormalMirrorPartsLesson;
-
-
-

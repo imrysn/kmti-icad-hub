@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { ArrowLeft, ChevronLeft, ChevronRight, ArrowBigDown, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import React from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
+/* Importing assets */
 import titleBlock1Img from "../../assets/2D_Image_File/2D_title_block_1.png";
 
 interface TitleBlockLessonProps {
@@ -15,102 +17,91 @@ interface TitleBlockLessonProps {
 
 const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
   onNextLesson,
-  onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
+  onPrevLesson,
+  nextLabel
+}) => {
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-titleblock');
 
   const titleBlockSteps = [
-    "Title Block Overview: The title block displays critical part information including Job Order, Drawing Number, and designer names. Ensure all fields are filled accurately for project tracking.",
-    "Data Entry Procedure: Follow the systematic approach to reflect technical data. Input the required information into the dialog and check that it appears correctly in the designated template fields.",
-    "Placement Landmarks: Position the completed title block using landmarks P1 and P2 to ensure it aligns perfectly with the standard KEMCO drawing frame."
+    "The title block displays critical part information including Job Order, Drawing Number, and designer names. Ensure all fields are filled accurately for project tracking.",
+    "Follow the systematic approach to reflect technical data. Input the required information into the dialog and check that it appears correctly in the designated template fields.",
+    "Position the completed title block using landmarks P1 and P2 to ensure it aligns perfectly with the standard KEMCO drawing frame."
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, []);
+  const currentTitle = "TITLE BLOCK";
+  const currentSubtitle = "Configuring the primary information block for project tracking and part identification.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          19. Title Block
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(titleBlockSteps)}
-            onStop={stop}
-          />
-        </h3>
 
-        <p className="lesson-subtitle">
-          {" "}
-          Displays part informations, such as Job Order, Drawing Number, Part &
-          Machine Name, Drawn & Designer Name, Cross Reference and Previous
-          Drawing Number and...
-        </p>
-      </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          <div className="flex-col">
-            {" "}
-            {/* Section 1: Main Fields and Procedure */}
-            <div className="lesson-section">
-              <div className="flex-col">
-                <div>
-                  <img src={titleBlock1Img} alt="Title Block Field Definitions and Creation Procedure" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentTitle}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentTitle, currentSubtitle, ...titleBlockSteps])}
+                onStop={stop}
+              />
+            </div>
+
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentSubtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
             </div>
 
 
-          </div>{" "}
-          {/* Navigation */}
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+              <div className="step-header">
+                <span className="step-number">1</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Title Block Definition & Overview"
+                  isActive={isSpeaking && currentIndex === 2}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+              <div className="step-description">
+                <div className="red-text mb-4">
+                  <KaraokeLessonText
+                    text="Displays part information: Job Order, Drawing Number, Machine Name, Designer, and References."
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+                <img src={titleBlock1Img} alt="Title Block Definitions" className="software-screenshot screenshot-wide" />
+              </div>
+            </div>
+          </div>
+
           <div className="lesson-navigation">
-            {" "}
             <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
+              <ChevronLeft size={18} /> Previous
+            </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
 export default TitleBlockLesson;
-
-
-

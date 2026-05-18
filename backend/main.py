@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from .database import engine, Base, get_db, get_db_mode
-from .routers import auth, admin, chat, lessons, quizzes
+from .routers import auth, admin, chat, lessons, quizzes, assessments
 
 # Create database tables on startup (only if SQLite, or MySQL is ready)
 try:
@@ -36,7 +36,7 @@ if not origins:
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -62,12 +62,16 @@ if os.path.exists(assets_path):
 else:
     print(f"⚠️ Warning: Static assets path not found: {assets_path}")
 
+from .routers import auth, admin, chat, lessons, quizzes, assessments, notifications
+
 # Include Modular Routers
 app.include_router(auth.router)
 app.include_router(admin.router)
 app.include_router(chat.router)
 app.include_router(lessons.router)
 app.include_router(quizzes.router)
+app.include_router(assessments.router)
+app.include_router(notifications.router)
 
 @app.get("/")
 def read_root():

@@ -1,234 +1,296 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
-/* Importing assets for Additional View (1) */
 
+/* Importing assets */
 import additionalView1Img1 from "../../assets/2D_Image_File/2D_additional_view(1)_a.png";
-
-/* Importing assets for Additional View (2) */
-
 import additionalView2ImgB from "../../assets/2D_Image_File/2D_additional_view(2)_b.png";
-
 import additionalView2ImgC from "../../assets/2D_Image_File/2D_additional_view(2)_c.png";
-/* Importing assets for Additional View (3) */
-
 import additionalView3ImgD from "../../assets/2D_Image_File/2D_additional_view(3)_d.png";
-
 import additionalView3ImgE from "../../assets/2D_Image_File/2D_additional_view(3)_e.png";
-/* Importing assets for Additional View (4) */
-
 import additionalView4ImgF from "../../assets/2D_Image_File/2D_additional_view(4)_f.png";
 
 interface AdditionalViewLessonProps {
   nextLabel?: string;
-  subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
-  subLessonId = "2d-additional-view-1",
   onNextLesson,
-  onPrevLesson, nextLabel }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking } = useTTS();
-
-  const additionalView1Steps = [
-    "Cross Section View: Follow steps 1 through 4 to create a basic cross section. Note that the text height of the section name must match the dimension text height."
+  onPrevLesson,
+  nextLabel 
+}) => {
+  const TABS = [
+    { id: 'cross-section', label: 'Cross Section View' },
+    { id: 'partial-detail', label: 'Partial Section & Detail' },
+    { id: 'isometric', label: 'Isometric View' },
+    { id: 'trim', label: 'Trim View' }
   ];
 
-  const additionalView2Steps = [
-    "Partial Section: Use this tool to create a cross-section of a specific part area. Select the view, define the boundary, and set the depth.",
-    "Detail Drawing: Use this to show a specific view area on a larger scale for better clarity."
-  ];
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-additional-view-active-tab') || TABS[0].id;
+  });
 
-  const additionalView3Steps = [
-    "Isometric View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
-    "Cross-sectional Depth: Set the depth to eliminate unnecessary background parts from your section view."
-  ];
-
-  const additionalView4Steps = [
-    "Trim: This is another way to eliminate unneeded parts from a view. Note that Trim cannot be applied to Detail Drawings."
-  ];
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-additional-view-${activeTab}`);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    localStorage.setItem('2d-additional-view-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
+  const handleNext = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    return () => currentContainer?.removeEventListener("scroll", handleScroll);
-  }, [subLessonId]);
+  const handlePrev = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
+    '2d-additional-view-cross-section': {
+      title: 'ADDITIONAL VIEW',
+      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      steps: [
+        "Cross Section View: Follow steps 1 through 4 to create a basic cross section. Note that the text height of the section name must match the dimension text height."
+      ]
+    },
+    '2d-additional-view-partial-detail': {
+      title: 'ADDITIONAL VIEW',
+      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      steps: [
+        "Partial Section: Use this tool to create a cross-section of a specific part area. Select the view, define the boundary, and set the depth.",
+        "Detail Drawing: Use this to show a specific view area on a larger scale for better clarity."
+      ]
+    },
+    '2d-additional-view-isometric': {
+      title: 'ADDITIONAL VIEW',
+      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      steps: [
+        "Isometric View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
+        "Cross-sectional Depth: Set the depth to eliminate unnecessary background parts from your section view."
+      ]
+    },
+    '2d-additional-view-trim': {
+      title: 'ADDITIONAL VIEW',
+      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      steps: [
+        "Trim: This is another way to eliminate unneeded parts from a view. Note that Trim cannot be applied to Detail Drawings."
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[`2d-additional-view-${activeTab}`] || LESSON_DATA['2d-additional-view-cross-section'];
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
-          20. ADDITIONAL
-          VIEW
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (subLessonId === "2d-additional-view-1") speak(additionalView1Steps);
-            else if (subLessonId === "2d-additional-view-2") speak(additionalView2Steps);
-            else if (subLessonId === "2d-additional-view-3") speak(additionalView3Steps);
-            else if (subLessonId === "2d-additional-view-4") speak(additionalView4Steps);
-          }}
-            onStop={stop}
-          />
-        </h3>
-      </section>
+
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {" "}
-          {subLessonId === "2d-additional-view-1" ? (
-            <div className="flex-col">
-              {" "}
-              {/* a. Cross Section View Section */}
-              <div id="cross-section-view">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">a.</span>
-                  <span className="step-label">Cross Section View</span>
-                </div>
-                {/* Steps 1-4 */}
-                <div>
-                  <img src={additionalView1Img1} alt="Cross Section View Steps 1-4" className="software-screenshot screenshot-wide" />
-                </div>{" "}
-              </div>{" "}
-              {/* Footer Note */}
-              <div className="info-box">
-                <p>
-                  {" "}
-                  <div className="red-text"><strong>Note:</strong></div>The text height of the section name should be the same
-                  with dimension text height.
-                </p>
-              </div>
+          <div className="fade-in">
+            <div className="card-header">
+              <KaraokeLessonText
+                as="h4"
+                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                data-reading-index="0"
+                text={currentLesson.title}
+                isActive={isSpeaking && currentIndex === 0}
+                currentCharIndex={currentCharIndex}
+              />
+              <ReadAloudButton 
+                isSpeaking={isSpeaking} 
+                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
+                onStop={stop}
+              />
             </div>
-          ) : subLessonId === "2d-additional-view-2" ? (
-            <div className="flex-col">
-              {" "}
-              {/* b. Partial Section Section */}
-              <div id="partial-section">
-                {" "}
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">b.</span>
-                  <span className="step-label">Partial Section</span>
-                </div>
-                <p className="p-flush" style={{ marginBottom: "1rem" }}>
-                  - use to make a cross-section of a part partially
-                </p>
-                <div>
-                  <img src={additionalView2ImgB} alt="Partial Section Operations" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>{" "}
-              {/* c. Detail Drawing Section */}
-              <div id="detail-drawing">
-                {" "}
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">c.</span>
-                  <span className="step-label">Detail drawing</span>
-                </div>
-                <p className="p-flush" style={{ marginBottom: "1rem" }}>use to detail a view on a bigger scale from a different view. </p>
 
+            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+              <KaraokeLessonText
+                className="p-flush"
+                text={currentLesson.subtitle}
+                isActive={isSpeaking && currentIndex === 1}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
 
-                <div>
-                  <img src={additionalView2ImgC} alt="Detail Drawing Procedure" className="software-screenshot screenshot-wide" />
+            <div className="flex-col tab-content fade-in">
+              {activeTab === 'cross-section' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">1</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Cross Section View Construction"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <img src={additionalView1Img1} alt="Cross Section View Steps" className="software-screenshot screenshot-wide mb-4" />
+                    <div className="red-text">
+                      <p><strong>Standard Rule:</strong> The text height of the section name should be the same with the dimension text height.</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {activeTab === 'partial-detail' && (
+                <>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">1</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Partial Section Creation"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={additionalView2ImgB} alt="Partial Section Logic" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+                    <div className="step-header">
+                      <span className="step-number">2</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Detail Drawing Scale"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[1]}
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={additionalView2ImgC} alt="Detail View" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'isometric' && (
+                <>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
+                      <span className="step-number">1</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Isometric View Projection"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <img src={additionalView3ImgD} alt="Isometric Projection" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+                    <div className="step-header">
+                      <span className="step-number">2</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Cross-sectional Depth Settings"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[1]}
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={additionalView3ImgE} alt="Section Depth" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'trim' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">1</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Trim View Operations"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <KaraokeLessonText
+                      className="p-flush mb-4"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                    <img src={additionalView4ImgF} alt="Trim Command" className="software-screenshot screenshot-wide mb-4" />
+                    <div className="red-text">
+                      <p><strong>Restriction:</strong> Trim command cannot be applied to Detail Drawings.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          ) : subLessonId === "2d-additional-view-3" ? (
-            <div className="flex-col">
-              {" "}
-              {/* d. Isometric View Section */}
-              <div id="isometric-view">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">d.</span>
-                  <span className="step-label">Isometric View</span>
-                </div>
-                <div>
-                  <img src={additionalView3ImgD} alt="Isometric View Steps" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>{" "}
-              {/* e. Cross-sectional depth Section */}
-              <div id="cross-sectional-depth">
-                {" "}
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">e.</span>
-                  <span className="step-label">Cross-sectional depth</span>
-                </div>
-                <p style={{ marginBottom: "1rem" }}>
-                  There are some instances that the cross-sectional view have
-                  parts which is not related to the desired view to be seen, we
-                  can set the cross-sectional depth to eliminate the unnecessary
-                  parts.
-                </p>
-                <div>
-                  <img src={additionalView3ImgE} alt="Cross-sectional depth Steps" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
-            </div>
-          ) : subLessonId === "2d-additional-view-4" ? (
-            <div className="flex-col">
-              {" "}
-              {/* f. Trim Section */}
-              <div id="trim-view">
-                <div className="step-header" style={{ marginBottom: "1rem" }}>
-                  <span className="step-number">f.</span>
-                  <span className="step-label">Trim</span>
-                </div>
-                <p style={{ marginBottom: "1rem" }}>
-                  Another way to eliminate parts that are not needed on a certain view. This can not be applied on Detail Drawing.
-                </p>
-                <div>
-                  <img src={additionalView4ImgF} alt="Trim View Steps" className="software-screenshot screenshot-wide" />
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="content-placeholder">
-              <p>
-                Lesson content for
-                {subLessonId} will be provided soon.
-              </p>
-            </div>
-          )}{" "}
-          {/* Navigation */}
+          </div>
+
           <div className="lesson-navigation">
-            {" "}
-            <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
-            <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
+            <button className="nav-button" onClick={handlePrev}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -238,6 +300,5 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
 };
 
 export default AdditionalViewLesson;
-
 
 

@@ -4,6 +4,7 @@ import { adminService, Quiz, Question } from '../../../services/adminService';
 import { useUI } from '../../../context/UIContext';
 import { useNotification } from '../../../context/NotificationContext';
 import { useLessons } from '../../../hooks/useLessons';
+import { ICAD_3D_LESSONS, ICAD_2D_LESSONS, Lesson } from '../../mentor/mentorConstants';
 import '../../../styles/AssessmentManagement.css';
 
 export const AssessmentManagement: React.FC = () => {
@@ -62,8 +63,23 @@ export const AssessmentManagement: React.FC = () => {
         }
     }, [selectedQuiz]);
     
-    // Fetch lessons for ordering
-    const { lessons: currentLessons } = useLessons(assessmentTab === '3D_Modeling' ? 1 : 2);
+    // Fetch lessons for ordering - use DB for content but constants for canonical ordering
+    const { lessons: dbLessons } = useLessons(assessmentTab === '3D_Modeling' ? 1 : 2);
+    
+    const globalOrder = useMemo(() => {
+        const ids: string[] = [];
+        const lessons = assessmentTab === '3D_Modeling' ? ICAD_3D_LESSONS : ICAD_2D_LESSONS;
+        
+        const traverse = (list: Lesson[]) => {
+            list.forEach(l => {
+                if (l.quiz) ids.push(l.id);
+                if (l.children) traverse(l.children);
+            });
+        };
+        
+        traverse(lessons);
+        return ids;
+    }, [assessmentTab]);
     
     const [isEditingQuiz, setIsEditingQuiz] = useState(false);
     const [isEditingQuestion, setIsEditingQuestion] = useState(false);
@@ -233,18 +249,8 @@ export const AssessmentManagement: React.FC = () => {
         }
     };
 
-    // Define the canonical orders based on DB lessons
-    const globalOrder = useMemo(() => {
-        const ids: string[] = [];
-        const traverse = (list: any[]) => {
-            list.forEach(l => {
-                ids.push(l.id);
-                if (l.children) traverse(l.children);
-            });
-        };
-        traverse(currentLessons);
-        return ids;
-    }, [currentLessons]);
+    // globalOrder is now derived from the static curriculum constants to ensure
+    // consistency between the lesson navigation and the assessment management.
 
     const filteredQuizzes = quizzes
         .filter(q => {
@@ -347,7 +353,6 @@ export const AssessmentManagement: React.FC = () => {
                         <div className="modal-content question-modal">
                             <div className="modal-header">
                                 <h3>{currentQuestion.id ? 'Edit Question' : 'Add Question'}</h3>
-                                <button onClick={() => setIsEditingQuestion(false)}><X size={20} /></button>
                             </div>
                             <div className="modal-body">
                                 <div className="form-group">
@@ -472,7 +477,6 @@ export const AssessmentManagement: React.FC = () => {
                     <div className="modal-content quiz-modal">
                         <div className="modal-header">
                             <h3>{currentQuiz.id ? 'Edit Assessment' : 'New Assessment'}</h3>
-                            <button onClick={() => setIsEditingQuiz(false)}><X size={20} /></button>
                         </div>
                         <div className="modal-body">
                             <div className="form-group">

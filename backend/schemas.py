@@ -290,3 +290,71 @@ class QuestionAttemptResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+# --- Practical Assessment Schemas ---
+
+class AssessmentTaskBase(BaseModel):
+    set_number: int
+    task_code: str
+    title: str
+    description: Optional[str] = None
+    master_file_path: Optional[str] = None
+    order: int = 0
+
+class AssessmentTaskCreate(AssessmentTaskBase):
+    pass
+
+class AssessmentTaskResponse(AssessmentTaskBase):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+class AssessmentFeedbackBase(BaseModel):
+    submission_id: int
+    checkback_file_path: Optional[str] = None
+    comments: Optional[str] = None
+    trainee_reply: Optional[str] = None
+    replied_at: Optional[datetime] = None
+
+class AssessmentFeedbackCreate(AssessmentFeedbackBase):
+    pass
+
+class AssessmentFeedbackResponse(AssessmentFeedbackBase):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+class AssessmentSubmissionBase(BaseModel):
+    task_id: int
+    submission_file_path: str
+    status: str = "pending"
+
+class AssessmentSubmissionCreate(AssessmentSubmissionBase):
+    user_id: int
+
+class AssessmentSubmissionResponse(AssessmentSubmissionBase):
+    id: int
+    user_id: int
+    trainer_id: Optional[int] = None
+    submitted_at: datetime
+    updated_at: datetime
+    user: Optional[UserResponse] = None
+    task: Optional[AssessmentTaskResponse] = None
+    feedback: List[AssessmentFeedbackResponse] = []
+    class Config:
+        from_attributes = True
+
+class TrainerTraineeMappingBase(BaseModel):
+    trainer_id: int
+    trainee_id: int
+
+class TrainerTraineeMappingCreate(TrainerTraineeMappingBase):
+    pass
+
+class TrainerTraineeMappingResponse(TrainerTraineeMappingBase):
+    id: int
+    assigned_at: datetime
+    class Config:
+        from_attributes = True

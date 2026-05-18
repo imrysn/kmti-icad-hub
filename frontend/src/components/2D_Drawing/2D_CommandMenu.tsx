@@ -1,276 +1,232 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { ArrowRight, ChevronLeft, ChevronRight, Layout, MousePointer2, List, } from 'lucide-react'; import { ReadAloudButton } from "../ReadAloudButton";
-import { useTTS } from "../../hooks/useTTS";
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReadAloudButton } from "../ReadAloudButton";
+import { useLessonCore } from "../../hooks/useLessonCore";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
-/* Importing assets for Command Menu (1) */
 
-import selectableLineImg from "../../assets/2D_Image_File/2D_command_menu_(1)_selectable_and_unselectable_line.png";
-/* Section 2 */
-
-import commandMenu1Img from "../../assets/2D_Image_File/2D_command_menu_(1)_command_menu.png";
-/* Section 3 - Part 1 */
-
-import commandMenu2Img from "../../assets/2D_Image_File/2D_command_menu_(1)_command_menu_2.png";
-/* Section 3 - Part 2 */
-/* Importing assets for Command Menu (2) */
-
+/* Importing assets for Command Menu */
+import linePropsImg from "../../assets/2D_Image_File/2D_command_menu_(1)_selectable_and_unselectable_line.png";
+import commandMenu1ImgA from "../../assets/2D_Image_File/2D_command_menu_(1)_command_menu.png";
+import commandMenu1ImgB from "../../assets/2D_Image_File/2D_command_menu_(1)_command_menu_2.png";
 import activeViewImg from "../../assets/2D_Image_File/2D_command_menu_(2)_active_view.png";
-/* Section 3 */
-
-import componentHighlighted1Img from "../../assets/2D_Image_File/2D_command_menu_(3)_component_highlighled_1.png";
-/* Section 4 - Part 1 */
-
-
+import componentHighlightedImg from "../../assets/2D_Image_File/2D_command_menu_(3)_component_highlighled_1.png";
 
 interface CommandMenuLessonProps {
   nextLabel?: string;
-  subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
 }
 
 const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
-  subLessonId = "2d-command-menu-1",
   onNextLesson,
-  onPrevLesson, nextLabel }) => {
-
-
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { speak, stop, isSpeaking, currentIndex } = useTTS();
-
-  const commandMenu1Steps = [
-    "Line Properties: All line type, weight, and color are selectable at startup. Click entities to select or unselect properties; selectable entities are highlighted in blue.",
-    "Essential Tools: Familiarize yourself with the Trim command for cutting overlapping lines and the Offset command for creating precise parallel geometry.",
-    "Efficiency: During 2D detailing, the command menu is significantly more effective than the icon menu for rapid tool access."
+  onPrevLesson,
+  nextLabel
+}) => {
+  const TABS = [
+    { id: 'line-properties', label: 'Selectable / Unselectable Line' },
+    { id: 'command-menu', label: 'Command Menu' },
+    { id: 'active-view', label: 'Active View' },
+    { id: 'component', label: 'Highlighted / Unhighlighted ' }
   ];
 
-  const commandMenu2Steps = [
-    "Active View: Each view is local. The highlighted view is activated, meaning changes only apply to that specific view. Unactivated views cannot be edited.",
-    "Chamfer Removal: Chamfer lines appearing too close to object lines can cause dimensioning errors and printing issues. Remove these per orthographic view using the properties menu."
-  ];
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-command-menu-active-tab') || TABS[0].id;
+  });
+
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-command-menu-${activeTab}`);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    localStorage.setItem('2d-command-menu-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
-      const element = containerRef.current;
-
-      const totalHeight = element.scrollHeight - element.clientHeight;
-
-      if (totalHeight === 0) {
-        setScrollProgress(100);
-        return;
-      }
-
-      const progress = (element.scrollTop / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const currentContainer = containerRef.current;
-
-    if (currentContainer) {
-      currentContainer.addEventListener("scroll", handleScroll);
-      handleScroll();
+  const handleNext = () => {
+    const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentTabIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentTabIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    return () => {
-      if (currentContainer) {
-        currentContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [subLessonId]);
+  const handlePrev = () => {
+    const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentTabIndex > 0) {
+      setActiveTab(TABS[currentTabIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
+  const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
+    '2d-command-menu-line-properties': {
+      title: 'Selectable and Unselectable Line Properties',
+      steps: [
 
+      ]
+    },
+    '2d-command-menu-command-menu': {
+      title: 'COMMAND MENU',
+      steps: [
+        "During 2D detailing, command menu is more effective to use rather than icon menu."
+      ]
+    },
+    '2d-command-menu-active-view': {
+      title: 'ACTIVE VIEW',
+      steps: [
+        "Each viewing has its own local view.<br />Highlighted one is activated. It means, all changes performed in that activated view is valid.<br />Unactivated view cannot select any line, so that no command will be performed.",
+      ]
+    },
+    '2d-command-menu-component': {
+      title: 'Component highlighted / unhighlighted',
+      steps: [
+        "<strong class=\"red-text\">Note:</strong> The process of removing the chamfer is per orthographic view."
+      ]
+    }
+  };
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const currentLesson = LESSON_DATA[`2d-command-menu-${activeTab}`] || { title: 'COMMAND MENU', steps: [] };
+
   return (
-    <div className="course-lesson-container command-menu-lesson" ref={containerRef}>
-      {" "}
-      {/* Sticky Progress Bar */}
+    <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-      <section className="lesson-intro">
-        <h3 className="section-title">
-          {" "}
 
-          {subLessonId === "2d-command-menu-1"
-            ? "COMMAND MENU (1)"
-            : "COMMAND MENU (2)"}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            if (subLessonId === "2d-command-menu-1") speak(commandMenu1Steps);
-            else speak(commandMenu2Steps);
-          }}
-            onStop={stop}
-          />
-        </h3>
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-        <p className="p-flush">
-          Learn about line properties and the efficiency of using the command
-          menu in 2D detailing.
-        </p>
-      </section>
       <div className="lesson-grid single-card">
         <div className="lesson-card">
-          {" "}
-          {subLessonId === "2d-command-menu-1" ? (
-            <>
-              {" "}
-              {/* Section 2: Selectable and Unselectable Line Properties */}
-              <div className={`${getStepClass("cm1-2")} ${currentIndex === 0 ? "reading-active" : ""}`}>
-                <div className="step-header">
-                  {" "}
-                  <span className="step-number">
+          <div className="fade-in">
 
-                    2
-                  </span>{" "}
-                  <span className="step-label">
-                    Selectable and Unselectable Line Properties
-                  </span>
+
+            <div className="flex-col tab-content fade-in">
+              {activeTab === 'line-properties' && (
+                <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 4 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}> 
+                  <div className="step-header">
+                    <span className="step-number">2</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Selectable and Unselectable Line Properties"
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <img src={linePropsImg} alt="Line Properties" className="software-screenshot screenshot-wide mt-4" />
+                    
+                    <div className="instruction-box mt-4">
+                      <p className="p-flush">All line type, line weight, and color are selectable when system is started.</p>
+                      <p className="p-flush mt-2">Click on the entities to select and unselect line properties.</p>
+                      <p className="p-flush mt-2">Entities highlighted in blue are selectable.</p>
+                    </div>
+
+
+
+                  </div>
+              )}
+
+              {activeTab === 'command-menu' && (
+                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">3</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Command Menu"
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <KaraokeLessonText
+                      className="p-flush"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                    <img src={commandMenu1ImgA} alt="Command Menu Details" className="software-screenshot screenshot-wide mt-4" />
+                    <img src={commandMenu1ImgB} alt="Command Menu Specifics" className="software-screenshot screenshot-wide mt-4" />
+                  </div>
                 </div>
+              )}
 
-                <div className="step-description">
-                  <div className="flex-col">
-                    {/* Relative container to allow absolute positioning of the info-box over the image */}
-                    <div className="image-overlay-container" style={{ position: "relative" }}>
-                      <img src={selectableLineImg} alt="Selectable Line Properties" className="software-screenshot screenshot-wide" />
+              {activeTab === 'active-view' && (
+                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">3</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Active View"
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <KaraokeLessonText
+                      className="p-flush font-bold"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
 
+                    
+                    <img src={activeViewImg} alt="Active View Settings" className="software-screenshot screenshot-wide mt-4" />
+                  </div>
+                </div>
+              )}
 
-                      <div className="info-box" style={{
-                        position: "absolute",
-                        top: "22rem",
-                        right: "1px",
-                        width: "510px",
-                        margin: 0,
-                        zIndex: 10,
-                        boxShadow: "var(--shadow-lg)"
-                      }}>
-                        <p className="p-flush">
-                          All line type, line weight, and color are selectable
-                          when system is started.
-                        </p>
-
-                        <p className="p-flush">
-                          Click on the entities to select and unselect line
-                          properties.
-                        </p>
-
-                        <div className="flex-row-center">
-                          <div className="blue-bold">Entities highlighted in blue are selectables</div>
-                        </div>
-                      </div>
+              {activeTab === 'component' && (
+                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">4</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Component highlighted / unhighlighted"
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <img src={componentHighlightedImg} alt="Component Highlighting" className="software-screenshot screenshot-wide mt-4" />
+                    
+                    <div className={`instruction-box ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{marginTop: "2rem"}}>
+                      <KaraokeLessonText
+                        as="div"
+                        className="p-flush"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* Section 3: Command Menu */}
-              <div className={`${getStepClass("cm1-3")} ${currentIndex === 2 ? "reading-active" : ""}`} style={{ marginTop: "3rem" }}>
-                <div className="step-header">
-                  {" "}
-                  <span className="step-number">
+              )}
+            </div>
+          </div>
 
-                    3
-                  </span>{" "}
-                  <span className="step-label">
-                    {" "}
-                    <strong>Command Menu</strong>{" "}
-                  </span>
-                </div>
-                <p>During 2D detailing, command menu is more effective to use rather than icon menu.</p>
-
-                <div className="step-description">
-                  <div className="flex-col">
-                    <div>
-                      <img src={commandMenu1Img} alt="Command Menu - Basic Tools" className="software-screenshot screenshot-wide" />
-                    </div>
-
-                    <div>
-                      <img src={commandMenu2Img} alt="Command Menu - Advanced Tools" className="software-screenshot screenshot-wide" />
-                    </div>
-                  </div>
-                </div>
-              </div>{" "}
-            </>
-          ) : subLessonId === "2d-command-menu-2" ? (
-            <>
-              {" "}
-              {/* Section 3: Active View */}
-              <div className={`${getStepClass("cm2-3")} ${currentIndex === 0 ? "reading-active" : ""}`}>
-                <div className="step-header">
-                  {" "}
-                  <span className="step-number">
-
-                    3
-                  </span>{" "}
-                  <span className="step-label">Active View</span>
-                </div>
-
-                <div className="step-description">
-                  <div className="flex-col">
-                    <p className="p-flush">
-                      Each viewing has its own local view. <br /> Highlighted
-                      one is activated. It means, all changes performed in that
-                      activated view is valid. <br />
-                      Unactivated view cannot select any line, so that no
-                      command will be performed.
-                    </p>
-
-                    <div style={{ marginBottom: "-2rem" }}>
-                      <img src={activeViewImg} alt="Active View and Local View" className="software-screenshot screenshot-large" />
-                    </div>
-                  </div>
-                </div>
-              </div>{" "}
-              {/* Section 4: Component highlighted / unhighlighted */}
-              <div className={`${getStepClass("cm2-4")} ${currentIndex === 1 ? "reading-active" : ""}`}>
-                <div className="step-header">
-                  {" "}
-                  <span className="step-number">
-
-                    4
-                  </span>{" "}
-                  <span className="step-label">
-                    Component highlighted / unhighlighted
-                  </span>
-                </div>
-
-                <div className="step-description">
-                  <div className="flex-row--top">
-                    <div className="flex-1">
-                      <div>
-                        <img src={componentHighlighted1Img} alt="Chamfer line appearing too close" className="software-screenshot screenshot-large" />
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-                <div className="info-box" style={{ marginTop: "1rem" }}>
-                  <p className="p-flush red-text"><strong>Note:</strong> </p> <p> The process of removing the chamfer is per orthographic view.</p>
-                </div>
-              </div>
-
-
-
-            </>
-          ) : (
-            <p>
-              Content for
-              {subLessonId} is still being prepared.
-            </p>
-          )}
           <div className="lesson-navigation">
-            {" "}
-            <button className="nav-button" onClick={onPrevLesson}>
-              {" "}
-              <ChevronLeft size={18} /> Previous{" "}
-            </button>{" "}
-            <button className="nav-button next" onClick={onNextLesson}>
-              {" "}
-              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />{" "}
+            <button className="nav-button" onClick={handlePrev}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -280,6 +236,3 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 };
 
 export default CommandMenuLesson;
-
-
-

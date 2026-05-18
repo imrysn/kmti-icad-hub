@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey, Text
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 try:
     from .database import Base
 except ImportError:
@@ -100,7 +101,7 @@ class ChatLog(Base):
     username = Column(String(100), index=True, nullable=False)  # Denormalized for fast queries
     session_id = Column(String(100), index=True, nullable=True) # Client session identifier
     message = Column(String(2000), nullable=False)              # User's question
-    answer = Column(String(8000), nullable=False)               # AI response
+    answer = Column(Text, nullable=False)                       # AI response
     sources_used = Column(String(1000), nullable=True)          # Comma-separated source filenames
     source_count = Column(Integer, default=0)                   # How many KB chunks were retrieved
     tokens_estimated = Column(Integer, default=0)               # Rough token count (chars / 4)
@@ -130,8 +131,8 @@ class QueryCache(Base):
     id = Column(Integer, primary_key=True, index=True)
     query_hash = Column(String(64), unique=True, index=True, nullable=False)  # SHA-256 of normalized query
     query_text = Column(String(2000), nullable=False)          # Original query for debugging
-    answer = Column(String(8000), nullable=False)
-    sources_json = Column(String(16000), nullable=True)        # JSON-serialized sources
+    answer = Column(Text, nullable=False)
+    sources_json = Column(Text, nullable=True)        # JSON-serialized sources
     hit_count = Column(Integer, default=0)                     # Times this cache entry was served
     created_at = Column(DateTime, default=func.now(), index=True)
     expires_at = Column(DateTime, nullable=False, index=True)  # TTL expiry
@@ -143,7 +144,7 @@ class SavedSnippet(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, index=True, nullable=False) # FK to users.id
-    content = Column(String(8000), nullable=False)        # The clipped text
+    content = Column(Text, nullable=False)        # The clipped text
     source = Column(String(200), nullable=True)           # E.g. "AI Response", "2D Keyway Lesson"
     tags = Column(String(500), nullable=True)             # Optional tags for categorization
     created_at = Column(DateTime, default=func.now(), index=True)
@@ -207,7 +208,7 @@ class LessonContent(Base):
     id = Column(Integer, primary_key=True, index=True)
     lesson_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=False)
     content_type = Column(String(50)) # "text", "image", "video", "bullet_list"
-    data = Column(String(10000)) # Using large String for content
+    data = Column(Text) # Using large String for content
     order = Column(Integer, default=0)
 
 
@@ -225,3 +226,76 @@ class QuestionAttempt(Base):
     attempted_at = Column(DateTime, default=func.now())
 
 
+
+class AssessmentTask(Base):
+    """Definition of a practical assessment task (Set 1-10)"""
+    __tablename__ = "assessment_tasks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    set_number = Column(Integer, nullable=False, index=True) # 1-10
+    task_code = Column(String(10), nullable=False) # e.g., "A", "B"
+    title = Column(String(200), nullable=False)
+    description = Column(Text)
+    master_file_path = Column(String(500)) # Path to master .dwg
+    order = Column(Integer, default=0)
+    created_at = Column(DateTime, default=func.now())
+    
+    submissions = relationship("AssessmentSubmission", back_populates="task")
+
+class AssessmentSubmission(Base):
+    """Trainee submission for a practical assessment task"""
+    __tablename__ = "assessment_submissions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    task_id = Column(Integer, ForeignKey("assessment_tasks.id"), nullable=False)
+    submission_file_path = Column(String(500)) # Path to uploaded .dwg
+    status = Column(String(50), default="pending") # "pending", "approved", "rejected"
+    trainer_id = Column(Integer, ForeignKey("users.id"), nullable=True) # Trainer who reviewed it
+    submitted_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    user = relationship("User", foreign_keys=[user_id])
+    task = relationship("AssessmentTask", back_populates="submissions")
+    feedback = relationship("AssessmentFeedback", back_populates="submission", cascade="all, delete-orphan")
+
+class AssessmentFeedback(Base):
+    """Detailed feedback for a submission, including Excel checkback"""
+    __tablename__ = "assessment_feedback"
+
+    id = Column(Integer, primary_key=True, index=True)
+    submission_id = Column(Integer, ForeignKey("assessment_submissions.id", ondelete="CASCADE"), nullable=False)
+    checkback_file_path = Column(String(500)) # Path to Excel checkback file
+    comments = Column(Text)
+    trainee_reply = Column(Text, nullable=True)
+    replied_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=func.now())
+
+    submission = relationship("AssessmentSubmission", back_populates="feedback")
+
+class TrainerTraineeMapping(Base):
+    """Relationship between a trainer (Employee) and a trainee"""
+    __tablename__ = "trainer_trainee_mappings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    trainer_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    trainee_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    assigned_at = Column(DateTime, default=func.now())
+
+    trainee = relationship("User", foreign_keys=[trainee_id])
+    trainer = relationship("User", foreign_keys=[trainer_id])
+
+class Notification(Base):
+    """System notifications for users (e.g. Trainers notified of submissions)"""
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    recipient_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    sender_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    message = Column(String(1000), nullable=False)
+    type = Column(String(50)) # "assessment_completion", "feedback_reply", etc.
+    is_read = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=func.now())
+
+    recipient = relationship("User", foreign_keys=[recipient_id])
+    sender = relationship("User", foreign_keys=[sender_id])

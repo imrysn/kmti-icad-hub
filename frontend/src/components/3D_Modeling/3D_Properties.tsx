@@ -1,9 +1,8 @@
-/** * 3D_Properties.tsx – Properties lessons */
-
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Properties (1) Assets */
@@ -29,10 +28,10 @@ import information4 from "../../assets/3D_Image_File/information4.png";
 import information5 from "../../assets/3D_Image_File/information5.png";
 import infoPointImg from "../../assets/3D_Image_File/properties2_information_point.png";
 import infoEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
-import infoPointEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
+import infoPointEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edgeq.jpg";
 import infoAngleImg from "../../assets/3D_Image_File/properties2_information_angle.png";
 import infoEntityImg from "../../assets/3D_Image_File/properties2_information_entity.png";
-import propertiesLayerImg from "../../assets/3D_Image_File/change_layer.png";
+import layerImg from "../../assets/3D_Image_File/layer.jpg";
 
 interface PropertiesLessonProps {
   nextLabel?: string;
@@ -52,7 +51,8 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     speak,
     stop,
     isSpeaking,
-    currentIndex
+    currentIndex,
+    currentCharIndex
   } = useLessonCore(`${subLessonId}-${activeTab}`);
 
   useEffect(() => {
@@ -60,23 +60,31 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
   }, [activeTab]);
 
   const colorSteps = [
-    "Step 1: Select Change Color from the icon menu.",
-    "Step 2: Choose either Entity or Face. For Entity, pick a color and select the solid to change everything. For Face, pick a color and select specific surfaces, then click GO."
+    "CHANGE COLOR",
+    "Step 1: Select Change Color from the icon menu",
+    "Step 2: Choose either Entity or Face",
+    "Entity. The entire solid entity will change its color.",
+    "Pick a color then select the solid entity",
+    "Face. Only selected faces or surfaces will change its color",
+    "Pick a color then select surface to be changed then GO"
   ];
 
   const layerSteps = [
+    "CHANGE LAYER",
     "Step 1: Select Change Layer from the icon menu.",
-    "Step 2: Specify the target layer number on the item entry.",
-    "Step 3: Click on the solid entity to move it to that layer.",
-    "Layer Designations: Layer 1 is for common white parts. Layer 2 is for painted or safety-yellow parts. Layer 3 is for purchase parts like bolts."
+    "Step 2: Specify the layer on the item entry.",
+    "Step 3: Click on the solid entity.",
+    "Layer Designations: Layer 1 is for All common parts need to be fabricated or machined. Parts that undergo Annealing, Shot blasting, or Annealing Shot blasting.Covers for purchase parts (No mechanism). All parts must be color White (No. 1). Layer 2 is for Fabricated/Machined parts with specific color/paint. Safety Covers - Yellow (No. 4). Layer 3 is for Purchase Parts (including stud bolts). Purchase Parts with Additional Process Use manufacturer standard colors.."
   ];
 
   const infoSteps = [
-    "Step 1: Coordinates. Pick a point to display its position from the origin.",
-    "Step 2: Length. Pick an edge and click GO to measure it.",
-    "Step 3: Distance. Pick two points or edges to measure the gap between them.",
-    "Step 4: Angle. Pick two edges or three points to calculate the angle.",
-    "Step 5: Entity Info. Pick a solid and click GO to see all technical information."
+    "INFORMATION",
+    "Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information).",
+    "Displays coordinates of a point from the origin then Pick a point",
+    "Measures the length of an edge then Pick an edge then GO",
+    "Measures the distance between two points or edges then Pick first point/edge then Pick second point/edge",
+    "Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points",
+    "Displays the informations about the selected entity then Pick the solid entity then GO"
   ];
 
   const handleNext = () => {
@@ -101,11 +109,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     { id: "info", label: "Information" },
   ];
 
+
+
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
+
+
 
       <div className="lesson-tabs">
         {tabs.map(tab => (
@@ -123,64 +135,117 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
         {activeTab === "color" && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>CHANGE COLOR</h4>
+              <h4 className={`${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                <KaraokeLessonText
+                  as="span"
+                  text="CHANGE COLOR"
+                  isActive={isSpeaking && currentIndex === 0}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(colorSteps)} onStop={stop} />
             </div>
             <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div className={`${getStepClass("color-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
+                <div className={`${getStepClass("color-1")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">1 </span>
-                    <span className="step-label">Select <strong className="text-highlight">Change Color</strong> from the icon menu.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Select Change Color from the icon menu"
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="step-description">
-                    <div className="screenshot-wrapper">
-                      <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot" height="150" width="150" />
-                    </div>
+                    <img src={changeColorIcon} alt="Change Color Icon" className="software-screenshot mt-4" height="150" width="150" />
                   </div>
                 </div>
 
-                <div className={`${getStepClass("color-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+                <div className={`${getStepClass("color-2")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ marginBottom: "2rem", alignItems: 'flex-start' }}>
                     <span className="step-number">2 </span>
-                    <span className="step-label">Select either <strong className="text-highlight">Entity</strong> or <strong className="text-highlight">Face</strong></span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Choose either Entity or Face"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
 
                   <div className="tool-block mt-8">
-                    <div className="card-header"><h4>&gt; Entity </h4></div>
-                    <div className="step-description" style={{ marginTop: "1rem" }}>
-                      <p className="p-flush">The entire solid entity will change its color.</p>
+                    <div className={`card-header ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+                      <h4>
+                        <KaraokeLessonText
+                          as="span"
+                          text="> Entity"
+                          isActive={isSpeaking && currentIndex === 3}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </h4>
                     </div>
-                    <div className="step-description" style={{ marginBottom: "2rem" }}>
-                      <p className="p-flush">Pick a color &gt; Select the solid entity</p>
+                    <div className={`step-description ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: "1rem" }}>
+                      <KaraokeLessonText
+                        as="p"
+                        className="p-flush"
+                        text="The entire solid entity will change its color."
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
-                    <div className="card-header" style={{ marginLeft: "6rem", marginBottom: "1rem" }}><h4>CHANGE COLOR (ENTITY)</h4></div>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot" style={{ height: 'auto', width: '500px' }} />
+                    <div className={`step-description ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
+                      <KaraokeLessonText
+                        as="p"
+                        className="p-flush"
+                        text="Pick a color > Select the solid entity"
+                        isActive={isSpeaking && currentIndex === 5}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
+                    <div className="card-header" style={{ marginBottom: "1rem" }}><h4>CHANGE COLOR (ENTITY)</h4></div>
+                    <img src={changeColorEntity} alt="Change Color Entity" className="software-screenshot mt-4" style={{ height: 'auto', width: '500px' }} />
                   </div>
 
                   <div className="tool-block mt-8">
-                    <div className="card-header"><h4>&gt; Face </h4></div>
-                    <div className="step-description" style={{ marginTop: "1rem" }}>
-                      <p className="p-flush">Only <strong className="text-highlight">selected faces/surfaces</strong> will change its color</p>
+                    <div className={`card-header ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
+                      <h4>
+                        <KaraokeLessonText
+                          as="span"
+                          text="> Face"
+                          isActive={isSpeaking && currentIndex === 6}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </h4>
                     </div>
-                    <div className="step-description" style={{ marginBottom: "2rem" }}>
-                      <p className="p-flush">Pick a color &gt; Select surface to be changed &gt; GO
+                    <div className={`step-description ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7" style={{ marginTop: "1rem" }}>
+                      <KaraokeLessonText
+                        as="p"
+                        className="p-flush"
+                        text="Only selected faces/surfaces will change its color"
+                        isActive={isSpeaking && currentIndex === 7}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className={`step-description ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginBottom: "2rem" }}>
+                      <p className="p-flush">
+                        <KaraokeLessonText
+                          as="span"
+                          text="Pick a color > Select surface to be changed > GO"
+                          isActive={isSpeaking && currentIndex === 8}
+                          currentCharIndex={currentCharIndex}
+                        />
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 20px' }} />
                       </p>
                     </div>
-                    <div className="card-header" style={{ marginLeft: "6rem", marginBottom: "1rem" }}><h4>CHANGE COLOR (FACE)</h4></div>
-                    <div className="screenshot-wrapper mt-4">
-                      <img src={changeColorFace} alt="Change Color Face" className="software-screenshot" style={{ height: 'auto', width: '500px' }} />
-                    </div>
+                    <div className="card-header" style={{ marginBottom: "1rem" }}><h4>CHANGE COLOR (FACE)</h4></div>
+                    <img src={changeColorFace} alt="Change Color Face" className="software-screenshot mt-4" style={{ height: 'auto', width: '500px' }} />
                   </div>
                 </div>
               </div>
 
-              <div className="screenshot-wrapper" style={{ flex: '0 0 auto', position: 'sticky', top: '5rem', marginTop: '2rem', padding: '15px', borderRadius: '12px' }}>
-                <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot" style={{ height: "400px", width: "auto" }} />
-              </div>
+              <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot mt-8" style={{ height: "400px", width: "auto" }} />
             </div>
           </div>
         )}
@@ -188,77 +253,87 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
         {activeTab === "layer" && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>CHANGE LAYER</h4>
+              <h4 className={`${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                <KaraokeLessonText
+                  as="span"
+                  text="CHANGE LAYER"
+                  isActive={isSpeaking && currentIndex === 0}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(layerSteps)} onStop={stop} />
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div className={`${getStepClass("layer-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginBottom: "1rem" }}>
+                <div className={`${getStepClass("layer-1")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginBottom: "1rem" }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">1 </span>
-                    <span className="step-label">Select <strong className="text-highlight">Change Layer</strong> from the icon menu.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Select Change Layer from the icon menu."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="step-description">
-                    <div className="screenshot-wrapper">
-                      <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot" style={{ height: '180px', width: '180px' }} />
-                    </div>
+                    <img src={changeLayerIcon} alt="Change Layer Icon" className="software-screenshot mt-4" style={{ height: '180px', width: '180px' }} />
                   </div>
                 </div>
 
-                <div className={`${getStepClass("layer-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+                <div className={`${getStepClass("layer-2")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">2 </span>
-                    <span className="step-label">Specify the <strong className="text-highlight">target layer</strong> on the item entry.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Specify the layer on the item entry."
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                   <div className="step-description">
-                    <div className="screenshot-wrapper">
-                      <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot" style={{ width: '400px', height: 'auto' }} />
-                    </div>
+                    <img src={itemEntryChangeLayer} alt="Change Layer Item Entry" className="software-screenshot mt-4" style={{ width: '400px', height: 'auto' }} />
                   </div>
                 </div>
 
-                <div className={`${getStepClass("layer-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+                <div className={`${getStepClass("layer-3")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <span className="step-number">3 </span>
-                    <span className="step-label">Click on the solid entity to move it to that layer.</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Click on the solid entity."
+                      isActive={isSpeaking && currentIndex === 3}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
                 </div>
               </div>
 
-              <div className="screenshot-wrapper" style={{ flex: '0 0 auto', position: 'sticky', top: '5rem', marginTop: '2rem', padding: '15px', borderRadius: '12px' }}>
-                <img src={propertiesLayerImg} alt="Change Layer Properties Dialog" className="software-screenshot" style={{ height: "290px", width: "auto", marginTop: "1rem" }} />
-              </div>
+              <img src={layerImg} alt="Change Layer Properties Dialog" className="software-screenshot mt-4" style={{ height: "250px", width: "auto", marginTop: "3rem" }} />
             </div>
-
-            <div className="section-divider"></div>
-
-            <div className={`${getStepClass("layer-designations")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <div className="card-header" style={{ marginBottom: "2rem" }}><h4>LAYER DESIGNATION OF 3D PARTS</h4></div>
+              <div className="card-header" style={{marginTop: "1rem"}}><h4>LAYER DESIGNATION OF 3D PARTS</h4></div>
               <div className="card-header"><h4>LAYER 1</h4></div>
-              <div className="step-description">
+              <div className="step-description" style={{marginTop: "-2.5rem"}}>
                 <ul className="list-flush">
                   <li>All common parts need to be fabricated or machined.</li>
                   <li>Parts that undergo <strong className="text-highlight">Annealing</strong>, <strong className="text-highlight">Shot blasting</strong>, or <strong className="text-highlight">Annealing Shot blasting</strong>.</li>
                   <li>Covers for purchase parts (No mechanism).</li>
                   <li>All parts must be color <strong className="text-highlight">White (No. 1)</strong>.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot" style={{ width: '900px' }} />
-                </div>
+                <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot mt-4" style={{ width: '900px' }} />
               </div>
-            </div>
 
             <div className="tool-block mt-8">
               <div className="card-header"><h4>LAYER 2</h4></div>
               <div className="step-description">
                 <ul className="list-flush">
-                  <li>Fabricated/Machined parts with specific color/paint requirements.</li>
+                  <li>Fabricated/Machined parts with specific color/paint.</li>
                   <li>Safety Covers - <strong className="text-highlight">Yellow (No. 4)</strong>.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot" style={{ width: '900px', marginBottom: "1rem" }} />
-                </div>
+                <img src={layer2Img} alt="Layer 2 Yellow Parts" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "1rem" }} />
                 <p className="p-flush">
                   Safety color applies to covers for machine guarding such as chain, belt and gear drive power transmission systems.
                 </p>
@@ -268,22 +343,17 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   <li>All Stainless Steel (SUS) - <strong className="text-highlight">White (No. 1)</strong>.</li>
                   <li>Acrylic - <strong className="text-highlight">White (No. 1)</strong>.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4" style={{ position: 'relative' }}>
-                  <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot" style={{ maxWidth: '600px', height: 'auto', marginBottom: "1rem" }} />
-                  <p className="red-text" style={{
-                    position: 'absolute',
-                    bottom: '2rem',
-                    right: '2rem',
-                    fontWeight: 700,
-                    margin: 0
-                  }}>*Red paint only on the pointer</p>
-                </div>
+                <img src={acrylicPointerImg} alt="Acrylic and Pointer" className="software-screenshot mt-4" style={{ maxWidth: '600px', height: 'auto', marginBottom: "4rem" }} />
+                <p className="red-text" style={{
+                  position: 'absolute',
+                  bottom: '90rem',
+                  right: '4rem',
+                  fontWeight: 700,
+                  margin: 0
+                }}>*Red paint only on the pointer</p>
 
-                <div className="card-header" style={{ marginBottom: "5rem", display: 'flex', justifyContent: 'space-around' }}>
-                  <h4>ACRYLIC</h4> <h4>POINTER</h4>
-                </div>
+                  
 
-                <div className="section-divider"></div>
 
                 <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginTop: '1.5rem' }}>
                   <div style={{ flex: 1 }}>
@@ -296,12 +366,9 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <li>New Light - <strong className="text-highlight">White (No. 1)</strong></li>
                     </ul>
                   </div>
-                  <div className="screenshot-wrapper" style={{ flex: '0 0 auto', margin: 0 }}>
-                    <img src={propertiesMaterialImg} alt="Material List Color Codes" className="software-screenshot" style={{ height: "auto", width: "480px" }} />
-                  </div>
+                  <img src={propertiesMaterialImg} alt="Material List Color Codes" className="software-screenshot mt-4" style={{ height: "auto", width: "480px" }} />
                 </div>
 
-                <div className="section-divider" style={{ marginTop: '4rem' }}></div>
 
                 <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginTop: '2rem' }}>
                   <div style={{ flex: 1 }}>
@@ -312,14 +379,9 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <li>Parkerizing, Manganese Phosphate - <strong className="text-highlight">Black (No. 16)</strong>.</li>
                     </ul>
                   </div>
-                  <div className="screenshot-wrapper" style={{ flex: '0 0 auto', margin: 0 }}>
-                    <img src={isoniteManganeseImg} alt="Heat Treated Parts" className="software-screenshot" style={{ height: 'auto', width: '400px' }} />
-                  </div>
+                  <img src={isoniteManganeseImg} alt="Heat Treated Parts" className="software-screenshot mt-4" style={{ height: 'auto', width: '310px' }} />
                 </div>
-                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-around', marginTop: '1rem' }}>
-                  <span style={{ fontWeight: '700' }}>ISONITE</span> 
-                  <span style={{ fontWeight: '700' }}>MANGANESE PHOSPHATE</span>
-                </div>
+               
               </div>
             </div>
 
@@ -328,12 +390,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <div className="step-description">
                 <ul className="list-flush">
                   <li>Purchase Parts (including stud bolts).</li>
-                  <li>Purchase Parts with Additional Processing.</li>
+                  <li>Purchase Parts with Additional Process</li>
                   <li>Use manufacturer standard colors.</li>
                 </ul>
-                <div className="screenshot-wrapper mt-4">
-                  <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot screenshot-wide" />
-                </div>
+                <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot mt-4 screenshot-wide" />
               </div>
             </div>
           </div>
@@ -342,84 +402,108 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
         {activeTab === "info" && (
           <div className="lesson-card tab-content fade-in">
             <div className="card-header">
-              <h4>INFORMATION TOOLS</h4>
+              <h4 className={`${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                <KaraokeLessonText
+                  as="span"
+                  text="INFORMATION"
+                  isActive={isSpeaking && currentIndex === 0}
+                  currentCharIndex={currentCharIndex}
+                />
+              </h4>
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(infoSteps)} onStop={stop} />
             </div>
-            <p className='p-flush' style={{ marginTop: "-2rem" }}>Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information).</p>
+            <KaraokeLessonText
+              as="p"
+              className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`}
+              style={{ marginTop: "-2rem" }}
+              data-reading-index="1"
+              text="Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information)."
+              isActive={isSpeaking && currentIndex === 1}
+              currentCharIndex={currentCharIndex}
+            />
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginTop: '1rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 {/* Coordinates */}
-                <div className={`${getStepClass("info-1")} ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-1")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information1} alt="Coord icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Displays coordinates of a point from the origin <br />
-                      <span className="text-highlight">&gt; Pick a point</span>
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Displays coordinates of a point from the origin > Pick a point"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoPointImg} alt="Coordinates" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoPointImg} alt="Coordinates" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
 
                 {/* Length */}
-                <div className={`${getStepClass("info-2")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-2")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information2} alt="Length icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Measures the length of an edge <br />
-                      <span className="text-highlight">&gt; Pick an edge &gt; GO</span> <img src={leftClick} alt="click" style={{ width: '28px', verticalAlign: 'middle', marginLeft: '4px' }} />
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Measures the length of an edge > Pick an edge > GO"
+                      isActive={isSpeaking && currentIndex === 3}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoEdgeImg} alt="Length" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoEdgeImg} alt="Length" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
 
                 {/* Distance */}
-                <div className={`${getStepClass("info-3")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-3")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information3} alt="Distance icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Measures the distance between two points or edges <br />
-                      <span className="text-highlight">&gt; Pick first point/edge &gt; Pick second point/edge</span>
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Measures the distance between two points or edges > Pick first point/edge > Pick second point/edge"
+                      isActive={isSpeaking && currentIndex === 4}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 {/* Angle */}
-                <div className={`${getStepClass("info-4")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-4")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information4} alt="Angle icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Measures the angle between two edges or three points <br />
-                      <span className="text-highlight">&gt; Pick 2 edges</span> <br />
-                      <span className="text-highlight">&gt; Pick 3 points</span>
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Measures the angle between two edges or three points > Pick 2 edges > Pick 3 Points "
+                      isActive={isSpeaking && currentIndex === 5}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoAngleImg} alt="Angle" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoAngleImg} alt="Angle" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
 
                 {/* Entity Info */}
-                <div className={`${getStepClass("info-5")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ padding: 0 }}>
+                <div className={`${getStepClass("info-5")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ padding: 0 }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
                     <img src={information5} alt="Entity icon" style={{ width: '42px', marginTop: '0.25rem' }} />
-                    <div className="step-label" style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}>
-                      Displays the information about the selected entity <br />
-                      <span className="text-highlight">&gt; Pick the solid entity &gt; GO</span> <img src={leftClick} alt="click" style={{ width: '28px', verticalAlign: 'middle', marginLeft: '4px' }} />
-                    </div>
+                    <KaraokeLessonText
+                      as="div"
+                      className="step-label"
+                      style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+                      text="Displays the informations about the selected entity > Pick the solid entity > GO"
+                      isActive={isSpeaking && currentIndex === 6}
+                      currentCharIndex={currentCharIndex}
+                    />
                   </div>
-                  <div className="screenshot-wrapper" style={{ marginTop: '1.5rem', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                    <img src={infoEntityImg} alt="Entity Info" className="software-screenshot" style={{ width: '100%' }} />
-                  </div>
+                  <img src={infoEntityImg} alt="Entity Info" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
                 </div>
               </div>
             </div>
@@ -438,3 +522,4 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 };
 
 export default PropertiesLesson;
+

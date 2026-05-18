@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 // --- Assets ---
@@ -10,52 +11,55 @@ import toolSelection from "../../assets/3D_Image_File/origin_change_3d_part_layo
 import interactionSteps from "../../assets/3D_Image_File/origin_change_3d_part_layout_2345.png";
 
 interface OriginLessonProps {
-  subLessonId: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
   nextLabel?: string;
 }
 
 const OriginLesson: React.FC<OriginLessonProps> = ({
-  subLessonId,
   onNextLesson,
   onPrevLesson,
   nextLabel,
 }) => {
   const [activeTab, setActiveTab] = useState<"projections" | "layout">(() => {
-    return (localStorage.getItem(`${subLessonId}-tab`) as any) || "projections";
+    return (localStorage.getItem('3d-origin-active-tab') as any) || "projections";
   });
-  
+
   const {
     scrollProgress,
     containerRef,
     speak,
     stop,
     isSpeaking,
-    currentIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentIndex,
+    currentCharIndex
+  } = useLessonCore(`3d-origin-${activeTab}`);
 
   useEffect(() => {
-    localStorage.setItem(`${subLessonId}-tab`, activeTab);
-  }, [subLessonId, activeTab]);
+    localStorage.setItem('3d-origin-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
   const LESSON_DATA = {
     projections: {
-      steps: [
-        "Origin concept: A point where the coordinates of the X, Y, and Z axes are 0, 0, 0. It sets the layout and orientation of views for an entity.",
-        "Important note: The origin must stay in the same position in both 3D and 2D environments."
-      ]
+      title: 'ORIGIN',
+      subtitle: "A point where the coordinates of the X,Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.",
+      importantNotes: "※ The origin must be in the same position 3D and 2D"
     },
     layout: {
+      title: 'CHANGE 3D PART LAYOUT',
+      subtitle: "Use this tool to set the location of origin.",
       steps: [
-        "Step 1: Select Change 3D Part Layout from the icon menu.",
+        "Step 1: Select the Change 3D Part Layout from the icon menu.",
         "Step 2: Right-click to show the current location of the origin.",
-        "Step 3: Left-click on the point where you want the new origin location to be.",
-        "Step 4: Left-click on a second point to set the X-axis direction.",
-        "Step 5: Left-click on a third point to set the Y-axis. The X Y plane will become your front view."
+        "Step 3: Left-click on the point of the desired new location of origin.",
+        "Step 4: Left-click on a 2nd point to set the X-axis.",
+        "Step 5: Left-click on a 3rd point to set the Y-axis. The XY-plane will be front view."
       ]
     }
   };
+
+  const currentLesson = activeTab === 'projections' ? LESSON_DATA.projections : LESSON_DATA.layout;
 
   const handleNext = () => {
     if (activeTab === "projections") {
@@ -63,6 +67,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
@@ -71,10 +76,11 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+    <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -88,85 +94,151 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
         </button>
       </div>
 
+
+
       <div className="lesson-grid single-card">
-        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
+        <div className="lesson-card tab-content">
           {activeTab === "projections" ? (
             <div className="fade-in"> 
-              <div className="card-header"> 
-                <h4>ORIGIN</h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA.projections.steps)} onStop={stop} />
+              <div className="card-header">
+                <KaraokeLessonText
+                  as="h4"
+                  className={`section-title ${currentIndex === 0 ? 'reading-active' : ''}`}
+                  data-reading-index="0"
+                  text="ORIGIN"
+                  isActive={isSpeaking && currentIndex === 0}
+                  currentCharIndex={currentCharIndex}
+                />
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+                  speak([LESSON_DATA.projections.title, LESSON_DATA.projections.subtitle, LESSON_DATA.projections.importantNotes]);
+                }} onStop={stop} />
               </div>
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-                <p className="p-flush">
-                  A point where the coordinates of the X, Y and Z-axis are <strong className="text-highlight">(0, 0, 0)</strong>. It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.
-                </p>
-              </div>
+
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
-                <p className="red-text" style={{marginBottom: "3rem", marginTop: "1rem"}}> <strong>※ The origin must be in the same position 3D and 2D </strong></p>  
-                <div className="screenshot-wrapper mt-8">
-                  <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide" />
+                <KaraokeLessonText
+                  className="p-flush"
+                  text={currentLesson.subtitle}
+                  isActive={isSpeaking && currentIndex === 1}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+
+              <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                <div className="red-text" style={{marginBottom: "2rem", marginTop: "1rem"}}>
+                  <KaraokeLessonText
+                    as="p"
+                    text={LESSON_DATA.projections.importantNotes}
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
+                  <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide mt-4" />
               </div>
             </div>
           ) : (
             <div className="fade-in">
               <div className="card-header">
-                <h4>CHANGE 3D PART LAYOUT</h4>
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA.layout.steps)} onStop={stop} />
+                <KaraokeLessonText
+                  as="h4"
+                  className={`section-title ${currentIndex === 0 ? 'reading-active' : ''}`}
+                  data-reading-index="0"
+                  text="CHANGE 3D PART LAYOUT"
+                  isActive={isSpeaking && currentIndex === 0}
+                  currentCharIndex={currentCharIndex}
+                />
+                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+                  speak([LESSON_DATA.layout.title, LESSON_DATA.layout.subtitle, ...LESSON_DATA.layout.steps]);
+                }} onStop={stop} />
               </div>
-              <p className="p-flush" style={{marginBottom: "2rem"}}> Use this tool to set or modify the location of the origin.</p>
-
-              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-                <div className="step-header">
-                  <span className="step-number">1 </span>
-                  <span className="step-label">Select the <strong className="red-text">Change 3D Part layout</strong> from the icon menu.</span>
-                </div>
-                <div className="step-description">
-                  <div className="screenshot-wrapper">
-                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot screenshot-small" style={{ height: '200px' }} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
-                <div className="step-header">
-                  <span className="step-number">2 </span>
-                  <span className="step-label">Right-click to show the <strong className="text-highlight">current location</strong> of the origin.</span>
-                </div>
+                <KaraokeLessonText
+                  className="p-flush"
+                  text={currentLesson.subtitle}
+                  isActive={isSpeaking && currentIndex === 1}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
-
-              <div className="section-divider"></div>
 
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
-                  <span className="step-number">3 </span>
-                  <span className="step-label">Left-click on the point of the desired new location of origin.</span>
-                </div>
-              </div>
-
-              <div className="section-divider"></div>
-
-              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-                <div className="step-header">
-                  <span className="step-number">4 </span>
-                  <span className="step-label">Left-click on a 2nd point to set the X-axis.</span>
-                </div>
-              </div>
-
-              <div className="section-divider"></div>
-
-              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-                <div className="step-header">
-                  <span className="step-number">5 </span>
-                  <span className="step-label">Left-click on a 3rd point to set the Y-axis.</span>
+                  <span className="step-number">1 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text='Select the Change 3D Part Layout from the icon menu.'
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
                 </div>
                 <div className="step-description">
-                  <p className="p-flush" style={{marginLeft:"3rem", marginBottom: "3rem"}}>The XY-plane will be front view.</p>
-                  <div className="screenshot-wrapper mt-4" style={{marginLeft: "3rem"}}>
-                    <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-wide" />
-                  </div>
+                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot" style={{ height: 'auto', width: "300px" }} />
+                </div>
+              </div>
+
+
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+                <div className="step-header" style={{marginTop: "-2rem"}}>
+                  <span className="step-number">2 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Right-click to show the current location of the origin."
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+
+              <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+                <div className="step-header" style={{marginTop: "-1rem"}}>
+                  <span className="step-number">3 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Left-click on the point of the desired new location of origin."
+                    isActive={isSpeaking && currentIndex === 4}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+
+              <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
+                <div className="step-header" style={{marginTop: "-1rem"}}>
+                  <span className="step-number">4 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Left-click on a 2nd point to set the X-axis."
+                    isActive={isSpeaking && currentIndex === 5}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+
+              <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
+                <div className="step-header" style={{marginTop: "-1rem"}}>
+                  <span className="step-number">5 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Left-click on a 3rd point to set the Y-axis."
+                    isActive={isSpeaking && currentIndex === 6}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+                <div className="step-description">
+                  <KaraokeLessonText
+                    className="p-flush"
+                    style={{ marginBottom: "3rem"}}
+                    text="The XY-plane will be front view."
+                    isActive={isSpeaking && currentIndex === 6}
+                    currentCharIndex={currentCharIndex}
+                  />
+                    <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-medium mt-4" />
                 </div>
               </div>
             </div>

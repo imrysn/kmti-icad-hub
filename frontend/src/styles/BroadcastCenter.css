@@ -19,111 +19,26 @@
 
 .chatbox-bubble {
     width: auto;
-    height: 48px;
-    padding: 0 24px 0 16px;
-    border-radius: 24px;
-    background: transparent;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: var(--radius-full);
+    background: #0f172a !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    /* Default text to White */
+    color: #ffffff !important;
     cursor: pointer;
-    gap: 12px;
+    gap: 10px;
     position: relative;
-    overflow: hidden;
-    /* Stronger shadow for separation on white pages */
-    box-shadow: 0 12px 48px -12px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Inner Background Mask - Default Black */
-.chatbox-bubble::after {
-    content: '';
-    position: absolute;
-    inset: 2.5px;
-    /* Increased from 1px for a thicker border effect */
-    background: #000;
-    border-radius: 22px;
-    /* Adjusted to maintain smooth curvature */
-    z-index: 1;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Flowing Border Light Layer */
-.chatbox-bubble::before {
-    content: '';
-    position: absolute;
-    z-index: 0;
-    left: -50%;
-    top: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(transparent,
-            #6366f1,
-            /* Indigo light streak for visibility on white ops */
-            transparent 40%
-            /* Increased from 15% for a longer tail */
-        );
-    animation: rotateBorder 3s linear infinite;
-    transition: background 0.4s;
-}
-
-.bubble-label {
-    position: relative;
-    z-index: 2;
-    /* Sit above the mask */
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    opacity: 0.95;
-    color: inherit;
-    /* Inherits from parent, handled by hover */
-    transition: color 0.4s;
-}
-
-/* Ensure icon is above mask */
-.chatbox-bubble svg {
-    position: relative;
-    z-index: 2;
-    color: inherit;
-    transition: color 0.4s;
-}
-
-@keyframes rotateBorder {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .chatbox-bubble:hover {
-    transform: translateY(-4px) scale(1.04);
-    box-shadow: 0 20px 60px -12px rgba(0, 0, 0, 0.25);
-    color: #000;
-    /* Invert text to Black */
-}
-
-.chatbox-bubble:hover::after {
-    background: #fff;
-    /* Invert background to White on hover */
-}
-
-.chatbox-bubble:hover::before {
-    animation-duration: 1s;
-    /* Speed up on hover */
-    background: conic-gradient(transparent,
-            #000,
-            /* Black light streak on white pill */
-            transparent 35%
-            /* Slightly longer tail on hover */
-        );
+    background: #000000 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
 /* Old hover styles removed */
@@ -136,16 +51,13 @@
 
 .chatbox-expanded {
     width: 380px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgb(0, 0, 0);
-    /* Darker border for white bg */
-    border-radius: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     padding: 0;
     overflow: hidden;
-    box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.2);
-    animation: slideUpPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-card);
+    animation: slideUpPop 0.2s ease-out;
 }
 
 @keyframes slideUpPop {
@@ -162,8 +74,8 @@
 
 .chatbox-header {
     padding: 16px 20px;
-    background: rgba(163, 163, 163, 0.062);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Info, Play } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
@@ -87,36 +88,84 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     }
   }, [subLessonId, activeTab]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeTab]);
+
   const {
     scrollProgress,
     containerRef,
     speak,
     stop,
     isSpeaking,
-    currentIndex
-  } = useLessonCore((subLessonId === 'standard-1' || subLessonId === 'standard-4') ? `${subLessonId}-${activeTab}` : subLessonId);
+    currentIndex,
+    currentCharIndex
+  } = useLessonCore((subLessonId === 'standard-1' || subLessonId === 'standard-4' || subLessonId === 'standard-6') ? `${subLessonId}-${activeTab}` : subLessonId);
 
   const getStepClass = (stepId: string) => "instruction-step";
 
   const pointerSteps = [
-    "Step 1: Scale Pointer: Apply standard dimensions to both 3D modeling and 2D detailing. The image shows the required pointer geometry.",
-    "Step 2: V-Groove Pointer: For V-groove pointers, apply the same standard on 3D and 2D. The pointer color must be Red #3."
+    "SCALE POINTER",
+    "Based on the image. We must apply it on 3D Modeling and 2D Detailing",
+    "Another type of Scale Pointer is by putting V groove. We must also apply this on 3D and 2D"
   ];
 
   const scaleSteps = [
-    "Step 1: Scale Specifications: On 3D models, text and linear graduations must be Black. On 2D drawings, text must be Yellow #4, and linear graduations must be Skin Color #15."
+    "SCALE",
+    "On 3D: Text and linear graduations of scale are Black. On 2D: Text must be Yellow #4, and linear graduations of scale must be Skin Color #15."
   ];
 
   const gasSteps = [
-    "Step 1: Gas Discharge: To avoid deformation from heat during welding, add one ρE drill hole per square pipe for gas discharge."
+    "GAS DISCHARGE",
+    "Deformation may happen due to the presence of heat and gas at time of welding. Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
   ];
 
   const oilSteps = [
-    "Step 1: Oil Groove: Manufacturing depth should be 1.5mm. Ensure drill and tap holes are smaller than the groove width to maintain oil flow."
+    "OIL GROOVE",
+    "Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole.",
+    "Follow oil way standard of KEM. Depth of manufacturing should be 1.5mm. In case drill hole and tap hole reach to ditch, the diameter of hole should be smaller than width of groove."
   ];
 
   const sprocketSteps = [
-    "Step 1: Sprocket: When detailing sprockets in 2D, always include the standard safety color note as shown."
+    "SPROCKET",
+    "In 2D detail of sprocket, there is a safety color note.",
+    "This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint.",
+    "Location of Sprocket Keyway",
+    "Note: 1. Location of keyway always indicated on special notes. Key groove should be machined at the center of the tooth. 2. Purchase part with additional process. CORRECT."
+  ];
+
+  const boltLengthSteps = [
+    "BOLT LENGTH",
+    "Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm.",
+    "Note: 1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5 to 2 to get the length of bolt fasten on thread part. 2. In case the result is not standard, it will round up to the nearest standard bolt length."
+  ];
+
+  const boltingSetupSteps = [
+    "BOLTING SETUP",
+    "Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup.",
+    "Note: Hexagonal Bolt can be change to Capscrew if there will be problems at installation like tight spaces for tools or hard to reach areas.",
+    "Bolting for Pillow Block: Hexagonal Bolt, Spring Washer, and Flat Washer (Hardening) Slotted.",
+    "For Flange-type Pillow Block: Hexagonal Bolt and Spring Washer."
+  ];
+
+  const slottedHoleSteps = [
+    "SLOTTED HOLE",
+    "For Parts that need adjustments.",
+    "Note: Slotted holes need Flat washer. For normal bolting, Spring Washer is enough.",
+    "CASE 1: Slotted plus Threaded Hole. Hexagonal Bolt, Spring Washer, Flat Washer.",
+    "CASE 2: Slotted plus Drill hole. Hexagonal Bolt, Flat washer, Spring Washer, Hex Nut."
+  ];
+
+  const connectionSteps = [
+    "CONNECTIONS",
+    "CASE 1: On C-Channel. Hexagonal Bolt, Taper washer, Flat washer (If slotted), Spring Washer, Hex Nut.",
+    "CASE 2: Both Drill hole. Hex Sockethead Cap Screw, Spring Washer, Hex Nut."
+  ];
+
+  const sgpPipeSteps = [
+    "SGP PIPES",
+    "a. SGP White: Apply for fluid (Oil, Air and Coolant). b. SGP Black: Apply for Structural Parts or Fabricated Parts.",
+    "These two types of SGP Pipes must be strictly applied on all drawings to avoid mistakes on purchasing. Red Colored Pipes are SGP White. Yellow Colored Pipes are SGP Black."
   ];
 
   const handleNext = () => {
@@ -278,33 +327,46 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="fade-in">
               {activeTab === 'pointer' && (
                 <>
-                  <div className="card-header">
-                    <h4>SCALE POINTER</h4>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SCALE POINTER"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
                     <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(pointerSteps)} onStop={stop} />
                   </div>
 
-                  <div className={`${getStepClass("s1-1")} ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                  <div className={`${getStepClass("s1-1")} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-header">
-                      <span className="step-label">Based on the image. We must apply it on <strong className='red-text'> 3D Modeling</strong> and <strong className='red-text'> 2D Detailing</strong>
-                      </span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Based on the image. We must apply it on 3D Modeling and 2D Detailing"
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                      <div className="screenshot-wrapper">
-                        <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot"  style={{width: "900px"}}/>
-                      </div>
+                      <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot mt-4"  style={{width: "900px"}}/>
                     </div>
                   </div>
 
-                  <div className="section-divider"></div>
 
-                  <div className={`${getStepClass("s1-2")} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                  <div className={`${getStepClass("s1-2")} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-header">
-                      <span className="step-label">Another type of <strong className='red-text'> Scale Pointer</strong> is by putting <strong className='red-text'>V groove</strong>. We must also apply this on <strong className='red-text'>3D</strong> and <strong className='red-text'>2D</strong></span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Another type of Scale Pointer is by putting V groove. We must also apply this on 3D and 2D"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                      <div className="screenshot-wrapper">
-                        <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot"  style={{width: "900px"}}/>
-                      </div>
+                      <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot mt-4"  style={{width: "900px"}}/>
                     </div>
                   </div>
                 </>
@@ -312,53 +374,86 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               {activeTab === 'scale' && (
                 <>
-                  <div className="card-header">
-                    <h4>SCALE</h4>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SCALE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
                     <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(scaleSteps)} onStop={stop} />
                   </div>
 
-                    <div className="step-description">
+                    <div className={`step-description ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                       <div className="info-box mb-8">
-                        <ul className="list-flush">
-                          <li>On <strong className="text-highlight">3D</strong>: Text and linear graduations of scale are <strong className="red-text">Black</strong>.</li>
-                          <li>On <strong className="text-highlight">2D</strong>: Text must be <strong className="red-text">Yellow #4</strong>, and linear graduations of scale must be <strong className="red-text">Skin Color #15</strong>.</li>
-                        </ul>
+                        <KaraokeLessonText
+                          as="div"
+                          text="On 3D: Text and linear graduations of scale are Black. <br />On 2D: Text must be Yellow #4, and linear graduations of scale must be Skin Color #15."
+                          isActive={isSpeaking && currentIndex === 1}
+                          currentCharIndex={currentCharIndex}
+                        />
                       </div>
-                      <div className="screenshot-wrapper" style={{marginTop: "2rem"}}>
-                        <img src={scale2D} alt="Scale in 2D" className="software-screenshot" style={{width: "900px"}} />
-                      </div>
-                      <div className="screenshot-wrapper mt-8">
-                        <img src={scale3D} alt="Scale in 3D" className="software-screenshot" style={{marginTop: "2rem", width: "900px"}} />
-                      </div>
+                      <img src={scale2D} alt="Scale in 2D" className="software-screenshot mt-8" style={{width: "900px"}} />
+                      <img src={scale3D} alt="Scale in 3D" className="software-screenshot mt-8" style={{marginTop: "2rem", width: "900px"}} />
                     </div>
                 </>
               )}
 
               {activeTab === 'gas' && (
                 <div className="fade-in">
-                  <div className="card-header">
-                    <h4>GAS DISCHARGE</h4>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="GAS DISCHARGE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
                     <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(gasSteps)} onStop={stop} />
                   </div>
-                  <p className='p-flush'>Deformation may happen due to the presence of heat and gas at time of welding. 
-                    <br /> Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough.</p>
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="div"
+                      className='p-flush'
+                      text="Deformation may happen due to the presence of heat and gas at time of welding. 
+                        <br /> Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
                 
                     <div className="step-description">
-                      <div className="screenshot-wrapper">
-                        <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot" style={{ width: "900px", marginTop: "2rem"}} />
-                      </div>
+                      <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem"}} />
                     </div>
                 </div>
               )}
 
               {activeTab === 'oil' && (
                 <div className="fade-in">
-                  <div className="card-header">
-                    <h4>OIL GROOVE</h4>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="OIL GROOVE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
                     <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(oilSteps)} onStop={stop} />
                   </div>
-                  <p className='p-flush'>Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole.</p>
-                  <div className="step-description">
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="div"
+                      className='p-flush'
+                      text="Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className={`step-description ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
                       <div className="flex-1">
                         <ul className="list-flush">
@@ -367,9 +462,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           <li>In case drill hole and tap hole reach to ditch, the diameter of hole should be smaller than width of groove.</li>
                         </ul>
                       </div>
-                      <div className="screenshot-wrapper" style={{marginTop: "2rem"}}>
-                        <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot screenshot" style={{width: "900px"}} />
-                      </div>
+                      <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot mt-8" style={{width: "900px"}} />
                     </div>
                   </div>
                 </div>
@@ -377,34 +470,68 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               {activeTab === 'sprocket' && (
                 <div className="fade-in">
-                  <div className="card-header">
-                    <h4>SPROCKET</h4>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SPROCKET"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
                     <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sprocketSteps)} onStop={stop} />
                   </div>
-                  <p className='p-flush'>In 2D detail of sprocket, there is a safety color note.</p>
-                  <div className="step-description">
-                    <div className="screenshot-wrapper mt-4" style={{marginTop: "2rem"}}>
-                      <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot" style={{width: "900px", marginBottom: "2rem"}} />
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="div"
+                      className='p-flush'
+                      text="In 2D detail of sprocket, there is a safety color note."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className={`step-description`}>
+                    <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot mt-8" style={{width: "900px", marginBottom: "2rem"}} />
+                    
+                    <div className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginBottom: "2rem"}}>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint."
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={sprocketColoring} alt="Sprocket Coloring Standard" className="software-screenshot mt-4" style={{marginTop: "1rem", width: "600px"}} />
                     </div>
-                 <span className="step-label"> This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint.</span>
-                <div className="screenshot-wrapper">
-                    <img src={sprocketColoring} alt="Sprocket Coloring Standard" className="software-screenshot" style={{marginTop: "1rem", width: "600px", marginBottom: "2rem"}} />
-                </div>
-                 <span className="step-label">Location of Sprocket Keyway</span>
-                 <div className="screenshot-wrapper">
-                    <img src={sprocketKeywayLoc} alt="Sprocket Keyway Location Standard" className="software-screenshot" style={{marginTop: "1rem", width: "600px"}} />
-                </div>
-                <div className="instruction-box" style={{marginTop: "2rem"}}> 
-                  <p className='p-flush'> <strong className='red-text'>Note:</strong></p>
-                   <p className='p-flush'> 1. Location of keyway always indicated on special notes <br />  キー溝は歯山部中心に合わせ加工すること (Key groove should be machined at the center of the tooth) </p>
-                   <p className='p-flush'> 2.  本図ハ市販品ノ追加加工図デアル  (Purchase part with additional process) <br />  <strong className='red-text'> 本図は市販品の追加加工図である (CORRECT)</strong></p>
-                </div> 
 
+                    <div className={`${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{marginBottom: "2rem"}}>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Location of Sprocket Keyway"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={sprocketKeywayLoc} alt="Sprocket Keyway Location Standard" className="software-screenshot mt-4" style={{marginTop: "1rem", width: "600px"}} />
+                    <div className={`instruction-box ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "2rem"}}> 
+                      <p className='p-flush'> <strong className='red-text'>Note:</strong></p>
+                      <KaraokeLessonText
+                        as="div"
+                        className='p-flush'
+                        text="1. Location of keyway always indicated on special notes <br /> キー溝は歯山部中心に合わせ加工すること (Key groove should be machined at the center of the tooth) <br /> 2. 本図ハ市販品ノ追加加工図デアル (Purchase part with additional process) <br /> 本図は市販品の追加加工図である (CORRECT)"
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div> 
                   </div>
                 </div>
-              )}
+              </div>
+            )}
             </div>
           )}
+              
+        
+        
        
 
           {subLessonId === 'standard-4' && (
@@ -592,14 +719,28 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="fade-in">
               {activeTab === 'bolt length' && (
                 <>
-                  <div className="card-header">
-                    <h4>BOLT LENGTH</h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="BOLT LENGTH"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boltLengthSteps)} onStop={stop} />
                   </div>
 
-                  <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-description">
                       <div className="info-box">
+                        <KaraokeLessonText
+                          as="div"
+                          text="Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm."
+                          isActive={isSpeaking && currentIndex === 1}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
                         <table style={{ border: 'none', background: 'transparent' }}>
                           <tbody>
                             <tr>
@@ -626,14 +767,17 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush" style={{color: "white"}}><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
                         <br /> 
                         </div>
-                        <div className='instruction-box' style={{marginBottom: "2rem"}}>
+                        <div className={`instruction-box ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginBottom: "2rem"}}>
                         <p className="p-flush"><strong className="red-text">Note: </strong> </p>
-                        <p className="p-flush" style={{ paddingLeft: '40px'}}>1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5~2 to get the length of bolt fasten on thread part.</p>
-                        <p className="p-flush" style={{ paddingLeft: '40px'}}>2. In case the result is not standard, it will round up to the nearest standard bolt length.</p>
+                        <KaraokeLessonText
+                          as="div"
+                          text="1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5 to 2 to get the length of bolt fasten on thread part. <br /> 2. In case the result is not standard, it will round up to the nearest standard bolt length."
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                          style={{ paddingLeft: '40px'}}
+                        />
                      </div>
-                      <div className="screenshot-wrapper mt-4">
-                        <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot" style={{width: "900px"}} />
-                      </div>
+                        <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot mt-4" style={{width: "900px"}} />
                     </div>
                   </div>
                 </>
@@ -641,39 +785,68 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               {activeTab === 'bolting setup' && (
                 <>
-                  <div className="card-header">
-                    <h4>BOLTING SETUP</h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="BOLTING SETUP"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boltingSetupSteps)} onStop={stop} />
                   </div>
-                  <p className="p-flush">Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup.</p>
-                  <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                  <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="span"
+                      text="Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  
+                  <div className={`instruction-box ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginTop: "1rem", marginBottom: "2rem"}}>
+                    <p className="p-flush"><strong className="red-text">Note: </strong> </p>
+                    <KaraokeLessonText
+                      as="div"
+                      text="Hexagonal Bolt can be change to Capscrew if there will be problems at installation like tight spaces for tools or hard to reach areas."
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                      style={{ paddingLeft: '40px'}}
+                    />
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                     <div className="step-description">
-                      <div className='instruction-box' style={{marginTop: "1rem", marginBottom: "2rem"}}>
-                        <p className="p-flush"><strong className="red-text">Note: </strong> </p>
-                        <p className="p-flush" style={{ paddingLeft: '40px'}}>Hexagonal Bolt (HB) can be change to Capscrew (CS) if there will be problems at installation like tight spaces for tools (wrench) or hard to reach areas.</p>
-                     </div>
                       <div className="mt-8">
                         <h4 style={{marginBottom: '10px' }}>Pillow Block</h4>
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 3}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: "white", marginBottom: '1rem' }}
+                        />
                         <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>Bolting for Pillow Block:</p>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
                         <p className="p-flush">Flat Washer (Hardening) - <strong className="red-text">SLOTTED</strong></p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginTop: "2rem"}}>
-                          <div className="screenshot-wrapper">
-                            <img src={pillowBlock1} alt="Pillow Block Setup 1" className="software-screenshot" style={{width: "900px", marginBottom: "2rem"}} />
-                          </div>
+                          <img src={pillowBlock1} alt="Pillow Block Setup 1" className="software-screenshot mt-8" style={{width: "900px", marginBottom: "2rem"}} />
                         </div>
                       </div>
+                    </div>
+                  </div>
 
+                  <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+                    <div className="step-description">
                       <div className="mt-8">
                         <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>For Flange-type Pillow Block:</p>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
                         
-                        <div className="screenshot-wrapper mt-4">
-                          <img src={pillowBlock3} alt="Flange Setup" className="software-screenshot" style={{ width: "300px", marginTop: "2rem"}} />
-                        </div>
+                        <img src={pillowBlock3} alt="Flange Setup" className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem"}} />
                       </div>
                     </div>
                   </div>
@@ -682,19 +855,50 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               {activeTab === 'SLOTTED HOLE' && (
                 <>
-                  <div className="card-header">
-                    <h4>SLOTTED HOLE</h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA['standard-7']?.steps || [])} onStop={stop} />
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SLOTTED HOLE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(slottedHoleSteps)} onStop={stop} />
                   </div>
-                  <p className="p-flush">For Parts that need adjustments.</p>
-                  <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                  <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="span"
+                      text="For Parts that need adjustments."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-description">
-                      
                       <div className='instruction-box' style={{marginTop: "1rem", marginBottom: "2rem"}}>
-                        <p className="p-flush"><strong className="red-text">Note: </strong> Slotted holes need Flat washer (FW). For normal bolting, Spring Washer (SW) is enough.</p>
+                        <p className="p-flush"><strong className="red-text">Note: </strong> </p>
+                        <KaraokeLessonText
+                          as="div"
+                          text="Slotted holes need Flat washer. For normal bolting, Spring Washer is enough."
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                          style={{ paddingLeft: '1rem' }}
+                        />
                       </div>
+                    </div>
+                  </div>
 
+                  <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+                    <div className="step-description">
                       <div className="mt-8">
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 3}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
                         <p className="p-flush"> <strong style={{color: "white"}}>CASE 1: </strong><br/>Slotted + Threaded Hole</p>
                         <br/>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
@@ -702,13 +906,22 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">FlatWasher (Hardening)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={slottedThreaded} alt="Slotted Threaded Case" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={slottedThreaded} alt="Slotted Threaded Case" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
+                    </div>
+                  </div>
 
+                  <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+                    <div className="step-description">
                       <div className="mt-8">
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 4}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
                         <p className="p-flush"><strong style={{color: "white"}}>CASE 2: </strong><br/>Slotted + Drill hole</p>
                         <br/>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
@@ -717,9 +930,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Hex Nut (HN1)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={slottedDrill} alt="Slotted Drill Case" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={slottedDrill} alt="Slotted Drill Case" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
                     </div>
@@ -729,13 +940,27 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               {activeTab === 'CONNECTIONS' && (
                 <>
-                  <div className="card-header">
-                    <h4>CONNECTIONS</h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA['standard-7']?.steps || [])} onStop={stop} />
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="CONNECTIONS"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(connectionSteps)} onStop={stop} />
                   </div>
-                  <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-description">
                       <div className="mt-8">
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 1}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
                         <p className="p-flush"> <strong style={{color: "white"}}>CASE 1: </strong><br/>On C-Channel</p>
                         <br/>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
@@ -745,12 +970,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Hex Nut (HN1)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
+                    </div>
+                  </div>
 
+                  <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                    <div className="step-description">
                       <div className="mt-8">
                         <p className="p-flush"> <strong style={{color: "white"}}>CASE 2: </strong><br/>Both Drill hole</p>
                         <br/>
@@ -759,9 +986,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush">Hex Nut (HN1)</p>
                         
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                          <div className="screenshot-wrapper">
-                            <img src={connectionBothDrill} alt="Dual Drill Connection" className="software-screenshot" style={{width: "900px", marginTop: "2rem"}} />
-                          </div>
+                          <img src={connectionBothDrill} alt="Dual Drill Connection" className="software-screenshot mt-8" style={{width: "900px", marginTop: "2rem"}} />
                         </div>
                       </div>
                     </div>
@@ -771,35 +996,44 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               {activeTab === 'sgp pipes' && (
                 <>
-                  <div className="card-header">
-                    <h4>SGP PIPES</h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(LESSON_DATA['standard-8']?.steps || [])} onStop={stop} />
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SGP PIPES"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sgpPipeSteps)} onStop={stop} />
                   </div>
-                  <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-description">
                       <div className="mt-8">
-                        <div style={{marginLeft: "2rem"}}>
+                        <div>
                           <p className="p-flush">a. <strong className="red-text">SGP (White)</strong></p>
-                          <p className="p-flush" style={{marginLeft: "1.5rem"}}>Apply for fluid(Oil, Air and Coolant)</p>
+                          <p className="p-flush">Apply for fluid(Oil, Air and Coolant)</p>
                           <p className="p-flush mt-2">b. <strong className="red-text">SGP (Black)</strong></p>
-                          <p className="p-flush" style={{marginLeft: "1.5rem"}}>Apply for Structural Parts/Fabricated Parts.</p>
+                          <p className="p-flush">Apply for Structural Parts/Fabricated Parts.</p>
                         </div>
-                        
-                        <p className="p-flush mt-4" style={{marginTop: "1rem", textIndent: "2rem"}}>This two types of SGP Pipes will be added on Icad Material List and must be strictly applied on all the drawings to avoid mistakes on purchasing of pipes. This means, we need to identify the 2 types of pipes separately. We will apply it on 3D modeling and 2D detailing of parts.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <p className="p-flush mt-4" style={{marginTop: "1rem", textIndent: "2rem"}}>These two types of SGP Pipes will be added on Icad Material List and must be strictly applied on all the drawings to avoid mistakes on purchasing of pipes. This means, we need to identify the 2 types of pipes separately. We will apply it on 3D modeling and 2D detailing of parts.</p>
                         <p className="p-flush mt-4" style={{marginTop: "1rem",  textIndent: "2rem"}}>Inspite of having distinction of White and Black, it does not mean that we also apply it on the 3D Modeling. The color that we will apply on SGP Pipes will based on its usage and application. We must not be confused about the color of SGP Pipes.</p>
 
                         <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                           <div className="flex-1">
-                            <div className="screenshot-wrapper">
-                              <img src={sgpPipesRed} alt="SGP White Pipes" className="software-screenshot" style={{width: "500px", marginTop: "2rem", marginBottom: "1rem"}} />
-                            </div>
+                              <img src={sgpPipesRed} alt="SGP White Pipes" className="software-screenshot mt-8" style={{width: "500px", marginTop: "2rem", marginBottom: "1rem"}} />
                             <p className="p-flush mt-2">Red Colored Pipes are <strong className="red-text">SGP (White) Pipes</strong>.</p>
                             <p className="p-flush">ex. Pipes for Outfitting</p>
                           </div>
                           <div className="flex-1">
-                            <div className="screenshot-wrapper">
-                              <img src={sgpPipesYellow} alt="SGP Black Pipes" className="software-screenshot" style={{width: "300px", marginTop: "2rem", marginBottom: "1rem"}} />
-                            </div>
+                              <img src={sgpPipesYellow} alt="SGP Black Pipes" className="software-screenshot mt-8" style={{width: "300px", marginTop: "2rem", marginBottom: "1rem"}} />
                             <p className="p-flush mt-2">Yellow Colored Pipes are <strong className="red-text">SGP (Black) Pipes</strong>.</p>
                             <p className="p-flush">ex. Hand Rails</p>
                           </div>

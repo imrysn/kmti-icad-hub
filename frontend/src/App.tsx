@@ -41,9 +41,14 @@ function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    // Force dark mode on login page, otherwise use saved theme
+    const activeTheme = location.pathname === '/login' ? 'dark' : theme;
+    document.documentElement.setAttribute('data-theme', activeTheme);
+    
+    if (location.pathname !== '/login') {
+      localStorage.setItem('theme', theme);
+    }
+  }, [theme, location.pathname]);
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
@@ -93,7 +98,7 @@ function App() {
 
   return (
     <div className="app-container frameless">
-      {/* Background Aurora Elements */}
+      {/* Background Aurora Elements - Restored per user request */}
       <div className="aurora-bg">
         <div className="aurora-blob aurora-1"></div>
         <div className="aurora-blob aurora-2"></div>
@@ -103,9 +108,7 @@ function App() {
         <LoadingScreen />
       ) : !isAuthenticated ? (
         <main className="app-content app-content-login">
-          <div className="login-theme-wrapper">
-            <ThemeToggle theme={theme} onToggle={toggleTheme} />
-          </div>
+
           <Routes>
             <Route path="/login" element={<LoginView />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
@@ -132,7 +135,7 @@ function App() {
 
             {/* 2. NAVIGATION (Center) */}
             <div className="header-center">
-              {user?.role === 'admin' && (
+              {user?.role === 'admin' ? (
                 <nav className="mode-switcher">
                   <button className={`mode-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
                     Mentor
@@ -144,12 +147,23 @@ function App() {
                     Admin
                   </button>
                 </nav>
+              ) : location.pathname.startsWith('/mentor') && (
+                <nav className="mode-switcher">
+                  <button className={`mode-btn ${new URLSearchParams(location.search).get('mode') !== 'assessment' ? 'active' : ''}`} onClick={() => navigate('/mentor?mode=manual')}>
+                    Manual
+                  </button>
+                  <button className={`mode-btn ${new URLSearchParams(location.search).get('mode') === 'assessment' ? 'active' : ''}`} onClick={() => navigate('/mentor?mode=assessment')}>
+                    Practical Assessment
+                  </button>
+                </nav>
               )}
             </div>
 
             {/* 3. USER & ACTIONS (Right) */}
             <div className="header-right">
               <div className="user-status-minimal">
+                <span className="user-name-minimal">{user?.username}</span>
+                <span className="user-separator">|</span>
                 <span className="user-role-minimal">{user?.role}</span>
               </div>
 
