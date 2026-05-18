@@ -8,6 +8,7 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 
 /* Importing assets for Geometric Tolerance */
 import geoTolMainImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1).png";
+import geoTolAddImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png";
 import datumImg from "../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png";
 
 interface GeometricToleranceLessonProps {
@@ -60,16 +61,16 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-geometric-tol-1': {
       title: 'GEOMETRIC TOLERANCE',
-      subtitle: 'Applying geometric tolerances and datum references to ensure precision part fabrication.',
+      subtitle: '',
       steps: [
-        "Select the tolerance command from the menu. Configure the characteristics, value, and datum references in the dialog box, then place the symbol on your technical feature."
+        "A system for defining allowable engineering tolerances. It tells what degree of accuracy and precision that needs to be applied on the part."
       ]
     },
     '2d-geometric-tol-2': {
-      title: 'GEOMETRIC TOLERANCE',
-      subtitle: 'Applying geometric tolerances and datum references to ensure precision part fabrication.',
+      title: 'DATUM',
+      subtitle: '',
       steps: [
-        "Datums establish the reference points for your tolerances. Select the datum command and place the reference triangle on the required surface or dimension line."
+        ""
       ]
     }
   };
@@ -97,40 +98,16 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentLesson.subtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
 
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
-                    <span className="step-number">1</span>
+                    <span className="step-number">9</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Tolerance Frame Construction"
+                      text="Geometric Tolerance"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -143,6 +120,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={geoTolMainImg} alt="Tolerance Dialog" className="software-screenshot screenshot-wide" />
+                    <img src={geoTolAddImg} alt="Add Stacked Geometric Tolerance" className="software-screenshot screenshot-wide mt-6" />
                   </div>
                 </div>
               )}
@@ -150,11 +128,11 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
               {activeTab === '2' && (
                 <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
-                    <span className="step-number">1</span>
+                    <span className="step-number">10</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Datum Reference Application"
+                      text="Datum"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />

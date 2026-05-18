@@ -9,6 +9,7 @@ export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
     const [activeSubTab, setActiveSubTab] = useState<'tasks' | 'assignments'>('tasks');
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
+    const [setFilter, setSetFilter] = useState<number | 'all'>('all');
     const [allUsers, setAllUsers] = useState<User[]>([]);
     const [mappings, setMappings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -159,6 +160,7 @@ export const PracticalManagement: React.FC = () => {
 
     const trainers = allUsers.filter(u => u.role === 'employee' || u.role === 'admin');
     const trainees = allUsers.filter(u => u.role === 'trainee');
+    const filteredTasks = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
 
     return (
         <div className="practical-management animate-fade-in">
@@ -294,7 +296,21 @@ export const PracticalManagement: React.FC = () => {
                         </div>
 
                         <div className="task-inventory">
-                            {tasks.length > 0 ? (
+                            <div className="inventory-header" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                                <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <label>Filter by Set:</label>
+                                    <select 
+                                        value={setFilter} 
+                                        onChange={(e) => setSetFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
+                                        className="admin-input-styled"
+                                        style={{ padding: '0.25rem 0.5rem', borderRadius: '4px' }}
+                                    >
+                                        <option value="all">All Sets</option>
+                                        {[1,2,3,4,5,6,7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                            {filteredTasks.length > 0 ? (
                                 <table className="admin-table">
                                     <thead>
                                         <tr>
@@ -306,7 +322,7 @@ export const PracticalManagement: React.FC = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {tasks.map(task => (
+                                        {filteredTasks.map(task => (
                                             <tr key={task.id}>
                                                 <td><span className="set-pill-mini">{task.set_number}</span></td>
                                                 <td><strong>{task.task_code}</strong></td>

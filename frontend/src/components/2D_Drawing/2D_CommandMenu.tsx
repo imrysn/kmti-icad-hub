@@ -25,10 +25,10 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
   nextLabel
 }) => {
   const TABS = [
-    { id: 'line-properties', label: 'Line Properties' },
+    { id: 'line-properties', label: 'Selectable / Unselectable Line' },
     { id: 'command-menu', label: 'Command Menu' },
     { id: 'active-view', label: 'Active View' },
-    { id: 'component', label: 'Component' }
+    { id: 'component', label: 'Highlighted / Unhighlighted ' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -64,12 +64,9 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
     '2d-command-menu-line-properties': {
-      title: 'Line Properties',
+      title: 'Selectable and Unselectable Line Properties',
       steps: [
-        "Display line properties by selecting it in icon.",
-        "As well as in 3D modeling, Line color can change whenever it is required using this color selection.",
-        "But unlike in 3D, Line color can only change if entity option is activated.",
-        "If ever face option is activated, operator will notice that no lines are possible to select during changing color."
+
       ]
     },
     '2d-command-menu-command-menu': {
@@ -81,10 +78,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     '2d-command-menu-active-view': {
       title: 'ACTIVE VIEW',
       steps: [
-        "Each viewing has its own local view.",
-        "Highlighted one is activated. It means, all changes performed in that activated view is valid. ",
-        "Unactivated view cannot select any line, so that no command will be performed.",
-
+        "Each viewing has its own local view.<br />Highlighted one is activated. It means, all changes performed in that activated view is valid.<br />Unactivated view cannot select any line, so that no command will be performed.",
       ]
     },
     '2d-command-menu-component': {
@@ -118,109 +112,42 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
+
 
             <div className="flex-col tab-content fade-in">
               {activeTab === 'line-properties' && (
                 <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 4 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}> 
                   <div className="step-header">
+                    <span className="step-number">2</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Selectable and Unselectable Line Properties"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="step-description">
-                    <KaraokeLessonText
-                      className="p-flush font-bold"
-                      text={currentLesson.steps[0]}
-                      isActive={isSpeaking && currentIndex === 1}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <KaraokeLessonText
-                      className="p-flush mt-4"
-                      text={currentLesson.steps[1]}
-                      isActive={isSpeaking && currentIndex === 2}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <KaraokeLessonText
-                      className="p-flush mt-2"
-                      text={currentLesson.steps[2]}
-                      isActive={isSpeaking && currentIndex === 3}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <KaraokeLessonText
-                      className="p-flush mt-2"
-                      text={currentLesson.steps[3]}
-                      isActive={isSpeaking && currentIndex === 4}
-                      currentCharIndex={currentCharIndex}
-                    />
-
-                    <img src={linePropsImg} alt="Line Properties" className="software-screenshot screenshot-wide mt-4" />
-
-                    <div className="lesson-table-container mt-6">
-                      <table className="lesson-table">
-                        <thead>
-                          <tr>
-                            <th>Application</th>
-                            <th>LineType</th>
-                            <th>Line Weight</th>
-                            <th>Thickness</th>
-                            <th>Color</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td>Actual line</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
-                          <tr><td>Hidden Line</td><td>Broken Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Center Line</td><td>Single DotLine</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
-                          <tr><td>Phantom Line</td><td>Double DotLine</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Arrow / Machine Flow</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
-                          <tr><td>Welding Hatch</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>Pink (6)</td></tr>
-                          <tr style={{ backgroundColor: '#facc15', color: '#000' }}><td>Scribe Line</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
-                          <tr><td>Floor Level</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Spline / Cutting Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Additional Information / Table</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Detail View Indicator</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Text / Letter</td><td>-</td><td>Thin</td><td>0.15mm</td><td>Yellow (4)</td></tr>
-                          <tr><td>Machining Symbol</td><td>-</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Revised Old Data / Dimension</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Cutted part (Hatch)</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Revision Cloud</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Pipe Reference Drawing</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Pipe End Reference Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Scale Line</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                          <tr><td>Surface Treatment/Condition Surface Without Welding Appearance</td><td>Single DotLine</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                          <tr><td>Same Level</td><td>Single DotLine</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
-                        </tbody>
-                      </table>
+                  <img src={linePropsImg} alt="Line Properties" className="software-screenshot screenshot-wide mt-4" />
+                    
+                    <div className="instruction-box mt-4">
+                      <p className="p-flush">All line type, line weight, and color are selectable when system is started.</p>
+                      <p className="p-flush mt-2">Click on the entities to select and unselect line properties.</p>
+                      <p className="p-flush mt-2">Entities highlighted in blue are selectable.</p>
                     </div>
+
+
+
                   </div>
-                </div>
               )}
 
               {activeTab === 'command-menu' && (
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">3</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Command Menu"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -239,12 +166,13 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
               )}
 
               {activeTab === 'active-view' && (
-                <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 3 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">3</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Active View"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -254,18 +182,6 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                       className="p-flush font-bold"
                       text={currentLesson.steps[0]}
                       isActive={isSpeaking && currentIndex === 1}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <KaraokeLessonText
-                      className="p-flush mt-4"
-                      text={currentLesson.steps[1]}
-                      isActive={isSpeaking && currentIndex === 2}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <KaraokeLessonText
-                      className="p-flush mt-2"
-                      text={currentLesson.steps[2]}
-                      isActive={isSpeaking && currentIndex === 3}
                       currentCharIndex={currentCharIndex}
                     />
 
@@ -278,10 +194,11 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
               {activeTab === 'component' && (
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">4</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Component highlighted / unhighlighted"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />

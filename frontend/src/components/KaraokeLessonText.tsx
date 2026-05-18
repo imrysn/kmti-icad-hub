@@ -25,7 +25,7 @@ export const KaraokeLessonText: React.FC<KaraokeLessonTextProps> = ({
     const wordTokens = useMemo(() => {
         // Regex to split by whitespace but keep the whitespace as a token
         // and ignore whitespace inside HTML tags
-        const tokens = text.split(/(\s+(?![^<>]*>))/);
+        const tokens = (text || "").split(/(\s+(?![^<>]*>))/);
         let charAcc = 0;
         
         return tokens.map((token) => {
@@ -64,7 +64,7 @@ export const KaraokeLessonText: React.FC<KaraokeLessonTextProps> = ({
     }, [isActive, currentCharIndex]);
 
     if (!isActive) {
-        return <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: text }} />;
+        return <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: text || "" }} />;
     }
 
     return (

@@ -131,6 +131,11 @@
     color: var(--text-main);
 }
 
+.form-group select option {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+}
+
 .form-group textarea {
     min-height: 80px;
     resize: vertical;
@@ -244,6 +249,11 @@
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
     outline: none !important;
+}
+
+select.admin-input-styled option {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
 }
 
 /* Custom File Upload Styled */

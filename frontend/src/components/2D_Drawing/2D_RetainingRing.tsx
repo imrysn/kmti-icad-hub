@@ -62,14 +62,14 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
       title: 'RETAINING RING SIZE AND TOLERANCE',
       subtitle: 'Dimensional specifications and assembly standards for External C-Type Retaining Rings.',
       steps: [
-        "Review the dimensional specifications for C-type external rings. Ensure the groove diameter and width match the shaft standards for secure axial retention."
+       
       ]
     },
     '2d-retaining-ring-internal': {
       title: 'RETAINING RING SIZE AND TOLERANCE',
       subtitle: 'Dimensional specifications and assembly standards for Internal C-Type Retaining Rings.',
       steps: [
-        "These standards focus on rings fitted inside bores. Verify the housing diameter and groove dimensions to ensure the C-type internal ring seats correctly during assembly."
+        
       ]
     }
   };
@@ -97,86 +97,57 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentLesson.subtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
             <div className="flex-col tab-content fade-in">
               {activeTab === 'external' && (
-                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                  <div className="step-header">
+                <>
+                  <div className="step-header" style={{ marginTop: "-1rem" }}>
                     <span className="step-number">1</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="External Shaft Standards"
+                      text="retaining Rings-C Type-External"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="step-description">
-                    <KaraokeLessonText
-                      className="p-flush mb-4"
-                      text={currentLesson.steps[0]}
-                      isActive={isSpeaking && currentIndex === 2}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <img 
-                      src={retaining1Img} 
-                      alt="External Retaining Ring Standards" 
-                      className="software-screenshot screenshot-wide" 
-                    />
-                  </div>
-                </div>
+                  <KaraokeLessonText
+                    className="p-flush mb-4"
+                    text={currentLesson.steps[0]}
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                  <img 
+                    src={retaining1Img} 
+                    alt="External Retaining Ring Standards" 
+                    className="software-screenshot screenshot-wide" 
+                  />
+                </>
               )}
 
               {activeTab === 'internal' && (
-                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                  <div className="step-header">
-                    <span className="step-number">1</span>
+                <>
+                  <div className="step-header" style={{ marginTop: "-1rem" }}>
+                    <span className="step-number">2</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Internal Housing Standards"
+                      text="Retaining Rings-C Type-Internal"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="step-description">
-                    <KaraokeLessonText
-                      className="p-flush mb-4"
-                      text={currentLesson.steps[0]}
-                      isActive={isSpeaking && currentIndex === 2}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <img 
-                      src={retaining2Img} 
-                      alt="Internal Retaining Ring Standards" 
-                      className="software-screenshot screenshot-wide" 
-                    />
-                  </div>
-                </div>
+                  <KaraokeLessonText
+                    className="p-flush mb-4"
+                    text={currentLesson.steps[0]}
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                  <img 
+                    src={retaining2Img} 
+                    alt="Internal Retaining Ring Standards" 
+                    className="software-screenshot screenshot-wide" 
+                  />
+                </>
               )}
             </div>
           </div>

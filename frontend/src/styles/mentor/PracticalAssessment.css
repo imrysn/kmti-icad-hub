@@ -213,6 +213,7 @@
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -739,7 +740,6 @@
     font-size: 0.82rem;
     line-height: 1.5;
     color: var(--text-main);
-    border-right: 2px solid var(--primary);
     margin-top: 0.5rem;
     align-self: flex-end;
     width: 90%;
@@ -807,4 +807,128 @@
 
 .reply-submit-btn:hover {
     opacity: 0.9;
+}
+
+/* „Ÿ„Ÿ Resubmit Action „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ */
+.feedback-resubmit-action {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.resubmit-work-btn {
+    min-width: unset !important;
+    width: 100%;
+    gap: 0.6rem !important;
+    background: #DD4DFA !important;
+    border: none !important;
+    font-size: 0.85rem !important;
+    padding: 0.8rem !important;
+}
+
+.resubmit-work-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(221, 77, 250, 0.3);
+}
+
+/* „Ÿ„Ÿ Submissions History „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ */
+.upload-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.resubmit-trigger-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(221, 77, 250, 0.1);
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(221, 77, 250, 0.2);
+}
+
+.resubmit-trigger-btn:hover:not(.disabled) {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.submissions-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.history-item {
+    padding: 0.5rem 0.75rem !important;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.history-item.latest {
+    border-left-color: var(--primary);
+    background: rgba(221, 77, 250, 0.03);
+}
+
+.file-meta-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.history-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.history-badge {
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.05rem 0.35rem;
+    border-radius: 4px;
+}
+
+.history-badge.latest {
+    background: var(--primary);
+    color: white;
+}
+
+.history-badge.resubmit {
+    background: var(--bg-card);
+    color: var(--text-dim);
+    border: 1px solid var(--border-color);
+}
+
+.empty-upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1.5px dashed var(--border-color);
+    border-radius: 12px;
+    color: var(--text-dim);
+    gap: 0.5rem;
+}
+
+.empty-upload-placeholder p {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 0;
 }

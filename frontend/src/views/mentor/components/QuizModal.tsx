@@ -175,8 +175,13 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   const handleTimeUp = () => {
     playSound('error');
     const timeSpent = 120 - timeLeft;
-    const newAnswers = [...answers, -1]; // -1 indicates timeout/wrong
-    const newDurations = [...durations, timeSpent];
+    
+    // Safety check to prevent array desync if state was misaligned by reload
+    const safeAnswers = answers.slice(0, currentIdx);
+    const safeDurations = durations.slice(0, currentIdx);
+    
+    const newAnswers = [...safeAnswers, -1]; // -1 indicates timeout/wrong
+    const newDurations = [...safeDurations, timeSpent];
     setAnswers(newAnswers);
     setDurations(newDurations);
     
@@ -194,6 +199,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   const finalizeQuiz = (finalAnswers: number[], finalDurations: number[]) => {
     const correctCount = finalAnswers.reduce((acc, ans, idx) => {
       const qObj = shuffledQuestions[idx];
+      if (!qObj) return acc;
       const correct = qObj.originalCorrectIdx;
       return ans === correct ? acc + 1 : acc;
     }, 0);
@@ -204,6 +210,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     let highestStreak = 0;
     finalAnswers.forEach((ans, idx) => {
       const qObj = shuffledQuestions[idx];
+      if (!qObj) return;
       const correct = qObj.originalCorrectIdx;
       if (ans === correct) {
         currentStreak++;
@@ -215,6 +222,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
 
     const detailedAnswers = finalAnswers.map((ans, idx) => {
       const qObj = shuffledQuestions[idx];
+      if (!qObj) return null;
       const correct = qObj.originalCorrectIdx;
       return {
         question_id: (qObj as any).id,
@@ -222,7 +230,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
         is_correct: ans === correct,
         seconds_spent: finalDurations[idx] || 0
       };
-    });
+    }).filter(Boolean);
 
     setScore(finalScore);
     setMaxStreak(highestStreak);
@@ -345,8 +353,13 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     if (!isAnswerChecked) {
       const timeSpent = 120 - timeLeft;
       const selectedOriginalIdx = qOptions[selectedOpt].originalIdx;
-      const newAnswers = [...answers, selectedOriginalIdx];
-      const newDurations = [...durations, timeSpent];
+      
+      // Safety check to prevent array desync if state was misaligned by reload
+      const safeAnswers = answers.slice(0, currentIdx);
+      const safeDurations = durations.slice(0, currentIdx);
+      
+      const newAnswers = [...safeAnswers, selectedOriginalIdx];
+      const newDurations = [...safeDurations, timeSpent];
       setAnswers(newAnswers);
       setDurations(newDurations);
       setIsAnswerChecked(true);

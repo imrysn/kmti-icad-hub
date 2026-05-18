@@ -13,10 +13,14 @@ import lineProp1Img from "../../assets/2D_Image_File/2D_line_properties_(1).png"
 import lineProp2Img from "../../assets/2D_Image_File/2D_line_properties_(2)_6_changing_line_color.png";
 
 /* Importing assets for Line Properties (3) */
-import lineProp3Img from "../../assets/2D_Image_File/2D_line_properties_(3)_b_center_line_3.png";
+import lineProp3ImgA from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline1.png";
+import lineProp3ImgB from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline_spline.png";
 
 /* Importing assets for Line Properties (4) */
-import lineProp4Img from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_1.png";
+import lineProp4Img from "../../assets/2D_Image_File/2D_line_properties_(3)_additional_lines_a_spline.png.png";
+import lineProp5Img from "../../assets/2D_Image_File/2D_line_properties_(3)_c_piping_center_line_1.png";
+import lineProp6Img from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_1.png";
+import lineProp7Img from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_3.png";
 
 interface LinePropertiesLessonProps {
   nextLabel?: string;
@@ -30,10 +34,9 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
   nextLabel
 }) => {
   const TABS = [
-    { id: '1', label: 'Standards Table' },
-    { id: '2', label: 'External & Hidden' },
-    { id: '3', label: 'Center & Dimensions' },
-    { id: '4', label: 'Verification' }
+    { id: '1', label: 'Line Properties' },
+    { id: '2', label: 'Changing Color' },
+    { id: '3', label: 'Additional Lines' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -70,30 +73,23 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-line-props-1': {
       title: 'LINE PROPERTIES',
-      subtitle: 'Technical standards for line colors, types, and thicknesses in 2D drafting.',
-      steps: [
-        "Line Standards: Review the technical table for line color and thickness. Each color corresponds to a specific line weight used in the standard KEMCO template."
-      ]
+      subtitle: '',
+      steps: []
     },
     '2d-line-props-2': {
-      title: 'LINE PROPERTIES',
-      subtitle: 'Technical standards for line colors, types, and thicknesses in 2D drafting.',
+      title: 'CHANGING LINE PROPERTIES',
+      subtitle: '',
       steps: [
-        "External and Hidden Lines: Visible edges use thick lines (White), while hidden features use dashed thin lines (Yellow). Ensure your drawing clearly distinguishes these for fabrication."
+        ""
       ]
     },
     '2d-line-props-3': {
-      title: 'LINE PROPERTIES',
-      subtitle: 'Technical standards for line colors, types, and thicknesses in 2D drafting.',
+      title: 'ADDITIONAL LINES',
+      subtitle: '',
       steps: [
-        "Center Lines and Dimensions: Center lines use long-short dash patterns (Red). Dimensions and technical notes are typically assigned to specific layers with uniform thickness."
-      ]
-    },
-    '2d-line-props-4': {
-      title: 'LINE PROPERTIES',
-      subtitle: 'Technical standards for line colors, types, and thicknesses in 2D drafting.',
-      steps: [
-        "Verification: Use the line properties command to audit your entities. All lines must match the established standards before the drawing is submitted for approval."
+        "",
+        "Spline is used to replace lines when a partial section is done on the drawing. These lines will be replaced by a spline.",
+        "Automatically shown for the holes from machine tools. Aside from that, if additional center lines is necessary, It can be put manually."
       ]
     }
   };
@@ -121,81 +117,75 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
 
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentLesson.subtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
+
+
+            
 
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
-                    <span className="step-number">1</span>
+                    <span className="step-number">5</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Line Standards Table"
+                      text="Line Properties"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="step-description">
-                    <KaraokeLessonText
-                      className="p-flush mb-4"
-                      text={currentLesson.steps[0]}
-                      isActive={isSpeaking && currentIndex === 2}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <div className="lesson-table-container mb-4">
+                  
+                      <img src={lineProp1Img} alt="Line Properties Overview" className="software-screenshot screenshot-wide" />
+                    
+                    <div className="lesson-table-container mt-6">
                       <table className="lesson-table">
                         <thead>
                           <tr>
-                            <th>Color</th>
+                            <th>Application</th>
+                            <th>LineType</th>
+                            <th>Line Weight</th>
                             <th>Thickness</th>
-                            <th>Type</th>
-                            <th>Purpose</th>
+                            <th>Color</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr><td>White</td><td>0.35mm</td><td>Solid</td><td>External lines, visible edges</td></tr>
-                          <tr><td>Yellow</td><td>0.18mm</td><td>Dashed</td><td>Hidden lines</td></tr>
-                          <tr><td>Red</td><td>0.18mm</td><td>Dash-Dot</td><td>Center lines, symmetry</td></tr>
+                          <tr><td>Actual line</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
+                          <tr><td>Hidden Line</td><td>Broken Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Center Line</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
+                          <tr><td>Phantom Line</td><td>Double Dot Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Arrow / Machine Flow</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
+                          <tr><td>Welding Hatch</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>Pink (6)</td></tr>
+                          <tr><td>Scribe Line</td><td>Continuous line</td><td className="highlight-cell-yellow">Thick</td><td className="highlight-cell-yellow">0.4mm</td><td className="highlight-cell-yellow">White (1)</td></tr>
+                          <tr><td>Floor Level</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Spline / Cutting Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Additional Information / Table</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Detail View Indicator</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Text / Letter</td><td>-</td><td>Thin</td><td>0.15mm</td><td>Yellow (4)</td></tr>
+                          <tr><td>Machining Symbol</td><td>-</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                          <tr><td>Revised Old Data / Dimension</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                          <tr><td>Cutted part (Hatch)</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                          <tr><td>Revision Cloud</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                          <tr><td>Pipe Reference Drawing</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Pipe End Reference Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                          <tr><td>Scale Line</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
+                          <tr><td>Surface Treatment / Condition</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
+                          <tr><td>Surface Without Welding Appearance</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
+                          <tr><td>Same Level</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
                         </tbody>
                       </table>
                     </div>
-                    <img src={lineProp1Img} alt="Line Properties Overview" className="software-screenshot screenshot-wide" />
                   </div>
-                </div>
               )}
 
               {activeTab === '2' && (
                 <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
-                    <span className="step-number">1</span>
+                    <span className="step-number">6</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="External & Hidden Lines"
+                      text="Changing line properties (Changing Color)"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -207,7 +197,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={lineProp2Img} alt="External and Hidden Lines" className="software-screenshot screenshot-wide" />
+                    <img src={lineProp2Img} alt="External and Hidden Lines" className="software-screenshot screenshot-wide"  style={{ marginTop: "-3rem" }} />
                   </div>
                 </div>
               )}
@@ -215,11 +205,21 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
               {activeTab === '3' && (
                 <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
-                    <span className="step-number">1</span>
+                    <span className="step-number">7</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Center Lines & Dimensions"
+                      text="Additional Lines"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-header" style={{ marginTop: '0.5rem', marginLeft: "3rem"}}>
+                    <span className="step-number">a</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Spline"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -231,31 +231,72 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={lineProp3Img} alt="Center Lines and Dimensions" className="software-screenshot screenshot-wide" />
-                  </div>
-                </div>
-              )}
+                    <img src={lineProp3ImgA} alt="Additional Lines - Spline Settings" className="software-screenshot screenshot-wide mb-6" />
+                    
+                    <KaraokeLessonText
+                      className="p-flush mb-4"
+                      text={currentLesson.steps[1]}
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                    <img src={lineProp3ImgB} alt="Additional Lines - Spline Application" className="software-screenshot screenshot-wide" />
+                    
+                    <div className="step-header" style={{ marginTop: '2rem', marginLeft: "3rem" }}>
+                      <span className="step-number">b</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Center Line"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    
+                    <KaraokeLessonText
+                      className="p-flush mb-4 mt-4"
+                      text={currentLesson.steps[2]}
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                    <img src={lineProp4Img} alt="Line Property Verification" className="software-screenshot screenshot-wide" style={{ marginBottom: "-5rem"}}/>
+                    
+                    <div className="instruction-box mt-4">
+                      <p style={{ margin: 0, lineHeight: 1.5 }}>
+                        <strong>NOTE:</strong> Be careful when which line will be picked first because the center line is always base on L1. The standard properties for centerline are already applied if this command is used.
+                      </p>
+                    </div>
 
-              {activeTab === '4' && (
-                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                  <div className="step-header">
-                    <span className="step-number">1</span>
+                    <div className="step-header" style={{ marginTop: '2rem', marginLeft: "3rem" }}>
+                      <span className="step-number">c</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Piping Center Line"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <img src={lineProp5Img} alt="Piping Center Line" className="software-screenshot screenshot-wide mt-4" />
+
+                    <div className="step-header" style={{ marginTop: '2rem', marginLeft: "3rem" }}>
+                      <span className="step-number">d</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Change the representation of parts hierarchically"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    
                     <KaraokeLessonText
-                      as="span"
-                      className="step-label"
-                      text="Property Verification"
+                      className="p-flush mb-4 mt-4"
+                      text="This is use to change the Line properties of certain parts depends on the detail. This is very useful during detailing of assembly but can also use in parts detail"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
-                  </div>
-                  <div className="step-description">
-                    <KaraokeLessonText
-                      className="p-flush mb-4"
-                      text={currentLesson.steps[0]}
-                      isActive={isSpeaking && currentIndex === 2}
-                      currentCharIndex={currentCharIndex}
-                    />
-                    <img src={lineProp4Img} alt="Line Property Verification" className="software-screenshot screenshot-wide" />
+                    <img src={lineProp6Img} alt="Change representation of parts hierarchically" className="software-screenshot screenshot-wide" />
+                    <img src={lineProp7Img} alt="Change representation of parts hierarchically - continued" className="software-screenshot screenshot-wide mt-4" />
                   </div>
                 </div>
               )}

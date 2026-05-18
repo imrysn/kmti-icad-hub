@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Edit3, Trash2, FileSpreadsheet, ChevronRight } from 'lucide-react';
+import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Edit3, Trash2, FileSpreadsheet, ChevronRight, UploadCloud } from 'lucide-react';
 import { assessmentService, AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
@@ -249,7 +249,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                             <div className="assessment-task-grid">
                                 {currentSetTasks.length > 0 ? (
                                     currentSetTasks.map((task, index) => {
-                                        const submission = submissions.find(s => s.task_id === task.id);
+                                        const taskSubmissions = submissions.filter(s => {
+                                            const subTaskId = s.task?.id || s.task_id;
+                                            return Number(subTaskId) === Number(task.id);
+                                        }).sort((a, b) => {
+                                            const dateA = new Date(a.submitted_at).getTime();
+                                            const dateB = new Date(b.submitted_at).getTime();
+                                            return dateB - dateA;
+                                        });
+                                        
+                                        const latestSubmission = taskSubmissions[0];
+                                        // Find the most recent submission that has feedback (for rejection comments)
+                                        const feedbackSubmission = taskSubmissions.find(s => s.feedback && s.feedback.length > 0) || latestSubmission;
+                                        
                                         const isUploading = uploadingTaskId === task.id && isSubmitting;
                                         const uploadId = `cad-upload-${task.id}`;
 
@@ -280,123 +292,139 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                 <div className="task-row-body">
                                                     {/* Upload Section */}
                                                     <div className="task-row-upload">
-                                                        <span className="task-row-section-label">Your Submission</span>
-                                                        {submission?.submission_file_path ? (
-                                                            <div className="uploaded-file-card">
-                                                                <div className="uploaded-file-info">
-                                                                    <FileText size={18} />
-                                                                    <span className="uploaded-file-name">
-                                                                        {submission.submission_file_path.split(/[\\/]/).pop()}
-                                                                    </span>
-                                                                    <div className={`assessment-status-badge ${submission.status}`}>
-                                                                        {submission.status === 'approved' && <CheckCircle2 size={12} />}
-                                                                        {submission.status === 'pending' && <Clock size={12} />}
-                                                                        {submission.status === 'rejected' && <AlertCircle size={12} />}
-                                                                        <span>{submission.status}</span>
+                                                        <div className="upload-header-row">
+                                                            <span className="task-row-section-label">Your Submissions {taskSubmissions.length > 0 ? `(${taskSubmissions.length})` : ''}</span>
+                                                            <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`}>
+                                                                <Upload size={14} /> {latestSubmission ? 'Resubmit' : 'Upload'}
+                                                            </label>
+                                                        </div>
+
+                                                        <div className="submissions-history-list">
+                                                            {taskSubmissions.length > 0 ? (
+                                                                taskSubmissions.map((sub, sIdx) => (
+                                                                    <div key={sub.id} className={`uploaded-file-card history-item ${sIdx === 0 ? 'latest' : ''}`}>
+                                                                        <div className="uploaded-file-info">
+                                                                            <FileText size={18} />
+                                                                            <div className="file-meta-stack">
+                                                                                <span className="uploaded-file-name">
+                                                                                    {sub.submission_file_path?.split(/[\\/]/).pop()}
+                                                                                </span>
+                                                                                <div className="history-badges">
+                                                                                    {sIdx === 0 && <span className="history-badge latest">Latest</span>}
+                                                                                    {sIdx > 0 && <span className="history-badge resubmit">Attempt {taskSubmissions.length - sIdx}</span>}
+                                                                                    <div className={`assessment-status-badge ${sub.status}`}>
+                                                                                        {sub.status === 'approved' && <CheckCircle2 size={12} />}
+                                                                                        {sub.status === 'pending' && <Clock size={12} />}
+                                                                                        {sub.status === 'rejected' && <AlertCircle size={12} />}
+                                                                                        <span>{sub.status}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="table-actions-horizontal">
+                                                                            <button 
+                                                                                className="action-btn-styled delete" 
+                                                                                title="Delete submission"
+                                                                                onClick={async () => {
+                                                                                    if (window.confirm("Are you sure you want to delete this submission?")) {
+                                                                                        try {
+                                                                                            await assessmentService.deleteSubmission(sub.id);
+                                                                                            showNotification('Submission deleted.', 'success');
+                                                                                            fetchData();
+                                                                                        } catch (err) {
+                                                                                            showNotification('Failed to delete.', 'error');
+                                                                                        }
+                                                                                    }
+                                                                                }}
+                                                                            >
+                                                                                <Trash2 size={14} />
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            ) : (
+                                                                <div className="no-submissions-yet">
+                                                                    <div className="empty-upload-placeholder">
+                                                                        <UploadCloud size={24} />
+                                                                        <p>No files uploaded yet</p>
                                                                     </div>
                                                                 </div>
-                                                                <div className="table-actions-horizontal">
-                                                                    <label htmlFor={uploadId} className="action-btn-styled edit" title="Replace file">
-                                                                        <Edit3 size={16} />
-                                                                    </label>
-                                                                    <button 
-                                                                        className="action-btn-styled delete" 
-                                                                        title="Delete submission"
-                                                                        onClick={async () => {
-                                                                            if (window.confirm("Are you sure you want to delete this submission? This action cannot be undone.")) {
-                                                                                try {
-                                                                                    await assessmentService.deleteSubmission(submission.id);
-                                                                                    showNotification('Submission deleted successfully.', 'success');
-                                                                                    fetchData();
-                                                                                } catch (err) {
-                                                                                    showNotification('Failed to delete submission.', 'error');
-                                                                                }
-                                                                            }
-                                                                        }}
-                                                                    >
-                                                                        <Trash2 size={16} />
-                                                                    </button>
-                                                                </div>
-                                                                <input 
-                                                                    type="file" id={uploadId}
-                                                                    accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm" 
-                                                                    onChange={(e) => handleFileUpload(e, task)}
-                                                                    style={{ display: 'none' }}
-                                                                />
-                                                            </div>
-                                                        ) : (
-                                                            <div className="task-upload-compact">
-                                                                <input 
-                                                                    type="file" id={uploadId}
-                                                                    accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm" 
-                                                                    onChange={(e) => handleFileUpload(e, task)}
-                                                                    disabled={isUploading}
-                                                                />
-                                                                <label htmlFor={uploadId} className={isUploading ? 'uploading' : ''}>
-                                                                    <Upload size={16} />
-                                                                    <span>{isUploading ? 'Uploading...' : 'Upload CAD file'}</span>
-                                                                    <small>.dwg .icd .dxf .step</small>
-                                                                </label>
-                                                            </div>
-                                                        )}
+                                                            )}
+                                                        </div>
+                                                        <input 
+                                                            type="file" id={uploadId}
+                                                            accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm" 
+                                                            onChange={(e) => handleFileUpload(e, task)}
+                                                            disabled={isUploading}
+                                                            style={{ display: 'none' }}
+                                                        />
                                                     </div>
 
                                                     {/* Trainer Feedback Section */}
                                                     <div className="task-row-feedback">
                                                         <span className="task-row-section-label">Trainer Feedback</span>
-                                                        {submission?.status && submission.status !== 'pending' ? (
+                                                        {feedbackSubmission?.status && feedbackSubmission.status !== 'pending' ? (
                                                             <>
-                                                                {expandedFeedbackId === submission.id ? (
-                                                                    <div className={`feedback-container ${submission.status} animate-scale-in`}>
+                                                                {expandedFeedbackId === feedbackSubmission.id ? (
+                                                                    <div className={`feedback-container ${feedbackSubmission.status} animate-scale-in`}>
                                                                         <div className="feedback-header-row" onClick={() => setExpandedFeedbackId(null)}>
                                                                             <div className="feedback-status-info">
-                                                                                {submission.status === 'approved' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
-                                                                                <span>{submission.status === 'approved' ? 'Submission Approved' : 'Revision Required'}</span>
+                                                                                {feedbackSubmission.status === 'approved' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
+                                                                                <span>{feedbackSubmission.status === 'approved' ? 'Submission Approved' : 'Revision Required'}</span>
                                                                             </div>
                                                                             <span className="close-feedback-btn">Close</span>
                                                                         </div>
                                                                         
-                                                                        {submission.feedback && submission.feedback.length > 0 && (
+                                                                        {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
                                                                             <div className="feedback-details">
-                                                                                {submission.feedback[0].comments && (
+                                                                                {feedbackSubmission.feedback[0].comments && (
                                                                                     <div className="feedback-comment">
-                                                                                        <p>{submission.feedback[0].comments}</p>
+                                                                                        <p>{feedbackSubmission.feedback[0].comments}</p>
                                                                                     </div>
                                                                                 )}
 
                                                                                 {/* Trainee Reply Display */}
-                                                                                {submission.feedback[0].trainee_reply && (
+                                                                                {feedbackSubmission.feedback[0].trainee_reply && (
                                                                                     <div className="feedback-trainee-reply">
                                                                                         <div className="reply-header">
                                                                                             <span className="reply-badge">Your Reply</span>
-                                                                                            {submission.feedback[0].replied_at && (
-                                                                                                <small>{new Date(submission.feedback[0].replied_at).toLocaleDateString()}</small>
+                                                                                            {feedbackSubmission.feedback[0].replied_at && (
+                                                                                                <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
                                                                                             )}
                                                                                         </div>
-                                                                                        <p>{submission.feedback[0].trainee_reply}</p>
+                                                                                        <p>{feedbackSubmission.feedback[0].trainee_reply}</p>
                                                                                     </div>
                                                                                 )}
 
                                                                                 {/* Reply Input (only if no reply yet) */}
-                                                                                {!submission.feedback[0].trainee_reply && (
+                                                                                {!feedbackSubmission.feedback[0].trainee_reply && (
                                                                                     <div className="feedback-reply-input-group">
                                                                                         <textarea 
                                                                                             placeholder="Reply to trainer comment..."
                                                                                             className="reply-textarea"
-                                                                                            id={`reply-to-${submission.feedback[0].id}`}
+                                                                                            id={`reply-to-${feedbackSubmission.feedback[0].id}`}
                                                                                         />
                                                                                         <button 
                                                                                             className="reply-submit-btn"
                                                                                             onClick={async () => {
-                                                                                                const textarea = document.getElementById(`reply-to-${submission.feedback[0].id}`) as HTMLTextAreaElement;
-                                                                                                const text = textarea?.value.trim();
+                                                                                                const feedbackItems = feedbackSubmission.feedback;
+                                                                                                if (!feedbackItems || feedbackItems.length === 0) return;
+                                                                                                
+                                                                                                const feedbackId = feedbackItems[0].id;
+                                                                                                const textarea = document.getElementById(`reply-to-${feedbackId}`) as HTMLTextAreaElement;
+                                                                                                const text = textarea?.value?.trim();
                                                                                                 if (!text) return;
+                                                                                                
                                                                                                 try {
-                                                                                                    await assessmentService.replyToFeedback(submission.feedback[0].id, text);
+                                                                                                    await assessmentService.replyToFeedback(feedbackId, text);
                                                                                                     showNotification('Reply sent successfully!', 'success');
                                                                                                     fetchData();
-                                                                                                } catch (err) {
-                                                                                                    showNotification('Failed to send reply.', 'error');
+                                                                                                } catch (err: any) {
+                                                                                                    const errorData = err.response?.data?.detail;
+                                                                                                    const errorMsg = Array.isArray(errorData) 
+                                                                                                        ? errorData[0].msg 
+                                                                                                        : (typeof errorData === 'string' ? errorData : 'Failed to send reply.');
+                                                                                                    showNotification(errorMsg, 'error');
                                                                                                 }
                                                                                             }}
                                                                                         >
@@ -405,11 +433,11 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                     </div>
                                                                                 )}
                                                                                 
-                                                                                {submission.feedback[0].checkback_file_path && (
+                                                                                {feedbackSubmission.feedback[0].checkback_file_path && (
                                                                                     <div className="feedback-file-actions">
                                                                                         <button 
                                                                                             className="checkback-open-btn"
-                                                                                            onClick={() => handleOpenFeedbackExcel(submission)}
+                                                                                            onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
                                                                                         >
                                                                                             <FileSpreadsheet size={16} />
                                                                                             Open in Excel
@@ -421,11 +449,21 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                             onClick={(e) => {
                                                                                                 e.preventDefault();
                                                                                                 e.stopPropagation();
-                                                                                                handleDownloadFeedback(submission);
+                                                                                                handleDownloadFeedback(feedbackSubmission);
                                                                                             }}
                                                                                         >
                                                                                             <Download size={14} />
                                                                                         </a>
+                                                                                    </div>
+                                                                                )}
+                                                                                {feedbackSubmission.status === 'rejected' && latestSubmission?.status === 'rejected' && (
+                                                                                    <div className="feedback-resubmit-action">
+                                                                                        <button 
+                                                                                            className="btn-primary resubmit-work-btn"
+                                                                                            onClick={() => document.getElementById(uploadId)?.click()}
+                                                                                        >
+                                                                                            <Upload size={14} /> Resubmit Corrected Work
+                                                                                        </button>
                                                                                     </div>
                                                                                 )}
                                                                             </div>
@@ -433,12 +471,12 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                     </div>
                                                                 ) : (
                                                                     <div 
-                                                                        className={`feedback-message ${submission.status} clickable animate-fade-in`}
-                                                                        onClick={() => setExpandedFeedbackId(submission.id)}
+                                                                        className={`feedback-message ${feedbackSubmission.status} clickable animate-fade-in`}
+                                                                        onClick={() => setExpandedFeedbackId(feedbackSubmission.id)}
                                                                     >
-                                                                        {submission.status === 'approved' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
+                                                                        {feedbackSubmission.status === 'approved' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
                                                                         <span className="feedback-preview-text">
-                                                                            {submission.feedback?.[0]?.comments || (submission.status === 'approved' ? 'Approved by trainer' : 'Revision required')}
+                                                                            {feedbackSubmission.feedback?.[0]?.comments || (feedbackSubmission.status === 'approved' ? 'Approved by trainer' : 'Revision required')}
                                                                         </span>
                                                                         <ChevronRight size={14} className="expand-icon" />
                                                                     </div>
@@ -446,8 +484,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                             </>
                                                         ) : (
                                                             <div className="feedback-message empty">
-                                                                <FileText size={14} />
-                                                                <span>No feedback yet</span>
+                                                                {latestSubmission?.status === 'pending' ? <Clock size={14} /> : <FileText size={14} />}
+                                                                <span>{latestSubmission?.status === 'pending' ? 'Waiting for trainer review' : 'No feedback yet'}</span>
                                                             </div>
                                                         )}
                                                     </div>

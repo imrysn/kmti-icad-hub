@@ -41,7 +41,8 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
     { id: '1', label: 'Adding Dimensions' },
     { id: '2', label: 'Editing Dimensions' },
     { id: '3', label: 'Part Note' },
-    { id: '4', label: 'Change Position' }
+    { id: '4', label: 'Change Position' },
+    { id: '5', label: 'Breakviews' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -78,27 +79,25 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-dimensioning-1': {
       title: 'DIMENSIONING',
-      subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
+      subtitle: '',
       steps: [
         "Put all the dimensions, symbols, and notes required in the drawing.",
-        "This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
-        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain."
       ]
     },
     '2d-dimensioning-2': {
       title: 'DIMENSIONING',
       subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
       steps: [
-        "To add symbols like the diameter mark, select the edit characters command, click the dimension, and choose the symbol from the Mark dropdown.",
-        "If fitting tolerance is required, use the convert tool to display the appropriate JIC standard values.",
-        "These marks are generated automatically if your 3D model features were created correctly, so manual input is usually unnecessary."
+        "Select the dimension command and double click on the dimension characters you wish to edit.",
+        "To add tolerance specifications, select the dimension and use the tolerance formatting tool to define deviations.",
+        "Specify chamfer and radius prefixes in standard dimensions to denote cut corners and circular edge roundings.",
+        "Grinded materials like S45C-D and SS400-D have specific tolerance levels and surface roughness requirements based on the grinding process."
       ]
     },
     '2d-dimensioning-3': {
       title: 'PART NOTE',
       subtitle: 'Guidelines for adding technical notes and material specifications.',
       steps: [
-        "Grinded materials like S45C-D and SS400-D have specific tolerance levels and surface roughness requirements based on the grinding process.",
         "Use this tool for automatic hole detailing and quantity callouts. Select the command and click the features to place the leader notes."
       ]
     },
@@ -106,8 +105,14 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
       title: 'CHANGE POSITION',
       subtitle: 'Adjusting dimension placement for clarity and alignment.',
       steps: [
-        "Ensure dimensions have enough space between them. Use the change position command, click the dimension, and pick its new location.",
-        "For professional drawings, align dimensions across different views. Select multiple dimensions and move them parallelly to match a reference point."
+        "Ensure dimensions have enough space between them. Use the change position command, click the dimension, and pick its new location."
+      ]
+    },
+    '2d-dimensioning-5': {
+      title: 'DIMENSION FOR BREAKVIEWS',
+      subtitle: 'Technical guide for dimensioning components using break views.',
+      steps: [
+        "There are parts that are too long for the template, which, if scaled too high to fit, become too small for the details. This is applicable for shafts, covers, and other long parts."
       ]
     }
   };
@@ -135,41 +140,16 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card main-dimensioning-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentLesson.subtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                     <div className="step-header">
-                      <span className="step-number">1</span>
+                      <span className="step-number">8</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Dimensioning Overview"
+                        text="Dimensioning"
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -187,7 +167,18 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                     <div className="step-header">
-                      <span className="step-number">2</span>
+                      <span className="step-number">a</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Adding dimensions"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+
+                     <div className="step-header" style={{marginLeft: "3rem"}}>
+                      <span className="step-number">a.1</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
@@ -196,6 +187,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
+                    
                     <div className="step-description">
                       <KaraokeLessonText
                         className="p-flush"
@@ -203,13 +195,13 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={standardDimMenuImg} alt="Standard Dimension Menu" className="software-screenshot screenshot-wide mt-4" />
+                      <img src={standardDimMenuImg} alt="Standard Dimension Menu" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem", marginBottom: "-1rem"}}/>
                     </div>
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-                    <div className="step-header">
-                      <span className="step-number">3</span>
+                    <div className="step-header" style={{ marginLeft: "3rem"}}>
+                      <span className="step-number">a.2</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
@@ -225,7 +217,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={seriesDimMenuImg} alt="Series Dimension Menu" className="software-screenshot screenshot-wide mt-4" />
+                      <img src={seriesDimMenuImg} alt="Series Dimension Menu" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem"}}  />
                     </div>
                   </div>
                 </div>
@@ -235,7 +227,17 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                     <div className="step-header">
-                      <span className="step-number">1</span>
+                      <span className="step-number">b</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Editing Dimension"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-header" style={{marginLeft: "3rem"}}>
+                      <span className="step-number">b.1</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
@@ -251,13 +253,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={editDimDrawingImg} alt="Edit Dimension Guide" className="software-screenshot screenshot-wide mt-4" />
+                      <img src={editDimDrawingImg} alt="Edit Dimension Guide" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem", marginBottom: "-1rem"}} />
                     </div>
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
+                    <div>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
@@ -273,13 +274,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={toleranceImg} alt="Tolerance Guide" className="software-screenshot screenshot-wide mt-4" />
+                      <img src={toleranceImg} alt="Tolerance Guide" className="software-screenshot screenshot-wide" style={{marginBottom: "-1rem"}} />
                     </div>
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-                    <div className="step-header">
-                      <span className="step-number">3</span>
+                    <div>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
@@ -298,29 +298,27 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <img src={chamferRadiusImg} alt="Chamfer and Radius Marks" className="software-screenshot screenshot-wide mt-4" />
                     </div>
                   </div>
-                </div>
-              )}
 
-              {activeTab === '3' && (
-                <div className="flex-col">
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                     <div className="step-header">
-                      <span className="step-number">1</span>
+                      <span className="step-number">b.2</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
                         text="Polished Material"
-                        isActive={isSpeaking && currentIndex === 2}
+                        isActive={isSpeaking && currentIndex === 5}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
                       <KaraokeLessonText
                         className="p-flush"
-                        text={currentLesson.steps[0]}
-                        isActive={isSpeaking && currentIndex === 2}
+                        text={currentLesson.steps[3]}
+                        isActive={isSpeaking && currentIndex === 5}
                         currentCharIndex={currentCharIndex}
-                      />
+                      /> 
+                      <img src={polishedMaterialImg} alt="Polished Material Dialog" className="software-screenshot screenshot-wide mt-4" />
+
                       <div className="lesson-table-container mt-4">
                         <table className="lesson-table">
                           <thead>
@@ -353,26 +351,30 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                           </tbody>
                         </table>
                       </div>
-                      <img src={polishedMaterialImg} alt="Polished Material Dialog" className="software-screenshot screenshot-wide mt-4" />
+                     
                     </div>
                   </div>
+                </div>
+              )}
 
-                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
+              {activeTab === '3' && (
+                <div className="flex-col">
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                     <div className="step-header">
-                      <span className="step-number">2</span>
+                      <span className="step-number">11</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
                         text="Part Note"
-                        isActive={isSpeaking && currentIndex === 3}
+                        isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
                       <KaraokeLessonText
                         className="p-flush"
-                        text={currentLesson.steps[1]}
-                        isActive={isSpeaking && currentIndex === 3}
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
                       <img src={partNoteMenuImg} alt="Part Note Menu" className="software-screenshot screenshot-wide mt-4" />
@@ -384,8 +386,8 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
               {activeTab === '4' && (
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header">
-                      <span className="step-number">1</span>
+                    <div className="step-header" style={{marginLeft: "3rem"}}>
+                      <span className="step-number">b.4</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
@@ -402,28 +404,37 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                       <img src={changePosition1Img} alt="Change Position Overview" className="software-screenshot screenshot-wide mt-4" />
+                      <div className="instruction-box mt-4">
+                        <p style={{ margin: 0, lineHeight: 1.5 }}>
+                          <strong>Note:</strong> Either of these commands can be use to align dimensions.
+                        </p>
+                      </div>
                     </div>
                   </div>
+                </div>
+              )}
 
-                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
+              {activeTab === '5' && (
+                <div className="flex-col">
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem"}}>
+                      <span className="step-number">c</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Align Dimensions"
-                        isActive={isSpeaking && currentIndex === 3}
+                        text="Dimension for Breakviews"
+                        isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
-                      <div className="red-text">
-                        <KaraokeLessonText
-                          text={currentLesson.steps[1]}
-                          isActive={isSpeaking && currentIndex === 3}
-                          currentCharIndex={currentCharIndex}
-                        />
-                      </div>
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={breakViewWorkflowImg} alt="Dimension for Breakviews Guide" className="software-screenshot screenshot-wide mt-4" />
                     </div>
                   </div>
                 </div>

@@ -735,7 +735,7 @@
 
 [data-theme='light'] .lesson-table thead th {
   background: rgba(99, 102, 241, 0.08);
-  color: #6366F1;
+  color: #6366F1 !important;
   /* Darker indigo for visibility in light mode */
 }
 
@@ -766,7 +766,7 @@
 }
 
 [data-theme='light'] .lesson-table td:last-child {
-  color: #F1F5F9 !important;
+  color: #334155 !important;
 }
 
 .lesson-table tr:last-child td:first-child {
@@ -792,8 +792,13 @@
 
 [data-theme='light'] .lesson-table th,
 [data-theme='light'] .lesson-table td {
-  color: #F1F5F9 !important;
+  color: #334155 !important;
   border-color: rgba(0, 0, 0, 0.2);
+}
+
+.lesson-table td.highlight-cell-yellow {
+  background-color: #facc15 !important;
+  color: #000000 !important;
 }
 /* --- Lesson Karaoke Highlighting --- */
 

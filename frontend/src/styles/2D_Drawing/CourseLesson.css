@@ -16,7 +16,7 @@
 
 @keyframes fadeInSlideUp {
   from {
-    opacity: 0;
+    opacity: 0; 
     transform: translateY(30px);
   }
 
@@ -764,22 +764,23 @@
 }
 
 .lesson-table th {
-  text-align: center;
+  text-align: center !important;
   color: #F1F5F9;
 
 }
 
 .lesson-table td {
-  text-align: center;
+  text-align: center !important;
   color: #F1F5F9 !important;
 }
 
 /* Material Column - specific alignment & border */
 .lesson-table td:first-child {
-  text-align: center;
+  text-align: center !important;
   font-weight: 600;
   color: #F1F5F9 !important;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
+  white-space: nowrap;
 }
 
 [data-theme='light'] .lesson-table td:first-child {
@@ -788,6 +789,7 @@
 
 [data-theme='light'] .lesson-table td:first-child {
   background: none;
+  color: #334155 !important;
 }
 
 .lesson-table thead th {
@@ -808,7 +810,7 @@
 
 [data-theme='light'] .lesson-table thead th {
   background: rgba(99, 102, 241, 0.08);
-  color: #6366F1;
+  color: #6366F1 !important;
   /* Darker indigo for visibility in light mode */
 }
 
@@ -840,7 +842,7 @@
 }
 
 [data-theme='light'] .lesson-table td:last-child {
-  color: #F1F5F9 !important;
+  color: #334155 !important;
 }
 
 .lesson-table tr:last-child td:first-child {
@@ -860,8 +862,14 @@
   background: rgba(99, 102, 241, 0.05);
 }
 
+[data-theme='light'] .lesson-table th,
 [data-theme='light'] .lesson-table td {
-  color: #F1F5F9 !important;
+  color: #334155 !important;
+}
+
+.lesson-table td.highlight-cell-yellow {
+  background-color: #facc15 !important;
+  color: #000000 !important;
 }
 
 /* --- Spacing Utilities --- */

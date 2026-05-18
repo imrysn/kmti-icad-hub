@@ -27,7 +27,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 }) => {
   const TABS = [
     { id: 'template', label: 'Drawing Template' },
-    { id: 'views', label: 'Create / Delete Views' },
+    { id: 'views', label: 'Orthograohic View / Delete' },
     { id: 'scale', label: 'Scale' },
     { id: 'hidden', label: 'Hidden Line' },
     { id: 'tangent', label: 'Tangent Line' },
@@ -125,30 +125,17 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
+
 
             <div className="flex-col tab-content fade-in">
               {activeTab === 'template' && (
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}> 
                   <div className="step-header">
+                    <span className="step-number">1</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Inserting Drawing Template"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -162,10 +149,11 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               {activeTab === 'views' && (
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">a</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Creating Orthographic View / Delete Views"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -179,10 +167,11 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               {activeTab === 'scale' && (
                 <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 3 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">b</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Scale"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -222,10 +211,11 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               {activeTab === 'hidden' && (
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">c</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Hidden Line"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -245,10 +235,11 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               {activeTab === 'tangent' && (
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">d</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="Tangent Line"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -268,10 +259,11 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               {activeTab === 'precision' && (
                 <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
+                    <span className="step-number">e</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text=""
+                      text="High Precision"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />

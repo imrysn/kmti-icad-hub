@@ -86,7 +86,11 @@ export const assessmentService = {
     replyToFeedback: async (feedbackId: number, reply: string) => {
         const formData = new FormData();
         formData.append('reply', reply);
-        const response = await api.post(`/api/v1/assessments/feedback/${feedbackId}/reply`, formData);
+        const response = await api.post(`/api/v1/assessments/feedback/${feedbackId}/reply`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response.data;
     },
 

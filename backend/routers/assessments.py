@@ -16,6 +16,7 @@ from ..schemas import (
     TrainerTraineeMappingCreate
 )
 from .auth import get_current_user
+from ..websocket_manager import notification_manager
 
 router = APIRouter(prefix="/api/v1/assessments", tags=["Assessments"])
 
@@ -56,10 +57,11 @@ def get_my_submissions(
 ):
     """Get all submissions for the currently logged-in user."""
     return db.query(AssessmentSubmission).options(
-        joinedload(AssessmentSubmission.feedback)
+        joinedload(AssessmentSubmission.feedback),
+        joinedload(AssessmentSubmission.task)
     ).filter(
         AssessmentSubmission.user_id == current_user.id
-    ).all()
+    ).order_by(AssessmentSubmission.submitted_at.desc()).all()
 
 # --- Admin Endpoints ---
 
@@ -285,17 +287,20 @@ async def submit_task(
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # Create or update submission
+    # Create a new submission record for every attempt (Work History)
+    # However, if the user re-uploads while the status is still 'pending', we replace the file for that specific record.
     submission = db.query(AssessmentSubmission).filter(
         AssessmentSubmission.user_id == current_user.id,
-        AssessmentSubmission.task_id == task_id
-    ).first()
+        AssessmentSubmission.task_id == task_id,
+        AssessmentSubmission.status == "pending"
+    ).order_by(AssessmentSubmission.submitted_at.desc()).first()
 
     if submission:
+        # Update current pending submission
         submission.submission_file_path = file_path
-        submission.status = "pending"
         submission.submitted_at = datetime.now()
     else:
+        # Create a new attempt
         submission = AssessmentSubmission(
             user_id=current_user.id,
             task_id=task_id,
@@ -312,10 +317,11 @@ async def submit_task(
     set_tasks = db.query(AssessmentTask).filter(AssessmentTask.set_number == task.set_number).all()
     set_task_ids = [t.id for t in set_tasks]
     
-    user_submissions_count = db.query(AssessmentSubmission).filter(
+    # Count UNIQUE tasks submitted in this set to avoid double-counting attempts
+    user_submissions_count = db.query(AssessmentSubmission.task_id).filter(
         AssessmentSubmission.user_id == current_user.id,
         AssessmentSubmission.task_id.in_(set_task_ids)
-    ).count()
+    ).distinct().count()
 
     if user_submissions_count == len(set_tasks):
         # Set is finished! Find the assigned trainer
@@ -330,6 +336,20 @@ async def submit_task(
             )
             db.add(new_notif)
             db.commit()
+
+    # --- Real-Time Trainer Notification ---
+    mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
+    if mapping:
+        import asyncio
+        asyncio.create_task(notification_manager.send_personal_message(
+            {
+                "event": "NEW_SUBMISSION", 
+                "trainee_name": current_user.full_name or current_user.username,
+                "task_code": task.task_code,
+                "set_number": task.set_number
+            }, 
+            mapping.trainer_id
+        ))
 
     return submission
 
@@ -477,6 +497,19 @@ def reply_to_feedback(
     feedback.trainee_reply = reply
     feedback.replied_at = datetime.now()
     db.commit()
+
+    # --- Real-Time Trainer Notification ---
+    mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
+    if mapping:
+        import asyncio
+        asyncio.create_task(notification_manager.send_personal_message(
+            {
+                "event": "NEW_REPLY", 
+                "trainee_name": current_user.full_name or current_user.username
+            }, 
+            mapping.trainer_id
+        ))
+
     return {"message": "Reply saved successfully"}
 
 @router.delete("/submissions/{submission_id}")
