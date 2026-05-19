@@ -28,8 +28,8 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
   nextLabel
 }) => {
   const TABS = [
-    { id: 'move-view', label: 'Move View' },
-    { id: 'alignment-delete', label: 'Alignment & Delete' }
+    { id: 'move-view', label: 'Isometric / Orthographic View' },
+    { id: 'alignment-delete', label: 'Delete View' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -105,70 +105,68 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentLesson.subtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
             <div className="flex-col tab-content fade-in">
+              <div className="instruction-step" style={{ marginTop: "-2rem" }}>
+                <div className="step-header">
+                  <span className="step-number">21</span>
+                  <span className="step-label">Operate View</span>
+                </div>
+              </div>
+
               {activeTab === 'move-view' && (
                 <>
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header">
-                      <span className="step-number">1</span>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">a</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Move View Operation"
+                        text="Move View"
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
                       <img src={operateView1ImgA} alt="Move View Menu" className="software-screenshot screenshot-medium mb-4" />
-                      <div className="red-text">
-                        <p><strong>Isometric Spacing:</strong> Views must not be too close, too far, or overlap with orthographic views.</p>
+                      <div className="step-header" style={{ marginLeft: "3rem", marginTop: "1.5rem", marginBottom: "1rem" }}>
+                        <span className="step-number">a.1</span>
+                        <span className="step-label">Isometric View</span>
                       </div>
                       <img src={operateView1ImgA1} alt="Isometric View" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">b.2</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Orthographic Alignment Sync"
+                        text="Orthographic View"
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
-                      <div className="red-text mb-4">
-                        <p><strong>Projection Rule:</strong> All projected views must always remain aligned. Moving one will move all simultaneous aligned views.</p>
-                      </div>
                       <img src={operateView1ImgB2} alt="Orthographic Sync" className="software-screenshot screenshot-wide" />
+                      <div className="instruction-box mt-4">
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+                          1. Select create three view icon and select the Front view. If all the main view are highlighted, it means that the views are align.
+                        </p>
+                        <p className="p-flush">
+                          <strong className="red-text">Note:</strong> <br /> If the projected views are aligned, upon moving the views, all views will move simultaneously
+                        </p>
+                      </div>
+                      <div className="flex-row gap-4 mt-4">
+                        <div className="instruction-box" style={{ flex: 1, display: "flex", alignItems: "center" }}>
+                          <p className="p-flush">
+                            If the views are not aligned, you can use also the same icon to adjust the location and aligning lines will appear.
+                          </p>
+                        </div>
+                        <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
+                          <img src={operateView2ImgB3} alt="Alignment Guides" className="software-screenshot screenshot-wide" style={{ margin: 0 }} />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -176,46 +174,36 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
 
               {activeTab === 'alignment-delete' && (
                 <>
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header">
-                      <span className="step-number">1</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Create Three-View Alignment"
-                        isActive={isSpeaking && currentIndex === 2}
-                        currentCharIndex={currentCharIndex}
-                      />
-                    </div>
-                    <div className="step-description">
-                      <div className="red-text mb-4">
-                        <p><strong>Guide Tip:</strong> Use the three-view tool to restore alignment. Visible guides will appear during adjustment.</p>
-                      </div>
-                      <img src={operateView2ImgB3} alt="Alignment Guides" className="software-screenshot screenshot-wide" />
-                    </div>
-                  </div>
+
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
+                    <div className="step-header" style={{ marginTop: "-3rem", marginLeft: "3rem" }}>
+                      <span className="step-number">b</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Delete View Cleanup"
+                        text="Delete View"
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    <div className="step-description">
-                      <KaraokeLessonText
-                        className="p-flush mb-4"
-                        text="Select unnecessary views, click GO, and confirm in the dialog box to maintain a clean template."
-                        isActive={isSpeaking && currentIndex === 3}
-                        currentCharIndex={currentCharIndex}
-                      />
-                      <div className="flex-col gap-4">
-                        <img src={operateView2ImgB1} alt="Delete Command" className="software-screenshot screenshot-medium" />
-                        <img src={operateView2ImgB2} alt="Confirmation Dialog" className="software-screenshot screenshot-wide" />
+                    <div className="flex-col gap-4">
+                      <img src={operateView2ImgB1} alt="Delete Command" className="software-screenshot screenshot-medium" />
+                      <div className="flex-row gap-4 mt-4">
+                        <div className="instruction-box" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+                            1. Click the unnecessary view, then GO.
+                          </p>
+                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+                            2. Delete view dialog box display.
+                          </p>
+                          <p className="p-flush">
+                            3. Click OK if you decided to delete the view. Click CANCEL if it's still needed.
+                          </p>
+                        </div>
+                        <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
+                          <img src={operateView2ImgB2} alt="Confirmation Dialog" className="software-screenshot screenshot-wide" style={{ margin: 0 }} />
+                        </div>
                       </div>
                     </div>
                   </div>

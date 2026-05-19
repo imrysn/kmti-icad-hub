@@ -23,12 +23,12 @@ interface AdditionalViewLessonProps {
 const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
   onNextLesson,
   onPrevLesson,
-  nextLabel 
+  nextLabel
 }) => {
   const TABS = [
-    { id: 'cross-section', label: 'Cross Section View' },
+    { id: 'cross-section', label: 'Additional View' },
     { id: 'partial-detail', label: 'Partial Section & Detail' },
-    { id: 'isometric', label: 'Isometric View' },
+    { id: 'isometric', label: 'Isometric & Cross Sectional' },
     { id: 'trim', label: 'Trim View' }
   ];
 
@@ -68,15 +68,15 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
       title: 'ADDITIONAL VIEW',
       subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
       steps: [
-        "Cross Section View: Follow steps 1 through 4 to create a basic cross section. Note that the text height of the section name must match the dimension text height."
+        "There are some instances that the cross sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate uneccessary parts."
       ]
     },
     '2d-additional-view-partial-detail': {
       title: 'ADDITIONAL VIEW',
       subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
       steps: [
-        "Partial Section: Use this tool to create a cross-section of a specific part area. Select the view, define the boundary, and set the depth.",
-        "Detail Drawing: Use this to show a specific view area on a larger scale for better clarity."
+        "Use to make a cross-section of a part partially",
+        "Use to detail a view on a bigger scale from a different view."
       ]
     },
     '2d-additional-view-isometric': {
@@ -91,7 +91,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
       title: 'ADDITIONAL VIEW',
       subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
       steps: [
-        "Trim: This is another way to eliminate unneeded parts from a view. Note that Trim cannot be applied to Detail Drawings."
+        "Another way to eliminate parts that are not needed on a certain view. This can not be applied on Detail Drawing."
       ]
     }
   };
@@ -119,48 +119,32 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentLesson.subtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
             <div className="flex-col tab-content fade-in">
+              <div className="instruction-step" style={{ marginTop: "-2rem" }}>
+                <div className="step-header">
+                  <span className="step-number">20</span>
+                  <span className="step-label">Additional View</span>
+                </div>
+              </div>
+
               {activeTab === 'cross-section' && (
-                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                  <div className="step-header">
-                    <span className="step-number">1</span>
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-3rem" }}>
+                  <div className="step-header" style={{ marginLeft: "3rem" }}>
+                    <span className="step-number">a</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Cross Section View Construction"
+                      text="Cross Section View"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
                   <div className="step-description">
                     <img src={additionalView1Img1} alt="Cross Section View Steps" className="software-screenshot screenshot-wide mb-4" />
-                    <div className="red-text">
-                      <p><strong>Standard Rule:</strong> The text height of the section name should be the same with the dimension text height.</p>
+                    <div className="instruction-box mt-4">
+                      <p className="p-flush">
+                        <strong className="red-text">Note:</strong> <br /> The text height of the section name should be the same with the dimension text height.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -168,13 +152,13 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
 
               {activeTab === 'partial-detail' && (
                 <>
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header">
-                      <span className="step-number">1</span>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">b</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Partial Section Creation"
+                        text="Partial Section"
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -191,12 +175,12 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">c</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Detail Drawing Scale"
+                        text="Detail Drawing"
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -216,13 +200,13 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
 
               {activeTab === 'isometric' && (
                 <>
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header">
-                      <span className="step-number">1</span>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">d</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Isometric View Projection"
+                        text="Isometric View"
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -232,13 +216,13 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     </div>
                   </div>
 
-                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">e</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Cross-sectional Depth Settings"
+                        text="Cross-sectional Depth"
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -257,9 +241,9 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
               )}
 
               {activeTab === 'trim' && (
-                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                  <div className="step-header">
-                    <span className="step-number">1</span>
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-3rem" }}>
+                  <div className="step-header" style={{ marginLeft: "3rem" }}>
+                    <span className="step-number">f</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -276,9 +260,6 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={additionalView4ImgF} alt="Trim Command" className="software-screenshot screenshot-wide mb-4" />
-                    <div className="red-text">
-                      <p><strong>Restriction:</strong> Trim command cannot be applied to Detail Drawings.</p>
-                    </div>
                   </div>
                 </div>
               )}

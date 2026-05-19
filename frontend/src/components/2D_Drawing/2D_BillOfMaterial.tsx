@@ -29,10 +29,10 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
   nextLabel
 }) => {
   const TABS = [
-    { id: '1', label: 'Part Drawing' },
+    { id: '1', label: 'Bill of Material' },
     { id: '2', label: 'Assembly Drawing' },
     { id: '3', label: 'Additional Info' },
-    { id: '4', label: 'Edit Attribute' }
+    { id: '4', label: 'BOM after inserting' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -122,44 +122,21 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentLesson.title}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentLesson.title, currentLesson.subtitle, ...currentLesson.steps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentLesson.subtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className="flex-col">
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="instruction-step">
+                    <div className="step-header" style={{ marginTop: "-2rem" }}>
+                      <span className="step-number">16</span>
+                      <span className="step-label">Bill Of Material (BOM)</span>
+                    </div>
+                    <p className="p-flush">displays part informations particularly material, part specifications and weights. Located at upper right portion of the template.</p>
+                  </div>
+
+                  <div className="instruction-step">
                     <div className="step-header">
-                      <span className="step-number">1</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Part Drawing"
-                        isActive={isSpeaking && currentIndex === 2}
-                        currentCharIndex={currentCharIndex}
-                      />
+                      <span className="step-number">a</span>
+                      <span className="step-label">Part drawing</span>
                     </div>
                     <div className="step-description">
                       <img src={bomPartDrawingImg} alt="BOM Part Drawing Entry" className="software-screenshot screenshot-wide" />
@@ -167,81 +144,116 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                     </div>
                   </div>
 
-                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Excel BOM Generation"
-                        isActive={isSpeaking && currentIndex === 3}
-                        currentCharIndex={currentCharIndex}
-                      />
+                  <div className="instruction-step">
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">c</span>
+                      <span className="step-label"></span>
                     </div>
                     <div className="step-description">
                       <img src={bomPartDrawingCImg} alt="Excel BOM Generation" className="software-screenshot screenshot-wide" />
-                      <div className="mt-4" style={{ paddingLeft: "1rem", borderLeft: "2px solid var(--primary-alpha)" }}>
-                        <p style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
-                        <p style={{ marginBottom: "0.5rem" }}>2. Rearrange the sequence of part specification in decreasing order. Make sure the entire row (including the data on column A).</p>
-                        <p style={{ marginBottom: "0.5rem" }}>3. For parts detail, use letters for part balloon.</p>
-                        <p>4. Compute the material weight of each part specification.</p>
+                      <div className="instruction-box mt-6">
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>2. Rearrange the sequence of part specification in decreasing order. Make sure to select the entire row (including the data on column A).</p>
+                        <p className="p-flush">3. For parts detail, use letters for part balloon.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="instruction-step">
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">d</span>
+                      <span className="step-label"></span>
+                    </div>
+                    <div className="step-description">
+                      <div className="screenshot-wrapper" style={{ position: "relative", width: "100%" }}>
+                        <img src={bomPartDrawingDImg} alt="BOM Single Multiple Parts" className="software-screenshot screenshot-wide" />
+
+                        {/* For Single Part Overlay */}
+                        <div className="image-overlay-badge" style={{
+                          position: "absolute",
+                          top: "28rem",
+                          left: "32rem",
+                          background: "rgba(17, 24, 39, 0.9)",
+                          backdropFilter: "blur(4px)",
+                          border: "1px solid rgba(255, 255, 255, 0.25)",
+                          borderRadius: "12px",
+                          padding: "0.5rem 0.75rem",
+                          color: "#ffffff",
+                          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+                          zIndex: 5
+                        }}>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <span style={{
+                              background: "#DD4DFA",
+                              color: "white",
+                              padding: "4px 8px",
+                              borderRadius: "6px",
+                              fontSize: "0.8rem",
+                              fontWeight: "bold",
+                              textTransform: "uppercase"
+                            }}>
+                              For Single Part
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Note Overlay */}
+                        <div className="image-overlay-note" style={{
+                          position: "absolute",
+                          top: "20rem",
+                          left: "35rem",
+                          background: "rgba(17, 24, 39, 0.9)",
+                          backdropFilter: "blur(4px)",
+                          border: "1px solid rgba(255, 255, 255, 0.25)",
+                          borderRadius: "12px",
+                          padding: "1rem",
+                          maxWidth: "320px",
+                          color: "#ffffff",
+                          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+                          zIndex: 5
+                        }}>
+                          <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Note:</strong></p>
+                          <p className="p-flush" style={{ fontSize: "0.85rem", lineHeight: "1.4", color: "#e2e8f0" }}>
+                            Material weight and finish weight must be in 2 decimal places, but for some special cases, 3 decimal places is acceptable.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
 
+
               {activeTab === '2' && (
                 <div className="flex-col">
-                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header">
-                      <span className="step-number">1</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Weight Configuration"
-                        isActive={isSpeaking && currentIndex === 2}
-                        currentCharIndex={currentCharIndex}
-                      />
+                  <div className="instruction-step">
+                    <div className="step-header" style={{ marginTop: "-2rem" }}>
+                      <span className="step-number">b</span>
+                      <span className="step-label">Assembly drawing</span>
                     </div>
                     <div className="step-description">
-                      <img src={bomPartDrawingDImg} alt="Excel Operations" className="software-screenshot screenshot-wide" />
-                      <div className="red-text mt-4">
-                        <strong>Note:</strong> Material weight and finish weight must be in 2 decimal places, but for some special cases, 3 decimal places is acceptable.
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Assembly Drawing BOM"
-                        isActive={isSpeaking && currentIndex === 3}
-                        currentCharIndex={currentCharIndex}
-                      />
-                    </div>
-                    <div className="step-description">
-                      <div className="p-flush mb-4">
-                        BOM of assembly drawing divides into three groups:
-                        <div className="ml-4 mt-2">
-                          • Fabricated and Machine Parts<br />
-                          • Mechanical / Purchase parts<br />
-                          • Hardwares
+                      <div className="p-flush" style={{ marginBottom: "1rem" }}>
+                        BOM of assembly drawing divides into three groups.
+                        <div style={{ paddingLeft: "1rem", marginTop: "0.5rem" }}>
+                          1. Fabricated and Machine Parts<br />
+                          2. Mechanical / Purchase parts<br />
+                          3. Hardwares
                         </div>
                       </div>
-                      <img src={bomAssemblyDrawingImg} alt="Assembly BOM Excel" className="software-screenshot screenshot-medium" />
-                      <div className="mt-4" style={{ paddingLeft: "1rem", borderLeft: "2px solid var(--primary-alpha)" }}>
-                        <p style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
-                        <p style={{ marginBottom: "0.5rem" }}>2. Rearrange the excel data from Drawing number, Purchased parts, then Hardware.</p>
-                        <p style={{ marginBottom: "0.5rem" }}>3. Click "delete abbreviation" button to delete hardware codes.</p>
-                        <p style={{ marginBottom: "0.5rem" }}>4. Click "sum the parts" button to combine quantity of same parts.</p>
-                        <p style={{ marginBottom: "0.5rem" }}>5. Purchase parts must indicate the maker in English.</p>
-                        <p style={{ marginBottom: "0.5rem" }}>6. Hardwares arrange in decreasing order.</p>
-                        <p>7. In terms of assembly detail, use number for parts balloon with a gap of 20 numbers between groups.</p>
+                      <img src={bomAssemblyDrawingImg} alt="Assembly BOM Excel" className="software-screenshot screenshot-wide" />
+                      <div className="instruction-box mt-6">
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}>2. Rearrange the excel data from;</p>
+                        <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.25rem" }}>a. Drawing number of parts arranging successively</p>
+                        <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.25rem" }}>b. Purchased parts</p>
+                        <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.5rem" }}>c. Hardware (HS,BS,CS,SS,SP,HN,FW,SW)</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>3. Click "delete abbreviation" button to delete hardware codes.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>4. Click "sum the parts" button to combine quantity of same parts.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>5. Purchase parts must indicate the maker in English.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>6. Hardwares arrange in decreasing order.</p>
+                        <p className="p-flush">7. In terms of assembly detail, use number for parts balloon. Also, there must be a gap of 20 numbers in between the three groups.</p>
                       </div>
+                      <img src={bomAssemblyDrawing2Img} alt="Standard Assembly BOM Grouping" className="software-screenshot screenshot-wide mt-4" />
                     </div>
                   </div>
                 </div>
@@ -251,35 +263,20 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                     <div className="step-header">
-                      <span className="step-number">1</span>
+                      <span className="step-number">17</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Standard Numbering"
+                        text="Additional Information"
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
-                      <img src={bomAssemblyDrawing2Img} alt="Standard Assembly BOM Grouping" className="software-screenshot screenshot-wide" />
-                    </div>
-                  </div>
-
-                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header">
-                      <span className="step-number">2</span>
-                      <KaraokeLessonText
-                        as="span"
-                        className="step-label"
-                        text="Additional Information"
-                        isActive={isSpeaking && currentIndex === 3}
-                        currentCharIndex={currentCharIndex}
-                      />
-                    </div>
-                    <div className="step-description">
                       <img src={bomAdditionalInfoImg} alt="Additional Information Excel" className="software-screenshot screenshot-wide" />
-                      <div className="red-text mt-4">
-                        <strong>Note:</strong> Columns with green color can not be changed.
+                      <div className="instruction-box mt-4">
+                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Note:</strong></p>
+                        <p className="p-flush">Columns with green color can not be changed.</p>
                       </div>
                     </div>
                   </div>
@@ -290,11 +287,10 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                     <div className="step-header">
-                      <span className="step-number">1</span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Post-Insertion Review"
+                        text="Bill of Material after inserting on ICAD data"
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -306,7 +302,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                     <div className="step-header">
-                      <span className="step-number">2</span>
+
                       <KaraokeLessonText
                         as="span"
                         className="step-label"

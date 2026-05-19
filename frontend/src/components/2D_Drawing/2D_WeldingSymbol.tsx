@@ -1,6 +1,5 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
@@ -41,33 +40,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentTitle}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentTitle, currentSubtitle, ...weldingSteps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentSubtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
-
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">1</span>
                 <KaraokeLessonText
@@ -106,17 +79,8 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                 />
               </div>
               <div className="step-description">
-                <KaraokeLessonText
-                  className="p-flush mb-4"
-                  text={weldingSteps[1]}
-                  isActive={isSpeaking && currentIndex === 3}
-                  currentCharIndex={currentCharIndex}
-                />
                 <div className="flex-col gap-4">
                   <img src={standardNotesImg} alt="Standard Notes Placement" className="software-screenshot screenshot-wide" />
-                  <div className="red-text" style={{ padding: "1rem", borderLeft: "2px solid var(--primary-alpha)" }}>
-                    <p><strong>Note:</strong> Drill holes shall be chamfered, unspecified corners slightly chamfered, and all parts must be free from burrs and dust.</p>
-                  </div>
                 </div>
               </div>
             </div>
