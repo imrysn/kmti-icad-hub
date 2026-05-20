@@ -1328,3 +1328,105 @@
     transform: translateY(0);
   }
 }
+
+/* ── Locked Practical Assessment Screen ──────────────────────── */
+.locked-assessment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  background: var(--bg-dark);
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.locked-assessment-card {
+  max-width: 600px;
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(10px);
+}
+
+.lock-badge-large {
+  width: 80px;
+  height: 80px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fbbf24;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+  margin-bottom: 1rem;
+}
+
+.locked-assessment-card h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--text-white);
+  margin: 0;
+}
+
+.lock-description {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 500px;
+}
+
+.unlock-requirements {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.warning {
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
+}
+
+[data-theme='light'] .locked-assessment-card {
+  background: var(--bg-surface);
+  border-color: var(--border-color);
+}
+
+[data-theme='light'] .locked-assessment-card h2 {
+  color: #1e293b;
+}
+
+[data-theme='light'] .unlock-requirements {
+  background: rgba(0, 0, 0, 0.02);
+}

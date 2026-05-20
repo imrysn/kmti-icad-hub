@@ -1,15 +1,24 @@
-import { useState, useEffect, useRef } from 'react'; import { useTTS } from './useTTS';
+import { useState, useEffect, useRef } from 'react';
+import { useTTSContext } from '../context/TTSContext';
 
 /**
  * useLessonCore - Shared logic for all lesson components.
  * Handles scroll progress and provides TTS status.
  */
-export const useLessonCore = (subLessonId: string) => {
+export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // TTS integration
-  const { speak, stop, isSpeaking, currentIndex, currentSentenceIndex, currentCharIndex } = useTTS();
+  // TTS integration using global shared context
+  const { speak, stop, isSpeaking, currentIndex, currentSentenceIndex, currentCharIndex, registerText } = useTTSContext();
+
+  const defaultTextJSON = defaultText ? JSON.stringify(defaultText) : '';
+
+  useEffect(() => {
+    if (defaultTextJSON) {
+      registerText(JSON.parse(defaultTextJSON));
+    }
+  }, [subLessonId, defaultTextJSON, registerText]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,8 +60,9 @@ export const useLessonCore = (subLessonId: string) => {
     return () => {
         window.removeEventListener('scroll', handleScroll, true);
         stop(); // Stop speaking when navigating away
+        registerText([]); // Clear global registered text
     };
-  }, [subLessonId, stop]);
+  }, [subLessonId, stop, registerText]);
 
   // Auto-scroll logic for TTS
   useEffect(() => {

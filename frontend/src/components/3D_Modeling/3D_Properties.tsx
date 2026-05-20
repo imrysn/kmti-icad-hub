@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
@@ -45,16 +44,6 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     return (localStorage.getItem('properties-tab') as any) || "color";
   });
 
-  const {
-    scrollProgress,
-    containerRef,
-    speak,
-    stop,
-    isSpeaking,
-    currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
-
   useEffect(() => {
     localStorage.setItem('properties-tab', activeTab);
   }, [activeTab]);
@@ -86,6 +75,19 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     "Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points",
     "Displays the informations about the selected entity then Pick the solid entity then GO"
   ];
+
+  const currentSteps = activeTab === "color" ? colorSteps :
+    activeTab === "layer" ? layerSteps : infoSteps;
+
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex,
+    currentCharIndex
+  } = useLessonCore(`${subLessonId}-${activeTab}`, currentSteps);
 
   const handleNext = () => {
     if (activeTab === "color") setActiveTab("layer");
@@ -121,10 +123,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
       <div className="lesson-tabs">
         {tabs.map(tab => (
-          <button 
+          <button
             key={tab.id}
-            className={`tab-button ${activeTab === tab.id ? "active" : ""}`} 
-            onClick={() => setActiveTab(tab.id as any)} 
+            className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
+            onClick={() => setActiveTab(tab.id as any)}
           >
             {tab.label}
           </button>
@@ -143,7 +145,6 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(colorSteps)} onStop={stop} />
             </div>
             <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
@@ -190,7 +191,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <KaraokeLessonText
                         as="p"
                         className="p-flush"
-                        text="The entire solid entity will change its color."
+                        text="The entire solid entity will change its color"
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -261,7 +262,6 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(layerSteps)} onStop={stop} />
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
@@ -272,7 +272,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Select Change Layer from the icon menu."
+                      text="Select Change Layer from the icon menu"
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -288,7 +288,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Specify the layer on the item entry."
+                      text="Specify the layer on the item entry"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -304,7 +304,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Click on the solid entity."
+                      text="Click on the solid entity"
                       isActive={isSpeaking && currentIndex === 3}
                       currentCharIndex={currentCharIndex}
                     />
@@ -314,17 +314,17 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
               <img src={layerImg} alt="Change Layer Properties Dialog" className="software-screenshot mt-4" style={{ height: "250px", width: "auto", marginTop: "3rem" }} />
             </div>
-              <div className="card-header" style={{marginTop: "1rem"}}><h4>LAYER DESIGNATION OF 3D PARTS</h4></div>
-              <div className="card-header"><h4>LAYER 1</h4></div>
-              <div className="step-description" style={{marginTop: "-2.5rem"}}>
-                <ul className="list-flush">
-                  <li>All common parts need to be fabricated or machined.</li>
-                  <li>Parts that undergo <strong className="text-highlight">Annealing</strong>, <strong className="text-highlight">Shot blasting</strong>, or <strong className="text-highlight">Annealing Shot blasting</strong>.</li>
-                  <li>Covers for purchase parts (No mechanism).</li>
-                  <li>All parts must be color <strong className="text-highlight">White (No. 1)</strong>.</li>
-                </ul>
-                <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot mt-4" style={{ width: '900px' }} />
-              </div>
+            <div className="card-header" style={{ marginTop: "1rem" }}><h4>LAYER DESIGNATION OF 3D PARTS</h4></div>
+            <div className="card-header"><h4>LAYER 1</h4></div>
+            <div className="step-description" style={{ marginTop: "-2.5rem" }}>
+              <ul className="list-flush">
+                <li>All common parts need to be fabricated or machined.</li>
+                <li>Parts that undergo <strong className="text-highlight">Annealing</strong>, <strong className="text-highlight">Shot blasting</strong>, or <strong className="text-highlight">Annealing Shot blasting</strong>.</li>
+                <li>Covers for purchase parts (No mechanism).</li>
+                <li>All parts must be color <strong className="text-highlight">White (No. 1)</strong>.</li>
+              </ul>
+              <img src={layer1Img} alt="Layer 1 White Parts" className="software-screenshot mt-4" style={{ width: '900px' }} />
+            </div>
 
             <div className="tool-block mt-8">
               <div className="card-header"><h4>LAYER 2</h4></div>
@@ -352,7 +352,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   margin: 0
                 }}>*Red paint only on the pointer</p>
 
-                  
+
 
 
                 <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginTop: '1.5rem' }}>
@@ -381,7 +381,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   </div>
                   <img src={isoniteManganeseImg} alt="Heat Treated Parts" className="software-screenshot mt-4" style={{ height: 'auto', width: '310px' }} />
                 </div>
-               
+
               </div>
             </div>
 
@@ -410,7 +410,6 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(infoSteps)} onStop={stop} />
             </div>
             <KaraokeLessonText
               as="p"

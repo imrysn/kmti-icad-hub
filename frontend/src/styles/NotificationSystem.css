@@ -1,107 +1,161 @@
 .notification-system {
     position: fixed;
-    top: 24px;
+    bottom: 24px;
     right: 24px;
-    z-index: 9999;
+    top: auto;
+    z-index: 99999;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: column-reverse;
+    gap: 16px;
     pointer-events: none;
-    max-width: 400px;
-    width: 100%;
+    max-width: 440px;
+    width: calc(100% - 48px);
 }
 
 .notification-item {
     pointer-events: auto;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 16px;
-    padding: 12px 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 
-                0 1px 2px rgba(0, 0, 0, 0.04);
+    padding: 20px 24px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    animation: notificationEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    transition: all 0.3s ease;
+    gap: 16px;
     position: relative;
     overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: notificationBounceEnter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notification-item:hover {
+    transform: translateY(-6px) scale(1.03);
 }
 
 .notification-item.exiting {
     animation: notificationExit 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* ── Live Pulsing Accent Dot ── */
+.notification-item::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 0 8px #ffffff, 0 0 16px #ffffff;
+    animation: pulseGlow 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.85); opacity: 0.6; }
+    50% { transform: scale(1.4); opacity: 1; }
+    100% { transform: scale(0.85); opacity: 0.6; }
+}
+
+/* ── Saturated Radiant Gradients & Neon Shadows by Type ── */
+.notification-item.success {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    box-shadow: 
+        0 15px 35px -5px rgba(16, 185, 129, 0.55),
+        0 5px 15px -2px rgba(16, 185, 129, 0.35),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.notification-item.error {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    box-shadow: 
+        0 15px 35px -5px rgba(239, 68, 68, 0.55),
+        0 5px 15px -2px rgba(239, 68, 68, 0.35),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.notification-item.info {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    box-shadow: 
+        0 15px 35px -5px rgba(59, 130, 246, 0.55),
+        0 5px 15px -2px rgba(59, 130, 246, 0.35),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.notification-item.warning {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+    box-shadow: 
+        0 15px 35px -5px rgba(245, 158, 11, 0.55),
+        0 5px 15px -2px rgba(245, 158, 11, 0.35),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* ── Icon Panel ── */
 .notification-icon {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+/* ── Message Area ── */
 .notification-message {
     flex: 1;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #1e293b;
-    line-height: 1.4;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.5;
+    padding-left: 6px;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 
+/* Highlight dynamic keywords inside the toast */
+.notification-message strong,
+.notification-message span.highlight {
+    color: #ffff00;
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: #ffff00;
+}
+
+/* ── Close Button ── */
 .notification-close {
-    background: transparent;
-    border: none;
-    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
     cursor: pointer;
-    padding: 4px;
-    border-radius: 6px;
-    transition: all 0.2s;
+    padding: 6px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .notification-close:hover {
-    background: rgba(0, 0, 0, 0.05);
-    color: #475569;
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #ff0000;
+    transform: rotate(90deg) scale(1.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* ── Types ──────────────────────────────────────────────────── */
-
-.notification-item.success .notification-icon {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
-}
-
-.notification-item.error .notification-icon {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-}
-
-.notification-item.info .notification-icon {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-}
-
-.notification-item.warning .notification-icon {
-    background: rgba(245, 158, 11, 0.1);
-    color: #f59e0b;
-}
-
-/* ── Progress Bar ───────────────────────────────────────────── */
-
+/* ── Progress Bar ── */
 .notification-progress {
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 3px;
-    background: currentColor;
-    opacity: 0.3;
+    height: 4px;
+    background: #ffffff;
+    opacity: 0.8;
     animation: progressLinear linear forwards;
+    box-shadow: 0 -1px 8px #ffffff;
 }
 
 @keyframes progressLinear {
@@ -109,16 +163,21 @@
     to { width: 0%; }
 }
 
-/* ── Animations ─────────────────────────────────────────────── */
-
-@keyframes notificationEnter {
-    from {
+/* ── Premium Bounce Entrance Animation ── */
+@keyframes notificationBounceEnter {
+    0% {
         opacity: 0;
-        transform: translateX(40px) scale(0.9);
+        transform: translateY(40px) translateX(60px) scale(0.8);
+        filter: blur(4px);
     }
-    to {
+    50% {
+        opacity: 0.9;
+        transform: translateY(-6px) translateX(-10px) scale(1.05);
+        filter: blur(0px);
+    }
+    100% {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: translateY(0) translateX(0) scale(1);
     }
 }
 
@@ -129,6 +188,7 @@
     }
     to {
         opacity: 0;
-        transform: translateX(40px) scale(0.9);
+        transform: translateX(80px) scale(0.9);
+        filter: blur(4px);
     }
 }

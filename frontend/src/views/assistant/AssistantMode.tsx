@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Brain, GraduationCap, ClipboardList } from 'lucide-react'; 
 import { IntelligenceChatbot } from '../admin/components/IntelligenceChatbot';
 import MentorMode from '../mentor/MentorMode';
@@ -12,6 +13,7 @@ import '../../styles/AssistantMode.css';
  * - Training Review: Refresher training from Mentor Mode
  */
 const AssistantMode: React.FC = () => {
+    const location = useLocation();
     const [activeTab, setActiveTab] = useState<'assistant' | 'training' | 'assessment'>(() => {
         return (localStorage.getItem('assistant-active-tab') as any) || 'assistant';
     });
@@ -19,6 +21,14 @@ const AssistantMode: React.FC = () => {
     useEffect(() => {
         localStorage.setItem('assistant-active-tab', activeTab);
     }, [activeTab]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const tabParam = params.get('tab');
+        if (tabParam === 'assessment' || tabParam === 'assistant' || tabParam === 'training') {
+            setActiveTab(tabParam as any);
+        }
+    }, [location.search]);
 
     return (
         <div className="assistant-mode-container">

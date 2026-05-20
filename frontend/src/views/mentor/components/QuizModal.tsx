@@ -235,6 +235,9 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     setScore(finalScore);
     setMaxStreak(highestStreak);
     setIsFinished(true);
+    if (storageKey) {
+      localStorage.removeItem(storageKey);
+    }
     onComplete(finalScore, detailedAnswers);
   };
 

@@ -507,23 +507,23 @@
 }
 
 .add-user-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    background: var(--bg-card);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .add-user-btn:hover {
-    border-color: #DD4DFA !important;
-    color: #DD4DFA !important;
+  border-color: #DD4DFA !important;
+  color: #DD4DFA !important;
 }
 
 
@@ -1488,8 +1488,13 @@
   background: rgba(239, 68, 68, 0.03);
 }
 
-[data-theme='dark'] .log-entry.warning { background: rgba(245, 158, 11, 0.05); }
-[data-theme='dark'] .log-entry.error { background: rgba(239, 68, 68, 0.05); }
+[data-theme='dark'] .log-entry.warning {
+  background: rgba(245, 158, 11, 0.05);
+}
+
+[data-theme='dark'] .log-entry.error {
+  background: rgba(239, 68, 68, 0.05);
+}
 
 .log-time {
   font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
@@ -2099,8 +2104,13 @@
 }
 
 @keyframes admin-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .reset-all-btn {

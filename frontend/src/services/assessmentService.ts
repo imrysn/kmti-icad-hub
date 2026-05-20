@@ -94,6 +94,11 @@ export const assessmentService = {
         return response.data;
     },
 
+    getTrainerTraineesProgress: async (): Promise<any[]> => {
+        const response = await api.get('/api/v1/assessments/trainer/trainees-progress');
+        return response.data;
+    },
+
     // Admin Methods
     getTrainerMappings: async () => {
         const response = await api.get('/api/v1/assessments/admin/mappings');

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { User, CheckCircle2, XCircle, Clock, Download, Upload, Eye, ChevronRight, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
@@ -7,6 +8,7 @@ import '../../../styles/mentor/PracticalTrainerDashboard.css';
 
 export const PracticalTrainerDashboard: React.FC = () => {
     const { showNotification } = useNotification();
+    const location = useLocation();
     const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -18,6 +20,80 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const [statusFilter, setStatusFilter] = useState<'pending' | 'all'>('pending');
     const [expandedTrainees, setExpandedTrainees] = useState<number[]>([]);
     const [expandedSets, setExpandedSets] = useState<string[]>([]);
+
+    // Main Tabs & Progress Tracking
+    const [activeMainTab, setActiveMainTab] = useState<'assessments' | 'progress'>('assessments');
+    const [traineeProgressData, setTraineeProgressData] = useState<any[]>([]);
+    const [loadingProgress, setLoadingProgress] = useState(false);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const subtabParam = params.get('subtab');
+        if (subtabParam === 'assessments' || subtabParam === 'progress') {
+            setActiveMainTab(subtabParam as any);
+        }
+    }, [location.search]);
+
+    // Dynamic Deep-Link auto-expand and highlighting
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const targetTraineeId = params.get('traineeId');
+        const targetSet = params.get('set');
+        
+        if (targetTraineeId) {
+            const traineeIdNum = Number(targetTraineeId);
+            setExpandedTrainees(prev => prev.includes(traineeIdNum) ? prev : [...prev, traineeIdNum]);
+            
+            if (targetSet) {
+                const setKey = `${targetTraineeId}-${targetSet}`;
+                setExpandedSets(prev => prev.includes(setKey) ? prev : [...prev, setKey]);
+            }
+        }
+    }, [location.search, submissions]);
+
+    // Auto-Scroll to highlighted card
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const targetUnit = params.get('unit');
+        const targetTraineeId = params.get('traineeId');
+        if (targetUnit && targetTraineeId) {
+            const timer = setTimeout(() => {
+                const element = document.querySelector('.highlighted-submission-card');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 600);
+            return () => clearTimeout(timer);
+        }
+    }, [location.search, submissions]);
+
+    const fetchTraineeProgress = async () => {
+        setLoadingProgress(true);
+        try {
+            const data = await assessmentService.getTrainerTraineesProgress();
+            setTraineeProgressData(data);
+        } catch (err) {
+            showNotification('Failed to load trainee progress data.', 'error');
+        } finally {
+            setLoadingProgress(false);
+        }
+    };
+
+    useEffect(() => {
+        if (activeMainTab === 'progress') {
+            fetchTraineeProgress();
+        }
+    }, [activeMainTab]);
+
+    useEffect(() => {
+        const handleProgressRefresh = () => {
+            if (activeMainTab === 'progress') {
+                fetchTraineeProgress();
+            }
+        };
+        window.addEventListener('kmti-refresh-trainee-progress', handleProgressRefresh);
+        return () => window.removeEventListener('kmti-refresh-trainee-progress', handleProgressRefresh);
+    }, [activeMainTab]);
 
     // Escape key to close modal
     useEffect(() => {
@@ -34,44 +110,15 @@ export const PracticalTrainerDashboard: React.FC = () => {
         fetchSubmissions();
     }, [statusFilter]);
 
-    // WebSocket connection for real-time updates
+
+
     useEffect(() => {
-        const token = authService.getToken();
-        if (!token) return;
-
-        // Determine correct WebSocket URL based on current host
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.hostname}:8000/notifications/ws?token=${token}`;
-        
-        const ws = new WebSocket(wsUrl);
-
-        ws.onopen = () => {
-            console.log("Connected to Real-Time Notification Server");
+        const handleRefresh = () => {
+            fetchSubmissions();
         };
-
-        ws.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.event === "NEW_SUBMISSION") {
-                    showNotification(`${data.trainee_name} just submitted Set ${data.set_number} Task ${data.task_code}`, 'info', 6000);
-                    fetchSubmissions(); // Auto-refresh the dashboard
-                } else if (data.event === "NEW_REPLY") {
-                    showNotification(`${data.trainee_name} replied to your feedback.`, 'info', 6000);
-                    fetchSubmissions(); // Auto-refresh the dashboard
-                }
-            } catch (err) {
-                console.error("Failed to parse websocket message", err);
-            }
-        };
-
-        ws.onclose = () => {
-            console.log("Disconnected from Real-Time Notification Server");
-        };
-
-        return () => {
-            ws.close();
-        };
-    }, []);
+        window.addEventListener('kmti-refresh-submissions', handleRefresh);
+        return () => window.removeEventListener('kmti-refresh-submissions', handleRefresh);
+    }, [statusFilter]);
 
     const fetchSubmissions = async () => {
         setLoading(true);
@@ -95,7 +142,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.dwg`;
+            const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
+            a.download = `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -103,16 +151,17 @@ export const PracticalTrainerDashboard: React.FC = () => {
         .catch(err => showNotification('Download failed.', 'error'));
     };
 
-    const handleOpenInIJCAD = async (submission: AssessmentSubmission) => {
+    const handleOpenInIJCAD = async (submission: AssessmentSubmission, appName?: string) => {
         if (window.electronAPI && window.electronAPI.downloadAndOpen) {
             try {
                 const url = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/assessments/submissions/${submission.id}/download`;
                 const token = authService.getToken() || '';
-                const filename = `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.dwg`;
+                const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
+                const filename = `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
                 
-                showNotification('Opening submission in CAD...', 'info');
-                await window.electronAPI.downloadAndOpen({ url, filename, token });
-                showNotification(`Submission opened in CAD.`, 'success');
+                showNotification(`Opening submission in ${appName ? appName : 'CAD'}...`, 'info');
+                await window.electronAPI.downloadAndOpen({ url, filename, token, appName });
+                showNotification(`Submission opened.`, 'success');
             } catch (err) {
                 console.error('Failed to open in CAD:', err);
                 showNotification('Failed to launch CAD application. Please check if it is installed.', 'error');
@@ -204,6 +253,10 @@ export const PracticalTrainerDashboard: React.FC = () => {
     };
     
     useEffect(() => {
+        // Only run default expand if there are no deep-link parameters in URL
+        const params = new URLSearchParams(location.search);
+        if (params.get('traineeId')) return;
+
         if (Object.keys(grouped).length > 0 && expandedTrainees.length === 0) {
             const firstTraineeId = Number(Object.keys(grouped)[0]);
             setExpandedTrainees([firstTraineeId]);
@@ -212,7 +265,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 setExpandedSets([`${firstTraineeId}-${firstSet}`]);
             }
         }
-    }, [grouped, expandedTrainees.length]);
+    }, [grouped, expandedTrainees.length, location.search]);
 
     if (loading) {
         return (
@@ -232,31 +285,53 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
     return (
         <div className="trainer-dashboard animate-fade-in">
+            <div className="trainer-main-nav">
+                <button 
+                    className={`main-nav-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
+                    onClick={() => setActiveMainTab('assessments')}
+                >
+                    <FileText size={18} /> Practical Submissions
+                </button>
+                <button 
+                    className={`main-nav-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
+                    onClick={() => setActiveMainTab('progress')}
+                >
+                    <CheckCircle2 size={18} /> Trainee Progress Tracker
+                </button>
+            </div>
+
             <div className="trainer-header">
                 <div className="header-info">
-                    <h2>Assessment Review Portal</h2>
-                    <p>Manage and verify practical drafting submissions from trainees</p>
+                    <h2>{activeMainTab === 'assessments' ? "Assessment Review Portal" : "Trainee Progress Tracker"}</h2>
+                    <p>
+                        {activeMainTab === 'assessments' 
+                            ? "Manage and verify practical drafting submissions from trainees" 
+                            : "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
+                        }
+                    </p>
                 </div>
                 <div className="header-controls">
-                    <div className="admin-sub-tabs">
-                        <button 
-                            className={`sub-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
-                            onClick={() => setStatusFilter('pending')}
-                        >
-                            <Clock size={16} /> Pending Reviews
-                        </button>
-                        <button 
-                            className={`sub-tab-btn ${statusFilter === 'all' ? 'active' : ''}`}
-                            onClick={() => setStatusFilter('all')}
-                        >
-                            <CheckCircle2 size={16} /> Review History
-                        </button>
-                    </div>
+                    {activeMainTab === 'assessments' && (
+                        <div className="admin-sub-tabs">
+                            <button 
+                                className={`sub-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
+                                onClick={() => setStatusFilter('pending')}
+                            >
+                                <Clock size={16} /> Pending Reviews
+                            </button>
+                            <button 
+                                className={`sub-tab-btn ${statusFilter === 'all' ? 'active' : ''}`}
+                                onClick={() => setStatusFilter('all')}
+                            >
+                                <CheckCircle2 size={16} /> Review History
+                            </button>
+                        </div>
+                    )}
                     <div className="search-bar">
                         <Search size={18} />
                         <input 
                             type="text" 
-                            placeholder="Search trainee or task..." 
+                            placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -264,106 +339,195 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 </div>
             </div>
 
-            <div className="grouped-submissions-container">
-                {Object.keys(grouped).length > 0 ? (
-                    Object.values(grouped).map((traineeGroup: any) => {
-                        const traineeId = traineeGroup.user.id;
-                        const isTraineeExpanded = expandedTrainees.includes(traineeId);
-                        
-                        let pendingCount = 0;
-                        Object.values(traineeGroup.sets).forEach((setGroup: any) => {
-                             Object.values(setGroup.tasks).forEach((subs: any) => {
-                                 const latest = subs.sort((a: any,b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())[0];
-                                 if (latest.status === 'pending') pendingCount++;
-                             });
-                        });
+            {activeMainTab === 'progress' ? (
+                loadingProgress ? (
+                    <div className="skeleton-cards" style={{ marginTop: '2rem' }}>
+                        <div className="skeleton-card"></div>
+                        <div className="skeleton-card"></div>
+                    </div>
+                ) : (
+                    <div className="progress-tracker-container">
+                        {traineeProgressData.length === 0 ? (
+                            <div className="no-submissions" style={{ gridColumn: '1 / -1' }}>
+                                <h3>No Trainees Assigned</h3>
+                                <p>There are currently no trainees assigned to your account.</p>
+                            </div>
+                        ) : (
+                            traineeProgressData
+                                .filter(t => 
+                                    t.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    t.username?.toLowerCase().includes(searchTerm.toLowerCase())
+                                )
+                                .map((trainee: any) => {
+                                    const init = (trainee.full_name || trainee.username || "T").substring(0, 1).toUpperCase();
+                                    return (
+                                        <div key={trainee.id} className="progress-trainee-card animate-fade-in">
+                                            <div className="trainee-profile-section">
+                                                <div className="avatar">{init}</div>
+                                                <div className="trainee-meta-details">
+                                                    <h3>{trainee.full_name || trainee.username}</h3>
+                                                    <p>{trainee.email || "No email provided"}</p>
+                                                </div>
+                                            </div>
 
-                        return (
-                            <div key={traineeId} className="trainee-group-card">
-                                <div className="trainee-group-header" onClick={() => toggleTrainee(traineeId)}>
-                                    <div className="trainee-info">
-                                        <div className="avatar-circle">
-                                            {traineeGroup.user.full_name?.[0] || 'U'}
+                                            {/* 3D Modeling Progress */}
+                                            <div className="course-progress-block">
+                                                <div className="course-progress-header">
+                                                    <span className="title">3D Modeling Curriculum</span>
+                                                    <span className="ratio">
+                                                        {trainee.progress.course_3d.completed}/{trainee.progress.course_3d.total} Quizzes Passed ({trainee.progress.course_3d.percentage}%)
+                                                    </span>
+                                                </div>
+                                                <div className="progress-bar-outer">
+                                                    <div 
+                                                        className="progress-bar-inner blue" 
+                                                        style={{ width: `${trainee.progress.course_3d.percentage}%` }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+
+                                            {/* 2D Drawing Progress */}
+                                            <div className="course-progress-block">
+                                                <div className="course-progress-header">
+                                                    <span className="title">2D Drawing Curriculum</span>
+                                                    <span className="ratio">
+                                                        {trainee.progress.course_2d.completed}/{trainee.progress.course_2d.total} Quizzes Passed ({trainee.progress.course_2d.percentage}%)
+                                                    </span>
+                                                </div>
+                                                <div className="progress-bar-outer">
+                                                    <div 
+                                                        className="progress-bar-inner green" 
+                                                        style={{ width: `${trainee.progress.course_2d.percentage}%` }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+
+                                            {/* Practical Assessment Stats */}
+                                            <h4 style={{ margin: '1.5rem 0 0.75rem 0', color: 'var(--text-white)', fontSize: '0.9rem', fontWeight: 650 }}>Practical Assessment Attempts</h4>
+                                            <div className="assessment-progress-stats">
+                                                <div className="stat-pill approved">
+                                                    <span className="val">{trainee.progress.assessments.approved}</span>
+                                                    <span className="lbl">Approved</span>
+                                                </div>
+                                                <div className="stat-pill pending">
+                                                    <span className="val">{trainee.progress.assessments.pending}</span>
+                                                    <span className="lbl">Pending</span>
+                                                </div>
+                                                <div className="stat-pill rejected">
+                                                    <span className="val">{trainee.progress.assessments.rejected}</span>
+                                                    <span className="lbl">Rejected</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h4>{traineeGroup.user.full_name}</h4>
-                                            <span>@{traineeGroup.user.username}</span>
+                                    );
+                                })
+                        )}
+                    </div>
+                )
+            ) : (
+                <div className="grouped-submissions-container">
+                    {Object.keys(grouped).length > 0 ? (
+                        Object.values(grouped).map((traineeGroup: any) => {
+                            const traineeId = traineeGroup.user.id;
+                            const isTraineeExpanded = expandedTrainees.includes(traineeId);
+                            
+                            let pendingCount = 0;
+                            Object.values(traineeGroup.sets).forEach((setGroup: any) => {
+                                 Object.values(setGroup.tasks).forEach((subs: any) => {
+                                     const latest = subs.sort((a: any,b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())[0];
+                                     if (latest.status === 'pending') pendingCount++;
+                                 });
+                            });
+
+                            return (
+                                <div key={traineeId} className="trainee-group-card">
+                                    <div className="trainee-group-header" onClick={() => toggleTrainee(traineeId)}>
+                                        <div className="trainee-info">
+                                            <div className="avatar-circle">
+                                                {traineeGroup.user.full_name?.[0] || 'U'}
+                                            </div>
+                                            <div>
+                                                <h4>{traineeGroup.user.full_name}</h4>
+                                                <span>@{traineeGroup.user.username}</span>
+                                            </div>
+                                        </div>
+                                        <div className="trainee-header-right">
+                                            {pendingCount > 0 && <span className="pending-badge">{pendingCount} Pending</span>}
+                                            {isTraineeExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                         </div>
                                     </div>
-                                    <div className="trainee-header-right">
-                                        {pendingCount > 0 && <span className="pending-badge">{pendingCount} Pending</span>}
-                                        {isTraineeExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                                    </div>
-                                </div>
 
-                                {isTraineeExpanded && (
-                                    <div className="trainee-group-body">
-                                        {Object.keys(traineeGroup.sets).sort((a,b)=>Number(a)-Number(b)).map(setNum => {
-                                            const setKey = `${traineeId}-${setNum}`;
-                                            const isSetExpanded = expandedSets.includes(setKey);
-                                            const tasks = Object.values(traineeGroup.sets[setNum].tasks);
-                                            
-                                            return (
-                                                <div key={setKey} className="set-group">
-                                                    <div className="set-group-header" onClick={() => toggleSet(setKey)}>
-                                                        <h4>Set {setNum} <span className="task-count-dim">({tasks.length} tasks)</span></h4>
-                                                        {isSetExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                                                    </div>
-                                                    
-                                                    {isSetExpanded && (
-                                                        <div className="set-tasks-grid">
-                                                            {tasks.map((taskSubmissions: any) => {
-                                                                const sortedSubs = [...taskSubmissions].sort((a: any,b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime());
-                                                                const latestSub = sortedSubs[0];
-                                                                
-                                                                return (
-                                                                    <div key={latestSub.task.id} className="submission-card small">
-                                                                        <div className="card-header compact">
-                                                                            <span className="set-tag">Unit {latestSub.task.task_code}</span>
-                                                                            <div className={`status-badge ${latestSub.status}`}>
-                                                                                {latestSub.status === 'approved' && <CheckCircle2 size={12} />}
-                                                                                {latestSub.status === 'pending' && <Clock size={12} />}
-                                                                                {latestSub.status === 'rejected' && <XCircle size={12} />}
-                                                                                <span>{latestSub.status.charAt(0).toUpperCase() + latestSub.status.slice(1)}</span>
+                                    {isTraineeExpanded && (
+                                        <div className="trainee-group-body">
+                                            {Object.keys(traineeGroup.sets).sort((a,b)=>Number(a)-Number(b)).map(setNum => {
+                                                const setKey = `${traineeId}-${setNum}`;
+                                                const isSetExpanded = expandedSets.includes(setKey);
+                                                const tasks = Object.values(traineeGroup.sets[setNum].tasks);
+                                                
+                                                return (
+                                                    <div key={setKey} className="set-group">
+                                                        <div className="set-group-header" onClick={() => toggleSet(setKey)}>
+                                                            <h4>Set {setNum} <span className="task-count-dim">({tasks.length} tasks)</span></h4>
+                                                            {isSetExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                                        </div>
+                                                        
+                                                        {isSetExpanded && (
+                                                            <div className="set-tasks-grid">
+                                                                {tasks.map((taskSubmissions: any) => {
+                                                                    const sortedSubs = [...taskSubmissions].sort((a: any,b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime());
+                                                                    const latestSub = sortedSubs[0];
+                                                                    
+                                                                    const params = new URLSearchParams(location.search);
+                                                                    const targetUnit = params.get('unit');
+                                                                    const targetTraineeId = params.get('traineeId');
+                                                                    const isHighlighted = targetUnit === latestSub.task.task_code && Number(targetTraineeId) === latestSub.user.id;
+
+                                                                    return (
+                                                                        <div key={latestSub.task.id} className={`submission-card small ${isHighlighted ? 'highlighted-submission-card' : ''}`}>
+                                                                            <div className="card-header compact">
+                                                                                <span className="set-tag">Unit {latestSub.task.task_code}</span>
+                                                                                <div className={`status-badge ${latestSub.status}`}>
+                                                                                    {latestSub.status === 'approved' && <CheckCircle2 size={12} />}
+                                                                                    {latestSub.status === 'pending' && <Clock size={12} />}
+                                                                                    {latestSub.status === 'rejected' && <XCircle size={12} />}
+                                                                                    <span>{latestSub.status.charAt(0).toUpperCase() + latestSub.status.slice(1)}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <h3 className="task-title-trunc">{latestSub.task.title}</h3>
+                                                                            <div className="submission-meta compact-meta">
+                                                                                <Clock size={12} /> {new Date(latestSub.submitted_at).toLocaleDateString()}
+                                                                                {sortedSubs.length > 1 && <span className="attempt-badge">{sortedSubs.length} Attempts</span>}
+                                                                            </div>
+                                                                            <div className="card-actions compact-actions">
+                                                                                <button className="btn-primary" style={{ flex: 1 }} onClick={() => {
+                                                                                    setSelectedTaskSubmissions(sortedSubs);
+                                                                                    setIsReviewing(true);
+                                                                                }}>
+                                                                                    <Eye size={14} /> Review
+                                                                                </button>
                                                                             </div>
                                                                         </div>
-                                                                        <h3 className="task-title-trunc">{latestSub.task.title}</h3>
-                                                                        <div className="submission-meta compact-meta">
-                                                                            <Clock size={12} /> {new Date(latestSub.submitted_at).toLocaleDateString()}
-                                                                            {sortedSubs.length > 1 && <span className="attempt-badge">{sortedSubs.length} Attempts</span>}
-                                                                        </div>
-                                                                        <div className="card-actions compact-actions">
-                                                                            <button className="btn-secondary" onClick={() => handleDownloadTraineeFile(latestSub)}>
-                                                                                <Download size={14} /> DWG
-                                                                            </button>
-                                                                            <button className="btn-primary" onClick={() => {
-                                                                                setSelectedTaskSubmissions(sortedSubs);
-                                                                                setIsReviewing(true);
-                                                                            }}>
-                                                                                <Eye size={14} /> Review
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })
-                ) : (
-                    <div className="no-submissions">
-                        <CheckCircle2 size={48} />
-                        <h3>All caught up!</h3>
-                        <p>No pending submissions require your review at this time.</p>
-                    </div>
-                )}
-            </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <div className="no-submissions">
+                            <CheckCircle2 size={48} />
+                            <h3>All caught up!</h3>
+                            <p>No pending submissions require your review at this time.</p>
+                        </div>
+                    )}
+                </div>
+            )}
 
             {/* Review Modal with History & Chat */}
             {isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0 && (
@@ -398,13 +562,35 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         {sub.submission_file_path?.split(/[\\/]/).pop()}
                                                     </span>
                                                     <div className="node-file-actions">
-                                                        <button 
-                                                            className="action-icon-btn primary" 
-                                                            onClick={() => handleOpenInIJCAD(sub)}
-                                                            title="Open in CAD"
-                                                        >
-                                                            <Play size={14} /> Open
-                                                        </button>
+                                                        {(() => {
+                                                            const ext = sub.submission_file_path?.split('.').pop()?.toLowerCase();
+                                                            const isDwg = ext === 'dwg';
+                                                            const isCad = ext === 'cad' || ext === 'icd';
+                                                            return (
+                                                                <div className="open-with-dropdown-container">
+                                                                    <button className="action-icon-btn primary dropdown-trigger" title="Open in CAD">
+                                                                        <Play size={14} /> Open <ChevronDown size={14} />
+                                                                    </button>
+                                                                    <div className="open-with-menu">
+                                                                        {isDwg && (
+                                                                            <>
+                                                                                <div className="menu-item" onClick={() => handleOpenInIJCAD(sub, 'ijcad')}>iJCAD</div>
+                                                                                <div className="menu-item" onClick={() => handleOpenInIJCAD(sub, 'nanocad')}>NanoCAD</div>
+                                                                            </>
+                                                                        )}
+                                                                        {isCad && (
+                                                                            <>
+                                                                                <div className="menu-item" onClick={() => handleOpenInIJCAD(sub, 'icad')}>iCAD</div>
+                                                                                <div className="menu-item" onClick={() => handleOpenInIJCAD(sub, 'solidworks')}>SolidWorks</div>
+                                                                            </>
+                                                                        )}
+                                                                        {!isDwg && !isCad && (
+                                                                             <div className="menu-item" onClick={() => handleOpenInIJCAD(sub)}>Default App</div>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })()}
                                                         <button 
                                                             className="action-icon-btn" 
                                                             onClick={() => handleDownloadTraineeFile(sub)}

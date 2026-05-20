@@ -134,15 +134,15 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
         setLoadingBreakdownId(quizSlug);
         try {
             const data = await adminService.getTraineeQuizAttempts(selectedTrainee.id, quizSlug);
-            
+
             // Filter attempts to only show the LATEST attempt for each unique question
             if (data && data.attempts && Array.isArray(data.attempts)) {
                 const uniqueAttemptsMap = new Map();
-                
+
                 // Sort by date or just reverse to prioritize latest if backend returns chronological
                 // We reverse to process latest first
                 const sortedAttempts = [...data.attempts].reverse();
-                
+
                 sortedAttempts.forEach((attempt: any) => {
                     // Use question_id as primary key, trimmed text as fallback
                     const key = attempt.question_id || (attempt.question_text ? attempt.question_text.trim() : null);
@@ -150,25 +150,25 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                         uniqueAttemptsMap.set(key, attempt);
                     }
                 });
-                
+
                 // Convert back to array (these are the latest attempts for each question encountered)
                 let finalAttempts = Array.from(uniqueAttemptsMap.values());
-                
+
                 // Limit to 10 items (as each assessment session only serves 10 questions from the 15-question pool)
                 // We keep the 10 LATEST unique questions found
                 if (finalAttempts.length > 10) {
                     finalAttempts = finalAttempts.slice(0, 10);
                 }
-                
+
                 // Restore original chronological order for display
                 data.attempts = finalAttempts.reverse();
             }
-            
+
             setBreakdownData(data);
         } catch (error) {
             console.error('Failed to fetch breakdown:', error);
             alert('Could not retrieve assessment breakdown.');
-        } finally { 
+        } finally {
             setLoadingBreakdownId(null);
         }
     };
@@ -417,20 +417,20 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                     {breakdownData.quiz_title} • <span style={{ color: 'var(--color-primary)' }}>{selectedTrainee.full_name}</span>
                                 </p>
                             </div>
-                            <button 
-                                onClick={() => setBreakdownData(null)} 
+                            <button
+                                onClick={() => setBreakdownData(null)}
                                 className="modal-close-btn"
-                                style={{ 
-                                    background: 'transparent', 
-                                    border: 'none', 
-                                    color: 'var(--text-dim)', 
-                                    width: '32px', 
-                                    height: '32px', 
-                                    borderRadius: 'var(--radius-md)', 
-                                    cursor: 'pointer', 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center', 
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: 'var(--text-dim)',
+                                    width: '32px',
+                                    height: '32px',
+                                    borderRadius: 'var(--radius-md)',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                                     transition: 'all 0.2s ease',
                                     padding: 0
                                 }}
@@ -456,13 +456,13 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                 </div>
                                 <div className="perf-bar-container" style={{ height: '12px', background: 'var(--bg-card)', borderRadius: 'var(--radius-full)', overflow: 'hidden', display: 'flex', border: '1px solid var(--border-color)' }}>
                                     {/* Correct Bar */}
-                                    <div style={{ 
+                                    <div style={{
                                         width: `${(breakdownData.attempts.filter((a: any) => a.is_correct).length / breakdownData.attempts.length) * 100}%`,
                                         background: 'linear-gradient(90deg, #10b981, #34d399)',
                                         height: '100%'
                                     }}></div>
                                     {/* Incorrect Bar */}
-                                    <div style={{ 
+                                    <div style={{
                                         width: `${(breakdownData.attempts.filter((a: any) => !a.is_correct).length / breakdownData.attempts.length) * 100}%`,
                                         background: 'linear-gradient(90deg, #ef4444, #f87171)',
                                         height: '100%'
@@ -498,7 +498,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                         {item.seconds_spent}s
                                                     </span>
                                                 </div>
-                                                
+
                                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', fontSize: '0.8rem' }}>
                                                     <div style={{ color: item.is_correct ? '#10b981' : '#ef4444' }}>
                                                         <span style={{ color: 'var(--text-dim)', marginRight: '0.5rem' }}>Answer:</span>

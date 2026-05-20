@@ -112,7 +112,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
           />
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             const steps = activeTab === 'chamfer' ? chamferSteps :
-                           activeTab === 'fillet' ? filletSteps : shellSteps;
+              activeTab === 'fillet' ? filletSteps : shellSteps;
             speak([introTitle, introSubtitle, ...steps]);
           }} onStop={stop} />
         </h3>
@@ -163,7 +163,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 />
               </div>
               <div className="step-description">
-                    <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-2rem' }} />
+                <img src={chamferEntry} alt="Chamfer Item Entry" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-2rem' }} />
               </div>
             </div>
 
@@ -179,14 +179,14 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 />
               </div>
               <div className="step-description">
-                    <img src={chamferResult} alt="Chamfer Process" className="software-screenshot mt-4" style={{ width: '500px', marginBottom: '-1rem' }} />
+                <img src={chamferResult} alt="Chamfer Process" className="software-screenshot mt-4" style={{ width: '500px', marginBottom: '-1rem' }} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{marginTop: "-1.5rem"}}>
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Select the edge of the entity to be chamfered > GO"
@@ -195,16 +195,16 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </span>
-              </div> 
-             <div className={`instruction-box ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7" style={{ marginTop: '1rem' }}>
-                  <KaraokeLessonText
-                    as="p"
-                    className="p-flush red-text"
-                    text="Note: Several edges can be chamfered all at once."
-                    isActive={isSpeaking && currentIndex === 7}
-                    currentCharIndex={currentCharIndex}
-                  />
-              </div>         
+              </div>
+              <div className={`instruction-box ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7" style={{ marginTop: '1rem' }}>
+                <KaraokeLessonText
+                  as="p"
+                  className="p-flush red-text"
+                  text="Note: Several edges can be chamfered all at once."
+                  isActive={isSpeaking && currentIndex === 7}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
@@ -218,7 +218,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   />
                 </h4>
               </div>
-                <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '700px' }} />
+              <img src={chamferResult2} alt="Chamfer Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '700px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -245,7 +245,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               className={`p-flush ${currentIndex === 3 ? 'reading-active' : ''}`}
               style={{ marginTop: "-2rem" }}
               data-reading-index="3"
-              text="Use for rounding specified corners."
+              text="Use for rounding specified corners"
               isActive={isSpeaking && currentIndex === 3}
               currentCharIndex={currentCharIndex}
             />
@@ -258,13 +258,13 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Fillet edge from the icon menu."
+                  text="Select Fillet edge from the icon menu"
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
-                    <img src={filletIcon} alt="Fillet Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-3rem' }} />
+                <img src={filletIcon} alt="Fillet Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
@@ -275,13 +275,13 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the fillet radius on the item entry."
+                  text="Specify the fillet radius on the item entry"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
-                    <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot mt-4" style={{ width: '500px', marginBottom: '-3rem' }} />
+                <img src={filletEntry} alt="Fillet Item Entry" className="software-screenshot mt-4" style={{ width: '500px', marginBottom: '-3rem' }} />
               </div>
             </div>
 
@@ -304,7 +304,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               <KaraokeLessonText
                 as="p"
                 className="p-flush red-text"
-                text="Note: Several edges can be fillet all at once."
+                text="Note: Several edges can be fillet all at once"
                 isActive={isSpeaking && currentIndex === 7}
                 currentCharIndex={currentCharIndex}
               />
@@ -321,7 +321,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   />
                 </h4>
               </div>
-                <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '350px' }} />
+              <img src={filletResult} alt="Fillet Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '350px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -348,7 +348,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
               className={`p-flush ${currentIndex === 3 ? 'reading-active' : ''}`}
               style={{ marginTop: "-2rem" }}
               data-reading-index="3"
-              text="Use for hollowing solid entities using the specified wall thickness."
+              text="Use for hollowing solid entities using the specified wall thickness"
               isActive={isSpeaking && currentIndex === 3}
               currentCharIndex={currentCharIndex}
             />
@@ -360,20 +360,20 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Shell from the icon menu."
+                  text="Select Shell from the icon menu"
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
-                    <img src={shellIcon} alt="Shell Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: "-1rem" }} />
+                <img src={shellIcon} alt="Shell Icon" className="software-screenshot mt-4" style={{ width: '200px', marginBottom: "-1rem" }} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
                 <span className="step-number">2 </span>
-                <span className="step-label" style={{marginTop: "-1.5rem"}}>
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Select the two endfaces of the solid entity > GO"
@@ -384,14 +384,14 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 </span>
               </div>
               <div className="step-description">
-                    <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium mt-4" style={{ width: '500px' }} />
+                <img src={shellFaces} alt="Select Endfaces" className="software-screenshot screenshot-medium mt-4" style={{ width: '500px' }} />
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
                 <span className="step-number">3 </span>
-                <span className="step-label" style={{marginTop: "-1.5rem"}}>
+                <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Specify the desired thickness of the solid entity after shell on the item entry > double GO"
@@ -402,7 +402,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 </span>
               </div>
               <div className="step-description">
-                    <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-wide mt-4" />
+                <img src={shellEntry} alt="Shell Thickness Entry" className="software-screenshot screenshot-wide mt-4" />
               </div>
             </div>
 
@@ -418,7 +418,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                   />
                 </h4>
               </div>
-                <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '490px' }} />
+              <img src={shellResult} alt="Shell Result" className="software-screenshot screenshot-medium mt-8" style={{ width: '490px' }} />
             </div>
 
             <div className="lesson-navigation">

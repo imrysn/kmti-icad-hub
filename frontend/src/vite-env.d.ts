@@ -8,6 +8,6 @@ interface Window {
     maximize: () => void;
     close: () => void;
     openFile: (filePath: string) => void;
-    downloadAndOpen: (params: { url: string; filename: string; token: string }) => Promise<string>;
+    downloadAndOpen: (params: { url: string; filename: string; token: string, appName?: string }) => Promise<string>;
   };
 }

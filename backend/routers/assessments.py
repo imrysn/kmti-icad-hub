@@ -340,16 +340,30 @@ async def submit_task(
     # --- Real-Time Trainer Notification ---
     mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
     if mapping:
-        import asyncio
-        asyncio.create_task(notification_manager.send_personal_message(
-            {
-                "event": "NEW_SUBMISSION", 
-                "trainee_name": current_user.full_name or current_user.username,
-                "task_code": task.task_code,
-                "set_number": task.set_number
-            }, 
-            mapping.trainer_id
-        ))
+        try:
+            notification_msg = f"Trainee {current_user.full_name or current_user.username} submitted Set {task.set_number} Unit {task.task_code} for review."
+            new_notif = Notification(
+                recipient_id=mapping.trainer_id,
+                sender_id=current_user.id,
+                message=notification_msg,
+                type="new_submission"
+            )
+            db.add(new_notif)
+            db.commit()
+
+            import asyncio
+            asyncio.create_task(notification_manager.send_personal_message(
+                {
+                    "event": "NEW_SUBMISSION", 
+                    "trainee_name": current_user.full_name or current_user.username,
+                    "task_code": task.task_code,
+                    "set_number": task.set_number,
+                    "message": notification_msg
+                }, 
+                mapping.trainer_id
+            ))
+        except Exception as e:
+            print(f"Error sending trainer submission notification: {e}")
 
     return submission
 
@@ -455,6 +469,39 @@ async def provide_feedback(
             db.add(feedback)
 
     db.commit()
+
+    # Save Notification record in database and trigger real-time WebSocket push
+    try:
+        notification_msg = ""
+        if status == "approved":
+            notification_msg = f"Trainer {current_user.full_name or current_user.username} approved your Set {submission.task.set_number} Unit {submission.task.task_code} assessment!"
+        else:
+            notification_msg = f"Your Set {submission.task.set_number} Unit {submission.task.task_code} assessment has been rejected by {current_user.full_name or current_user.username}. Please check comments."
+
+        db_notification = Notification(
+            recipient_id=submission.user_id,
+            sender_id=current_user.id,
+            message=notification_msg,
+            type="assessment_reviewed"
+        )
+        db.add(db_notification)
+        db.commit()
+
+        import asyncio
+        asyncio.create_task(notification_manager.send_personal_message(
+            {
+                "event": "ASSESSMENT_REVIEWED",
+                "status": status,
+                "trainer_name": current_user.full_name or current_user.username,
+                "set_number": submission.task.set_number,
+                "task_code": submission.task.task_code,
+                "message": notification_msg
+            },
+            submission.user_id
+        ))
+    except Exception as e:
+        print(f"Error sending trainee feedback notification: {e}")
+
     return {"message": f"Submission {status}"}
 
 @router.get("/feedback/{feedback_id}/download")
@@ -501,14 +548,28 @@ def reply_to_feedback(
     # --- Real-Time Trainer Notification ---
     mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
     if mapping:
-        import asyncio
-        asyncio.create_task(notification_manager.send_personal_message(
-            {
-                "event": "NEW_REPLY", 
-                "trainee_name": current_user.full_name or current_user.username
-            }, 
-            mapping.trainer_id
-        ))
+        try:
+            notification_msg = f"Trainee {current_user.full_name or current_user.username} replied to your feedback."
+            new_notif = Notification(
+                recipient_id=mapping.trainer_id,
+                sender_id=current_user.id,
+                message=notification_msg,
+                type="feedback_reply"
+            )
+            db.add(new_notif)
+            db.commit()
+
+            import asyncio
+            asyncio.create_task(notification_manager.send_personal_message(
+                {
+                    "event": "NEW_REPLY", 
+                    "trainee_name": current_user.full_name or current_user.username,
+                    "message": notification_msg
+                }, 
+                mapping.trainer_id
+            ))
+        except Exception as e:
+            print(f"Error sending trainer reply notification: {e}")
 
     return {"message": "Reply saved successfully"}
 
@@ -550,3 +611,71 @@ def delete_submission(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+@router.get("/trainer/trainees-progress")
+def get_trainer_trainees_progress(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get detailed curriculum & assessment progress for all assigned trainees."""
+    try:
+        from ..models import QuizScore, Quiz
+    except ImportError:
+        from models import QuizScore, Quiz
+
+    if current_user.role not in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # 1. Fetch assigned mappings
+    mappings = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainer_id == current_user.id).all()
+    trainee_ids = [m.trainee_id for m in mappings]
+    
+    # 2. Fetch all trainees' details
+    trainees = db.query(User).filter(User.id.in_(trainee_ids)).all()
+    
+    results = []
+    for trainee in trainees:
+        # Fetch Quiz Scores (Lessons completed/passed)
+        scores = db.query(QuizScore).filter(QuizScore.user_id == str(trainee.id)).all()
+        
+        # Calculate completion metrics
+        # Course 1 is 3D Modeling, Course 2 is 2D Drawing
+        completed_3d = [s for s in scores if s.course_id == "1" and s.score >= 80.0]
+        completed_2d = [s for s in scores if s.course_id == "2" and s.score >= 80.0]
+        
+        # Total quizzes in DB per course type
+        total_3d = db.query(Quiz).filter(Quiz.course_type == "3D_Modeling").count()
+        total_2d = db.query(Quiz).filter(Quiz.course_type == "2D_Drawing").count()
+        
+        # Fetch assessment submissions for this trainee
+        submissions = db.query(AssessmentSubmission).filter(AssessmentSubmission.user_id == trainee.id).all()
+        approved_submissions = [s for s in submissions if s.status == "approved"]
+        pending_submissions = [s for s in submissions if s.status == "pending"]
+        rejected_submissions = [s for s in submissions if s.status == "rejected"]
+        
+        results.append({
+            "id": trainee.id,
+            "username": trainee.username,
+            "full_name": trainee.full_name,
+            "email": trainee.email,
+            "progress": {
+                "course_3d": {
+                    "completed": len(completed_3d),
+                    "total": total_3d,
+                    "percentage": round((len(completed_3d) / total_3d * 100), 1) if total_3d > 0 else 0.0
+                },
+                "course_2d": {
+                    "completed": len(completed_2d),
+                    "total": total_2d,
+                    "percentage": round((len(completed_2d) / total_2d * 100), 1) if total_2d > 0 else 0.0
+                },
+                "assessments": {
+                    "approved": len(approved_submissions),
+                    "pending": len(pending_submissions),
+                    "rejected": len(rejected_submissions),
+                    "total_submitted": len(submissions)
+                }
+            }
+        })
+        
+    return results

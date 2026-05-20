@@ -452,9 +452,13 @@
 
 .chat-bubble.user .bubble-content {
     background: var(--primary);
-    color: #ffffff;
     border-color: transparent;
     border-radius: var(--radius-md);
+}
+
+.chat-bubble.user .bubble-content,
+.chat-bubble.user .bubble-content * {
+    color: #ffffff !important;
 }
 
 /* ── Typing indicator ─────────────────────────────────────── */

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Lock } from 'lucide-react';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
 import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
@@ -45,6 +46,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Prerequisite State (3D Completion for 2D Course)
     const [is3DCompleted, setIs3DCompleted] = useState(false);
     const [is2DCompleted, setIs2DCompleted] = useState(false);
+    const [isAnnotationCompleted, setIsAnnotationCompleted] = useState(false);
     const [isCheckingPrereq, setIsCheckingPrereq] = useState(true);
 
     // Count completable 3D modules once
@@ -165,6 +167,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         const checkPrereq = async () => {
             if (canBypass) {
                 setIs3DCompleted(true);
+                setIsAnnotationCompleted(true);
+                localStorage.setItem(authService.getStorageKey('annotationCompleted'), 'true');
                 setIsCheckingPrereq(false);
                 return;
             }
@@ -176,6 +180,12 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 
                 // Mark as completed if all quizzes are passed
                 setIs3DCompleted(completedCount3D >= completable3DCount && completable3DCount > 0);
+
+                // Check specifically for annotation quiz
+                const annotationProgress = progress3D.find((p: any) => p.lesson_id === 'annotation');
+                const annotationDone = !!annotationProgress?.is_completed;
+                setIsAnnotationCompleted(annotationDone);
+                localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
 
                 // Course ID '2' is 2D Drawing
                 const progress2D = await authService.getLessonProgress('2');
@@ -261,6 +271,13 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             
             setCompletedLessons(ids);
             
+            // If we are currently loading progress for Course '1', update isAnnotationCompleted as well
+            if (selectedCourse.id.toString() === '1') {
+                const annotationDone = ids.includes('annotation');
+                setIsAnnotationCompleted(annotationDone);
+                localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
+            }
+            
             // Calculate average score
             const quizLessons = progress.filter((p: any) => p.score > 0);
             if (quizLessons.length > 0) {
@@ -313,6 +330,20 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, []);
 
     const goToNextLesson = useCallback(() => {
+        if (activeLessonId === 'annotation') {
+            console.log('Annotation quiz completed. Routing to Practical Assessment.');
+            const assessmentCourse: Course = {
+                id: 'practical-assessment',
+                title: 'Practical Assessment',
+                description: 'Sequential 7-set drafting tasks in iJCAD.',
+                course_type: 'Practical',
+                order: 99
+            };
+            setSelectedCourse(assessmentCourse);
+            navigate('/mentor?mode=assessment');
+            return;
+        }
+
         if (currentLessonIndex < allLessonIds.length - 1) {
             const nextId = allLessonIds[currentLessonIndex + 1];
             console.log('Navigating to next lesson:', { 
@@ -407,7 +438,34 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 )}
 
                 {selectedCourse.id === 'practical-assessment' ? (
-                    <PracticalAssessment onBack={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }} />
+                    (!canBypass && !isAnnotationCompleted) ? (
+                        <div className="locked-assessment-container animate-fade-in">
+                            <div className="locked-assessment-card">
+                                <div className="lock-badge-large">
+                                    <Lock size={48} />
+                                </div>
+                                <h2>Practical Assessment Locked</h2>
+                                <p className="lock-description">
+                                    The Practical Assessment is a series of 7 sequential drafting tasks in iJCAD.
+                                    To ensure you have the prerequisite skills, you must first pass the <strong>3D Annotation Competency Quiz</strong>.
+                                </p>
+                                <div className="unlock-requirements">
+                                    <div className="requirement-item">
+                                        <div className="status-dot warning" />
+                                        <span>Prerequisite: Course 1 (3D Modeling) &gt; Annotation Quiz (Score &ge; 80%)</span>
+                                    </div>
+                                </div>
+                                <button className="primary mt-6" onClick={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }}>
+                                    Return to Courses
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <PracticalAssessment 
+                            is3DCompleted={is3DCompleted}
+                            onBack={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }} 
+                        />
+                    )
                 ) : (
                     <LessonViewer 
                         is2DDrawingCourse={is2DDrawingCourse} 

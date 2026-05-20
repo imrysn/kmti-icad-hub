@@ -1178,3 +1178,41 @@ def get_trainee_quiz_attempts(
         "attempts": results
     }
 
+    # 3. Get all attempts for this user and quiz
+    attempts = db.query(QuestionAttempt).filter(
+        QuestionAttempt.user_id == user_id,
+        QuestionAttempt.quiz_id == quiz.id
+    ).order_by(QuestionAttempt.attempted_at.desc()).all()
+    
+    # Map latest attempts to question IDs
+    attempts_map = {}
+    for a in attempts:
+        if a.question_id not in attempts_map:
+            attempts_map[a.question_id] = a
+    
+    results = []
+    for q in questions:
+        attempt = attempts_map.get(q.id)
+        
+        # Parse options safely
+        try:
+            options = json.loads(q.options_json) if q.options_json else []
+        except:
+            options = []
+            
+        results.append({
+            "question_text": q.text,
+            "explanation": q.explanation,
+            "options": options,
+            "correct_answer_index": q.correct_answer,
+            "user_answer_index": attempt.chosen_option if attempt else None,
+            "is_correct": attempt.is_correct if attempt else False,
+            "seconds_spent": attempt.seconds_spent if attempt else 0,
+            "attempted_at": attempt.attempted_at if attempt else None
+        })
+        
+    return {
+        "quiz_title": quiz.title,
+        "attempts": results
+    }
+

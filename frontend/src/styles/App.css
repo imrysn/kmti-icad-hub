@@ -335,3 +335,24 @@
 .quiz-mode-active .app-content {
   filter: grayscale(0.2);
 }
+
+/* ── Text-to-Speech Active Paragraph Glow ───────────────────── */
+
+.tts-active-highlight {
+  background: rgba(6, 182, 212, 0.08) !important;
+  border-left: 3px solid #06b6d4 !important;
+  padding: 8px 12px !important;
+  border-radius: 0 8px 8px 0 !important;
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.1), inset 0 0 4px rgba(6, 182, 212, 0.05) !important;
+  transform: translateX(4px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+[data-theme='light'] .tts-active-highlight {
+  background: rgba(6, 182, 212, 0.06) !important;
+}
+
+/* ── Hide redundant TTS buttons inside lesson intro headers ──── */
+.lesson-intro .tts-widget-container {
+  display: none !important;
+}
