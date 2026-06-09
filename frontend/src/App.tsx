@@ -15,6 +15,7 @@ import WindowControls from './components/WindowControls';
 import ThemeToggle from './components/ThemeToggle';
 import { getSystemStatus } from './services/api';
 
+import kmtiLogo from './assets/kmti_logo.png';
 import './styles/App.css';
 
 function App() {
@@ -123,7 +124,20 @@ function App() {
           <header className="app-header animate-fade-in">
             {/* 1. BRANDING (Left) */}
             <div className="header-left">
-              <div className="app-title">KMTI iCAD Hub</div>
+              <div className="app-title">
+                <img 
+                  src={kmtiLogo} 
+                  alt="KMTI Logo" 
+                  draggable={false} 
+                  style={{ 
+                    width: '18px', 
+                    height: '18px', 
+                    objectFit: 'contain',
+                    userSelect: 'none'
+                  }} 
+                />
+                <span>KMTI iCAD Hub</span>
+              </div>
               
               {!dbStatus.nas_reachable && (
                 <div className="status-badge local-mode" title="NAS Connection Lost - Progress stored on Server PC">

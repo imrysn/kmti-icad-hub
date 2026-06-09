@@ -10,7 +10,7 @@ class UserProgress(Base):
     __tablename__ = "user_progress"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(String(100), index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     course_id = Column(String(100), index=True)
     progress_percentage = Column(Float, default=0.0)
     last_accessed = Column(DateTime, nullable=True)
@@ -19,7 +19,7 @@ class QuizScore(Base):
     __tablename__ = "quiz_scores"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(String(100), index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     course_id = Column(String(100), index=True)
     lesson_id = Column(String(100), index=True)
     score = Column(Float)  # Best score achieved

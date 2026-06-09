@@ -199,11 +199,16 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   }, [activeLessonId]);
 
   // Persist showQuiz state
+  const activeLessonIdRef = useRef(activeLessonId);
   useEffect(() => {
-    if (activeLessonId) {
-      localStorage.setItem(authService.getStorageKey(`showQuiz_${activeLessonId}`), showQuiz.toString());
+    activeLessonIdRef.current = activeLessonId;
+  }, [activeLessonId]);
+
+  useEffect(() => {
+    if (activeLessonIdRef.current) {
+      localStorage.setItem(authService.getStorageKey(`showQuiz_${activeLessonIdRef.current}`), showQuiz.toString());
     }
-  }, [showQuiz, activeLessonId]);
+  }, [showQuiz]);
 
   const handleExitCourse = async () => {
     const confirmed = await requestConfirmation({
@@ -319,10 +324,10 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
           <div className="lesson-content-body">
             <Suspense fallback={
-              <div className="lesson-loading-fallback">
-                <div className="fallback-card">
-                  <Loader2 className="animate-spin" size={48} />
-                  <p>Preparing lesson modules...</p>
+              <div className="lesson-loading-fallback" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '350px', width: '100%' }}>
+                <div className="fallback-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: 'var(--text-dim)' }}>
+                  <Loader2 className="animate-spin" size={48} style={{ color: 'var(--color-primary)' }} />
+                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500 }}>Preparing lesson modules...</p>
                 </div>
               </div>
             }>
@@ -457,7 +462,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
 
             {/* Premium Quiz Modal */}
-            {hasQuiz && (activeQuiz || parentResult?.parent?.quiz) && (
+            {showQuiz && hasQuiz && (activeQuiz || parentResult?.parent?.quiz) && (
               <QuizModal 
                 isOpen={showQuiz} 
                 onClose={() => setShowQuiz(false)}

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
+const isElectron = navigator.userAgent.toLowerCase().includes('electron');
+const defaultHost = isElectron ? '127.0.0.1' : (window.location.hostname || '127.0.0.1');
+const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${defaultHost}:3001`;
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -10,12 +12,15 @@ const api = axios.create({
     },
 });
 
-// Request interceptor to add JWT token to headers
+// Request interceptor to add JWT token to headers and prepend /api/v1 prefix
 api.interceptors.request.use(
     (config) => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
+        }
+        if (config.url && !config.url.startsWith('/api/v1') && !config.url.startsWith('http') && !config.url.startsWith('//')) {
+            config.url = `/api/v1${config.url.startsWith('/') ? '' : '/'}${config.url}`;
         }
         return config;
     },
@@ -61,24 +66,24 @@ export const getSystemStatus = async () => {
 
 // Search knowledge base
 export const searchKnowledgeBase = async (query: string) => {
-    const response = await api.get(`/search?query=${encodeURIComponent(query)}`);
+    const response = await api.get(`/api/v1/chat/search?query=${encodeURIComponent(query)}`);
     return response.data;
 };
 
 // Get available courses
 export const getCourses = async () => {
-    const response = await api.get('/courses');
+    const response = await api.get('/api/v1/courses');
     return response.data;
 };
 
 // Get user progress for a course
 export const getUserProgress = async (courseId: string, userId: string) => {
-    const response = await api.get(`/courses/${courseId}/progress/${userId}`);
+    const response = await api.get(`/api/v1/courses/${courseId}/progress/${userId}`);
     return response.data;
 };
 
 // Get hierarchical lessons for a specific course
 export const getCourseLessons = async (courseId: string | number) => {
-    const response = await api.get(`/courses/${courseId}/lessons`);
+    const response = await api.get(`/api/v1/courses/${courseId}/lessons`);
     return response.data;
 };

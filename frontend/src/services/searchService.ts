@@ -24,7 +24,7 @@ export interface SearchResponse {
 
 export const searchService = {
     async query(query: string): Promise<SearchResponse> {
-        const response = await api.get('/search', { params: { query } });
+        const response = await api.get('/chat/search', { params: { query } });
         return response.data;
     }
 };
@@ -98,7 +98,7 @@ export const chatService = {
         },
         onChunk: (chunk: { type: string; delta?: string; sources?: ChatSource[]; suggestions?: string[]; log_id?: number }) => void
     ): Promise<void> {
-        const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const API_BASE = api.defaults.baseURL || 'http://localhost:3001';
         const token = sessionStorage.getItem('access_token');
 
         const response = await fetch(`${API_BASE}/chat/stream`, {

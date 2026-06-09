@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-// Single source of truth for the API base URL.
-// authService.ts previously hardcoded 'http://localhost:8000' — now uses the
-// shared config so VITE_API_URL is honoured in all environments.
-const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
+const isElectron = navigator.userAgent.toLowerCase().includes('electron');
+const defaultHost = isElectron ? '127.0.0.1' : (window.location.hostname || '127.0.0.1');
+const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${defaultHost}:3001`;
 
 export interface LoginCredentials {
     username: string;
@@ -47,11 +46,14 @@ const authApi = axios.create({
     },
 });
 
-// Add Bearer token to every request
+// Add Bearer token to every request and prepend /api/v1 prefix
 authApi.interceptors.request.use((config) => {
     const token = sessionStorage.getItem('access_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+    }
+    if (config.url && !config.url.startsWith('/api/v1') && !config.url.startsWith('http') && !config.url.startsWith('//')) {
+        config.url = `/api/v1${config.url.startsWith('/') ? '' : '/'}${config.url}`;
     }
     return config;
 });
