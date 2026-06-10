@@ -10,14 +10,14 @@ interface UserModalProps {
 }
 
 export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, user }) => {
-    const [formData, setFormData] = useState({ username: '', email: '', full_name: '', role: 'trainee', password: '', is_active: true }); const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({ username: '', full_name: '', role: 'trainee', password: '', is_active: true });
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (user) {
             setFormData({
                 username: user.username,
-                email: user.email,
                 full_name: user.full_name,
                 role: user.role,
                 password: '', // Don't show hashed password
@@ -26,7 +26,6 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
         } else {
             setFormData({
                 username: '',
-                email: '',
                 full_name: '',
                 role: 'trainee',
                 password: '',
@@ -68,31 +67,6 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
 
                     <div className="form-grid">
                         <div className="form-group full">
-                            <label><UserIcon size={14} /> Username</label>
-                            <input type="text" value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })}
-                                disabled={!!user} // Username usually immutable
-                                placeholder="e.g. jdoe"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label><Mail size={14} /> Email Address</label>
-                            <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                placeholder="john.doe@example.com"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Full Name</label>
-                            <input type="text" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })}
-                                placeholder="John Doe"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
                             <label><Shield size={14} /> System Role</label>
                             <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}
                             >
@@ -102,18 +76,36 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
                             </select>
                         </div>
 
+                        <div className="form-group full">
+                            <label>Full Name</label>
+                            <input type="text" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })}
+                                placeholder="John Doe"
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label><UserIcon size={14} /> Username</label>
+                            <input type="text" value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })}
+                                disabled={!!user} // Username usually immutable
+                                placeholder="e.g. jd"
+                                minLength={2}
+                                required
+                            />
+                        </div>
+
                         <div className="form-group">
                             <label><Key size={14} /> {user ? 'New Password (Optional)' : 'Password'}</label>
                             <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })}
-                                placeholder={user ? "Leave blank to keep current" : "Min 8 characters"}
+                                placeholder={user ? "Leave blank to keep current" : "Min 4 characters"}
+                                minLength={4}
                                 required={!user}
                             />
                         </div>
                     </div>
 
                     <div className="admin-modal-footer">
-                        <button type="button" className="admin-btn-secondary" onClick={onClose}>Cancel</button>
-                        <button type="submit" className="admin-btn-primary" disabled={loading}>
+                        <button type="submit" className="admin-btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center' }}>
                             {loading ? <div className="spinner-small"></div> : <Save size={16} />}
                             {user ? 'Update User' : 'Create User'}
                         </button>

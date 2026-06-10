@@ -116,6 +116,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                         <strong className="red-text">Mirror parts</strong> are parts that are symmetrically the same.<br />
                         <span style={{ marginLeft: "6.1rem" }}>Example drawing number </span><span style={{ color: "#fff" }}>RTXXXXXA01 & RTXXXXXB01</span>
                       </p>
+                      <p className="p-flush"><strong className="red-text">※ Rule on how to detail a mirror parts</strong> </p>
                       <img src={img2} alt="Normal and Mirror parts drawing sheet" className="software-screenshot screenshot-wide mt-4" />
                     </div>
                   </div>

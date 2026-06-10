@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Brain, GraduationCap, ClipboardList } from 'lucide-react'; 
+import { Brain, GraduationCap, ClipboardList } from 'lucide-react';
 import { IntelligenceChatbot } from '../admin/components/IntelligenceChatbot';
 import MentorMode from '../mentor/MentorMode';
 import { PracticalTrainerDashboard } from '../mentor/components/PracticalTrainerDashboard';
@@ -46,7 +46,7 @@ const AssistantMode: React.FC = () => {
                 <button className={`assistant-tab-btn ${activeTab === 'assessment' ? 'active' : ''}`} onClick={() => setActiveTab('assessment')}
                 >
                     <ClipboardList size={18} />
-                    <span>Assessment Review</span>
+                    <span>Trainee Overview</span>
                 </button>
             </nav>
 

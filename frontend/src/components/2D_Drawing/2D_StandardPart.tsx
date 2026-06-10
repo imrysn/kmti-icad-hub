@@ -168,7 +168,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               {activeTab === '1' && (
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header" style={{marginLeft:"3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">d</span>
                       <KaraokeLessonText
                         as="span"
@@ -191,7 +191,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header" style={{marginLeft:"3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">e</span>
                       <KaraokeLessonText
                         as="span"
@@ -213,7 +213,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-                    <div className="step-header" style={{marginLeft:"3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">f</span>
                       <KaraokeLessonText
                         as="span"
@@ -265,7 +265,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 
                   {/* 1. For Flat Surface */}
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-1rem" }}>
-                    <div className="step-header"  style={{ marginLeft: "3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">1</span>
                       <KaraokeLessonText
                         as="span"
@@ -282,23 +282,23 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
-                      
+
                       <div className="mb-4">
-                        <img src={oilGroove1Img} alt="Oil Groove Flat Detail" className="software-screenshot screenshot-wide" style={{ marginTop: "-2rem", marginBottom: "-1rem"}} />
+                        <img src={oilGroove1Img} alt="Oil Groove Flat Detail" className="software-screenshot screenshot-wide" style={{ marginTop: "-2rem", marginBottom: "-1rem" }} />
                       </div>
 
                       <div className="instruction-box mt-4 mb-4">
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
-                            <span style={{ marginRight: "0.5rem"}}>●</span>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
                             <span>Follow the standard detail of KEMCO for flat surface <strong style={{ color: 'red' }}>(Figure 1)</strong>.</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
-                            <span style={{ marginRight: "0.5rem"}}>●</span>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
                             <span>Depth of grease line should be <strong>1.5mm</strong></span>
-                          </li>``
+                          </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
-                            <span style={{ marginRight: "0.5rem"}}>●</span>
+                            <span style={{ marginRight: "0.5rem" }}>●</span>
                             <span>In case of drill hole and tap hole, the diameter of the hole must be <strong>smaller than width of groove</strong>.</span>
                           </li>
                         </ul>
@@ -308,7 +308,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 
                   {/* 2. For Circular Portion */}
                   <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: "-1rem" }}>
-                    <div className="step-header"  style={{ marginLeft: "3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">2</span>
                       <KaraokeLessonText
                         as="span"
@@ -327,7 +327,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       />
 
                       <div className="mb-4">
-                        <img src={oilGroove2Img} alt="Oil Groove Circular Detail" className="software-screenshot screenshot-wide" style={{ marginTop: "-2rem", marginBottom: "-1rem"}} />
+                        <img src={oilGroove2Img} alt="Oil Groove Circular Detail" className="software-screenshot screenshot-wide" style={{ marginTop: "-2rem", marginBottom: "-1rem" }} />
                       </div>
 
                       <div className="instruction-box mt-4 mb-4">
@@ -369,7 +369,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    
+
                     <div className="step-description">
                       <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600" }}>
                         ※ Dimension of Shaft and Key Plate
@@ -392,7 +392,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>The tolerance of the width groove must be <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>f <span style={{ display: "inline-block", verticalAlign: "middle", fontSize: "0.6em", lineHeight: "1.2", marginLeft: "0.1rem" }}><div style={{textAlign: "left"}}>+0.3</div><div style={{textAlign: "left"}}>+0.2</div></span></span></span>
+                            <span>The tolerance of the width groove must be <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>f <span style={{ display: "inline-block", verticalAlign: "middle", fontSize: "0.6em", lineHeight: "1.2", marginLeft: "0.1rem" }}><div style={{ textAlign: "left" }}>+0.3</div><div style={{ textAlign: "left" }}>+0.2</div></span></span></span>
                           </li>
                         </ul>
                       </div>
@@ -409,12 +409,12 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <div className="mb-4">
                         <img src={shaftKeyPlate3Img} alt="Key Plate Sample Drawing" className="software-screenshot screenshot-wide" style={{ marginTop: "-3rem", marginBottom: "-1rem" }} />
                       </div>
-                      
+
                       <div className="instruction-box mt-4 mb-4">
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>As much as possible, follow the way of detailing in this reference.<br/>Do not position the key groove below.</span>
+                            <span>As much as possible, follow the way of detailing in this reference.<br />Do not position the key groove below.</span>
                           </li>
                         </ul>
                       </div>
@@ -455,12 +455,12 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   {/* OST-2 Example 3 */}
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
                     <div className="step-description">
-                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", fontStyle: "italic", marginTop: "-2rem", fontSize:"1.3rem", marginLeft: "1.5rem"}}>
+                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", fontStyle: "italic", marginTop: "-2rem", fontSize: "1.3rem", marginLeft: "1.5rem" }}>
                         Example 3.
                       </p>
 
                       <div className="mb-4">
-                        <img src={collar1Img} alt="OST-2 Overview" className="software-screenshot screenshot-wide" style={{marginLeft: "1rem", marginTop: "-2rem"}} />
+                        <img src={collar1Img} alt="OST-2 Overview" className="software-screenshot screenshot-wide" style={{ marginLeft: "1rem", marginTop: "-2rem" }} />
                       </div>
 
                       <div className="instruction-box mt-4 mb-4">
@@ -471,7 +471,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                           </li>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>To avoid over press of the material during tightening that causes<br/>the urethane to distort.</span>
+                            <span>To avoid over press of the material during tightening that causes<br />the urethane to distort.</span>
                           </li>
                         </ul>
                       </div>
@@ -481,7 +481,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   {/* Sample Drawing */}
                   <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: "1rem" }}>
                     <div className="step-description">
-                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", marginTop: "-1rem"}}>
+                      <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", marginTop: "-1rem" }}>
                         ※ Sample Drawing
                       </p>
 
@@ -532,7 +532,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                           </li>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>On assembly drawing, standard scale should be used, but non-standard<br/>scale can be used as a second option.</span>
+                            <span>On assembly drawing, standard scale should be used, but non-standard<br />scale can be used as a second option.</span>
                           </li>
                         </ul>
                       </div>
@@ -561,7 +561,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
-                      
+
                       <p className="font-semibold mb-4" style={{ color: 'red', marginTop: "1rem" }}>
                         In 2D
                       </p>
@@ -574,20 +574,20 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0, flex: 1 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Relief process detail should be <strong style={{color: 'red'}}>used on shaft parts</strong> with three (3) triangle and surface grinding process.</span>
+                            <span>Relief process detail should be <strong style={{ color: 'red' }}>used on shaft parts</strong> with three (3) triangle and surface grinding process.</span>
                           </li>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Relief process should be <strong style={{color: 'red'}}>shown on 2D detailing</strong>.</span>
+                            <span>Relief process should be <strong style={{ color: 'red' }}>shown on 2D detailing</strong>.</span>
                           </li>
                         </ul>
-                        <img 
-                          src={reliefProcess2Img} 
-                          alt="Relief Process Detailing" 
-                          style={{ width: "55px", flexShrink: 0, marginTop: "-1rem", marginRight: "-1.5rem", border: "1px solid var(--border-color)", borderRadius: "4px" }} 
+                        <img
+                          src={reliefProcess2Img}
+                          alt="Relief Process Detailing"
+                          style={{ width: "55px", flexShrink: 0, marginTop: "-1rem", marginRight: "-1.5rem", border: "1px solid var(--border-color)", borderRadius: "4px" }}
                         />
                       </div>
-                      
+
                       <div className="instruction-box mt-4 mb-4">
                         <p style={{ color: "red", fontWeight: "bold", marginBottom: "0.5rem" }}>Note:</p>
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
@@ -607,7 +607,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   {/* Relief Workflow Steps */}
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-1rem" }}>
                     <div className="step-description">
-                      <p className="mb-4"style={{ color: 'red' }}>
+                      <p className="mb-4" style={{ color: 'red' }}>
                         ※ There are four (4) steps to show the detail on the template
                       </p>
 

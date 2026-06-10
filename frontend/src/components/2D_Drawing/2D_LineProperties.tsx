@@ -88,7 +88,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
       subtitle: '',
       steps: [
         "",
-        "Spline is used to replace lines when a partial section is done on the drawing. These lines will be replaced by a spline.",
+        "Spline is used to replace lines when a partial section is done on the drawing.",
         "Automatically shown for the holes from machine tools. Aside from that, if additional center lines is necessary, It can be put manually."
       ]
     }
@@ -120,7 +120,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
 
 
-            
+
 
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
@@ -135,47 +135,47 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  
-                      <img src={lineProp1Img} alt="Line Properties Overview" className="software-screenshot screenshot-wide" />
-                    
-                    <div className="lesson-table-container mt-6">
-                      <table className="lesson-table">
-                        <thead>
-                          <tr>
-                            <th>Application</th>
-                            <th>LineType</th>
-                            <th>Line Weight</th>
-                            <th>Thickness</th>
-                            <th>Color</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td>Actual line</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
-                          <tr><td>Hidden Line</td><td>Broken Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Center Line</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
-                          <tr><td>Phantom Line</td><td>Double Dot Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Arrow / Machine Flow</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
-                          <tr><td>Welding Hatch</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>Pink (6)</td></tr>
-                          <tr><td>Scribe Line</td><td>Continuous line</td><td className="highlight-cell-yellow">Thick</td><td className="highlight-cell-yellow">0.4mm</td><td className="highlight-cell-yellow">White (1)</td></tr>
-                          <tr><td>Floor Level</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Spline / Cutting Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Additional Information / Table</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Detail View Indicator</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Text / Letter</td><td>-</td><td>Thin</td><td>0.15mm</td><td>Yellow (4)</td></tr>
-                          <tr><td>Machining Symbol</td><td>-</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Revised Old Data / Dimension</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Cutted part (Hatch)</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Revision Cloud</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                          <tr><td>Pipe Reference Drawing</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Pipe End Reference Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                          <tr><td>Scale Line</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                          <tr><td>Surface Treatment / Condition</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                          <tr><td>Surface Without Welding Appearance</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                          <tr><td>Same Level</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
-                        </tbody>
-                      </table>
-                    </div>
+
+                  <img src={lineProp1Img} alt="Line Properties Overview" className="software-screenshot screenshot-wide" />
+
+                  <div className="lesson-table-container mt-6">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Application</th>
+                          <th>Line Type</th>
+                          <th>Line Weight</th>
+                          <th>Thickness</th>
+                          <th>Color</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Actual line</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
+                        <tr><td>Hidden Line</td><td>Broken Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Center Line</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
+                        <tr><td>Phantom Line</td><td>Double Dot Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Arrow / Machine Flow</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
+                        <tr><td>Welding Hatch</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>Pink (6)</td></tr>
+                        <tr><td>Scribe Line</td><td>Continuous line</td><td className="highlight-cell-yellow">Thick</td><td className="highlight-cell-yellow">0.4mm</td><td className="highlight-cell-yellow">White (1)</td></tr>
+                        <tr><td>Floor Level</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Spline / Cutting Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Additional Information / Table</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Detail View Indicator</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Text / Letter</td><td>-</td><td>Thin</td><td>0.15mm</td><td>Yellow (4)</td></tr>
+                        <tr><td>Machining Symbol</td><td>-</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                        <tr><td>Revised Old Data / Dimension</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                        <tr><td>Cutted part (Hatch)</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                        <tr><td>Revision Cloud</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
+                        <tr><td>Pipe Reference Drawing</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Pipe End Reference Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
+                        <tr><td>Scale Line</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
+                        <tr><td>Surface Treatment / Condition</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
+                        <tr><td>Surface Without Welding Appearance</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
+                        <tr><td>Same Level</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
+                      </tbody>
+                    </table>
                   </div>
+                </div>
               )}
 
               {activeTab === '2' && (
@@ -197,7 +197,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={lineProp2Img} alt="External and Hidden Lines" className="software-screenshot screenshot-wide"  style={{ marginTop: "-3rem" }} />
+                    <img src={lineProp2Img} alt="External and Hidden Lines" className="software-screenshot screenshot-wide" style={{ marginTop: "-3rem" }} />
                   </div>
                 </div>
               )}
@@ -214,7 +214,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <div className="step-header" style={{ marginTop: '0.5rem', marginLeft: "3rem"}}>
+                  <div className="step-header" style={{ marginTop: '0.5rem', marginLeft: "3rem" }}>
                     <span className="step-number">a</span>
                     <KaraokeLessonText
                       as="span"
@@ -232,7 +232,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={lineProp3ImgA} alt="Additional Lines - Spline Settings" className="software-screenshot screenshot-wide mb-6" />
-                    
+
                     <KaraokeLessonText
                       className="p-flush mb-4"
                       text={currentLesson.steps[1]}
@@ -240,7 +240,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={lineProp3ImgB} alt="Additional Lines - Spline Application" className="software-screenshot screenshot-wide" />
-                    
+
                     <div className="step-header" style={{ marginTop: '2rem', marginLeft: "3rem" }}>
                       <span className="step-number">b</span>
                       <KaraokeLessonText
@@ -251,15 +251,15 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    
+
                     <KaraokeLessonText
                       className="p-flush mb-4 mt-4"
                       text={currentLesson.steps[2]}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={lineProp4Img} alt="Line Property Verification" className="software-screenshot screenshot-wide" style={{ marginBottom: "-5rem"}}/>
-                    
+                    <img src={lineProp4Img} alt="Line Property Verification" className="software-screenshot screenshot-wide" style={{ marginBottom: "-5rem" }} />
+
                     <div className="instruction-box mt-4">
                       <p style={{ margin: 0, lineHeight: 1.5 }}>
                         <strong>NOTE:</strong> Be careful when which line will be picked first because the center line is always base on L1. The standard properties for centerline are already applied if this command is used.
@@ -288,7 +288,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    
+
                     <KaraokeLessonText
                       className="p-flush mb-4 mt-4"
                       text="This is use to change the Line properties of certain parts depends on the detail. This is very useful during detailing of assembly but can also use in parts detail"

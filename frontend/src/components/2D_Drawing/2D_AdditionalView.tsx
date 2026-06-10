@@ -84,7 +84,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
       subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
       steps: [
         "Isometric View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
-        "Cross-sectional Depth: Set the depth to eliminate unnecessary background parts from your section view."
+        "There are some instances that the cross-sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate the unnecessary parts."
       ]
     },
     '2d-additional-view-trim': {
@@ -247,7 +247,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Trim View Operations"
+                      text="Trim"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />

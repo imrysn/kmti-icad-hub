@@ -132,6 +132,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                         <span className="step-number">a.1</span>
                         <span className="step-label">Isometric View</span>
                       </div>
+                      <p className="p-flush">Position of isometric view must not be too close, too far, or over lap with the orthographic view.</p>
                       <img src={operateView1ImgA1} alt="Isometric View" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
@@ -147,6 +148,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
+                    <p className="p-flush">All projection views must always aligned.</p>
                     <div className="step-description">
                       <img src={operateView1ImgB2} alt="Orthographic Sync" className="software-screenshot screenshot-wide" />
                       <div className="instruction-box mt-4">

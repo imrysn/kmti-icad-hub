@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { api } from '../../../services/api';
 import { useNotification } from '../../../context/NotificationContext';
+import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 
 export const PracticalTrainerDashboard: React.FC = () => {
@@ -23,14 +24,14 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const [expandedSets, setExpandedSets] = useState<string[]>([]);
 
     // Main Tabs & Progress Tracking
-    const [activeMainTab, setActiveMainTab] = useState<'assessments' | 'progress'>('assessments');
+    const [activeMainTab, setActiveMainTab] = useState<'assessments' | 'progress' | 'sets'>('assessments');
     const [traineeProgressData, setTraineeProgressData] = useState<any[]>([]);
     const [loadingProgress, setLoadingProgress] = useState(false);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const subtabParam = params.get('subtab');
-        if (subtabParam === 'assessments' || subtabParam === 'progress') {
+        if (subtabParam === 'assessments' || subtabParam === 'progress' || subtabParam === 'sets') {
             setActiveMainTab(subtabParam as any);
         }
     }, [location.search]);
@@ -315,16 +316,27 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 >
                     <CheckCircle2 size={18} /> Trainee Progress Tracker
                 </button>
+                <button
+                    className={`main-nav-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
+                    onClick={() => setActiveMainTab('sets')}
+                >
+                    <Settings size={18} /> Set Configuration
+                </button>
             </div>
 
             <div className="trainer-header">
                 <div className="header-info">
-                    <h2>{activeMainTab === 'assessments' ? "Assessment Review Portal" : "Trainee Progress Tracker"}</h2>
+                    <h2>
+                        {activeMainTab === 'assessments' ? "Assessment Review Portal" : 
+                         activeMainTab === 'progress' ? "Trainee Progress Tracker" : 
+                         "Trainee Set Configuration"}
+                    </h2>
                     <p>
                         {activeMainTab === 'assessments'
                             ? "Manage and verify practical drafting submissions from trainees"
-                            : "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
-                        }
+                            : activeMainTab === 'progress'
+                                ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
+                                : "Configure which assessment sets each trainee can see and access"}
                     </p>
                 </div>
                 <div className="header-controls">
@@ -533,6 +545,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
                             ))
                     )}
                 </div>
+            )}
+
+            {/* Set Configuration Tab */}
+            {activeMainTab === 'sets' && (
+                <TraineeSetConfiguration />
             )}
 
             {/* Review Modal with History & Chat */}

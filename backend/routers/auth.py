@@ -42,7 +42,8 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
         )
     
     # Check if email already exists
-    existing_email = db.query(User).filter(User.email == user_data.email).first()
+    user_email = user_data.email or f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
+    existing_email = db.query(User).filter(User.email == user_email).first()
     if existing_email:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -52,7 +53,7 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     # Create new user
     new_user = User(
         username=user_data.username,
-        email=user_data.email,
+        email=user_email,
         hashed_password=hash_password(user_data.password),
         full_name=user_data.full_name,
         role=user_data.role,

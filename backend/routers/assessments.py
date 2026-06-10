@@ -15,7 +15,8 @@ from ..schemas import (
     AssessmentTaskResponse, AssessmentSubmissionResponse, 
     AssessmentFeedbackResponse, AssessmentSubmissionCreate,
     AssessmentTaskCreate, TrainerTraineeMappingResponse,
-    TrainerTraineeMappingCreate
+    TrainerTraineeMappingCreate, TraineeSetMappingResponse,
+    TraineeSetMappingCreate
 )
 from .auth import get_current_user
 from ..websocket_manager import notification_manager
@@ -46,7 +47,7 @@ def handle_task_upload(file: UploadFile, set_number: int, task_code: str) -> str
             shutil.copyfileobj(file.file, buffer)
         return file_path
 
-router = APIRouter(prefix="/api/v1/assessments", tags=["Assessments"])
+router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
 # --- Trainee Endpoints ---
 
@@ -70,12 +71,21 @@ def get_assessment_tasks(
         AssessmentSubmission.status == "approved"
     ).distinct().all()
     
-    # Logic: Set N is unlocked if ALL tasks in Set N-1 are approved.
-    # For simplicity here, we'll mark the tasks as locked/unlocked in metadata 
-    # if we had that field, but the requirement is to strictly isolate them.
-    # The frontend will handle the visual lock, but the backend provides the data.
+    # Mapping Logic
+    from ..models import TraineeSetMapping
+    mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
     
-    # To truly enforce, we can filter or mark them.
+    if mappings:
+        mapping_dict = {m.actual_set_number: m.display_set_number for m in mappings}
+        filtered_tasks = []
+        for t in tasks:
+            if t.set_number in mapping_dict:
+                db.expunge(t)
+                t.set_number = mapping_dict[t.set_number]
+                filtered_tasks.append(t)
+        filtered_tasks.sort(key=lambda x: (x.set_number, x.order))
+        return filtered_tasks
+
     return tasks
 
 @router.get("/my-submissions", response_model=List[AssessmentSubmissionResponse])
@@ -522,6 +532,41 @@ async def submit_task(
     return submission
 
 # --- Trainer (Employee) Endpoints ---
+
+from ..models import TraineeSetMapping
+
+@router.get("/trainer/trainees/{trainee_id}/set-mappings", response_model=List[TraineeSetMappingResponse])
+def get_trainee_set_mappings(
+    trainee_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role not in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    return db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee_id).all()
+
+@router.post("/trainer/trainees/{trainee_id}/set-mappings")
+def update_trainee_set_mappings(
+    trainee_id: int,
+    mappings: List[TraineeSetMappingCreate] = Body(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role not in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+        
+    db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee_id).delete()
+    
+    for m in mappings:
+        new_map = TraineeSetMapping(
+            trainee_id=trainee_id,
+            trainer_id=current_user.id,
+            display_set_number=m.display_set_number,
+            actual_set_number=m.actual_set_number
+        )
+        db.add(new_map)
+    db.commit()
+    return {"message": "Mappings updated"}
 
 @router.get("/trainer/submissions", response_model=List[AssessmentSubmissionResponse])
 def get_trainer_submissions(

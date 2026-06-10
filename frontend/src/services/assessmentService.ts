@@ -99,6 +99,16 @@ export const assessmentService = {
         return response.data;
     },
 
+    getTraineeSetMappings: async (traineeId: number) => {
+        const response = await api.get(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
+        return response.data;
+    },
+
+    updateTraineeSetMapping: async (traineeId: number, mappings: { display_set_number: number, actual_set_number: number }[]) => {
+        const response = await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, mappings);
+        return response.data;
+    },
+
     // Admin Methods
     getTrainerMappings: async () => {
         const response = await api.get('/api/v1/assessments/admin/mappings');

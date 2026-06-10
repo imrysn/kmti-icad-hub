@@ -285,6 +285,20 @@ class TrainerTraineeMapping(Base):
     trainee = relationship("User", foreign_keys=[trainee_id])
     trainer = relationship("User", foreign_keys=[trainer_id])
 
+class TraineeSetMapping(Base):
+    """Maps actual assessment sets to display sets for a specific trainee"""
+    __tablename__ = "trainee_set_mappings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    trainee_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    trainer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    display_set_number = Column(Integer, nullable=False)
+    actual_set_number = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=func.now())
+
+    trainee = relationship("User", foreign_keys=[trainee_id])
+    trainer = relationship("User", foreign_keys=[trainer_id])
+
 class Notification(Base):
     """System notifications for users (e.g. Trainers notified of submissions)"""
     __tablename__ = "notifications"

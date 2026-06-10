@@ -47,12 +47,13 @@ def create_user_as_admin(
     # Check for existing user
     if db.query(User).filter(User.username == user_data.username).first():
         raise HTTPException(status_code=400, detail="Username already registered")
-    if db.query(User).filter(User.email == user_data.email).first():
+    user_email = user_data.email or f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
+    if db.query(User).filter(User.email == user_email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
 
     new_user = User(
         username=user_data.username,
-        email=user_data.email,
+        email=user_email,
         hashed_password=hash_password(user_data.password),
         full_name=user_data.full_name,
         role=user_data.role,
