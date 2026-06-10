@@ -16,12 +16,17 @@ export const LoginView: React.FC = () => {
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false); const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
     const [forgotPasswordMessage, setForgotPasswordMessage] = useState(''); const [isForgotPasswordSubmitting, setIsForgotPasswordSubmitting] = useState(false);
 
-    // Load remembered username on mount and set window size
+    // Load remembered username on mount and check for session expiration
     useEffect(() => {
         const rememberedUser = localStorage.getItem('remembered_username');
         if (rememberedUser) {
             setFormData(prev => ({ ...prev, username: rememberedUser }));
             setRememberMe(true);
+        }
+
+        const queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.get('expired') === 'true') {
+            setLocalError('YOUR SESSION HAS EXPIRED. PLEASE LOG IN AGAIN.');
         }
     }, []);
 
@@ -58,7 +63,7 @@ export const LoginView: React.FC = () => {
             });
             // Explicitly navigate to home to trigger role-based redirect in App.tsx
             if (window.electronAPI) {
-                window.electronAPI.setWindowSize(1280, 720, true);
+                window.electronAPI.maximize();
             }
             navigate('/');
         } catch (err: any) {

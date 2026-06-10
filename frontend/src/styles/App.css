@@ -37,13 +37,12 @@
   -webkit-app-region: drag;
 }
 
-/* Ensure interactive elements in header are NOT draggable */
-.header-left,
-.header-center,
-.header-right,
+/* Ensure interactive elements in header are NOT draggable, but empty spaces are */
 .mode-switcher,
 .header-actions,
-.window-buttons-group {
+.window-buttons-group,
+.status-badge,
+.app-title {
   -webkit-app-region: no-drag;
 }
 

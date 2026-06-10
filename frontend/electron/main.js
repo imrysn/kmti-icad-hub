@@ -68,6 +68,7 @@ function createWindow() {
     });
 
     ipcMain.on('window-maximize', () => {
+        mainWindow.setResizable(true);
         if (mainWindow.isMaximized()) {
             mainWindow.unmaximize();
         } else {
