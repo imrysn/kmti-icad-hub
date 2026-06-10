@@ -1,6 +1,5 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
@@ -23,17 +22,18 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
 }) => {
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-surface-coating');
 
-  const coatingSteps = [
-    "Review the technical table for surface finishing processes. Ensure the chosen coating matches the material requirements for durability and corrosion resistance.",
-    "Use special notes for heat treatments or specific part requirements. Arrange them chronologically by manufacturing sequence to match standard drafting practices.",
-    "Copy multiplies entities, while move changes their location. Use reference points P1 and P2 to precisely reposition technical details."
-  ];
-
-  const currentTitle = "SURFACE COATING";
-  const currentSubtitle = "Technical specifications for surface finishing processes and annotation management.";
-
   return (
     <div className="course-lesson-container" ref={containerRef}>
+      <style>{`
+        .lesson-table {
+          table-layout: fixed !important;
+          width: 100% !important;
+        }
+        .lesson-table th, .lesson-table td {
+          white-space: normal !important;
+          word-break: break-word !important;
+        }
+      `}</style>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -41,129 +41,162 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentTitle}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentTitle, currentSubtitle, ...coatingSteps])}
-                onStop={stop}
-              />
-            </div>
+            <div className="flex-col tab-content fade-in">
 
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentSubtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
-
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="step-header">
-                <span className="step-number">1</span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Plating & Coating Specifications"
-                  isActive={isSpeaking && currentIndex === 2}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
+              {/* === Table: Surface Coating Processes === */}
+              <div className="instruction-step">
                 <div className="lesson-table-container">
                   <table className="lesson-table">
+                    <colgroup>
+                      <col style={{ width: "14%" }} />
+                      <col style={{ width: "23%" }} />
+                      <col style={{ width: "16%" }} />
+                      <col style={{ width: "16%" }} />
+                      <col style={{ width: "32%" }} />
+                    </colgroup>
                     <thead>
                       <tr>
                         <th>Kind of Process</th>
                         <th>Indication of Drawing</th>
-                        <th>Material</th>
+                        <th>Applicable Material</th>
                         <th>Purpose</th>
                         <th>Characteristics</th>
                       </tr>
                     </thead>
                     <tbody>
+                      {/* Hard Chromate */}
                       <tr>
                         <td rowSpan={2}>Hard Chromate</td>
                         <td>硬質クロームメッキ施工</td>
-                        <td rowSpan={2}>S45C, STKM16A, etc.</td>
-                        <td rowSpan={2}>Shafts, Shoes, etc.</td>
-                        <td rowSpan={2}>Good for anti-corrosion and anti-friction.</td>
+                        <td>
+                          • S45C<br/>
+                          • STKM16A<br/>
+                          • SNCM447<br/>
+                        </td>
+                        <td>
+                          • Roller Shaft<br/>
+                          • Roller<br/>
+                          • Shoe<br/>
+                          • etc.
+                        </td>
+                        <td rowSpan={2}>
+                          <strong>ADVANTAGE:</strong><br/>
+                          • Good for Anti-corrosion.<br/>
+                          • Good for Anti-Friction.<br/>
+                          • Good for Decoration.<br/>
+                          • Less friction coefficient.<br/>
+                          • Hard chromate can coat specific area.<br/><br/>
+                          <strong>RECOMMEND:</strong><br/>
+                          • After hard chromate, thermal refining, polishing and buffing must done. (Give specific dimension before and after the process.)
+                        </td>
                       </tr>
-                      <tr><td>(Plating thickness &gt;0.03mm)</td></tr>
+                      <tr>
+                        <td>plating thickness (one side over 0.03mm.)</td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+
+                      {/* Chrome Plating */}
                       <tr>
                         <td>Chrome Plating</td>
                         <td>クロームメッキ施工</td>
-                        <td>All materials</td>
-                        <td>Handles, Tools</td>
-                        <td>Good for decoration and anti-corrosion.</td>
+                        <td>
+                          • All material<br/>
+                          • Brass material
+                        </td>
+                        <td>
+                          • Handle<br/>
+                          • Any tools<br/>
+                          • etc.
+                        </td>
+                        <td>
+                          <strong>ADVANTAGE:</strong><br/>
+                          • Good for Anti-corrosion.<br/>
+                          • Good for decoration.
+                        </td>
                       </tr>
+
+                      {/* Nickel Plating */}
                       <tr>
                         <td>Nickel Plating</td>
                         <td>ニッケルメッキ施工</td>
-                        <td>All materials</td>
-                        <td>Levers, Covers</td>
-                        <td>Low-cost decorative process.</td>
+                        <td>
+                          • All material<br/>
+                          • Brass material
+                        </td>
+                        <td>
+                          • Lever<br/>
+                          • Bearing cover<br/>
+                          • Name plate<br/>
+                          • Reader ring<br/>
+                          • etc.
+                        </td>
+                        <td>
+                          <strong>ADVANTAGE:</strong><br/>
+                          • Good for Anti-corrosion.<br/>
+                          • Good for Decoration.<br/>
+                          • Low-cost process<br/><br/>
+                          <strong>RECOMMEND:</strong><br/>
+                          • Apply before chromate process.<br/>
+                          • After the Nickel chromate process no need to check its thickness.<br/><br/>
+                          Fitting gap for reader ring must be 0.1~0.2mm.
+                        </td>
+                      </tr>
+
+                      {/* Colored Plating (Dipping) */}
+                      <tr>
+                        <td>Colored Plating (Dipping)</td>
+                        <td>有色クロメイト施工</td>
+                        <td>
+                          • All material<br/>
+                          • Brass material
+                        </td>
+                        <td>
+                          • Electrical Bracket<br/>
+                          • Any tools<br/>
+                          • etc.
+                        </td>
+                        <td>
+                          <strong>ADVANTAGE:</strong><br/>
+                          • Good for Anti-corrosion.<br/>
+                          • Low-cost process.
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-            </div>
 
-
-            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <div className="step-header">
-                <span className="step-number">2</span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Special Notes & Documentation"
-                  isActive={isSpeaking && currentIndex === 3}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <KaraokeLessonText
-                  className="p-flush mb-4"
-                  text={coatingSteps[1]}
-                  isActive={isSpeaking && currentIndex === 3}
-                  currentCharIndex={currentCharIndex}
-                />
-                <img src={specialNotesImg} alt="Special Notes Interface" className="software-screenshot screenshot-wide" />
-              </div>
-            </div>
-
-
-            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-              <div className="step-header">
-                <span className="step-number">3</span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Precision Management (Copy / Move)"
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <div className="red-text mb-4">
-                  <KaraokeLessonText
-                    text={coatingSteps[2]}
-                    isActive={isSpeaking && currentIndex === 4}
-                    currentCharIndex={currentCharIndex}
-                  />
+              {/* === b. Special Notes === */}
+              <div className="instruction-step">
+                <div className="step-header">
+                  <span className="step-number">b</span>
+                  <span className="step-label">Special Notes</span>
                 </div>
-                <img src={copyMoveImg} alt="Drafting Commands" className="software-screenshot screenshot-wide" />
+                <div className="step-description">
+                  <img src={specialNotesImg} alt="Special Notes Interface" className="software-screenshot screenshot-wide" />
+                </div>
               </div>
+
+              {/* === c. Copy / Move === */}
+              <div className="instruction-step">
+                <div className="step-header">
+                  <span className="step-number">c</span>
+                  <span className="step-label">Copy / Move</span>
+                </div>
+                <div className="step-description">
+                  <img src={copyMoveImg} alt="Copy Move Commands" className="software-screenshot screenshot-wide" />
+                  <div className="instruction-box mt-6">
+                    <p className="p-flush" style={{ marginBottom: "0.75rem" }}>
+                      Copy and move has the same procedure. The only difference is that copy will multiply its quantity while move will only change location.
+                    </p>
+                    <p className="p-flush">1. Click copy command. Click P1 then "GO".</p>
+                    <p className="p-flush">2. Click P2 for reference.</p>
+                    <p className="p-flush">3. Click P3 for the new location of entity.</p>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 

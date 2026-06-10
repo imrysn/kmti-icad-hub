@@ -125,9 +125,9 @@ export const adminService = {
     },
 
     async downloadProgressExport(userId?: number): Promise<void> {
-        const response = await api.get('/admin/export/progress', { 
+        const response = await api.get('/admin/export/progress', {
             params: { user_id: userId },
-            responseType: 'blob' 
+            responseType: 'blob'
         });
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');

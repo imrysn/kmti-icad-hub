@@ -127,14 +127,14 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 isActive={isSpeaking && currentIndex === 1}
                 currentCharIndex={currentCharIndex}
               />
-                <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small mt-4" style={{ width: "10rem", marginTop: "-2rem" }} />
+              <img src={workPlaneImg} alt="X-Y Plane" className="software-screenshot screenshot-small mt-4" style={{ width: "10rem", marginTop: "-2rem" }} />
               <img src={openWorkPlaneImg} alt="Open Work Plane toolbar" className="software-screenshot screenshot-wide mt-4" />
             </div>
 
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <KaraokeLessonText
                 as="span"
-                text="Use to rotate the work plane to X-Y Plane, X-Z Plane or Y-Z Plane."
+                text="Use to rotate the work plane to X-Y Plane, X-Z Plane or Y-Z Plane"
                 isActive={isSpeaking && currentIndex === 2}
                 currentCharIndex={currentCharIndex}
               />
@@ -164,13 +164,13 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <KaraokeLessonText
               as="p"
               className="p-flush mb-8"
-              style={{marginTop: "-2rem"}}
+              style={{ marginTop: "-2rem" }}
               text="Most tools use for sketching on the work plane can be found on the command menu."
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
-                <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide mt-8" style={{ height: '545px', marginTop: "2rem" }} />
+              <img src={commandMenu} alt="Command Menu" className="software-screenshot screenshot-wide mt-8" style={{ height: '545px', marginTop: "2rem" }} />
             </div>
 
             <div className="lesson-navigation">
@@ -235,19 +235,19 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
   ];
 
   const tabs = [{ id: "extrude", label: "Extrude" }, { id: "revolve", label: "Revolve" }, { id: "spiral", label: "Spiral" },];
-  const handleNext = () => { 
-    const i = tabs.findIndex((t) => t.id === activeTab); 
-    if (i < tabs.length - 1) { 
-      setActiveTab(tabs[i + 1].id as any); 
+  const handleNext = () => {
+    const i = tabs.findIndex((t) => t.id === activeTab);
+    if (i < tabs.length - 1) {
+      setActiveTab(tabs[i + 1].id as any);
     } else if (onNextLesson) {
       onNextLesson();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  const handlePrev = () => { 
-    const i = tabs.findIndex((t) => t.id === activeTab); 
-    if (i > 0) { 
-      setActiveTab(tabs[i - 1].id as any); 
+  const handlePrev = () => {
+    const i = tabs.findIndex((t) => t.id === activeTab);
+    if (i > 0) {
+      setActiveTab(tabs[i - 1].id as any);
     } else if (onPrevLesson) {
       onPrevLesson();
     }
@@ -255,7 +255,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
   };
 
   const introTitle = "Extrude, Revolve, Spiral";
-  const introSubtitle = "These are the tools use for extruding 2D sketches to 3D Solid Entities.";
+  const introSubtitle = "These are the tools use for extruding 2D sketches to 3D Solid Entities";
   const introSubtitle2 = "Most commonly used tools are the following:";
 
   return (
@@ -277,7 +277,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
           />
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             const steps = activeTab === 'extrude' ? extrudeSteps :
-                           activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
+              activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
             speak([introTitle, introSubtitle, introSubtitle2, ...steps]);
           }} onStop={stop} />
         </h3>
@@ -328,13 +328,13 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Extrude from the icon menu."
+                  text="Select Extrude from the icon menu"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
-                    <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot mt-4" style={{height: 'auto', width: "200px" }} />
+                <img src={extrudeIcon} alt="Extrude Icon Menu" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px" }} />
               </div>
             </div>
 
@@ -359,7 +359,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 </div>
               </div>
               <div className="step-description">
-                    <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot mt-8" style={{ width: '600px', marginTop: "2rem" }} />
+                <img src={pickCrossSection} alt="PICK EDGE" className="software-screenshot mt-8" style={{ width: '600px', marginTop: "2rem" }} />
               </div>
             </div>
 
@@ -385,21 +385,21 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 as="p"
                 className="p-flush"
                 style={{ marginBottom: "1rem" }}
-                text="A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane. "
+                text="A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane"
                 isActive={isSpeaking && currentIndex === 8}
                 currentCharIndex={currentCharIndex}
               />
               <KaraokeLessonText
                 as="p"
                 className="red-text"
-                text="Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone."
+                text="Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone"
                 isActive={isSpeaking && currentIndex === 9}
                 currentCharIndex={currentCharIndex}
               />
               <KaraokeLessonText
                 as="p"
                 style={{ marginTop: "1rem" }}
-                text="Select Cancel to keep the work plane together with all the 2D sketches."
+                text="Select Cancel to keep the work plane together with all the 2D sketches"
                 isActive={isSpeaking && currentIndex === 10}
                 currentCharIndex={currentCharIndex}
               />
@@ -418,7 +418,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                    <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot mt-8" style={{ width: '900px' }} />
+                <img src={extrudeDialog} alt="Extrude Dialog" className="software-screenshot mt-8" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -458,16 +458,16 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Revolve from the icon menu."
+                  text="Select Revolve from the icon menu"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
-                    <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-2rem"}} />
+                <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-2rem" }} />
               </div>
-            </div>  
-            
+            </div>
+
             <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
               <div className="step-header">
                 <span className="step-number">2 </span>
@@ -501,11 +501,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                </div>     
+                </div>
               </div>
             </div>
 
-          
+
 
             <div className={`instruction-step ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
               <div className="card-header">
@@ -518,7 +518,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   />
                 </h4>
               </div>
-                <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot mt-8" style={{ width: '950px', height: '350px', marginTop: "1rem" }} />
+              <img src={revolveSteps} alt="Revolve Steps" className="software-screenshot mt-8" style={{ width: '950px', height: '350px', marginTop: "1rem" }} />
             </div>
 
             <div className="lesson-navigation">
@@ -563,7 +563,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                    <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
+                <img src={spiralSketch} alt="Spiral Sketch" className="software-screenshot" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
               </div>
             </div>
 
@@ -579,22 +579,22 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                  <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem" }} />
+                <img src={spiralIcon} alt="Spiral Form Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem" }} />
               </div>
               <KaraokeLessonText
-                  as="p"
-                  className="p-flush"
-                  style={{ marginTop: "-1rem" }}
-                  text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO"
-                  isActive={isSpeaking && currentIndex === 6}
-                  currentCharIndex={currentCharIndex}
-                />
+                as="p"
+                className="p-flush"
+                style={{ marginTop: "-1rem" }}
+                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO"
+                isActive={isSpeaking && currentIndex === 6}
+                currentCharIndex={currentCharIndex}
+              />
             </div>
 
             <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
               <div className="step-header" style={{ marginTop: "-1rem" }}>
                 <span className="step-number">3 </span>
-                <div className="step-label" style={{marginTop: "-1.5rem"}}>
+                <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
                     text="Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO"
@@ -602,19 +602,19 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                </div>   
-              </div> 
-             <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: '1rem' }}>
-                    <KaraokeLessonText
-                           as="p"
-                           className="p-flush red-text"
-                           text="Note: Pitch must be greater than Thickness."
-                           isActive={isSpeaking && currentIndex === 8}
-                           currentCharIndex={currentCharIndex}
-                         />
-                       </div>
+                </div>
+              </div>
+              <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: '1rem' }}>
+                <KaraokeLessonText
+                  as="p"
+                  className="p-flush red-text"
+                  text="Note: Pitch must be greater than Thickness."
+                  isActive={isSpeaking && currentIndex === 8}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
               <div className="flex-row-center--wrap mt-4" style={{ gap: '2rem' }}>
-                    <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-wide mt-4" style={{ height: 'auto', width: '900px', marginBottom: "-2rem", marginTop: "1rem"}} />
+                <img src={spiralItemEntry} alt="Spiral Item Entry" className="software-screenshot screenshot-wide mt-4" style={{ height: 'auto', width: '900px', marginBottom: "-2rem", marginTop: "1rem" }} />
               </div>
             </div>
 
@@ -630,7 +630,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 />
               </div>
               <div className="step-description">
-                    <img src={spiralRotation1} alt="Spiral Axis Selection" className="software-screenshot screenshot-medium mt-4" style={{ width: '700px', height: 'auto' }} />
+                <img src={spiralRotation1} alt="Spiral Axis Selection" className="software-screenshot screenshot-medium mt-4" style={{ width: '700px', height: 'auto' }} />
               </div>
             </div>
 
@@ -646,7 +646,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                    <img src={spiralRotation} alt="Spiral Axis Result" className="software-screenshot" style={{ height: 'auto', width: '900px' }} />
+                <img src={spiralRotation} alt="Spiral Axis Result" className="software-screenshot" style={{ height: 'auto', width: '900px' }} />
               </div>
             </div>
 

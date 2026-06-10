@@ -19,7 +19,7 @@ interface GeometricToleranceLessonProps {
 
 const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
+  onPrevLesson, 
   nextLabel
 }) => {
   const TABS = [

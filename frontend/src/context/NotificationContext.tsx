@@ -7,11 +7,12 @@ export interface Notification {
     message: string;
     type: NotificationType;
     duration?: number;
+    redirectTo?: string;
 }
 
 interface NotificationContextType {
     notifications: Notification[];
-    showNotification: (message: string, type?: NotificationType, duration?: number) => void;
+    showNotification: (message: string, type?: NotificationType, duration?: number, redirectTo?: string) => void;
     dismissNotification: (id: string) => void;
 }
 
@@ -24,10 +25,10 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
         setNotifications(prev => prev.filter(n => n.id !== id));
     }, []);
 
-    const showNotification = useCallback((message: string, type: NotificationType = 'success', duration: number = 5000) => {
+    const showNotification = useCallback((message: string, type: NotificationType = 'success', duration: number = 5000, redirectTo?: string) => {
         const id = Math.random().toString(36).substring(2, 9);
-        const newNotification: Notification = { id, message, type, duration };
-        
+        const newNotification: Notification = { id, message, type, duration, redirectTo };
+
         setNotifications(prev => [...prev, newNotification]);
 
         if (duration > 0) {

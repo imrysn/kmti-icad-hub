@@ -5,7 +5,7 @@
 .assistant-mode-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 60px);
   padding: 0;
   background: var(--bg-dark);
   width: 100%; /* Explicitly set full width */
@@ -96,4 +96,12 @@
 
 .assistant-training-wrapper .course-view-container {
   height: 100%;
+}
+
+/* ── Trainer Dashboard Scroll Override ─────────────────────────── */
+
+.assistant-tab-content .trainer-dashboard {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
 }

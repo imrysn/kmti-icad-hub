@@ -100,7 +100,14 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                 .map(lesson => {
                     const lessonMatch = searchTerms.every(t => 
                         lesson.title.toLowerCase().includes(t) || 
-                        lesson.content?.some(c => c.toLowerCase().includes(t))
+                        lesson.content?.some(c => c.toLowerCase().includes(t)) ||
+                        lesson.quiz?.title.toLowerCase().includes(t) ||
+                        lesson.quiz?.description.toLowerCase().includes(t) ||
+                        lesson.quiz?.questions.some(q => 
+                            q.text.toLowerCase().includes(t) || 
+                            q.explanation.toLowerCase().includes(t) ||
+                            q.options.some(o => o.toLowerCase().includes(t))
+                        )
                     );
                     
                     const filteredChildren = lesson.children 
@@ -279,7 +286,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 <span>{lesson.title}</span>
                                                 {searchTerms.length > 0 && 
                                                  !searchTerms.every(t => lesson.title.toLowerCase().includes(t)) && 
-                                                 searchTerms.some(t => lesson.content?.some(c => c.toLowerCase().includes(t))) && (
+                                                 searchTerms.some(t => lesson.content?.some(c => c.toLowerCase().includes(t)) || lesson.quiz?.title.toLowerCase().includes(t) || lesson.quiz?.description.toLowerCase().includes(t) || lesson.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
                                                     <span className="search-match-badge">Found in Content</span>
                                                 )}
                                             </div>
@@ -322,7 +329,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                                 <span>{child.title}</span>
                                                                 {searchTerms.length > 0 && 
                                                                  !searchTerms.every(t => child.title.toLowerCase().includes(t)) && 
-                                                                 searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t))) && (
+                                                                 searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t)) || child.quiz?.title.toLowerCase().includes(t) || child.quiz?.description.toLowerCase().includes(t) || child.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
                                                                     <span className="search-match-badge sub">Found in Content</span>
                                                                  )}
                                                             </div>

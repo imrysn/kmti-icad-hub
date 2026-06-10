@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
@@ -24,16 +23,46 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-revision-code');
+  const TABS = [
+    { id: 'revision-code', label: 'Revision Code' }
+  ];
+
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-revision-code-active-tab') || TABS[0].id;
+  });
+
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-revision-code-${activeTab}`);
+
+  useEffect(() => {
+    localStorage.setItem('2d-revision-code-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
+
+  const handleNext = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrev = () => {
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const revisionSteps = [
-    "Revisions occur when approved drawings need modifications due to fabrication discrepancies. It's critical to track these changes for engineering history.",
+    "Revision will occur if the finished drawing is already approved yet discrepancy notice during fabrication.",
     "Use the 'create delta' command to mark changes. Enter the delta character and place it near the modified feature. Remember: local view must be activated.",
     "Update the revision history block to provide a clear record of what was changed, by whom, and when."
   ];
-
-  const currentTitle = "REVISION CODE AND HISTORY";
-  const currentSubtitle = "Tracking engineering changes and modifications using delta markers and history blocks.";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -41,114 +70,128 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentTitle}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentTitle, currentSubtitle, ...revisionSteps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentSubtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
-
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+            <div className="instruction-step" style={{ marginTop: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">1</span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Revision Awareness & Necessity"
-                  isActive={isSpeaking && currentIndex === 2}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <div className="red-text mb-4">
-                  <KaraokeLessonText
-                    text={revisionSteps[0]}
-                    isActive={isSpeaking && currentIndex === 2}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-                <img src={img1} alt="Revision History Overview" className="software-screenshot screenshot-wide" />
+                <span className="step-number">23</span>
+                <span className="step-label">Revision Code and History</span>
               </div>
             </div>
 
-
-            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-              <div className="step-header">
-                <span className="step-number">2</span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Delta Marker Placement (Revised Detail)"
-                  isActive={isSpeaking && currentIndex === 3}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <div className="flex-col gap-4 mb-4">
-                  <div className="flex-row gap-4">
-                    <img src={imgA1} alt="Command Menu" className="software-screenshot screenshot-wide" />
-                    <img src={imgA2} alt="Delta Input" className="software-screenshot screenshot-medium" />
+            <div className="flex-col tab-content fade-in">
+              {activeTab === 'revision-code' && (
+                <>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-4rem" }}>
+                    <div className="step-header">
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Revision"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <div className="red-text mb-4">
+                        <KaraokeLessonText
+                          text={revisionSteps[0]}
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </div>
+                      <img src={img1} alt="Revision History Overview" className="software-screenshot screenshot-wide" />
+                    </div>
                   </div>
-                  <div className="red-text">
-                    <p><strong>Workflow:</strong> 1. Setup 'create delta' → 2. Enter character → 3. Place on location.</p>
-                    <p><strong>Requirement:</strong> Local view must be activated before placement.</p>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "1rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">a</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Revise Detail"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <div className="flex-col gap-4 mb-4">
+                        <div className="flex-row gap-4">
+                          <img src={imgA1} alt="Command Menu" className="software-screenshot screenshot-wide" />
+                          <img src={imgA2} alt="Delta Input" className="software-screenshot screenshot-medium" />
+                        </div>
+
+                      </div>
+                      <div className="flex-row gap-4 mt-4" style={{ alignItems: "center" }}>
+                        <div className="flex-1">
+                          <div className="instruction-box" style={{ margin: 0 }}>
+                            <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+                              1. Set up <strong>"create delta"</strong> command
+                            </p>
+                            <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+                              2. Enter delta character
+                            </p>
+                            <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+                              3. Place it on proper location
+                            </p>
+                            <p className="p-flush red-text" style={{ marginTop: "0.5rem" }}>
+                              <strong>Note:</strong><br />
+                              Local view where it will belong must be activated. see Command Menu Tab
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <img src={imgA3} alt="Placement Example" className="software-screenshot screenshot-wide" style={{ margin: 0 }} />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <img src={imgA3} alt="Placement Example" className="software-screenshot screenshot-wide" />
-              </div>
-            </div>
 
-
-            <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-              <div className="step-header">
-                <span className="step-number">3</span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Revision History Management"
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <KaraokeLessonText
-                  className="p-flush mb-4"
-                  text={revisionSteps[2]}
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-                <img src={imgB} alt="Revision Code History" className="software-screenshot screenshot-wide" />
-              </div>
+                  <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginTop: "1rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">b</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Revision Code"
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={revisionSteps[2]}
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={imgB} alt="Revision Code History" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={onPrevLesson}>
+            <button className="nav-button" onClick={handlePrev}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={onNextLesson}>
+            <button className="nav-button next" onClick={handleNext}>
               {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>

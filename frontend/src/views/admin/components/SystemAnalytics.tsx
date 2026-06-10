@@ -9,18 +9,18 @@ interface SystemAnalyticsProps {
     heatmap: { course_id: string; count: number }[];
 }
 
-export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({ 
-    stats, 
-    cpuLoad, 
-    memoryUsage, 
-    sysStatus, 
+export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
+    stats,
+    cpuLoad,
+    memoryUsage,
+    sysStatus,
     heatmap
 }) => {
     // Heatmap color logic
     const getHeatmapColor = (count: number) => {
         if (count > 50) return 'rgba(99, 102, 241, 0.6)';  // Heavy activity
         if (count > 20) return 'rgba(99, 102, 241, 0.4)';  // Medium activity
-        if (count > 5)  return 'rgba(99, 102, 241, 0.2)';  // Light activity
+        if (count > 5) return 'rgba(99, 102, 241, 0.2)';  // Light activity
         return 'rgba(148, 163, 184, 0.1)';              // Idle
     };
 

@@ -78,8 +78,8 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
       title: 'SCALE',
       steps: [
         "Set the scale of selected view. When changing the scale, take note to always use the Projection Properties.",
-        "Note: Do not change the scale on the toolbar because the dimensions and scales will not update according to the set scale.",
-        "Note: When changing the scale of a standard view, other standard views also change the scale. Cross section view and detail view need to change the scale separately."
+        "Do not change the scale on the toolbar because the dimensions and scales will not update according to the set scale.",
+        "When changing the scale of a standard view, other standard views also change the scale. Cross section view and detail view need to change the scale separately."
       ]
     },
     '2d-orthographic-hidden': {
@@ -129,7 +129,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 
             <div className="flex-col tab-content fade-in">
               {activeTab === 'template' && (
-                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}> 
+                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">1</span>
                     <KaraokeLessonText
@@ -183,7 +183,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
-                    <div className={`instruction-box ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{marginTop: "1rem"}}>
+                    <div className={`instruction-box ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "1rem" }}>
                       <p className="p-flush"><strong className="red-text">Note:</strong></p>
                       <KaraokeLessonText
                         as="div"
@@ -194,7 +194,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                       />
                     </div>
                     <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide mt-4" />
-                    <div className={`instruction-box ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{marginTop: "2rem"}}>
+                    <div className={`instruction-box ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
                       <p className="p-flush"><strong className="red-text">Note:</strong></p>
                       <KaraokeLessonText
                         as="div"

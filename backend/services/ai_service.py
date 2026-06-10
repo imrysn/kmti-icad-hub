@@ -57,8 +57,12 @@ class AIService:
                         yield chunk.text
                 return # Success
             except Exception as e:
+                err_str = str(e).lower()
                 print(f"[AIService] Model {model_id} failed: {e}")
                 last_err = e
+                # Fail fast if the API key is invalid or unauthorized
+                if "api_key" in err_str or "400" in err_str or "401" in err_str or "403" in err_str:
+                    break
                 continue
         
         if last_err:
@@ -97,14 +101,18 @@ class AIService:
                 )
                 return response.text.strip()
             except Exception as e:
-                err_str = str(e)
-                if "429" in err_str:
+                err_str = str(e).lower()
+                if "429" in err_str or "quota" in err_str:
                     retry_after = backoff * (2 ** attempt)
+                    import re
                     match = re.search(r'retry_delay\s*\{\s*seconds:\s*(\d+)', err_str)
                     if match:
                         retry_after = int(match.group(1)) + 2
                     print(f"[AIService] Rate limited. Retrying in {retry_after}s...")
                     time.sleep(retry_after)
+                elif "api_key" in err_str or "400" in err_str or "401" in err_str or "403" in err_str:
+                    print(f"[AIService] Auth/API Key error: {e}")
+                    return None
                 else:
                     print(f"[AIService] Non-retryable error: {e}")
                     return None

@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Body
 from sqlalchemy.orm import Session
 from typing import List
 import os
 import shutil
+import zipfile
 from datetime import datetime
+from pydantic import BaseModel
 
 from fastapi.responses import FileResponse
 from ..database import get_db
@@ -13,10 +15,37 @@ from ..schemas import (
     AssessmentTaskResponse, AssessmentSubmissionResponse, 
     AssessmentFeedbackResponse, AssessmentSubmissionCreate,
     AssessmentTaskCreate, TrainerTraineeMappingResponse,
-    TrainerTraineeMappingCreate
+    TrainerTraineeMappingCreate, TraineeSetMappingResponse,
+    TraineeSetMappingCreate
 )
 from .auth import get_current_user
 from ..websocket_manager import notification_manager
+
+def handle_task_upload(file: UploadFile, set_number: int, task_code: str) -> str:
+    master_dir = os.path.join("master_units", f"set{set_number}")
+    os.makedirs(master_dir, exist_ok=True)
+    
+    safe_filename = os.path.basename(file.filename)
+    file_extension = os.path.splitext(safe_filename)[1].lower()
+    
+    if file_extension == '.zip':
+        temp_zip_path = os.path.join(master_dir, f"temp_{task_code}_{safe_filename}")
+        with open(temp_zip_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        extract_dir = os.path.join(master_dir, f"{task_code}_{os.path.splitext(safe_filename)[0]}")
+        os.makedirs(extract_dir, exist_ok=True)
+        
+        with zipfile.ZipFile(temp_zip_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_dir)
+            
+        os.remove(temp_zip_path)
+        return extract_dir
+    else:
+        file_path = os.path.join(master_dir, f"{task_code}_{safe_filename}")
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        return file_path
 
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
@@ -42,12 +71,21 @@ def get_assessment_tasks(
         AssessmentSubmission.status == "approved"
     ).distinct().all()
     
-    # Logic: Set N is unlocked if ALL tasks in Set N-1 are approved.
-    # For simplicity here, we'll mark the tasks as locked/unlocked in metadata 
-    # if we had that field, but the requirement is to strictly isolate them.
-    # The frontend will handle the visual lock, but the backend provides the data.
+    # Mapping Logic
+    from ..models import TraineeSetMapping
+    mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
     
-    # To truly enforce, we can filter or mark them.
+    if mappings:
+        mapping_dict = {m.actual_set_number: m.display_set_number for m in mappings}
+        filtered_tasks = []
+        for t in tasks:
+            if t.set_number in mapping_dict:
+                db.expunge(t)
+                t.set_number = mapping_dict[t.set_number]
+                filtered_tasks.append(t)
+        filtered_tasks.sort(key=lambda x: (x.set_number, x.order))
+        return filtered_tasks
+
     return tasks
 
 @router.get("/my-submissions", response_model=List[AssessmentSubmissionResponse])
@@ -80,12 +118,7 @@ async def create_task(
         raise HTTPException(status_code=403, detail="Admin only")
     
     # Save the master file
-    master_dir = os.path.join("master_units", f"set{set_number}")
-    os.makedirs(master_dir, exist_ok=True)
-    
-    file_path = os.path.join(master_dir, f"{task_code}_{file.filename}")
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    file_path = handle_task_upload(file, set_number, task_code)
     
     db_task = AssessmentTask(
         set_number=set_number,
@@ -117,15 +150,12 @@ async def bulk_create_tasks(
     
     for i, file in enumerate(files):
         task_code = chr(65 + existing_count + i) # A=65
-        master_dir = os.path.join("master_units", f"set{set_number}")
-        os.makedirs(master_dir, exist_ok=True)
         
-        file_path = os.path.join(master_dir, f"{task_code}_{file.filename}")
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        file_path = handle_task_upload(file, set_number, task_code)
         
         # Strip extension for title
-        title = os.path.splitext(file.filename)[0].replace('_', ' ').title()
+        safe_filename = os.path.basename(file.filename)
+        title = os.path.splitext(safe_filename)[0].replace('_', ' ').title()
         
         db_task = AssessmentTask(
             set_number=set_number,
@@ -167,6 +197,25 @@ def assign_trainer(
     db.add(db_mapping)
     db.commit()
     return {"message": "Trainer assigned successfully"}
+
+@router.patch("/admin/tasks/reorder")
+def reorder_tasks(
+    updates: List[dict] = Body(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Admin only: Bulk-update task_code, set_number and order for drag-and-drop reordering."""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    for item in updates:
+        task = db.query(AssessmentTask).filter(AssessmentTask.id == int(item["id"])).first()
+        if task:
+            task.set_number = int(item["set_number"])
+            task.order = int(item["order"])
+            if "task_code" in item:
+                task.task_code = str(item["task_code"])
+    db.commit()
+    return {"message": "Tasks reordered successfully"}
 
 @router.delete("/admin/tasks/{task_id}")
 def delete_task(
@@ -212,18 +261,133 @@ async def update_task(
     
     if file:
         # Save new file
-        set_dir = os.path.join("master_units", f"set{set_number}")
-        os.makedirs(set_dir, exist_ok=True)
-        file_path = os.path.join(set_dir, f"{task_code}_{file.filename}")
-        
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        
+        file_path = handle_task_upload(file, set_number, task_code)
         db_task.master_file_path = file_path
     
     db.commit()
     db.refresh(db_task)
     return db_task
+
+@router.get("/admin/tasks/{task_id}/files")
+def get_task_file_tree(
+    task_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    master_path = task.master_file_path
+    if not master_path or not os.path.exists(master_path):
+        return {"tree": []}
+        
+    # If it's a file, the "folder" is its directory. But we only manage if it's a directory.
+    # To support this properly, let's ensure we are dealing with a directory.
+    base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
+    
+    def build_tree(dir_path):
+        tree = []
+        for item in os.listdir(dir_path):
+            full_path = os.path.join(dir_path, item)
+            rel_path = os.path.relpath(full_path, base_dir)
+            is_dir = os.path.isdir(full_path)
+            node = {
+                "name": item,
+                "path": rel_path.replace("\\", "/"),
+                "is_dir": is_dir
+            }
+            if is_dir:
+                node["children"] = build_tree(full_path)
+            tree.append(node)
+        return sorted(tree, key=lambda x: (not x["is_dir"], x["name"].lower()))
+        
+    return {"tree": build_tree(base_dir), "base_dir": base_dir}
+
+class FolderCreateRequest(BaseModel):
+    path: str
+
+@router.post("/admin/tasks/{task_id}/folders")
+def create_task_subfolder(
+    task_id: int,
+    req: FolderCreateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+        
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    
+    # Secure path to prevent path traversal
+    safe_path = req.path.lstrip("/\\").replace("..", "")
+    new_dir = os.path.join(base_dir, safe_path)
+    os.makedirs(new_dir, exist_ok=True)
+    
+    return {"message": "Folder created"}
+
+@router.post("/admin/tasks/{task_id}/files")
+async def upload_task_file(
+    task_id: int,
+    path: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+        
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    
+    safe_path = path.lstrip("/\\").replace("..", "") if path and path != "/" else ""
+    target_dir = os.path.join(base_dir, safe_path)
+    os.makedirs(target_dir, exist_ok=True)
+    
+    safe_filename = os.path.basename(file.filename)
+    file_path = os.path.join(target_dir, safe_filename)
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    return {"message": "File uploaded"}
+
+@router.delete("/admin/tasks/{task_id}/files")
+def delete_task_file(
+    task_id: int,
+    req: FolderCreateRequest, # reuse the schema for path
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+        
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    safe_path = req.path.lstrip("/\\").replace("..", "")
+    target_path = os.path.join(base_dir, safe_path)
+    
+    if os.path.exists(target_path):
+        if os.path.isdir(target_path):
+            shutil.rmtree(target_path)
+        else:
+            os.remove(target_path)
+            
+    return {"message": "Item deleted"}
+
 
 @router.delete("/admin/mappings/{mapping_id}")
 def delete_mapping(
@@ -340,20 +504,69 @@ async def submit_task(
     # --- Real-Time Trainer Notification ---
     mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
     if mapping:
-        import asyncio
-        asyncio.create_task(notification_manager.send_personal_message(
-            {
-                "event": "NEW_SUBMISSION", 
-                "trainee_name": current_user.full_name or current_user.username,
-                "task_code": task.task_code,
-                "set_number": task.set_number
-            }, 
-            mapping.trainer_id
-        ))
+        try:
+            notification_msg = f"Trainee {current_user.full_name or current_user.username} submitted Set {task.set_number} Unit {task.task_code} for review."
+            new_notif = Notification(
+                recipient_id=mapping.trainer_id,
+                sender_id=current_user.id,
+                message=notification_msg,
+                type="new_submission"
+            )
+            db.add(new_notif)
+            db.commit()
+
+            import asyncio
+            asyncio.create_task(notification_manager.send_personal_message(
+                {
+                    "event": "NEW_SUBMISSION", 
+                    "trainee_name": current_user.full_name or current_user.username,
+                    "task_code": task.task_code,
+                    "set_number": task.set_number,
+                    "message": notification_msg
+                }, 
+                mapping.trainer_id
+            ))
+        except Exception as e:
+            print(f"Error sending trainer submission notification: {e}")
 
     return submission
 
 # --- Trainer (Employee) Endpoints ---
+
+from ..models import TraineeSetMapping
+
+@router.get("/trainer/trainees/{trainee_id}/set-mappings", response_model=List[TraineeSetMappingResponse])
+def get_trainee_set_mappings(
+    trainee_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role not in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    return db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee_id).all()
+
+@router.post("/trainer/trainees/{trainee_id}/set-mappings")
+def update_trainee_set_mappings(
+    trainee_id: int,
+    mappings: List[TraineeSetMappingCreate] = Body(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role not in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+        
+    db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee_id).delete()
+    
+    for m in mappings:
+        new_map = TraineeSetMapping(
+            trainee_id=trainee_id,
+            trainer_id=current_user.id,
+            display_set_number=m.display_set_number,
+            actual_set_number=m.actual_set_number
+        )
+        db.add(new_map)
+    db.commit()
+    return {"message": "Mappings updated"}
 
 @router.get("/trainer/submissions", response_model=List[AssessmentSubmissionResponse])
 def get_trainer_submissions(
@@ -455,6 +668,39 @@ async def provide_feedback(
             db.add(feedback)
 
     db.commit()
+
+    # Save Notification record in database and trigger real-time WebSocket push
+    try:
+        notification_msg = ""
+        if status == "approved":
+            notification_msg = f"Trainer {current_user.full_name or current_user.username} approved your Set {submission.task.set_number} Unit {submission.task.task_code} assessment!"
+        else:
+            notification_msg = f"Your Set {submission.task.set_number} Unit {submission.task.task_code} assessment has been rejected by {current_user.full_name or current_user.username}. Please check comments."
+
+        db_notification = Notification(
+            recipient_id=submission.user_id,
+            sender_id=current_user.id,
+            message=notification_msg,
+            type="assessment_reviewed"
+        )
+        db.add(db_notification)
+        db.commit()
+
+        import asyncio
+        asyncio.create_task(notification_manager.send_personal_message(
+            {
+                "event": "ASSESSMENT_REVIEWED",
+                "status": status,
+                "trainer_name": current_user.full_name or current_user.username,
+                "set_number": submission.task.set_number,
+                "task_code": submission.task.task_code,
+                "message": notification_msg
+            },
+            submission.user_id
+        ))
+    except Exception as e:
+        print(f"Error sending trainee feedback notification: {e}")
+
     return {"message": f"Submission {status}"}
 
 @router.get("/feedback/{feedback_id}/download")
@@ -501,14 +747,28 @@ async def reply_to_feedback(
     # --- Real-Time Trainer Notification ---
     mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
     if mapping:
-        import asyncio
-        asyncio.create_task(notification_manager.send_personal_message(
-            {
-                "event": "NEW_REPLY", 
-                "trainee_name": current_user.full_name or current_user.username
-            }, 
-            mapping.trainer_id
-        ))
+        try:
+            notification_msg = f"Trainee {current_user.full_name or current_user.username} replied to your feedback."
+            new_notif = Notification(
+                recipient_id=mapping.trainer_id,
+                sender_id=current_user.id,
+                message=notification_msg,
+                type="feedback_reply"
+            )
+            db.add(new_notif)
+            db.commit()
+
+            import asyncio
+            asyncio.create_task(notification_manager.send_personal_message(
+                {
+                    "event": "NEW_REPLY", 
+                    "trainee_name": current_user.full_name or current_user.username,
+                    "message": notification_msg
+                }, 
+                mapping.trainer_id
+            ))
+        except Exception as e:
+            print(f"Error sending trainer reply notification: {e}")
 
     return {"message": "Reply saved successfully"}
 
@@ -550,3 +810,71 @@ def delete_submission(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+@router.get("/trainer/trainees-progress")
+def get_trainer_trainees_progress(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get detailed curriculum & assessment progress for all assigned trainees."""
+    try:
+        from ..models import QuizScore, Quiz
+    except ImportError:
+        from models import QuizScore, Quiz
+
+    if current_user.role not in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # 1. Fetch assigned mappings
+    mappings = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainer_id == current_user.id).all()
+    trainee_ids = [m.trainee_id for m in mappings]
+    
+    # 2. Fetch all trainees' details
+    trainees = db.query(User).filter(User.id.in_(trainee_ids)).all()
+    
+    results = []
+    for trainee in trainees:
+        # Fetch Quiz Scores (Lessons completed/passed)
+        scores = db.query(QuizScore).filter(QuizScore.user_id == str(trainee.id)).all()
+        
+        # Calculate completion metrics
+        # Course 1 is 3D Modeling, Course 2 is 2D Drawing
+        completed_3d = [s for s in scores if s.course_id == "1" and s.score >= 80.0]
+        completed_2d = [s for s in scores if s.course_id == "2" and s.score >= 80.0]
+        
+        # Total quizzes in DB per course type
+        total_3d = db.query(Quiz).filter(Quiz.course_type == "3D_Modeling").count()
+        total_2d = db.query(Quiz).filter(Quiz.course_type == "2D_Drawing").count()
+        
+        # Fetch assessment submissions for this trainee
+        submissions = db.query(AssessmentSubmission).filter(AssessmentSubmission.user_id == trainee.id).all()
+        approved_submissions = [s for s in submissions if s.status == "approved"]
+        pending_submissions = [s for s in submissions if s.status == "pending"]
+        rejected_submissions = [s for s in submissions if s.status == "rejected"]
+        
+        results.append({
+            "id": trainee.id,
+            "username": trainee.username,
+            "full_name": trainee.full_name,
+            "email": trainee.email,
+            "progress": {
+                "course_3d": {
+                    "completed": len(completed_3d),
+                    "total": total_3d,
+                    "percentage": round((len(completed_3d) / total_3d * 100), 1) if total_3d > 0 else 0.0
+                },
+                "course_2d": {
+                    "completed": len(completed_2d),
+                    "total": total_2d,
+                    "percentage": round((len(completed_2d) / total_2d * 100), 1) if total_2d > 0 else 0.0
+                },
+                "assessments": {
+                    "approved": len(approved_submissions),
+                    "pending": len(pending_submissions),
+                    "rejected": len(rejected_submissions),
+                    "total_submitted": len(submissions)
+                }
+            }
+        })
+        
+    return results

@@ -20,7 +20,7 @@ interface InteractiveImageMapProps {
 }
 
 const HOTSPOTS: Hotspot[] = [
-  { id: 1, label: 'Title bar', description: 'Displays the name of the program and typically the name of the currently active document.', x: 12.9, y: 3.8},
+  { id: 1, label: 'Title bar', description: 'Displays the name of the program and typically the name of the currently active document.', x: 12.9, y: 3.8 },
   { id: 2, label: 'Menu bar', description: 'Contains drop down menus such as File, View, Information, Set, Tool, Window and Help.', x: 2.5, y: 19.2 },
   { id: 3, label: 'Command Menu', description: 'Contains sets of available commands associated with different functions. Preferably use on 2D.', x: 2.55, y: 38.1 },
   { id: 4, label: 'Tree view', description: 'Displays the 3D parts and groups for the drawing currently being worked on.', x: 2.5, y: 71.7 },
@@ -32,14 +32,14 @@ const HOTSPOTS: Hotspot[] = [
   { id: 10, label: 'Message Pane', description: 'Displays messages related to operations. Messages displayed in red are error messages.', x: 41.55, y: 95.9 },
 ];
 
-const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({ 
-    imageSrc, 
-    nextLabel,
-    externalIndex = -1,
-    externalCharIndex = 0
+const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
+  imageSrc,
+  nextLabel,
+  externalIndex = -1,
+  externalCharIndex = 0
 }) => {
   const { speak, stop, isSpeaking: isInternalSpeaking, currentCharIndex: internalCharIndex } = useTTS();
-  
+
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
 
   const isGlobalSpeaking = externalIndex >= 0;
@@ -55,22 +55,15 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
 
   const [hoveredHotspotId, setHoveredHotspotId] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (selectedHotspot) {
-      /* Auto-speak only if NOT already being controlled by external index */
-      if (!isGlobalSpeaking) {
-        speak([`${selectedHotspot.label}: ${selectedHotspot.description}`]);
-      }
-    } else {
-      if (!isGlobalSpeaking) stop();
-    }
-  }, [selectedHotspot, speak, stop, isGlobalSpeaking]);
-
   const handleHotspotClick = (hotspot: Hotspot) => {
     if (selectedHotspot?.id === hotspot.id) {
-        setSelectedHotspot(null);
+      setSelectedHotspot(null);
+      if (!isGlobalSpeaking) stop();
     } else {
-        setSelectedHotspot(hotspot);
+      setSelectedHotspot(hotspot);
+      if (!isGlobalSpeaking) {
+        speak([`${hotspot.label}: ${hotspot.description}`]);
+      }
     }
   };
 
@@ -85,20 +78,20 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
             <div className="detail-header-row">
               <div className="item-badge">{selectedHotspot.id}</div>
               <h5>{selectedHotspot.label}</h5>
-              <button 
+              <button
                 className={`tts-mini-toggle ${isAnySpeaking ? 'active' : ''}`}
                 onClick={() => {
-                    if (isInternalSpeaking) stop();
-                    else speak([`${selectedHotspot.label}: ${selectedHotspot.description}`]);
+                  if (isInternalSpeaking) stop();
+                  else speak([`${selectedHotspot.label}: ${selectedHotspot.description}`]);
                 }}
               >
-                {isAnySpeaking ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                <Volume2 size={20} />
               </button>
             </div>
-            <KaraokeLessonText 
-              text={selectedHotspot.description} 
-              isActive={isAnySpeaking} 
-              currentCharIndex={activeCharIndex - (selectedHotspot.label.length + 2)} 
+            <KaraokeLessonText
+              text={selectedHotspot.description}
+              isActive={isAnySpeaking}
+              currentCharIndex={activeCharIndex - (selectedHotspot.label.length + 2)}
               className="hotspot-description"
             />
           </div>
@@ -115,10 +108,10 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
         <div className="image-container-inner">
           <img src={imageSrc} alt="iCAD Window Structure" className="base-image" />
           {HOTSPOTS.map((hotspot, index) => (
-            <div 
-              key={hotspot.id} 
-              className={`hotspot-node ${activeId === hotspot.id ? "active" : ""} ${selectedHotspot?.id === hotspot.id ? "selected" : ""}`} 
-              style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }} 
+            <div
+              key={hotspot.id}
+              className={`hotspot-node ${activeId === hotspot.id ? "active" : ""} ${selectedHotspot?.id === hotspot.id ? "selected" : ""}`}
+              style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}
               onMouseEnter={() => setHoveredHotspotId(hotspot.id)}
               onMouseLeave={() => setHoveredHotspotId(null)}
               onClick={() => handleHotspotClick(hotspot)}

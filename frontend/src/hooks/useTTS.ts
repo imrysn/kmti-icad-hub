@@ -7,17 +7,52 @@ interface SentenceQueueItem {
     text: string;
     normalizedText: string;
     offset: number; // Offset in original paragraph
+    paragraphText: string; // Original full paragraph text
 }
 
 export const useTTS = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(-1); // Paragraph index
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(-1);
+  const [activeParagraphText, setActiveParagraphText] = useState<string>('');
   const [currentCharIndex, setCurrentCharIndex] = useState<number>(0); // Global to paragraph
-  
+
+  // User Preference States (with localStorage persistence)
+  const [rate, setRateState] = useState<number>(() => {
+    const saved = localStorage.getItem('tts_rate');
+    return saved ? parseFloat(saved) : 1.0;
+  });
+  const [selectedVoiceURI, setSelectedVoiceURIState] = useState<string | null>(() => {
+    return localStorage.getItem('tts_voice_uri') || null;
+  });
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+
   const queueRef = useRef<SentenceQueueItem[]>([]);
   const currentSentenceRef = useRef<number>(-1);
   const isDebug = process.env.NODE_ENV === 'development';
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    const updateVoices = () => {
+      setVoices(window.speechSynthesis.getVoices());
+    };
+    updateVoices();
+    window.speechSynthesis.onvoiceschanged = updateVoices;
+  }, []);
+
+  const setRate = useCallback((r: number) => {
+    setRateState(r);
+    localStorage.setItem('tts_rate', r.toString());
+  }, []);
+
+  const setSelectedVoiceURI = useCallback((uri: string | null) => {
+    setSelectedVoiceURIState(uri);
+    if (uri) {
+      localStorage.setItem('tts_voice_uri', uri);
+    } else {
+      localStorage.removeItem('tts_voice_uri');
+    }
+  }, []);
 
   const stop = useCallback(() => {
     if (window.speechSynthesis) {
@@ -27,19 +62,25 @@ export const useTTS = () => {
     setCurrentIndex(-1);
     setCurrentSentenceIndex(-1);
     setCurrentCharIndex(0);
+    setActiveParagraphText('');
     currentSentenceRef.current = -1;
+    if (typeof window !== 'undefined') {
+      try {
+        delete (window as any)._activeUtterance;
+      } catch (e) {}
+    }
   }, []);
 
   const getTeacherVoice = useCallback((): SpeechSynthesisVoice | null => {
     if (!window.speechSynthesis) return null;
-    const voices = window.speechSynthesis.getVoices();
+    const voicesList = window.speechSynthesis.getVoices();
     
     // Prioritize natural/professional sounding voices
     const selectedVoice = 
-           voices.find(v => v.name.includes('Google') && v.lang.startsWith('en')) ||
-           voices.find(v => v.name.includes('Natural') && v.lang.startsWith('en')) ||
-           voices.find(v => v.name.includes('Zira') && v.lang.startsWith('en')) ||
-           voices.find(v => v.lang.startsWith('en') && !v.name.includes('Low Quality'));
+           voicesList.find(v => v.name.includes('Google') && v.lang.startsWith('en')) ||
+           voicesList.find(v => v.name.includes('Natural') && v.lang.startsWith('en')) ||
+           voicesList.find(v => v.name.includes('Zira') && v.lang.startsWith('en')) ||
+           voicesList.find(v => v.lang.startsWith('en') && !v.name.includes('Low Quality'));
     
     return selectedVoice || null;
   }, []);
@@ -51,6 +92,7 @@ export const useTTS = () => {
       setCurrentIndex(-1);
       setCurrentSentenceIndex(-1);
       setCurrentCharIndex(0);
+      setActiveParagraphText('');
       currentSentenceRef.current = -1;
       return;
     }
@@ -60,12 +102,24 @@ export const useTTS = () => {
     
     setCurrentIndex(item.paragraphIndex);
     setCurrentSentenceIndex(item.sentenceIndex);
+    setActiveParagraphText(item.paragraphText);
     
     const utterance = new SpeechSynthesisUtterance(item.normalizedText);
+    if (typeof window !== 'undefined') {
+      (window as any)._activeUtterance = utterance;
+    }
     
-    // Teacher settings
-    utterance.voice = getTeacherVoice();
-    utterance.rate = 0.92;
+    // Voice settings
+    let voice: SpeechSynthesisVoice | null = null;
+    if (selectedVoiceURI) {
+      voice = window.speechSynthesis.getVoices().find(v => v.voiceURI === selectedVoiceURI) || null;
+    }
+    if (!voice) {
+      voice = getTeacherVoice();
+    }
+
+    utterance.voice = voice;
+    utterance.rate = rate;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
@@ -127,15 +181,20 @@ export const useTTS = () => {
       if (fallbackInterval) clearInterval(fallbackInterval);
       setIsSpeaking(false);
       setCurrentIndex(-1);
+      setActiveParagraphText('');
     };
 
+    if (window.speechSynthesis) {
+      window.speechSynthesis.resume();
+    }
     window.speechSynthesis.speak(utterance);
-  }, [getTeacherVoice, isDebug, isSpeaking]);
+  }, [getTeacherVoice, isDebug, isSpeaking, rate, selectedVoiceURI]);
 
   const speak = useCallback((textArray: string[], startIndex: number = 0) => {
     if (!window.speechSynthesis) return;
 
     window.speechSynthesis.cancel();
+    window.speechSynthesis.resume();
     if (!textArray || textArray.length === 0) return;
 
     const sentenceQueue: SentenceQueueItem[] = [];
@@ -149,7 +208,8 @@ export const useTTS = () => {
                 sentenceIndex: sIdx,
                 text: m.text,
                 normalizedText: normalizeSpeechText(m.text),
-                offset: m.start
+                offset: m.start,
+                paragraphText: para
             });
         });
     });
@@ -162,10 +222,10 @@ export const useTTS = () => {
 
     if (window.speechSynthesis.getVoices().length === 0) {
       window.speechSynthesis.onvoiceschanged = () => {
-        speakSentence(finalStartIdx);
+        setTimeout(() => speakSentence(finalStartIdx), 100);
       };
     } else {
-      speakSentence(finalStartIdx);
+      setTimeout(() => speakSentence(finalStartIdx), 100);
     }
   }, [speakSentence]);
 
@@ -177,12 +237,37 @@ export const useTTS = () => {
     };
   }, []);
 
+  // Dynamic Realtime Voice/Rate Change Controller
+  useEffect(() => {
+    if (isSpeaking && currentSentenceRef.current !== -1) {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        // Nullify callbacks on active utterance to prevent interrupted/end events from firing
+        const activeUtterance = (window as any)._activeUtterance;
+        if (activeUtterance) {
+          activeUtterance.onstart = null;
+          activeUtterance.onboundary = null;
+          activeUtterance.onend = null;
+          activeUtterance.onerror = null;
+        }
+        window.speechSynthesis.cancel();
+        setTimeout(() => speakSentence(currentSentenceRef.current), 100);
+      }
+    }
+  }, [rate, selectedVoiceURI]);
+
   return { 
     speak, 
     stop, 
     isSpeaking, 
     currentIndex, 
+    setCurrentIndex,
     currentSentenceIndex, 
-    currentCharIndex 
+    currentCharIndex,
+    activeParagraphText,
+    rate,
+    setRate,
+    voices,
+    selectedVoiceURI,
+    setSelectedVoiceURI
   };
 };

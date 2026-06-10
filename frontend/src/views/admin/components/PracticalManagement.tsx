@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight, UserPlus, Upload } from 'lucide-react';
+import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder } from 'lucide-react';
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { authService, User } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
+import { FileManagerModal } from './FileManagerModal';
 import '../../../styles/admin/PracticalManagement.css';
 
 export const PracticalManagement: React.FC = () => {
@@ -19,7 +20,7 @@ export const PracticalManagement: React.FC = () => {
     const [bulkFiles, setBulkFiles] = useState<File[]>([]);
     const [isBulkMode, setIsBulkMode] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     // Form State for New Task
     const [newTask, setNewTask] = useState({
         set_number: 1,
@@ -33,8 +34,13 @@ export const PracticalManagement: React.FC = () => {
     const [selectedTrainer, setSelectedTrainer] = useState<number>(0);
     const [selectedTrainee, setSelectedTrainee] = useState<number>(0);
     const [editingTask, setEditingTask] = useState<AssessmentTask | null>(null);
+    const [fileManagerTask, setFileManagerTask] = useState<AssessmentTask | null>(null);
     const [editFile, setEditFile] = useState<File | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
+
+    // Drag and Drop State
+    const [draggedTaskId, setDraggedTaskId] = useState<number | null>(null);
+    const [dragOverTaskId, setDragOverTaskId] = useState<number | null>(null);
 
     useEffect(() => {
         fetchData();
@@ -158,6 +164,78 @@ export const PracticalManagement: React.FC = () => {
         }
     };
 
+    const handleDragStart = (taskId: number) => {
+        setDraggedTaskId(taskId);
+    };
+
+    const handleDragOver = (e: React.DragEvent, taskId: number) => {
+        e.preventDefault();
+        setDragOverTaskId(taskId);
+    };
+
+    const handleDrop = async (e: React.DragEvent, targetTaskId: number, setNumber: number) => {
+        e.preventDefault();
+        if (draggedTaskId === null || draggedTaskId === targetTaskId) {
+            setDraggedTaskId(null);
+            setDragOverTaskId(null);
+            return;
+        }
+
+        // Only allow reordering within the same set
+        // Important: Extract ONLY the tasks from the specific set being interacted with,
+        // otherwise if 'All Sets' is selected, task codes will bleed continuously (e.g. A, B... Z) across sets.
+        const setLocalTasks = tasks.filter(t => t.set_number === setNumber).sort((a, b) => a.order - b.order);
+        
+        const draggedIndex = setLocalTasks.findIndex(t => t.id === draggedTaskId);
+        const targetIndex = setLocalTasks.findIndex(t => t.id === targetTaskId);
+
+        if (draggedIndex === -1 || targetIndex === -1) return;
+
+        const newTasks = [...setLocalTasks];
+        const [draggedItem] = newTasks.splice(draggedIndex, 1);
+        newTasks.splice(targetIndex, 0, draggedItem);
+
+        // Update task codes based on new order
+        const reorderedTasks = newTasks.map((task, index) => ({
+            ...task,
+            task_code: String.fromCharCode(65 + index),
+            order: index + 1
+        }));
+
+        // Optimistically update UI
+        setTasks(prev => {
+            // First update all tasks with their new properties
+            const updated = prev.map(t => {
+                const reordered = reorderedTasks.find(rt => rt.id === t.id);
+                return reordered ? reordered : t;
+            });
+            // Then sort them so the UI reflects the new correct order immediately
+            return updated.sort((a, b) => {
+                if (a.set_number !== b.set_number) return a.set_number - b.set_number;
+                return a.order - b.order;
+            });
+        });
+
+        setDraggedTaskId(null);
+        setDragOverTaskId(null);
+
+        try {
+            // Call API
+            await assessmentService.reorderTasks(
+                reorderedTasks.map(t => ({
+                    id: t.id,
+                    set_number: t.set_number,
+                    order: t.order,
+                    task_code: t.task_code
+                }))
+            );
+            showNotification('Task order updated.', 'success');
+        } catch (err) {
+            showNotification('Failed to reorder tasks.', 'error');
+            fetchData(); // Revert on failure
+        }
+    };
+
     const trainers = allUsers.filter(u => u.role === 'employee' || u.role === 'admin');
     const trainees = allUsers.filter(u => u.role === 'trainee');
     const filteredTasks = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
@@ -165,13 +243,13 @@ export const PracticalManagement: React.FC = () => {
     return (
         <div className="practical-management animate-fade-in">
             <div className="admin-sub-tabs">
-                <button 
+                <button
                     className={`sub-tab-btn ${activeSubTab === 'tasks' ? 'active' : ''}`}
                     onClick={() => setActiveSubTab('tasks')}
                 >
                     <BookOpen size={18} /> Units & Tasks
                 </button>
-                <button 
+                <button
                     className={`sub-tab-btn ${activeSubTab === 'assignments' ? 'active' : ''}`}
                     onClick={() => setActiveSubTab('assignments')}
                 >
@@ -190,7 +268,7 @@ export const PracticalManagement: React.FC = () => {
                         <div className="creation-form-card">
                             <div className="form-header-toggle">
                                 <h4>{isBulkMode ? 'Bulk Upload Units' : 'Create New Unit'}</h4>
-                                <button 
+                                <button
                                     className="btn-outline"
                                     onClick={() => setIsBulkMode(!isBulkMode)}
                                 >
@@ -203,56 +281,56 @@ export const PracticalManagement: React.FC = () => {
                                     <div className="form-row">
                                         <div className="form-group">
                                             <label>Set Number</label>
-                                            <select 
-                                                value={newTask.set_number} 
-                                                onChange={(e) => setNewTask({...newTask, set_number: parseInt(e.target.value)})}
+                                            <select
+                                                value={newTask.set_number}
+                                                onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
                                             >
-                                                {[1,2,3,4,5,6,7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                                {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
                                             </select>
                                         </div>
                                         <div className="form-group">
                                             <label>Unit Code</label>
-                                            <input 
-                                                type="text" 
-                                                placeholder="e.g. A" 
+                                            <input
+                                                type="text"
+                                                placeholder="e.g. A"
                                                 value={newTask.task_code}
-                                                onChange={(e) => setNewTask({...newTask, task_code: e.target.value.toUpperCase()})}
+                                                onChange={(e) => setNewTask({ ...newTask, task_code: e.target.value.toUpperCase() })}
                                                 required
                                             />
                                         </div>
                                     </div>
                                     <div className="form-group">
                                         <label>Unit Title</label>
-                                        <input 
-                                            type="text" 
-                                            placeholder="e.g. Flange Assembly Drafting" 
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. Flange Assembly Drafting"
                                             value={newTask.title}
-                                            onChange={(e) => setNewTask({...newTask, title: e.target.value})}
+                                            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                                             required
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>Master .dwg File</label>
+                                        <label>Master File (.dwg, .zip)</label>
                                         <div className="file-upload-area">
-                                            <input 
-                                                type="file" 
-                                                id="task-file" 
-                                                accept=".dwg"
+                                            <input
+                                                type="file"
+                                                id="task-file"
+                                                accept=".dwg,.zip"
                                                 onChange={(e) => setTaskFile(e.target.files?.[0] || null)}
                                                 required
                                             />
                                             <label htmlFor="task-file">
                                                 <Upload size={18} />
-                                                <span>{taskFile ? taskFile.name : 'Choose Master DWG'}</span>
+                                                <span>{taskFile ? taskFile.name : 'Choose Master File'}</span>
                                             </label>
                                         </div>
                                     </div>
                                     <div className="form-group">
                                         <label>Instructions (Optional)</label>
-                                        <textarea 
+                                        <textarea
                                             placeholder="Provide unit instructions..."
                                             value={newTask.description}
-                                            onChange={(e) => setNewTask({...newTask, description: e.target.value})}
+                                            onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                                         ></textarea>
                                     </div>
                                     <button type="submit" className="btn-primary" disabled={isSubmitting}>
@@ -263,20 +341,20 @@ export const PracticalManagement: React.FC = () => {
                                 <form onSubmit={handleBulkUpload}>
                                     <div className="form-group">
                                         <label>Target Set</label>
-                                        <select 
-                                            value={newTask.set_number} 
-                                            onChange={(e) => setNewTask({...newTask, set_number: parseInt(e.target.value)})}
+                                        <select
+                                            value={newTask.set_number}
+                                            onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
                                         >
-                                            {[1,2,3,4,5,6,7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                            {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
                                         </select>
                                     </div>
                                     <div className="form-group">
-                                        <label>Select Multiple .dwg Files</label>
+                                        <label>Select Multiple Files (.dwg, .zip)</label>
                                         <div className="file-upload-area bulk">
-                                            <input 
-                                                type="file" 
-                                                id="bulk-files" 
-                                                accept=".dwg"
+                                            <input
+                                                type="file"
+                                                id="bulk-files"
+                                                accept=".dwg,.zip"
                                                 multiple
                                                 onChange={(e) => setBulkFiles(Array.from(e.target.files || []))}
                                                 required
@@ -298,15 +376,15 @@ export const PracticalManagement: React.FC = () => {
                         <div className="task-inventory">
                             <div className="inventory-header" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
                                 <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <label>Filter by Set:</label>
-                                    <select 
-                                        value={setFilter} 
+                                    <label style={{ whiteSpace: 'nowrap' }}>Filter by Set:</label>
+                                    <select
+                                        value={setFilter}
                                         onChange={(e) => setSetFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
                                         className="admin-input-styled"
                                         style={{ padding: '0.25rem 0.5rem', borderRadius: '4px' }}
                                     >
                                         <option value="all">All Sets</option>
-                                        {[1,2,3,4,5,6,7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
                                     </select>
                                 </div>
                             </div>
@@ -314,6 +392,7 @@ export const PracticalManagement: React.FC = () => {
                                 <table className="admin-table">
                                     <thead>
                                         <tr>
+                                            <th style={{ width: '40px' }}></th>
                                             <th>Set</th>
                                             <th>Code</th>
                                             <th>Title</th>
@@ -323,21 +402,42 @@ export const PracticalManagement: React.FC = () => {
                                     </thead>
                                     <tbody>
                                         {filteredTasks.map(task => (
-                                            <tr key={task.id}>
+                                            <tr 
+                                                key={task.id}
+                                                draggable
+                                                onDragStart={() => handleDragStart(task.id)}
+                                                onDragOver={(e) => handleDragOver(e, task.id)}
+                                                onDrop={(e) => handleDrop(e, task.id, task.set_number)}
+                                                className={`
+                                                    ${draggedTaskId === task.id ? 'opacity-50' : ''} 
+                                                    ${dragOverTaskId === task.id ? 'bg-indigo-50 border-t-2 border-indigo-500' : ''}
+                                                    cursor-move transition-all
+                                                `}
+                                            >
+                                                <td className="text-gray-400 cursor-grab active:cursor-grabbing text-center">
+                                                    <GripVertical size={16} />
+                                                </td>
                                                 <td><span className="set-pill-mini">{task.set_number}</span></td>
                                                 <td><strong>{task.task_code}</strong></td>
                                                 <td>{task.title}</td>
                                                 <td className="dim-text">{task.master_file_path}</td>
                                                 <td>
                                                     <div className="table-actions-horizontal">
-                                                        <button 
+                                                        <button
+                                                            className="btn-ghost"
+                                                            onClick={() => setFileManagerTask(task)}
+                                                            title="Manage Files & Folders"
+                                                        >
+                                                            <Folder size={16} />
+                                                        </button>
+                                                        <button
                                                             className="btn-ghost"
                                                             onClick={() => handleEditTask(task)}
                                                             title="Edit Unit"
                                                         >
                                                             <Edit3 size={16} />
                                                         </button>
-                                                        <button 
+                                                        <button
                                                             className="btn-ghost"
                                                             onClick={() => handleDeleteTask(task.id)}
                                                             title="Delete Unit"
@@ -372,8 +472,8 @@ export const PracticalManagement: React.FC = () => {
                             <form onSubmit={handleAssignTrainer}>
                                 <div className="form-group">
                                     <label>Trainee</label>
-                                    <select 
-                                        value={selectedTrainee} 
+                                    <select
+                                        value={selectedTrainee}
                                         onChange={(e) => setSelectedTrainee(parseInt(e.target.value))}
                                         required
                                     >
@@ -383,8 +483,8 @@ export const PracticalManagement: React.FC = () => {
                                 </div>
                                 <div className="form-group">
                                     <label>Trainer (Employee/Admin)</label>
-                                    <select 
-                                        value={selectedTrainer} 
+                                    <select
+                                        value={selectedTrainer}
                                         onChange={(e) => setSelectedTrainer(parseInt(e.target.value))}
                                         required
                                     >
@@ -447,20 +547,20 @@ export const PracticalManagement: React.FC = () => {
                             <div className="form-row">
                                 <div className="form-group">
                                     <label>Set Number</label>
-                                    <select 
-                                        value={editingTask.set_number} 
-                                        onChange={(e) => setEditingTask({...editingTask, set_number: parseInt(e.target.value)})}
+                                    <select
+                                        value={editingTask.set_number}
+                                        onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
                                         className="admin-input-styled"
                                     >
-                                        {[1,2,3,4,5,6,7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
                                     </select>
                                 </div>
                                 <div className="form-group">
                                     <label>Unit Code</label>
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         value={editingTask.task_code}
-                                        onChange={(e) => setEditingTask({...editingTask, task_code: e.target.value.toUpperCase()})}
+                                        onChange={(e) => setEditingTask({ ...editingTask, task_code: e.target.value.toUpperCase() })}
                                         required
                                         className="admin-input-styled"
                                     />
@@ -468,20 +568,20 @@ export const PracticalManagement: React.FC = () => {
                             </div>
                             <div className="form-group">
                                 <label>Unit Title</label>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     value={editingTask.title}
-                                    onChange={(e) => setEditingTask({...editingTask, title: e.target.value})}
+                                    onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
                                     required
                                     className="admin-input-styled"
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Master .dwg File (Optional)</label>
+                                <label>Master File (Optional) (.dwg, .zip)</label>
                                 <div className="file-input-wrapper-styled">
-                                    <input 
-                                        type="file" 
-                                        accept=".dwg" 
+                                    <input
+                                        type="file"
+                                        accept=".dwg,.zip"
                                         id="edit-file-upload"
                                         onChange={(e) => setEditFile(e.target.files ? e.target.files[0] : null)}
                                         className="hidden-file-input"
@@ -505,9 +605,9 @@ export const PracticalManagement: React.FC = () => {
                             </div>
                             <div className="form-group">
                                 <label>Instructions</label>
-                                <textarea 
+                                <textarea
                                     value={editingTask.description}
-                                    onChange={(e) => setEditingTask({...editingTask, description: e.target.value})}
+                                    onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
                                     rows={4}
                                     placeholder="Provide unit instructions..."
                                     className="admin-input-styled"
@@ -522,6 +622,13 @@ export const PracticalManagement: React.FC = () => {
                         </form>
                     </div>
                 </div>
+            )}
+
+            {fileManagerTask && (
+                <FileManagerModal 
+                    task={fileManagerTask} 
+                    onClose={() => setFileManagerTask(null)} 
+                />
             )}
         </div>
     );

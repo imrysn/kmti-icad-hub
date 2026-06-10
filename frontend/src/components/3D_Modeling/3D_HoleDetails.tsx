@@ -100,13 +100,13 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               <KaraokeLessonText
                 as="span"
                 className="step-label"
-                text="Select Arrange Machine Part from the icon menu."
+                text="Select Arrange Machine Part from the icon menu"
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
             </div>
             <div className="step-description">
-                <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
+              <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
             </div>
           </div>
 
@@ -118,14 +118,14 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               <span className="step-label">
                 <KaraokeLessonText
                   as="span"
-                  text="A window will appear showing the list of available tools, such as drill holes and counterbores."
+                  text="A window will appear showing the list of available tools, such as drill holes and counterbores"
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
               </span>
             </div>
             <div className="step-description">
-                <img src={listTools} alt="List of available tools" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
+              <img src={listTools} alt="List of available tools" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
             </div>
           </div>
 
@@ -150,7 +150,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
           <div className={`${getStepClass("hole-4")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
             <div className="step-header">
               <span className="step-number">4 </span>
-              <span className="step-label" style={{ marginTop: "-1.5rem"}}>
+              <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                 <KaraokeLessonText
                   as="span"
                   text="Click the location of the hole on the solid entity &gt; GO"
@@ -161,7 +161,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               </span>
             </div>
             <div className="step-description">
-                <img src={holeResult} alt="Hole Creation Result" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
+              <img src={holeResult} alt="Hole Creation Result" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
             </div>
           </div>
 

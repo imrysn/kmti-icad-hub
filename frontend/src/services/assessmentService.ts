@@ -94,6 +94,21 @@ export const assessmentService = {
         return response.data;
     },
 
+    getTrainerTraineesProgress: async (): Promise<any[]> => {
+        const response = await api.get('/api/v1/assessments/trainer/trainees-progress');
+        return response.data;
+    },
+
+    getTraineeSetMappings: async (traineeId: number) => {
+        const response = await api.get(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
+        return response.data;
+    },
+
+    updateTraineeSetMapping: async (traineeId: number, mappings: { display_set_number: number, actual_set_number: number }[]) => {
+        const response = await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, mappings);
+        return response.data;
+    },
+
     // Admin Methods
     getTrainerMappings: async () => {
         const response = await api.get('/api/v1/assessments/admin/mappings');
@@ -108,9 +123,7 @@ export const assessmentService = {
         if (taskData.description) formData.append('description', taskData.description);
         formData.append('file', file);
 
-        const response = await api.post('/api/v1/assessments/admin/tasks', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        const response = await api.post('/api/v1/assessments/admin/tasks', formData);
         return response.data;
     },
 
@@ -121,9 +134,7 @@ export const assessmentService = {
             formData.append('files', file);
         });
 
-        const response = await api.post('/api/v1/assessments/admin/tasks/bulk', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        const response = await api.post('/api/v1/assessments/admin/tasks/bulk', formData);
         return response.data;
     },
 
@@ -150,8 +161,36 @@ export const assessmentService = {
         if (taskData.description) formData.append('description', taskData.description);
         if (file) formData.append('file', file);
 
-        const response = await api.put(`/api/v1/assessments/admin/tasks/${taskId}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
+        const response = await api.put(`/api/v1/assessments/admin/tasks/${taskId}`, formData);
+        return response.data;
+    },
+
+    reorderTasks: async (updates: { id: number; set_number: number; order: number; task_code: string }[]) => {
+        const response = await api.patch('/api/v1/assessments/admin/tasks/reorder', updates);
+        return response.data;
+    },
+
+    getTaskFileTree: async (taskId: number) => {
+        const response = await api.get(`/api/v1/assessments/admin/tasks/${taskId}/files`);
+        return response.data;
+    },
+
+    createTaskSubfolder: async (taskId: number, path: string) => {
+        const response = await api.post(`/api/v1/assessments/admin/tasks/${taskId}/folders`, { path });
+        return response.data;
+    },
+
+    uploadTaskFile: async (taskId: number, path: string, file: File) => {
+        const formData = new FormData();
+        formData.append('path', path);
+        formData.append('file', file);
+        const response = await api.post(`/api/v1/assessments/admin/tasks/${taskId}/files`, formData);
+        return response.data;
+    },
+
+    deleteTaskFile: async (taskId: number, path: string) => {
+        const response = await api.delete(`/api/v1/assessments/admin/tasks/${taskId}/files`, {
+            data: { path }
         });
         return response.data;
     },

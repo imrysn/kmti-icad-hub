@@ -123,7 +123,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           currentCharIndex={currentCharIndex}
         />
         {activeTab === 'set' && (
-            <img src={materialSettingImg} alt="Material Setting" className="software-screenshot" style={{ height: 'auto', width: "200px", marginTop: "1rem" }} />
+          <img src={materialSettingImg} alt="Material Setting" className="software-screenshot" style={{ height: 'auto', width: "200px", marginTop: "1rem" }} />
         )}
       </section>
 
@@ -149,13 +149,13 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select the Set Material from the icon menu."
+                    text="Select the Set Material from the icon menu"
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px", marginBottom: '-3rem' }} />
+                  <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px", marginBottom: '-3rem' }} />
                 </div>
               </div>
 
@@ -171,13 +171,13 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginTop: "-2rem" }} />
+                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginTop: "-2rem" }} />
                 </div>
               </div>
 
 
               {/* Step 3 */}
-              <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
+              <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">3 </span>
                   <KaraokeLessonText
@@ -195,7 +195,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                    <img src={materialListImg} alt="Material Settings Window" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
+                  <img src={materialListImg} alt="Material Settings Window" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
                 </div>
               </div>
 
@@ -214,11 +214,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="step-description">
                   <KaraokeLessonText
                     className="p-flush mb-4"
-                    text="Parts that already have material set will be highlighted to show distinction with parts that does not have yet."
+                    text="Parts that already have material set will be highlighted to show distinction with parts that does not have yet"
                     isActive={isSpeaking && currentIndex === 8}
                     currentCharIndex={currentCharIndex}
                   />
-                    <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide mt-4" style={{ marginTop: "1rem"}} />
+                  <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide mt-4" style={{ marginTop: "1rem" }} />
                 </div>
               </div>
 
@@ -229,7 +229,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="In case there are changes in the material, select Set Material from the icon menu."
+                    text="In case there are changes in the material, select Set Material from the icon menu"
                     isActive={isSpeaking && currentIndex === 9}
                     currentCharIndex={currentCharIndex}
                   />
@@ -242,39 +242,39 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                
+
                 <div className="step-description">
-                    <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium mt-4" style={{ height: '190px' }} />
+                  <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium mt-4" style={{ height: '190px' }} />
                 </div>
               </div>
-               
-               <div className="step-description">
-                  <KaraokeLessonText
-                    className="p-flush mb-4"
-                    text="Select OK > Material Settings window will appear > Reselect new material for the part"
-                    isActive={isSpeaking && currentIndex === 11}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
 
-                 <div className="step-description" style={{marginTop: "-1rem"}}> 
-                  <KaraokeLessonText
-                    className="p-flush mb-4"
-                    text="OR"
-                    isActive={isSpeaking && currentIndex === 12}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
+              <div className="step-description">
+                <KaraokeLessonText
+                  className="p-flush mb-4"
+                  text="Select OK > Material Settings window will appear > Reselect new material for the part"
+                  isActive={isSpeaking && currentIndex === 11}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
 
-                 <div className="step-description" style={{marginTop: "-1rem"}}>
-                  <KaraokeLessonText
-                    className="p-flush mb-4"
-                    text="Select Cancel > No changes will be made."
-                    isActive={isSpeaking && currentIndex === 13}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-              
+              <div className="step-description" style={{ marginTop: "-1rem" }}>
+                <KaraokeLessonText
+                  className="p-flush mb-4"
+                  text="OR"
+                  isActive={isSpeaking && currentIndex === 12}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+
+              <div className="step-description" style={{ marginTop: "-1rem" }}>
+                <KaraokeLessonText
+                  className="p-flush mb-4"
+                  text="Select Cancel > No changes will be made"
+                  isActive={isSpeaking && currentIndex === 13}
+                  currentCharIndex={currentCharIndex}
+                />
+              </div>
+
 
               <div className="lesson-navigation">
                 <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
@@ -297,7 +297,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               </div>
 
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                  <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide mt-4" style={{marginBottom: "1rem"}}/>
+                <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide mt-4" style={{ marginBottom: "1rem" }} />
                 <div className="instruction-box instruction-box--warning mt-8">
                   <KaraokeLessonText
                     className="p-flush"
@@ -306,7 +306,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                  <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide mt-8" style={{marginTop: "1rem"}} />
+                <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide mt-8" style={{ marginTop: "1rem" }} />
               </div>
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">

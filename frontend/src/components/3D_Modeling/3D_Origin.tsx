@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
@@ -99,7 +98,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content">
           {activeTab === "projections" ? (
-            <div className="fade-in"> 
+            <div className="fade-in">
               <div className="card-header">
                 <KaraokeLessonText
                   as="h4"
@@ -109,9 +108,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   isActive={isSpeaking && currentIndex === 0}
                   currentCharIndex={currentCharIndex}
                 />
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-                  speak([LESSON_DATA.projections.title, LESSON_DATA.projections.subtitle, LESSON_DATA.projections.importantNotes]);
-                }} onStop={stop} />
+
               </div>
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
@@ -124,7 +121,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
               </div>
 
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
-                <div className="red-text" style={{marginBottom: "2rem", marginTop: "1rem"}}>
+                <div className="red-text" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text={LESSON_DATA.projections.importantNotes}
@@ -132,7 +129,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                  <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide mt-4" />
+                <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide mt-4" />
               </div>
             </div>
           ) : (
@@ -146,9 +143,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   isActive={isSpeaking && currentIndex === 0}
                   currentCharIndex={currentCharIndex}
                 />
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-                  speak([LESSON_DATA.layout.title, LESSON_DATA.layout.subtitle, ...LESSON_DATA.layout.steps]);
-                }} onStop={stop} />
+
               </div>
 
               <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
@@ -172,13 +167,13 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                    <img src={toolSelection} alt="Tool Selection" className="software-screenshot" style={{ height: 'auto', width: "300px" }} />
+                  <img src={toolSelection} alt="Tool Selection" className="software-screenshot" style={{ height: 'auto', width: "400px" }} />
                 </div>
               </div>
 
 
               <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-                <div className="step-header" style={{marginTop: "-2rem"}}>
+                <div className="step-header" style={{ marginTop: "-1rem" }}>
                   <span className="step-number">2 </span>
                   <KaraokeLessonText
                     as="span"
@@ -192,7 +187,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
 
               <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-                <div className="step-header" style={{marginTop: "-1rem"}}>
+                <div className="step-header">
                   <span className="step-number">3 </span>
                   <KaraokeLessonText
                     as="span"
@@ -206,7 +201,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
 
               <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-                <div className="step-header" style={{marginTop: "-1rem"}}>
+                <div className="step-header">
                   <span className="step-number">4 </span>
                   <KaraokeLessonText
                     as="span"
@@ -220,7 +215,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-                <div className="step-header" style={{marginTop: "-1rem"}}>
+                <div className="step-header">
                   <span className="step-number">5 </span>
                   <KaraokeLessonText
                     as="span"
@@ -233,12 +228,12 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                 <div className="step-description">
                   <KaraokeLessonText
                     className="p-flush"
-                    style={{ marginBottom: "3rem"}}
+                    style={{ marginBottom: "3rem" }}
                     text="The XY-plane will be front view."
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                    <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-medium mt-4" />
+                  <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-medium mt-4" />
                 </div>
               </div>
             </div>

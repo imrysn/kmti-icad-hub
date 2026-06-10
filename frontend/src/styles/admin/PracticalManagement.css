@@ -24,7 +24,7 @@
     font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .sub-tab-btn:hover, .sub-tab-btn.active {
@@ -477,4 +477,49 @@ select.admin-input-styled option {
 .empty-inventory p {
     margin-top: 1rem;
     max-width: 250px;
+}
+
+/* ── Drag-and-drop reordering ────────────────────────────────── */
+.drag-handle-cell {
+    width: 32px;
+    padding: 0 !important;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.drag-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--text-dim);
+    border-radius: 6px;
+    cursor: grab;
+    opacity: 0.4;
+    transition: opacity 0.2s, color 0.2s, background 0.2s;
+}
+
+.draggable-row:hover .drag-handle {
+    opacity: 1;
+    color: #DD4DFA;
+    background: rgba(221, 77, 250, 0.08);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.draggable-row {
+    transition: background 0.15s, opacity 0.15s, transform 0.15s;
+}
+
+.row-dragging {
+    opacity: 0.35;
+    background: rgba(221, 77, 250, 0.04) !important;
+}
+
+.row-drag-over {
+    box-shadow: 0 -3px 0 0 #DD4DFA inset;
+    background: rgba(221, 77, 250, 0.06) !important;
 }

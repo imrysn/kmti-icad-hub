@@ -1,0 +1,63 @@
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import { useTTS } from '../hooks/useTTS';
+
+interface TTSContextType {
+  isSpeaking: boolean;
+  currentIndex: number;
+  setCurrentIndex: (index: number) => void;
+  currentCharIndex: number;
+  currentSentenceIndex: number;
+  activeParagraphText: string;
+  currentText: string[];
+  registerText: (text: string[]) => void;
+  speak: (text: string[], startIndex?: number) => void;
+  stop: () => void;
+  rate: number;
+  setRate: (rate: number) => void;
+  voices: SpeechSynthesisVoice[];
+  selectedVoiceURI: string | null;
+  setSelectedVoiceURI: (uri: string | null) => void;
+}
+
+const TTSContext = createContext<TTSContextType | undefined>(undefined);
+
+export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const tts = useTTS();
+  const [currentText, setCurrentText] = useState<string[]>([]);
+
+  const registerText = useCallback((text: string[]) => {
+    setCurrentText(text);
+  }, []);
+
+  return (
+    <TTSContext.Provider
+      value={{
+        isSpeaking: tts.isSpeaking,
+        currentIndex: tts.currentIndex,
+        setCurrentIndex: tts.setCurrentIndex,
+        currentCharIndex: tts.currentCharIndex,
+        currentSentenceIndex: tts.currentSentenceIndex,
+        activeParagraphText: tts.activeParagraphText,
+        currentText,
+        registerText,
+        speak: tts.speak,
+        stop: tts.stop,
+        rate: tts.rate,
+        setRate: tts.setRate,
+        voices: tts.voices,
+        selectedVoiceURI: tts.selectedVoiceURI,
+        setSelectedVoiceURI: tts.setSelectedVoiceURI,
+      }}
+    >
+      {children}
+    </TTSContext.Provider>
+  );
+};
+
+export const useTTSContext = () => {
+  const context = useContext(TTSContext);
+  if (!context) {
+    throw new Error('useTTSContext must be used within a TTSProvider');
+  }
+  return context;
+};
