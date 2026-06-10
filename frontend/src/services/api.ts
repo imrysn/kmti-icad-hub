@@ -48,7 +48,7 @@ api.interceptors.response.use(
             sessionStorage.removeItem('user');
             
             if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
-                window.location.href = '/'; 
+                window.location.href = '/login?expired=true'; 
             }
         }
         return Promise.reject(error);
@@ -77,7 +77,7 @@ export const searchKnowledgeBase = async (query: string) => {
 
 // Get available courses
 export const getCourses = async () => {
-    const response = await api.get('/api/v1/courses');
+    const response = await api.get('/api/v1/courses/');
     return response.data;
 };
 

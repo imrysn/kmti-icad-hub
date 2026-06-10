@@ -35,12 +35,12 @@
 :root:not([data-theme='light']) {
   color-scheme: dark;
 
-  --bg-dark: #0d1117;
-  --bg-surface: #161b22;
-  --bg-card: #21262d;
+  --bg-dark: #090b10;
+  --bg-surface: #21262d;
+  --bg-card: #30363d;
 
-  --glass-bg: #161b22;
-  --glass-border: #30363d;
+  --glass-bg: #21262d;
+  --glass-border: #444c56;
   --glass-blur: 0px;
 
   --text-main: #e6edf3;
@@ -48,19 +48,19 @@
   --text-dim: #6e7681;
   --text-white: #ffffff;
 
-  --border-color: #30363d;
-  --border-hover: #444c56;
+  --border-color: #38414e;
+  --border-hover: #4e5a6a;
 
-  --shadow-glow: none;
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-inner: none;
+  --shadow-glow: 0 0 15px rgba(221, 77, 250, 0.15);
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
   --color-primary: #dd4dfa;
   --color-success: #3fb950;
   --color-warning: #d29922;
   --color-error: #f85149;
 
-  --color-primary-glow: rgba(221, 77, 250, 0.1);
+  --color-primary-glow: rgba(221, 77, 250, 0.2);
   --color-secondary-glow: rgba(139, 148, 158, 0.1);
 }
 
@@ -68,12 +68,12 @@
 [data-theme='light'] {
   color-scheme: light;
 
-  --bg-dark: #f6f8fa;
+  --bg-dark: #e2e8f0;
   --bg-surface: #ffffff;
   --bg-card: #f3f4f6;
 
   --glass-bg: #ffffff;
-  --glass-border: #d0d7de;
+  --glass-border: #cbd5e1;
   --glass-blur: 0px;
 
   --text-main: #1f2328;
@@ -81,20 +81,20 @@
   --text-dim: #6e7781;
   --text-white: #020617;
 
-  --border-color: #d0d7de;
-  --border-hover: #afb8c1;
+  --border-color: #cbd5e1;
+  --border-hover: #94a3b8;
 
-  --shadow-glow: none;
-  --shadow-card: 0 2px 8px rgba(31, 35, 40, 0.1);
-  --shadow-inner: none;
+  --shadow-glow: 0 4px 12px rgba(181, 23, 158, 0.08);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 
-  --color-primary: #dd4dfa;
+  --color-primary: #b5179e;
   --color-success: #1a7f37;
   --color-warning: #bf8700;
   --color-error: #cf222e;
 
-  --color-primary-glow: rgba(221, 77, 250, 0.1);
-  --color-secondary-glow: rgba(87, 96, 106, 0.1);
+  --color-primary-glow: rgba(181, 23, 158, 0.12);
+  --color-secondary-glow: rgba(87, 96, 106, 0.15);
 }
 
 :root {
@@ -209,19 +209,29 @@ p {
 }
 
 @keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* --- Global Button Design System --- */
 button {
   font-family: var(--font-main);
-  border-radius: 12px; /* Standardized radius */
+  border-radius: 12px;
+  /* Standardized radius */
   border: 1px solid var(--border-color);
   padding: 0.7rem 1.25rem;
   font-size: 0.875rem;
-  font-weight: 700; /* Bolder font for premium look */
+  font-weight: 700;
+  /* Bolder font for premium look */
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
@@ -236,7 +246,8 @@ button {
 button:hover:not(:disabled) {
   background: var(--bg-card);
   border-color: var(--border-hover);
-  transform: translateY(-2px); /* Standard lift effect */
+  transform: translateY(-2px);
+  /* Standard lift effect */
   box-shadow: var(--shadow-card);
 }
 
