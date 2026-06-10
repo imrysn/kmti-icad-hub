@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Body
 from sqlalchemy.orm import Session
 from typing import List
 import os
 import shutil
+import zipfile
 from datetime import datetime
+from pydantic import BaseModel
 
 from fastapi.responses import FileResponse
 from ..database import get_db
@@ -17,6 +19,32 @@ from ..schemas import (
 )
 from .auth import get_current_user
 from ..websocket_manager import notification_manager
+
+def handle_task_upload(file: UploadFile, set_number: int, task_code: str) -> str:
+    master_dir = os.path.join("master_units", f"set{set_number}")
+    os.makedirs(master_dir, exist_ok=True)
+    
+    safe_filename = os.path.basename(file.filename)
+    file_extension = os.path.splitext(safe_filename)[1].lower()
+    
+    if file_extension == '.zip':
+        temp_zip_path = os.path.join(master_dir, f"temp_{task_code}_{safe_filename}")
+        with open(temp_zip_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        extract_dir = os.path.join(master_dir, f"{task_code}_{os.path.splitext(safe_filename)[0]}")
+        os.makedirs(extract_dir, exist_ok=True)
+        
+        with zipfile.ZipFile(temp_zip_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_dir)
+            
+        os.remove(temp_zip_path)
+        return extract_dir
+    else:
+        file_path = os.path.join(master_dir, f"{task_code}_{safe_filename}")
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        return file_path
 
 router = APIRouter(prefix="/api/v1/assessments", tags=["Assessments"])
 
@@ -80,12 +108,7 @@ async def create_task(
         raise HTTPException(status_code=403, detail="Admin only")
     
     # Save the master file
-    master_dir = os.path.join("master_units", f"set{set_number}")
-    os.makedirs(master_dir, exist_ok=True)
-    
-    file_path = os.path.join(master_dir, f"{task_code}_{file.filename}")
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    file_path = handle_task_upload(file, set_number, task_code)
     
     db_task = AssessmentTask(
         set_number=set_number,
@@ -117,15 +140,12 @@ async def bulk_create_tasks(
     
     for i, file in enumerate(files):
         task_code = chr(65 + existing_count + i) # A=65
-        master_dir = os.path.join("master_units", f"set{set_number}")
-        os.makedirs(master_dir, exist_ok=True)
         
-        file_path = os.path.join(master_dir, f"{task_code}_{file.filename}")
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        file_path = handle_task_upload(file, set_number, task_code)
         
         # Strip extension for title
-        title = os.path.splitext(file.filename)[0].replace('_', ' ').title()
+        safe_filename = os.path.basename(file.filename)
+        title = os.path.splitext(safe_filename)[0].replace('_', ' ').title()
         
         db_task = AssessmentTask(
             set_number=set_number,
@@ -167,6 +187,25 @@ def assign_trainer(
     db.add(db_mapping)
     db.commit()
     return {"message": "Trainer assigned successfully"}
+
+@router.patch("/admin/tasks/reorder")
+def reorder_tasks(
+    updates: List[dict] = Body(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Admin only: Bulk-update task_code, set_number and order for drag-and-drop reordering."""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    for item in updates:
+        task = db.query(AssessmentTask).filter(AssessmentTask.id == int(item["id"])).first()
+        if task:
+            task.set_number = int(item["set_number"])
+            task.order = int(item["order"])
+            if "task_code" in item:
+                task.task_code = str(item["task_code"])
+    db.commit()
+    return {"message": "Tasks reordered successfully"}
 
 @router.delete("/admin/tasks/{task_id}")
 def delete_task(
@@ -212,18 +251,133 @@ async def update_task(
     
     if file:
         # Save new file
-        set_dir = os.path.join("master_units", f"set{set_number}")
-        os.makedirs(set_dir, exist_ok=True)
-        file_path = os.path.join(set_dir, f"{task_code}_{file.filename}")
-        
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        
+        file_path = handle_task_upload(file, set_number, task_code)
         db_task.master_file_path = file_path
     
     db.commit()
     db.refresh(db_task)
     return db_task
+
+@router.get("/admin/tasks/{task_id}/files")
+def get_task_file_tree(
+    task_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    master_path = task.master_file_path
+    if not master_path or not os.path.exists(master_path):
+        return {"tree": []}
+        
+    # If it's a file, the "folder" is its directory. But we only manage if it's a directory.
+    # To support this properly, let's ensure we are dealing with a directory.
+    base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
+    
+    def build_tree(dir_path):
+        tree = []
+        for item in os.listdir(dir_path):
+            full_path = os.path.join(dir_path, item)
+            rel_path = os.path.relpath(full_path, base_dir)
+            is_dir = os.path.isdir(full_path)
+            node = {
+                "name": item,
+                "path": rel_path.replace("\\", "/"),
+                "is_dir": is_dir
+            }
+            if is_dir:
+                node["children"] = build_tree(full_path)
+            tree.append(node)
+        return sorted(tree, key=lambda x: (not x["is_dir"], x["name"].lower()))
+        
+    return {"tree": build_tree(base_dir), "base_dir": base_dir}
+
+class FolderCreateRequest(BaseModel):
+    path: str
+
+@router.post("/admin/tasks/{task_id}/folders")
+def create_task_subfolder(
+    task_id: int,
+    req: FolderCreateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+        
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    
+    # Secure path to prevent path traversal
+    safe_path = req.path.lstrip("/\\").replace("..", "")
+    new_dir = os.path.join(base_dir, safe_path)
+    os.makedirs(new_dir, exist_ok=True)
+    
+    return {"message": "Folder created"}
+
+@router.post("/admin/tasks/{task_id}/files")
+async def upload_task_file(
+    task_id: int,
+    path: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+        
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    
+    safe_path = path.lstrip("/\\").replace("..", "") if path and path != "/" else ""
+    target_dir = os.path.join(base_dir, safe_path)
+    os.makedirs(target_dir, exist_ok=True)
+    
+    safe_filename = os.path.basename(file.filename)
+    file_path = os.path.join(target_dir, safe_filename)
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    return {"message": "File uploaded"}
+
+@router.delete("/admin/tasks/{task_id}/files")
+def delete_task_file(
+    task_id: int,
+    req: FolderCreateRequest, # reuse the schema for path
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+        
+    task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    safe_path = req.path.lstrip("/\\").replace("..", "")
+    target_path = os.path.join(base_dir, safe_path)
+    
+    if os.path.exists(target_path):
+        if os.path.isdir(target_path):
+            shutil.rmtree(target_path)
+        else:
+            os.remove(target_path)
+            
+    return {"message": "Item deleted"}
+
 
 @router.delete("/admin/mappings/{mapping_id}")
 def delete_mapping(
