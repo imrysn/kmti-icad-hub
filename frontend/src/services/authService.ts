@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-// Single source of truth for the API base URL.
-// authService.ts previously hardcoded 'http://localhost:8000' — now uses the
-// shared config so VITE_API_URL is honoured in all environments.
-const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
+const isElectron = navigator.userAgent.toLowerCase().includes('electron');
+const defaultHost = isElectron ? '127.0.0.1' : (typeof window !== 'undefined' && window.location && window.location.hostname ? window.location.hostname : '127.0.0.1');
+const API_BASE_URL = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:3001`;
 
 export interface LoginCredentials {
     username: string;
@@ -47,12 +46,23 @@ const authApi = axios.create({
     },
 });
 
-// Add Bearer token to every request
+// Add Bearer token to every request and prepend /api/v1 prefix
 authApi.interceptors.request.use((config) => {
     const token = sessionStorage.getItem('access_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Normalize url prepends
+    let url = config.url || '';
+    if (!url.startsWith('http') && !url.startsWith('//')) {
+        if (!url.startsWith('/api/v1')) {
+            url = `/api/v1${url.startsWith('/') ? '' : '/'}${url}`;
+        }
+        const base = config.baseURL || API_BASE_URL;
+        url = `${base.replace(/\/$/, '')}${url}`;
+    }
+    config.url = url;
     return config;
 });
 
@@ -62,7 +72,7 @@ authApi.interceptors.response.use(
     (error) => {
         // Only redirect if NOT a login attempt AND not already on the login page.
         // This prevents failed logins from refreshing the page and clearing error messages.
-        const isLoginRequest = error.config.url?.includes('login');
+        const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {

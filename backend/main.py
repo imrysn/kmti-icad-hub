@@ -65,13 +65,13 @@ else:
 from .routers import auth, admin, chat, lessons, quizzes, assessments, notifications
 
 # Include Modular Routers
-app.include_router(auth.router)
-app.include_router(admin.router)
-app.include_router(chat.router)
-app.include_router(lessons.router)
-app.include_router(quizzes.router)
-app.include_router(assessments.router)
-app.include_router(notifications.router)
+app.include_router(auth.router, prefix="/api/v1")
+app.include_router(admin.router, prefix="/api/v1")
+app.include_router(chat.router, prefix="/api/v1")
+app.include_router(lessons.router, prefix="/api/v1")
+app.include_router(quizzes.router, prefix="/api/v1")
+app.include_router(assessments.router, prefix="/api/v1")
+app.include_router(notifications.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():

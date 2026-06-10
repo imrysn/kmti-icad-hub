@@ -247,7 +247,7 @@ def get_course_progress(
     Get all completed lessons and scores for a specific course for the current user.
     """
     scores = db.query(QuizScore).filter(
-        QuizScore.user_id == str(current_user.id),
+        QuizScore.user_id == current_user.id,
         QuizScore.course_id == course_id
     ).all()
     
@@ -273,7 +273,7 @@ def submit_quiz_score(
     """
     # Check if a score already exists for this lesson
     existing_score = db.query(QuizScore).filter(
-        QuizScore.user_id == str(current_user.id),
+        QuizScore.user_id == current_user.id,
         QuizScore.course_id == submission.course_id,
         QuizScore.lesson_id == submission.lesson_id
     ).first()
@@ -295,7 +295,7 @@ def submit_quiz_score(
     else:
         now = datetime.now(timezone.utc)
         new_score = QuizScore(
-            user_id=str(current_user.id),
+            user_id=current_user.id,
             course_id=submission.course_id,
             lesson_id=submission.lesson_id,
             score=submission.score,

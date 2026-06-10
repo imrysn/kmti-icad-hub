@@ -537,7 +537,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                               <motion.button 
                                 type="button"
                                 key={idx} 
-                                className={`quiz-option-btn ${ isSelected ? 'active' : '' } ${ isAnswerChecked && isCorrect ? 'correct' : '' } ${ isWrong ? 'wrong' : '' } ${ isAnswerChecked && !isSelected ? 'dimmed' : '' }`} 
+                                className={`quiz-option-btn ${ isSelected ? 'active' : '' } ${ isAnswerChecked && isCorrect && isSelected ? 'correct' : '' } ${ isWrong ? 'wrong' : '' } ${ isAnswerChecked && !isSelected ? 'dimmed' : '' }`} 
                                 onClick={() => handleSelect(idx)}
                                 whileTap={{ scale: 0.98 }}
                                 animate={isWrong ? { 

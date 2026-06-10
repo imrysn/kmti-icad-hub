@@ -11,3 +11,8 @@ interface Window {
     downloadAndOpen: (params: { url: string; filename: string; token: string, appName?: string }) => Promise<string>;
   };
 }
+
+declare module '*.glb' {
+  const src: string;
+  export default src;
+}

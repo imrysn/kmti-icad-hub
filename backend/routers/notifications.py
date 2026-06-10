@@ -1,6 +1,6 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from ..database import get_db
+from ..database import SessionLocal  # Import SessionLocal
 from ..models import User
 from ..auth.security import decode_token
 from jose import JWTError
@@ -24,22 +24,26 @@ def get_user_from_token(token: str, db: Session) -> User:
     return None
 
 @router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, token: str = Query(...), db: Session = Depends(get_db)):
+async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
     try:
-        user = get_user_from_token(token, db)
-        if not user:
-            await websocket.close(code=1008)
-            return
-            
-        await notification_manager.connect(websocket, user.id)
+        # Use context manager to handle db session, freeing connection pool immediately
+        with SessionLocal() as db:
+            user = get_user_from_token(token, db)
+            if not user:
+                await websocket.close(code=1008)
+                return
+            user_id = user.id
+
+        await notification_manager.connect(websocket, user_id)
         try:
             while True:
                 data = await websocket.receive_text()
         except WebSocketDisconnect:
-            notification_manager.disconnect(websocket, user.id)
+            notification_manager.disconnect(websocket, user_id)
     except Exception as e:
         logger.error(f"WebSocket connection error: {e}")
         try:
             await websocket.close(code=1011)
         except:
             pass
+

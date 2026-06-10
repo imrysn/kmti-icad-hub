@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Search, ChevronDown, ChevronUp, FileSpreadsheet, FileText, Image as ImageIcon, Video } from 'lucide-react'; import { ChatSource, MediaAsset } from '../../../../services/searchService';
+import { Search, ChevronDown, ChevronUp, FileSpreadsheet, FileText, Image as ImageIcon, Video } from 'lucide-react'; 
+import { ChatSource, MediaAsset } from '../../../../services/searchService';
+import { api } from '../../../../services/api';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE = api.defaults.baseURL || 'http://localhost:3001';
 
 // Single image card — clicking opens the lightbox
 export const MediaCard: React.FC<{

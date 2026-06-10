@@ -23,7 +23,7 @@ if not SECRET_KEY:
         "python -c \"import secrets; print(secrets.token_hex(32))\""
     )
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "600"))
 
 def hash_password(password: str) -> str:
     """

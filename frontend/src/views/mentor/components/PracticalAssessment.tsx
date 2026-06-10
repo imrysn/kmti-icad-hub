@@ -114,9 +114,9 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     if (loading) {
         return (
-            <div className="assessment-loading">
+            <div className="assessment-loading" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', width: '100%', gap: '1rem' }}>
                 <div className="spinner"></div>
-                <p>Preparing your assessment environment...</p>
+                <p style={{ margin: 0 }}>Preparing your assessment environment...</p>
             </div>
         );
     }

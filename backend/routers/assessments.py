@@ -679,7 +679,7 @@ def download_feedback_file(
     )
 
 @router.post("/feedback/{feedback_id}/reply")
-def reply_to_feedback(
+async def reply_to_feedback(
     feedback_id: int,
     reply: str = Form(...),
     db: Session = Depends(get_db),

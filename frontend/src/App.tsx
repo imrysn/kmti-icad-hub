@@ -16,6 +16,7 @@ import WindowControls from './components/WindowControls';
 import ThemeToggle from './components/ThemeToggle';
 import { getSystemStatus } from './services/api';
 
+import kmtiLogo from './assets/kmti_logo.png';
 import './styles/App.css';
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
     // Use location host to build connection URL
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.hostname}:8000/notifications/ws?token=${token}`;
-    
+
     let ws: WebSocket;
     let reconnectTimeout: any;
 
@@ -48,9 +49,9 @@ function App() {
         try {
           const data = JSON.parse(event.data);
           const role = user?.role?.toLowerCase()?.trim();
-          
+
           let notificationTriggered = false;
-          
+
           if (data.event === "NEW_SUBMISSION" && (role === 'employee' || role === 'admin')) {
             showNotification(data.message || `${data.trainee_name} submitted Set ${data.set_number} Unit ${data.task_code} for review.`, 'info', 0, '/assistant?tab=assessment&subtab=assessments');
             window.dispatchEvent(new CustomEvent('kmti-refresh-submissions'));
@@ -200,7 +201,20 @@ function App() {
           <header className="app-header animate-fade-in">
             {/* 1. BRANDING (Left) */}
             <div className="header-left">
-              <div className="app-title">KMTI iCAD Hub</div>
+              <div className="app-title">
+                <img
+                  src={kmtiLogo}
+                  alt="KMTI Logo"
+                  draggable={false}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    objectFit: 'contain',
+                    userSelect: 'none'
+                  }}
+                />
+                <span>KMTI iCAD Hub</span>
+              </div>
 
               {!dbStatus.nas_reachable && (
                 <div className="status-badge local-mode" title="NAS Connection Lost - Progress stored on Server PC">
