@@ -5,6 +5,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse
+from fastapi.concurrency import run_in_threadpool
 
 from ..database import get_db
 from ..models import User, ChatLog, ChatFeedback
@@ -116,27 +117,34 @@ async def chat_stream_with_intelligence_node(
             had_media = any(bool(s.get("media")) for s in sources)
             tokens_est = (len(request.message) + len(full_answer)) // 4
             
+            def save_to_db():
+                try:
+                    log = ChatLog(
+                        user_id=current_user.id,
+                        username=current_user.username,
+                        session_id=request.session_id,
+                        message=request.message[:2000],
+                        answer=full_answer[:8000],
+                        sources_used=",".join(unique_sources)[:1000] if unique_sources else None,
+                        source_count=len(sources),
+                        tokens_estimated=tokens_est,
+                        response_time_ms=elapsed_ms,
+                        had_media=had_media,
+                        is_cached=False,
+                        suggestions=json.dumps(suggestions) if suggestions else None
+                    )
+                    db.add(log)
+                    db.commit()
+                    db.refresh(log)
+                    return log.id
+                except Exception as log_err:
+                    db.rollback()
+                    raise log_err
+
             try:
-                log = ChatLog(
-                    user_id=current_user.id,
-                    username=current_user.username,
-                    session_id=request.session_id,
-                    message=request.message[:2000],
-                    answer=full_answer[:8000],
-                    sources_used=",".join(unique_sources)[:1000] if unique_sources else None,
-                    source_count=len(sources),
-                    tokens_estimated=tokens_est,
-                    response_time_ms=elapsed_ms,
-                    had_media=had_media,
-                    is_cached=False,
-                    suggestions=json.dumps(suggestions) if suggestions else None
-                )
-                db.add(log)
-                db.commit()
-                db.refresh(log)
-                yield f"data: {json.dumps({'type': 'metadata', 'log_id': log.id})}\n\n"
+                log_id = await run_in_threadpool(save_to_db)
+                yield f"data: {json.dumps({'type': 'metadata', 'log_id': log_id})}\n\n"
             except Exception as log_err:
-                db.rollback()
                 print(f"[ChatLog Stream] Failed to write log: {log_err}")
 
         except Exception as e:

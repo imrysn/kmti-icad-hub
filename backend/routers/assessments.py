@@ -18,7 +18,7 @@ from ..schemas import (
 from .auth import get_current_user
 from ..websocket_manager import notification_manager
 
-router = APIRouter(prefix="/api/v1/assessments", tags=["Assessments"])
+router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
 # --- Trainee Endpoints ---
 
@@ -478,7 +478,7 @@ def download_feedback_file(
     )
 
 @router.post("/feedback/{feedback_id}/reply")
-def reply_to_feedback(
+async def reply_to_feedback(
     feedback_id: int,
     reply: str = Form(...),
     db: Session = Depends(get_db),

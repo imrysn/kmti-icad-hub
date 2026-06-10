@@ -86,13 +86,6 @@
   color: var(--text-white);
 }
 
-.app-title::before {
-  content: '';
-  width: 10px;
-  height: 10px;
-  background: #dd4dfa;
-  border-radius: 50px;
-}
 
 /* ── Header Actions Group ────────────────────────────────────── */
 

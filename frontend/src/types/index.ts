@@ -3,6 +3,7 @@ export interface Course {
     title: string;
     description: string;
     course_type?: string;
+    order?: number;
 }
 
 export interface MediaAsset {
