@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const isElectron = navigator.userAgent.toLowerCase().includes('electron');
-const defaultHost = isElectron ? '127.0.0.1' : (window.location.hostname || '127.0.0.1');
-const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${defaultHost}:3001`;
+const defaultHost = isElectron ? '127.0.0.1' : (typeof window !== 'undefined' && window.location && window.location.hostname ? window.location.hostname : '127.0.0.1');
+const API_BASE_URL = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:3001`;
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -22,6 +22,11 @@ api.interceptors.request.use(
         if (config.url && !config.url.startsWith('/api/v1') && !config.url.startsWith('http') && !config.url.startsWith('//')) {
             config.url = `/api/v1${config.url.startsWith('/') ? '' : '/'}${config.url}`;
         }
+        // Prepend baseURL explicitly for relative URLs to avoid errors in JSDOM environment
+        const base = config.baseURL || API_BASE_URL;
+        if (config.url && !config.url.startsWith('http') && !config.url.startsWith('//') && base) {
+            config.url = `${base.replace(/\/$/, '')}${config.url}`;
+        }
         return config;
     },
     (error) => {
@@ -34,7 +39,7 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         // Token expired or invalid - clear auth and redirect to login
-        const isLoginRequest = error.config.url?.includes('login');
+        const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {

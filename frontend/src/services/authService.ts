@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const isElectron = navigator.userAgent.toLowerCase().includes('electron');
-const defaultHost = isElectron ? '127.0.0.1' : (window.location.hostname || '127.0.0.1');
-const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${defaultHost}:3001`;
+const defaultHost = isElectron ? '127.0.0.1' : (typeof window !== 'undefined' && window.location && window.location.hostname ? window.location.hostname : '127.0.0.1');
+const API_BASE_URL = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:3001`;
 
 export interface LoginCredentials {
     username: string;
@@ -52,9 +52,17 @@ authApi.interceptors.request.use((config) => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
-    if (config.url && !config.url.startsWith('/api/v1') && !config.url.startsWith('http') && !config.url.startsWith('//')) {
-        config.url = `/api/v1${config.url.startsWith('/') ? '' : '/'}${config.url}`;
+    
+    // Normalize url prepends
+    let url = config.url || '';
+    if (!url.startsWith('http') && !url.startsWith('//')) {
+        if (!url.startsWith('/api/v1')) {
+            url = `/api/v1${url.startsWith('/') ? '' : '/'}${url}`;
+        }
+        const base = config.baseURL || API_BASE_URL;
+        url = `${base.replace(/\/$/, '')}${url}`;
     }
+    config.url = url;
     return config;
 });
 
@@ -64,7 +72,7 @@ authApi.interceptors.response.use(
     (error) => {
         // Only redirect if NOT a login attempt AND not already on the login page.
         // This prevents failed logins from refreshing the page and clearing error messages.
-        const isLoginRequest = error.config.url?.includes('login');
+        const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
