@@ -86,10 +86,11 @@ function App() {
         if (window.electronAPI) {
           window.electronAPI.setWindowSize(440, 550, false);
         }
-      } else if (prevAuthRef.current === false) {
-        // Transitioning from login
+      } else {
+        // App is authenticated (either on startup or after login) -> Set to maximized/full screen
         if (window.electronAPI) {
           window.electronAPI.setWindowSize(1280, 720, true);
+          window.electronAPI.maximize();
         }
       }
       // Update ref for next state change
