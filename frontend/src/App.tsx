@@ -227,7 +227,7 @@ function App() {
 
             {/* 2. NAVIGATION (Center) */}
             <div className="header-center">
-              {user?.role === 'admin' ? (
+              {user?.role === 'admin' && (
                 <nav className="mode-switcher">
                   <button className={`mode-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
                     Mentor
@@ -239,28 +239,7 @@ function App() {
                     Admin
                   </button>
                 </nav>
-              ) : location.pathname.startsWith('/mentor') && (() => {
-                const storageKey = user ? `kmti_u${user.id}_annotationCompleted` : '';
-                const isAnnotationCompleted = localStorage.getItem(storageKey) === 'true';
-                const canBypass = user?.role?.toLowerCase() === 'admin' || user?.role?.toLowerCase() === 'employee';
-                const isAssessmentLocked = !canBypass && !isAnnotationCompleted;
-                return (
-                  <nav className="mode-switcher">
-                    <button className={`mode-btn ${new URLSearchParams(location.search).get('mode') !== 'assessment' ? 'active' : ''}`} onClick={() => navigate('/mentor?mode=manual')}>
-                      Manual
-                    </button>
-                    <button 
-                      className={`mode-btn ${new URLSearchParams(location.search).get('mode') === 'assessment' ? 'active' : ''}`} 
-                      onClick={() => navigate('/mentor?mode=assessment')}
-                      disabled={isAssessmentLocked}
-                      title={isAssessmentLocked ? "Complete Course 1 & the Annotation Quiz to unlock" : "Go to Practical Assessment"}
-                    >
-                      {isAssessmentLocked && <Lock size={12} style={{ marginRight: '6px', color: '#fbbf24' }} />}
-                      Practical Assessment
-                    </button>
-                  </nav>
-                );
-              })()}
+              )}
             </div>
 
             {/* 3. USER & ACTIONS (Right) */}

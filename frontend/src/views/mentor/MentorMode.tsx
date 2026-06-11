@@ -408,6 +408,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 setSelectedCourse={setSelectedCourse} 
                 is3DCompleted={is3DCompleted}
                 is2DCompleted={is2DCompleted}
+                isAnnotationCompleted={isAnnotationCompleted}
                 canBypass={canBypass}
             />
         );

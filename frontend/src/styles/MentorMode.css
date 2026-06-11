@@ -32,10 +32,11 @@
 
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(480px, 480px));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1rem;
   justify-content: center;
-  max-width: 1100px;
+  max-width: 1800px;
+  width: 100%;
 }
 
 .mentor-header {
@@ -236,8 +237,9 @@
   opacity: 0.85;
 }
 
-/* ── 2D Card: always white text over image bg (any theme, any lock state) ── */
-.course-card.card-2d::before {
+/* ── 2D & Practical Cards: always white text over image bg (any theme, any lock state) ── */
+.course-card.card-2d::before,
+.course-card.card-practical::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -251,15 +253,29 @@
   pointer-events: none;
 }
 
-.course-card.card-2d h3 {
+.course-card.card-2d h3,
+.course-card.card-practical h3 {
   color: #ffffff !important;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.98), 0 0 24px rgba(0, 0, 0, 0.7);
   font-weight: 700;
 }
 
-.course-card.card-2d p {
+.course-card.card-2d p,
+.course-card.card-practical p {
   color: rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.98);
+}
+
+.course-card.card-practical-3d .card-2d-image {
+  object-fit: contain;
+  transform: scale(0.9);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease, opacity 0.5s ease;
+}
+
+.course-card.card-practical-3d:hover:not(.locked) .card-2d-image {
+  transform: scale(0.95);
+  filter: blur(0) grayscale(0) brightness(0.9);
+  opacity: 0.95;
 }
 
 
@@ -351,7 +367,8 @@
 }
 
 .course-card.card-3d .card-header,
-.course-card.card-2d .card-header {
+.course-card.card-2d .card-header,
+.course-card.card-practical .card-header {
   transform: translateY(285px);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -366,7 +383,8 @@
 }
 
 .course-card.card-3d p,
-.course-card.card-2d p {
+.course-card.card-2d p,
+.course-card.card-practical p {
   transform: translateY(275px);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s;
 }
@@ -399,8 +417,10 @@
 
 .course-card.card-3d:hover .card-header,
 .course-card.card-2d:hover .card-header,
+.course-card.card-practical:hover .card-header,
 .course-card.card-3d:hover p,
-.course-card.card-2d:hover p {
+.course-card.card-2d:hover p,
+.course-card.card-practical:hover p {
   transform: translateY(0);
 }
 

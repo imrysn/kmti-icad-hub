@@ -1,9 +1,11 @@
 import React from 'react';
-import { BookOpen, PlayCircle, Lock, Layers, Compass } from 'lucide-react'; import { Course } from '../../../types';
+import { BookOpen, PlayCircle, Lock, Layers } from 'lucide-react'; import { Course } from '../../../types';
 import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
 import { ModelViewer3D } from '../../../components/ModelViewer3D';
 import uncoilerUrl from '../../../assets/uncoiler.glb';
 import drawing2DUrl from '../../../assets/2D.png';
+import practical3DImgUrl from '../../../assets/froming4.webp';
+import drawing2DAssessmentUrl from '../../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png';
 
 interface CourseSelectorProps {
     courses: Course[];
@@ -12,6 +14,7 @@ interface CourseSelectorProps {
     setSelectedCourse: (course: Course) => void;
     is3DCompleted: boolean;
     is2DCompleted: boolean;
+    isAnnotationCompleted: boolean;
     canBypass: boolean;
 }
 
@@ -22,6 +25,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     setSelectedCourse,
     is3DCompleted,
     is2DCompleted,
+    isAnnotationCompleted,
     canBypass
 }) => {
     if (loading) {
@@ -36,6 +40,8 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                         <CourseCardSkeleton />
                         <CourseCardSkeleton />
                         <CourseCardSkeleton />
+                        <CourseCardSkeleton />
+                        <CourseCardSkeleton />
                     </div>
                 </div>
             </div>
@@ -46,16 +52,42 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         return <div className="mentor-error">{error}</div>;
     }
 
-    const allCourses = [
-        ...courses,
+    const course3D = courses.find(c => c.id.toString() === '1') || {
+        id: '1',
+        title: '3D Modeling',
+        description: 'Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints.',
+        course_type: '3D_Modeling',
+        order: 1
+    };
+
+    const course2D = courses.find(c => c.id.toString() === '2') || {
+        id: '2',
+        title: '2D Detailing',
+        description: 'Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.',
+        course_type: '2D_Drawing',
+        order: 2
+    };
+
+    const activeCards = [
+        course3D,
         {
-            id: 'coming-soon',
-            title: 'Coming Soon',
-            description: 'This module is under development.',
-            course_type: '3d',
-            order: 999
+            id: 'practical-assessment',
+            title: '3D Practical Assessment',
+            description: 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
+            course_type: 'Practical',
+            order: 1.5
+        },
+        course2D,
+        {
+            id: '2d-assessment',
+            title: '2D Detailing Assessment',
+            description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
+            course_type: 'Practical_2D',
+            order: 2.5
         }
     ];
+
+    const allCourses = [...activeCards];
 
     return (
         <div className="mentor-mode course-selector-view animate-fade-in">
@@ -67,30 +99,27 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
             <div className="course-selection">
                 <div className="course-grid">
                     {allCourses.map((course) => {
-                        const isComingSoon = course.id.toString() === 'coming-soon';
-                        const isLocked = isComingSoon || (course.id.toString() === '2' && !is3DCompleted && !canBypass);
+                        const isLocked = (course.id.toString() === 'practical-assessment' && !isAnnotationCompleted && !canBypass) ||
+                            (course.id.toString() === '2' && !is3DCompleted && !canBypass) ||
+                            (course.id.toString() === '2d-assessment' && !is2DCompleted && !canBypass);
 
                         return (
                             <div
                                 key={course.id}
-                                className={`course-card ${course.id.toString() === '1' ? 'card-3d' : ''} ${course.id.toString() === '2' ? 'card-2d' : ''} ${isLocked ? 'locked' : ''} ${isComingSoon ? 'coming-soon-card' : ''}`}
+                                className={`course-card ${course.id.toString() === '1' ? 'card-3d' : ''} ${course.id.toString() === '2' ? 'card-2d' : ''} ${course.id.toString() === 'practical-assessment' ? 'card-practical-3d card-practical' : ''} ${course.id.toString() === '2d-assessment' ? 'card-practical-2d card-practical' : ''} ${isLocked ? 'locked' : ''}`}
                             >
                                 {isLocked && (
                                     <div className="locked-overlay">
                                         <div className="locked-overlay-inner">
-                                            {isComingSoon ? (
-                                                <>
-                                                    <Compass size={36} className="overlay-lock-icon animate-pulse" />
-                                                    <span>Under Development</span>
-                                                    <p className="locked-hint">Advanced modules launching soon</p>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <Lock size={36} className="overlay-lock-icon" />
-                                                    <span>Prerequisite Required</span>
-                                                    <p className="locked-hint">Complete 3D Modeling to unlock</p>
-                                                </>
-                                            )}
+                                            <Lock size={36} className="overlay-lock-icon" />
+                                            <span>Prerequisite Required</span>
+                                            <p className="locked-hint">
+                                                {course.id.toString() === 'practical-assessment'
+                                                    ? 'Complete 3D Modeling to unlock'
+                                                    : course.id.toString() === '2d-assessment'
+                                                        ? 'Complete 2D Detailing to unlock'
+                                                        : 'Complete 3D Practical Assessment to unlock'}
+                                            </p>
                                         </div>
                                     </div>
                                 )}
@@ -108,13 +137,13 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                     <div className="card-graphic-container card-2d-graphic-container">
                                         <img src={drawing2DUrl} alt="2D Drawing" className="card-2d-image" />
                                     </div>
+                                ) : course.id.toString() === 'practical-assessment' ? (
+                                    <div className="card-graphic-container card-2d-graphic-container">
+                                        <img src={practical3DImgUrl} alt="3D Practical" className="card-2d-image" />
+                                    </div>
                                 ) : (
-                                    <div className="card-graphic-container" style={{ opacity: 0.15 }}>
-                                        <svg viewBox="0 0 100 100" className="card-svg-graphic coming-soon-graphic">
-                                            <rect x="15" y="15" width="70" height="70" rx="8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinejoin="round" strokeDasharray="4,4" />
-                                            <circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3,3" />
-                                            <path d="M 50,25 L 50,50 L 65,50" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                        </svg>
+                                    <div className="card-graphic-container card-2d-graphic-container">
+                                        <img src={drawing2DAssessmentUrl} alt="2D Assessment" className="card-2d-image" />
                                     </div>
                                 )}
 
@@ -126,7 +155,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                         if (!isLocked) setSelectedCourse(course as any);
                                     }}
                                 >
-                                    {isComingSoon ? 'Coming Soon' : isLocked ? 'Locked' : 'Launch Module'} <PlayCircle size={18} />
+                                    {isLocked ? 'Locked' : 'Launch Module'} <PlayCircle size={18} />
                                 </button>
                             </div>
                         );
