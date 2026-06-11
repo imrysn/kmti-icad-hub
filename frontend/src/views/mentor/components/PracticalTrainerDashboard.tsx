@@ -17,6 +17,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedTaskSubmissions, setSelectedTaskSubmissions] = useState<AssessmentSubmission[] | null>(null);
     const [isReviewing, setIsReviewing] = useState(false);
+    
+    // New states for Bulk Set Review
+    const [selectedSetSubmissions, setSelectedSetSubmissions] = useState<AssessmentSubmission[] | null>(null);
+    const [isReviewingSet, setIsReviewingSet] = useState(false);
+
     const [feedbackComments, setFeedbackComments] = useState('');
     const [feedbackFile, setFeedbackFile] = useState<File | null>(null);
     const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
@@ -244,6 +249,50 @@ export const PracticalTrainerDashboard: React.FC = () => {
         }
     };
 
+    const handleBulkSubmitFeedback = async (status: 'approved' | 'rejected') => {
+        if (!selectedSetSubmissions || selectedSetSubmissions.length === 0) return;
+
+        if (status === 'rejected' && !feedbackComments) {
+            showNotification('Please provide comments for rejection.', 'warning');
+            return;
+        }
+
+        setIsSubmittingFeedback(true);
+        let successCount = 0;
+        let failCount = 0;
+
+        try {
+            for (const sub of selectedSetSubmissions) {
+                try {
+                    await assessmentService.provideFeedback(
+                        sub.id,
+                        status,
+                        feedbackFile || undefined,
+                        feedbackComments
+                    );
+                    successCount++;
+                } catch (err) {
+                    console.error(`Failed to submit feedback for submission ${sub.id}`, err);
+                    failCount++;
+                }
+            }
+
+            if (failCount > 0) {
+                showNotification(`Successfully ${status} ${successCount} tasks. Failed on ${failCount}.`, 'warning');
+            } else {
+                showNotification(`Successfully ${status} all ${successCount} tasks in the set.`, 'success');
+            }
+
+            setIsReviewingSet(false);
+            setSelectedSetSubmissions(null);
+            setFeedbackComments('');
+            setFeedbackFile(null);
+            fetchSubmissions();
+        } finally {
+            setIsSubmittingFeedback(false);
+        }
+    };
+
     const filteredSubmissions = submissions.filter(s =>
         s.user?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.user?.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -417,6 +466,23 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         <div className="set-group-header" onClick={() => toggleSet(setKey)}>
                                                             <h4>Set {setNum} <span className="task-count-dim">({tasks.length} tasks)</span></h4>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                    <button 
+                                                                        className="task-action-btn primary"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            const latestSubmissions = tasks.map((subs: any) => subs[0]);
+                                                                            if (latestSubmissions.length === 0) {
+                                                                                showNotification('No submissions to review in this set.', 'info');
+                                                                                return;
+                                                                            }
+                                                                            setSelectedSetSubmissions(latestSubmissions);
+                                                                            setIsReviewingSet(true);
+                                                                        }}
+                                                                        title="Review Entire Set"
+                                                                        style={{ padding: '0.2rem 0.5rem', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px', color: '#fff' }}
+                                                                    >
+                                                                        <Eye size={14} style={{ marginRight: '4px' }} /> Review Set {setNum}
+                                                                    </button>
                                                                     <button 
                                                                         className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
                                                                         onClick={(e) => {
@@ -664,74 +730,164 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {selectedTaskSubmissions[0].status === 'pending' ? (
-                                    <div className="feedback-form">
-                                        <div className="form-scroll-area">
-                                            <div className="form-group">
-                                                <label>Your Feedback / Comments</label>
-                                                <textarea
-                                                    placeholder="Provide detailed feedback for the latest attempt..."
-                                                    value={feedbackComments}
-                                                    onChange={(e) => setFeedbackComments(e.target.value)}
-                                                ></textarea>
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label>Excel Checkback File (Optional)</label>
-                                                <div className="file-upload-area">
-                                                    <input
-                                                        type="file"
-                                                        id="checkback-file"
-                                                        accept=".xlsx,.xls"
-                                                        onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
-                                                    />
-                                                    <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''}>
-                                                        <Upload size={18} />
-                                                        <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
-                                                    </label>
-                                                    {feedbackFile && (
-                                                        <button
-                                                            type="button"
-                                                            className="clear-file-btn"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                setFeedbackFile(null);
-                                                                const fileInput = document.getElementById('checkback-file') as HTMLInputElement;
-                                                                if (fileInput) fileInput.value = '';
-                                                            }}
-                                                            title="Remove selected file"
-                                                        >
-                                                            <XCircle size={16} />
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
+                                <div className="feedback-form-panel">
+                                    <h4>Provide Feedback</h4>
+                                    {selectedTaskSubmissions[0].status !== 'pending' && (
+                                        <div style={{ padding: '0.75rem', background: 'rgba(255, 165, 0, 0.1)', border: '1px solid orange', borderRadius: '6px', marginBottom: '1rem', color: 'orange', fontSize: '0.85rem' }}>
+                                            <Eye size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }}/>
+                                            This attempt is already marked as <strong>{selectedTaskSubmissions[0].status}</strong>. Submitting feedback will update the existing review.
                                         </div>
+                                    )}
+                                    <div className="form-group">
+                                        <label>Comments</label>
+                                        <textarea
+                                            placeholder="Provide detailed feedback for the latest attempt..."
+                                            value={feedbackComments}
+                                            onChange={(e) => setFeedbackComments(e.target.value)}
+                                        ></textarea>
+                                    </div>
 
-                                        <div className="modal-action-buttons">
-                                            <button
-                                                className="btn-reject"
-                                                onClick={() => handleSubmitFeedback('rejected')}
-                                                disabled={isSubmittingFeedback}
-                                            >
-                                                <XCircle size={16} /> Reject
-                                            </button>
-                                            <button
-                                                className="btn-approve"
-                                                onClick={() => handleSubmitFeedback('approved')}
-                                                disabled={isSubmittingFeedback}
-                                            >
-                                                <CheckCircle2 size={16} /> Approve
-                                            </button>
+                                    <div className="form-group">
+                                        <label>Excel Checkback File (Optional)</label>
+                                        <div className="file-upload-area">
+                                            <input
+                                                type="file"
+                                                id="checkback-file"
+                                                accept=".xlsx,.xls"
+                                                onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
+                                            />
+                                            <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''}>
+                                                <Upload size={18} />
+                                                <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
+                                            </label>
+                                            {feedbackFile && (
+                                                <button
+                                                    type="button"
+                                                    className="clear-file-btn"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setFeedbackFile(null);
+                                                        const fileInput = document.getElementById('checkback-file') as HTMLInputElement;
+                                                        if (fileInput) fileInput.value = '';
+                                                    }}
+                                                    title="Remove selected file"
+                                                >
+                                                    <XCircle size={16} />
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
-                                ) : (
-                                    <div className="already-reviewed">
-                                        <CheckCircle2 size={48} className="success-icon" />
-                                        <h3>Task {selectedTaskSubmissions[0].status}</h3>
-                                        <p>This attempt has already been reviewed. If the trainee resubmits, it will appear as a new attempt.</p>
+                                </div>
+
+                                <div className="modal-action-buttons">
+                                    <button
+                                        className="btn-reject"
+                                        onClick={() => handleSubmitFeedback('rejected')}
+                                        disabled={isSubmittingFeedback}
+                                    >
+                                        <XCircle size={16} /> Reject
+                                    </button>
+                                    <button
+                                        className="btn-approve"
+                                        onClick={() => handleSubmitFeedback('approved')}
+                                        disabled={isSubmittingFeedback}
+                                    >
+                                        <CheckCircle2 size={16} /> Approve
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Bulk Review Modal for Entire Set */}
+            {isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0 && (
+                <div className="modal-overlay" onClick={() => setIsReviewingSet(false)}>
+                    <div className="review-modal enhanced animate-slide-up" style={{ maxWidth: '800px' }} onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>Review Entire Set {selectedSetSubmissions[0].task?.set_number} for {selectedSetSubmissions[0].user?.full_name}</h3>
+                            <button className="close-btn" onClick={() => setIsReviewingSet(false)}>
+                                <XCircle size={24} />
+                            </button>
+                        </div>
+
+                        <div className="modal-body">
+                            <div className="bulk-review-info" style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+                                <h4 style={{ margin: '0 0 0.5rem 0', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <Eye size={18} /> You are reviewing {selectedSetSubmissions.length} tasks
+                                </h4>
+                                <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                                    The feedback and status you provide below will be applied to all <strong>{selectedSetSubmissions.length}</strong> tasks simultaneously.
+                                </p>
+                                <div style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {selectedSetSubmissions.map(sub => (
+                                        <span key={sub.id} style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
+                                            Unit {sub.task?.task_code}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="feedback-form-panel" style={{ background: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                                <h4>Provide Bulk Feedback</h4>
+                                <div className="form-group" style={{ marginTop: '1rem' }}>
+                                    <label>Overall Comments</label>
+                                    <textarea
+                                        placeholder="Provide overall feedback for the entire set..."
+                                        value={feedbackComments}
+                                        onChange={(e) => setFeedbackComments(e.target.value)}
+                                        style={{ minHeight: '120px' }}
+                                    ></textarea>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Excel Checkback File (Optional, applies to all)</label>
+                                    <div className="file-upload-area">
+                                        <input
+                                            type="file"
+                                            id="bulk-checkback-file"
+                                            accept=".xlsx,.xls"
+                                            onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
+                                        />
+                                        <label htmlFor="bulk-checkback-file" className={feedbackFile ? 'has-file' : ''}>
+                                            <Upload size={18} />
+                                            <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
+                                        </label>
+                                        {feedbackFile && (
+                                            <button
+                                                type="button"
+                                                className="clear-file-btn"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setFeedbackFile(null);
+                                                    const fileInput = document.getElementById('bulk-checkback-file') as HTMLInputElement;
+                                                    if (fileInput) fileInput.value = '';
+                                                }}
+                                                title="Remove selected file"
+                                            >
+                                                <XCircle size={16} />
+                                            </button>
+                                        )}
                                     </div>
-                                )}
+                                </div>
+
+                                <div className="modal-action-buttons" style={{ marginTop: '2rem' }}>
+                                    <button
+                                        className="btn-reject"
+                                        onClick={() => handleBulkSubmitFeedback('rejected')}
+                                        disabled={isSubmittingFeedback}
+                                    >
+                                        <XCircle size={16} /> Reject Entire Set
+                                    </button>
+                                    <button
+                                        className="btn-approve"
+                                        onClick={() => handleBulkSubmitFeedback('approved')}
+                                        disabled={isSubmittingFeedback}
+                                    >
+                                        <CheckCircle2 size={16} /> Approve Entire Set
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
