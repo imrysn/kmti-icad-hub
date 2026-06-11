@@ -334,6 +334,7 @@ class AssessmentSubmissionBase(BaseModel):
     task_id: int
     submission_file_path: str
     status: str = "pending"
+    assessment_type: str = "3D"
 
 class AssessmentSubmissionCreate(AssessmentSubmissionBase):
     user_id: int

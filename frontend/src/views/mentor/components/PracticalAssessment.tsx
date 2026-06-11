@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle, Folder } from 'lucide-react';
 import { AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
@@ -10,6 +10,7 @@ import '../../../styles/3D_Modeling/CourseLesson.css';
 interface PracticalAssessmentProps {
     onBack: () => void;
     is3DCompleted?: boolean;
+    assessmentType?: '3D' | '2D';
 }
 
 /** Ordinal label helper */
@@ -19,7 +20,7 @@ const getSetLabel = (n: number): string => {
     return `${ordinals[n - 1]} ${suffix}`;
 };
 
-export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack, is3DCompleted = false }) => {
+export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack, is3DCompleted = false, assessmentType = '3D' }) => {
     const location = useLocation();
     const [showInstructions, setShowInstructions] = useState<boolean>(() => {
         return localStorage.getItem('kmti_assessment_instructions_expanded') !== 'false';
@@ -104,15 +105,48 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         setDragActiveTaskId(null);
 
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            await uploadTaskFile(e.dataTransfer.files[0], task);
+            await uploadTaskFile(e.dataTransfer.files[0], task, assessmentType);
         }
     };
 
-    const isCurrentSetLocked = useMemo(() => {
-        return activeSet >= 4 && !is3DCompleted;
-    }, [activeSet, is3DCompleted]);
+    const isSetLocked = useCallback((s: number) => {
+        if (assessmentType === '3D') {
+            if (s === 1) {
+                return !is3DCompleted; // Ensure 3D is completed to unlock 1st set
+            } else {
+                const prevSetTasks = tasks.filter(t => t.set_number === s - 1);
+                const prevCompleted = prevSetTasks.length > 0 && prevSetTasks.every(t =>
+                    submissions.some(sub => sub.task_id === t.id && sub.status === 'approved' && (sub.assessment_type || '3D') === '3D')
+                );
+                return !prevCompleted || !is3DCompleted;
+            }
+        } else {
+            if (s === 4) {
+                return false; // 4th set is always unlocked if the 2D component itself is opened.
+            } else {
+                const prevSetTasks = tasks.filter(t => t.set_number === s - 1);
+                const prevCompleted = prevSetTasks.length > 0 && prevSetTasks.every(t =>
+                    submissions.some(sub => sub.task_id === t.id && sub.status === 'approved' && (sub.assessment_type || '3D') === '2D')
+                );
+                return !prevCompleted;
+            }
+        }
+    }, [assessmentType, is3DCompleted, tasks, submissions]);
 
-    const sets = Array.from({ length: 10 }, (_, i) => i + 1);
+    const isCurrentSetLocked = useMemo(() => {
+        return isSetLocked(activeSet);
+    }, [activeSet, isSetLocked]);
+
+    const sets = assessmentType === '3D' 
+        ? Array.from({ length: 10 }, (_, i) => i + 1)
+        : [4, 5, 6, 7];
+        
+    useEffect(() => {
+        if (assessmentType === '2D' && activeSet < 4) {
+            setActiveSet(4);
+        }
+    }, [assessmentType, activeSet, setActiveSet]);
+
     const currentSetTasks = tasks.filter(t => t.set_number === activeSet);
 
     if (loading) {
@@ -140,16 +174,18 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         {sets.map(s => {
                             const setTasks = tasks.filter(t => t.set_number === s);
                             const isCompleted = setTasks.length > 0 && setTasks.every(t =>
-                                submissions.some(sub => sub.task_id === t.id && sub.status === 'approved')
+                                submissions.some(sub => sub.task_id === t.id && sub.status === 'approved' && (sub.assessment_type || '3D') === assessmentType)
                             );
 
-                            const isLocked = s >= 4 && !is3DCompleted;
+                            const isLocked = isSetLocked(s);
 
                             return (
                                 <button
                                     key={s}
                                     className={`sidebar-set-pill ${activeSet === s ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`}
-                                    onClick={() => setActiveSet(s)}
+                                    onClick={() => {
+                                        if (!isLocked) setActiveSet(s);
+                                    }}
                                 >
                                     <span className="sidebar-set-indicator">
                                         {isLocked ? <Lock size={14} /> : isCompleted ? <CheckCircle2 size={14} /> : <span className="set-number-badge">{s}</span>}
@@ -645,7 +681,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                         {sortedUnitTasks.map((task, index) => {
                                                             const taskSubmissions = submissions.filter(s => {
                                                                 const subTaskId = s.task?.id || s.task_id;
-                                                                return Number(subTaskId) === Number(task.id);
+                                                                return Number(subTaskId) === Number(task.id) && (s.assessment_type || '3D') === assessmentType;
                                                             }).sort((a, b) => {
                                                                 const dateA = new Date(a.submitted_at).getTime();
                                                                 const dateB = new Date(b.submitted_at).getTime();
@@ -756,7 +792,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                             <input
                                                                                 type="file" id={uploadId}
                                                                                 accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
-                                                                                onChange={(e) => handleFileUpload(e, task)}
+                                                                                onChange={(e) => handleFileUpload(e, task, assessmentType)}
                                                                                 disabled={isUploading}
                                                                                 style={{ display: 'none' }}
                                                                             />

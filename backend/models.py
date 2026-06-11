@@ -255,6 +255,7 @@ class AssessmentSubmission(Base):
     task_id = Column(Integer, ForeignKey("assessment_tasks.id"), nullable=False)
     submission_file_path = Column(String(500)) # Path to uploaded .dwg
     status = Column(String(50), default="pending") # "pending", "approved", "rejected"
+    assessment_type = Column(String(50), default="3D") # "3D" or "2D"
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=True) # Trainer who reviewed it
     submitted_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())

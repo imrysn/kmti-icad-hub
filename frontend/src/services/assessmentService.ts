@@ -20,6 +20,7 @@ export interface AssessmentSubmission {
     task_id: number;
     submission_file_path: string;
     status: 'pending' | 'approved' | 'rejected';
+    assessment_type: '3D' | '2D';
     trainer_id?: number;
     submitted_at: string;
     updated_at: string;
@@ -58,9 +59,10 @@ export const assessmentService = {
         return `${api.defaults.baseURL}/api/v1/assessments/feedback/${feedbackId}/download`;
     },
 
-    submitTask: async (taskId: number, file: File): Promise<AssessmentSubmission> => {
+    submitTask: async (taskId: number, file: File, assessmentType: '3D' | '2D' = '3D'): Promise<AssessmentSubmission> => {
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('assessment_type', assessmentType);
         const response = await api.post(`/api/v1/assessments/submit/${taskId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
