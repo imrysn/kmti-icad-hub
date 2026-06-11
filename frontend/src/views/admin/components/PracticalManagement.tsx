@@ -3,12 +3,14 @@ import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight,
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { authService, User } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
+import { useUI } from '../../../context/UIContext';
 import { FileManagerModal } from './FileManagerModal';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/admin/PracticalManagement.css';
 
 export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
+    const { requestConfirmation } = useUI();
     const [activeSubTab, setActiveSubTab] = useState<'tasks' | 'assignments'>('tasks');
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
     const [setFilter, setSetFilter] = useState<number | 'all'>(1);
@@ -117,7 +119,13 @@ export const PracticalManagement: React.FC = () => {
     };
 
     const handleDeleteTask = async (taskId: number) => {
-        if (!window.confirm('Are you sure you want to delete this assessment unit?')) return;
+        const confirmed = await requestConfirmation({
+            title: 'Delete Unit',
+            message: 'Are you sure you want to delete this assessment unit?',
+            confirmText: 'Delete',
+            type: 'danger'
+        });
+        if (!confirmed) return;
         try {
             await assessmentService.deleteTask(taskId);
             showNotification('Unit deleted successfully.', 'success');
@@ -128,7 +136,13 @@ export const PracticalManagement: React.FC = () => {
     };
 
     const handleDeleteMapping = async (mappingId: number) => {
-        if (!window.confirm('Are you sure you want to remove this trainer assignment?')) return;
+        const confirmed = await requestConfirmation({
+            title: 'Remove Assignment',
+            message: 'Are you sure you want to remove this trainer assignment?',
+            confirmText: 'Remove',
+            type: 'danger'
+        });
+        if (!confirmed) return;
         try {
             await assessmentService.deleteMapping(mappingId);
             showNotification('Mapping removed successfully.', 'success');
@@ -236,7 +250,7 @@ export const PracticalManagement: React.FC = () => {
     const trainees = allUsers.filter(u => u.role === 'trainee');
     const filteredTasks = useMemo(() => {
         const filtered = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
-        
+
         // Group by set_number to arrange each set individually
         const sets: Record<number, AssessmentTask[]> = {};
         filtered.forEach(t => {
@@ -249,12 +263,12 @@ export const PracticalManagement: React.FC = () => {
         Object.keys(sets).sort((a, b) => parseInt(a) - parseInt(b)).forEach(setStr => {
             const setNum = parseInt(setStr);
             const setTasks = sets[setNum];
-            
+
             const arranged = [...setTasks].sort((a, b) => {
                 const isPartA = !a.is_assembly;
                 const isPartB = !b.is_assembly;
                 if (isPartA !== isPartB) return isPartA ? -1 : 1; // Parts first
-                
+
                 const codeA = a.task_code || '';
                 const codeB = b.task_code || '';
                 // Sort missing codes to the bottom
@@ -262,7 +276,7 @@ export const PracticalManagement: React.FC = () => {
                 if (codeA && !codeB) return -1;
                 return codeA.localeCompare(codeB, undefined, { numeric: true });
             });
-            
+
             arrangedTasks.push(...arranged);
         });
 
@@ -273,14 +287,14 @@ export const PracticalManagement: React.FC = () => {
         <section className="practical-management animate-fade-in">
             <div className="management-header" style={{ borderBottom: '1px solid var(--border-color)', marginBottom: '2rem' }}>
                 <div className="tab-navigation" style={{ display: 'flex', gap: '2rem', marginBottom: '1rem' }}>
-                    <button 
-                        className={`tab-btn ${activeSubTab === 'tasks' ? 'active' : ''}`} 
+                    <button
+                        className={`tab-btn ${activeSubTab === 'tasks' ? 'active' : ''}`}
                         onClick={() => setActiveSubTab('tasks')}
                     >
                         Units & Tasks
                     </button>
-                    <button 
-                        className={`tab-btn ${activeSubTab === 'assignments' ? 'active' : ''}`} 
+                    <button
+                        className={`tab-btn ${activeSubTab === 'assignments' ? 'active' : ''}`}
                         onClick={() => setActiveSubTab('assignments')}
                     >
                         Trainer Assignments
@@ -430,7 +444,7 @@ export const PracticalManagement: React.FC = () => {
                                         <option value="all">All Sets</option>
                                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
                                     </select>
-                                    <button 
+                                    <button
                                         className={`btn-primary ${isBulkDownloading ? 'disabled' : ''}`}
                                         onClick={() => handleBulkDownload(filteredTasks)}
                                         disabled={isBulkDownloading || filteredTasks.length === 0}

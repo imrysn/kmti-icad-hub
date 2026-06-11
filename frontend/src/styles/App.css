@@ -265,9 +265,14 @@
   border: 1px solid var(--border-color);
 }
 
-.mode-btn:hover:not(.active) {
+.mode-btn:hover:not(.active):not(:disabled) {
   background: var(--bg-card);
   color: var(--text-main);
+}
+
+.mode-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ── Background Aurora ───────────────────────────────────────── */
