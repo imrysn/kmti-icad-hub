@@ -268,9 +268,7 @@ button:disabled {
   border: none !important;
   align-items: center;
   box-shadow: 0 4px 12px rgba(221, 77, 250, 0.2);
-  min-width: 100%;
   padding: 0.7rem 2rem;
-
 }
 
 .btn-primary:hover:not(:disabled) {

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Body
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 import os
 import shutil
 import zipfile
@@ -57,7 +57,7 @@ def get_assessment_tasks(
     current_user: User = Depends(get_current_user)
 ):
     """Get all assessment tasks with sequential locking logic."""
-    tasks = db.query(AssessmentTask).order_by(AssessmentTask.set_number, AssessmentTask.order).all()
+    tasks = db.query(AssessmentTask).order_by(AssessmentTask.set_number, AssessmentTask.task_code).all()
     
     # If user is admin/employee, return all tasks without restriction
     if current_user.role in ["admin", "employee"]:
@@ -108,7 +108,8 @@ async def create_task(
     set_number: int = Form(...),
     task_code: str = Form(...),
     title: str = Form(...),
-    description: str = Form(None),
+    description: Optional[str] = Form(None),
+    is_assembly: bool = Form(False),
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -125,12 +126,31 @@ async def create_task(
         task_code=task_code,
         title=title,
         description=description,
-        master_file_path=file_path
+        master_file_path=file_path,
+        is_assembly=is_assembly
     )
     db.add(db_task)
     db.commit()
     db.refresh(db_task)
     return db_task
+
+@router.post("/admin/tasks/sync")
+async def trigger_folder_sync(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Admin only: Trigger the script to sync tasks from local Unts & Tasks folder."""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    import subprocess
+    import sys
+    try:
+        script_path = os.path.join("backend", "scripts", "sync_tasks_from_folder.py")
+        subprocess.run([sys.executable, script_path], check=True)
+        return {"message": "Successfully synced tasks from the server folder."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Sync failed: {str(e)}")
 
 @router.post("/admin/tasks/bulk")
 async def bulk_create_tasks(
@@ -149,7 +169,7 @@ async def bulk_create_tasks(
     existing_count = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).count()
     
     for i, file in enumerate(files):
-        task_code = chr(65 + existing_count + i) # A=65
+        task_code = f"A{existing_count + i + 1}"
         
         file_path = handle_task_upload(file, set_number, task_code)
         
@@ -241,8 +261,9 @@ async def update_task(
     set_number: int = Form(...),
     task_code: str = Form(...),
     title: str = Form(...),
-    description: str = Form(None),
-    file: UploadFile = File(None),
+    description: Optional[str] = Form(None),
+    is_assembly: bool = Form(False),
+    file: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -258,6 +279,7 @@ async def update_task(
     db_task.task_code = task_code
     db_task.title = title
     db_task.description = description
+    db_task.is_assembly = is_assembly
     
     if file:
         # Save new file
@@ -418,14 +440,17 @@ def download_master_file(
     if not task or not task.master_file_path:
         raise HTTPException(status_code=404, detail="Master file not found")
     
-    # In a real app, master_file_path would be an absolute path or relative to a storage root
-    # For now, we assume it's relative to the project root or a known directory
-    if not os.path.exists(task.master_file_path):
+    # Prepend 'uploads' if missing, since path from sync is relative to uploads directory
+    full_path = task.master_file_path
+    if not full_path.startswith("uploads"):
+        full_path = os.path.join("uploads", full_path)
+        
+    if not os.path.exists(full_path):
         raise HTTPException(status_code=404, detail="File does not exist on server")
         
     return FileResponse(
-        path=task.master_file_path, 
-        filename=f"Set{task.set_number}_{task.task_code}.dwg",
+        path=full_path, 
+        filename=task.file_name or os.path.basename(full_path),
         media_type="application/octet-stream"
     )
 
@@ -442,11 +467,13 @@ async def submit_task(
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
 
-    # Define upload directory
-    upload_dir = os.path.join("uploads", "submissions", str(current_user.id))
+    # Define upload directory mirroring the master structure
+    # e.g., master path: "Unts & Tasks/4th Set Parts And Assembly/2655RCGR/Parts/part.dwg"
+    master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""
+    upload_dir = os.path.join("uploads", "submissions", str(current_user.id), master_dir)
     os.makedirs(upload_dir, exist_ok=True)
     
-    file_path = os.path.join(upload_dir, f"set{task.set_number}_{task.task_code}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}")
+    file_path = os.path.join(upload_dir, file.filename)
     
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -625,8 +652,8 @@ def download_trainee_submission(
 async def provide_feedback(
     submission_id: int,
     status: str = Form(...), # "approved" or "rejected"
-    file: UploadFile = File(None),
-    comments: str = Form(None),
+    file: Optional[UploadFile] = File(None),
+    comments: Optional[str] = Form(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):

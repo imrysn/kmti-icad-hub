@@ -295,17 +295,21 @@ class QuestionAttemptResponse(BaseModel):
 
 class AssessmentTaskBase(BaseModel):
     set_number: int
-    task_code: str
+    set_name: Optional[str] = None
+    unit_name: Optional[str] = None
+    task_code: Optional[str] = None
     title: str
     description: Optional[str] = None
-    master_file_path: Optional[str] = None
     order: int = 0
+    file_name: Optional[str] = None
+    is_assembly: bool = False
 
 class AssessmentTaskCreate(AssessmentTaskBase):
     pass
 
 class AssessmentTaskResponse(AssessmentTaskBase):
     id: int
+    master_file_path: Optional[str] = None
     created_at: datetime
     class Config:
         from_attributes = True

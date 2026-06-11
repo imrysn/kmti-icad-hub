@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder, UploadCloud } from 'lucide-react';
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { authService, User } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
 import { FileManagerModal } from './FileManagerModal';
+import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/admin/PracticalManagement.css';
 
 export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
     const [activeSubTab, setActiveSubTab] = useState<'tasks' | 'assignments'>('tasks');
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
-    const [setFilter, setSetFilter] = useState<number | 'all'>('all');
+    const [setFilter, setSetFilter] = useState<number | 'all'>(1);
     const [allUsers, setAllUsers] = useState<User[]>([]);
     const [mappings, setMappings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -21,13 +22,15 @@ export const PracticalManagement: React.FC = () => {
     const [isBulkMode, setIsBulkMode] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Form State for New Task
+    const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
+
     const [newTask, setNewTask] = useState({
         set_number: 1,
         task_code: '',
         title: '',
         description: '',
-        master_file_path: ''
+        master_file_path: '',
+        is_assembly: false
     });
 
     // Form State for Assignment
@@ -78,7 +81,7 @@ export const PracticalManagement: React.FC = () => {
         try {
             await assessmentService.createTask(newTask, taskFile);
             showNotification('Unit created successfully.', 'success');
-            setNewTask({ set_number: 1, task_code: '', title: '', description: '', master_file_path: '' });
+            setNewTask({ set_number: 1, task_code: '', title: '', description: '', master_file_path: '', is_assembly: false });
             setTaskFile(null);
             fetchData();
         } catch (err) {
@@ -88,21 +91,14 @@ export const PracticalManagement: React.FC = () => {
         }
     };
 
-    const handleBulkUpload = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (bulkFiles.length === 0) {
-            showNotification('Please select at least one .dwg file.', 'warning');
-            return;
-        }
-
+    const handleSyncTasks = async () => {
         setIsSubmitting(true);
         try {
-            await assessmentService.bulkCreateTasks(newTask.set_number, bulkFiles);
-            showNotification(`Successfully created ${bulkFiles.length} units.`, 'success');
-            setBulkFiles([]);
+            await assessmentService.syncTasks();
+            showNotification('Successfully synced tasks from the server folder.', 'success');
             fetchData();
         } catch (err) {
-            showNotification('Bulk upload failed.', 'error');
+            showNotification('Sync failed.', 'error');
         } finally {
             setIsSubmitting(false);
         }
@@ -184,8 +180,8 @@ export const PracticalManagement: React.FC = () => {
         // Only allow reordering within the same set
         // Important: Extract ONLY the tasks from the specific set being interacted with,
         // otherwise if 'All Sets' is selected, task codes will bleed continuously (e.g. A, B... Z) across sets.
-        const setLocalTasks = tasks.filter(t => t.set_number === setNumber).sort((a, b) => a.order - b.order);
-        
+        const setLocalTasks = tasks.filter(t => t.set_number === setNumber).sort((a, b) => (a.task_code || '').localeCompare(b.task_code || ''));
+
         const draggedIndex = setLocalTasks.findIndex(t => t.id === draggedTaskId);
         const targetIndex = setLocalTasks.findIndex(t => t.id === targetTaskId);
 
@@ -212,7 +208,7 @@ export const PracticalManagement: React.FC = () => {
             // Then sort them so the UI reflects the new correct order immediately
             return updated.sort((a, b) => {
                 if (a.set_number !== b.set_number) return a.set_number - b.set_number;
-                return a.order - b.order;
+                return (a.task_code || '').localeCompare(b.task_code || '');
             });
         });
 
@@ -238,41 +234,72 @@ export const PracticalManagement: React.FC = () => {
 
     const trainers = allUsers.filter(u => u.role === 'employee' || u.role === 'admin');
     const trainees = allUsers.filter(u => u.role === 'trainee');
-    const filteredTasks = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
+    const filteredTasks = useMemo(() => {
+        const filtered = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
+        
+        // Group by set_number to arrange each set individually
+        const sets: Record<number, AssessmentTask[]> = {};
+        filtered.forEach(t => {
+            if (!sets[t.set_number]) sets[t.set_number] = [];
+            sets[t.set_number].push(t);
+        });
+
+        const arrangedTasks: AssessmentTask[] = [];
+
+        Object.keys(sets).sort((a, b) => parseInt(a) - parseInt(b)).forEach(setStr => {
+            const setNum = parseInt(setStr);
+            const setTasks = sets[setNum];
+            
+            const arranged = [...setTasks].sort((a, b) => {
+                const isPartA = !a.is_assembly;
+                const isPartB = !b.is_assembly;
+                if (isPartA !== isPartB) return isPartA ? -1 : 1; // Parts first
+                
+                const codeA = a.task_code || '';
+                const codeB = b.task_code || '';
+                // Sort missing codes to the bottom
+                if (!codeA && codeB) return 1;
+                if (codeA && !codeB) return -1;
+                return codeA.localeCompare(codeB, undefined, { numeric: true });
+            });
+            
+            arrangedTasks.push(...arranged);
+        });
+
+        return arrangedTasks;
+    }, [tasks, setFilter]);
 
     return (
-        <div className="practical-management animate-fade-in">
-            <div className="admin-sub-tabs">
-                <button
-                    className={`sub-tab-btn ${activeSubTab === 'tasks' ? 'active' : ''}`}
-                    onClick={() => setActiveSubTab('tasks')}
-                >
-                    <BookOpen size={18} /> Units & Tasks
-                </button>
-                <button
-                    className={`sub-tab-btn ${activeSubTab === 'assignments' ? 'active' : ''}`}
-                    onClick={() => setActiveSubTab('assignments')}
-                >
-                    <Users size={18} /> Trainer Assignments
-                </button>
+        <section className="practical-management animate-fade-in">
+            <div className="management-header" style={{ borderBottom: '1px solid var(--border-color)', marginBottom: '2rem' }}>
+                <div className="tab-navigation" style={{ display: 'flex', gap: '2rem', marginBottom: '1rem' }}>
+                    <button 
+                        className={`tab-btn ${activeSubTab === 'tasks' ? 'active' : ''}`} 
+                        onClick={() => setActiveSubTab('tasks')}
+                    >
+                        Units & Tasks
+                    </button>
+                    <button 
+                        className={`tab-btn ${activeSubTab === 'assignments' ? 'active' : ''}`} 
+                        onClick={() => setActiveSubTab('assignments')}
+                    >
+                        Trainer Assignments
+                    </button>
+                </div>
             </div>
 
             {activeSubTab === 'tasks' ? (
                 <div className="tasks-management">
-                    <div className="management-header">
-                        <h3>Assessment Unit Library</h3>
-                        <p>Configure the 7-set practical units and their master drafting files</p>
-                    </div>
 
                     <div className="management-grid">
                         <div className="creation-form-card">
                             <div className="form-header-toggle">
-                                <h4>{isBulkMode ? 'Bulk Upload Units' : 'Create New Unit'}</h4>
+                                <h4>{isBulkMode ? 'Sync Units' : 'Create New Unit'}</h4>
                                 <button
                                     className="btn-outline"
                                     onClick={() => setIsBulkMode(!isBulkMode)}
                                 >
-                                    {isBulkMode ? 'Switch to Single' : 'Switch to Bulk'}
+                                    {isBulkMode ? 'Switch to Single' : 'Switch to Sync'}
                                 </button>
                             </div>
 
@@ -285,16 +312,36 @@ export const PracticalManagement: React.FC = () => {
                                                 value={newTask.set_number}
                                                 onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
                                             >
-                                                {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                            </select>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Type</label>
+                                            <select
+                                                value={newTask.is_assembly ? 'assembly' : 'part'}
+                                                onChange={(e) => {
+                                                    const isAssembly = e.target.value === 'assembly';
+                                                    setNewTask({ ...newTask, is_assembly: isAssembly, task_code: '' });
+                                                }}
+                                            >
+                                                <option value="part">Part</option>
+                                                <option value="assembly">Assembly</option>
                                             </select>
                                         </div>
                                         <div className="form-group">
                                             <label>Unit Code</label>
                                             <input
                                                 type="text"
-                                                placeholder="e.g. A"
+                                                placeholder={newTask.is_assembly ? "e.g. A1" : "e.g. P1"}
                                                 value={newTask.task_code}
-                                                onChange={(e) => setNewTask({ ...newTask, task_code: e.target.value.toUpperCase() })}
+                                                onChange={(e) => {
+                                                    const val = e.target.value.toUpperCase();
+                                                    if (newTask.is_assembly) {
+                                                        if (/^A\d*$/.test(val) || val === '') setNewTask({ ...newTask, task_code: val });
+                                                    } else {
+                                                        if (/^P\d*$/.test(val) || val === '') setNewTask({ ...newTask, task_code: val });
+                                                    }
+                                                }}
                                                 required
                                             />
                                         </div>
@@ -311,17 +358,31 @@ export const PracticalManagement: React.FC = () => {
                                     </div>
                                     <div className="form-group">
                                         <label>Master File (.dwg, .zip)</label>
-                                        <div className="file-upload-area">
+                                        <div className="file-input-wrapper-styled">
                                             <input
                                                 type="file"
                                                 id="task-file"
                                                 accept=".dwg,.zip"
-                                                onChange={(e) => setTaskFile(e.target.files?.[0] || null)}
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0] || null;
+                                                    setTaskFile(file);
+                                                    if (file) {
+                                                        const titleWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+                                                        setNewTask({ ...newTask, title: titleWithoutExt });
+                                                    }
+                                                }}
+                                                className="hidden-file-input"
                                                 required
                                             />
-                                            <label htmlFor="task-file">
-                                                <Upload size={18} />
-                                                <span>{taskFile ? taskFile.name : 'Choose Master File'}</span>
+                                            <label htmlFor="task-file" className="custom-file-upload">
+                                                <Upload size={20} className="upload-icon" />
+                                                <div className="upload-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                                    {taskFile ? (
+                                                        <span className="file-name-highlight">{taskFile.name}</span>
+                                                    ) : (
+                                                        <span>CHOOSE MASTER FILE</span>
+                                                    )}
+                                                </div>
                                             </label>
                                         </div>
                                     </div>
@@ -338,38 +399,21 @@ export const PracticalManagement: React.FC = () => {
                                     </button>
                                 </form>
                             ) : (
-                                <form onSubmit={handleBulkUpload}>
-                                    <div className="form-group">
-                                        <label>Target Set</label>
-                                        <select
-                                            value={newTask.set_number}
-                                            onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
-                                        >
-                                            {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Select Multiple Files (.dwg, .zip)</label>
-                                        <div className="file-upload-area bulk">
-                                            <input
-                                                type="file"
-                                                id="bulk-files"
-                                                accept=".dwg,.zip"
-                                                multiple
-                                                onChange={(e) => setBulkFiles(Array.from(e.target.files || []))}
-                                                required
-                                            />
-                                            <label htmlFor="bulk-files">
-                                                <Upload size={24} />
-                                                <span>{bulkFiles.length > 0 ? `${bulkFiles.length} files selected` : 'Select Files to Bulk Create'}</span>
-                                            </label>
-                                        </div>
-                                        <p className="dim-text small">Task codes (A, B, C...) and titles will be auto-generated from filenames.</p>
-                                    </div>
-                                    <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                                        {isSubmitting ? 'Uploading...' : <><Upload size={18} /> Bulk Upload Units</>}
+                                <div className="sync-tasks-card" style={{ padding: '2rem', textAlign: 'center' }}>
+                                    <Folder size={48} style={{ color: 'var(--brand-primary)', marginBottom: '1rem' }} />
+                                    <h3 style={{ marginBottom: '0.5rem' }}>Sync Units from Server</h3>
+                                    <p style={{ color: 'var(--text-dim)', marginBottom: '1.5rem' }}>
+                                        Automatically scan the <code>uploads/Unts & Tasks</code> folder and build the assessment hierarchy for all Sets (1-10).
+                                    </p>
+                                    <button
+                                        className="btn-primary"
+                                        onClick={handleSyncTasks}
+                                        disabled={isSubmitting}
+                                        style={{ width: '100%', justifyContent: 'center' }}
+                                    >
+                                        {isSubmitting ? 'Syncing...' : <><Upload size={18} /> Sync Tasks</>}
                                     </button>
-                                </form>
+                                </div>
                             )}
                         </div>
 
@@ -384,52 +428,47 @@ export const PracticalManagement: React.FC = () => {
                                         style={{ padding: '0.25rem 0.5rem', borderRadius: '4px' }}
                                     >
                                         <option value="all">All Sets</option>
-                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
                                     </select>
+                                    <button 
+                                        className={`btn-primary ${isBulkDownloading ? 'disabled' : ''}`}
+                                        onClick={() => handleBulkDownload(filteredTasks)}
+                                        disabled={isBulkDownloading || filteredTasks.length === 0}
+                                        title="Download All Filtered Tasks"
+                                        style={{ padding: '0.4rem 0.8rem', marginLeft: '0.5rem' }}
+                                    >
+                                        <UploadCloud size={16} style={{ transform: 'rotate(180deg)' }} /> Download Filtered
+                                    </button>
                                 </div>
                             </div>
                             {filteredTasks.length > 0 ? (
                                 <table className="admin-table">
                                     <thead>
                                         <tr>
-                                            <th style={{ width: '40px' }}></th>
                                             <th>Set</th>
-                                            <th>Code</th>
+                                            <th>Unit</th>
                                             <th>Title</th>
-                                            <th>File Path</th>
+                                            <th>File Name</th>
+                                            <th>Type</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {filteredTasks.map(task => (
-                                            <tr 
-                                                key={task.id}
-                                                draggable
-                                                onDragStart={() => handleDragStart(task.id)}
-                                                onDragOver={(e) => handleDragOver(e, task.id)}
-                                                onDrop={(e) => handleDrop(e, task.id, task.set_number)}
-                                                className={`
-                                                    ${draggedTaskId === task.id ? 'opacity-50' : ''} 
-                                                    ${dragOverTaskId === task.id ? 'bg-indigo-50 border-t-2 border-indigo-500' : ''}
-                                                    cursor-move transition-all
-                                                `}
-                                            >
-                                                <td className="text-gray-400 cursor-grab active:cursor-grabbing text-center">
-                                                    <GripVertical size={16} />
-                                                </td>
-                                                <td><span className="set-pill-mini">{task.set_number}</span></td>
-                                                <td><strong>{task.task_code}</strong></td>
+                                            <tr key={task.id}>
+                                                <td><span className="set-pill-mini">S{task.set_number}</span></td>
+                                                <td><strong>{task.task_code || '-'}</strong></td>
                                                 <td>{task.title}</td>
-                                                <td className="dim-text">{task.master_file_path}</td>
+                                                <td className="dim-text">{task.file_name}</td>
+                                                <td>
+                                                    {task.is_assembly ? (
+                                                        <span className="role-tag admin" style={{ fontSize: '0.7rem' }}>Assembly</span>
+                                                    ) : (
+                                                        <span className="role-tag trainee" style={{ fontSize: '0.7rem' }}>Part</span>
+                                                    )}
+                                                </td>
                                                 <td>
                                                     <div className="table-actions-horizontal">
-                                                        <button
-                                                            className="btn-ghost"
-                                                            onClick={() => setFileManagerTask(task)}
-                                                            title="Manage Files & Folders"
-                                                        >
-                                                            <Folder size={16} />
-                                                        </button>
                                                         <button
                                                             className="btn-ghost"
                                                             onClick={() => handleEditTask(task)}
@@ -461,11 +500,6 @@ export const PracticalManagement: React.FC = () => {
                 </div>
             ) : (
                 <div className="assignments-management">
-                    <div className="management-header">
-                        <h3>Trainer Assignments</h3>
-                        <p>Map trainees to specific employees for assessment review and oversight</p>
-                    </div>
-
                     <div className="management-grid">
                         <div className="creation-form-card">
                             <h4>Assign Trainer</h4>
@@ -552,15 +586,37 @@ export const PracticalManagement: React.FC = () => {
                                         onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
                                         className="admin-input-styled"
                                     >
-                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Type</label>
+                                    <select
+                                        value={editingTask.is_assembly ? 'assembly' : 'part'}
+                                        onChange={(e) => {
+                                            const isAssembly = e.target.value === 'assembly';
+                                            setEditingTask({ ...editingTask, is_assembly: isAssembly, task_code: '' });
+                                        }}
+                                        className="admin-input-styled"
+                                    >
+                                        <option value="part">Part</option>
+                                        <option value="assembly">Assembly</option>
                                     </select>
                                 </div>
                                 <div className="form-group">
                                     <label>Unit Code</label>
                                     <input
                                         type="text"
-                                        value={editingTask.task_code}
-                                        onChange={(e) => setEditingTask({ ...editingTask, task_code: e.target.value.toUpperCase() })}
+                                        placeholder={editingTask.is_assembly ? "e.g. A1" : "e.g. P1"}
+                                        value={editingTask.task_code || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value.toUpperCase();
+                                            if (editingTask.is_assembly) {
+                                                if (/^A\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
+                                            } else {
+                                                if (/^P\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
+                                            }
+                                        }}
                                         required
                                         className="admin-input-styled"
                                     />
@@ -583,25 +639,34 @@ export const PracticalManagement: React.FC = () => {
                                         type="file"
                                         accept=".dwg,.zip"
                                         id="edit-file-upload"
-                                        onChange={(e) => setEditFile(e.target.files ? e.target.files[0] : null)}
+                                        onChange={(e) => {
+                                            const file = e.target.files ? e.target.files[0] : null;
+                                            setEditFile(file);
+                                            if (file) {
+                                                const titleWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+                                                setEditingTask({ ...editingTask, title: titleWithoutExt });
+                                            }
+                                        }}
                                         className="hidden-file-input"
                                     />
                                     <label htmlFor="edit-file-upload" className="custom-file-upload">
                                         <Upload size={20} className="upload-icon" />
-                                        <div className="upload-text">
+                                        <div className="upload-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
                                             {editFile ? (
                                                 <span className="file-name-highlight">{editFile.name}</span>
                                             ) : (
-                                                <span>Click to replace master DWG</span>
+                                                <>
+                                                    <span>Click to replace master DWG</span>
+                                                    {editingTask.master_file_path && (
+                                                        <div className="current-file-badge" style={{ marginTop: '0' }}>
+                                                            <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
+                                                        </div>
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     </label>
                                 </div>
-                                {editingTask.master_file_path && !editFile && (
-                                    <div className="current-file-badge">
-                                        <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
-                                    </div>
-                                )}
                             </div>
                             <div className="form-group">
                                 <label>Instructions</label>
@@ -614,10 +679,10 @@ export const PracticalManagement: React.FC = () => {
                                 ></textarea>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
                                 <button type="submit" className="btn-primary" disabled={isSubmitting}>
                                     {isSubmitting ? 'Saving...' : 'Save Changes'}
                                 </button>
+                                <button type="button" className="btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
                             </div>
                         </form>
                     </div>
@@ -625,11 +690,11 @@ export const PracticalManagement: React.FC = () => {
             )}
 
             {fileManagerTask && (
-                <FileManagerModal 
-                    task={fileManagerTask} 
-                    onClose={() => setFileManagerTask(null)} 
+                <FileManagerModal
+                    task={fileManagerTask}
+                    onClose={() => setFileManagerTask(null)}
                 />
             )}
-        </div>
+        </section>
     );
 };

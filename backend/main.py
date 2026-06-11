@@ -11,6 +11,10 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from .database import engine, Base, get_db, get_db_mode
 from .routers import auth, admin, chat, lessons, quizzes, assessments
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from fastapi import Request
+import json
 
 # Create database tables on startup (only if SQLite, or MySQL is ready)
 try:
@@ -41,6 +45,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    error_details = {
+        "detail": exc.errors(),
+        "body": str(exc.body) if hasattr(exc, "body") else "No body"
+    }
+    with open("scratch/error_log.txt", "w") as f:
+        json.dump(error_details, f, default=str)
+    return JSONResponse(status_code=422, content={"detail": exc.errors()})
 
 # System Status Endpoint
 @app.get("/api/v1/system/status")

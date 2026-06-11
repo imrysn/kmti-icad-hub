@@ -205,7 +205,90 @@ function createWindow() {
             console.error('Critical download error:', error);
             throw error; // Rethrow to let the renderer catch it
         }
+
     });
+
+    ipcMain.handle('download-bulk-files', async (event, { tasks, token }) => {
+        const { shell } = require('electron');
+        
+        // Auto-save directly to Downloads instead of prompting
+        const targetDir = app.getPath('downloads');
+        const downloadedFiles = [];
+        const errors = [];
+
+        for (const task of tasks) {
+            try {
+                let relativePath = task.target_relative_path;
+                if (!relativePath) {
+                    relativePath = `Unts & Tasks/Set ${task.set_number || 'unknown'}/${task.task_code || 'unknown'}_Master.dwg`;
+                }
+
+                // Ensure no path traversal tricks and remove any prefixes before the actual Set folders
+                relativePath = relativePath.replace(/\\/g, '/');
+                let safeRelativePath = path.normalize(relativePath).replace(/^(\.\.[\/\\])+/, '');
+                
+                // Extract everything after "Unts & Tasks/" to keep exactly the "1st Set Parts/..." structure
+                const match = safeRelativePath.match(/Unts & Tasks[\/\\](.*)/i);
+                if (match) {
+                    safeRelativePath = match[1];
+                }
+
+                const localPath = path.join(targetDir, safeRelativePath);
+                
+                const fileDir = path.dirname(localPath);
+                if (!fs.existsSync(fileDir)) {
+                    fs.mkdirSync(fileDir, { recursive: true });
+                }
+
+                // If file exists, maybe overwrite it
+                const file = fs.createWriteStream(localPath);
+                const safeUrl = task.url.replace('localhost', '127.0.0.1');
+                const protocol = safeUrl.startsWith('https') ? https : http;
+
+                await new Promise((resolve, reject) => {
+                    const request = protocol.get(safeUrl, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }, (response) => {
+                        if (response.statusCode !== 200) {
+                            file.close();
+                            fs.unlink(localPath, () => {});
+                            reject(new Error(`Failed to download: ${response.statusCode}`));
+                            return;
+                        }
+
+                        response.pipe(file);
+                        file.on('finish', () => {
+                            file.close();
+                            resolve(localPath);
+                        });
+                    });
+
+                    request.on('error', (err) => {
+                        file.close();
+                        fs.unlink(localPath, () => {});
+                        reject(err);
+                    });
+
+                    request.setTimeout(30000, () => {
+                        request.destroy();
+                        reject(new Error('Download timeout'));
+                    });
+                });
+                
+                downloadedFiles.push(localPath);
+            } catch (err) {
+                console.error(`Error downloading task ${task.id}:`, err);
+                errors.push({ taskId: task.id, error: err.message });
+            }
+        }
+
+        if (downloadedFiles.length > 0) {
+            shell.openPath(targetDir);
+        }
+
+        return { canceled: false, successCount: downloadedFiles.length, errors };
+    });
+
 
     // Handle permission requests
     const { session } = require('electron');
