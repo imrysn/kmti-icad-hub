@@ -35,9 +35,9 @@
 :root:not([data-theme='light']) {
   color-scheme: dark;
 
-  --bg-dark: #090b10;
-  --bg-surface: #21262d;
-  --bg-card: #30363d;
+  --bg-dark: #000000;
+  --bg-surface: #0e0e0e;
+  --bg-card: #000000;
 
   --glass-bg: #21262d;
   --glass-border: #444c56;
@@ -48,11 +48,11 @@
   --text-dim: #6e7681;
   --text-white: #ffffff;
 
-  --border-color: #38414e;
-  --border-hover: #4e5a6a;
+  --border-color: #5a5a5a;
+  --border-hover: #dd4dfa;
 
   --shadow-glow: 0 0 15px rgba(221, 77, 250, 0.15);
-  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1);
+  --shadow-card: 0 6px 20px #00000080, 0 0 1px rgba(255, 255, 255, 0.1);
   --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
   --color-primary: #dd4dfa;
