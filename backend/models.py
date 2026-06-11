@@ -233,10 +233,14 @@ class AssessmentTask(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     set_number = Column(Integer, nullable=False, index=True) # 1-10
-    task_code = Column(String(10), nullable=False) # e.g., "A", "B"
+    set_name = Column(String(200), nullable=True) # Custom name for the set (e.g., "Bonus Set")
+    unit_name = Column(String(200), nullable=True) # e.g., "2655RCGR"
+    task_code = Column(String(10), nullable=True) # e.g., "A", "B"
     title = Column(String(200), nullable=False)
     description = Column(Text)
     master_file_path = Column(String(500)) # Path to master .dwg
+    file_name = Column(String(200), nullable=True) # Name of the file
+    is_assembly = Column(Boolean, default=False) # True if it's the master assembly
     order = Column(Integer, default=0)
     created_at = Column(DateTime, default=func.now())
     

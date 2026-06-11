@@ -1,5 +1,6 @@
 import React from 'react';
-import { RefreshCw } from 'lucide-react'; import { SystemStats, TraineeProgress } from '../../../services/adminService';
+import { RefreshCw } from 'lucide-react'; 
+import { SystemStats, TraineeProgress } from '../../../services/adminService';
 import { AdminTab } from '../AdminMode';
 
 interface AdminHeaderProps {
@@ -15,7 +16,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
     stats, 
     selectedTrainee, 
     fetchData, 
-    loading 
+    loading
 }) => {
     return (
         <header className="page-header">
@@ -28,6 +29,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'chatbot' && 'Intelligence Chatbot'}
                     {activeTab === 'logs' && 'Security Audit'}
                     {activeTab === 'assessments' && 'Assessment Management'}
+                    {activeTab === 'practical' && 'Practical Unit Dashboard'}
                 </h1>
                 <p className="subtitle">
                     {activeTab === 'overview' && `${stats?.users.total || '0'} active users monitored`}
@@ -37,6 +39,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'chatbot' && `Ask questions grounded in the indexed knowledge base`}
                     {activeTab === 'logs' && `Detailed record of critical system security events`}
                     {activeTab === 'assessments' && `Create and manage quizzes, questions, and evaluation criteria`}
+                    {activeTab === 'practical' && `Manage assessment units and assign to trainers`}
                 </p>
             </div>
             <div className="header-actions">

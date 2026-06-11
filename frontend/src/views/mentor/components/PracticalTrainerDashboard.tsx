@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { api } from '../../../services/api';
 import { useNotification } from '../../../context/NotificationContext';
 import { TraineeSetConfiguration } from './TraineeSetConfiguration';
+import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 
 export const PracticalTrainerDashboard: React.FC = () => {
@@ -22,6 +23,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const [statusFilter, setStatusFilter] = useState<'pending' | 'all'>('pending');
     const [expandedTrainees, setExpandedTrainees] = useState<number[]>([]);
     const [expandedSets, setExpandedSets] = useState<string[]>([]);
+
+    const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
 
     // Main Tabs & Progress Tracking
     const [activeMainTab, setActiveMainTab] = useState<'assessments' | 'progress' | 'sets'>('assessments');
@@ -413,8 +416,24 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     <div key={setKey} className="set-group">
                                                         <div className="set-group-header" onClick={() => toggleSet(setKey)}>
                                                             <h4>Set {setNum} <span className="task-count-dim">({tasks.length} tasks)</span></h4>
-                                                            {isSetExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                                                        </div>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                    <button 
+                                                                        className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            // Get the latest submission for each task
+                                                                            const latestSubmissions = tasks.map((subs: any) => subs[0]);
+                                                                            handleBulkDownload(latestSubmissions, 'submissions');
+                                                                        }}
+                                                                        disabled={isBulkDownloading}
+                                                                        title="Download Trainee Submissions"
+                                                                        style={{ padding: '0.2rem 0.5rem', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px', color: '#fff' }}
+                                                                    >
+                                                                        <UploadCloud size={14} style={{ transform: 'rotate(180deg)', marginRight: '4px' }} /> Download Submissions
+                                                                    </button>
+                                                                    {isSetExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                                                </div>
+                                                            </div>
 
                                                         {isSetExpanded && (
                                                             <div className="set-tasks-grid">

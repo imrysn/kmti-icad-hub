@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     maximize: () => ipcRenderer.send('window-maximize'),
     close: () => ipcRenderer.send('window-close'),
     openFile: (filePath) => ipcRenderer.send('open-file', filePath),
-    downloadAndOpen: (params) => ipcRenderer.invoke('download-and-open', params)
+    downloadAndOpen: (params) => ipcRenderer.invoke('download-and-open', params),
+    downloadBulkFiles: (params) => ipcRenderer.invoke('download-bulk-files', params)
 });

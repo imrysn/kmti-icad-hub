@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle } from 'lucide-react';
+import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle, Folder } from 'lucide-react';
 import { AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
 import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
+import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/mentor/PracticalAssessment.css';
 import '../../../styles/3D_Modeling/CourseLesson.css';
 
@@ -53,6 +54,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         handleDeleteSubmission,
         handleReplyToFeedback
     } = usePracticalTasks();
+
+    const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
 
     // Auto-select correct Set from URL parameter
     useEffect(() => {
@@ -590,8 +593,57 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                         </div>
                                     </div>
                                 ) : currentSetTasks.length > 0 ? (
-                                    currentSetTasks.map((task, index) => {
-                                        const taskSubmissions = submissions.filter(s => {
+                                    (() => {
+                                        const unitsMap = new Map<string, AssessmentTask[]>();
+                                        currentSetTasks.forEach(task => {
+                                            const unitName = task.unit_name || 'Ungrouped Tasks';
+                                            if (!unitsMap.has(unitName)) {
+                                                unitsMap.set(unitName, []);
+                                            }
+                                            unitsMap.get(unitName)!.push(task);
+                                        });
+
+                                        return Array.from(unitsMap.entries()).map(([unitName, unitTasks]) => {
+                                            const sortedUnitTasks = [...unitTasks].sort((a, b) => {
+                                                const isPartA = !a.is_assembly;
+                                                const isPartB = !b.is_assembly;
+                                                if (isPartA !== isPartB) return isPartA ? -1 : 1;
+                                                const codeA = a.task_code || '';
+                                                const codeB = b.task_code || '';
+                                                if (!codeA && codeB) return 1;
+                                                if (codeA && !codeB) return -1;
+                                                return codeA.localeCompare(codeB, undefined, { numeric: true });
+                                            });
+
+                                            return (
+                                                <div key={unitName} className="assessment-unit-group" style={{ marginBottom: '2.5rem' }}>
+                                                    <div className="unit-header-bar" style={{ 
+                                                        background: 'rgba(15, 23, 42, 0.4)', 
+                                                        border: '1px solid rgba(255,255,255,0.08)', 
+                                                        borderRadius: '12px', 
+                                                        padding: '1rem 1.5rem', 
+                                                        marginBottom: '1rem',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '0.75rem',
+                                                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                                                    }}>
+                                                        <Folder size={20} style={{ color: '#38bdf8' }} />
+                                                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#f8fafc', fontWeight: 600 }}>{unitName}</h3>
+                                                        <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem' }}>{unitTasks.length} Files</span>
+                                                        <button 
+                                                            className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
+                                                            onClick={() => handleBulkDownload(sortedUnitTasks)}
+                                                            disabled={isBulkDownloading}
+                                                            title="Download All Unit Files"
+                                                            style={{ marginLeft: '0.5rem', padding: '0.4rem 0.8rem' }}
+                                                        >
+                                                            <UploadCloud size={16} style={{ transform: 'rotate(180deg)' }} /> Bulk Download
+                                                        </button>
+                                                    </div>
+                                                    <div className="unit-tasks-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingLeft: '1rem' }}>
+                                                        {sortedUnitTasks.map((task, index) => {
+                                                        const taskSubmissions = submissions.filter(s => {
                                             const subTaskId = s.task?.id || s.task_id;
                                             return Number(subTaskId) === Number(task.id);
                                         }).sort((a, b) => {
@@ -611,11 +663,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                         const uploadId = `cad-upload-${task.id}`;
 
                                         return (
-                                            <div key={task.id} className={`task-row-card animate-slide-up ${isHighlighted ? 'highlighted-task-row-card' : ''}`} style={{ animationDelay: `${index * 0.05}s` }}>
+                                            <div key={task.id} className={`task-row-card ${isHighlighted ? 'highlighted-task-row-card' : ''}`}>
                                                 {/* Row Header */}
                                                 <div className="task-row-header">
                                                     <div className="task-row-info">
-                                                        <div className="task-row-code">{task.task_code}</div>
+                                                        <div className="task-row-code" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', width: 'auto', borderRadius: '4px' }}>
+                                                            {task.task_code || (task.is_assembly ? 'ASM' : 'PRT')}
+                                                        </div>
                                                         <div className="task-row-meta">
                                                             <h4 className="task-row-title">{task.title}</h4>
                                                             <p className="task-row-desc">
@@ -829,8 +883,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                     </div>
                                                 </div>
                                             </div>
-                                        );
-                                    })
+                                                        );
+                                                    })}
+                                                </div>
+                                                </div>
+                                            );
+                                        });
+                                    })()
                                 ) : (
                                     <div className="no-task-selected-portal animate-fade-in">
                                         <div className="portal-aura"></div>
