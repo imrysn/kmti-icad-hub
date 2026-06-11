@@ -11,30 +11,38 @@ from models import Course, Lesson, LessonContent
 def seed_curriculum():
     db = SessionLocal()
     try:
-        # 1. Create Courses
+        # 1. Create or Update Courses
         modeling_course = db.query(Course).filter(Course.course_type == "3D_Modeling").first()
+        modeling_desc = "Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints."
         if not modeling_course:
             modeling_course = Course(
                 title="3D Modeling",
-                description="Master 3D technical design and assembly in iCAD.",
+                description=modeling_desc,
                 course_type="3D_Modeling",
                 order=0
             )
             db.add(modeling_course)
-            db.commit()
-            db.refresh(modeling_course)
+        else:
+            modeling_course.title = "3D Modeling"
+            modeling_course.description = modeling_desc
+        db.commit()
+        db.refresh(modeling_course)
 
         drawing_course = db.query(Course).filter(Course.course_type == "2D_Drawing").first()
+        drawing_desc = "Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing."
         if not drawing_course:
             drawing_course = Course(
-                title="2D Drawing",
-                description="Learn precision 2D drafting and orthographic projection.",
+                title="2D Detailing",
+                description=drawing_desc,
                 course_type="2D_Drawing",
                 order=1
             )
             db.add(drawing_course)
-            db.commit()
-            db.refresh(drawing_course)
+        else:
+            drawing_course.title = "2D Detailing"
+            drawing_course.description = drawing_desc
+        db.commit()
+        db.refresh(drawing_course)
 
         # 2. Parse mentorConstants.ts for Lessons
         constants_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 

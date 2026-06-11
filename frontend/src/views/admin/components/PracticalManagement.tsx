@@ -3,10 +3,12 @@ import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight,
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { authService, User } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
+import { useUI } from '../../../context/UIContext';
 import '../../../styles/admin/PracticalManagement.css';
 
 export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
+    const { requestConfirmation } = useUI();
     const [activeSubTab, setActiveSubTab] = useState<'tasks' | 'assignments'>('tasks');
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
     const [setFilter, setSetFilter] = useState<number | 'all'>('all');
@@ -115,7 +117,13 @@ export const PracticalManagement: React.FC = () => {
     };
 
     const handleDeleteTask = async (taskId: number) => {
-        if (!window.confirm('Are you sure you want to delete this assessment unit?')) return;
+        const confirmed = await requestConfirmation({
+            title: 'Delete Unit',
+            message: 'Are you sure you want to delete this assessment unit?',
+            confirmText: 'Delete',
+            type: 'danger'
+        });
+        if (!confirmed) return;
         try {
             await assessmentService.deleteTask(taskId);
             showNotification('Unit deleted successfully.', 'success');
@@ -126,7 +134,13 @@ export const PracticalManagement: React.FC = () => {
     };
 
     const handleDeleteMapping = async (mappingId: number) => {
-        if (!window.confirm('Are you sure you want to remove this trainer assignment?')) return;
+        const confirmed = await requestConfirmation({
+            title: 'Remove Assignment',
+            message: 'Are you sure you want to remove this trainer assignment?',
+            confirmText: 'Remove',
+            type: 'danger'
+        });
+        if (!confirmed) return;
         try {
             await assessmentService.deleteMapping(mappingId);
             showNotification('Mapping removed successfully.', 'success');

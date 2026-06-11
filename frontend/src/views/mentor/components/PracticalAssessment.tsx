@@ -3,6 +3,7 @@ import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Loc
 import { assessmentService, AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
+import { useUI } from '../../../context/UIContext';
 import '../../../styles/mentor/PracticalAssessment.css';
 import '../../../styles/3D_Modeling/CourseLesson.css';
 
@@ -19,6 +20,7 @@ const getSetLabel = (n: number): string => {
 
 export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack }) => {
     const { showNotification } = useNotification();
+    const { requestConfirmation } = useUI();
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
     const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
     const [loading, setLoading] = useState(true);
@@ -326,14 +328,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 className="action-btn-styled delete" 
                                                                                 title="Delete submission"
                                                                                 onClick={async () => {
-                                                                                    if (window.confirm("Are you sure you want to delete this submission?")) {
-                                                                                        try {
-                                                                                            await assessmentService.deleteSubmission(sub.id);
-                                                                                            showNotification('Submission deleted.', 'success');
-                                                                                            fetchData();
-                                                                                        } catch (err) {
-                                                                                            showNotification('Failed to delete.', 'error');
-                                                                                        }
+                                                                                    const confirmed = await requestConfirmation({
+                                                                                        title: 'Delete Submission',
+                                                                                        message: 'Are you sure you want to delete this submission?',
+                                                                                        confirmText: 'Delete',
+                                                                                        type: 'danger'
+                                                                                    });
+                                                                                    if (!confirmed) return;
+                                                                                    try {
+                                                                                        await assessmentService.deleteSubmission(sub.id);
+                                                                                        showNotification('Submission deleted.', 'success');
+                                                                                        fetchData();
+                                                                                    } catch (err) {
+                                                                                        showNotification('Failed to delete.', 'error');
                                                                                     }
                                                                                 }}
                                                                             >
