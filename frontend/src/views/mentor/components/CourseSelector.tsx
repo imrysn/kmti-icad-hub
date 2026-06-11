@@ -16,6 +16,7 @@ interface CourseSelectorProps {
     is2DCompleted: boolean;
     isAnnotationCompleted: boolean;
     canBypass: boolean;
+    is3DAssessmentCompleted: boolean;
 }
 
 export const CourseSelector: React.FC<CourseSelectorProps> = ({
@@ -26,7 +27,8 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     is3DCompleted,
     is2DCompleted,
     isAnnotationCompleted,
-    canBypass
+    canBypass,
+    is3DAssessmentCompleted
 }) => {
     if (loading) {
         return (
@@ -92,15 +94,15 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     return (
         <div className="mentor-mode course-selector-view animate-fade-in">
             <div className="mentor-header">
-                <h1>Welcome to iCAD Hub</h1>
+                <h1>Welcome to iCAD Training</h1>
                 <p>Select your learning path to begin the deep dive</p>
             </div>
 
             <div className="course-selection">
                 <div className="course-grid">
                     {allCourses.map((course) => {
-                        const isLocked = (course.id.toString() === 'practical-assessment' && !isAnnotationCompleted && !canBypass) ||
-                            (course.id.toString() === '2' && !is3DCompleted && !canBypass) ||
+                        const isLocked = (course.id.toString() === 'practical-assessment' && !is3DCompleted && !canBypass) ||
+                            (course.id.toString() === '2' && !is3DAssessmentCompleted && !canBypass) ||
                             (course.id.toString() === '2d-assessment' && !is2DCompleted && !canBypass);
 
                         return (

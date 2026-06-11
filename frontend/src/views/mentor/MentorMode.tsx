@@ -4,6 +4,7 @@ import { Lock } from 'lucide-react';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
 import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
+import { assessmentService } from '../../services/assessmentService';
 
 // Extracted Components
 import { CourseSelector } from './components/CourseSelector'; import { MentorSidebar } from './components/MentorSidebar';
@@ -43,8 +44,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const [isRestored, setIsRestored] = useState(false);
     const lastCourseIdRef = useRef<string | null>(null);
 
-    // Prerequisite State (3D Completion for 2D Course)
     const [is3DCompleted, setIs3DCompleted] = useState(false);
+    const [is3DAssessmentCompleted, setIs3DAssessmentCompleted] = useState(false);
     const [is2DCompleted, setIs2DCompleted] = useState(false);
     const [isAnnotationCompleted, setIsAnnotationCompleted] = useState(false);
     const [isCheckingPrereq, setIsCheckingPrereq] = useState(true);
@@ -187,12 +188,28 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 setIsAnnotationCompleted(annotationDone);
                 localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
 
+                // Check 3D Practical Assessment Completion
+                try {
+                    const [tasksData, submissionsData] = await Promise.all([
+                        assessmentService.getTasks(),
+                        assessmentService.getMySubmissions()
+                    ]);
+                    
+                    // A task is completed if it has an approved submission with assessment_type === '3D' (or missing)
+                    const isPracticalCompleted = tasksData.length > 0 && tasksData.every(task => 
+                        submissionsData.some(sub => sub.task_id === task.id && sub.status === 'approved' && (sub.assessment_type || '3D') === '3D')
+                    );
+                    setIs3DAssessmentCompleted(isPracticalCompleted);
+                } catch (e) {
+                    console.error('Failed to check 3D practical assessment prerequisite:', e);
+                }
+
                 // Course ID '2' is 2D Drawing
                 const progress2D = await authService.getLessonProgress('2');
                 const completedCount2D = progress2D.filter((p: any) => p.is_completed).length;
                 setIs2DCompleted(completedCount2D >= completable2DCount && completable2DCount > 0);
             } catch (err) {
-                console.error('Failed to check 3D prerequisite:', err);
+                console.error('Failed to check prerequisites:', err);
             } finally {
                 setIsCheckingPrereq(false);
             }
@@ -410,6 +427,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 is2DCompleted={is2DCompleted}
                 isAnnotationCompleted={isAnnotationCompleted}
                 canBypass={canBypass}
+                is3DAssessmentCompleted={is3DAssessmentCompleted}
             />
         );
     }
@@ -438,22 +456,44 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     />
                 )}
 
-                {selectedCourse.id === 'practical-assessment' ? (
-                    (!canBypass && !isAnnotationCompleted) ? (
+                {selectedCourse.id === 'practical-assessment' || selectedCourse.id === '2d-assessment' ? (
+                    (selectedCourse.id === 'practical-assessment' && !canBypass && !is3DCompleted) ? (
                         <div className="locked-assessment-container animate-fade-in">
                             <div className="locked-assessment-card">
                                 <div className="lock-badge-large">
                                     <Lock size={48} />
                                 </div>
-                                <h2>Practical Assessment Locked</h2>
+                                <h2>3D Practical Assessment Locked</h2>
                                 <p className="lock-description">
-                                    The Practical Assessment is a series of 7 sequential drafting tasks in iJCAD.
-                                    To ensure you have the prerequisite skills, you must first pass the <strong>3D Annotation Competency Quiz</strong>.
+                                    The 3D Practical Assessment is a series of 10 sequential drafting tasks in iJCAD.
+                                    To ensure you have the prerequisite skills, you must first complete the <strong>3D Modeling Course</strong>.
                                 </p>
                                 <div className="unlock-requirements">
                                     <div className="requirement-item">
                                         <div className="status-dot warning" />
-                                        <span>Prerequisite: Course 1 (3D Modeling) &gt; Annotation Quiz (Score &ge; 80%)</span>
+                                        <span>Prerequisite: Complete 3D Modeling</span>
+                                    </div>
+                                </div>
+                                <button className="primary mt-6" onClick={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }}>
+                                    Return to Courses
+                                </button>
+                            </div>
+                        </div>
+                    ) : (selectedCourse.id === '2d-assessment' && !canBypass && !is2DCompleted) ? (
+                        <div className="locked-assessment-container animate-fade-in">
+                            <div className="locked-assessment-card">
+                                <div className="lock-badge-large">
+                                    <Lock size={48} />
+                                </div>
+                                <h2>2D Detailing Assessment Locked</h2>
+                                <p className="lock-description">
+                                    The 2D Detailing Assessment is a series of 4 sequential drafting tasks in iJCAD.
+                                    To ensure you have the prerequisite skills, you must first complete the <strong>2D Detailing Course</strong>.
+                                </p>
+                                <div className="unlock-requirements">
+                                    <div className="requirement-item">
+                                        <div className="status-dot warning" />
+                                        <span>Prerequisite: Complete 2D Detailing</span>
                                     </div>
                                 </div>
                                 <button className="primary mt-6" onClick={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }}>
@@ -464,6 +504,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     ) : (
                         <PracticalAssessment 
                             is3DCompleted={is3DCompleted}
+                            assessmentType={selectedCourse.id === '2d-assessment' ? '2D' : '3D'}
                             onBack={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }} 
                         />
                     )

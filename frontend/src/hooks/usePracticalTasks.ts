@@ -179,7 +179,7 @@ export const usePracticalTasks = () => {
     }
   }, [showNotification, handleDownloadFeedback]);
 
-  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask) => {
+  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D') => {
     const validExtensions = ['.dwg', '.icd', '.dxf', '.step', '.stp', '.iges', '.igs', '.sat', '.3dm'];
     const ext = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
     if (!validExtensions.includes(ext)) {
@@ -190,7 +190,7 @@ export const usePracticalTasks = () => {
     setUploadingTaskId(task.id);
     setIsSubmitting(true);
     try {
-      await assessmentService.submitTask(task.id, file);
+      await assessmentService.submitTask(task.id, file, assessmentType);
       showNotification('Task submitted successfully! Awaiting trainer review.', 'success');
       fetchData(true);
     } catch (err) {
@@ -201,9 +201,9 @@ export const usePracticalTasks = () => {
     }
   }, [showNotification, fetchData]);
 
-  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>, task: AssessmentTask) => {
+  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D') => {
     if (!e.target.files?.[0]) return;
-    await uploadTaskFile(e.target.files[0], task);
+    await uploadTaskFile(e.target.files[0], task, assessmentType);
   }, [uploadTaskFile]);
 
   const handleDeleteSubmission = useCallback(async (subId: number) => {

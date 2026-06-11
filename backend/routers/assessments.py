@@ -458,6 +458,7 @@ def download_master_file(
 async def submit_task(
     task_id: int,
     file: UploadFile = File(...),
+    assessment_type: str = Form("3D"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -483,6 +484,7 @@ async def submit_task(
     submission = db.query(AssessmentSubmission).filter(
         AssessmentSubmission.user_id == current_user.id,
         AssessmentSubmission.task_id == task_id,
+        AssessmentSubmission.assessment_type == assessment_type,
         AssessmentSubmission.status == "pending"
     ).order_by(AssessmentSubmission.submitted_at.desc()).first()
 
@@ -496,6 +498,7 @@ async def submit_task(
             user_id=current_user.id,
             task_id=task_id,
             submission_file_path=file_path,
+            assessment_type=assessment_type,
             status="pending"
         )
         db.add(submission)
