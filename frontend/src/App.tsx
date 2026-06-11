@@ -249,7 +249,12 @@ function App() {
                     <button className={`mode-btn ${new URLSearchParams(location.search).get('mode') !== 'assessment' ? 'active' : ''}`} onClick={() => navigate('/mentor?mode=manual')}>
                       Manual
                     </button>
-                    <button className={`mode-btn ${new URLSearchParams(location.search).get('mode') === 'assessment' ? 'active' : ''}`} onClick={() => navigate('/mentor?mode=assessment')}>
+                    <button 
+                      className={`mode-btn ${new URLSearchParams(location.search).get('mode') === 'assessment' ? 'active' : ''}`} 
+                      onClick={() => navigate('/mentor?mode=assessment')}
+                      disabled={isAssessmentLocked}
+                      title={isAssessmentLocked ? "Complete Course 1 & the Annotation Quiz to unlock" : "Go to Practical Assessment"}
+                    >
                       {isAssessmentLocked && <Lock size={12} style={{ marginRight: '6px', color: '#fbbf24' }} />}
                       Practical Assessment
                     </button>
