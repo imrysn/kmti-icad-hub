@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -20,16 +18,11 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-titleblock');
-
-  const titleBlockSteps = [
-    "The title block displays critical part information including Job Order, Drawing Number, and designer names. Ensure all fields are filled accurately for project tracking.",
-    "Follow the systematic approach to reflect technical data. Input the required information into the dialog and check that it appears correctly in the designated template fields.",
-    "Position the completed title block using landmarks P1 and P2 to ensure it aligns perfectly with the standard KEMCO drawing frame."
+  const { scrollProgress, containerRef } = useLessonCore('2d-titleblock');
+  const TABS = [
+    { id: 'titleblock', label: 'Titleblock' }
   ];
-
-  const currentTitle = "TITLE BLOCK";
-  const currentSubtitle = "Configuring the primary information block for project tracking and part identification.";
+  const [activeTab, setActiveTab] = useState('titleblock');
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -37,56 +30,36 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text={currentTitle}
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak([currentTitle, currentSubtitle, ...titleBlockSteps])}
-                onStop={stop}
-              />
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
-              <KaraokeLessonText
-                className="p-flush"
-                text={currentSubtitle}
-                isActive={isSpeaking && currentIndex === 1}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-
-
-            <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-              <div className="step-header">
-                <span className="step-number">1</span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Title Block Definition & Overview"
-                  isActive={isSpeaking && currentIndex === 2}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <div className="red-text mb-4">
-                  <KaraokeLessonText
-                    text="Displays part information: Job Order, Drawing Number, Machine Name, Designer, and References."
-                    isActive={isSpeaking && currentIndex === 2}
-                    currentCharIndex={currentCharIndex}
-                  />
+            <div className="flex-col tab-content fade-in">
+              {activeTab === 'titleblock' && (
+                <div className="instruction-step" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">19</span>
+                    <span className="step-label">Title Block</span>
+                  </div>
+                  <div className="step-description">
+                    <div className="p-flush">
+                      Displays part informations such as Job Order, Drawing Number,  Part & Machine Name,  Drawn & Designer Name, Cross Reference and Pervious Drawing Number and Quantity
+                    </div>
+                    <img src={titleBlock1Img} alt="Title Block Definitions" className="software-screenshot screenshot-wide" />
+                  </div>
                 </div>
-                <img src={titleBlock1Img} alt="Title Block Definitions" className="software-screenshot screenshot-wide" />
-              </div>
+              )}
             </div>
           </div>
 

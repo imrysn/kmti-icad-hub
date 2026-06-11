@@ -84,7 +84,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     '2d-command-menu-component': {
       title: 'Component highlighted / unhighlighted',
       steps: [
-        "<strong class=\"red-text\">Note:</strong> The process of removing the chamfer is per orthographic view."
+        "<strong class=\"red-text\">Note:</strong> <br />The process of removing the chamfer is per orthographic view."
       ]
     }
   };
@@ -116,7 +116,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
             <div className="flex-col tab-content fade-in">
               {activeTab === 'line-properties' && (
-                <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 4 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}> 
+                <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 4 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">2</span>
                     <KaraokeLessonText
@@ -128,16 +128,16 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                     />
                   </div>
                   <img src={linePropsImg} alt="Line Properties" className="software-screenshot screenshot-wide mt-4" />
-                    
-                    <div className="instruction-box mt-4">
-                      <p className="p-flush">All line type, line weight, and color are selectable when system is started.</p>
-                      <p className="p-flush mt-2">Click on the entities to select and unselect line properties.</p>
-                      <p className="p-flush mt-2">Entities highlighted in blue are selectable.</p>
-                    </div>
 
-
-
+                  <div className="instruction-box mt-4">
+                    <p className="p-flush">All line type, line weight, and color are selectable when system is started.</p>
+                    <p className="p-flush mt-2">Click on the entities to select and unselect line properties.</p>
+                    <p className="p-flush mt-2">Entities highlighted in blue are selectable.</p>
                   </div>
+
+
+
+                </div>
               )}
 
               {activeTab === 'command-menu' && (
@@ -185,7 +185,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
 
-                    
+
                     <img src={activeViewImg} alt="Active View Settings" className="software-screenshot screenshot-wide mt-4" />
                   </div>
                 </div>
@@ -205,8 +205,8 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                   </div>
                   <div className="step-description">
                     <img src={componentHighlightedImg} alt="Component Highlighting" className="software-screenshot screenshot-wide mt-4" />
-                    
-                    <div className={`instruction-box ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{marginTop: "2rem"}}>
+
+                    <div className={`instruction-box ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "2rem" }}>
                       <KaraokeLessonText
                         as="div"
                         className="p-flush"

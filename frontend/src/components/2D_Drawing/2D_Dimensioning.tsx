@@ -88,31 +88,28 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
       title: 'DIMENSIONING',
       subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
       steps: [
-        "Select the dimension command and double click on the dimension characters you wish to edit.",
-        "To add tolerance specifications, select the dimension and use the tolerance formatting tool to define deviations.",
-        "Specify chamfer and radius prefixes in standard dimensions to denote cut corners and circular edge roundings.",
-        "Grinded materials like S45C-D and SS400-D have specific tolerance levels and surface roughness requirements based on the grinding process."
+
       ]
     },
     '2d-dimensioning-3': {
       title: 'PART NOTE',
       subtitle: 'Guidelines for adding technical notes and material specifications.',
       steps: [
-        "Use this tool for automatic hole detailing and quantity callouts. Select the command and click the features to place the leader notes."
+
       ]
     },
     '2d-dimensioning-4': {
       title: 'CHANGE POSITION',
       subtitle: 'Adjusting dimension placement for clarity and alignment.',
       steps: [
-        "Ensure dimensions have enough space between them. Use the change position command, click the dimension, and pick its new location."
+
       ]
     },
     '2d-dimensioning-5': {
       title: 'DIMENSION FOR BREAKVIEWS',
       subtitle: 'Technical guide for dimensioning components using break views.',
       steps: [
-        "There are parts that are too long for the template, which, if scaled too high to fit, become too small for the details. This is applicable for shafts, covers, and other long parts."
+        "There are parts that are too long for the template, which, if scaled too high to fit, become too small for the details, and when used with a larger template, seem unnecessary for minimal details. This is applicable for shafts, covers and other parts that are long."
       ]
     }
   };
@@ -177,7 +174,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       />
                     </div>
 
-                     <div className="step-header" style={{marginLeft: "3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">a.1</span>
                       <KaraokeLessonText
                         as="span"
@@ -187,7 +184,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    
+
                     <div className="step-description">
                       <KaraokeLessonText
                         className="p-flush"
@@ -195,12 +192,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={standardDimMenuImg} alt="Standard Dimension Menu" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem", marginBottom: "-1rem"}}/>
+                      <img src={standardDimMenuImg} alt="Standard Dimension Menu" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem", marginBottom: "-1rem" }} />
                     </div>
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-                    <div className="step-header" style={{ marginLeft: "3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">a.2</span>
                       <KaraokeLessonText
                         as="span"
@@ -217,7 +214,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={seriesDimMenuImg} alt="Series Dimension Menu" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem"}}  />
+                      <img src={seriesDimMenuImg} alt="Series Dimension Menu" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem" }} />
                     </div>
                   </div>
                 </div>
@@ -236,7 +233,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    <div className="step-header" style={{marginLeft: "3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">b.1</span>
                       <KaraokeLessonText
                         as="span"
@@ -253,7 +250,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={editDimDrawingImg} alt="Edit Dimension Guide" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem", marginBottom: "-1rem"}} />
+                      <img src={editDimDrawingImg} alt="Edit Dimension Guide" className="software-screenshot screenshot-wide" style={{ marginTop: "-1rem", marginBottom: "-1rem" }} />
                     </div>
                   </div>
 
@@ -274,7 +271,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={toleranceImg} alt="Tolerance Guide" className="software-screenshot screenshot-wide" style={{marginBottom: "-1rem"}} />
+                      <img src={toleranceImg} alt="Tolerance Guide" className="software-screenshot screenshot-wide" style={{ marginBottom: "-1rem" }} />
                     </div>
                   </div>
 
@@ -316,7 +313,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         text={currentLesson.steps[3]}
                         isActive={isSpeaking && currentIndex === 5}
                         currentCharIndex={currentCharIndex}
-                      /> 
+                      />
                       <img src={polishedMaterialImg} alt="Polished Material Dialog" className="software-screenshot screenshot-wide mt-4" />
 
                       <div className="lesson-table-container mt-4">
@@ -351,7 +348,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                           </tbody>
                         </table>
                       </div>
-                     
+
                     </div>
                   </div>
                 </div>
@@ -386,7 +383,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
               {activeTab === '4' && (
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header" style={{marginLeft: "3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">b.4</span>
                       <KaraokeLessonText
                         as="span"
@@ -417,7 +414,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
               {activeTab === '5' && (
                 <div className="flex-col">
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
-                    <div className="step-header" style={{ marginLeft: "3rem"}}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">c</span>
                       <KaraokeLessonText
                         as="span"

@@ -81,30 +81,55 @@ function createWindow() {
     });
 
     ipcMain.on('open-file', (event, filePath) => {
+        if (!filePath || typeof filePath !== 'string' || filePath.includes('..')) {
+            console.error('Blocked invalid or unsafe path in open-file:', filePath);
+            return;
+        }
+
+        const draftsDir = path.join(app.getPath('userData'), 'drafts');
+        const resolvedPath = path.resolve(filePath);
+
+        // Enforce boundary safety: path must reside strictly inside user drafts or downloads folder
+        const downloadsDir = app.getPath('downloads');
+        if (!resolvedPath.startsWith(draftsDir) && !resolvedPath.startsWith(downloadsDir)) {
+            console.error('Blocked opening unauthorized location in open-file:', resolvedPath);
+            return;
+        }
+
         const { shell } = require('electron');
-        shell.openPath(filePath).then((error) => {
+        shell.openPath(resolvedPath).then((error) => {
             if (error) {
                 console.error(`Failed to open file: ${error}`);
             }
         });
     });
 
-    ipcMain.handle('download-and-open', async (event, { url, filename, token }) => {
+    ipcMain.handle('download-and-open', async (event, { url, filename, token, appName }) => {
         try {
+            if (!filename || typeof filename !== 'string' || filename.includes('..')) {
+                throw new Error('Invalid or unsafe filename');
+            }
+
+            // Strictly strip any folder routing character
+            const safeFilename = path.basename(filename).replace(/[/\\]/g, '');
             const draftsDir = path.join(app.getPath('userData'), 'drafts');
             if (!fs.existsSync(draftsDir)) {
                 fs.mkdirSync(draftsDir, { recursive: true });
             }
 
-            let localPath = path.join(draftsDir, filename);
+            let localPath = path.join(draftsDir, safeFilename);
+
+            if (!localPath.startsWith(draftsDir)) {
+                throw new Error('Path traversal detected');
+            }
             
             // If file exists, try to check if it's writable. If not, use a unique name.
             if (fs.existsSync(localPath)) {
                 try {
                     fs.accessSync(localPath, fs.constants.W_OK);
                 } catch (e) {
-                    const ext = path.extname(filename);
-                    const base = path.basename(filename, ext);
+                    const ext = path.extname(safeFilename);
+                    const base = path.basename(safeFilename, ext);
                     localPath = path.join(draftsDir, `${base}_${Date.now()}${ext}`);
                 }
             }
@@ -128,6 +153,36 @@ function createWindow() {
                     file.on('finish', () => {
                         file.close();
                         const { shell } = require('electron');
+                        const { exec } = require('child_process');
+
+                        if (appName && appName !== 'default') {
+                            let cmd = '';
+                            if (appName.toLowerCase() === 'ijcad') {
+                                cmd = `start gcad.exe "${localPath}"`;
+                            } else if (appName.toLowerCase() === 'nanocad') {
+                                cmd = `start ncad.exe "${localPath}"`; 
+                            } else if (appName.toLowerCase() === 'icad') {
+                                cmd = `start icad.exe "${localPath}"`;
+                            } else if (appName.toLowerCase() === 'solidworks') {
+                                cmd = `start SLDWORKS.exe "${localPath}"`;
+                            }
+
+                            if (cmd) {
+                                exec(cmd, (error) => {
+                                    if (error) {
+                                        console.warn(`Failed to open with ${appName}, falling back to default:`, error);
+                                        shell.openPath(localPath).then((err) => {
+                                            if (err) reject(new Error(err));
+                                            else resolve(localPath);
+                                        });
+                                    } else {
+                                        resolve(localPath);
+                                    }
+                                });
+                                return;
+                            }
+                        }
+
                         shell.openPath(localPath).then((error) => {
                             if (error) reject(new Error(error));
                             else resolve(localPath);
@@ -150,7 +205,90 @@ function createWindow() {
             console.error('Critical download error:', error);
             throw error; // Rethrow to let the renderer catch it
         }
+
     });
+
+    ipcMain.handle('download-bulk-files', async (event, { tasks, token }) => {
+        const { shell } = require('electron');
+        
+        // Auto-save directly to Downloads instead of prompting
+        const targetDir = app.getPath('downloads');
+        const downloadedFiles = [];
+        const errors = [];
+
+        for (const task of tasks) {
+            try {
+                let relativePath = task.target_relative_path;
+                if (!relativePath) {
+                    relativePath = `Unts & Tasks/Set ${task.set_number || 'unknown'}/${task.task_code || 'unknown'}_Master.dwg`;
+                }
+
+                // Ensure no path traversal tricks and remove any prefixes before the actual Set folders
+                relativePath = relativePath.replace(/\\/g, '/');
+                let safeRelativePath = path.normalize(relativePath).replace(/^(\.\.[\/\\])+/, '');
+                
+                // Extract everything after "Unts & Tasks/" to keep exactly the "1st Set Parts/..." structure
+                const match = safeRelativePath.match(/Unts & Tasks[\/\\](.*)/i);
+                if (match) {
+                    safeRelativePath = match[1];
+                }
+
+                const localPath = path.join(targetDir, safeRelativePath);
+                
+                const fileDir = path.dirname(localPath);
+                if (!fs.existsSync(fileDir)) {
+                    fs.mkdirSync(fileDir, { recursive: true });
+                }
+
+                // If file exists, maybe overwrite it
+                const file = fs.createWriteStream(localPath);
+                const safeUrl = task.url.replace('localhost', '127.0.0.1');
+                const protocol = safeUrl.startsWith('https') ? https : http;
+
+                await new Promise((resolve, reject) => {
+                    const request = protocol.get(safeUrl, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }, (response) => {
+                        if (response.statusCode !== 200) {
+                            file.close();
+                            fs.unlink(localPath, () => {});
+                            reject(new Error(`Failed to download: ${response.statusCode}`));
+                            return;
+                        }
+
+                        response.pipe(file);
+                        file.on('finish', () => {
+                            file.close();
+                            resolve(localPath);
+                        });
+                    });
+
+                    request.on('error', (err) => {
+                        file.close();
+                        fs.unlink(localPath, () => {});
+                        reject(err);
+                    });
+
+                    request.setTimeout(30000, () => {
+                        request.destroy();
+                        reject(new Error('Download timeout'));
+                    });
+                });
+                
+                downloadedFiles.push(localPath);
+            } catch (err) {
+                console.error(`Error downloading task ${task.id}:`, err);
+                errors.push({ taskId: task.id, error: err.message });
+            }
+        }
+
+        if (downloadedFiles.length > 0) {
+            shell.openPath(targetDir);
+        }
+
+        return { canceled: false, successCount: downloadedFiles.length, errors };
+    });
+
 
     // Handle permission requests
     const { session } = require('electron');

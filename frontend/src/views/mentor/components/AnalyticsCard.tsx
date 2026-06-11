@@ -41,8 +41,8 @@ export const AnalyticsCard: React.FC<AnalyticsCardProps> = ({
                     <span className="analytics-value">{Math.round(completionPercentage)}%</span>
                 </div>
                 <div className="analytics-progress-bar-bg">
-                    <div 
-                        className="analytics-progress-bar-fill" 
+                    <div
+                        className="analytics-progress-bar-fill"
                         style={{ width: `${completionPercentage}%` }}
                     />
                 </div>

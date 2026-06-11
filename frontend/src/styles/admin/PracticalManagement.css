@@ -2,6 +2,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding: 1.5rem;
 }
 
 .admin-sub-tabs {
@@ -24,7 +25,7 @@
     font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .sub-tab-btn:hover, .sub-tab-btn.active {
@@ -41,6 +42,28 @@
 
 .management-header {
     margin-bottom: 2rem;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.tab-btn:hover {
+    color: var(--text-main);
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+.tab-btn.active {
+    color: var(--primary);
 }
 
 .management-header h3 {
@@ -103,9 +126,13 @@
     color: var(--primary);
 }
 
+.creation-form-card .btn-primary {
+    width: 100%;
+}
+
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 
@@ -125,7 +152,7 @@
 .form-group input, .form-group select, .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    background: var(--bg-dark);
+    background: transparent;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--text-main);
@@ -170,6 +197,42 @@
     background: #cbd5e1 !important;
     color: #64748b !important;
     box-shadow: none;
+}
+
+.file-upload-area {
+    position: relative;
+    width: 100%;
+}
+
+.file-upload-area input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+}
+
+.file-upload-area label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background: var(--bg-dark);
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-dim);
+    font-weight: 600;
+}
+
+.file-upload-area:hover label {
+    border-color: var(--primary);
+    color: var(--text-main);
+    background: rgba(59, 130, 246, 0.05);
 }
 
 .file-upload-area.bulk {
@@ -236,7 +299,7 @@
 .admin-input-styled {
     width: 100%;
     padding: 0.875rem 1.25rem !important;
-    background: var(--bg-dark) !important;
+    background: transparent !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 14px !important;
     color: var(--text-main) !important;
@@ -270,7 +333,7 @@ select.admin-input-styled option {
 }
 
 .custom-file-upload {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -364,11 +427,15 @@ select.admin-input-styled option {
 
 .modal-footer {
     padding: 1.5rem 2rem;
-    background: var(--bg-dark);
-    opacity: 0.8;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 1rem;
+    background: transparent;
+    border: none;
+}
+
+.modal-footer button {
+    flex: 1;
 }
 
 .btn-cancel {
@@ -477,4 +544,49 @@ select.admin-input-styled option {
 .empty-inventory p {
     margin-top: 1rem;
     max-width: 250px;
+}
+
+/* ── Drag-and-drop reordering ────────────────────────────────── */
+.drag-handle-cell {
+    width: 32px;
+    padding: 0 !important;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.drag-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--text-dim);
+    border-radius: 6px;
+    cursor: grab;
+    opacity: 0.4;
+    transition: opacity 0.2s, color 0.2s, background 0.2s;
+}
+
+.draggable-row:hover .drag-handle {
+    opacity: 1;
+    color: #DD4DFA;
+    background: rgba(221, 77, 250, 0.08);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.draggable-row {
+    transition: background 0.15s, opacity 0.15s, transform 0.15s;
+}
+
+.row-dragging {
+    opacity: 0.35;
+    background: rgba(221, 77, 250, 0.04) !important;
+}
+
+.row-drag-over {
+    box-shadow: 0 -3px 0 0 #DD4DFA inset;
+    background: rgba(221, 77, 250, 0.06) !important;
 }

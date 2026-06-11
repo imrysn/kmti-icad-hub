@@ -10,10 +10,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User, SystemLog, QuizScore, UserProgress, QuestionAttempt, Quiz
+from ..models import User, SystemLog, QuizScore, UserProgress, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
 from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
+from ..websocket_manager import notification_manager
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -41,7 +42,8 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
         )
     
     # Check if email already exists
-    existing_email = db.query(User).filter(User.email == user_data.email).first()
+    user_email = user_data.email or f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
+    existing_email = db.query(User).filter(User.email == user_email).first()
     if existing_email:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -51,7 +53,7 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     # Create new user
     new_user = User(
         username=user_data.username,
-        email=user_data.email,
+        email=user_email,
         hashed_password=hash_password(user_data.password),
         full_name=user_data.full_name,
         role=user_data.role,
@@ -277,6 +279,12 @@ def submit_quiz_score(
         QuizScore.lesson_id == submission.lesson_id
     ).first()
     
+    # Determine if this pass is new (first time scoring >= 80%)
+    is_new_pass = False
+    if submission.score >= 80.0:
+        if not existing_score or (existing_score and existing_score.score < 80.0):
+            is_new_pass = True
+            
     if existing_score:
         # Increment attempt counter
         existing_score.attempts_count = (existing_score.attempts_count or 0) + 1
@@ -317,5 +325,71 @@ def submit_quiz_score(
                 )
                 db.add(attempt)
             db.commit()
+
+    # Dispatch Trainer progress updates
+    if is_new_pass:
+        try:
+            quiz = db.query(Quiz).filter(Quiz.slug == submission.lesson_id).first()
+            quiz_title = quiz.title if quiz else submission.lesson_id
+            course_name = "3D Modeling" if submission.course_id == "1" else "2D Drawing" if submission.course_id == "2" else "Curriculum"
+
+            mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
+            if mapping:
+                # 1. Save and dispatch lesson completion
+                msg = f"Trainee {current_user.full_name or current_user.username} passed {quiz_title} quiz with {submission.score}%!"
+                new_notif = Notification(
+                    recipient_id=mapping.trainer_id,
+                    sender_id=current_user.id,
+                    message=msg,
+                    type="lesson_passed"
+                )
+                db.add(new_notif)
+                db.commit()
+
+                import asyncio
+                asyncio.create_task(notification_manager.send_personal_message(
+                    {
+                        "event": "TRAINEE_PROGRESS",
+                        "trainee_name": current_user.full_name or current_user.username,
+                        "trainee_id": current_user.id,
+                        "lesson_title": quiz_title,
+                        "score": submission.score,
+                        "message": msg
+                    },
+                    mapping.trainer_id
+                ))
+
+                # 2. Check and dispatch course completion
+                if quiz:
+                    total_quizzes = db.query(Quiz).filter(Quiz.course_type == quiz.course_type).count()
+                    passed_quizzes = db.query(QuizScore).filter(
+                        QuizScore.user_id == str(current_user.id),
+                        QuizScore.course_id == submission.course_id,
+                        QuizScore.score >= 80.0
+                    ).count()
+
+                    if passed_quizzes >= total_quizzes and total_quizzes > 0:
+                        course_msg = f"Trainee {current_user.full_name or current_user.username} completed the ENTIRE {course_name} Course!"
+                        course_notif = Notification(
+                            recipient_id=mapping.trainer_id,
+                            sender_id=current_user.id,
+                            message=course_msg,
+                            type="course_completed"
+                        )
+                        db.add(course_notif)
+                        db.commit()
+
+                        asyncio.create_task(notification_manager.send_personal_message(
+                            {
+                                "event": "TRAINEE_COURSE_COMPLETED",
+                                "trainee_name": current_user.full_name or current_user.username,
+                                "trainee_id": current_user.id,
+                                "course_name": course_name,
+                                "message": course_msg
+                            },
+                            mapping.trainer_id
+                        ))
+        except Exception as e:
+            print(f"Error triggering progress notifications: {e}")
     
     return {"message": "Score submitted successfully", "score": submission.score, "passed": submission.score >= 80.0}

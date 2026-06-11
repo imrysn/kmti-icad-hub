@@ -124,11 +124,11 @@ const PartLesson: React.FC<PartLessonProps> = ({
         />
         <div>
           <img
-              src={activeTab === 'create' ? partMenu2 : partMenu2}
-              alt={activeTab === 'create' ? "3D Part Menu" : "Change 3D Part Menu"}
-              className="software-screenshot"
-              style={{ height: 'auto', width: "200px" }}
-            />
+            src={activeTab === 'create' ? partMenu2 : partMenu2}
+            alt={activeTab === 'create' ? "3D Part Menu" : "Change 3D Part Menu"}
+            className="software-screenshot"
+            style={{ height: 'auto', width: "200px" }}
+          />
         </div>
       </section>
 
@@ -162,13 +162,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select Create 3D Part from the icon menu."
+                    text="Select Create 3D Part from the icon menu"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px"}} />
+                  <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px" }} />
                 </div>
               </div>
 
@@ -192,15 +192,15 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="A window will appear showing the informations to fill-up."
+                    text="A window will appear showing the informations to fill-up"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot mt-4" style={{ marginBottom: '-2rem' }} />
+                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot mt-4" style={{ marginBottom: '-2rem' }} />
                 </div>
-              </div>  
+              </div>
 
               <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
                 <div className="step-header">
@@ -208,13 +208,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="All created 3D Part will appear on the tree view."
+                    text="All created 3D Part will appear on the tree view"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot mt-4" style={{ height: '300px' }} />
+                  <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot mt-4" style={{ height: '300px' }} />
                 </div>
               </div>
 
@@ -229,7 +229,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                    <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot mt-4" style={{ width: '900px' }} />
+                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot mt-4" style={{ width: '900px' }} />
                 </div>
               </div>
 
@@ -268,13 +268,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select Change 3D Part Name from the icon menu."
+                    text="Select Change 3D Part Name from the icon menu"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px"}} />
+                  <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px" }} />
                 </div>
               </div>
 
@@ -284,7 +284,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select an entity or right-click on the 3D space."
+                    text="Select an entity or right-click on the 3D space"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -297,13 +297,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="A window will appear showing the informations to fill-up."
+                    text="A window will appear showing the informations to fill-up"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={modalInfo2} alt="Change Name Window" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
+                  <img src={modalInfo2} alt="Change Name Window" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
                 </div>
               </div>
 
@@ -313,14 +313,14 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    style={{marginTop : "2rem"}}
+                    style={{ marginTop: "2rem" }}
                     text="A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name > Select Yes"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide mt-4" />
+                  <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide mt-4" />
                 </div>
 
                 <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: "2rem" }}>

@@ -233,10 +233,14 @@ class AssessmentTask(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     set_number = Column(Integer, nullable=False, index=True) # 1-10
-    task_code = Column(String(10), nullable=False) # e.g., "A", "B"
+    set_name = Column(String(200), nullable=True) # Custom name for the set (e.g., "Bonus Set")
+    unit_name = Column(String(200), nullable=True) # e.g., "2655RCGR"
+    task_code = Column(String(10), nullable=True) # e.g., "A", "B"
     title = Column(String(200), nullable=False)
     description = Column(Text)
     master_file_path = Column(String(500)) # Path to master .dwg
+    file_name = Column(String(200), nullable=True) # Name of the file
+    is_assembly = Column(Boolean, default=False) # True if it's the master assembly
     order = Column(Integer, default=0)
     created_at = Column(DateTime, default=func.now())
     
@@ -281,6 +285,20 @@ class TrainerTraineeMapping(Base):
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     trainee_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     assigned_at = Column(DateTime, default=func.now())
+
+    trainee = relationship("User", foreign_keys=[trainee_id])
+    trainer = relationship("User", foreign_keys=[trainer_id])
+
+class TraineeSetMapping(Base):
+    """Maps actual assessment sets to display sets for a specific trainee"""
+    __tablename__ = "trainee_set_mappings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    trainee_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    trainer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    display_set_number = Column(Integer, nullable=False)
+    actual_set_number = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=func.now())
 
     trainee = relationship("User", foreign_keys=[trainee_id])
     trainer = relationship("User", foreign_keys=[trainer_id])

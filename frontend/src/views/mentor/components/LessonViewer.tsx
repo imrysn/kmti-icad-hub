@@ -52,6 +52,9 @@ const NormalMirrorPartsLesson = lazy(() => import('../../../components/2D_Drawin
 const RevisionCodeLesson = lazy(() => import('../../../components/2D_Drawing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/2D_Drawing/2D_StandardLibrary'));
 
+import { useTTSContext } from '../../../context/TTSContext';
+import { ReadAloudButton } from '../../../components/ReadAloudButton';
+
 interface LessonViewerProps {
   is2DDrawingCourse: boolean;
   activeLessonId: string;
@@ -87,6 +90,35 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 }) => {
   const { requestConfirmation } = useUI();
   const { user } = useAuth();
+  const { speak, stop, isSpeaking, currentText, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
+
+  const speakCurrent = useCallback(() => {
+    // If the active lesson has already explicitly registered custom text paragraphs
+    if (currentText && currentText.length > 0) {
+      speak(currentText);
+      return;
+    }
+
+    // Dynamic Fallback: Scrape the DOM of the active lesson page for premium readable content
+    const container = document.querySelector('.course-lesson-container');
+    if (container) {
+      const elements = container.querySelectorAll('.section-title, p, .card-header, .step-header, .p-flush');
+      const paragraphs: string[] = [];
+      elements.forEach(el => {
+        const text = el.textContent?.trim();
+        // Ignore buttons, navigation elements, or headers that are not part of lesson narration
+        if (text && text.length > 2 && !el.closest('.lesson-navigation') && !el.closest('.lesson-tabs') && !el.closest('.tab-button')) {
+          if (!paragraphs.includes(text)) {
+            paragraphs.push(text);
+          }
+        }
+      });
+      if (paragraphs.length > 0) {
+        speak(paragraphs);
+      }
+    }
+  }, [speak, currentText]);
+
   const [showQuiz, setShowQuiz] = useState(false);
   const [activeQuiz, setActiveQuiz] = useState<any>(null);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
@@ -210,6 +242,71 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     }
   }, [showQuiz]);
 
+  // Dynamic Accessibility Highlight Controller
+  useEffect(() => {
+    const container = document.querySelector('.course-lesson-container');
+    if (!container) return;
+
+    // Retrieve exact same element selectors used for narration scraping to align indices
+    const elements = container.querySelectorAll('.section-title, p, .card-header, .step-header, .p-flush');
+    
+    // Create a filtered list to match speakCurrent exclusions
+    const paragraphs: string[] = [];
+    const validElements: HTMLElement[] = [];
+    elements.forEach(el => {
+      const text = el.textContent?.trim();
+      if (text && text.length > 2 && !el.closest('.lesson-navigation') && !el.closest('.lesson-tabs') && !el.closest('.tab-button')) {
+        if (!paragraphs.includes(text)) {
+          paragraphs.push(text);
+          validElements.push(el as HTMLElement);
+        }
+      }
+    });
+
+    let detectedIndex = -1;
+
+    validElements.forEach((el, idx) => {
+      let isMatch = false;
+      if (isSpeaking) {
+        if (activeParagraphText) {
+          const elText = el.textContent?.trim().replace(/\s+/g, ' ');
+          const targetText = activeParagraphText.trim().replace(/\s+/g, ' ');
+          isMatch = !!(elText && targetText && (elText === targetText || elText.includes(targetText) || targetText.includes(elText)));
+        } else {
+          isMatch = idx === currentIndex;
+        }
+      }
+
+      if (isMatch) {
+        el.classList.add('tts-active-highlight');
+        // Smoothly scroll active narration paragraph into visual context
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        // Find the closest ancestor (or self) with data-reading-index to correct custom index matching
+        const readingIndexEl = el.closest('[data-reading-index]');
+        if (readingIndexEl) {
+          const attr = readingIndexEl.getAttribute('data-reading-index');
+          if (attr) {
+            const parsed = parseInt(attr, 10);
+            if (!isNaN(parsed)) {
+              detectedIndex = parsed;
+            }
+          }
+        }
+      } else {
+        el.classList.remove('tts-active-highlight');
+      }
+    });
+
+    if (detectedIndex !== -1 && detectedIndex !== currentIndex) {
+      setCurrentIndex(detectedIndex);
+    }
+
+    return () => {
+      validElements.forEach(el => el.classList.remove('tts-active-highlight'));
+    };
+  }, [isSpeaking, currentIndex, activeParagraphText, activeLessonId, setCurrentIndex]);
+
   const handleExitCourse = async () => {
     const confirmed = await requestConfirmation({
       title: 'SUSPEND LEARNING SESSION',
@@ -245,18 +342,21 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   const handleQuizComplete = async (score: number, detailedAnswers?: any[]) => {
     if (!parentResult?.parent) return;
+    const lessonIdToClear = parentResult.parent.id;
     try {
       await api.post('/auth/submit-quiz', {
         course_id: is2DDrawingCourse ? '2' : '1',
-        lesson_id: parentResult.parent.id,
+        lesson_id: lessonIdToClear,
         score: score,
         answers: detailedAnswers
       });
       if (score >= 80) {
-        onLessonComplete(parentResult.parent.id);
+        localStorage.removeItem(authService.getStorageKey(`showQuiz_${lessonIdToClear}`));
+        onLessonComplete(lessonIdToClear);
         setTimeout(() => {
           setShowQuiz(prev => {
             if (prev) {
+              localStorage.removeItem(authService.getStorageKey(`showQuiz_${lessonIdToClear}`));
               goToNextLesson();
               return false;
             }
@@ -270,6 +370,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   };
 
   const handleQuizSuccessContinue = () => {
+    if (parentResult?.parent) {
+      localStorage.removeItem(authService.getStorageKey(`showQuiz_${parentResult.parent.id}`));
+    }
     setShowQuiz(false);
     goToNextLesson();
   };
@@ -314,6 +417,26 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
       <div className="lesson-split-layout">
         <div className="lesson-scroll-area">
+          {/* Sticky TTS button container: sits next to title initially, freezes on scroll */}
+          <div style={{ 
+            position: 'sticky', 
+            top: '-1.5rem', 
+            float: 'right', 
+            marginRight: '2rem', 
+            zIndex: 100, 
+            height: 0,
+            pointerEvents: 'none'
+          }}>
+            <div style={{ 
+              position: 'absolute', 
+              right: 0, 
+              top: '3rem', 
+              pointerEvents: 'auto'
+            }}>
+              <ReadAloudButton isSpeaking={isSpeaking} onStart={speakCurrent} onStop={stop} />
+            </div>
+          </div>
+
           <div className="lesson-header-banner">
             <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIdsLength}</p>
             <h2 className="lesson-banner-title">
@@ -465,7 +588,12 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             {showQuiz && hasQuiz && (activeQuiz || parentResult?.parent?.quiz) && (
               <QuizModal 
                 isOpen={showQuiz} 
-                onClose={() => setShowQuiz(false)}
+                onClose={() => {
+                  if (parentResult?.parent) {
+                    localStorage.removeItem(authService.getStorageKey(`showQuiz_${parentResult.parent.id}`));
+                  }
+                  setShowQuiz(false);
+                }}
                 quiz={activeQuiz || parentResult?.parent?.quiz}
                 lessonId={parentResult.parent.id}
                 onComplete={handleQuizComplete}

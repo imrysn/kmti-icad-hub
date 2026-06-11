@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
 
@@ -18,9 +17,8 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
   nextLabel
 }) => {
   const TABS = [
-    { id: '1', label: 'Materials & Standards' },
-    { id: '2', label: 'Process Table 1' },
-    { id: '3', label: 'Process Table 2' }
+    { id: '1', label: 'Material' },
+    { id: '2', label: 'Heat Treatment Process' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -56,6 +54,16 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
+      <style>{`
+        .lesson-table {
+          table-layout: fixed !important;
+          width: 100% !important;
+        }
+        .lesson-table th, .lesson-table td {
+          white-space: normal !important;
+          word-break: break-word !important;
+        }
+      `}</style>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -75,27 +83,17 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card">
           <div className="fade-in">
-            <div className="card-header">
-              <KaraokeLessonText
-                as="h4"
-                className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                data-reading-index="0"
-                text="HEAT TREATMENT"
-                isActive={isSpeaking && currentIndex === 0}
-                currentCharIndex={currentCharIndex}
-              />
-              <ReadAloudButton 
-                isSpeaking={isSpeaking} 
-                onStart={() => speak(["HEAT TREATMENT"])}
-                onStop={stop}
-              />
-            </div>
-
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className="instruction-step">
                   <div className="lesson-table-container">
                     <table className="lesson-table">
+                      <colgroup>
+                        <col style={{ width: "18%" }} />
+                        <col style={{ width: "36%" }} />
+                        <col style={{ width: "36%" }} />
+                        <col style={{ width: "10%" }} />
+                      </colgroup>
                       <thead>
                         <tr>
                           <th>Material</th>
@@ -113,12 +111,12 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>Rev11</td>
                         </tr>
                         <tr><td>After rough machining thermal refining to 35~40 HS</td><td>荒削後調質施工 硬度HS35〜40</td><td>Rev11</td></tr>
-                        <tr><td>Through hardening to 55~60 HS (Thru)</td><td>ズブ焼入れ施工 硬度HS55〜60 (無心焼入れ、心部焼入れ)</td><td>Rev1,2</td></tr>
-                        <tr><td>Induction hardening to 60~65 HS</td><td>高周波焼入れ施工 硬度HS60〜65</td><td>Rev3</td></tr>
+                        <tr><td>Through hardening to 55~60 HS (Thru)</td><td>ズブ焼入レ施工 硬度HS55〜60 (無心焼入れ、心部焼入れ)</td><td>Rev1,2</td></tr>
+                        <tr><td>Induction hardening to 60~65 HS</td><td>高周波焼入レ施工 硬度HS60〜65</td><td>Rev3</td></tr>
                         <tr><td>Salt-bath nitrocarburizing to HV500 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV500 UP</td><td></td></tr>
                         <tr><td>Ion nitriding to HV400 UP</td><td>イオンナイト施工 硬度HV400 UP</td><td></td></tr>
                         <tr><td>Parsonite construction to HV400 UP</td><td>パルソナイト施工 硬度HV400 UP</td><td>Rev6</td></tr>
-                        <tr><td>part(Upper and lower) Laser Hardening Hardness HRC50up (S45C-D)</td><td>部(上下両面) レーザー焼入れ施工 硬度HRC50up</td><td></td></tr>
+                        <tr><td>part(Upper and lower) Laser Hardening Hardness HRC50up (S45C-D)</td><td>歯(上下両面)レーザー焼入レ施工 硬度HRC50up</td><td></td></tr>
                         
                         {/* S50C, S55C */}
                         <tr>
@@ -128,8 +126,8 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>Rev11</td>
                         </tr>
                         <tr><td>After rough machining thermal refining to 35~40 HS</td><td>荒削後調質施工 硬度HS35〜40</td><td>Rev11</td></tr>
-                        <tr><td>Through hardening to 60~70 HS (Thru)</td><td>ズブ焼入れ施工 硬度HS60〜70 (無心焼入れ、心部焼入れ)</td><td>Rev10</td></tr>
-                        <tr><td>Induction hardening to 70~75HS</td><td>高周波焼入れ施工 硬度HS70〜75</td><td>Rev10</td></tr>
+                        <tr><td>Through hardening to 60~70 HS (Thru)</td><td>ズブ焼入レ施工 硬度HS60〜70 (無心焼入れ、心部焼入れ)</td><td>Rev10</td></tr>
+                        <tr><td>Induction hardening to 70~75HS</td><td>高周波焼入レ施工 硬度HS70〜75</td><td>Rev10</td></tr>
                         <tr><td>Salt-bath nitrocarburizing to HV500 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV500 UP</td><td></td></tr>
 
                         {/* SCM435 */}
@@ -140,7 +138,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>Rev11</td>
                         </tr>
                         <tr><td>After rough machining thermal refining to 42~48 HS</td><td>荒削後調質施工 硬度HS42〜48</td><td>Rev11</td></tr>
-                        <tr><td>Salt-bath nitrocarburizing to HV600 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV600 UP</td><td>Rev9</td></tr>
+                        <tr><td>Salt-bath nitrocarburizing to HV800 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV800 UP</td><td>Rev9</td></tr>
                         <tr><td>Parsonite construction to HV500 UP</td><td>パルソナイト施工 硬度HV500 UP</td><td>Rev9</td></tr>
                         <tr><td>Ion nitriding to HV700 UP</td><td>イオンナイト施工 硬度HV700 UP</td><td></td></tr>
 
@@ -152,7 +150,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>Rev11</td>
                         </tr>
                         <tr><td>After rough machining thermal refining to 42~48 HS</td><td>荒削後調質施工 硬度HS42〜48</td><td>Rev11</td></tr>
-                        <tr><td>Induction hardening to 70~75 HS</td><td>高周波焼入れ施工 硬度HS70〜75</td><td>Rev9</td></tr>
+                        <tr><td>Induction hardening to 70~75 HS</td><td>高周波焼入レ施工 硬度HS70〜75</td><td>Rev9</td></tr>
                         <tr><td>Salt-bath nitrocarburizing to HV600 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV600 UP</td><td>Rev9</td></tr>
                         <tr><td>Ion nitriding to HV700 UP</td><td>イオンナイト施工 硬度HV700 UP</td><td></td></tr>
                         <tr><td>(Treatment for gear instead of induction hardening)</td><td>(高周波焼入れに代わるギヤ用処理)</td><td>Rev8</td></tr>
@@ -161,20 +159,19 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
                         {/* SKD11 */}
                         <tr>
-                          <td rowSpan={4}>SKD11</td>
+                          <td rowSpan={3}>SKD11</td>
                           <td>Through hardening to 80~83 HS (Thru)</td>
-                          <td>ズブ焼入れ施工 硬度HS80〜83 (無心焼入れ、心部焼入れ)</td>
+                          <td>ズブ焼入レ施工 硬度HS80〜83 (無心焼入れ、心部焼入れ)</td>
                           <td>Rev2</td>
                         </tr>
-                        <tr><td>Vacuum hardening to 80~83 HS</td><td>真空焼入れ施工 硬度HS80〜83</td><td>Rev2</td></tr>
-                        <tr><td>Vacuum hardening to 78±2 HS (for SW BLADE)</td><td>真空焼入れ施工 硬度HS78±2 (対象SW刃物)</td><td>Rev9</td></tr>
-                        <tr><td>Through hardening to 80~83 HS</td><td>ズブ焼入れ施工 硬度HS80〜83</td><td></td></tr>
+                        <tr><td>Vacuum hardening to 80~83 HS</td><td>真空焼入レ施工 硬度HS80〜83</td><td>Rev2</td></tr>
+                        <tr><td>Vacuum hardening to 78±2 HS (for SW BLADE)</td><td>真空焼入レ施工 硬度HS78±2 (対象SW刃物)</td><td>Rev9</td></tr>
 
                         {/* SKH51 */}
                         <tr>
                           <td>SKH51</td>
                           <td>Through hardening to 80~83 HS</td>
-                          <td>ズブ焼入れ施工 硬度HS80〜83</td>
+                          <td>ズブ焼入レ施工 硬度HS80〜83</td>
                           <td></td>
                         </tr>
 
@@ -186,7 +183,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>Rev11</td>
                         </tr>
                         <tr><td>After rough machining thermal refining to 38~44 HS</td><td>荒削後調質施工 硬度HS38〜44</td><td>Rev11</td></tr>
-                        <tr><td>Induction hardening to 68~75 HS</td><td>高周波焼入れ施工 硬度HS68〜75</td><td></td></tr>
+                        <tr><td>Induction hardening to 68~75 HS</td><td>高周波焼入レ施工 硬度HS68〜75</td><td></td></tr>
                         <tr><td>Salt-bath nitrocarburizing to HV600 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV600 UP</td><td></td></tr>
 
                         {/* SNCM439 */}
@@ -196,7 +193,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>素材調質施工 硬度HS44〜50</td>
                           <td>Rev11</td>
                         </tr>
-                        <tr><td>After rough machining thermal refining to 35~40 HS</td><td>荒削後調質施工 硬度HS44〜50</td><td>Rev11</td></tr>
+                        <tr><td>After rough machining thermal refining to 44~50 HS</td><td>荒削後調質施工 硬度HS44〜50</td><td>Rev11</td></tr>
                         <tr><td>Salt-bath nitrocarburizing to HV600 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV600 UP</td><td></td></tr>
 
                         {/* SNCM447 */}
@@ -206,26 +203,25 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>素材調質施工 硬度HS44〜50</td>
                           <td>Rev11</td>
                         </tr>
-                        <tr><td>After rough machining thermal refining to 35~40 HS</td><td>荒削後調質施工 硬度HS44〜50</td><td>Rev11</td></tr>
+                        <tr><td>After rough machining thermal refining to 44~50 HS</td><td>荒削後調質施工 硬度HS44〜50</td><td>Rev11</td></tr>
                         <tr><td>Salt-bath nitrocarburizing to HV700 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV700 UP</td><td></td></tr>
-                        <tr><td>Induction hardening to 70~85HS</td><td>高周波焼入れ施工 硬度HS70〜85</td><td></td></tr>
+                        <tr><td>Induction hardening to 70~85HS</td><td>高周波焼入レ施工 硬度HS70〜85</td><td></td></tr>
 
                         {/* FCD500 */}
                         <tr>
                           <td>FCD500</td>
-                          <td>Salt-bath nitrocarburizing to HV500 UP (Tufftride®, isonite)</td>
-                          <td>イソナイト施工 硬度HV500 UP</td>
+                          <td>Salt-bath nitrocarburizing to HV600 UP (Tufftride®, isonite)</td>
+                          <td>イソナイト施工 硬度HV600 UP</td>
                           <td></td>
                         </tr>
 
                         {/* SS400 */}
                         <tr>
-                          <td rowSpan={3}>SS400</td>
+                          <td rowSpan={2}>SS400</td>
                           <td>Salt-bath nitrocarburizing to HV400 UP (Tufftride®, isonite)</td>
                           <td>イソナイト施工 硬度HV400 UP</td>
                           <td></td>
                         </tr>
-                        <tr><td>Ion nitriding to HV400 UP</td><td>イオンナイト施工 硬度HV400 UP</td><td></td></tr>
                         <tr><td>Parsonite construction to HV300 UP</td><td>パルソナイト施工 硬度HV300 UP</td><td>Rev6</td></tr>
 
                         {/* STKM16A */}
@@ -235,7 +231,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>素材調質施工 硬度HS35〜40</td>
                           <td></td>
                         </tr>
-                        <tr><td>Induction hardening to 60~65 HS</td><td>高周波焼入れ施工 硬度HS60〜65</td><td></td></tr>
+                        <tr><td>Induction hardening to 60~65 HS</td><td>高周波焼入レ施工 硬度HS60〜65</td><td></td></tr>
                         <tr><td>Salt-bath nitrocarburizing to HV500 UP (Tufftride®, isonite)</td><td>イソナイト施工 硬度HV500 UP</td><td></td></tr>
 
                         {/* SUJ2 */}
@@ -245,8 +241,8 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                           <td>素材調質施工 硬度HS35〜45</td>
                           <td></td>
                         </tr>
-                        <tr><td>Through hardening to 75~80 HS (Thru)</td><td>ズブ焼入れ施工 硬度HS75〜80 (無心焼入れ、心部焼入れ)</td><td>Rev9</td></tr>
-                        <tr><td>Induction hardening to 75~80 HS</td><td>高周波焼入れ施工 硬度HS75〜80</td><td>Rev2,4</td></tr>
+                        <tr><td>Through hardening to 75~80 HS (Thru)</td><td>ズブ焼入レ施工 硬度HS75〜80 (無心焼入れ、心部焼入れ)</td><td>Rev9</td></tr>
+                        <tr><td>Induction hardening to 75~80 HS</td><td>高周波焼入レ施工 硬度HS75〜80</td><td>Rev2,4</td></tr>
 
                         {/* SUS304 */}
                         <tr>
@@ -287,9 +283,9 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                       { rev: "Rev10", text: "We have changed hardness standards of through hardening for S50C and S55C and induction hardening." },
                       { rev: "Rev11", text: "Describe thermal refining hardness for each material. It follows the standard of JIS." }
                     ].map((item, idx) => (
-                      <div key={idx} className="flex-row items-baseline gap-4 mb-2">
-                        <span className="red-text font-bold" style={{ minWidth: "60px" }}>{item.rev}:</span> 
-                        <span>{item.text}</span>
+                      <div key={idx} className="flex-row" style={{ marginBottom: "0.25rem", alignItems: "flex-start" }}>
+                        <span className="red-text font-bold">{item.rev}:</span> 
+                        <span style={{ lineHeight: "1.5" }}>{item.text}</span>
                       </div>
                     ))}
                   </div>
@@ -298,11 +294,16 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
               {activeTab === '2' && (
                 <div className="flex-col">
-                  <div className="card-header">
-                    <h5 className="section-title">Heat Treatment Process</h5>
-                  </div>
                   <div className="lesson-table-container">
                     <table className="lesson-table">
+                      <colgroup>
+                        <col style={{ width: "14%" }} />
+                        <col style={{ width: "18%" }} />
+                        <col style={{ width: "14%" }} />
+                        <col style={{ width: "14%" }} />
+                        <col style={{ width: "15%" }} />
+                        <col style={{ width: "25%" }} />
+                      </colgroup>
                       <thead>
                         <tr>
                           <th>Kind of Process</th>
@@ -317,7 +318,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         {/* Through Hardening */}
                         <tr>
                           <td rowSpan={4}>Through Hardening</td>
-                          <td rowSpan={4}>ズブ焼入れ施工 硬度HS-</td>
+                          <td rowSpan={4}>ズブ焼入レ施工 硬度HS-</td>
                           <td>• S45C</td>
                           <td>• HS55〜60</td>
                           <td rowSpan={4}>• Cutting Tools<br/>• Roller<br/>• Spacer<br/>• etc.</td>
@@ -337,7 +338,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         {/* Vacuum Hardening */}
                         <tr>
                           <td>Vacuum Hardening</td>
-                          <td>真空焼入れ施工 硬度HS-</td>
+                          <td>真空焼入レ施工 硬度HS-</td>
                           <td>• SKD11</td>
                           <td>• HS80〜83</td>
                           <td>• Roller<br/>• Plug Head (DF Machine)</td>
@@ -374,27 +375,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         <tr><td></td><td>• SUJ2</td></tr>
                         <tr><td></td><td>• etc.</td></tr>
                         <tr><td></td><td></td></tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
 
-              {activeTab === '3' && (
-                <div className="flex-col">
-                  <div className="lesson-table-container">
-                    <table className="lesson-table">
-                      <thead>
-                        <tr>
-                          <th>Kind of Process</th>
-                          <th>Indication of Drawing</th>
-                          <th>Applicable Material</th>
-                          <th>Applicable Hardness</th>
-                          <th>Purpose</th>
-                          <th>Characteristics</th>
-                        </tr>
-                      </thead>
-                      <tbody>
                         {/* Annealing */}
                         <tr>
                           <td rowSpan={3}>Annealing</td>
@@ -412,17 +393,17 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                             • Generally, shotblast will be done except for small and urgent parts.
                           </td>
                         </tr>
-                        <tr><td>焼鈍ショットプラス 施工</td><td>• SC420</td><td></td></tr>
+                        <tr><td>焼鈍ショットブラスト施工</td><td>• SC420</td><td></td></tr>
                         <tr><td></td><td>• etc.</td><td></td></tr>
 
                         {/* Induction Hardening */}
                         <tr>
-                          <td rowSpan={10}>Induction Hardening</td>
-                          <td rowSpan={5}>高周波焼入れ施工 硬度HS-</td>
+                          <td rowSpan={7}>Induction Hardening</td>
+                          <td rowSpan={6}>高周波焼入レ施工 硬度HS-</td>
                           <td>• S45C</td>
                           <td>• HS60〜65</td>
-                          <td rowSpan={10}>• Roller Shaft<br/>• Roller<br/>• Gear<br/>• Shaft<br/>• Collar<br/>• Pin<br/>• Slide Shoe<br/>• etc.</td>
-                          <td rowSpan={10}>
+                          <td rowSpan={7}>• Roller Shaft<br/>• Roller<br/>• Gear<br/>• Shaft<br/>• Collar<br/>• Pin<br/>• Slide Shoe<br/>• etc.</td>
+                          <td rowSpan={7}>
                             <strong>ADVANTAGE:</strong><br/>
                             • Good for Anti-Friction.<br/>
                             • Good for Anti-Fatigue.<br/>
@@ -440,14 +421,14 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         <tr><td>• SNCM447</td><td>• HS70〜85</td></tr>
                         <tr><td>• SUJ2</td><td>• HS75〜80</td></tr>
                         <tr>
-                          <td rowSpan={5}>(Without any notes before polishing or grinding, hardening depths must be 1mm.)</td>
                           <td>• etc.</td>
                           <td></td>
                         </tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
+                        <tr>
+                          <td>(Without any notes before polishing or grinding, hardening depths must be 1mm.)</td>
+                          <td></td>
+                          <td></td>
+                        </tr>
 
                         {/* QPQ */}
                         <tr>
@@ -478,12 +459,12 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
                         {/* Isonite */}
                         <tr>
-                          <td rowSpan={14}>Isonite</td>
+                          <td rowSpan={10}>Isonite</td>
                           <td rowSpan={9}>イソナイト施工 硬度HV-</td>
                           <td>• SS400</td>
                           <td>• HV400UP</td>
-                          <td rowSpan={14}>• Roller Shaft<br/>• Roller<br/>• Gear<br/>• Shaft<br/>• Collar<br/>• Pin<br/>• Slide Shoe<br/>• etc.</td>
-                          <td rowSpan={14}>
+                          <td rowSpan={10}>• Roller Shaft<br/>• Roller<br/>• Gear<br/>• Shaft<br/>• Collar<br/>• Pin<br/>• Slide Shoe<br/>• etc.</td>
+                          <td rowSpan={10}>
                             <strong>ADVANTAGE:</strong><br/>
                             • Good for Anti-Friction.<br/>
                             • Good for Anti-Fatigue.<br/>
@@ -498,14 +479,14 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         </tr>
                         <tr><td>• SC410</td><td>• HV450UP</td></tr>
                         <tr><td>• S45C</td><td>• HV500UP</td></tr>
-                        <tr><td>• STKM16A</td><td>• HS500UP</td></tr>
+                        <tr><td>• STKM16A</td><td>• HV500UP</td></tr>
                         <tr><td>• SNC631</td><td>• HV600UP</td></tr>
                         <tr><td>• SNCM447</td><td>• HV600UP</td></tr>
                         <tr><td>• SCM430</td><td>• HV600UP</td></tr>
                         <tr><td>• SACM645</td><td>• HV900UP</td></tr>
                         <tr><td>• etc.</td><td></td></tr>
                         <tr>
-                          <td rowSpan={5}>(Hardening depth- the thickness of chemical compound must be over 10μ.)</td>
+                          <td>(Hardening depth- the thickness of chemical compound must be over 10μ.)</td>
                           <td></td>
                           <td>
                             HV400〜HS55<br/>
@@ -515,19 +496,15 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                             HV900〜HS95
                           </td>
                         </tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
 
                         {/* Ionite */}
                         <tr>
-                          <td rowSpan={11}>Ionite</td>
+                          <td rowSpan={6}>Ionite</td>
                           <td rowSpan={5}>イオンナイト施工 硬度HV-</td>
                           <td>• S45C</td>
                           <td>• HV400UP</td>
-                          <td rowSpan={11}>• Roller<br/>• Shaft<br/>• Locator<br/>• cam<br/>• Bearing sleeve<br/>• etc.</td>
-                          <td rowSpan={11}>
+                          <td rowSpan={6}>• Roller<br/>• Shaft<br/>• Locator<br/>• cam<br/>• Bearing sleeve<br/>• etc.</td>
+                          <td rowSpan={6}>
                             <strong>ADVANTAGE:</strong><br/>
                             • Good for Anti-Friction.<br/>
                             • Good for Anti-Fatigue.<br/>
@@ -545,7 +522,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         <tr><td>• SUS304</td><td>• HV1000UP</td></tr>
                         <tr><td>• etc.</td><td></td></tr>
                         <tr>
-                          <td rowSpan={6}>(Hardening depth- the thickness of chemical compound must be over 10μ.)</td>
+                          <td>(Hardening depth- the thickness of chemical compound must be over 10μ.)</td>
                           <td></td>
                           <td>
                             HV600〜HS74<br/>
@@ -553,11 +530,6 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                             HV1000〜HS100
                           </td>
                         </tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
-                        <tr><td></td><td></td></tr>
                       </tbody>
                     </table>
                   </div>

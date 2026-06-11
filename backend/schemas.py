@@ -112,7 +112,7 @@ class FeedbackRequest(BaseModel):
 class UserCreate(BaseModel):
     """Schema for user registration"""
     username: str
-    email: EmailStr
+    email: Optional[EmailStr] = None
     password: str
     full_name: str
     # Admin accounts can only be created directly in the DB — never via API
@@ -121,15 +121,15 @@ class UserCreate(BaseModel):
     @field_validator("username")
     @classmethod
     def username_min_length(cls, v: str) -> str:
-        if len(v.strip()) < 3:
-            raise ValueError("Username must be at least 3 characters")
+        if len(v.strip()) < 2:
+            raise ValueError("Username must be at least 2 characters")
         return v.strip()
 
     @field_validator("password")
     @classmethod
     def password_strength(cls, v: str) -> str:
-        if len(v) < 8:
-            raise ValueError("Password must be at least 8 characters")
+        if len(v) < 4:
+            raise ValueError("Password must be at least 4 characters")
         return v
 
     @field_validator("full_name")
@@ -154,8 +154,8 @@ class UserUpdate(BaseModel):
     @field_validator("password")
     @classmethod
     def password_strength(cls, v: Optional[str]) -> Optional[str]:
-        if v and len(v) < 8:
-            raise ValueError("Password must be at least 8 characters")
+        if v and len(v) < 4:
+            raise ValueError("Password must be at least 4 characters")
         return v
 
 class UserLogin(BaseModel):
@@ -295,17 +295,21 @@ class QuestionAttemptResponse(BaseModel):
 
 class AssessmentTaskBase(BaseModel):
     set_number: int
-    task_code: str
+    set_name: Optional[str] = None
+    unit_name: Optional[str] = None
+    task_code: Optional[str] = None
     title: str
     description: Optional[str] = None
-    master_file_path: Optional[str] = None
     order: int = 0
+    file_name: Optional[str] = None
+    is_assembly: bool = False
 
 class AssessmentTaskCreate(AssessmentTaskBase):
     pass
 
 class AssessmentTaskResponse(AssessmentTaskBase):
     id: int
+    master_file_path: Optional[str] = None
     created_at: datetime
     class Config:
         from_attributes = True
@@ -356,5 +360,20 @@ class TrainerTraineeMappingCreate(TrainerTraineeMappingBase):
 class TrainerTraineeMappingResponse(TrainerTraineeMappingBase):
     id: int
     assigned_at: datetime
+    class Config:
+        from_attributes = True
+
+class TraineeSetMappingBase(BaseModel):
+    trainee_id: int
+    display_set_number: int
+    actual_set_number: int
+
+class TraineeSetMappingCreate(TraineeSetMappingBase):
+    pass
+
+class TraineeSetMappingResponse(TraineeSetMappingBase):
+    id: int
+    trainer_id: int
+    created_at: datetime
     class Config:
         from_attributes = True

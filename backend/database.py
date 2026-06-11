@@ -21,7 +21,7 @@ APP_PATH = get_app_path()
 
 # Load environment variables from the project root
 env_path = os.getenv("ENV_FILE_PATH", os.path.join(APP_PATH, ".env"))
-load_dotenv(env_path)
+load_dotenv(env_path, override=True)
 
 # Configuration
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"
