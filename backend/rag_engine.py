@@ -42,6 +42,9 @@ class RAGEngine:
             embedding_function=self.embedding_function,
             metadata={"description": "iCAD technical documentation and manuals"}
         )
+        
+        self.bm25 = None
+        self.cached_doc_ids = set()
     
     def ingest_documents(self, documents: List[Dict[str, str]]):
         """
@@ -63,6 +66,9 @@ class RAGEngine:
             documents=texts,
             metadatas=metadatas
         )
+        
+        self.bm25 = None
+        self.cached_doc_ids = set()
         
         print(f"✅ Ingested {len(documents)} documents into ChromaDB")
     
@@ -138,14 +144,19 @@ class RAGEngine:
         if not docs['documents']:
             return []
             
-        from rank_bm25 import BM25Okapi
         import re
         
         def tokenize(text):
             return re.sub(r'[^a-zA-Z0-9\s]', '', text.lower()).split()
         
-        tokenized_corpus = [tokenize(doc) for doc in docs['documents']]
-        bm25 = BM25Okapi(tokenized_corpus)
+        doc_ids_set = set(docs['ids'])
+        if self.bm25 is None or doc_ids_set != self.cached_doc_ids:
+            from rank_bm25 import BM25Okapi
+            tokenized_corpus = [tokenize(doc) for doc in docs['documents']]
+            self.bm25 = BM25Okapi(tokenized_corpus)
+            self.cached_doc_ids = doc_ids_set
+            
+        bm25 = self.bm25
         
         query_tokens = tokenize(query)
         scores = bm25.get_scores(query_tokens)
@@ -181,6 +192,8 @@ class RAGEngine:
         results = self.collection.get()
         if results['ids']:
             self.collection.delete(ids=results['ids'])
+        self.bm25 = None
+        self.cached_doc_ids = set()
         print("✅ Cleared documents from collection")
 
 # Singleton instance

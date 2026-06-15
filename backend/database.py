@@ -26,77 +26,115 @@ load_dotenv(env_path, override=True)
 # Configuration
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"
 SQLITE_URL = f"sqlite:///{os.path.join(APP_PATH, 'kmti_icad.db')}"
-DB_MODE = "sqlite" # Default fallback
+DB_MODE = "sqlite" # Default/Fallback mode
 
-def create_db_engine():
-    global DB_MODE
+# Initialize SQLite engine & session maker
+sqlite_engine = create_engine(
+    SQLITE_URL, 
+    connect_args={"check_same_thread": False}
+)
+
+@event.listens_for(sqlite_engine, "connect")
+def set_sqlite_pragma(dbapi_connection, _connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.close()
+
+SQLiteSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engine)
+
+# Initialize MySQL engine & session maker (if enabled)
+mysql_engine = None
+MySQLSessionLocal = None
+
+if USE_MYSQL:
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = os.getenv("DB_PORT", "3306")
+    DB_NAME = os.getenv("DB_NAME", "kmtihub")
+    DB_USER = os.getenv("DB_USER", "root")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "")
     
-    if USE_MYSQL:
-        # MySQL Configuration
-        DB_HOST = os.getenv("DB_HOST", "localhost")
-        DB_PORT = os.getenv("DB_PORT", "3306")
-        DB_NAME = os.getenv("DB_NAME", "kmtihub")
-        DB_USER = os.getenv("DB_USER", "root")
-        DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+    mysql_url = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    try:
+        mysql_engine = create_engine(
+            mysql_url,
+            poolclass=QueuePool,
+            pool_size=5,
+            max_overflow=10,
+            pool_timeout=5,
+            pool_recycle=1800,
+            pool_pre_ping=True,
+            connect_args={
+                "charset": "utf8",
+                "connect_timeout": 5,
+            }
+        )
+        # Test connection immediately
+        with mysql_engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
         
-        mysql_url = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-        
-        try:
-            # Attempt to create engine with short timeout to detect if NAS is online
-            engine = create_engine(
-                mysql_url,
-                poolclass=QueuePool,
-                pool_size=5,
-                max_overflow=10,
-                pool_timeout=5, # Short timeout for initial detection
-                pool_recycle=1800,
-                pool_pre_ping=True,
-                connect_args={
-                    "charset": "utf8",
-                    "connect_timeout": 5, # 5 seconds to decide if NAS is there
-                }
-            )
-            
-            # Test connection immediately
-            with engine.connect() as conn:
-                conn.execute(text("SELECT 1"))
-            
-            logger.info(f"✅ Connected to MySQL at {DB_HOST}")
-            DB_MODE = "mysql"
-            return engine
-            
-        except Exception as e:
-            logger.warning(f"⚠️ MySQL connection failed: {e}. Falling back to SQLite.")
-    
-    # SQLite Fallback
-    DB_MODE = "sqlite"
-    engine = create_engine(
-        SQLITE_URL, 
-        connect_args={"check_same_thread": False}
-    )
+        MySQLSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=mysql_engine)
+        DB_MODE = "mysql"
+        logger.info(f"✅ Connected to MySQL database at {DB_HOST}")
+    except Exception as e:
+        logger.warning(f"⚠️ MySQL connection failed on startup: {e}. Falling back to SQLite.")
+        DB_MODE = "sqlite"
 
-    # Enable WAL journal mode for better concurrency
-    @event.listens_for(engine, "connect")
-    def set_sqlite_pragma(dbapi_connection, _connection_record):
-        cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA journal_mode=WAL")
-        cursor.close()
-        
-    logger.info("ℹ️ Using SQLite local database")
-    return engine
-
-engine = create_db_engine()
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+# Expose a default 'engine' variable for migrations and backwards compatibility
+engine = mysql_engine if DB_MODE == "mysql" else sqlite_engine
+SessionLocal = MySQLSessionLocal if DB_MODE == "mysql" else SQLiteSessionLocal
 Base = declarative_base()
 
+import time
+last_mysql_check = 0
+
+def check_mysql_recovery():
+    global DB_MODE, last_mysql_check
+    if USE_MYSQL and DB_MODE == "sqlite" and mysql_engine is not None:
+        now = time.time()
+        if now - last_mysql_check > 10: # Check at most once every 10 seconds
+            last_mysql_check = now
+            try:
+                with mysql_engine.connect() as conn:
+                    conn.execute(text("SELECT 1"))
+                DB_MODE = "mysql"
+                logger.info("⚡ MySQL has recovered! Switching database mode to MySQL.")
+            except Exception:
+                pass
+
 def get_db():
-    db = SessionLocal()
+    global DB_MODE
+    
+    # Check if MySQL has recovered if we're currently down
+    if DB_MODE == "sqlite" and USE_MYSQL:
+        check_mysql_recovery()
+        
+    db = None
+    if DB_MODE == "mysql" and MySQLSessionLocal is not None:
+        try:
+            # pool_pre_ping=True on the engine already pings on checkout;
+            # just open the session and let SQLAlchemy handle dead connections.
+            db = MySQLSessionLocal()
+            # Validate by making a lightweight call
+            db.execute(text("SELECT 1"))
+        except Exception as e:
+            logger.warning(f"⚠️ MySQL session failed at runtime: {e}. Falling back to SQLite.")
+            DB_MODE = "sqlite"
+            if db:
+                db.close()
+            db = None
+            
+    if db is None:
+        db = SQLiteSessionLocal()
+        
     try:
         yield db
+    except Exception as e:
+        db.rollback()
+        raise e
     finally:
         db.close()
 
 def get_db_mode():
     return DB_MODE
+
 

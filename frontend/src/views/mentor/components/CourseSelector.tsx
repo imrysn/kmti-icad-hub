@@ -106,9 +106,15 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
             <div className="course-selection">
                 <div className="course-grid">
                     {allCourses.map((course) => {
-                        const isLocked = (course.id.toString() === 'practical-assessment' && !is3DCompleted && !canBypass) ||
-                            (course.id.toString() === '2' && !is3DAssessmentCompleted && !canBypass) ||
-                            (course.id.toString() === '2d-assessment' && !is2DCompleted && !canBypass);
+                        const isPracticalLocked = !is3DCompleted && !canBypass;
+                        const isCourse2Locked = !is3DAssessmentCompleted && !canBypass;
+                        const is2DAssessmentLocked = !is2DCompleted && !canBypass;
+
+                        const isLocked = 
+                            course.id.toString() === 'practical-assessment' ? isPracticalLocked :
+                            course.id.toString() === '2' ? (isPracticalLocked || isCourse2Locked) :
+                            course.id.toString() === '2d-assessment' ? (isPracticalLocked || isCourse2Locked || is2DAssessmentLocked) :
+                            false;
 
                         return (
                             <div

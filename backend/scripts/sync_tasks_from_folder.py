@@ -9,7 +9,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from database import SessionLocal
 from models import AssessmentTask
 
-UPLOAD_DIR = Path(__file__).parent.parent.parent / "uploads" / "Unts & Tasks"
+UPLOAD_DIR_BASE = os.getenv("UPLOAD_DIR")
+if UPLOAD_DIR_BASE:
+    UPLOAD_DIR = Path(UPLOAD_DIR_BASE) / "Unts & Tasks"
+else:
+    UPLOAD_DIR = Path(__file__).parent.parent.parent / "uploads" / "Unts & Tasks"
 
 def sync_tasks():
     if not UPLOAD_DIR.exists():

@@ -20,32 +20,54 @@ from ..schemas import (
 )
 from .auth import get_current_user
 from ..websocket_manager import notification_manager
+from pathlib import Path
+
+def get_safe_path(base_dir: str, req_path: str) -> str:
+    resolved_base = Path(base_dir).resolve()
+    normalized_req = req_path.lstrip("/\\")
+    resolved_target = Path(resolved_base).joinpath(normalized_req).resolve()
+    try:
+        resolved_target.relative_to(resolved_base)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Directory traversal detected")
+    return str(resolved_target)
 
 def handle_task_upload(file: UploadFile, set_number: int, task_code: str) -> str:
-    master_dir = os.path.join("master_units", f"set{set_number}")
-    os.makedirs(master_dir, exist_ok=True)
+    upload_base = os.getenv("UPLOAD_DIR")
+    if upload_base:
+        base = Path(upload_base) / "master_units"
+    else:
+        base = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) / "master_units"
+    
+    master_dir = base / f"set{set_number}"
+    master_dir.mkdir(parents=True, exist_ok=True)
     
     safe_filename = os.path.basename(file.filename)
     file_extension = os.path.splitext(safe_filename)[1].lower()
     
     if file_extension == '.zip':
-        temp_zip_path = os.path.join(master_dir, f"temp_{task_code}_{safe_filename}")
+        temp_zip_path = master_dir / f"temp_{task_code}_{safe_filename}"
         with open(temp_zip_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
             
-        extract_dir = os.path.join(master_dir, f"{task_code}_{os.path.splitext(safe_filename)[0]}")
-        os.makedirs(extract_dir, exist_ok=True)
+        extract_dir = master_dir / f"{task_code}_{os.path.splitext(safe_filename)[0]}"
+        extract_dir.mkdir(parents=True, exist_ok=True)
         
+        # Zip slip protection: validate all member paths before extracting
         with zipfile.ZipFile(temp_zip_path, 'r') as zip_ref:
+            for member in zip_ref.namelist():
+                member_path = (extract_dir / member).resolve()
+                if not str(member_path).startswith(str(extract_dir.resolve())):
+                    raise HTTPException(status_code=400, detail=f"Unsafe zip entry: {member}")
             zip_ref.extractall(extract_dir)
             
         os.remove(temp_zip_path)
-        return extract_dir
+        return str(extract_dir)
     else:
-        file_path = os.path.join(master_dir, f"{task_code}_{safe_filename}")
+        file_path = master_dir / f"{task_code}_{safe_filename}"
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-        return file_path
+        return str(file_path)
 
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
@@ -348,9 +370,8 @@ def create_task_subfolder(
         
     base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
     
-    # Secure path to prevent path traversal
-    safe_path = req.path.lstrip("/\\").replace("..", "")
-    new_dir = os.path.join(base_dir, safe_path)
+    # Secure path boundary check
+    new_dir = get_safe_path(base_dir, req.path)
     os.makedirs(new_dir, exist_ok=True)
     
     return {"message": "Folder created"}
@@ -372,8 +393,8 @@ async def upload_task_file(
         
     base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
     
-    safe_path = path.lstrip("/\\").replace("..", "") if path and path != "/" else ""
-    target_dir = os.path.join(base_dir, safe_path)
+    # Secure path boundary check
+    target_dir = get_safe_path(base_dir, path if path and path != "/" else "")
     os.makedirs(target_dir, exist_ok=True)
     
     safe_filename = os.path.basename(file.filename)
@@ -399,8 +420,9 @@ def delete_task_file(
         raise HTTPException(status_code=404, detail="Task not found")
         
     base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
-    safe_path = req.path.lstrip("/\\").replace("..", "")
-    target_path = os.path.join(base_dir, safe_path)
+    
+    # Secure path boundary check
+    target_path = get_safe_path(base_dir, req.path)
     
     if os.path.exists(target_path):
         if os.path.isdir(target_path):
@@ -440,10 +462,15 @@ def download_master_file(
     if not task or not task.master_file_path:
         raise HTTPException(status_code=404, detail="Master file not found")
     
-    # Prepend 'uploads' if missing, since path from sync is relative to uploads directory
+    # Prepend dynamic 'uploads' path if missing, since path from sync is relative to uploads directory
+    base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
     full_path = task.master_file_path
-    if not full_path.startswith("uploads"):
-        full_path = os.path.join("uploads", full_path)
+    if not os.path.isabs(full_path) and not full_path.startswith(base_upload_dir):
+        if full_path.startswith("uploads/"):
+            full_path = full_path.replace("uploads/", "", 1)
+        elif full_path.startswith("uploads\\"):
+            full_path = full_path.replace("uploads\\", "", 1)
+        full_path = os.path.join(base_upload_dir, full_path)
         
     if not os.path.exists(full_path):
         raise HTTPException(status_code=404, detail="File does not exist on server")
@@ -471,10 +498,12 @@ async def submit_task(
     # Define upload directory mirroring the master structure
     # e.g., master path: "Unts & Tasks/4th Set Parts And Assembly/2655RCGR/Parts/part.dwg"
     master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""
-    upload_dir = os.path.join("uploads", "submissions", str(current_user.id), master_dir)
+    base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
+    upload_dir = os.path.join(base_upload_dir, "submissions", str(current_user.id), master_dir)
     os.makedirs(upload_dir, exist_ok=True)
     
-    file_path = os.path.join(upload_dir, file.filename)
+    safe_filename = os.path.basename(file.filename) if file.filename else "submission"
+    file_path = os.path.join(upload_dir, safe_filename)
     
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -673,9 +702,11 @@ async def provide_feedback(
     
     file_path = None
     if file:
-        feedback_dir = os.path.join("uploads", "feedback", str(submission.user_id))
+        base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
+        feedback_dir = os.path.join(base_upload_dir, "feedback", str(submission.user_id))
         os.makedirs(feedback_dir, exist_ok=True)
-        file_path = os.path.join(feedback_dir, f"feedback_{submission_id}_{file.filename}")
+        safe_fb_filename = os.path.basename(file.filename) if file.filename else "feedback"
+        file_path = os.path.join(feedback_dir, f"feedback_{submission_id}_{safe_fb_filename}")
         
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)

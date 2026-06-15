@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { api } from '../../../services/api';
 import { useNotification } from '../../../context/NotificationContext';
+import { useWebSocket } from '../../../context/WebSocketContext';
 import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
@@ -116,37 +117,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isReviewing]);
 
-    useEffect(() => {
-        fetchSubmissions();
-    }, [statusFilter]);
-
-
-
-    useEffect(() => {
-        const token = authService.getToken();
-        if (!token) return;
-
-        // Determine correct WebSocket URL based on current host
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.hostname}:8000/notifications/ws?token=${token}`;
-
-        const ws = new WebSocket(wsUrl);
-
-        ws.onopen = () => {
-            console.log("Connected to Real-Time Notification Server");
-        };
-        ws.onmessage = () => {
-            fetchSubmissions();
-        };
-
-        window.addEventListener('kmti-refresh-submissions', fetchSubmissions);
-        return () => {
-            ws.close();
-            window.removeEventListener('kmti-refresh-submissions', fetchSubmissions);
-        };
-    }, [statusFilter]);
-
-    const fetchSubmissions = async () => {
+    const fetchSubmissions = useCallback(async () => {
         setLoading(true);
         try {
             const data = await assessmentService.getTrainerSubmissions(statusFilter);
@@ -156,7 +127,27 @@ export const PracticalTrainerDashboard: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [statusFilter, showNotification]);
+
+    useEffect(() => {
+        fetchSubmissions();
+    }, [fetchSubmissions]);
+
+    // Use the shared WebSocket context — no duplicate connection needed
+    const { subscribe } = useWebSocket();
+
+    useEffect(() => {
+        // Subscribe to all WS events that should trigger a submission refresh
+        const unsub = subscribe('*', () => {
+            fetchSubmissions();
+        });
+
+        window.addEventListener('kmti-refresh-submissions', fetchSubmissions);
+        return () => {
+            unsub();
+            window.removeEventListener('kmti-refresh-submissions', fetchSubmissions);
+        };
+    }, [fetchSubmissions, subscribe]);
 
     const handleDownloadTraineeFile = (submission: AssessmentSubmission) => {
         const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;

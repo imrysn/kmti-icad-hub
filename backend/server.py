@@ -91,6 +91,14 @@ if __name__ == "__main__":
         db_mode = get_db_mode()
         print_status(db_mode)
         
+        # Start SQLite-to-MySQL background sync worker
+        try:
+            from backend.sync_worker import start_sync_worker
+            start_sync_worker()
+            print(f"{Fore.GREEN}[+] SQLite-to-MySQL sync worker started successfully.")
+        except Exception as se:
+            print(f"{Fore.YELLOW}[!] Sync worker could not be started: {se}")
+        
         port = int(os.getenv("SERVER_PORT", 8000))
         host = "0.0.0.0"
         

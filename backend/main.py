@@ -48,13 +48,20 @@ app.add_middleware(
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    # Pydantic v2 validation errors can contain ValueError or other non-serializable objects inside ctx.
+    # We serialize them to JSON format with default=str and load them back to ensure all components are primitives.
+    try:
+        serialized_errors = json.loads(json.dumps(exc.errors(), default=str))
+    except Exception:
+        serialized_errors = exc.errors()
+
     error_details = {
-        "detail": exc.errors(),
+        "detail": serialized_errors,
         "body": str(exc.body) if hasattr(exc, "body") else "No body"
     }
     with open("scratch/error_log.txt", "w") as f:
         json.dump(error_details, f, default=str)
-    return JSONResponse(status_code=422, content={"detail": exc.errors()})
+    return JSONResponse(status_code=422, content={"detail": serialized_errors})
 
 # System Status Endpoint
 @app.get("/api/v1/system/status")

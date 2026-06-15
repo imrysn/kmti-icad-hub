@@ -9,17 +9,19 @@ import AssistantMode from './views/assistant/AssistantMode';
 import { AdminMode } from './views/admin/AdminMode';
 import { useAuth } from './hooks/useAuth';
 import { useNotification } from './context/NotificationContext';
+import { WebSocketProvider, useWebSocket } from './context/WebSocketContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import { BroadcastBanner } from './components/BroadcastBanner';
 import { NotificationSystem } from './components/NotificationSystem';
 import WindowControls from './components/WindowControls';
 import ThemeToggle from './components/ThemeToggle';
-import { getSystemStatus } from './services/api';
+import { getSystemStatus, api } from './services/api';
+import { authService } from './services/authService';
 
 import kmtiLogo from './assets/kmti_logo.png';
 import './styles/App.css';
 
-function App() {
+function AppContent() {
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const { showNotification } = useNotification();
   const navigate = useNavigate();
@@ -33,80 +35,49 @@ function App() {
     navigate(`/assistant?tab=${tab}`);
   };
 
-  // Centralized WebSocket notification receiver
+  // Centralized WebSocket notification receiver — now via WebSocketContext
+  const { subscribe } = useWebSocket();
+
   useEffect(() => {
     if (!isAuthenticated) return;
-    const token = sessionStorage.getItem('access_token') || localStorage.getItem('kmti_jwt_token') || sessionStorage.getItem('kmti_jwt_token');
-    if (!token) return;
 
-    // Use location host to build connection URL
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.hostname}:8000/notifications/ws?token=${token}`;
+    const unsub = subscribe('*', (data) => {
+      const role = user?.role?.toLowerCase()?.trim();
+      let notificationTriggered = false;
 
-    let ws: WebSocket;
-    let reconnectTimeout: any;
-
-    const connect = () => {
-      ws = new WebSocket(wsUrl);
-
-      ws.onopen = () => {
-        console.log("Connected to Real-Time Notification Server");
-      };
-
-      ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          const role = user?.role?.toLowerCase()?.trim();
-
-          let notificationTriggered = false;
-
-          if (data.event === "NEW_SUBMISSION" && (role === 'employee' || role === 'admin')) {
-            showNotification(data.message || `${data.trainee_name} submitted Set ${data.set_number} Unit ${data.task_code} for review.`, 'info', 0, '/assistant?tab=assessment&subtab=assessments');
-            window.dispatchEvent(new CustomEvent('kmti-refresh-submissions'));
-            notificationTriggered = true;
-          } else if (data.event === "NEW_REPLY" && (role === 'employee' || role === 'admin')) {
-            showNotification(data.message || `${data.trainee_name} replied to your feedback.`, 'info', 0, '/assistant?tab=assessment&subtab=assessments');
-            window.dispatchEvent(new CustomEvent('kmti-refresh-submissions'));
-            notificationTriggered = true;
-          } else if (data.event === "TRAINEE_PROGRESS" && (role === 'employee' || role === 'admin')) {
-            showNotification(data.message || `Trainee ${data.trainee_name} passed ${data.lesson_title} with ${data.score}%!`, 'success', 0, '/assistant?tab=assessment&subtab=progress');
-            window.dispatchEvent(new CustomEvent('kmti-refresh-trainee-progress'));
-            notificationTriggered = true;
-          } else if (data.event === "TRAINEE_COURSE_COMPLETED" && (role === 'employee' || role === 'admin')) {
-            showNotification(data.message || `Trainee ${data.trainee_name} completed the ENTIRE ${data.course_name} Course!`, 'success', 0, '/assistant?tab=assessment&subtab=progress');
-            window.dispatchEvent(new CustomEvent('kmti-refresh-trainee-progress'));
-            notificationTriggered = true;
-          } else if (data.event === "ASSESSMENT_REVIEWED" && role === 'trainee') {
-            if (data.status === 'approved') {
-              showNotification(data.message, 'success', 0, '/mentor?mode=assessment');
-            } else {
-              showNotification(data.message, 'error', 0, '/mentor?mode=assessment');
-            }
-            window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
-            notificationTriggered = true;
-          }
-
-          if (notificationTriggered && window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
-            window.electronAPI.flashWindow();
-          }
-        } catch (err) {
-          console.error("Failed to parse websocket message", err);
+      if (data.event === "NEW_SUBMISSION" && (role === 'employee' || role === 'admin')) {
+        showNotification(data.message || `${data.trainee_name} submitted Set ${data.set_number} Unit ${data.task_code} for review.`, 'info', 0, '/assistant?tab=assessment&subtab=assessments');
+        window.dispatchEvent(new CustomEvent('kmti-refresh-submissions'));
+        notificationTriggered = true;
+      } else if (data.event === "NEW_REPLY" && (role === 'employee' || role === 'admin')) {
+        showNotification(data.message || `${data.trainee_name} replied to your feedback.`, 'info', 0, '/assistant?tab=assessment&subtab=assessments');
+        window.dispatchEvent(new CustomEvent('kmti-refresh-submissions'));
+        notificationTriggered = true;
+      } else if (data.event === "TRAINEE_PROGRESS" && (role === 'employee' || role === 'admin')) {
+        showNotification(data.message || `Trainee ${data.trainee_name} passed ${data.lesson_title} with ${data.score}%!`, 'success', 0, '/assistant?tab=assessment&subtab=progress');
+        window.dispatchEvent(new CustomEvent('kmti-refresh-trainee-progress'));
+        notificationTriggered = true;
+      } else if (data.event === "TRAINEE_COURSE_COMPLETED" && (role === 'employee' || role === 'admin')) {
+        showNotification(data.message || `Trainee ${data.trainee_name} completed the ENTIRE ${data.course_name} Course!`, 'success', 0, '/assistant?tab=assessment&subtab=progress');
+        window.dispatchEvent(new CustomEvent('kmti-refresh-trainee-progress'));
+        notificationTriggered = true;
+      } else if (data.event === "ASSESSMENT_REVIEWED" && role === 'trainee') {
+        if (data.status === 'approved') {
+          showNotification(data.message, 'success', 0, '/mentor?mode=assessment');
+        } else {
+          showNotification(data.message, 'error', 0, '/mentor?mode=assessment');
         }
-      };
+        window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
+        notificationTriggered = true;
+      }
 
-      ws.onclose = () => {
-        console.log("Disconnected from Real-Time Notification Server. Attempting reconnect...");
-        reconnectTimeout = setTimeout(connect, 5000);
-      };
-    };
+      if (notificationTriggered && window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
+        window.electronAPI.flashWindow();
+      }
+    });
 
-    connect();
-
-    return () => {
-      if (ws) ws.close();
-      if (reconnectTimeout) clearTimeout(reconnectTimeout);
-    };
-  }, [isAuthenticated, user?.role]);
+    return unsub;
+  }, [isAuthenticated, user?.role, subscribe]);
 
   // System Status
   const [dbStatus, setDbStatus] = useState({ db_mode: 'mysql', nas_reachable: true });
@@ -313,6 +284,18 @@ function App() {
         </>
       )}
     </div>
+  );
+}
+
+/** Root App wraps AppContent with the centralized WebSocketProvider. */
+function App() {
+  const { isAuthenticated } = useAuth();
+  // Reactively read token so WebSocketProvider reconnects on login/logout
+  const token = isAuthenticated ? authService.getToken() : null;
+  return (
+    <WebSocketProvider token={token}>
+      <AppContent />
+    </WebSocketProvider>
   );
 }
 

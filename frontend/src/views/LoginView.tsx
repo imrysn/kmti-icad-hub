@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock, Settings } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth'; import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti_logo.png';
@@ -11,6 +11,10 @@ export const LoginView: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', password: '' }); const [localError, setLocalError] = useState('');
     const [showPassword, setShowPassword] = useState(false); const [rememberMe, setRememberMe] = useState(false);
+
+    // Custom API Server Settings State
+    const [showApiSettingsModal, setShowApiSettingsModal] = useState(false);
+    const [customApiUrl, setCustomApiUrl] = useState(localStorage.getItem('custom_api_url') || '');
 
     // Forgot Password State
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false); const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
@@ -101,11 +105,45 @@ export const LoginView: React.FC = () => {
         }
     };
 
+    const handleSaveApiUrl = () => {
+        if (customApiUrl.trim()) {
+            localStorage.setItem('custom_api_url', customApiUrl.trim());
+        } else {
+            localStorage.removeItem('custom_api_url');
+        }
+        setShowApiSettingsModal(false);
+        window.location.reload();
+    };
+
     return (
         <div className="unified-login-container">
             <div className="app-drag-region"></div>
             <LightPillar />
             <div className="ambient-particles"></div>
+
+            <button
+                type="button"
+                className="login-settings-btn"
+                onClick={() => setShowApiSettingsModal(true)}
+                title="API Server Settings"
+                style={{
+                    position: 'absolute',
+                    top: '20px',
+                    right: '20px',
+                    background: 'none',
+                    border: 'none',
+                    color: '#a0aec0',
+                    cursor: 'pointer',
+                    zIndex: 100,
+                    padding: '8px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <Settings size={20} />
+            </button>
 
             <div className="login-brand-header">
                 <span className="login-logo-text">KMTI</span>
@@ -141,6 +179,12 @@ export const LoginView: React.FC = () => {
                     <button type="submit" className="glass-login-btn" disabled={isLoggingIn}>
                         {isLoggingIn ? 'Logging...' : 'SIGN IN'}
                     </button>
+
+                    <div style={{ textAlign: 'right', marginTop: '8px' }}>
+                        <button type="button" className="forgot-password-btn" onClick={handleForgotPassword}>
+                            Forgot Password?
+                        </button>
+                    </div>
                 </form>
             </div>
 
@@ -162,6 +206,34 @@ export const LoginView: React.FC = () => {
                             </button>
                             <button onClick={handleForgotPasswordSubmit} className="submit-button" disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}>
                                 {isForgotPasswordSubmitting ? 'Sending...' : 'Send Reset Link'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* API Settings Modal */}
+            {showApiSettingsModal && (
+                <div className="modal-overlay" onClick={() => setShowApiSettingsModal(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <h3>API Server Configuration</h3>
+                        <p style={{ fontSize: '12px', margin: '8px 0 16px 0', color: '#a0aec0' }}>
+                            Configure the remote server URL (e.g. http://192.168.200.105:3001). Leave empty to use local server.
+                        </p>
+                        <label htmlFor="custom-api-url" className="modal-field-label">Server URL</label>
+                        <input
+                            id="custom-api-url"
+                            type="text"
+                            value={customApiUrl}
+                            onChange={(e) => setCustomApiUrl(e.target.value)}
+                            placeholder="http://127.0.0.1:3001"
+                        />
+                        <div className="modal-buttons">
+                            <button onClick={() => setShowApiSettingsModal(false)} className="cancel-button">
+                                Cancel
+                            </button>
+                            <button onClick={handleSaveApiUrl} className="submit-button">
+                                Save & Restart
                             </button>
                         </div>
                     </div>

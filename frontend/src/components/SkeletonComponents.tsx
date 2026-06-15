@@ -14,7 +14,7 @@ export const CourseCardSkeleton: React.FC = () => {
             {/* Description (3 lines) */}
             <div className="skeleton-text-group">
                 <div className="skeleton skeleton-line" />
-                <div className="skeleton skeleton-line w-90" />sidebar
+                <div className="skeleton skeleton-line w-90" />
 
                 <div className="skeleton skeleton-line w-60" />
             </div>
