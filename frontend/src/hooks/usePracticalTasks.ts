@@ -52,7 +52,9 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
       try {
         const url = assessmentService.getDownloadUrl(task.id);
-        const filename = `Set${task.set_number}_${task.task_code}_Master.dwg`;
+        const originalFilename = task.master_file_path 
+          ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
+          : `Set${task.set_number}_${task.task_code}_Master.dwg`;
         const token = authService.getToken();
 
         if (!token) {
@@ -61,7 +63,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
         }
 
         showNotification(`Preparing ${task.title}...`, 'info');
-        await window.electronAPI.downloadAndOpen({ url, filename, token });
+        await window.electronAPI.downloadAndOpen({ url, filename: originalFilename, token });
         showNotification(`${task.title} opened in iJCAD.`, 'success');
       } catch (err) {
         console.error('Failed to open in iJCAD:', err);
@@ -102,7 +104,10 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
-      a.download = `Set${task.set_number}_${task.task_code}_Master.dwg`;
+      const originalFilename = task.master_file_path 
+        ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
+        : `Set${task.set_number}_${task.task_code}_Master.dwg`;
+      a.download = originalFilename;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

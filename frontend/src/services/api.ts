@@ -74,11 +74,6 @@ export const getSystemStatus = async () => {
     }
 };
 
-// Search knowledge base
-export const searchKnowledgeBase = async (query: string) => {
-    const response = await api.get(`/api/v1/chat/search?query=${encodeURIComponent(query)}`);
-    return response.data;
-};
 
 // Get available courses
 export const getCourses = async () => {

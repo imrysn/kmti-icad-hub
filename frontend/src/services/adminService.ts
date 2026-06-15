@@ -161,33 +161,6 @@ export const adminService = {
         return response.data;
     },
 
-    async getChatLogs(params?: { limit?: number; offset?: number; username?: string }): Promise<any> {
-        const response = await api.get('/admin/chat-logs', { params });
-        return response.data;
-    },
-
-    async getChatLogStats(): Promise<any> {
-        const response = await api.get('/admin/chat-logs/stats');
-        return response.data;
-    },
-
-    async deleteChatLog(logId: number): Promise<void> {
-        await api.delete(`/admin/chat-logs/${logId}`);
-    },
-
-    async getFeedbackStats(): Promise<any> {
-        const response = await api.get('/admin/feedback/stats');
-        return response.data;
-    },
-
-    async getCacheStats(): Promise<any> {
-        const response = await api.get('/admin/cache/stats');
-        return response.data;
-    },
-
-    async clearCache(): Promise<void> {
-        await api.delete('/admin/cache');
-    },
 
     async downloadKBFile(filename: string): Promise<void> {
         const response = await api.get(`/admin/kb/files/${encodeURIComponent(filename)}/download`, {

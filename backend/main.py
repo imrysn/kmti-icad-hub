@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from .database import engine, Base, get_db, get_db_mode
-from .routers import auth, admin, chat, lessons, quizzes, assessments
+from .routers import auth, admin, lessons, quizzes, assessments
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi import Request
@@ -83,12 +83,11 @@ if os.path.exists(assets_path):
 else:
     print(f"⚠️ Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, chat, lessons, quizzes, assessments, notifications, settings
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")
-app.include_router(chat.router, prefix="/api/v1")
 app.include_router(lessons.router, prefix="/api/v1")
 app.include_router(quizzes.router, prefix="/api/v1")
 app.include_router(assessments.router, prefix="/api/v1")

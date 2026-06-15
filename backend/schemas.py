@@ -69,52 +69,6 @@ class QuizSubmission(BaseModel):
 
 # Authentication Schemas
 
-# Chat / Intelligence Node Schemas
-
-class ChatMessage(BaseModel):
-    role: Literal["user", "assistant"]
-    content: str
-
-class ImagePayload(BaseModel):
-    data: str  # Base64 string
-    mime: str = "image/jpeg"
-
-class ChatRequest(BaseModel):
-    message: str
-    history: Optional[List[ChatMessage]] = []
-    session_id: Optional[str] = None
-    images: Optional[List[ImagePayload]] = [] # Support up to 3 images
-    language: Optional[str] = "en-US"
-    is_regeneration: Optional[bool] = False # PHASE 3: Flag to bypass cache and vary response
-    current_lesson_id: Optional[str] = None # Support contextual biasing for Mentor Mode
-    
-    # PHASE 1 FIX #5: Backend validation for image upload limit
-    @field_validator("images")
-    @classmethod
-    def validate_image_limit(cls, v: Optional[List[ImagePayload]]) -> Optional[List[ImagePayload]]:
-        if v and len(v) > 3:
-            raise ValueError("Maximum 3 images allowed per request")
-        return v
-
-class ChatSource(BaseModel):
-    id: str
-    content: str
-    source: str
-    score: Optional[float] = None
-    media: Optional[List[MediaAsset]] = None
-
-class ChatResponse(BaseModel):
-    answer: str
-    sources: List[ChatSource]
-    cached: bool = False
-    log_id: Optional[int] = None
-    suggestions: Optional[List[str]] = None  # PHASE 3: Smart follow-up suggestions
-
-
-# PHASE 1 FIX #2: Updated feedback to accept null rating
-class FeedbackRequest(BaseModel):
-    chat_log_id: int
-    rating: Optional[Literal["up", "down"]] = None  # Allow null for deletion
 
 
 class UserCreate(BaseModel):

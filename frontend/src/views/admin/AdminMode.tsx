@@ -13,14 +13,12 @@ import { UserManagement } from './components/UserManagement';
 import { PerformanceDirectory } from './components/PerformanceDirectory';
 import { TraineeDetail } from './components/TraineeDetail';
 import { AuditLogs } from './components/AuditLogs';
-import { KnowledgeManagement } from './components/KnowledgeManagement';
-import { IntelligenceChatbot } from './components/IntelligenceChatbot';
 import { AssessmentManagement } from './components/AssessmentManagement';
 import { PracticalManagement } from './components/PracticalManagement';
 import { BroadcastCenter } from './components/BroadcastCenter';
 import { UserModal } from './components/UserModal';
 
-export type AdminTab = 'overview' | 'users' | 'progress' | 'intelligence' | 'chatbot' | 'assessments' | 'practical' | 'logs';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'assessments' | 'practical' | 'logs';
 
 export const AdminMode: React.FC = () => {
     const location = useLocation();
@@ -106,8 +104,7 @@ export const AdminMode: React.FC = () => {
                                 )}
                             </ErrorBoundary>
                         } />
-                        <Route path="intelligence" element={<ErrorBoundary><KnowledgeManagement /></ErrorBoundary>} />
-                        <Route path="chatbot" element={<ErrorBoundary><IntelligenceChatbot isAdmin={true} /></ErrorBoundary>} />
+
                         <Route path="assessments" element={<ErrorBoundary><AssessmentManagement /></ErrorBoundary>} />
                         <Route path="practical" element={<ErrorBoundary><PracticalManagement /></ErrorBoundary>} />
                         <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />

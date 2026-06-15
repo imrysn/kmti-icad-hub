@@ -4,7 +4,6 @@ import { useUI } from '../../../context/UIContext'; import { useAuth } from '../
 import { Lesson } from '../mentorConstants'; import { QuizModal } from './QuizModal';
 import { authService } from '../../../services/authService';
 import api from '../../../services/api';
-import { IntelligenceChatbot } from '../../admin/components/IntelligenceChatbot';
 
 // 3D Lesson Imports (Lazy Loaded)
 const IcadInterfaceLesson = lazy(() => import('../../../components/3D_Modeling/3D_iCadInterface'));
@@ -123,47 +122,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const [activeQuiz, setActiveQuiz] = useState<any>(null);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
 
-  // Chatbot Resizer & Toggle State
   const isTrainee = user?.role === 'trainee';
-  const [isChatbotOpen, setIsChatbotOpen] = useState(!isTrainee);
-  const [chatbotWidth, setChatbotWidth] = useState(300);
   const [dbContent, setDbContent] = useState<any[]>([]);
   const [isDbLoading, setIsDbLoading] = useState(false);
-  const isDragging = useRef(false);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging.current) return;
-    const newWidth = document.body.clientWidth - e.clientX;
-    if (newWidth >= 300 && newWidth <= 800) {
-      setChatbotWidth(newWidth);
-    }
-  }, []);
-
-  const handleMouseUp = useCallback(() => {
-    if (isDragging.current) {
-      isDragging.current = false;
-      document.body.style.cursor = 'default';
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.body.classList.remove('is-dragging');
-    }
-  }, [handleMouseMove]);
-
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    isDragging.current = true;
-    document.body.style.cursor = 'col-resize';
-    document.body.classList.add('is-dragging');
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }, [handleMouseMove, handleMouseUp]);
-
-  useEffect(() => {
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
     setShowQuiz(false);
@@ -400,16 +361,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   return (
     <main className="main-content-viewer">
       <div className="sticky-lesson-controls" style={{ justifyContent: 'flex-end', gap: '0.75rem' }}>
-        {!isTrainee && (
-          <button
-            className="exit-course-btn"
-            style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-main)', display: 'flex', alignItems: 'center' }}
-            onClick={() => setIsChatbotOpen(!isChatbotOpen)}
-          >
-            <Brain size={16} style={{ marginRight: '0.5rem' }} />
-            {isChatbotOpen ? 'CLOSE AI' : 'ASSISTANT'}
-          </button>
-        )}
+
         <button className="exit-course-btn" onClick={handleExitCourse}>
           EXIT COURSE
         </button>
@@ -604,17 +556,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
         </div> {/* End of lesson-scroll-area */}
 
-        {!isTrainee && isChatbotOpen && (
-          <>
-            <div
-              className="chatbot-resizer"
-              onMouseDown={handleMouseDown}
-            />
-            <aside className="lesson-chatbot-sidebar" style={{ width: `${chatbotWidth}px` }}>
-              <IntelligenceChatbot lessonId={activeLessonId} />
-            </aside>
-          </>
-        )}
+
       </div> {/* End of lesson-split-layout */}
     </main>
   );

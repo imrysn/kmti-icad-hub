@@ -24,8 +24,16 @@ def get_user_from_token(token: str, db: Session) -> User:
     return None
 
 @router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
+async def websocket_endpoint(websocket: WebSocket, token: str = None):
     try:
+        subprotocols = websocket.scope.get("subprotocols", [])
+        used_subprotocol = None
+        if subprotocols:
+            token = subprotocols[0]
+            used_subprotocol = subprotocols[0]
+        else:
+            token = websocket.query_params.get("token")
+
         # Use context manager to handle db session, freeing connection pool immediately
         with SessionLocal() as db:
             user = get_user_from_token(token, db)
@@ -34,7 +42,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
                 return
             user_id = user.id
 
-        await notification_manager.connect(websocket, user_id)
+        await notification_manager.connect(websocket, user_id, subprotocol=used_subprotocol)
         try:
             while True:
                 data = await websocket.receive_text()

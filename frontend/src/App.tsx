@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff, Lock, Brain, GraduationCap, ClipboardList } from 'lucide-react';
+import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff, Lock, Brain, GraduationCap, ClipboardList, Briefcase } from 'lucide-react';
 
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -29,7 +29,7 @@ function AppContent() {
 
   // Derived state for current tab
   const params = new URLSearchParams(location.search);
-  const currentTab = params.get('tab') || localStorage.getItem('assistant-active-tab') || 'assistant';
+  const currentTab = params.get('tab') || localStorage.getItem('assistant-active-tab') || 'training';
 
   const handleTabChange = (tab: string) => {
     navigate(`/assistant?tab=${tab}`);
@@ -209,8 +209,8 @@ function AppContent() {
               {user?.role === 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/assistant') ? 'active' : ''}`} onClick={() => navigate('/assistant')}>
-                    <Brain size={18} />
-                    <span>Intelligence Assistant</span>
+                    <Briefcase size={18} />
+                    <span>Trainer Workspace</span>
                   </button>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
                     <GraduationCap size={18} />
@@ -224,10 +224,6 @@ function AppContent() {
               )}
               {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
-                  <button className={`assistant-tab-btn ${currentTab === 'assistant' ? 'active' : ''}`} onClick={() => handleTabChange('assistant')} title="Intelligence Assistant">
-                      <Brain size={18} />
-                      <span>Intelligence Assistant</span>
-                  </button>
                   <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title="iCAD Manuals and Standard">
                       <GraduationCap size={18} />
                       <span>iCAD Manuals and Standard</span>

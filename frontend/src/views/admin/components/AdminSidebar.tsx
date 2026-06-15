@@ -21,7 +21,6 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
                     { id: 'progress', icon: BarChart3, label: 'Performance' },
                     { id: 'assessments', icon: ClipboardList, label: 'Quizzes' },
                     { id: 'practical', icon: Zap, label: 'Practical Units' },
-                    { id: 'intelligence', icon: Brain, label: 'Intelligence' },
                     { id: 'logs', icon: Shield, label: 'Audit Logs' }
                 ].map((item) => (
                     <button key={item.id} className={`nav-item ${activeTab === item.id ? 'active' : ''}`} onClick={() => navigate(`/admin/${item.id}`)}

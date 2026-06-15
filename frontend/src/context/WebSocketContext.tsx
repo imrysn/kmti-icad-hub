@@ -45,21 +45,21 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
   const handlersRef = useRef<Map<string, Set<WSEventHandler>>>(new Map());
   const isMountedRef = useRef(true);
 
-  const buildWsUrl = useCallback((jwtToken: string): string => {
+  const buildWsUrl = useCallback((): string => {
     const apiBase = api.defaults.baseURL || '';
     if (apiBase.startsWith('http')) {
       try {
         const parsed = new URL(apiBase);
         const proto = parsed.protocol === 'https:' ? 'wss:' : 'ws:';
-        return `${proto}//${parsed.host}/api/v1/notifications/ws?token=${jwtToken}`;
+        return `${proto}//${parsed.host}/api/v1/notifications/ws`;
       } catch {
         const cleaned = apiBase.replace(/^https?:\/\//i, '');
         const proto = apiBase.startsWith('https') ? 'wss:' : 'ws:';
-        return `${proto}//${cleaned}/api/v1/notifications/ws?token=${jwtToken}`;
+        return `${proto}//${cleaned}/api/v1/notifications/ws`;
       }
     }
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    return `${proto}//${window.location.hostname || '127.0.0.1'}:3001/api/v1/notifications/ws?token=${jwtToken}`;
+    return `${proto}//${window.location.hostname || '127.0.0.1'}:3001/api/v1/notifications/ws`;
   }, []);
 
   const connect = useCallback(() => {
@@ -69,8 +69,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
       wsRef.current.close();
     }
 
-    const wsUrl = buildWsUrl(token);
-    const ws = new WebSocket(wsUrl);
+    const wsUrl = buildWsUrl();
+    const ws = new WebSocket(wsUrl, token);
     wsRef.current = ws;
 
     ws.onopen = () => {
