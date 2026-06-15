@@ -351,6 +351,7 @@ class AssessmentSubmissionResponse(AssessmentSubmissionBase):
     id: int
     user_id: int
     trainer_id: Optional[int] = None
+    is_deleted: bool = False
     submitted_at: datetime
     updated_at: datetime
     user: Optional[UserResponse] = None

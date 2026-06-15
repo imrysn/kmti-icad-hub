@@ -238,6 +238,34 @@ def toggle_user_status(
     db.commit()
     db.refresh(user)
     return {"id": user.id, "username": user.username, "is_active": user.is_active}
+
+from pydantic import BaseModel
+
+class ActivityUpdate(BaseModel):
+    activity: str
+
+from ..models import UserActivity
+
+@router.post("/activity")
+def update_realtime_activity(
+    data: ActivityUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Update the user's current real-time activity (e.g. current tab or lesson).
+    """
+    activity_record = db.query(UserActivity).filter(UserActivity.user_id == current_user.id).first()
+    if not activity_record:
+        activity_record = UserActivity(user_id=current_user.id, current_activity=data.activity)
+        db.add(activity_record)
+    else:
+        activity_record.current_activity = data.activity
+        activity_record.last_updated = datetime.now(timezone.utc)
+    
+    db.commit()
+    return {"status": "success"}
+
 @router.get("/progress/{course_id}", response_model=List[LessonProgress])
 def get_course_progress(
     course_id: str,
