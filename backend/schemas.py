@@ -2,6 +2,14 @@ from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime
 from typing import List, Literal, Optional
 
+class SystemSettingResponse(BaseModel):
+    key: str
+    value: str
+    description: Optional[str] = None
+
+class SystemSettingUpdate(BaseModel):
+    value: str
+
 class MediaAsset(BaseModel):
     """Multimedia asset linked to a search result"""
     media_type: str  # "video", "image", "3d_model"

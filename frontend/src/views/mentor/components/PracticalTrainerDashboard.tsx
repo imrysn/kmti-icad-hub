@@ -315,11 +315,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
     }, {} as Record<number, any>);
 
     const toggleTrainee = (id: number) => {
-        setExpandedTrainees(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+        setExpandedTrainees(prev => prev.includes(id) ? [] : [id]);
     };
 
     const toggleSet = (key: string) => {
-        setExpandedSets(prev => prev.includes(key) ? prev.filter(x => x !== key) : [...prev, key]);
+        setExpandedSets(prev => prev.includes(key) ? [] : [key]);
     };
 
     useEffect(() => {
@@ -354,27 +354,34 @@ export const PracticalTrainerDashboard: React.FC = () => {
     }
 
     return (
-        <div className="trainer-dashboard animate-fade-in">
-            <div className="trainer-main-nav">
-                <button
-                    className={`main-nav-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
-                    onClick={() => setActiveMainTab('assessments')}
-                >
-                    <FileText size={18} /> Practical Submissions
-                </button>
-                <button
-                    className={`main-nav-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
-                    onClick={() => setActiveMainTab('progress')}
-                >
-                    <CheckCircle2 size={18} /> Trainee Progress Tracker
-                </button>
-                <button
-                    className={`main-nav-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
-                    onClick={() => setActiveMainTab('sets')}
-                >
-                    <Settings size={18} /> Set Configuration
-                </button>
+        <div className="practical-trainer-wrapper" style={{ display: 'flex', height: '100%', width: '100%', overflow: 'hidden' }}>
+            <div className="admin-sidebar" style={{ height: '100%', borderRight: '1px solid var(--border-color)', background: 'var(--bg-surface)' }}>
+                <div className="sidebar-nav" style={{ paddingTop: '1.5rem' }}>
+                    <button
+                        className={`nav-item ${activeMainTab === 'assessments' ? 'active' : ''}`}
+                        onClick={() => setActiveMainTab('assessments')}
+                        data-tooltip="Practical Submissions"
+                    >
+                        <div className="nav-icon"><FileText size={20} /></div>
+                    </button>
+                    <button
+                        className={`nav-item ${activeMainTab === 'progress' ? 'active' : ''}`}
+                        onClick={() => setActiveMainTab('progress')}
+                        data-tooltip="Trainee Progress Tracker"
+                    >
+                        <div className="nav-icon"><CheckCircle2 size={20} /></div>
+                    </button>
+                    <button
+                        className={`nav-item ${activeMainTab === 'sets' ? 'active' : ''}`}
+                        onClick={() => setActiveMainTab('sets')}
+                        data-tooltip="Set Configuration"
+                    >
+                        <div className="nav-icon"><Settings size={20} /></div>
+                    </button>
+                </div>
             </div>
+
+            <div className="trainer-dashboard animate-fade-in">
 
             <div className="trainer-header">
                 <div className="header-info">
@@ -893,6 +900,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     </div>
                 </div>
             )}
+        </div>
         </div>
     );
 };

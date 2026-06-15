@@ -137,15 +137,27 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         return isSetLocked(activeSet);
     }, [activeSet, isSetLocked]);
 
-    const sets = assessmentType === '3D' 
-        ? Array.from({ length: 10 }, (_, i) => i + 1)
-        : [4, 5, 6, 7];
+    const sets = useMemo(() => {
+        const uniqueSets = Array.from(new Set(tasks.map(t => t.set_number))).sort((a, b) => a - b);
+        
+        if (uniqueSets.length === 0) {
+            return assessmentType === '3D' ? Array.from({ length: 10 }, (_, i) => i + 1) : [4, 5, 6, 7];
+        }
+
+        if (assessmentType === '2D') {
+            // 2D course only focuses on Assembly tasks
+            const assemblySets = uniqueSets.filter(s => tasks.some(t => t.set_number === s && t.is_assembly));
+            return assemblySets.length > 0 ? assemblySets : uniqueSets.filter(s => s >= 4);
+        }
+
+        return uniqueSets;
+    }, [tasks, assessmentType]);
         
     useEffect(() => {
-        if (assessmentType === '2D' && activeSet < 4) {
-            setActiveSet(4);
+        if (sets.length > 0 && !sets.includes(activeSet)) {
+            setActiveSet(sets[0]);
         }
-    }, [assessmentType, activeSet, setActiveSet]);
+    }, [sets, activeSet, setActiveSet]);
 
     const currentSetTasks = tasks.filter(t => t.set_number === activeSet);
 

@@ -39,6 +39,7 @@
 
 /* Ensure interactive elements in header are NOT draggable, but empty spaces are */
 .mode-switcher,
+.assistant-tabs,
 .header-actions,
 .window-buttons-group,
 .status-badge,

@@ -6,6 +6,13 @@ try:
 except ImportError:
     from database import Base
 
+class SystemSettings(Base):
+    __tablename__ = "system_settings"
+
+    key = Column(String(100), primary_key=True, index=True)
+    value = Column(String(500))
+    description = Column(String(200))
+
 class UserProgress(Base):
     __tablename__ = "user_progress"
 

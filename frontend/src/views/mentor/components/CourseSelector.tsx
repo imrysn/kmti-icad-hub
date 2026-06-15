@@ -17,6 +17,7 @@ interface CourseSelectorProps {
     isAnnotationCompleted: boolean;
     canBypass: boolean;
     is3DAssessmentCompleted: boolean;
+    isEmployeeSide?: boolean;
 }
 
 export const CourseSelector: React.FC<CourseSelectorProps> = ({
@@ -28,7 +29,8 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     is2DCompleted,
     isAnnotationCompleted,
     canBypass,
-    is3DAssessmentCompleted
+    is3DAssessmentCompleted,
+    isEmployeeSide = false
 }) => {
     if (loading) {
         return (
@@ -41,9 +43,12 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                     <div className="course-grid">
                         <CourseCardSkeleton />
                         <CourseCardSkeleton />
-                        <CourseCardSkeleton />
-                        <CourseCardSkeleton />
-                        <CourseCardSkeleton />
+                        {!isEmployeeSide && (
+                            <>
+                                <CourseCardSkeleton />
+                                <CourseCardSkeleton />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -72,21 +77,21 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
 
     const activeCards = [
         course3D,
-        {
+        ...(isEmployeeSide ? [] : [{
             id: 'practical-assessment',
             title: '3D Practical Assessment',
             description: 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
             course_type: 'Practical',
             order: 1.5
-        },
+        }]),
         course2D,
-        {
+        ...(isEmployeeSide ? [] : [{
             id: '2d-assessment',
             title: '2D Detailing Assessment',
             description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
             course_type: 'Practical_2D',
             order: 2.5
-        }
+        }])
     ];
 
     const allCourses = [...activeCards];

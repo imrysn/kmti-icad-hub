@@ -114,7 +114,8 @@ export const assessmentService = {
     },
 
     updateTraineeSetMapping: async (traineeId: number, mappings: { display_set_number: number, actual_set_number: number }[]) => {
-        const response = await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, mappings);
+        const payload = mappings.map(m => ({ ...m, trainee_id: traineeId }));
+        const response = await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, payload);
         return response.data;
     },
 
