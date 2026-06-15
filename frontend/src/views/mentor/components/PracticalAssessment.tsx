@@ -56,6 +56,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         setExpandedFeedbackId,
         uploadingTaskId,
         handleOpenInIJCAD,
+        handleDownloadTask,
+        handleOpenFeedbackExcel,
         handleDownloadFeedback,
         handleFileUpload,
         uploadTaskFile,

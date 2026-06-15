@@ -3,7 +3,7 @@ import { assessmentService, AssessmentTask, AssessmentSubmission } from '../serv
 import { authService } from '../services/authService';
 import { useNotification } from '../context/NotificationContext';
 
-export const usePracticalTasks = () => {
+export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   const { showNotification } = useNotification();
   const [tasks, setTasks] = useState<AssessmentTask[]>([]);
   const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);

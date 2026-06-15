@@ -347,34 +347,37 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Real-time Activity Tracking
     const coursesRef = useRef(courses);
     const activeLessonIdRef = useRef(activeLessonId);
+    const selectedCourseRef = useRef(selectedCourse);
+    const currentLessonsRef = useRef(currentLessons);
     
     useEffect(() => {
         coursesRef.current = courses;
         activeLessonIdRef.current = activeLessonId;
-    }, [courses, activeLessonId]);
+        selectedCourseRef.current = selectedCourse;
+        currentLessonsRef.current = currentLessons;
+    }, [courses, activeLessonId, selectedCourse, currentLessons]);
 
     useEffect(() => {
         const sendActivity = async (tabName?: string | null) => {
-            const allCourses = coursesRef.current || [];
             const lessonId = activeLessonIdRef.current;
             
             let lessonTitle = 'Select a Lesson';
-            let courseTitle = '';
-            for (const course of allCourses) {
-                const lessonsList = course.lessons || [];
+            let courseTitle = selectedCourseRef.current?.title || '';
+
+            const findLesson = (lessonsList: any[]): any => {
                 for (const lesson of lessonsList) {
-                    if (lesson.id === lessonId) {
-                        lessonTitle = lesson.title;
-                        courseTitle = course.title;
-                    }
+                    if (lesson.id === lessonId) return lesson;
                     if (lesson.children) {
-                        const child = lesson.children.find(c => c.id === lessonId);
-                        if (child) {
-                            lessonTitle = child.title;
-                            courseTitle = course.title;
-                        }
+                        const found = findLesson(lesson.children);
+                        if (found) return found;
                     }
                 }
+                return null;
+            };
+
+            const activeLesson = findLesson(currentLessonsRef.current || []);
+            if (activeLesson) {
+                lessonTitle = activeLesson.title;
             }
 
             let activityStr = '';
