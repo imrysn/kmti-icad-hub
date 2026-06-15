@@ -12,18 +12,18 @@ interface UserManagementProps {
     onEditUser: (user: User) => void;
 }
 
-export const UserManagement: React.FC<UserManagementProps> = ({ 
-    users, 
-    currentUser, 
-    searchQuery, 
-    setSearchQuery, 
-    handleToggleStatus, 
+export const UserManagement: React.FC<UserManagementProps> = ({
+    users,
+    currentUser,
+    searchQuery,
+    setSearchQuery,
+    handleToggleStatus,
     handleDeleteUser,
     onAddUser,
     onEditUser
 }) => {
-    const filteredUsers = users.filter((u: User) => 
-        u.username.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const filteredUsers = users.filter((u: User) =>
+        u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
         u.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         u.email.toLowerCase().includes(searchQuery.toLowerCase())
     );

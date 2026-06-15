@@ -8,7 +8,14 @@
   height: calc(100vh - 60px);
   padding: 0;
   background: var(--bg-dark);
+  background-image: radial-gradient(rgba(221, 77, 250, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
   width: 100%; /* Explicitly set full width */
+}
+
+[data-theme='light'] .assistant-mode-container {
+  background-image: radial-gradient(rgba(181, 23, 158, 0.06) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
 }
 
 /* ── Tabs Navigation ───────────────────────────────────────── */
@@ -40,6 +47,9 @@
 
 .assistant-tab-btn:hover {
   color: var(--primary);
+  background: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .assistant-tab-btn.active {
@@ -78,7 +88,7 @@
 
 /* Ensure Chatbot layout fills the tab content height and overrides its default fixed height */
 .assistant-tab-content .chatbot-layout {
-  height: 100%;
+  height: 1018px;
 }
 
 /* ── Training/Mentor Wrapper ───────────────────────────────── */
@@ -92,6 +102,7 @@
 .assistant-training-wrapper .mentor-mode {
   padding: 0;
   height: 100%;
+  background: transparent;
 }
 
 .assistant-training-wrapper .course-view-container {

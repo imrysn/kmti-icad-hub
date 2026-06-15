@@ -15,13 +15,38 @@ import { ChatEntry, StoredSession, LightboxImage } from './chatbot/types';
 
 import '../../../styles/IntelligenceChatbot.css';
 
-export const IntelligenceChatbot: React.FC<{ lessonId?: string }> = ({ lessonId }) => {
+export const IntelligenceChatbot: React.FC<{ lessonId?: string; isAdmin?: boolean }> = ({ lessonId, isAdmin = false }) => {
     // State for common UI elements
     const [chatInput, setChatInput] = useState(''); const [forcedLanguage, setForcedLanguage] = useState<'en-US' | 'ja-JP' | 'fil-PH'>('en-US'); const [copiedIdx, setCopiedIdx] = useState<number | null>(null); const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [liveMessage, setLiveMessage] = useState(''); const [previewFile, setPreviewFile] = useState<string | null>(null); const [lightboxImages, setLightboxImages] = useState<LightboxImage[]>([]); const [lightboxIndex, setLightboxIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
+    
+    const [isGlobalEnabled, setIsGlobalEnabled] = useState(true);
+    const [isSettingLoading, setIsSettingLoading] = useState(true);
 
     const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isAdmin) {
+            setIsGlobalEnabled(true);
+            setIsSettingLoading(false);
+            return;
+        }
+
+        const fetchSetting = async () => {
+            try {
+                const setting = await adminService.getSetting('chatbot_enabled');
+                setIsGlobalEnabled(setting.value === 'true');
+            } catch (e) {
+                console.error("Failed to fetch chatbot setting", e);
+                setIsGlobalEnabled(false); // Default to disabled if fail
+            } finally {
+                setIsSettingLoading(false);
+            }
+        };
+
+        fetchSetting();
+    }, [isAdmin]);
 
     // Modal State
     const [modalConfig, setModalConfig] = useState<{
@@ -272,6 +297,20 @@ export const IntelligenceChatbot: React.FC<{ lessonId?: string }> = ({ lessonId 
             />
 
             <div className="chatbot-main">
+                {!isGlobalEnabled && !isSettingLoading ? (
+                    <div style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                        height: '100%', width: '100%', background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)',
+                        color: 'white', zIndex: 10, position: 'absolute', top: 0, left: 0, borderRadius: 'var(--radius-lg)'
+                    }}>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '2rem 3rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)', textAlign: 'center', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+                            <h2 style={{ margin: 0, fontSize: '2rem', fontWeight: 800, letterSpacing: '2px', color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>FUTURE FEATURE</h2>
+                            <p style={{ marginTop: '1rem', color: 'rgba(255,255,255,0.8)', fontSize: '1.1rem' }}>The Intelligence Chatbot is currently disabled.</p>
+                            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>Please check back later.</p>
+                        </div>
+                    </div>
+                ) : null}
+
                 <MessageList chatHistory={chatHistory} activeSessionId={activeSessionId} currentlyReadingIdx={currentlyReadingIdx} currentCharIndex={currentCharIndex} copiedIdx={copiedIdx} regeneratingIdx={regeneratingIdx} isThinking={isThinking} showScrollBtn={showScrollBtn} onScroll={handleScroll} scrollToBottom={scrollToBottom} onSpeak={speakText} onCopy={copyToClipboard} onFeedback={handleFeedback} onOpenLightbox={openLightbox} onRetry={handleRetry} onRegenerate={handleRegenerate} onBranch={handleBranch} onSuggestionClick={handleSuggestionClick} />
 
                 <SourcesPanel sources={latestSources} onOpenImage={openLightbox} onOpenFile={openFile} />

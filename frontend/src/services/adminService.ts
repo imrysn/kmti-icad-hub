@@ -257,5 +257,16 @@ export const adminService = {
     async getTraineeQuizAttempts(userId: number, quizSlug: string): Promise<any> {
         const response = await api.get(`/admin/trainee/${userId}/attempts/${quizSlug}`);
         return response.data;
+    },
+
+    // System Settings
+    async getSetting(key: string): Promise<{ key: string; value: string; description?: string }> {
+        const response = await api.get(`/settings/${key}`);
+        return response.data;
+    },
+
+    async updateSetting(key: string, value: string): Promise<{ key: string; value: string; description?: string }> {
+        const response = await api.put(`/settings/${key}`, { value });
+        return response.data;
     }
 };

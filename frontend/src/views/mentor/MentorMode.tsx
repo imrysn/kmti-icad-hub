@@ -428,6 +428,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 isAnnotationCompleted={isAnnotationCompleted}
                 canBypass={canBypass}
                 is3DAssessmentCompleted={is3DAssessmentCompleted}
+                isEmployeeSide={isEmployeeSide}
             />
         );
     }
@@ -435,7 +436,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
-                {selectedCourse.id !== 'practical-assessment' && (
+                {selectedCourse.id !== 'practical-assessment' && selectedCourse.id !== '2d-assessment' && (
                     <MentorSidebar 
                         selectedCourse={selectedCourse} 
                         is2DDrawingCourse={is2DDrawingCourse} 

@@ -107,7 +107,7 @@ export const AdminMode: React.FC = () => {
                             </ErrorBoundary>
                         } />
                         <Route path="intelligence" element={<ErrorBoundary><KnowledgeManagement /></ErrorBoundary>} />
-                        <Route path="chatbot" element={<ErrorBoundary><IntelligenceChatbot /></ErrorBoundary>} />
+                        <Route path="chatbot" element={<ErrorBoundary><IntelligenceChatbot isAdmin={true} /></ErrorBoundary>} />
                         <Route path="assessments" element={<ErrorBoundary><AssessmentManagement /></ErrorBoundary>} />
                         <Route path="practical" element={<ErrorBoundary><PracticalManagement /></ErrorBoundary>} />
                         <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />

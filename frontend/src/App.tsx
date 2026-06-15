@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff, Lock } from 'lucide-react';
+import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff, Lock, Brain, GraduationCap, ClipboardList } from 'lucide-react';
 
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -24,6 +24,14 @@ function App() {
   const { showNotification } = useNotification();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Derived state for current tab
+  const params = new URLSearchParams(location.search);
+  const currentTab = params.get('tab') || localStorage.getItem('assistant-active-tab') || 'assistant';
+
+  const handleTabChange = (tab: string) => {
+    navigate(`/assistant?tab=${tab}`);
+  };
 
   // Centralized WebSocket notification receiver
   useEffect(() => {
@@ -228,15 +236,34 @@ function App() {
             {/* 2. NAVIGATION (Center) */}
             <div className="header-center">
               {user?.role === 'admin' && (
-                <nav className="mode-switcher">
-                  <button className={`mode-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
-                    Mentor
+                <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
+                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/assistant') ? 'active' : ''}`} onClick={() => navigate('/assistant')}>
+                    <Brain size={18} />
+                    <span>Intelligence Assistant</span>
                   </button>
-                  <button className={`mode-btn ${location.pathname.startsWith('/assistant') ? 'active' : ''}`} onClick={() => navigate('/assistant')}>
-                    Assistant
+                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
+                    <GraduationCap size={18} />
+                    <span>iCAD Manuals and Standard</span>
                   </button>
-                  <button className={`mode-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => navigate('/admin')}>
-                    Admin
+                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => navigate('/admin')}>
+                    <Settings size={18} />
+                    <span>Admin</span>
+                  </button>
+                </nav>
+              )}
+              {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && (
+                <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
+                  <button className={`assistant-tab-btn ${currentTab === 'assistant' ? 'active' : ''}`} onClick={() => handleTabChange('assistant')} title="Intelligence Assistant">
+                      <Brain size={18} />
+                      <span>Intelligence Assistant</span>
+                  </button>
+                  <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title="iCAD Manuals and Standard">
+                      <GraduationCap size={18} />
+                      <span>iCAD Manuals and Standard</span>
+                  </button>
+                  <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
+                      <ClipboardList size={18} />
+                      <span>Trainee Overview</span>
                   </button>
                 </nav>
               )}
@@ -262,19 +289,6 @@ function App() {
                   title="Logout"
                 >
                   <LogOut size={20} className="theme-toggle-icon" />
-                </button>
-
-                <div className="header-divider" />
-
-                <button
-                  onClick={() => {
-                    // Force a hard reload to bust any JS/CSS caching
-                    window.location.reload();
-                  }}
-                  className="theme-toggle-btn"
-                  title="Refresh Page Content"
-                >
-                  <RefreshCw size={18} className="theme-toggle-icon" />
                 </button>
 
                 <div className="header-divider" />

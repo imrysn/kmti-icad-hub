@@ -42,11 +42,6 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'practical' && `Manage assessment units and assign to trainers`}
                 </p>
             </div>
-            <div className="header-actions">
-                <button className="refresh-btn" onClick={fetchData} disabled={loading}>
-                    <RefreshCw size={24} className={loading ? 'spinning' : ''} />
-                </button>
-            </div>
         </header>
     );
 };

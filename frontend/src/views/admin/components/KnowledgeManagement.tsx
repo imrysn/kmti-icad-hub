@@ -137,9 +137,22 @@ export const KnowledgeManagement: React.FC = () => {
     const [dragActive, setDragActive] = useState(false);
     const [kbExpanded, setKbExpanded] = useState(false);
     
+    // ── Global Setting state ──
+    const [chatbotEnabled, setChatbotEnabled] = useState(false);
+    const [settingLoading, setSettingLoading] = useState(true);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     /* ── Fetchers ── */
+    const fetchSetting = useCallback(async () => {
+        setSettingLoading(true);
+        try {
+            const setting = await adminService.getSetting('chatbot_enabled');
+            setChatbotEnabled(setting.value === 'true');
+        } catch { /* silent */ }
+        finally { setSettingLoading(false); }
+    }, []);
+
     const fetchStats = useCallback(async () => {
         setStatsLoading(true);
         try {
@@ -175,8 +188,23 @@ export const KnowledgeManagement: React.FC = () => {
     useEffect(() => { fetchStats(); }, [fetchStats]);
     useEffect(() => { fetchLogs(); }, [fetchLogs]);
     useEffect(() => { fetchFiles(); }, [fetchFiles]);
+    useEffect(() => { fetchSetting(); }, [fetchSetting]);
 
     /* ── KB handlers ── */
+    const handleToggleChatbot = async () => {
+        try {
+            setSettingLoading(true);
+            const newValue = !chatbotEnabled;
+            await adminService.updateSetting('chatbot_enabled', newValue ? 'true' : 'false');
+            setChatbotEnabled(newValue);
+            showNotification(`Intelligence Chatbot ${newValue ? 'Enabled' : 'Disabled'}`, 'success');
+        } catch {
+            showNotification('Failed to update chatbot setting.', 'error');
+        } finally {
+            setSettingLoading(false);
+        }
+    };
+
     const handleDrag = (e: React.DragEvent) => {
         e.preventDefault(); e.stopPropagation();
         setDragActive(e.type === 'dragenter' || e.type === 'dragover');
@@ -257,6 +285,37 @@ export const KnowledgeManagement: React.FC = () => {
 
     return (
         <div className="ih-page">
+            
+            {/* ── Global Controls ── */}
+            <div className="ih-global-controls" style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 0 1rem 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'var(--bg-surface)', padding: '0.75rem 1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                    <Brain size={18} style={{ color: chatbotEnabled ? 'var(--color-primary)' : 'var(--text-muted)' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-main)' }}>Intelligence Chatbot</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{chatbotEnabled ? 'Currently Active' : 'Currently Disabled'}</span>
+                    </div>
+                    <label className="switch" style={{ marginLeft: '1rem', position: 'relative', display: 'inline-block', width: '44px', height: '24px' }}>
+                        <input 
+                            type="checkbox" 
+                            checked={chatbotEnabled} 
+                            onChange={handleToggleChatbot} 
+                            disabled={settingLoading}
+                            style={{ opacity: 0, width: 0, height: 0 }} 
+                        />
+                        <span className="slider round" style={{ 
+                            position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0, 
+                            backgroundColor: chatbotEnabled ? 'var(--color-primary)' : '#ccc', 
+                            transition: '.4s', borderRadius: '34px' 
+                        }}>
+                            <span style={{
+                                position: 'absolute', content: '""', height: '16px', width: '16px', 
+                                left: chatbotEnabled ? '24px' : '4px', bottom: '4px', 
+                                backgroundColor: 'white', transition: '.4s', borderRadius: '50%'
+                            }}></span>
+                        </span>
+                    </label>
+                </div>
+            </div>
 
             {/* ── Hero stat strip ── */}
             <div className="ih-stat-strip">

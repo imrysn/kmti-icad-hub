@@ -20,13 +20,8 @@
   flex-direction: column;
   flex-shrink: 0;
   z-index: 100;
-  transition: width 0.2s;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: var(--shadow-card);
-}
-
-.admin-sidebar:hover {
-  width: 240px;
 }
 
 /* ── Sidebar ─────────────────────────────────────────────────── */
@@ -94,14 +89,13 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   height: 48px;
   padding: 0;
   border: none;
@@ -115,14 +109,9 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
   width: 100%;
-}
-
-.admin-sidebar:hover .nav-item {
-  justify-content: flex-start;
-  padding: 0 1rem;
 }
 
 .nav-item .nav-icon {
@@ -135,44 +124,42 @@
   transition: transform 0.3s ease;
 }
 
-.nav-item span {
+.nav-item::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 64px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
   opacity: 0;
   visibility: hidden;
-  width: 0;
-  display: block;
-  transform: translateX(-15px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-color);
+  margin-left: 0.5rem;
+  z-index: 1000;
+  pointer-events: none;
 }
 
-.admin-sidebar:hover .nav-item span {
+.nav-item:hover::after {
   opacity: 1;
   visibility: visible;
-  width: auto;
-  margin-left: 0.75rem;
-  transform: translateX(0);
 }
 
 .nav-item:hover {
   background: var(--bg-card);
   color: var(--text-main);
-  transform: translateX(4px);
 }
 
 .nav-item.active {
   background: var(--bg-card);
   color: var(--primary);
   font-weight: 700;
-}
-
-.nav-item.active .nav-glow {
-  position: absolute;
-  left: 0;
-  top: 15%;
-  height: 70%;
-  width: 3px;
-  background: var(--primary);
-  border-radius: 0 4px 4px 0;
 }
 
 .admin-info .role {

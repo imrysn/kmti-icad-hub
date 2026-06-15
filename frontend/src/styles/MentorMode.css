@@ -32,8 +32,8 @@
 
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 420px));
+  gap: 1.5rem;
   justify-content: center;
   max-width: 1800px;
   width: 100%;
@@ -1446,7 +1446,7 @@
 /* ── Antigravity Chatbot Style Overrides (Mentor Mode Only) ── */
 
 .lesson-chatbot-sidebar .chatbot-layout {
-  height: 100%;
+  height: 1018px;
   gap: 0;
 }
 
