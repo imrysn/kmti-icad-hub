@@ -13,6 +13,7 @@ import { WebSocketProvider, useWebSocket } from './context/WebSocketContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import { BroadcastBanner } from './components/BroadcastBanner';
 import { NotificationSystem } from './components/NotificationSystem';
+import { NotificationsModal } from './components/NotificationsModal';
 import WindowControls from './components/WindowControls';
 import ThemeToggle from './components/ThemeToggle';
 import { getSystemStatus, api } from './services/api';
@@ -38,6 +39,7 @@ function AppContent() {
   // Centralized WebSocket notification receiver — now via WebSocketContext
   const { subscribe } = useWebSocket();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const fetchUnreadCount = async () => {
     if (!isAuthenticated) return;
@@ -202,6 +204,7 @@ function AppContent() {
         <>
           <BroadcastBanner />
           <NotificationSystem />
+          <NotificationsModal isOpen={isNotificationsOpen} onClose={() => setIsNotificationsOpen(false)} />
 
           {/* Header with Categorized Zones */}
           <header className="app-header animate-fade-in">
@@ -267,38 +270,36 @@ function AppContent() {
               </div>
 
               <div className="header-actions">
-                {(user?.role === 'employee' || user?.role === 'admin') && (
-                  <button
-                    onClick={() => {
-                      navigate('/assistant?tab=assessment&subtab=notifications');
-                    }}
-                    className="theme-toggle-btn"
-                    title="Notifications"
-                    style={{ position: 'relative', marginRight: '0.25rem' }}
-                  >
-                    <Bell size={20} className="theme-toggle-icon" />
-                    {unreadCount > 0 && (
-                      <span style={{
-                        position: 'absolute',
-                        top: '-4px',
-                        right: '-4px',
-                        background: 'var(--accent-red, #ef4444)',
-                        color: '#fff',
-                        borderRadius: '50%',
-                        width: '18px',
-                        height: '18px',
-                        fontSize: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 'bold',
-                        border: '2px solid var(--bg-surface)'
-                      }}>
-                        {unreadCount}
-                      </span>
-                    )}
-                  </button>
-                )}
+                <button
+                  onClick={() => {
+                    setIsNotificationsOpen(true);
+                  }}
+                  className="theme-toggle-btn"
+                  title="Notifications"
+                  style={{ position: 'relative', marginRight: '0.25rem' }}
+                >
+                  <Bell size={20} className="theme-toggle-icon" />
+                  {unreadCount > 0 && (
+                    <span style={{
+                      position: 'absolute',
+                      top: '-4px',
+                      right: '-4px',
+                      background: 'var(--accent-red, #ef4444)',
+                      color: '#fff',
+                      borderRadius: '50%',
+                      width: '18px',
+                      height: '18px',
+                      fontSize: '10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 'bold',
+                      border: '2px solid var(--bg-surface)'
+                    }}>
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
 
                 <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
