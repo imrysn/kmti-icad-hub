@@ -5,6 +5,7 @@ import { useCourses } from '../../hooks/useCourses'; import { Course } from '../
 import { useLessons } from '../../hooks/useLessons';
 import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
 import { assessmentService } from '../../services/assessmentService';
+import { useWebSocket } from '../../context/WebSocketContext';
 
 // Extracted Components
 import { CourseSelector } from './components/CourseSelector'; import { MentorSidebar } from './components/MentorSidebar';
@@ -23,6 +24,9 @@ interface MentorModeProps {
 }
 
 const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
+    const { isConnected, sendMessage } = useWebSocket();
+    const lastActivityRef = useRef<string>('');
+
     // Router hooks for header mode-switcher integration
     const location = useLocation();
     const navigate = useNavigate();
@@ -404,6 +408,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             }
             
             authService.updateActivity(activityStr);
+
+            // Store for heartbeat interval and send immediately
+            lastActivityRef.current = activityStr;
+            if (isConnected) {
+                sendMessage({
+                    event: 'HEARTBEAT',
+                    activity: activityStr
+                });
+            }
         };
 
         if (activeLessonId) {
@@ -431,7 +444,23 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         return () => {
             localStorage.setItem = originalSetItem;
         };
-    }, [activeLessonId]);
+    }, [activeLessonId, isConnected, sendMessage]);
+
+    // Periodic WebSocket Heartbeat
+    useEffect(() => {
+        if (!isConnected) return;
+
+        const interval = setInterval(() => {
+            if (lastActivityRef.current) {
+                sendMessage({
+                    event: 'HEARTBEAT',
+                    activity: lastActivityRef.current
+                });
+            }
+        }, 30000);
+
+        return () => clearInterval(interval);
+    }, [isConnected, sendMessage]);
 
     // Handlers and Helpers
     const toggleExpand = useCallback((id: string) => {

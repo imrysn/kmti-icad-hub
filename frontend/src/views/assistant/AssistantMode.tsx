@@ -11,6 +11,11 @@ import '../../styles/AssistantMode.css';
 const AssistantMode: React.FC = () => {
     const location = useLocation();
     const [activeTab, setActiveTab] = useState<'training' | 'assessment'>(() => {
+        const params = new URLSearchParams(window.location.search);
+        const tabParam = params.get('tab');
+        if (tabParam === 'assessment' || tabParam === 'training') {
+            return tabParam as any;
+        }
         return (localStorage.getItem('assistant-active-tab') as any) || 'training';
     });
 

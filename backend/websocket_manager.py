@@ -1,5 +1,6 @@
+from datetime import datetime
+from typing import Dict, List, Optional
 from fastapi import WebSocket
-from typing import Dict, List
 import json
 import logging
 
@@ -9,11 +10,14 @@ class NotificationManager:
     def __init__(self):
         # Maps user_id to a list of active WebSockets
         self.active_connections: Dict[int, List[WebSocket]] = {}
+        # Maps user_id to first connection start time
+        self.connection_start_times: Dict[int, datetime] = {}
 
     async def connect(self, websocket: WebSocket, user_id: int, subprotocol: str = None):
         await websocket.accept(subprotocol=subprotocol)
         if user_id not in self.active_connections:
             self.active_connections[user_id] = []
+            self.connection_start_times[user_id] = datetime.utcnow()
         self.active_connections[user_id].append(websocket)
         logger.info(f"User {user_id} connected. Total active connections for user: {len(self.active_connections[user_id])}")
 
@@ -23,7 +27,16 @@ class NotificationManager:
                 self.active_connections[user_id].remove(websocket)
             if not self.active_connections[user_id]:
                 del self.active_connections[user_id]
+                if user_id in self.connection_start_times:
+                    del self.connection_start_times[user_id]
         logger.info(f"User {user_id} disconnected.")
+
+    def is_user_online(self, user_id: int) -> bool:
+        return user_id in self.active_connections
+
+    def get_online_since(self, user_id: int) -> Optional[datetime]:
+        return self.connection_start_times.get(user_id)
+
 
     async def send_personal_message(self, message: dict, user_id: int):
         if user_id in self.active_connections:

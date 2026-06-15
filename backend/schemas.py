@@ -341,3 +341,16 @@ class TraineeSetMappingResponse(TraineeSetMappingBase):
     created_at: datetime
     class Config:
         from_attributes = True
+
+class NotificationResponse(BaseModel):
+    id: int
+    recipient_id: int
+    sender_id: Optional[int] = None
+    message: str
+    type: Optional[str] = None
+    is_read: bool
+    created_at: datetime
+    sender: Optional[UserResponse] = None
+
+    class Config:
+        from_attributes = True

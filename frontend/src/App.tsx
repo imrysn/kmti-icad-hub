@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff, Lock, Brain, GraduationCap, ClipboardList, Briefcase } from 'lucide-react';
+import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff, Lock, Brain, GraduationCap, ClipboardList, Briefcase, Bell } from 'lucide-react';
 
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -37,6 +37,29 @@ function AppContent() {
 
   // Centralized WebSocket notification receiver — now via WebSocketContext
   const { subscribe } = useWebSocket();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const fetchUnreadCount = async () => {
+    if (!isAuthenticated) return;
+    try {
+      const response = await api.get('/api/v1/notifications');
+      const data = response.data;
+      setUnreadCount(data.filter((n: any) => !n.is_read).length);
+    } catch (err) {
+      console.error('Failed to load notifications count:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchUnreadCount();
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    window.addEventListener('kmti-refresh-unread-count', fetchUnreadCount);
+    return () => window.removeEventListener('kmti-refresh-unread-count', fetchUnreadCount);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -71,8 +94,11 @@ function AppContent() {
         notificationTriggered = true;
       }
 
-      if (notificationTriggered && window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
-        window.electronAPI.flashWindow();
+      if (notificationTriggered) {
+        fetchUnreadCount();
+        if (window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
+          window.electronAPI.flashWindow();
+        }
       }
     });
 
@@ -245,6 +271,39 @@ function AppContent() {
               </div>
 
               <div className="header-actions">
+                {(user?.role === 'employee' || user?.role === 'admin') && (
+                  <button
+                    onClick={() => {
+                      navigate('/assistant?tab=assessment&subtab=notifications');
+                    }}
+                    className="theme-toggle-btn"
+                    title="Notifications"
+                    style={{ position: 'relative', marginRight: '0.25rem' }}
+                  >
+                    <Bell size={20} className="theme-toggle-icon" />
+                    {unreadCount > 0 && (
+                      <span style={{
+                        position: 'absolute',
+                        top: '-4px',
+                        right: '-4px',
+                        background: 'var(--accent-red, #ef4444)',
+                        color: '#fff',
+                        borderRadius: '50%',
+                        width: '18px',
+                        height: '18px',
+                        fontSize: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 'bold',
+                        border: '2px solid var(--bg-surface)'
+                      }}>
+                        {unreadCount}
+                      </span>
+                    )}
+                  </button>
+                )}
+
                 <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
                 <button

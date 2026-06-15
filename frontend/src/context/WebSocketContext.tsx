@@ -21,11 +21,14 @@ interface WebSocketContextValue {
   isConnected: boolean;
   /** Subscribe to a specific event name. Returns an unsubscribe function. */
   subscribe: (event: string, handler: WSEventHandler) => () => void;
+  /** Send a message over the WebSocket connection */
+  sendMessage: (data: any) => void;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue>({
   isConnected: false,
   subscribe: () => () => {},
+  sendMessage: () => {},
 });
 
 export const useWebSocket = () => useContext(WebSocketContext);
@@ -152,8 +155,31 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
     };
   }, []);
 
+  const sendMessage = useCallback((data: any) => {
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(typeof data === 'string' ? data : JSON.stringify(data));
+    } else {
+      console.warn('[WS] Cannot send message: connection is not open');
+    }
+  }, []);
+
+  useEffect(() => {
+    (window as any).__mockWsMessage = (eventName: string, payload: any) => {
+      const data = { event: eventName, ...payload };
+      
+      const handlers = handlersRef.current.get(eventName);
+      if (handlers) handlers.forEach(h => h(data));
+
+      const wildcard = handlersRef.current.get('*');
+      if (wildcard) wildcard.forEach(h => h(data));
+    };
+    return () => {
+      delete (window as any).__mockWsMessage;
+    };
+  }, []);
+
   return (
-    <WebSocketContext.Provider value={{ isConnected, subscribe }}>
+    <WebSocketContext.Provider value={{ isConnected, subscribe, sendMessage }}>
       {children}
     </WebSocketContext.Provider>
   );

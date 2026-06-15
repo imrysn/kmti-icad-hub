@@ -1079,16 +1079,17 @@ def get_trainer_trainees_progress(
         current_activity = "Not started yet"
         
         realtime_activity = db.query(UserActivity).filter(UserActivity.user_id == trainee.id).first()
+        last_updated = None
         if realtime_activity and realtime_activity.current_activity:
             current_activity = realtime_activity.current_activity
+            last_updated = realtime_activity.last_updated
         else:
             recent_quiz = db.query(QuizScore).filter(QuizScore.user_id == str(trainee.id)).order_by(QuizScore.completed_at.desc()).first()
             recent_submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.user_id == trainee.id).order_by(AssessmentSubmission.submitted_at.desc()).first()
-            
             last_quiz_time = recent_quiz.completed_at if recent_quiz and recent_quiz.completed_at else None
             last_sub_time = recent_submission.submitted_at if recent_submission and recent_submission.submitted_at else None
-            
             if last_quiz_time and last_sub_time:
+                last_updated = max(last_quiz_time, last_sub_time)
                 if last_quiz_time > last_sub_time:
                     activity_str = recent_quiz.lesson_id.replace('-', ' ').title() if recent_quiz.lesson_id else "Quiz"
                     current_activity = f"Course: {activity_str}"
@@ -1096,11 +1097,17 @@ def get_trainer_trainees_progress(
                     task_title = recent_submission.task.title if recent_submission.task else "Task"
                     current_activity = f"Practical: {task_title}"
             elif last_quiz_time:
+                last_updated = last_quiz_time
                 activity_str = recent_quiz.lesson_id.replace('-', ' ').title() if recent_quiz.lesson_id else "Quiz"
                 current_activity = f"Course: {activity_str}"
             elif last_sub_time:
+                last_updated = last_sub_time
                 task_title = recent_submission.task.title if recent_submission.task else "Task"
                 current_activity = f"Practical: {task_title}"
+
+        last_updated_str = last_updated.isoformat() if last_updated else None
+        online_since = notification_manager.get_online_since(trainee.id)
+        online_since_str = online_since.isoformat() if online_since else None
 
         results.append({
             "id": trainee.id,
@@ -1108,6 +1115,9 @@ def get_trainer_trainees_progress(
             "full_name": trainee.full_name,
             "email": trainee.email,
             "current_activity": current_activity,
+            "is_online": notification_manager.is_user_online(trainee.id),
+            "online_since": online_since_str,
+            "last_updated": last_updated_str,
             "progress": {
                 "course_3d": {
                     "completed": len(completed_3d),

@@ -1,18 +1,80 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
-import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2 } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { api } from '../../../services/api';
 import { useNotification } from '../../../context/NotificationContext';
 import { useWebSocket } from '../../../context/WebSocketContext';
+import { useUI } from '../../../context/UIContext';
 import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 
+const TraineeStatusLabel: React.FC<{ isOnline: boolean; lastUpdated: string | null | undefined }> = ({ isOnline, lastUpdated }) => {
+    const [statusText, setStatusText] = useState<string>('');
+
+    useEffect(() => {
+        if (isOnline) {
+            setStatusText('Online');
+            return;
+        }
+
+        const updateStatus = () => {
+            if (!lastUpdated) {
+                setStatusText('Inactive');
+                return;
+            }
+            const date = new Date(lastUpdated);
+            const diffMs = new Date().getTime() - date.getTime();
+            if (diffMs <= 0) {
+                setStatusText('Active just now');
+                return;
+            }
+            const diffMins = Math.floor(diffMs / 60000);
+            if (diffMins < 1) {
+                setStatusText('Active just now');
+                return;
+            }
+            if (diffMins < 60) {
+                setStatusText(`Active ${diffMins}m ago`);
+                return;
+            }
+            const diffHours = Math.floor(diffMins / 60);
+            if (diffHours < 24) {
+                setStatusText(`Active ${diffHours}h ago`);
+                return;
+            }
+            const diffDays = Math.floor(diffHours / 24);
+            setStatusText(`Active ${diffDays}d ago`);
+        };
+
+        updateStatus();
+        if (!isOnline) {
+            const interval = setInterval(updateStatus, 60000);
+            return () => clearInterval(interval);
+        }
+    }, [isOnline, lastUpdated]);
+
+    return (
+        <span style={{ 
+            fontSize: '0.75rem', 
+            color: isOnline ? 'var(--accent-green, #22c55e)' : 'var(--text-muted, #64748b)', 
+            background: isOnline ? 'rgba(34, 197, 94, 0.1)' : 'rgba(100, 116, 139, 0.1)', 
+            padding: '2px 6px', 
+            borderRadius: '4px',
+            fontWeight: 600
+        }}>
+            {statusText}
+        </span>
+    );
+};
+
 export const PracticalTrainerDashboard: React.FC = () => {
     const { showNotification } = useNotification();
+    const { requestConfirmation } = useUI();
     const location = useLocation();
+    const navigate = useNavigate();
     const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -33,14 +95,109 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
 
     // Main Tabs & Progress Tracking
-    const [activeMainTab, setActiveMainTab] = useState<'assessments' | 'progress' | 'sets'>('assessments');
+    const [activeMainTab, setActiveMainTab] = useState<'assessments' | 'progress' | 'sets' | 'notifications'>(() => {
+        const params = new URLSearchParams(window.location.search);
+        const subtabParam = params.get('subtab');
+        if (subtabParam === 'assessments' || subtabParam === 'progress' || subtabParam === 'sets' || subtabParam === 'notifications') {
+            return subtabParam as any;
+        }
+        return 'assessments';
+    });
     const [traineeProgressData, setTraineeProgressData] = useState<any[]>([]);
     const [loadingProgress, setLoadingProgress] = useState(false);
+    const [isTelemetryOpen, setIsTelemetryOpen] = useState(true);
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    const fetchNotifications = async () => {
+        try {
+            const response = await api.get('/api/v1/notifications');
+            const data = response.data;
+            setNotifications(data);
+            setUnreadCount(data.filter((n: any) => !n.is_read).length);
+        } catch (err) {
+            console.error('Failed to load notifications:', err);
+        }
+    };
+
+    const handleMarkAsRead = async (id: number) => {
+        try {
+            await api.post(`/api/v1/notifications/${id}/read`);
+            setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
+            setUnreadCount(prev => Math.max(0, prev - 1));
+        } catch (err) {
+            console.error('Failed to mark notification as read:', err);
+        }
+    };
+
+    const handleMarkAllAsRead = async () => {
+        try {
+            await api.post('/api/v1/notifications/read-all');
+            setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+            setUnreadCount(0);
+            showNotification('All notifications marked as read.', 'success');
+        } catch (err) {
+            showNotification('Failed to mark notifications as read.', 'error');
+        }
+    };
+
+    const handleDeleteNotification = async (id: number) => {
+        const confirmed = await requestConfirmation({
+            title: 'Delete Notification',
+            message: 'Are you sure you want to delete this notification? This action cannot be undone.',
+            confirmText: 'Delete',
+            type: 'danger'
+        });
+        if (!confirmed) return;
+
+        try {
+            await api.delete(`/api/v1/notifications/${id}`);
+            setNotifications(prev => prev.filter(n => n.id !== id));
+            // Recalculate unread count
+            setUnreadCount(prev => {
+                const notif = notifications.find(n => n.id === id);
+                if (notif && !notif.is_read) {
+                    const nextVal = Math.max(0, prev - 1);
+                    setTimeout(() => window.dispatchEvent(new CustomEvent('kmti-refresh-unread-count')), 0);
+                    return nextVal;
+                }
+                return prev;
+            });
+        } catch (err) {
+            console.error('Failed to delete notification:', err);
+            showNotification('Failed to delete notification.', 'error');
+        }
+    };
+
+    const handleClearAll = async () => {
+        const confirmed = await requestConfirmation({
+            title: 'Clear All Notifications',
+            message: 'Are you sure you want to permanently delete all notifications? This action cannot be undone.',
+            confirmText: 'Clear All',
+            type: 'danger'
+        });
+        if (!confirmed) return;
+
+        try {
+            await api.delete('/api/v1/notifications/clear-all');
+            setNotifications([]);
+            setUnreadCount(0);
+            showNotification('All notifications cleared.', 'success');
+            window.dispatchEvent(new CustomEvent('kmti-refresh-unread-count'));
+        } catch (err) {
+            showNotification('Failed to clear notifications.', 'error');
+        }
+    };
+
+    useEffect(() => {
+        fetchTraineeProgress();
+        fetchNotifications();
+    }, []);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const subtabParam = params.get('subtab');
-        if (subtabParam === 'assessments' || subtabParam === 'progress' || subtabParam === 'sets') {
+        if (subtabParam === 'assessments' || subtabParam === 'progress' || subtabParam === 'sets' || subtabParam === 'notifications') {
             setActiveMainTab(subtabParam as any);
         }
     }, [location.search]);
@@ -78,28 +235,31 @@ export const PracticalTrainerDashboard: React.FC = () => {
         }
     }, [location.search, submissions]);
 
-    const fetchTraineeProgress = async () => {
-        setLoadingProgress(true);
+    const fetchTraineeProgress = async (silent = false) => {
+        if (!silent) setLoadingProgress(true);
         try {
             const data = await assessmentService.getTrainerTraineesProgress();
             setTraineeProgressData(data);
         } catch (err) {
             showNotification('Failed to load trainee progress data.', 'error');
         } finally {
-            setLoadingProgress(false);
+            if (!silent) setLoadingProgress(false);
         }
     };
 
     useEffect(() => {
         if (activeMainTab === 'progress') {
             fetchTraineeProgress();
+        } else if (activeMainTab === 'notifications') {
+            fetchNotifications();
         }
     }, [activeMainTab]);
 
     useEffect(() => {
-        const handleProgressRefresh = () => {
+        const handleProgressRefresh = (e: Event) => {
             if (activeMainTab === 'progress') {
-                fetchTraineeProgress();
+                const silent = e instanceof CustomEvent ? !!e.detail?.silent : false;
+                fetchTraineeProgress(silent);
             }
         };
         window.addEventListener('kmti-refresh-trainee-progress', handleProgressRefresh);
@@ -117,15 +277,15 @@ export const PracticalTrainerDashboard: React.FC = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isReviewing]);
 
-    const fetchSubmissions = useCallback(async () => {
-        setLoading(true);
+    const fetchSubmissions = useCallback(async (silent = false) => {
+        if (!silent) setLoading(true);
         try {
             const data = await assessmentService.getTrainerSubmissions(statusFilter);
             setSubmissions(data);
         } catch (err) {
             showNotification('Failed to load submissions.', 'error');
         } finally {
-            setLoading(false);
+            if (!silent) setLoading(false);
         }
     }, [statusFilter, showNotification]);
 
@@ -138,17 +298,64 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
     useEffect(() => {
         // Subscribe to all WS events that should trigger a submission refresh
-        const unsub = subscribe('*', () => {
-            fetchSubmissions();
-            window.dispatchEvent(new Event('kmti-refresh-trainee-progress'));
+        const unsub = subscribe('*', (data: any) => {
+            if (data?.event === 'TRAINEE_TELEMETRY') return;
+            fetchSubmissions(true);
+            fetchNotifications();
+            window.dispatchEvent(new CustomEvent('kmti-refresh-trainee-progress', { detail: { silent: true } }));
+            if (data?.message) {
+                showNotification(data.message, 'info');
+                if (window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
+                    window.electronAPI.flashWindow();
+                }
+            }
         });
 
-        window.addEventListener('kmti-refresh-submissions', fetchSubmissions);
+        const handleSubmissionsRefresh = () => {
+            fetchSubmissions(true);
+            fetchNotifications();
+        };
+        window.addEventListener('kmti-refresh-submissions', handleSubmissionsRefresh);
         return () => {
             unsub();
-            window.removeEventListener('kmti-refresh-submissions', fetchSubmissions);
+            window.removeEventListener('kmti-refresh-submissions', handleSubmissionsRefresh);
         };
-    }, [fetchSubmissions, subscribe]);
+    }, [fetchSubmissions, subscribe, showNotification]);
+
+    useEffect(() => {
+        const unsub = subscribe('TRAINEE_TELEMETRY', (data: any) => {
+            let shouldToast = false;
+            let traineeName = '';
+
+            setTraineeProgressData(prev => {
+                const target = prev.find(t => t.id === data.trainee_id);
+                if (target) {
+                    traineeName = target.full_name || target.username;
+                    // Only toast if status transitions from offline to online
+                    if (data.is_online && !target.is_online) {
+                        shouldToast = true;
+                    }
+                }
+                return prev.map(t => {
+                    if (t.id === data.trainee_id) {
+                        return {
+                            ...t,
+                            is_online: data.is_online,
+                            current_activity: data.current_activity,
+                            online_since: data.online_since,
+                            last_updated: data.last_updated
+                        };
+                    }
+                    return t;
+                });
+            });
+
+            if (shouldToast && traineeName) {
+                showNotification(`Trainee ${traineeName} is now online.`, 'success');
+            }
+        });
+        return () => unsub();
+    }, [subscribe]);
 
     const handleDownloadTraineeFile = (submission: AssessmentSubmission) => {
         const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
@@ -349,23 +556,24 @@ export const PracticalTrainerDashboard: React.FC = () => {
         <div className="practical-trainer-wrapper" style={{ display: 'flex', height: '100%', width: '100%', overflow: 'hidden' }}>
             <div className="admin-sidebar" style={{ height: '100%', borderRight: '1px solid var(--border-color)', background: 'var(--bg-surface)' }}>
                 <div className="sidebar-nav" style={{ paddingTop: '1.5rem' }}>
+
                     <button
                         className={`nav-item ${activeMainTab === 'assessments' ? 'active' : ''}`}
-                        onClick={() => setActiveMainTab('assessments')}
+                        onClick={() => navigate('/assistant?tab=assessment&subtab=assessments')}
                         data-tooltip="Practical Submissions"
                     >
                         <div className="nav-icon"><FileText size={20} /></div>
                     </button>
                     <button
                         className={`nav-item ${activeMainTab === 'progress' ? 'active' : ''}`}
-                        onClick={() => setActiveMainTab('progress')}
+                        onClick={() => navigate('/assistant?tab=assessment&subtab=progress')}
                         data-tooltip="Trainee Progress Tracker"
                     >
                         <div className="nav-icon"><CheckCircle2 size={20} /></div>
                     </button>
                     <button
                         className={`nav-item ${activeMainTab === 'sets' ? 'active' : ''}`}
-                        onClick={() => setActiveMainTab('sets')}
+                        onClick={() => navigate('/assistant?tab=assessment&subtab=sets')}
                         data-tooltip="Set Configuration"
                     >
                         <div className="nav-icon"><Settings size={20} /></div>
@@ -380,6 +588,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         <h2>
                             {activeMainTab === 'assessments' ? "Assessment Review Portal" :
                                 activeMainTab === 'progress' ? "Trainee Progress Tracker" :
+                                activeMainTab === 'notifications' ? "Recent Activity Notifications" :
                                     "Trainee Set Configuration"}
                         </h2>
                         <p>
@@ -387,7 +596,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 ? "Manage and verify practical drafting submissions from trainees"
                                 : activeMainTab === 'progress'
                                     ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
-                                    : "Configure which assessment sets each trainee can see and access"}
+                                    : activeMainTab === 'notifications'
+                                        ? "Review real-time trainee actions, submissions, and course completions"
+                                        : "Configure which assessment sets each trainee can see and access"}
                         </p>
                     </div>
                     <div className="header-controls">
@@ -416,6 +627,27 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
+                        <button
+                            onClick={() => setIsTelemetryOpen(!isTelemetryOpen)}
+                            className={`sub-tab-btn ${isTelemetryOpen ? 'active' : ''}`}
+                            style={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: '6px', 
+                                height: '38px', 
+                                padding: '0 12px',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                background: isTelemetryOpen ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+                                color: isTelemetryOpen ? 'var(--accent-blue)' : 'var(--text-main)',
+                                transition: 'all 0.2s ease',
+                                fontWeight: 500
+                            }}
+                            title="Toggle Telemetry Sidebar"
+                        >
+                            <User size={16} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
+                        </button>
                     </div>
                 </div>
 
@@ -601,11 +833,13 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                     t.username?.toLowerCase().includes(searchTerm.toLowerCase())
                                 )
                                 .map((trainee: any) => (
-                                    <div key={trainee.id} className="trainee-group-card">
+                                                                    <div key={trainee.id} className="trainee-group-card">
                                         <div className="trainee-group-header" style={{ cursor: 'default' }}>
                                             <div className="trainee-info">
-                                                <div className="avatar-circle">
-                                                    {trainee.full_name?.[0] || 'U'}
+                                                <div style={{ position: 'relative' }}>
+                                                    <div className="avatar-circle">
+                                                        {trainee.full_name?.[0] || 'U'}
+                                                    </div>
                                                 </div>
                                                 <div>
                                                     <h4>{trainee.full_name}</h4>
@@ -625,22 +859,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        {trainee.current_activity && (
-                                            <div style={{ padding: '8px 16px', background: 'rgba(59, 130, 246, 0.05)', borderBottom: '1px solid var(--border-color)', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <span style={{ fontSize: '0.8rem', color: 'var(--accent-blue)', fontWeight: 600 }}>
-                                                    Latest Activity:
-                                                </span>
-                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-main)' }}>
-                                                    {trainee.current_activity}
-                                                </span>
-                                            </div>
-                                        )}
                                         <div className="trainee-group-body" style={{ padding: '12px 16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '16px' }}>
                                         {/* 3D Modeling Course Progress */}
                                         <div className="set-group" style={{ margin: 0 }}>
                                             <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
                                                 <h4>3D Modeling Course</h4>
-                                                <span className="task-count-dim">{trainee.progress?.course_3d?.completed || 0}/{trainee.progress?.course_3d?.total || 0} passed</span>
+                                                <span className="task-count-dim">{trainee.progress?.course_3d?.completed || 0}/{trainee.progress?.course_3d?.total || 0} completed</span>
                                             </div>
                                             <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
                                                 <div style={{
@@ -657,7 +881,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         <div className="set-group" style={{ margin: 0 }}>
                                             <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
                                                 <h4>3D Practical Assessment</h4>
-                                                <span className="task-count-dim">{trainee.progress?.practical_3d?.completed || 0}/{trainee.progress?.practical_3d?.total || 0} passed</span>
+                                                <span className="task-count-dim">{trainee.progress?.practical_3d?.completed || 0}/{trainee.progress?.practical_3d?.total || 0} approved</span>
                                             </div>
                                             <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
                                                 <div style={{
@@ -670,11 +894,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        {/* 2D Drawing Course Progress */}
+                                        {/* 2D Detailing Course Progress */}
                                         <div className="set-group" style={{ margin: 0 }}>
                                             <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                <h4>2D Drawing Course</h4>
-                                                <span className="task-count-dim">{trainee.progress?.course_2d?.completed || 0}/{trainee.progress?.course_2d?.total || 0} passed</span>
+                                                <h4>2D Detailing Course</h4>
+                                                <span className="task-count-dim">{trainee.progress?.course_2d?.completed || 0}/{trainee.progress?.course_2d?.total || 0} completed</span>
                                             </div>
                                             <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
                                                 <div style={{
@@ -691,7 +915,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         <div className="set-group" style={{ margin: 0 }}>
                                             <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
                                                 <h4>2D Detailing Assessment</h4>
-                                                <span className="task-count-dim">{trainee.progress?.practical_2d?.completed || 0}/{trainee.progress?.practical_2d?.total || 0} passed</span>
+                                                <span className="task-count-dim">{trainee.progress?.practical_2d?.completed || 0}/{trainee.progress?.practical_2d?.total || 0} approved</span>
                                             </div>
                                             <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
                                                 <div style={{
@@ -713,6 +937,207 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 {/* Set Configuration Tab */}
                 {activeMainTab === 'sets' && (
                     <TraineeSetConfiguration />
+                )}
+
+                {/* Notifications Tab */}
+                {activeMainTab === 'notifications' && (
+                    <div className="notifications-tab-container" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', height: 'calc(100% - 110px)', overflowY: 'auto' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Recent Activities</h3>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                {unreadCount > 0 && (
+                                    <button 
+                                        onClick={handleMarkAllAsRead}
+                                        style={{
+                                            background: 'rgba(59, 130, 246, 0.1)',
+                                            border: '1px solid rgba(59, 130, 246, 0.2)',
+                                            borderRadius: '6px',
+                                            color: 'var(--accent-blue, #3b82f6)',
+                                            padding: '6px 12px',
+                                            fontSize: '0.85rem',
+                                            cursor: 'pointer',
+                                            fontWeight: 500,
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.2)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+                                        }}
+                                    >
+                                        Mark all as read
+                                    </button>
+                                )}
+                                {notifications.length > 0 && (
+                                    <button 
+                                        onClick={handleClearAll}
+                                        style={{
+                                            background: 'rgba(239, 68, 68, 0.1)',
+                                            border: '1px solid rgba(239, 68, 68, 0.2)',
+                                            borderRadius: '6px',
+                                            color: 'var(--accent-red, #ef4444)',
+                                            padding: '6px 12px',
+                                            fontSize: '0.85rem',
+                                            cursor: 'pointer',
+                                            fontWeight: 500,
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                                        }}
+                                    >
+                                        Clear all
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        {notifications.length === 0 ? (
+                            <div className="no-submissions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem', opacity: 0.6 }}>
+                                <Bell size={48} style={{ color: 'var(--text-muted)', marginBottom: '1rem' }} />
+                                <h3>No notifications yet</h3>
+                                <p>You will be notified when your trainees perform actions like submitting assignments or completing quizzes.</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                {notifications.map((notif) => {
+                                    const getRelativeTimeString = (dateString: string) => {
+                                        const date = new Date(dateString);
+                                        const diffMs = new Date().getTime() - date.getTime();
+                                        if (diffMs <= 0) return 'Just now';
+                                        const diffMins = Math.floor(diffMs / 60000);
+                                        if (diffMins < 1) return 'Just now';
+                                        if (diffMins < 60) return `${diffMins}m ago`;
+                                        const diffHours = Math.floor(diffMins / 60);
+                                        if (diffHours < 24) return `${diffHours}h ago`;
+                                        const diffDays = Math.floor(diffHours / 24);
+                                        return `${diffDays}d ago`;
+                                    };
+                                    return (
+                                        <div
+                                            key={notif.id}
+                                            onClick={() => {
+                                                if (!notif.is_read) {
+                                                    handleMarkAsRead(notif.id);
+                                                }
+                                                // Handle navigation/tab switching based on type
+                                                if (notif.type === 'new_submission' || notif.type === 'feedback_reply') {
+                                                    setActiveMainTab('assessments');
+                                                    if (notif.sender_id) {
+                                                        setExpandedTrainees(prev => prev.includes(notif.sender_id) ? prev : [...prev, notif.sender_id]);
+                                                    }
+                                                } else if (notif.type === 'lesson_passed' || notif.type === 'course_completed') {
+                                                    setActiveMainTab('progress');
+                                                }
+                                            }}
+                                            style={{
+                                                background: notif.is_read ? 'rgba(255, 255, 255, 0.02)' : 'rgba(59, 130, 246, 0.04)',
+                                                border: notif.is_read ? '1px solid var(--border-color)' : '1px solid rgba(59, 130, 246, 0.25)',
+                                                borderRadius: '8px',
+                                                padding: '1rem',
+                                                display: 'flex',
+                                                gap: '1rem',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.2s ease',
+                                                position: 'relative'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = 'translateY(-1px)';
+                                                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = 'none';
+                                                e.currentTarget.style.boxShadow = 'none';
+                                            }}
+                                        >
+                                            {/* Left color bar indicator for unread */}
+                                            {!notif.is_read && (
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    left: 0,
+                                                    top: 0,
+                                                    bottom: 0,
+                                                    width: '4px',
+                                                    background: 'var(--accent-blue, #3b82f6)',
+                                                    borderTopLeftRadius: '8px',
+                                                    borderBottomLeftRadius: '8px'
+                                                }} />
+                                            )}
+
+                                            <div className="avatar-circle" style={{ width: '40px', height: '40px', minWidth: '40px', fontSize: '1rem' }}>
+                                                {notif.sender?.full_name?.[0] || 'S'}
+                                            </div>
+
+                                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                                    <span style={{ fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-main)' }}>
+                                                        {notif.sender?.full_name || 'System'}
+                                                    </span>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                                            {getRelativeTimeString(notif.created_at)}
+                                                        </span>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteNotification(notif.id);
+                                                            }}
+                                                            style={{
+                                                                background: 'transparent',
+                                                                border: 'none',
+                                                                color: 'var(--text-muted)',
+                                                                cursor: 'pointer',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                padding: '2px',
+                                                                borderRadius: '4px',
+                                                                transition: 'all 0.2s ease'
+                                                            }}
+                                                            onMouseEnter={(e) => {
+                                                                e.currentTarget.style.color = 'var(--accent-red, #ef4444)';
+                                                                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                                                            }}
+                                                            onMouseLeave={(e) => {
+                                                                e.currentTarget.style.color = 'var(--text-muted)';
+                                                                e.currentTarget.style.background = 'transparent';
+                                                            }}
+                                                            title="Delete Notification"
+                                                        >
+                                                            <Trash2 size={14} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-main)', opacity: 0.9, lineHeight: 1.4 }}>
+                                                    {notif.message}
+                                                </p>
+                                                {notif.type && (
+                                                    <div style={{ marginTop: '4px' }}>
+                                                        <span style={{
+                                                            fontSize: '0.75rem',
+                                                            textTransform: 'uppercase',
+                                                            letterSpacing: '0.05em',
+                                                            fontWeight: 600,
+                                                            color: notif.type === 'new_submission' ? 'var(--accent-blue, #3b82f6)' :
+                                                                   notif.type === 'feedback_reply' ? 'var(--accent-orange, #f59e0b)' :
+                                                                   notif.type === 'course_completed' ? 'var(--accent-green, #22c55e)' :
+                                                                   'var(--text-muted)'
+                                                        }}>
+                                                            {notif.type.replace('_', ' ')}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
                 )}
 
                 {/* Review Modal with History & Chat */}
@@ -972,6 +1397,91 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     </div>
                 )}
             </div>
+
+            {/* Right Telemetry Sidebar Panel */}
+            {isTelemetryOpen && (
+                <div className="telemetry-sidebar animate-fade-in" style={{
+                    width: '320px',
+                    minWidth: '320px',
+                    borderLeft: '1px solid var(--border-color)',
+                    background: 'var(--bg-surface)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    overflow: 'hidden'
+                }}>
+                    <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <TrendingUp size={18} style={{ color: 'var(--accent-blue)' }} /> Trainee Presence
+                        </h3>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                            {traineeProgressData.filter(t => t.is_online).length} online
+                        </span>
+                    </div>
+
+                    <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }} className="telemetry-list">
+                        {traineeProgressData.length === 0 ? (
+                            <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: '2rem' }}>
+                                Loading trainee list...
+                            </div>
+                        ) : (
+                            traineeProgressData.map((trainee) => (
+                                <div key={trainee.id} style={{
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    background: 'rgba(255,255,255,0.02)',
+                                    border: '1px solid var(--border-color)',
+                                    marginBottom: '10px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '6px'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                            <div style={{ position: 'relative' }}>
+                                                <div className="avatar-circle" style={{ width: '32px', height: '32px', fontSize: '0.85rem' }}>
+                                                    {trainee.full_name?.[0] || 'U'}
+                                                </div>
+                                                <span style={{
+                                                    position: 'absolute',
+                                                    bottom: '-1px',
+                                                    right: '-1px',
+                                                    width: '10px',
+                                                    height: '10px',
+                                                    borderRadius: '50%',
+                                                    background: trainee.is_online ? 'var(--accent-green, #22c55e)' : '#64748b',
+                                                    border: '2px solid var(--bg-surface)'
+                                                }} />
+                                            </div>
+                                            <div>
+                                                <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>{trainee.full_name}</h4>
+                                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>@{trainee.username}</span>
+                                            </div>
+                                        </div>
+                                        <TraineeStatusLabel isOnline={!!trainee.is_online} lastUpdated={trainee.last_updated} />
+                                    </div>
+                                    <div style={{ 
+                                        padding: '6px 8px', 
+                                        background: trainee.is_online ? 'rgba(34, 197, 94, 0.04)' : 'rgba(255,255,255,0.01)', 
+                                        borderRadius: '4px',
+                                        fontSize: '0.75rem',
+                                        color: 'var(--text-main)',
+                                        border: '1px solid rgba(255,255,255,0.02)',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis'
+                                    }} title={trainee.current_activity || 'Offline'}>
+                                        <span style={{ fontWeight: 600, color: trainee.is_online ? 'var(--accent-green, #22c55e)' : 'var(--text-muted)', marginRight: '4px' }}>
+                                            {trainee.is_online ? "Active:" : "Last Seen:"}
+                                        </span>
+                                        {trainee.current_activity || 'No activity recorded'}
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
