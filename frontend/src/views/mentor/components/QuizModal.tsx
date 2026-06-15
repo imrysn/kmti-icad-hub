@@ -4,6 +4,8 @@ import confetti from 'canvas-confetti';
 import { Quiz } from '../mentorConstants';
 import { authService } from '../../../services/authService';
 import '../../../styles/mentor/QuizModal.css';
+import { Modal } from '../../../components/Modal';
+
 
 interface QuizModalProps {
   isOpen: boolean;
@@ -391,234 +393,221 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   const passed = score >= 80;
 
   return (
-    <>
-      {isOpen && (
-        <div className="quiz-modal-overlay">
-          <div className="quiz-modal-container">
-            <div className="quiz-modal-header">
-              <div className="quiz-info">
-                <span className="quiz-badge">MODULE ASSESSMENT</span>
-                <h2 className="quiz-title">{quiz.title}</h2>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={quiz.title}
+      tag="MODULE ASSESSMENT"
+      size="lg"
+      showCloseButton={showWarning || isFinished}
+    >
+      <div className="quiz-modal-content">
+        {showWarning ? (
+          <div className="quiz-warning-view">
+            <div className="warning-card">
+              <ShieldAlert className="warning-icon" size={80} />
+              <h3 className="warning-title">Assessment Protocol</h3>
+              <p className="warning-intro">Please review the rules before initiating the assessment:</p>
+              
+              <div className="warning-list">
+                <div className="warning-item">
+                  <span className="warning-label">No-Exit Policy:</span>
+                  <p>Once started, you cannot exit the assessment until all questions are answered.</p>
+                </div>
+                <div className="warning-item">
+                  <span className="warning-label">Time Constraints:</span>
+                  <p>Each question has a strict 2-minute limit. Timeouts are marked as incorrect.</p>
+                </div>
+                <div className="warning-item">
+                  <span className="warning-label">Randomized Loadout:</span>
+                  <p>Questions and choices are shuffled dynamically for every attempt.</p>
+                </div>
               </div>
-              {/* Only allow exit if on warning screen or finished */}
-              {(showWarning || isFinished) && (
-                <button className="quiz-close-btn" onClick={onClose} aria-label="Exit">
-                  <X size={24} />
-                </button>
-              )}
+
+              <button className="start-btn" onClick={() => setShowWarning(false)}>
+                Confirm & Start Assessment <ArrowRight size={18} />
+              </button>
+            </div>
+          </div>
+        ) : !isFinished ? (
+          <>
+            <div className="quiz-progress-wrapper">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '0.8rem' }}>
+                <div className="progress-text" style={{ margin: 0 }}>
+                  Question <span>{currentIdx + 1}</span> of {shuffledQuestions.length}
+                </div>
+                <div className={`timer-display ${timeLeft <= 30 ? 'urgent' : ''}`} style={{ 
+                  fontSize: '0.9rem', 
+                  fontWeight: 800, 
+                  fontFamily: 'monospace',
+                  color: timeLeft <= 30 ? '#ef4444' : 'var(--primary)',
+                  background: 'rgba(255,255,255,0.03)',
+                  padding: '0.4rem 0.8rem',
+                  borderRadius: '8px',
+                  border: `1px solid ${timeLeft <= 30 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(99, 102, 241, 0.1)'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: timeLeft <= 30 ? '#ef4444' : 'var(--primary)', animation: timeLeft <= 30 ? 'pulse 1s infinite' : 'none' }}></div>
+                  {formatTime(timeLeft)}
+                </div>
+              </div>
+              <div className="quiz-progress-segments">
+                {shuffledQuestions.map((_, idx) => {
+                  const isAnswered = idx < answers.length;
+                  const correctIdx = shuffledQuestions[idx].originalCorrectIdx;
+                  const isCorrect = isAnswered && answers[idx] === correctIdx;
+                  const isActive = idx === currentIdx;
+                  
+                  let statusClass = 'pending';
+                  if (isAnswered) statusClass = isCorrect ? 'correct' : 'wrong';
+                  else if (isActive) statusClass = 'active';
+
+                  return (
+                    <motion.div 
+                      key={idx}
+                      className={`progress-segment ${statusClass}`}
+                      initial={false}
+                      animate={statusClass}
+                      variants={{
+                        pending: { backgroundColor: 'rgba(255, 255, 255, 0.05)', scale: 1 },
+                        active: { backgroundColor: 'rgba(99, 102, 241, 0.3)', scale: 1.05, boxShadow: '0 0 10px rgba(99, 102, 241, 0.3)' },
+                        correct: { backgroundColor: '#10b981', scale: 1 },
+                        wrong: { backgroundColor: '#ef4444', scale: 1 }
+                      }}
+                    />
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="quiz-modal-content">
-              {showWarning ? (
-                <div className="quiz-warning-view">
-                  <div className="warning-card">
-                    <ShieldAlert className="warning-icon" size={80} />
-                    <h3 className="warning-title">Assessment Protocol</h3>
-                    <p className="warning-intro">Please review the rules before initiating the assessment:</p>
-                    
-                    <div className="warning-list">
-                      <div className="warning-item">
-                        <span className="warning-label">No-Exit Policy:</span>
-                        <p>Once started, you cannot exit the assessment until all questions are answered.</p>
-                      </div>
-                      <div className="warning-item">
-                        <span className="warning-label">Time Constraints:</span>
-                        <p>Each question has a strict 2-minute limit. Timeouts are marked as incorrect.</p>
-                      </div>
-                      <div className="warning-item">
-                        <span className="warning-label">Randomized Loadout:</span>
-                        <p>Questions and choices are shuffled dynamically for every attempt.</p>
-                      </div>
-                    </div>
-
-                    <button className="start-btn" onClick={() => setShowWarning(false)}>
-                      Confirm & Start Assessment <ArrowRight size={18} />
-                    </button>
+            <div className="quiz-content-frame">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={currentIdx}
+                  custom={direction}
+                  variants={{
+                    enter: (direction: number) => ({
+                      x: direction > 0 ? 50 : -50,
+                      opacity: 0,
+                      scale: 0.98
+                    }),
+                    center: {
+                      zIndex: 1,
+                      x: 0,
+                      opacity: 1,
+                      scale: 1
+                    },
+                    exit: (direction: number) => ({
+                      zIndex: 0,
+                      x: direction < 0 ? 50 : -50,
+                      opacity: 0,
+                      scale: 0.98
+                    })
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 }
+                  }}
+                  className="question-card"
+                >
+                  <div className="question-header">
+                    <p className="question-text">{qText}</p>
                   </div>
+
+                  <div className="options-container">
+                    {qOptions.map((option: any, idx: number) => {
+                      const isSelected = selectedOpt === idx;
+                      const isCorrect = idx === qCorrectUIIdx;
+                      const isWrong = isAnswerChecked && isSelected && !isCorrect;
+                      
+                      return (
+                        <motion.button 
+                          type="button"
+                          key={idx} 
+                          className={`quiz-option-btn ${ isSelected ? 'active' : '' } ${ isAnswerChecked && isCorrect && isSelected ? 'correct' : '' } ${ isWrong ? 'wrong' : '' } ${ isAnswerChecked && !isSelected ? 'dimmed' : '' }`} 
+                          onClick={() => handleSelect(idx)}
+                          whileTap={{ scale: 0.98 }}
+                          animate={isWrong ? { 
+                            x: [0, -10, 10, -10, 10, 0],
+                            transition: { duration: 0.4 }
+                          } : {}}
+                        >
+                          <span className="option-indicator">{String.fromCharCode(65 + idx)}</span>
+                          <span className="option-text">{option.text}</span>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            <div className="quiz-modal-footer" style={{ borderTop: 'none', padding: 0 }}>
+              <button type="button" className={`quiz-next-btn ${isAnswerChecked ? 'checked' : ''}`} disabled={selectedOpt === null} onClick={handleAction}>
+                {!isAnswerChecked ? 'Check Answer' : (isLastQuestion ? 'Finish Assessment' : 'Next Question')}
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="quiz-results-view">
+            <div className={`results-hero ${passed ? 'success' : 'failure'}`}>
+              <div className="hero-icon-container">
+                {passed ? (
+                  <Trophy className="hero-icon trophy" size={80} />
+                ) : (
+                  <ShieldAlert className="hero-icon alert" size={80} />
+                )}
+              </div>
+              <h3 className="results-status">
+                {passed ? 'Mastery Achieved!' : 'Evaluation Incomplete'}
+              </h3>
+
+              {maxStreak >= 3 && (
+                <div className="streak-badge">
+                  <span className="streak-flame">🔥</span>
+                  <span className="streak-count">{maxStreak} CORRECT STREAK</span>
                 </div>
-              ) : !isFinished ? (
-                <>
-                  <div className="quiz-progress-wrapper">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '0.8rem' }}>
-                      <div className="progress-text" style={{ margin: 0 }}>
-                        Question <span>{currentIdx + 1}</span> of {shuffledQuestions.length}
-                      </div>
-                      <div className={`timer-display ${timeLeft <= 30 ? 'urgent' : ''}`} style={{ 
-                        fontSize: '0.9rem', 
-                        fontWeight: 800, 
-                        fontFamily: 'monospace',
-                        color: timeLeft <= 30 ? '#ef4444' : 'var(--primary)',
-                        background: 'rgba(255,255,255,0.03)',
-                        padding: '0.4rem 0.8rem',
-                        borderRadius: '8px',
-                        border: `1px solid ${timeLeft <= 30 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(99, 102, 241, 0.1)'}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem'
-                      }}>
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: timeLeft <= 30 ? '#ef4444' : 'var(--primary)', animation: timeLeft <= 30 ? 'pulse 1s infinite' : 'none' }}></div>
-                        {formatTime(timeLeft)}
-                      </div>
-                    </div>
-                    <div className="quiz-progress-segments">
-                      {shuffledQuestions.map((_, idx) => {
-                        const isAnswered = idx < answers.length;
-                        const correctIdx = shuffledQuestions[idx].originalCorrectIdx;
-                        const isCorrect = isAnswered && answers[idx] === correctIdx;
-                        const isActive = idx === currentIdx;
-                        
-                        let statusClass = 'pending';
-                        if (isAnswered) statusClass = isCorrect ? 'correct' : 'wrong';
-                        else if (isActive) statusClass = 'active';
+              )}
 
-                        return (
-                          <motion.div 
-                            key={idx}
-                            className={`progress-segment ${statusClass}`}
-                            initial={false}
-                            animate={statusClass}
-                            variants={{
-                              pending: { backgroundColor: 'rgba(255, 255, 255, 0.05)', scale: 1 },
-                              active: { backgroundColor: 'rgba(99, 102, 241, 0.3)', scale: 1.05, boxShadow: '0 0 10px rgba(99, 102, 241, 0.3)' },
-                              correct: { backgroundColor: '#10b981', scale: 1 },
-                              wrong: { backgroundColor: '#ef4444', scale: 1 }
-                            }}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
+              <div className="results-score-pill">
+                <span className="final-score">{displayScore}%</span>
+                <span className="score-label">Final Grade</span>
+              </div>
+            </div>
 
-                  <div className="quiz-content-frame">
-                    <AnimatePresence mode="wait" custom={direction}>
-                      <motion.div
-                        key={currentIdx}
-                        custom={direction}
-                        variants={{
-                          enter: (direction: number) => ({
-                            x: direction > 0 ? 50 : -50,
-                            opacity: 0,
-                            scale: 0.98
-                          }),
-                          center: {
-                            zIndex: 1,
-                            x: 0,
-                            opacity: 1,
-                            scale: 1
-                          },
-                          exit: (direction: number) => ({
-                            zIndex: 0,
-                            x: direction < 0 ? 50 : -50,
-                            opacity: 0,
-                            scale: 0.98
-                          })
-                        }}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{
-                          x: { type: "spring", stiffness: 300, damping: 30 },
-                          opacity: { duration: 0.2 }
-                        }}
-                        className="question-card"
-                      >
-                        <div className="question-header">
-                          <p className="question-text">{qText}</p>
+            <div className="results-feedback">
+              <p>
+                {passed 
+                  ? "Congratulations! You've successfully demonstrated competency in this module. The next section of the curriculum is now unlocked."
+                  : "You did not reach the 80% competency threshold. Precision is critical in industrial modeling. Please review the lesson material and try again."}
+              </p>
+            </div>
 
-                        </div>
-
-                        <div className="options-container">
-                          {qOptions.map((option: any, idx: number) => {
-                            const isSelected = selectedOpt === idx;
-                            const isCorrect = idx === qCorrectUIIdx;
-                            const isWrong = isAnswerChecked && isSelected && !isCorrect;
-                            
-                            return (
-                              <motion.button 
-                                type="button"
-                                key={idx} 
-                                className={`quiz-option-btn ${ isSelected ? 'active' : '' } ${ isAnswerChecked && isCorrect && isSelected ? 'correct' : '' } ${ isWrong ? 'wrong' : '' } ${ isAnswerChecked && !isSelected ? 'dimmed' : '' }`} 
-                                onClick={() => handleSelect(idx)}
-                                whileTap={{ scale: 0.98 }}
-                                animate={isWrong ? { 
-                                  x: [0, -10, 10, -10, 10, 0],
-                                  transition: { duration: 0.4 }
-                                } : {}}
-                              >
-                                <span className="option-indicator">{String.fromCharCode(65 + idx)}</span>
-                                <span className="option-text">{option.text}</span>
-                                </motion.button>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-
-                  <div className="quiz-modal-footer">
-                    <button type="button" className={`quiz-next-btn ${isAnswerChecked ? 'checked' : ''}`} disabled={selectedOpt === null} onClick={handleAction}>
-                      {!isAnswerChecked ? 'Check Answer' : (isLastQuestion ? 'Finish Assessment' : 'Next Question')}
-                      <ChevronRight size={18} />
-                    </button>
-                  </div>
-                </>
+            <div className="results-actions">
+              {passed ? (
+                <button type="button" className="finish-btn success" onClick={onSuccessContinue || onClose}>
+                  Continue to Next Module <ArrowRight size={18} />
+                </button>
               ) : (
-                <div className="quiz-results-view">
-                  <div className={`results-hero ${passed ? 'success' : 'failure'}`}>
-                    <div className="hero-icon-container">
-                      {passed ? (
-                        <Trophy className="hero-icon trophy" size={80} />
-                      ) : (
-                        <ShieldAlert className="hero-icon alert" size={80} />
-                      )}
-                    </div>
-                    <h3 className="results-status">
-                      {passed ? 'Mastery Achieved!' : 'Evaluation Incomplete'}
-                    </h3>
-
-                    {maxStreak >= 3 && (
-                      <div className="streak-badge">
-                        <span className="streak-flame">🔥</span>
-                        <span className="streak-count">{maxStreak} CORRECT STREAK</span>
-                      </div>
-                    )}
-
-                    <div className="results-score-pill">
-                      <span className="final-score">{displayScore}%</span>
-                      <span className="score-label">Final Grade</span>
-                    </div>
-                  </div>
-
-                  <div className="results-feedback">
-                    <p>
-                      {passed 
-                        ? "Congratulations! You've successfully demonstrated competency in this module. The next section of the curriculum is now unlocked."
-                        : "You did not reach the 80% competency threshold. Precision is critical in industrial modeling. Please review the lesson material and try again."}
-                    </p>
-                  </div>
-
-                  <div className="results-actions">
-                    {passed ? (
-                      <button type="button" className="finish-btn success" onClick={onSuccessContinue || onClose}>
-                        Continue to Next Module <ArrowRight size={18} />
-                      </button>
-                    ) : (
-                      <div className="failure-actions">
-                        <button type="button" className="finish-btn retry" onClick={resetQuiz}>
-                          <RotateCcw size={18} /> Try Again
-                        </button>
-                        <button type="button" className="finish-btn secondary" onClick={onClose}>
-                          <X size={18} /> Review Lesson
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                <div className="failure-actions">
+                  <button type="button" className="finish-btn retry" onClick={resetQuiz}>
+                    <RotateCcw size={18} /> Try Again
+                  </button>
+                  <button type="button" className="finish-btn secondary" onClick={onClose}>
+                    <X size={18} /> Review Lesson
+                  </button>
                 </div>
               )}
             </div>
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </Modal>
   );
 };

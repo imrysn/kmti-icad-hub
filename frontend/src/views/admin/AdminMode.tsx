@@ -56,6 +56,15 @@ export const AdminMode: React.FC = () => {
     const memoryUsage = stats?.system?.memory_usage  ?? 0;
     const sysStatus   = stats?.system?.status        ?? 'Unknown';
 
+    // Prevent full-page flashing/flickering by only displaying overlay when switching to an empty tab
+    const isTabDataEmpty =
+        (activeTab === 'overview' && !stats) ||
+        (activeTab === 'users' && users.length === 0) ||
+        (activeTab === 'progress' && progress.length === 0) ||
+        (activeTab === 'logs' && logs.length === 0);
+
+    const showLoader = loading && isTabDataEmpty;
+
     return (
         <div className="admin-layout">
             <AdminSidebar currentUser={currentUser} />
@@ -63,7 +72,7 @@ export const AdminMode: React.FC = () => {
             <main className="admin-main">
                 <AdminHeader activeTab={activeTab} stats={stats} selectedTrainee={selectedTrainee} fetchData={fetchData} loading={loading} />
 
-                <div className="page-content">
+                <div className="page-content" style={{ position: 'relative' }}>
                     {error && (
                         <div className="admin-error-banner">
                             <XCircle size={18} /> {error}
@@ -88,7 +97,7 @@ export const AdminMode: React.FC = () => {
                                         setSelectedUser(user);
                                         setIsUserModalOpen(true);
                                     }}
-                                />
+                                 />
                             </ErrorBoundary>
                         } />
                         <Route path="progress" element={ <ErrorBoundary>
@@ -110,13 +119,13 @@ export const AdminMode: React.FC = () => {
                         <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />
                         <Route path="/" element={<Navigate to="overview" replace />} />
                     </Routes>
-                </div>
 
-                {loading && (
-                    <div className="loading-overlay">
-                        <div className="spinner"></div>
-                    </div>
-                )}
+                    {showLoader && (
+                        <div className="loading-overlay">
+                            <div className="spinner"></div>
+                        </div>
+                    )}
+                </div>
             </main>
             <BroadcastCenter />
 

@@ -33,6 +33,10 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
             onClick={handleItemClick}
             style={{ cursor: 'pointer' }}
         >
+            {/* Tech design corner markers matching Modal style */}
+            <div className="notification-marker tl" />
+            <div className="notification-marker br" />
+
             <div className="notification-icon">
                 {icons[notification.type]}
             </div>

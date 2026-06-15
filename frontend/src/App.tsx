@@ -234,10 +234,6 @@ function AppContent() {
             <div className="header-center">
               {user?.role === 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
-                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/assistant') ? 'active' : ''}`} onClick={() => navigate('/assistant')}>
-                    <Briefcase size={18} />
-                    <span>Trainer Workspace</span>
-                  </button>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
                     <GraduationCap size={18} />
                     <span>iCAD Manuals and Standard</span>

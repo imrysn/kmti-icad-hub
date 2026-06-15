@@ -6,6 +6,7 @@ import { useNotification } from '../../../context/NotificationContext';
 import { useUI } from '../../../context/UIContext';
 import { FileManagerModal } from './FileManagerModal';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
+import { Modal } from '../../../components/Modal';
 import '../../../styles/admin/PracticalManagement.css';
 
 export const PracticalManagement: React.FC = () => {
@@ -585,122 +586,127 @@ export const PracticalManagement: React.FC = () => {
             )}
 
             {showEditModal && editingTask && (
-                <div className="admin-modal-overlay">
-                    <div className="admin-modal-card animate-slide-up">
-                        <div className="modal-header">
-                            <h3>Edit Assessment Unit</h3>
-                            <button className="close-btn" onClick={() => setShowEditModal(false)}>&times;</button>
-                        </div>
-                        <form onSubmit={handleUpdateTask} className="modal-body">
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label>Set Number</label>
-                                    <select
-                                        value={editingTask.set_number}
-                                        onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
-                                        className="admin-input-styled"
-                                    >
-                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label>Type</label>
-                                    <select
-                                        value={editingTask.is_assembly ? 'assembly' : 'part'}
-                                        onChange={(e) => {
-                                            const isAssembly = e.target.value === 'assembly';
-                                            setEditingTask({ ...editingTask, is_assembly: isAssembly, task_code: '' });
-                                        }}
-                                        className="admin-input-styled"
-                                    >
-                                        <option value="part">Part</option>
-                                        <option value="assembly">Assembly</option>
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label>Unit Code</label>
-                                    <input
-                                        type="text"
-                                        placeholder={editingTask.is_assembly ? "e.g. A1" : "e.g. P1"}
-                                        value={editingTask.task_code || ''}
-                                        onChange={(e) => {
-                                            const val = e.target.value.toUpperCase();
-                                            if (editingTask.is_assembly) {
-                                                if (/^A\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
-                                            } else {
-                                                if (/^P\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
-                                            }
-                                        }}
-                                        required
-                                        className="admin-input-styled"
-                                    />
-                                </div>
+                <Modal
+                    isOpen={showEditModal}
+                    onClose={() => setShowEditModal(false)}
+                    title="Edit Assessment Unit"
+                    tag="UNIT_EDIT"
+                    size="md"
+                >
+                    <form onSubmit={handleUpdateTask} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div className="form-row" style={{ display: 'flex', gap: '1rem' }}>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label>Set Number</label>
+                                <select
+                                    value={editingTask.set_number}
+                                    onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
+                                    className="admin-input-styled"
+                                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
+                                >
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                </select>
                             </div>
-                            <div className="form-group">
-                                <label>Unit Title</label>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label>Type</label>
+                                <select
+                                    value={editingTask.is_assembly ? 'assembly' : 'part'}
+                                    onChange={(e) => {
+                                        const isAssembly = e.target.value === 'assembly';
+                                        setEditingTask({ ...editingTask, is_assembly: isAssembly, task_code: '' });
+                                    }}
+                                    className="admin-input-styled"
+                                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
+                                >
+                                    <option value="part">Part</option>
+                                    <option value="assembly">Assembly</option>
+                                </select>
+                            </div>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label>Unit Code</label>
                                 <input
                                     type="text"
-                                    value={editingTask.title}
-                                    onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
+                                    placeholder={editingTask.is_assembly ? "e.g. A1" : "e.g. P1"}
+                                    value={editingTask.task_code || ''}
+                                    onChange={(e) => {
+                                        const val = e.target.value.toUpperCase();
+                                        if (editingTask.is_assembly) {
+                                            if (/^A\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
+                                        } else {
+                                            if (/^P\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
+                                        }
+                                    }}
                                     required
                                     className="admin-input-styled"
+                                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
                                 />
                             </div>
-                            <div className="form-group">
-                                <label>Master File (Optional) (.dwg, .zip)</label>
-                                <div className="file-input-wrapper-styled">
-                                    <input
-                                        type="file"
-                                        accept=".dwg,.zip"
-                                        id="edit-file-upload"
-                                        onChange={(e) => {
-                                            const file = e.target.files ? e.target.files[0] : null;
-                                            setEditFile(file);
-                                            if (file) {
-                                                const titleWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-                                                setEditingTask({ ...editingTask, title: titleWithoutExt });
-                                            }
-                                        }}
-                                        className="hidden-file-input"
-                                    />
-                                    <label htmlFor="edit-file-upload" className="custom-file-upload">
-                                        <Upload size={20} className="upload-icon" />
-                                        <div className="upload-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                                            {editFile ? (
-                                                <span className="file-name-highlight">{editFile.name}</span>
-                                            ) : (
-                                                <>
-                                                    <span>Click to replace master DWG</span>
-                                                    {editingTask.master_file_path && (
-                                                        <div className="current-file-badge" style={{ marginTop: '0' }}>
-                                                            <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
-                                                        </div>
-                                                    )}
-                                                </>
-                                            )}
-                                        </div>
-                                    </label>
-                                </div>
+                        </div>
+                        <div className="form-group">
+                            <label>Unit Title</label>
+                            <input
+                                type="text"
+                                value={editingTask.title}
+                                onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
+                                required
+                                className="admin-input-styled"
+                                style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Master File (Optional) (.dwg, .zip)</label>
+                            <div className="file-input-wrapper-styled">
+                                <input
+                                    type="file"
+                                    accept=".dwg,.zip"
+                                    id="edit-file-upload"
+                                    onChange={(e) => {
+                                        const file = e.target.files ? e.target.files[0] : null;
+                                        setEditFile(file);
+                                        if (file) {
+                                            const titleWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+                                            setEditingTask({ ...editingTask, title: titleWithoutExt });
+                                        }
+                                    }}
+                                    className="hidden-file-input"
+                                />
+                                <label htmlFor="edit-file-upload" className="custom-file-upload">
+                                    <Upload size={20} className="upload-icon" />
+                                    <div className="upload-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                        {editFile ? (
+                                            <span className="file-name-highlight">{editFile.name}</span>
+                                        ) : (
+                                            <>
+                                                <span>Click to replace master DWG</span>
+                                                {editingTask.master_file_path && (
+                                                    <div className="current-file-badge" style={{ marginTop: '0' }}>
+                                                        <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                </label>
                             </div>
-                            <div className="form-group">
-                                <label>Instructions</label>
-                                <textarea
-                                    value={editingTask.description}
-                                    onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
-                                    rows={4}
-                                    placeholder="Provide unit instructions..."
-                                    className="admin-input-styled"
-                                ></textarea>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
-                                </button>
-                                <button type="button" className="btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                        </div>
+                        <div className="form-group">
+                            <label>Instructions</label>
+                            <textarea
+                                value={editingTask.description}
+                                onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+                                rows={4}
+                                placeholder="Provide unit instructions..."
+                                className="admin-input-styled"
+                                style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
+                            ></textarea>
+                        </div>
+                        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+                            <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                                {isSubmitting ? 'Saving...' : 'Save Changes'}
+                            </button>
+                            <button type="button" className="btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
+                        </div>
+                    </form>
+                </Modal>
             )}
 
             {fileManagerTask && (

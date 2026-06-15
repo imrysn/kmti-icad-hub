@@ -5,6 +5,7 @@ import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti_logo.png';
 import LightPillar from '../components/LightPillar';
 import { parseBackendError } from '../utils/errorUtils';
+import { Modal } from '../components/Modal';
 
 export const LoginView: React.FC = () => {
     const { login, isLoggingIn, error } = useAuth();
@@ -189,37 +190,79 @@ export const LoginView: React.FC = () => {
             </div>
 
             {/* Forgot Password Modal */}
-            {showForgotPasswordModal && (
-                <div className="modal-overlay" onClick={handleForgotPasswordCancel}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        {forgotPasswordMessage && (
-                            <p className="modal-success-msg">{forgotPasswordMessage}</p>
-                        )}
+            <Modal
+                isOpen={showForgotPasswordModal}
+                onClose={handleForgotPasswordCancel}
+                title="Forgot Password"
+                tag="AUTH_RECOVERY"
+                size="sm"
+            >
+                {forgotPasswordMessage && (
+                    <p className="modal-success-msg">{forgotPasswordMessage}</p>
+                )}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div className="input-group">
                         <label htmlFor="forgot-email" className="modal-field-label">Email or Username</label>
                         <input id="forgot-email" type="text" value={forgotPasswordEmail} onChange={(e) => setForgotPasswordEmail(e.target.value)}
                             placeholder="Email or Username"
                             disabled={isForgotPasswordSubmitting}
+                            style={{
+                                width: '100%',
+                                padding: '0.625rem 0.875rem',
+                                borderRadius: 'var(--radius-md)',
+                                border: '1px solid var(--border-color)',
+                                background: 'var(--bg-surface)',
+                                color: 'var(--text-main)',
+                                outline: 'none'
+                            }}
                         />
-                        <div className="modal-buttons">
-                            <button onClick={handleForgotPasswordCancel} className="cancel-button" disabled={isForgotPasswordSubmitting}>
-                                Cancel
-                            </button>
-                            <button onClick={handleForgotPasswordSubmit} className="submit-button" disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}>
-                                {isForgotPasswordSubmitting ? 'Sending...' : 'Send Reset Link'}
-                            </button>
-                        </div>
+                    </div>
+                    <div className="modal-buttons" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+                        <button onClick={handleForgotPasswordCancel} className="cancel-button" disabled={isForgotPasswordSubmitting}
+                            style={{
+                                padding: '0.5rem 1rem',
+                                borderRadius: '8px',
+                                fontSize: '0.8125rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                background: 'transparent',
+                                color: 'var(--text-muted)',
+                                border: '1px solid var(--border-color)'
+                            }}
+                        >
+                            Cancel
+                        </button>
+                        <button onClick={handleForgotPasswordSubmit} className="submit-button" disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}
+                            style={{
+                                padding: '0.5rem 1.25rem',
+                                borderRadius: '8px',
+                                fontSize: '0.8125rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                border: 'none',
+                                background: 'var(--primary)',
+                                color: '#ffffff'
+                            }}
+                        >
+                            {isForgotPasswordSubmitting ? 'Sending...' : 'Send Reset Link'}
+                        </button>
                     </div>
                 </div>
-            )}
+            </Modal>
 
             {/* API Settings Modal */}
-            {showApiSettingsModal && (
-                <div className="modal-overlay" onClick={() => setShowApiSettingsModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h3>API Server Configuration</h3>
-                        <p style={{ fontSize: '12px', margin: '8px 0 16px 0', color: '#a0aec0' }}>
-                            Configure the remote server URL (e.g. http://192.168.200.105:3001). Leave empty to use local server.
-                        </p>
+            <Modal
+                isOpen={showApiSettingsModal}
+                onClose={() => setShowApiSettingsModal(false)}
+                title="API Server Configuration"
+                tag="SYSTEM_CONFIG"
+                size="sm"
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                        Configure the remote server URL (e.g. http://192.168.200.105:3001). Leave empty to use local server.
+                    </p>
+                    <div className="input-group">
                         <label htmlFor="custom-api-url" className="modal-field-label">Server URL</label>
                         <input
                             id="custom-api-url"
@@ -227,18 +270,49 @@ export const LoginView: React.FC = () => {
                             value={customApiUrl}
                             onChange={(e) => setCustomApiUrl(e.target.value)}
                             placeholder="http://127.0.0.1:3001"
+                            style={{
+                                width: '100%',
+                                padding: '0.625rem 0.875rem',
+                                borderRadius: 'var(--radius-md)',
+                                border: '1px solid var(--border-color)',
+                                background: 'var(--bg-surface)',
+                                color: 'var(--text-main)',
+                                outline: 'none'
+                            }}
                         />
-                        <div className="modal-buttons">
-                            <button onClick={() => setShowApiSettingsModal(false)} className="cancel-button">
-                                Cancel
-                            </button>
-                            <button onClick={handleSaveApiUrl} className="submit-button">
-                                Save & Restart
-                            </button>
-                        </div>
+                    </div>
+                    <div className="modal-buttons" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+                        <button onClick={() => setShowApiSettingsModal(false)} className="cancel-button"
+                            style={{
+                                padding: '0.5rem 1rem',
+                                borderRadius: '8px',
+                                fontSize: '0.8125rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                background: 'transparent',
+                                color: 'var(--text-muted)',
+                                border: '1px solid var(--border-color)'
+                            }}
+                        >
+                            Cancel
+                        </button>
+                        <button onClick={handleSaveApiUrl} className="submit-button"
+                            style={{
+                                padding: '0.5rem 1.25rem',
+                                borderRadius: '8px',
+                                fontSize: '0.8125rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                border: 'none',
+                                background: 'var(--primary)',
+                                color: '#ffffff'
+                            }}
+                        >
+                            Save & Restart
+                        </button>
                     </div>
                 </div>
-            )}
+            </Modal>
         </div>
     );
 };

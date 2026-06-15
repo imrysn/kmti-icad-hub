@@ -1,3 +1,7 @@
+/* ============================================================
+   Glassmorphic Unified Notification Styles — KMTI iCAD Hub
+   ============================================================ */
+
 .notification-system {
     position: fixed;
     bottom: 24px;
@@ -14,77 +18,108 @@
 
 .notification-item {
     pointer-events: auto;
-    border-radius: 16px;
-    padding: 20px 24px;
+    background: color-mix(in srgb, var(--bg-surface) 85%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     gap: 16px;
     position: relative;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    animation: notificationBounceEnter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--text-main);
+    box-shadow: var(--shadow-card);
+    animation: notificationBounceEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .notification-item:hover {
-    transform: translateY(-6px) scale(1.03);
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
 }
 
 .notification-item.exiting {
-    animation: notificationExit 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: notificationExit 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ── Live Pulsing Accent Dot ── */
 .notification-item::before {
     content: '';
     position: absolute;
-    top: 14px;
-    left: 14px;
-    width: 10px;
-    height: 10px;
+    top: 12px;
+    left: 12px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background-color: #ffffff;
-    box-shadow: 0 0 8px #ffffff, 0 0 16px #ffffff;
     animation: pulseGlow 1.8s infinite ease-in-out;
 }
 
 @keyframes pulseGlow {
-    0% { transform: scale(0.85); opacity: 0.6; }
-    50% { transform: scale(1.4); opacity: 1; }
-    100% { transform: scale(0.85); opacity: 0.6; }
+    0% { transform: scale(0.85); opacity: 0.5; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(0.85); opacity: 0.5; }
 }
 
-/* ── Saturated Radiant Gradients & Neon Shadows by Type ── */
+/* ── Technical Corner Markers ── */
+.notification-marker {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    border: 0.5px solid transparent;
+}
+.notification-marker.tl { top: 0.5rem; left: 0.5rem; border-right: none; border-bottom: none; }
+.notification-marker.br { bottom: 0.5rem; right: 0.5rem; border-left: none; border-top: none; }
+
+/* ── Glassmorphic Types, Glowing Borders, and Markers ── */
 .notification-item.success {
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-    box-shadow: 
-        0 15px 35px -5px rgba(16, 185, 129, 0.55),
-        0 5px 15px -2px rgba(16, 185, 129, 0.35),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    border-left: 4px solid var(--color-success);
+    box-shadow: 0 8px 30px rgba(63, 185, 80, 0.08), var(--shadow-card);
+}
+.notification-item.success::before {
+    background-color: var(--color-success);
+    box-shadow: 0 0 8px var(--color-success);
+}
+.notification-item.success .notification-marker {
+    border-color: rgba(63, 185, 80, 0.25);
 }
 
 .notification-item.error {
-    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-    box-shadow: 
-        0 15px 35px -5px rgba(239, 68, 68, 0.55),
-        0 5px 15px -2px rgba(239, 68, 68, 0.35),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    border-left: 4px solid var(--color-error);
+    box-shadow: 0 8px 30px rgba(248, 81, 73, 0.08), var(--shadow-card);
+}
+.notification-item.error::before {
+    background-color: var(--color-error);
+    box-shadow: 0 0 8px var(--color-error);
+}
+.notification-item.error .notification-marker {
+    border-color: rgba(248, 81, 73, 0.25);
 }
 
 .notification-item.info {
-    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-    box-shadow: 
-        0 15px 35px -5px rgba(59, 130, 246, 0.55),
-        0 5px 15px -2px rgba(59, 130, 246, 0.35),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    border-left: 4px solid var(--color-primary);
+    box-shadow: 0 8px 30px rgba(221, 77, 250, 0.08), var(--shadow-card);
+}
+.notification-item.info::before {
+    background-color: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-primary);
+}
+.notification-item.info .notification-marker {
+    border-color: rgba(221, 77, 250, 0.25);
 }
 
 .notification-item.warning {
-    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-    box-shadow: 
-        0 15px 35px -5px rgba(245, 158, 11, 0.55),
-        0 5px 15px -2px rgba(245, 158, 11, 0.35),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    border-left: 4px solid var(--color-warning);
+    box-shadow: 0 8px 30px rgba(210, 153, 34, 0.08), var(--shadow-card);
+}
+.notification-item.warning::before {
+    background-color: var(--color-warning);
+    box-shadow: 0 0 8px var(--color-warning);
+}
+.notification-item.warning .notification-marker {
+    border-color: rgba(210, 153, 34, 0.25);
 }
 
 /* ── Icon Panel ── */
@@ -93,57 +128,52 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
 }
+.notification-item.success .notification-icon { color: var(--color-success); }
+.notification-item.error .notification-icon { color: var(--color-error); }
+.notification-item.info .notification-icon { color: var(--color-primary); }
+.notification-item.warning .notification-icon { color: var(--color-warning); }
 
 /* ── Message Area ── */
 .notification-message {
     flex: 1;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1.5;
-    padding-left: 6px;
-    letter-spacing: 0.02em;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-main);
+    line-height: 1.4;
+    letter-spacing: 0.01em;
 }
 
 /* Highlight dynamic keywords inside the toast */
 .notification-message strong,
 .notification-message span.highlight {
-    color: #ffff00;
-    font-weight: 900;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-color: #ffff00;
+    color: var(--color-primary);
+    font-weight: 700;
 }
 
 /* ── Close Button ── */
 .notification-close {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: rgba(255, 255, 255, 0.85);
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
     cursor: pointer;
     padding: 6px;
-    border-radius: 8px;
-    transition: all 0.25s ease;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .notification-close:hover {
-    background: #ffffff;
-    border-color: #ffffff;
-    color: #ff0000;
-    transform: rotate(90deg) scale(1.15);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
 }
 
 /* ── Progress Bar ── */
@@ -151,44 +181,39 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 4px;
-    background: #ffffff;
+    height: 2px;
     opacity: 0.8;
     animation: progressLinear linear forwards;
-    box-shadow: 0 -1px 8px #ffffff;
 }
+.notification-item.success .notification-progress { background: var(--color-success); }
+.notification-item.error .notification-progress { background: var(--color-error); }
+.notification-item.info .notification-progress { background: var(--color-primary); }
+.notification-item.warning .notification-progress { background: var(--color-warning); }
 
 @keyframes progressLinear {
     from { width: 100%; }
     to { width: 0%; }
 }
 
-/* ── Premium Bounce Entrance Animation ── */
+/* ── Entrance & Exit Animations ── */
 @keyframes notificationBounceEnter {
-    0% {
+    from {
         opacity: 0;
-        transform: translateY(40px) translateX(60px) scale(0.8);
-        filter: blur(4px);
+        transform: translateY(20px) scale(0.95);
     }
-    50% {
-        opacity: 0.9;
-        transform: translateY(-6px) translateX(-10px) scale(1.05);
-        filter: blur(0px);
-    }
-    100% {
+    to {
         opacity: 1;
-        transform: translateY(0) translateX(0) scale(1);
+        transform: translateY(0) scale(1);
     }
 }
 
 @keyframes notificationExit {
     from {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: scale(1);
     }
     to {
         opacity: 0;
-        transform: translateX(80px) scale(0.9);
-        filter: blur(4px);
+        transform: scale(0.95);
     }
 }

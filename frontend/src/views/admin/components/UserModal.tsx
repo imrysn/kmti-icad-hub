@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, UserPlus, Save, User as UserIcon, Mail, Shield, Key } from 'lucide-react'; import { User } from '../../../services/authService';
 import { parseBackendError } from '../../../utils/errorUtils';
+import { Modal } from '../../../components/Modal';
 
 interface UserModalProps {
     isOpen: boolean;
@@ -52,66 +53,62 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
     };
 
     return (
-        <div className="admin-modal-overlay">
-            <div className="admin-modal-content user-modal">
-                <header className="admin-modal-header">
-                    <div className="title-area">
-                        {user ? <UserIcon size={20} /> : <UserPlus size={20} />}
-                        <h3>{user ? 'Edit User' : 'Add New User'}</h3>
-                    </div>
-                    <button className="close-btn" onClick={onClose}><X size={20} /></button>
-                </header>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            title={user ? 'Edit User' : 'Add New User'}
+            tag={user ? 'USER_UPDATE' : 'USER_CREATE'}
+            size="md"
+        >
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                {error && <div className="modal-error">{error}</div>}
 
-                <form onSubmit={handleSubmit} className="modal-body">
-                    {error && <div className="modal-error">{error}</div>}
-
-                    <div className="form-grid">
-                        <div className="form-group full">
-                            <label><Shield size={14} /> System Role</label>
-                            <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}
-                            >
-                                <option value="trainee">Trainee</option>
-                                <option value="employee">Employee</option>
-                                <option value="admin">Administrator</option>
-                            </select>
-                        </div>
-
-                        <div className="form-group full">
-                            <label>Full Name</label>
-                            <input type="text" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })}
-                                placeholder="John Doe"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label><UserIcon size={14} /> Username</label>
-                            <input type="text" value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })}
-                                disabled={!!user} // Username usually immutable
-                                placeholder="e.g. jd"
-                                minLength={2}
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label><Key size={14} /> {user ? 'New Password (Optional)' : 'Password'}</label>
-                            <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })}
-                                placeholder={user ? "Leave blank to keep current" : "Min 4 characters"}
-                                minLength={4}
-                                required={!user}
-                            />
-                        </div>
+                <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
+                    <div className="form-group full" style={{ gridColumn: 'span 2' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><Shield size={14} /> System Role</label>
+                        <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}
+                        >
+                            <option value="trainee">Trainee</option>
+                            <option value="employee">Employee</option>
+                            <option value="admin">Administrator</option>
+                        </select>
                     </div>
 
-                    <div className="admin-modal-footer">
-                        <button type="submit" className="admin-btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center' }}>
-                            {loading ? <div className="spinner-small"></div> : <Save size={16} />}
-                            {user ? 'Update User' : 'Create User'}
-                        </button>
+                    <div className="form-group full" style={{ gridColumn: 'span 2' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Full Name</label>
+                        <input type="text" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })}
+                            placeholder="John Doe"
+                            required
+                        />
                     </div>
-                </form>
-            </div>
-        </div>
+
+                    <div className="form-group">
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><UserIcon size={14} /> Username</label>
+                        <input type="text" value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })}
+                            disabled={!!user} // Username usually immutable
+                            placeholder="e.g. jd"
+                            minLength={2}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><Key size={14} /> {user ? 'New Password (Optional)' : 'Password'}</label>
+                        <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })}
+                            placeholder={user ? "Leave blank to keep current" : "Min 4 characters"}
+                            minLength={4}
+                            required={!user}
+                        />
+                    </div>
+                </div>
+
+                <div className="admin-modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+                    <button type="submit" className="admin-btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center' }}>
+                        {loading ? <div className="spinner-small"></div> : <Save size={16} />}
+                        {user ? 'Update User' : 'Create User'}
+                    </button>
+                </div>
+            </form>
+        </Modal>
     );
 };

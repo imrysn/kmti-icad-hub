@@ -5,6 +5,7 @@ import { TraineeProgress, adminService } from '../../../services/adminService';
 import { useLessons } from '../../../hooks/useLessons';
 import { useUI } from '../../../context/UIContext';
 import { ProgressReportPrint } from './ProgressReportPrint';
+import { Modal } from '../../../components/Modal';
 
 interface TraineeDetailProps {
     selectedTrainee: TraineeProgress;
@@ -405,122 +406,93 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                     </div>
                 </div>
             </div>
+            {/* Breakdown Modal */}
+            <Modal
+                isOpen={!!breakdownData}
+                onClose={() => setBreakdownData(null)}
+                title="Assessment Analytics"
+                tag="ASSESSMENT_DETAIL"
+                size="lg"
+            >
+                {breakdownData && (
+                    <div>
+                        <p style={{ margin: '0.4rem 0 1.5rem 0', fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                            {breakdownData.quiz_title} • <span style={{ color: 'var(--color-primary)' }}>{selectedTrainee.full_name}</span>
+                        </p>
 
-            {/* Breakdown Modal - Rendered via Portal to ensure it sits above the title bar */}
-            {breakdownData && createPortal(
-                <div className="breakdown-modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(var(--glass-blur))', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-                    <div className="breakdown-modal-content" style={{ background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', width: '100%', maxWidth: '850px', maxHeight: '92vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-card)' }}>
-                        <div className="modal-header" style={{ padding: '2rem 2.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div>
-                                <h2 style={{ margin: 0, color: 'var(--text-white)', fontSize: '1.5rem', letterSpacing: '-0.02em', fontFamily: 'var(--font-heading)' }}>Assessment Analytics</h2>
-                                <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                                    {breakdownData.quiz_title} • <span style={{ color: 'var(--color-primary)' }}>{selectedTrainee.full_name}</span>
-                                </p>
+                        {/* Performance Bar Graph Summary */}
+                        <div className="performance-summary-section" style={{ marginBottom: '2.5rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.8rem', fontSize: '0.85rem', fontWeight: 600 }}>
+                                <span style={{ color: 'var(--text-muted)' }}>PERFORMANCE DISTRIBUTION</span>
+                                <span style={{ color: 'var(--text-white)' }}>
+                                    {breakdownData.attempts.filter((a: any) => a.is_correct).length} / {breakdownData.attempts.length} Correct
+                                </span>
                             </div>
-                            <button
-                                onClick={() => setBreakdownData(null)}
-                                className="modal-close-btn"
-                                style={{
-                                    background: 'transparent',
-                                    border: 'none',
-                                    color: 'var(--text-dim)',
-                                    width: '32px',
-                                    height: '32px',
-                                    borderRadius: 'var(--radius-md)',
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    transition: 'all 0.2s ease',
-                                    padding: 0
-                                }}
-                                onMouseOver={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                    e.currentTarget.style.color = 'var(--color-error)';
-                                }}
-                                onMouseOut={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                    e.currentTarget.style.color = 'var(--text-dim)';
-                                }}
-                            >
-                                <X size={24} strokeWidth={2.5} />
-                            </button>
+                            <div className="perf-bar-container" style={{ height: '12px', background: 'var(--bg-card)', borderRadius: 'var(--radius-full)', overflow: 'hidden', display: 'flex', border: '1px solid var(--border-color)' }}>
+                                {/* Correct Bar */}
+                                <div style={{
+                                    width: `${(breakdownData.attempts.filter((a: any) => a.is_correct).length / breakdownData.attempts.length) * 100}%`,
+                                    background: 'linear-gradient(90deg, #10b981, #34d399)',
+                                    height: '100%'
+                                }}></div>
+                                {/* Incorrect Bar */}
+                                <div style={{
+                                    width: `${(breakdownData.attempts.filter((a: any) => !a.is_correct).length / breakdownData.attempts.length) * 100}%`,
+                                    background: 'linear-gradient(90deg, #ef4444, #f87171)',
+                                    height: '100%'
+                                }}></div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></div>
+                                    CORRECT ({Math.round((breakdownData.attempts.filter((a: any) => a.is_correct).length / breakdownData.attempts.length) * 100)}%)
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: '#ef4444', fontWeight: 600 }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444' }}></div>
+                                    WRONG ({Math.round((breakdownData.attempts.filter((a: any) => !a.is_correct).length / breakdownData.attempts.length) * 100)}%)
+                                </div>
+                                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                                    AVG SPEED: <span style={{ color: 'var(--text-white)' }}>{Math.round(breakdownData.attempts.reduce((acc: number, curr: any) => acc + (curr.seconds_spent || 0), 0) / breakdownData.attempts.length)}s/q</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="modal-body" style={{ padding: '2rem 2.5rem', overflowY: 'auto', flex: 1 }}>
-                            {/* Performance Bar Graph Summary */}
-                            <div className="performance-summary-section" style={{ marginBottom: '2.5rem' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.8rem', fontSize: '0.85rem', fontWeight: 600 }}>
-                                    <span style={{ color: 'var(--text-muted)' }}>PERFORMANCE DISTRIBUTION</span>
-                                    <span style={{ color: 'var(--text-white)' }}>
-                                        {breakdownData.attempts.filter((a: any) => a.is_correct).length} / {breakdownData.attempts.length} Correct
-                                    </span>
-                                </div>
-                                <div className="perf-bar-container" style={{ height: '12px', background: 'var(--bg-card)', borderRadius: 'var(--radius-full)', overflow: 'hidden', display: 'flex', border: '1px solid var(--border-color)' }}>
-                                    {/* Correct Bar */}
-                                    <div style={{
-                                        width: `${(breakdownData.attempts.filter((a: any) => a.is_correct).length / breakdownData.attempts.length) * 100}%`,
-                                        background: 'linear-gradient(90deg, #10b981, #34d399)',
-                                        height: '100%'
-                                    }}></div>
-                                    {/* Incorrect Bar */}
-                                    <div style={{
-                                        width: `${(breakdownData.attempts.filter((a: any) => !a.is_correct).length / breakdownData.attempts.length) * 100}%`,
-                                        background: 'linear-gradient(90deg, #ef4444, #f87171)',
-                                        height: '100%'
-                                    }}></div>
-                                </div>
-                                <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
-                                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></div>
-                                        CORRECT ({Math.round((breakdownData.attempts.filter((a: any) => a.is_correct).length / breakdownData.attempts.length) * 100)}%)
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: '#ef4444', fontWeight: 600 }}>
-                                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444' }}></div>
-                                        WRONG ({Math.round((breakdownData.attempts.filter((a: any) => !a.is_correct).length / breakdownData.attempts.length) * 100)}%)
-                                    </div>
-                                    <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                                        AVG SPEED: <span style={{ color: 'var(--text-white)' }}>{Math.round(breakdownData.attempts.reduce((acc: number, curr: any) => acc + (curr.seconds_spent || 0), 0) / breakdownData.attempts.length)}s/q</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="attempts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-dim)', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>QUESTION LOG</p>
-                                {breakdownData.attempts.map((item: any, idx: number) => (
-                                    <div key={idx} className="breakdown-item" style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius-md)', padding: '1.2rem', border: `1px solid ${item.is_correct ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}`, boxShadow: 'var(--shadow-inner)' }}>
-                                        <div style={{ display: 'flex', gap: '1rem' }}>
-                                            <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: item.is_correct ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', color: item.is_correct ? '#10b981' : '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                                {item.is_correct ? <Check size={16} /> : <X size={16} />}
+                        <div className="attempts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-dim)', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>QUESTION LOG</p>
+                            {breakdownData.attempts.map((item: any, idx: number) => (
+                                <div key={idx} className="breakdown-item" style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius-md)', padding: '1.2rem', border: `1px solid ${item.is_correct ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}`, boxShadow: 'var(--shadow-inner)' }}>
+                                    <div style={{ display: 'flex', gap: '1rem' }}>
+                                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: item.is_correct ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', color: item.is_correct ? '#10b981' : '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                            {item.is_correct ? <Check size={16} /> : <X size={16} />}
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                                <p style={{ margin: 0, fontWeight: 500, fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.8rem', lineHeight: 1.5, flex: 1 }}>{item.question_text}</p>
+                                                <span style={{ fontSize: '0.7rem', color: item.seconds_spent > 90 ? '#ef4444' : 'var(--text-muted)', fontWeight: 700, marginLeft: '1rem', background: 'rgba(0,0,0,0.2)', padding: '2px 6px', borderRadius: '4px' }}>
+                                                    {item.seconds_spent}s
+                                                </span>
                                             </div>
-                                            <div style={{ flex: 1 }}>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                                    <p style={{ margin: 0, fontWeight: 500, fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.8rem', lineHeight: 1.5, flex: 1 }}>{item.question_text}</p>
-                                                    <span style={{ fontSize: '0.7rem', color: item.seconds_spent > 90 ? '#ef4444' : 'var(--text-muted)', fontWeight: 700, marginLeft: '1rem', background: 'rgba(0,0,0,0.2)', padding: '2px 6px', borderRadius: '4px' }}>
-                                                        {item.seconds_spent}s
-                                                    </span>
-                                                </div>
 
-                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', fontSize: '0.8rem' }}>
-                                                    <div style={{ color: item.is_correct ? '#10b981' : '#ef4444' }}>
-                                                        <span style={{ color: 'var(--text-dim)', marginRight: '0.5rem' }}>Answer:</span>
-                                                        <strong>{item.user_answer_index !== null ? item.options[item.user_answer_index] : 'No Answer'}</strong>
-                                                    </div>
-                                                    {!item.is_correct && (
-                                                        <div style={{ color: '#10b981' }}>
-                                                            <span style={{ color: 'var(--text-dim)', marginRight: '0.5rem' }}>Correct Answer:</span>
-                                                            <strong>{item.options[item.correct_answer_index]}</strong>
-                                                        </div>
-                                                    )}
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', fontSize: '0.8rem' }}>
+                                                <div style={{ color: item.is_correct ? '#10b981' : '#ef4444' }}>
+                                                    <span style={{ color: 'var(--text-dim)', marginRight: '0.5rem' }}>Answer:</span>
+                                                    <strong>{item.user_answer_index !== null ? item.options[item.user_answer_index] : 'No Answer'}</strong>
                                                 </div>
+                                                {!item.is_correct && (
+                                                    <div style={{ color: '#10b981' }}>
+                                                        <span style={{ color: 'var(--text-dim)', marginRight: '0.5rem' }}>Correct Answer:</span>
+                                                        <strong>{item.options[item.correct_answer_index]}</strong>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                </div>,
-                document.body
-            )}
+                )}
+            </Modal>
 
             {/* Hidden component for printing */}
             <ProgressReportPrint trainee={selectedTrainee} />

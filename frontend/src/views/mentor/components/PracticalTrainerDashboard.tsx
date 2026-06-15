@@ -9,6 +9,7 @@ import { useWebSocket } from '../../../context/WebSocketContext';
 import { useUI } from '../../../context/UIContext';
 import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
+import { Modal } from '../../../components/Modal';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 
 const TraineeStatusLabel: React.FC<{ isOnline: boolean; lastUpdated: string | null | undefined }> = ({ isOnline, lastUpdated }) => {
@@ -1139,221 +1140,122 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         )}
                     </div>
                 )}
-
                 {/* Review Modal with History & Chat */}
-                {isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0 && (
-                    <div className="modal-overlay" onClick={() => setIsReviewing(false)}>
-                        <div className="review-modal enhanced animate-slide-up" onClick={(e) => e.stopPropagation()}>
-                            <div className="modal-header">
-                                <h3>Review: {selectedTaskSubmissions[0].user?.full_name} - Set {selectedTaskSubmissions[0].task?.set_number} Unit {selectedTaskSubmissions[0].task?.task_code}</h3>
-                                <button className="close-btn" onClick={() => setIsReviewing(false)}>
-                                    <XCircle size={24} />
-                                </button>
-                            </div>
-
-                            <div className="modal-body split-layout">
-                                {/* Left Side: Submission History & Chat */}
-                                <div className="history-chat-panel">
-                                    <h4><MessageSquare size={16} /> Submission History & Feedback</h4>
-                                    <div className="history-timeline">
-                                        {selectedTaskSubmissions.map((sub, index) => (
-                                            <div key={sub.id} className="history-node">
-                                                <div className="node-marker">
-                                                    <div className={`node-dot ${sub.status}`}></div>
-                                                    {index !== selectedTaskSubmissions.length - 1 && <div className="node-line"></div>}
+                <Modal
+                    isOpen={isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0}
+                    onClose={() => setIsReviewing(false)}
+                    title={`Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Unit ${selectedTaskSubmissions?.[0]?.task?.task_code}`}
+                    tag="SUBMISSION_REVIEW"
+                    size="xl"
+                >
+                    {selectedTaskSubmissions && selectedTaskSubmissions.length > 0 && (
+                        <div className="modal-body split-layout" style={{ display: 'flex', gap: '2rem', height: '100%', minHeight: '500px' }}>
+                            {/* Left Side: Submission History & Chat */}
+                            <div className="history-chat-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem', borderRight: '1px solid var(--border-color)', paddingRight: '1.5rem', maxHeight: '70vh', overflowY: 'auto' }}>
+                                <h4><MessageSquare size={16} /> Submission History & Feedback</h4>
+                                <div className="history-timeline">
+                                    {selectedTaskSubmissions.map((sub, index) => (
+                                        <div key={sub.id} className="history-node" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+                                            <div className="node-marker" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                <div className={`node-dot ${sub.status}`} style={{ width: '12px', height: '12px', borderRadius: '50%', background: sub.status === 'approved' ? 'var(--color-success)' : sub.status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)' }}></div>
+                                                {index !== selectedTaskSubmissions.length - 1 && <div className="node-line" style={{ width: '2px', flex: 1, background: 'var(--border-color)', marginTop: '4px' }}></div>}
+                                            </div>
+                                            <div className="node-content" style={{ flex: 1 }}>
+                                                <div className="node-header" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                                                    <span className="node-title" style={{ fontWeight: 600 }}>Attempt {selectedTaskSubmissions.length - index}</span>
+                                                    <span className="node-date">{new Date(sub.submitted_at).toLocaleString()}</span>
                                                 </div>
-                                                <div className="node-content">
-                                                    <div className="node-header">
-                                                        <span className="node-title">Attempt {selectedTaskSubmissions.length - index}</span>
-                                                        <span className="node-date">{new Date(sub.submitted_at).toLocaleString()}</span>
+                                                <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px', marginBottom: '0.75rem' }}>
+                                                    <FileText size={14} />
+                                                    <span className="file-name" title={sub.submission_file_path?.split(/[\\/]/).pop()} style={{ fontSize: '0.85rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                        {sub.submission_file_path?.split(/[\\/]/).pop()}
+                                                    </span>
+                                                    <div className="node-file-actions" style={{ display: 'flex', gap: '0.5rem' }}>
+                                                        <button
+                                                            className="action-icon-btn primary"
+                                                            onClick={() => handleOpenInIJCAD(sub)}
+                                                            title="Open in CAD"
+                                                            style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
+                                                        >
+                                                            <Play size={14} /> Open
+                                                        </button>
+                                                        <button
+                                                            className="action-icon-btn"
+                                                            onClick={() => handleDownloadTraineeFile(sub)}
+                                                            title="Download File"
+                                                            style={{ padding: '0.25rem' }}
+                                                        >
+                                                            <Download size={14} />
+                                                        </button>
                                                     </div>
-                                                    <div className="node-file">
-                                                        <FileText size={14} />
-                                                        <span className="file-name" title={sub.submission_file_path?.split(/[\\/]/).pop()}>
-                                                            {sub.submission_file_path?.split(/[\\/]/).pop()}
-                                                        </span>
-                                                        <div className="node-file-actions">
-                                                            <button
-                                                                className="action-icon-btn primary"
-                                                                onClick={() => handleOpenInIJCAD(sub)}
-                                                                title="Open in CAD"
-                                                            >
-                                                                <Play size={14} /> Open
-                                                            </button>
-                                                            <button
-                                                                className="action-icon-btn"
-                                                                onClick={() => handleDownloadTraineeFile(sub)}
-                                                                title="Download File"
-                                                            >
-                                                                <Download size={14} />
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                </div>
 
-                                                    {/* Chat / Feedback Section */}
-                                                    {sub.feedback && sub.feedback.length > 0 ? (
-                                                        sub.feedback.map(fb => (
-                                                            <div key={fb.id} className="chat-container">
-                                                                <div className="chat-bubble trainer-chat">
-                                                                    <span className="chat-author">You (Trainer)</span>
-                                                                    <p>{fb.comments || "No comments provided."}</p>
-                                                                    {fb.checkback_file_path && (
-                                                                        <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)}>
-                                                                            <FileText size={12} /> Checkback File
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                                {fb.trainee_reply && (
-                                                                    <div className="chat-bubble trainee-chat">
-                                                                        <span className="chat-author">{sub.user?.full_name} (Trainee)</span>
-                                                                        <p>{fb.trainee_reply}</p>
-                                                                        {fb.replied_at && <span className="chat-time">{new Date(fb.replied_at).toLocaleString()}</span>}
+                                                {/* Chat / Feedback Section */}
+                                                {sub.feedback && sub.feedback.length > 0 ? (
+                                                    sub.feedback.map(fb => (
+                                                        <div key={fb.id} className="chat-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                            <div className="chat-bubble trainer-chat" style={{ background: 'rgba(221, 77, 250, 0.05)', border: '1px solid rgba(221, 77, 250, 0.1)', padding: '0.75rem', borderRadius: '8px', width: 'fit-content', maxWidth: '85%' }}>
+                                                                <span className="chat-author" style={{ fontSize: '0.7rem', color: 'var(--primary)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>You (Trainer)</span>
+                                                                <p style={{ margin: 0, fontSize: '0.85rem' }}>{fb.comments || "No comments provided."}</p>
+                                                                {fb.checkback_file_path && (
+                                                                    <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--primary)', marginTop: '0.5rem', textDecoration: 'underline' }}>
+                                                                        <FileText size={12} /> Checkback File
                                                                     </div>
                                                                 )}
                                                             </div>
-                                                        ))
-                                                    ) : (
-                                                        <div className="empty-chat-state">
-                                                            <MessageSquare size={24} className="empty-chat-icon" />
-                                                            <p>{sub.status === 'pending' ? 'Awaiting your review. This is the first attempt.' : 'No feedback left for this attempt.'}</p>
+                                                            {fb.trainee_reply && (
+                                                                <div className="chat-bubble trainee-chat" style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-color)', padding: '0.75rem', borderRadius: '8px', width: 'fit-content', maxWidth: '85%', alignSelf: 'flex-end', marginLeft: 'auto' }}>
+                                                                    <span className="chat-author" style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>{sub.user?.full_name} (Trainee)</span>
+                                                                    <p style={{ margin: 0, fontSize: '0.85rem' }}>{fb.trainee_reply}</p>
+                                                                    {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.65rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.25rem', textAlign: 'right' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Right Side: Action Form */}
-                                <div className="action-panel">
-                                    <div className="review-task-info">
-                                        <span className="label">Current Status</span>
-                                        <div className={`status-badge large ${selectedTaskSubmissions[0].status}`}>
-                                            {selectedTaskSubmissions[0].status.toUpperCase()}
-                                        </div>
-                                    </div>
-
-                                    <div className="feedback-form-panel">
-                                        <h4>Provide Feedback</h4>
-                                        {selectedTaskSubmissions[0].status !== 'pending' && (
-                                            <div style={{ padding: '0.75rem', background: 'rgba(255, 165, 0, 0.1)', border: '1px solid orange', borderRadius: '6px', marginBottom: '1rem', color: 'orange', fontSize: '0.85rem' }}>
-                                                <Eye size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
-                                                This attempt is already marked as <strong>{selectedTaskSubmissions[0].status}</strong>. Submitting feedback will update the existing review.
-                                            </div>
-                                        )}
-                                        <div className="form-group">
-                                            <label>Comments</label>
-                                            <textarea
-                                                placeholder="Provide detailed feedback for the latest attempt..."
-                                                value={feedbackComments}
-                                                onChange={(e) => setFeedbackComments(e.target.value)}
-                                            ></textarea>
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label>Excel Checkback File (Optional)</label>
-                                            <div className="file-upload-area">
-                                                <input
-                                                    type="file"
-                                                    id="checkback-file"
-                                                    accept=".xlsx,.xls"
-                                                    onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
-                                                />
-                                                <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''}>
-                                                    <Upload size={18} />
-                                                    <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
-                                                </label>
-                                                {feedbackFile && (
-                                                    <button
-                                                        type="button"
-                                                        className="clear-file-btn"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            setFeedbackFile(null);
-                                                            const fileInput = document.getElementById('checkback-file') as HTMLInputElement;
-                                                            if (fileInput) fileInput.value = '';
-                                                        }}
-                                                        title="Remove selected file"
-                                                    >
-                                                        <XCircle size={16} />
-                                                    </button>
+                                                    ))
+                                                ) : (
+                                                    <div className="empty-chat-state" style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-muted)' }}>
+                                                        <MessageSquare size={24} className="empty-chat-icon" style={{ opacity: 0.5, marginBottom: '0.5rem' }} />
+                                                        <p style={{ margin: 0, fontSize: '0.8rem' }}>{sub.status === 'pending' ? 'Awaiting your review. This is the first attempt.' : 'No feedback left for this attempt.'}</p>
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div className="modal-action-buttons">
-                                        <button
-                                            className="btn-reject"
-                                            onClick={() => handleSubmitFeedback('rejected')}
-                                            disabled={isSubmittingFeedback}
-                                        >
-                                            <XCircle size={16} /> Reject
-                                        </button>
-                                        <button
-                                            className="btn-approve"
-                                            onClick={() => handleSubmitFeedback('approved')}
-                                            disabled={isSubmittingFeedback}
-                                        >
-                                            <CheckCircle2 size={16} /> Approve
-                                        </button>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                )}
 
-                {/* Bulk Review Modal for Entire Set */}
-                {isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0 && (
-                    <div className="modal-overlay" onClick={() => setIsReviewingSet(false)}>
-                        <div className="review-modal enhanced animate-slide-up" style={{ maxWidth: '800px' }} onClick={(e) => e.stopPropagation()}>
-                            <div className="modal-header">
-                                <h3>Review Entire Set {selectedSetSubmissions[0].task?.set_number} for {selectedSetSubmissions[0].user?.full_name}</h3>
-                                <button className="close-btn" onClick={() => setIsReviewingSet(false)}>
-                                    <XCircle size={24} />
-                                </button>
-                            </div>
-
-                            <div className="modal-body">
-                                <div className="bulk-review-info" style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
-                                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Eye size={18} /> You are reviewing {selectedSetSubmissions.length} tasks
-                                    </h4>
-                                    <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                                        The feedback and status you provide below will be applied to all <strong>{selectedSetSubmissions.length}</strong> tasks simultaneously.
-                                    </p>
-                                    <div style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                        {selectedSetSubmissions.map(sub => (
-                                            <span key={sub.id} style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
-                                                Unit {sub.task?.task_code}
-                                            </span>
-                                        ))}
+                            {/* Right Side: Action Form */}
+                            <div className="action-panel" style={{ width: '300px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                <div className="review-task-info">
+                                    <span className="label" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Current Status</span>
+                                    <div className={`status-badge large ${selectedTaskSubmissions[0].status}`} style={{ fontSize: '1rem', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '6px', textAlign: 'center', marginTop: '0.25rem', width: '100%', background: selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.1)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)', color: selectedTaskSubmissions[0].status === 'approved' ? 'var(--color-success)' : selectedTaskSubmissions[0].status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)' }}>
+                                        {selectedTaskSubmissions[0].status.toUpperCase()}
                                     </div>
                                 </div>
 
-                                <div className="feedback-form-panel" style={{ background: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-                                    <h4>Provide Bulk Feedback</h4>
-                                    <div className="form-group" style={{ marginTop: '1rem' }}>
-                                        <label>Overall Comments</label>
+                                <div className="feedback-form-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    <h4>Provide Feedback</h4>
+                                    <div className="form-group">
+                                        <label>Comments</label>
                                         <textarea
-                                            placeholder="Provide overall feedback for the entire set..."
+                                            placeholder="Provide constructive comments..."
                                             value={feedbackComments}
                                             onChange={(e) => setFeedbackComments(e.target.value)}
-                                            style={{ minHeight: '120px' }}
+                                            style={{ width: '100%', minHeight: '100px', padding: '0.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
                                         ></textarea>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Excel Checkback File (Optional, applies to all)</label>
-                                        <div className="file-upload-area">
+                                        <label>Excel Checkback File (Optional)</label>
+                                        <div className="file-upload-area" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             <input
                                                 type="file"
-                                                id="bulk-checkback-file"
+                                                id="checkback-file"
                                                 accept=".xlsx,.xls"
                                                 onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
+                                                style={{ display: 'none' }}
                                             />
-                                            <label htmlFor="bulk-checkback-file" className={feedbackFile ? 'has-file' : ''}>
+                                            <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>
                                                 <Upload size={18} />
                                                 <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
                                             </label>
@@ -1364,10 +1266,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         setFeedbackFile(null);
-                                                        const fileInput = document.getElementById('bulk-checkback-file') as HTMLInputElement;
+                                                        const fileInput = document.getElementById('checkback-file') as HTMLInputElement;
                                                         if (fileInput) fileInput.value = '';
                                                     }}
                                                     title="Remove selected file"
+                                                    style={{ padding: '0.25rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)' }}
                                                 >
                                                     <XCircle size={16} />
                                                 </button>
@@ -1375,27 +1278,123 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <div className="modal-action-buttons" style={{ marginTop: '2rem' }}>
+                                    <div className="modal-action-buttons" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
                                         <button
                                             className="btn-reject"
-                                            onClick={() => handleBulkSubmitFeedback('rejected')}
+                                            onClick={() => handleSubmitFeedback('rejected')}
                                             disabled={isSubmittingFeedback}
+                                            style={{ flex: 1, padding: '0.6rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: 'var(--color-error)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
                                         >
-                                            <XCircle size={16} /> Reject Entire Set
+                                            <XCircle size={16} /> Reject
                                         </button>
                                         <button
                                             className="btn-approve"
-                                            onClick={() => handleBulkSubmitFeedback('approved')}
+                                            onClick={() => handleSubmitFeedback('approved')}
                                             disabled={isSubmittingFeedback}
+                                            style={{ flex: 1, padding: '0.6rem', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', color: 'var(--color-success)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
                                         >
-                                            <CheckCircle2 size={16} /> Approve Entire Set
+                                            <CheckCircle2 size={16} /> Approve
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    )}
+                </Modal>
+
+            {/* Bulk Review Modal for Entire Set */}
+            <Modal
+                isOpen={isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0}
+                onClose={() => setIsReviewingSet(false)}
+                title={`Review Entire Set ${selectedSetSubmissions?.[0]?.task?.set_number} for ${selectedSetSubmissions?.[0]?.user?.full_name}`}
+                tag="BULK_SET_REVIEW"
+                size="lg"
+            >
+                {selectedSetSubmissions && selectedSetSubmissions.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div className="bulk-review-info" style={{ padding: '1rem', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+                            <h4 style={{ margin: '0 0 0.5rem 0', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <Eye size={18} /> You are reviewing {selectedSetSubmissions.length} tasks
+                            </h4>
+                            <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                                The feedback and status you provide below will be applied to all <strong>{selectedSetSubmissions.length}</strong> tasks simultaneously.
+                            </p>
+                            <div style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                {selectedSetSubmissions.map(sub => (
+                                    <span key={sub.id} style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
+                                        Unit {sub.task?.task_code}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="feedback-form-panel" style={{ background: 'rgba(255,255,255,0.01)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <h4>Provide Bulk Feedback</h4>
+                            <div className="form-group">
+                                <label>Overall Comments</label>
+                                <textarea
+                                    placeholder="Provide overall feedback for the entire set..."
+                                    value={feedbackComments}
+                                    onChange={(e) => setFeedbackComments(e.target.value)}
+                                    style={{ width: '100%', minHeight: '120px', padding: '0.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
+                                ></textarea>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Excel Checkback File (Optional, applies to all)</label>
+                                <div className="file-upload-area" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <input
+                                        type="file"
+                                        id="bulk-checkback-file"
+                                        accept=".xlsx,.xls"
+                                        onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
+                                        style={{ display: 'none' }}
+                                    />
+                                    <label htmlFor="bulk-checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>
+                                        <Upload size={18} />
+                                        <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
+                                    </label>
+                                    {feedbackFile && (
+                                        <button
+                                            type="button"
+                                            className="clear-file-btn"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setFeedbackFile(null);
+                                                const fileInput = document.getElementById('bulk-checkback-file') as HTMLInputElement;
+                                                if (fileInput) fileInput.value = '';
+                                            }}
+                                            title="Remove selected file"
+                                            style={{ padding: '0.25rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)' }}
+                                        >
+                                            <XCircle size={16} />
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="modal-action-buttons" style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
+                                <button
+                                    className="btn-reject"
+                                    onClick={() => handleBulkSubmitFeedback('rejected')}
+                                    disabled={isSubmittingFeedback}
+                                    style={{ flex: 1, padding: '0.6rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: 'var(--color-error)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                >
+                                    <XCircle size={16} /> Reject Entire Set
+                                </button>
+                                <button
+                                    className="btn-approve"
+                                    onClick={() => handleBulkSubmitFeedback('approved')}
+                                    disabled={isSubmittingFeedback}
+                                    style={{ flex: 1, padding: '0.6rem', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', color: 'var(--color-success)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                >
+                                    <CheckCircle2 size={16} /> Approve Entire Set
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
+            </Modal>
             </div>
 
             {/* Right Telemetry Sidebar Panel */}

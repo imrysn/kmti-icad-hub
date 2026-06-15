@@ -6,6 +6,7 @@ import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/mentor/PracticalAssessment.css';
 import '../../../styles/3D_Modeling/CourseLesson.css';
+import { Modal } from '../../../components/Modal';
 import JSZip from 'jszip';
 
 interface PracticalAssessmentProps {
@@ -1097,145 +1098,144 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             </main>
 
             {/* Folder Upload Modal */}
-            {uploadFolderModalOpen && (
-                <div className="modal-overlay animate-fade-in" style={{ zIndex: 9999 }}>
-                    <div className="modal-content" style={{ maxWidth: '500px' }}>
-                        <div className="modal-header">
-                            <h3>Upload Custom Folder</h3>
-                            <button className="close-modal-btn" onClick={() => setUploadFolderModalOpen(false)}>×</button>
+            <Modal
+                isOpen={uploadFolderModalOpen}
+                onClose={() => setUploadFolderModalOpen(false)}
+                title="Upload Custom Folder"
+                tag="FOLDER_UPLOAD"
+                size="sm"
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div className="form-group">
+                        <label>Folder Name:</label>
+                        <input 
+                            type="text" 
+                            className="modal-input" 
+                            value={customFolderName} 
+                            onChange={(e) => setCustomFolderName(e.target.value)} 
+                            placeholder="e.g. Purchase Parts"
+                            style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Select Folder:</label>
+                        <div 
+                            className="upload-dropzone" 
+                            onClick={() => folderInputRef.current?.click()}
+                            style={{ border: '2px dashed var(--border-color)', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '8px', marginTop: '0.5rem' }}
+                        >
+                            <UploadCloud size={32} style={{ color: 'var(--text-muted)', marginBottom: '10px' }} />
+                            <p style={{ margin: 0, fontSize: '0.9rem' }}>Click to select a folder from your computer</p>
+                            <input 
+                                type="file" 
+                                multiple 
+                                // @ts-ignore
+                                webkitdirectory="true" 
+                                directory="true"
+                                ref={folderInputRef} 
+                                style={{ display: 'none' }} 
+                                onChange={handleFolderFilesSelect} 
+                            />
                         </div>
-                        <div className="modal-body">
-                            <div className="form-group" style={{ marginBottom: '1rem' }}>
-                                <label>Folder Name:</label>
-                                <input 
-                                    type="text" 
-                                    className="modal-input" 
-                                    value={customFolderName} 
-                                    onChange={(e) => setCustomFolderName(e.target.value)} 
-                                    placeholder="e.g. Purchase Parts"
-                                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-                                />
-                            </div>
-                            <div className="form-group" style={{ marginBottom: '1rem' }}>
-                                <label>Select Folder:</label>
-                                <div 
-                                    className="upload-dropzone" 
-                                    onClick={() => folderInputRef.current?.click()}
-                                    style={{ border: '2px dashed #ccc', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '8px', marginTop: '0.5rem' }}
-                                >
-                                    <UploadCloud size={32} style={{ color: '#666', marginBottom: '10px' }} />
-                                    <p>Click to select a folder from your computer</p>
-                                    <input 
-                                        type="file" 
-                                        multiple 
-                                        // @ts-ignore
-                                        webkitdirectory="true" 
-                                        directory="true"
-                                        ref={folderInputRef} 
-                                        style={{ display: 'none' }} 
-                                        onChange={handleFolderFilesSelect} 
-                                    />
-                                </div>
-                            </div>
-                            {folderFiles.length > 0 && (
-                                <div className="selected-files-summary">
-                                    <p><strong>{folderFiles.length} files selected</strong></p>
-                                    <ul style={{ maxHeight: '100px', overflowY: 'auto', fontSize: '12px', paddingLeft: '1rem', marginTop: '0.5rem' }}>
-                                        {folderFiles.slice(0, 5).map((f, i) => (
-                                            <li key={i}>{f.webkitRelativePath || f.name}</li>
-                                        ))}
-                                        {folderFiles.length > 5 && <li>...and {folderFiles.length - 5} more</li>}
-                                    </ul>
-                                </div>
-                            )}
+                    </div>
+                    {folderFiles.length > 0 && (
+                        <div className="selected-files-summary">
+                            <p><strong>{folderFiles.length} files selected</strong></p>
+                            <ul style={{ maxHeight: '100px', overflowY: 'auto', fontSize: '12px', paddingLeft: '1rem', marginTop: '0.5rem' }}>
+                                {folderFiles.slice(0, 5).map((f, i) => (
+                                    <li key={i}>{f.webkitRelativePath || f.name}</li>
+                                ))}
+                                {folderFiles.length > 5 && <li>...and {folderFiles.length - 5} more</li>}
+                            </ul>
                         </div>
-                        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-                            <button className="btn-secondary" onClick={() => setUploadFolderModalOpen(false)}>Cancel</button>
-                            <button className="btn-primary" onClick={submitFolderUpload} disabled={isZipping || folderFiles.length === 0 || !customFolderName.trim()}>
-                                {isZipping ? 'Compressing & Uploading...' : 'Upload'}
+                    )}
+                    <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+                        <button className="btn-secondary" onClick={() => setUploadFolderModalOpen(false)}>Cancel</button>
+                        <button className="btn-primary" onClick={submitFolderUpload} disabled={isZipping || folderFiles.length === 0 || !customFolderName.trim()}>
+                            {isZipping ? 'Compressing & Uploading...' : 'Upload'}
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Trash Modal */}
+            <Modal
+                isOpen={trashModalOpen}
+                onClose={() => setTrashModalOpen(false)}
+                title="Trash Bin"
+                tag="TRASH_BIN"
+                size="lg"
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>Submissions deleted by trainee</p>
+                        {trashSubmissions.length > 0 && (
+                            <button 
+                                onClick={handleEmptyTrash}
+                                style={{ background: 'transparent', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}
+                                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
+                                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                            >
+                                Empty Trash
                             </button>
-                        </div>
+                        )}
                     </div>
-                </div>
-            )}
-            {trashModalOpen && (
-                <div className="modal-overlay animate-fade-in" style={{ zIndex: 9999 }}>
-                    <div className="modal-content" style={{ maxWidth: '600px', width: '90%' }}>
-                        <div className="modal-header">
-                            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
-                                <Trash2 size={20} color="#f87171" /> 
-                                Trash Bin
-                            </h3>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                {trashSubmissions.length > 0 && (
-                                    <button 
-                                        onClick={handleEmptyTrash}
-                                        style={{ background: 'transparent', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}
-                                        onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
-                                        onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
-                                    >
-                                        Empty Trash
-                                    </button>
-                                )}
-                                <button className="close-modal-btn" onClick={() => setTrashModalOpen(false)}>×</button>
+
+                    <div className="modal-body" style={{ maxHeight: '60vh', overflowY: 'auto', padding: 0 }}>
+                        {loadingTrash ? (
+                            <div style={{ textAlign: 'center', padding: '2rem' }}>Loading trash...</div>
+                        ) : trashSubmissions.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#94a3b8' }}>
+                                <Trash2 size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
+                                <p>Trash is empty</p>
                             </div>
-                        </div>
-                        <div className="modal-body" style={{ maxHeight: '60vh', overflowY: 'auto', padding: '1.5rem' }}>
-                            {loadingTrash ? (
-                                <div style={{ textAlign: 'center', padding: '2rem' }}>Loading trash...</div>
-                            ) : trashSubmissions.length === 0 ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#94a3b8' }}>
-                                    <Trash2 size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
-                                    <p>Trash is empty</p>
-                                </div>
-                            ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    {trashSubmissions.map(sub => (
-                                        <div key={sub.id} style={{
-                                            background: 'rgba(255,255,255,0.05)',
-                                            border: '1px solid rgba(255,255,255,0.1)',
-                                            borderRadius: '8px',
-                                            padding: '1rem',
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            gap: '1rem',
-                                            flexWrap: 'wrap'
-                                        }}>
-                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: '1 1 200px', minWidth: 0 }}>
-                                                <span style={{ fontWeight: 600, color: '#f8fafc', wordBreak: 'break-all' }}>
-                                                    {sub.submission_file_path?.split(/[\\/]/).pop()}
-                                                </span>
-                                                <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
-                                                    Deleted: {new Date(sub.updated_at || sub.submitted_at).toLocaleString()}
-                                                </span>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
-                                                <button 
-                                                    style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
-                                                    onClick={() => handleRestore(sub.id)}
-                                                    onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'; }}
-                                                    onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)'; }}
-                                                >
-                                                    <RotateCcw size={16} /> Restore
-                                                </button>
-                                                <button 
-                                                    style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
-                                                    onClick={() => handlePermanentDelete(sub.id)}
-                                                    onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'; }}
-                                                    onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
-                                                >
-                                                    <Trash2 size={16} /> Delete
-                                                </button>
-                                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                {trashSubmissions.map(sub => (
+                                    <div key={sub.id} style={{
+                                        background: 'rgba(255,255,255,0.02)',
+                                        border: '1px solid var(--border-color)',
+                                        borderRadius: '8px',
+                                        padding: '1rem',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        gap: '1rem',
+                                        flexWrap: 'wrap'
+                                    }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: '1 1 200px', minWidth: 0 }}>
+                                            <span style={{ fontWeight: 600, color: '#f8fafc', wordBreak: 'break-all' }}>
+                                                {sub.submission_file_path?.split(/[\\/]/).pop()}
+                                            </span>
+                                            <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+                                                Deleted: {new Date(sub.updated_at || sub.submitted_at).toLocaleString()}
+                                            </span>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                                        <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+                                            <button 
+                                                style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
+                                                onClick={() => handleRestore(sub.id)}
+                                                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'; }}
+                                                onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)'; }}
+                                            >
+                                                <RotateCcw size={16} /> Restore
+                                            </button>
+                                            <button 
+                                                style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
+                                                onClick={() => handlePermanentDelete(sub.id)}
+                                                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'; }}
+                                                onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
+                                            >
+                                                <Trash2 size={16} /> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
-            )}
+            </Modal>
         </>
     );
 };

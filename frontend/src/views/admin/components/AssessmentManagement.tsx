@@ -3,6 +3,7 @@ import { Search, Plus, Edit2, Trash2, ChevronRight, ChevronLeft, Save, X, CheckC
 import { adminService, Quiz, Question } from '../../../services/adminService';
 import { useUI } from '../../../context/UIContext';
 import { useNotification } from '../../../context/NotificationContext';
+import { Modal } from '../../../components/Modal';
 import { useLessons } from '../../../hooks/useLessons';
 import { ICAD_3D_LESSONS, ICAD_2D_LESSONS, Lesson } from '../../mentor/mentorConstants';
 import '../../../styles/AssessmentManagement.css';
@@ -348,75 +349,72 @@ export const AssessmentManagement: React.FC = () => {
                     )}
                 </div>
 
-                {isEditingQuestion && (
-                    <div className="modal-overlay">
-                        <div className="modal-content question-modal">
-                            <div className="modal-header">
-                                <h3>{currentQuestion.id ? 'Edit Question' : 'Add Question'}</h3>
-                            </div>
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <label>Question Text</label>
-                                    <textarea 
-                                        value={currentQuestion.text || ''} 
-                                        onChange={e => setCurrentQuestion({...currentQuestion, text: e.target.value})}
-                                        placeholder="Enter the question..."
+                <Modal
+                    isOpen={isEditingQuestion}
+                    onClose={() => setIsEditingQuestion(false)}
+                    title={currentQuestion.id ? 'Edit Question' : 'Add Question'}
+                    size="lg"
+                    tag={currentQuestion.id ? 'QUESTION_EDIT' : 'QUESTION_ADD'}
+                >
+                    <div className="form-group">
+                        <label>Question Text</label>
+                        <textarea 
+                            value={currentQuestion.text || ''} 
+                            onChange={e => setCurrentQuestion({...currentQuestion, text: e.target.value})}
+                            placeholder="Enter the question..."
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Options</label>
+                        <div className="options-editor">
+                            {options.map((opt, i) => (
+                                <div key={i} className="opt-row">
+                                    <input 
+                                        type="radio" 
+                                        name="correct" 
+                                        checked={currentQuestion.correct_answer === i}
+                                        onChange={() => setCurrentQuestion({...currentQuestion, correct_answer: i})}
                                     />
-                                </div>
-                                <div className="form-group">
-                                    <label>Options</label>
-                                    <div className="options-editor">
-                                        {options.map((opt, i) => (
-                                            <div key={i} className="opt-row">
-                                                <input 
-                                                    type="radio" 
-                                                    name="correct" 
-                                                    checked={currentQuestion.correct_answer === i}
-                                                    onChange={() => setCurrentQuestion({...currentQuestion, correct_answer: i})}
-                                                />
-                                                <input 
-                                                    type="text" 
-                                                    value={opt} 
-                                                    onChange={e => {
-                                                        const newOpts = [...options];
-                                                        newOpts[i] = e.target.value;
-                                                        setOptions(newOpts);
-                                                    }}
-                                                    placeholder={`Option ${i + 1}`}
-                                                />
-                                                <button 
-                                                    type="button"
-                                                    className="remove-opt-btn" 
-                                                    onClick={() => handleRemoveOption(i)}
-                                                    title="Remove Option"
-                                                >
-                                                    <Trash2 size={14} />
-                                                </button>
-                                            </div>
-                                        ))}
-                                        <button type="button" className="add-opt-btn" onClick={handleAddOption}>
-                                            <Plus size={14} /> Add Option
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label>Explanation (Optional)</label>
-                                    <textarea 
-                                        value={currentQuestion.explanation || ''} 
-                                        onChange={e => setCurrentQuestion({...currentQuestion, explanation: e.target.value})}
-                                        placeholder="Explain why this is the correct answer..."
+                                    <input 
+                                        type="text" 
+                                        value={opt} 
+                                        onChange={e => {
+                                            const newOpts = [...options];
+                                            newOpts[i] = e.target.value;
+                                            setOptions(newOpts);
+                                        }}
+                                        placeholder={`Option ${i + 1}`}
                                     />
+                                    <button 
+                                        type="button"
+                                        className="remove-opt-btn" 
+                                        onClick={() => handleRemoveOption(i)}
+                                        title="Remove Option"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
                                 </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="cancel-btn" onClick={() => setIsEditingQuestion(false)}>Cancel</button>
-                                <button className="save-btn" onClick={handleSaveQuestion}>
-                                    <Save size={16} /> Save Question
-                                </button>
-                            </div>
+                            ))}
+                            <button type="button" className="add-opt-btn" onClick={handleAddOption}>
+                                <Plus size={14} /> Add Option
+                            </button>
                         </div>
                     </div>
-                )}
+                    <div className="form-group">
+                        <label>Explanation (Optional)</label>
+                        <textarea 
+                            value={currentQuestion.explanation || ''} 
+                            onChange={e => setCurrentQuestion({...currentQuestion, explanation: e.target.value})}
+                            placeholder="Explain why this is the correct answer..."
+                        />
+                    </div>
+                    <div className="global-modal-footer">
+                        <button className="cancel-btn" onClick={() => setIsEditingQuestion(false)}>Cancel</button>
+                        <button className="save-btn" onClick={handleSaveQuestion}>
+                            <Save size={16} /> Save Question
+                        </button>
+                    </div>
+                </Modal>
             </div>
         );
     }
@@ -472,42 +470,39 @@ export const AssessmentManagement: React.FC = () => {
                 ))}
             </div>
 
-            {isEditingQuiz && (
-                <div className="modal-overlay">
-                    <div className="modal-content quiz-modal">
-                        <div className="modal-header">
-                            <h3>{currentQuiz.id ? 'Edit Assessment' : 'New Assessment'}</h3>
-                        </div>
-                        <div className="modal-body">
-                            <div className="form-group">
-                                <label>Title</label>
-                                <input type="text" value={currentQuiz.title || ''} onChange={e => setCurrentQuiz({...currentQuiz, title: e.target.value})} placeholder="e.g. iCAD Interface Mastery" />
-                            </div>
-                            <div className="form-group">
-                                <label>Slug (Lesson ID)</label>
-                                <input type="text" value={currentQuiz.slug || ''} onChange={e => setCurrentQuiz({...currentQuiz, slug: e.target.value})} placeholder="e.g. interface" />
-                            </div>
-                            <div className="form-group">
-                                <label>Course Type</label>
-                                <select value={currentQuiz.course_type || ''} onChange={e => setCurrentQuiz({...currentQuiz, course_type: e.target.value})}>
-                                    <option value="2D_Drawing">2D Drawing</option>
-                                    <option value="3D_Modeling">3D Modeling</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Description</label>
-                                <textarea value={currentQuiz.description || ''} onChange={e => setCurrentQuiz({...currentQuiz, description: e.target.value})} placeholder="Briefly describe what this quiz assesses..." />
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="cancel-btn" onClick={() => setIsEditingQuiz(false)}>Cancel</button>
-                            <button className="save-btn" onClick={handleSaveQuiz}>
-                                <Save size={16} /> Save Assessment
-                            </button>
-                        </div>
-                    </div>
+            <Modal
+                isOpen={isEditingQuiz}
+                onClose={() => setIsEditingQuiz(false)}
+                title={currentQuiz.id ? 'Edit Assessment' : 'New Assessment'}
+                size="md"
+                tag={currentQuiz.id ? 'ASSESSMENT_EDIT' : 'ASSESSMENT_CREATE'}
+            >
+                <div className="form-group">
+                    <label>Title</label>
+                    <input type="text" value={currentQuiz.title || ''} onChange={e => setCurrentQuiz({...currentQuiz, title: e.target.value})} placeholder="e.g. iCAD Interface Mastery" />
                 </div>
-            )}
+                <div className="form-group">
+                    <label>Slug (Lesson ID)</label>
+                    <input type="text" value={currentQuiz.slug || ''} onChange={e => setCurrentQuiz({...currentQuiz, slug: e.target.value})} placeholder="e.g. interface" />
+                </div>
+                <div className="form-group">
+                    <label>Course Type</label>
+                    <select value={currentQuiz.course_type || ''} onChange={e => setCurrentQuiz({...currentQuiz, course_type: e.target.value})}>
+                        <option value="2D_Drawing">2D Drawing</option>
+                        <option value="3D_Modeling">3D Modeling</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>Description</label>
+                    <textarea value={currentQuiz.description || ''} onChange={e => setCurrentQuiz({...currentQuiz, description: e.target.value})} placeholder="Briefly describe what this quiz assesses..." />
+                </div>
+                <div className="global-modal-footer">
+                    <button className="cancel-btn" onClick={() => setIsEditingQuiz(false)}>Cancel</button>
+                    <button className="save-btn" onClick={handleSaveQuiz}>
+                        <Save size={16} /> Save Assessment
+                    </button>
+                </div>
+            </Modal>
 
             {loading && (
                 <div className="loading-overlay">
