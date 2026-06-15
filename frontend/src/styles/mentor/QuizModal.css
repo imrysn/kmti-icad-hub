@@ -89,7 +89,7 @@
 
 .quiz-title {
   font-family: var(--font-heading);
-  font-size: 2.25rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: var(--text-white);
   margin: 0;
@@ -137,8 +137,10 @@
 /* Content Layout */
 .quiz-modal-content {
   flex: 1;
+  min-height: 0; /* Critical for flex child scrolling */
   padding: 0 3rem 2.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -239,7 +241,7 @@
 }
 
 .question-text {
-  font-size: 1.2rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-main);
   line-height: 1.5;
@@ -275,6 +277,11 @@
   width: 100%;
   font-family: inherit;
   color: inherit;
+}
+
+.option-text {
+  font-size: 0.85rem;
+  line-height: 1.4;
 }
 
 [data-theme='light'] .quiz-option-btn {
@@ -374,7 +381,7 @@
 }
 
 .option-text {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-muted);
 }
@@ -476,7 +483,7 @@
 }
 
 .results-status {
-  font-size: 2.25rem;
+  font-size: 1.75rem;
   font-weight: 900;
   color: var(--text-white);
   margin: 0 0 1.5rem;
@@ -528,7 +535,7 @@
 .results-feedback p {
   color: var(--text-muted);
   line-height: 1.7;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
 }
 
 .finish-btn {
@@ -618,6 +625,7 @@
   overflow: hidden; /* Hide the sliding questions */
   min-height: 400px;
   height: auto;
+  flex-shrink: 0; /* Critical: Prevent flex shrinking which causes clipping */
 }
 
 .streak-badge {

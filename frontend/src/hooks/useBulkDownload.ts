@@ -46,7 +46,15 @@ export const useBulkDownload = () => {
                         
                         // Extract just the directory from the master path
                         const lastSlash = Math.max(masterPath.lastIndexOf('/'), masterPath.lastIndexOf('\\'));
-                        const dirOnly = lastSlash >= 0 ? masterPath.substring(0, lastSlash) : masterPath;
+                        let dirOnly = lastSlash >= 0 ? masterPath.substring(0, lastSlash) : masterPath;
+                        
+                        // For extra folders like .zip and .rar, place them in the unit root folder (e.g. 2655RCGR) instead of deeper folders like Parts/
+                        if (fileName.match(/\.(zip|rar)$/i)) {
+                            const parts = masterPath.split(/[\\/]/);
+                            if (parts.length >= 3) {
+                                dirOnly = parts.slice(0, 3).join('/');
+                            }
+                        }
                         
                         relativePath = `${dirOnly}/${fileName}`;
                     } else {

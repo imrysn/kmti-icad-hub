@@ -159,6 +159,18 @@ export const authService = {
     },
 
     /**
+     * Update real-time user activity
+     */
+    async updateActivity(activity: string): Promise<any> {
+        try {
+            const response = await authApi.post('/auth/activity', { activity });
+            return response.data;
+        } catch (e) {
+            console.error('Failed to update activity', e);
+        }
+    },
+
+    /**
      * Logout and clear local storage
      */
     logout() {

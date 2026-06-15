@@ -13,6 +13,15 @@ class SystemSettings(Base):
     value = Column(String(500))
     description = Column(String(200))
 
+class UserActivity(Base):
+    """Tracks real-time user activity across the app"""
+    __tablename__ = "user_activities"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, index=True, nullable=False)
+    current_activity = Column(String(500))
+    last_updated = Column(DateTime, default=func.now(), onupdate=func.now())
+
 class UserProgress(Base):
     __tablename__ = "user_progress"
 
@@ -264,6 +273,7 @@ class AssessmentSubmission(Base):
     status = Column(String(50), default="pending") # "pending", "approved", "rejected"
     assessment_type = Column(String(50), default="3D") # "3D" or "2D"
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=True) # Trainer who reviewed it
+    is_deleted = Column(Boolean, default=False) # Soft delete flag
     submitted_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 

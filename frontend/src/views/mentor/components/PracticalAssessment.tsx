@@ -1,11 +1,12 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle, Folder } from 'lucide-react';
+import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle, Folder, RotateCcw } from 'lucide-react';
 import { AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
 import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import '../../../styles/mentor/PracticalAssessment.css';
 import '../../../styles/3D_Modeling/CourseLesson.css';
+import JSZip from 'jszip';
 
 interface PracticalAssessmentProps {
     onBack: () => void;
@@ -28,6 +29,14 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     const [dragActiveTaskId, setDragActiveTaskId] = useState<number | null>(null);
 
+    // Folder Upload State
+    const [uploadFolderModalOpen, setUploadFolderModalOpen] = useState(false);
+    const [customFolderName, setCustomFolderName] = useState('Purchase Parts');
+    const [folderFiles, setFolderFiles] = useState<File[]>([]);
+    const [isZipping, setIsZipping] = useState(false);
+    const [folderUploadTargetTask, setFolderUploadTargetTask] = useState<AssessmentTask | null>(null);
+    const folderInputRef = useRef<HTMLInputElement>(null);
+
     const toggleInstructions = () => {
         setShowInstructions(prev => {
             const next = !prev;
@@ -47,16 +56,23 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         setExpandedFeedbackId,
         uploadingTaskId,
         handleOpenInIJCAD,
-        handleDownloadTask,
-        handleOpenFeedbackExcel,
         handleDownloadFeedback,
         handleFileUpload,
         uploadTaskFile,
         handleDeleteSubmission,
-        handleReplyToFeedback
-    } = usePracticalTasks();
+        handleReplyToFeedback,
+        trashSubmissions,
+        loadingTrash,
+        fetchTrash,
+        handleRestore,
+        handlePermanentDelete,
+        handleBulkDelete,
+        handleEmptyTrash
+    } = usePracticalTasks(assessmentType);
 
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
+
+    const [trashModalOpen, setTrashModalOpen] = useState(false);
 
     // Auto-select correct Set from URL parameter
     useEffect(() => {
@@ -97,6 +113,45 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         e.preventDefault();
         e.stopPropagation();
         setDragActiveTaskId(null);
+    };
+
+    const handleFolderFilesSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setFolderFiles(Array.from(e.target.files));
+        }
+    };
+
+    const submitFolderUpload = async () => {
+        if (!folderUploadTargetTask || folderFiles.length === 0 || !customFolderName.trim()) return;
+        setIsZipping(true);
+        try {
+            const zip = new JSZip();
+            // Add files directly to the root of the zip (the zip file itself acts as the folder)
+            folderFiles.forEach(file => {
+                const path = file.webkitRelativePath || file.name;
+                const pathParts = path.split('/');
+                if (pathParts.length > 1) {
+                    // Remove the root folder name that the browser includes in webkitRelativePath
+                    pathParts.shift();
+                }
+                const newPath = pathParts.join('/');
+                zip.file(newPath, file);
+            });
+
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const zipFile = new File([zipBlob], `${customFolderName.trim()}.zip`, { type: 'application/zip' });
+
+            await uploadTaskFile(zipFile, folderUploadTargetTask, assessmentType);
+            
+            // Cleanup
+            setUploadFolderModalOpen(false);
+            setFolderFiles([]);
+            setCustomFolderName('Purchase Parts');
+        } catch (error) {
+            console.error('Error zipping folder:', error);
+        } finally {
+            setIsZipping(false);
+        }
     };
 
     const handleDrop = async (e: React.DragEvent, task: AssessmentTask) => {
@@ -221,9 +276,31 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         </h3>
                         <span className="task-count">{currentSetTasks.length} Tasks</span>
                     </div>
-                    <button className="exit-course-btn" onClick={onBack}>
-                        EXIT COURSE
-                    </button>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <button 
+                            className="task-action-btn"
+                            style={{ 
+                                padding: '0.4rem 1rem', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: '0.5rem',
+                                background: 'transparent',
+                                border: '1px solid rgba(255,255,255,0.2)',
+                                borderRadius: '4px',
+                                color: '#fff',
+                                fontSize: '0.85rem'
+                            }}
+                            onClick={() => {
+                                fetchTrash();
+                                setTrashModalOpen(true);
+                            }}
+                        >
+                            <Trash2 size={16} /> Trash Bin
+                        </button>
+                        <button className="exit-course-btn" onClick={onBack}>
+                            EXIT COURSE
+                        </button>
+                    </div>
                 </div>
 
                 {/* Task Row Cards */}
@@ -594,7 +671,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             <div className="step-card">
                                                 <span className="step-badge">Step 3</span>
                                                 <h5>Submit File</h5>
-                                                <p>Click <strong>"Upload"</strong> to submit your saved <code>.dwg</code> or <code>.dxf</code> file to the trainer.</p>
+                                                <p>Click <strong>"Upload"</strong> to submit your saved <code>.dwg</code>, <code>.dxf</code>, or a <code>.zip</code> file (for purchased parts) to the trainer.</p>
                                             </div>
                                             <div className="step-card">
                                                 <span className="step-badge">Step 4</span>
@@ -688,17 +765,51 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                         >
                                                             <UploadCloud size={16} style={{ transform: 'rotate(180deg)' }} /> Bulk Download
                                                         </button>
+                                                        <button
+                                                            className="task-action-btn danger"
+                                                            onClick={() => handleBulkDelete(sortedUnitTasks.map(t => t.id))}
+                                                            title="Delete All Uploaded Files"
+                                                            style={{ 
+                                                                marginLeft: '0.5rem', 
+                                                                padding: '0.4rem 0.8rem', 
+                                                                background: 'rgba(239, 68, 68, 0.1)', 
+                                                                border: '1px solid rgba(239, 68, 68, 0.3)', 
+                                                                color: '#fca5a5' 
+                                                            }}
+                                                        >
+                                                            <Trash2 size={16} />
+                                                        </button>
                                                     </div>
                                                     <div className="unit-tasks-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingLeft: '1rem' }}>
-                                                        {sortedUnitTasks.map((task, index) => {
-                                                            const taskSubmissions = submissions.filter(s => {
-                                                                const subTaskId = s.task?.id || s.task_id;
-                                                                return Number(subTaskId) === Number(task.id) && (s.assessment_type || '3D') === assessmentType;
-                                                            }).sort((a, b) => {
-                                                                const dateA = new Date(a.submitted_at).getTime();
-                                                                const dateB = new Date(b.submitted_at).getTime();
-                                                                return dateB - dateA;
-                                                            });
+                                                        {(() => {
+                                                            const augmentedUnitTasks = [...sortedUnitTasks];
+                                                            if (sortedUnitTasks.length > 0) {
+                                                                augmentedUnitTasks.push({
+                                                                    ...sortedUnitTasks[0],
+                                                                    id: `virtual_${sortedUnitTasks[0].id}`,
+                                                                    real_id: sortedUnitTasks[0].id,
+                                                                    task_code: 'EXTRA',
+                                                                    title: 'Additional Folders & Purchase Parts',
+                                                                    description: 'Upload your purchased parts and extra folders here.',
+                                                                    is_virtual_extra: true
+                                                                } as any);
+                                                            }
+                                                            return augmentedUnitTasks.map((task: any, index) => {
+                                                                const actualTaskId = task.is_virtual_extra ? task.real_id : task.id;
+                                                                let taskSubmissions = submissions.filter(s => {
+                                                                    const subTaskId = s.task?.id || s.task_id;
+                                                                    return Number(subTaskId) === Number(actualTaskId) && (s.assessment_type || '3D') === assessmentType;
+                                                                }).sort((a, b) => {
+                                                                    const dateA = new Date(a.submitted_at).getTime();
+                                                                    const dateB = new Date(b.submitted_at).getTime();
+                                                                    return dateB - dateA;
+                                                                });
+
+                                                                if (task.is_virtual_extra) {
+                                                                    taskSubmissions = taskSubmissions.filter(s => s.submission_file_path?.match(/\.(zip|rar)$/i));
+                                                                } else if (actualTaskId === sortedUnitTasks[0].id) {
+                                                                    taskSubmissions = taskSubmissions.filter(s => !s.submission_file_path?.match(/\.(zip|rar)$/i));
+                                                                }
 
                                                             const latestSubmission = taskSubmissions[0];
                                                             // Find the most recent submission that has feedback (for rejection comments)
@@ -726,12 +837,16 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                             </div>
                                                                         </div>
                                                                         <div className="task-row-actions">
-                                                                            <button className="task-action-btn primary" onClick={() => handleOpenInIJCAD(task)}>
-                                                                                <Play size={14} /> Open in iJCAD
-                                                                            </button>
-                                                                            <button className="task-action-btn secondary" onClick={() => handleDownloadTask(task)}>
-                                                                                <Download size={14} /> Download
-                                                                            </button>
+                                                                            {!task.is_virtual_extra && (
+                                                                                <>
+                                                                                    <button className="task-action-btn primary" onClick={() => handleOpenInIJCAD(task)}>
+                                                                                        <Play size={14} /> Open in iJCAD
+                                                                                    </button>
+                                                                                    <button className="task-action-btn secondary" onClick={() => handleDownloadTask(task)}>
+                                                                                        <Download size={14} /> Download
+                                                                                    </button>
+                                                                                </>
+                                                                            )}
                                                                         </div>
                                                                     </div>
 
@@ -754,9 +869,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                             )}
                                                                             <div className="upload-header-row">
                                                                                 <span className="task-row-section-label">Your Submissions {taskSubmissions.length > 0 ? `(${taskSubmissions.length})` : ''}</span>
-                                                                                <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`}>
-                                                                                    <Upload size={14} /> {latestSubmission ? 'Resubmit' : 'Upload'}
-                                                                                </label>
+                                                                                {task.is_virtual_extra ? (
+                                                                                    <button className={`resubmit-trigger-btn`} onClick={() => { setFolderUploadTargetTask(sortedUnitTasks[0]); setUploadFolderModalOpen(true); }}>
+                                                                                        <Upload size={14} /> {taskSubmissions.length > 0 ? 'Add Another Folder' : 'Upload Folder'}
+                                                                                    </button>
+                                                                                ) : (
+                                                                                    <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`}>
+                                                                                        <Upload size={14} /> {latestSubmission ? 'Resubmit' : 'Upload'}
+                                                                                    </label>
+                                                                                )}
                                                                             </div>
 
                                                                             <div className="submissions-history-list">
@@ -770,8 +891,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                         {sub.submission_file_path?.split(/[\\/]/).pop()}
                                                                                                     </span>
                                                                                                     <div className="history-badges">
-                                                                                                        {sIdx === 0 && <span className="history-badge latest">Latest</span>}
-                                                                                                        {sIdx > 0 && <span className="history-badge resubmit">Attempt {taskSubmissions.length - sIdx}</span>}
+                                                                                                        {!task.is_virtual_extra && sIdx === 0 && <span className="history-badge latest">Latest</span>}
+                                                                                                        {!task.is_virtual_extra && sIdx > 0 && <span className="history-badge resubmit">Attempt {taskSubmissions.length - sIdx}</span>}
                                                                                                         <div className={`assessment-status-badge ${sub.status}`}>
                                                                                                             {sub.status === 'approved' && <CheckCircle2 size={12} />}
                                                                                                             {sub.status === 'pending' && <Clock size={12} />}
@@ -796,18 +917,20 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                     <div className="no-submissions-yet">
                                                                                         <div className="empty-upload-placeholder">
                                                                                             <UploadCloud size={24} />
-                                                                                            <p>No files uploaded yet. Drag & drop CAD file here or click Upload</p>
+                                                                                            <p>No files uploaded yet. Drag & drop CAD or .zip file here or click Upload</p>
                                                                                         </div>
                                                                                     </div>
                                                                                 )}
                                                                             </div>
-                                                                            <input
-                                                                                type="file" id={uploadId}
-                                                                                accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
-                                                                                onChange={(e) => handleFileUpload(e, task, assessmentType)}
-                                                                                disabled={isUploading}
-                                                                                style={{ display: 'none' }}
-                                                                            />
+                                                                            {!task.is_virtual_extra && (
+                                                                                <input
+                                                                                    type="file" id={uploadId}
+                                                                                    accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
+                                                                                    onChange={(e) => handleFileUpload(e, task, assessmentType)}
+                                                                                    disabled={isUploading}
+                                                                                    style={{ display: 'none' }}
+                                                                                />
+                                                                            )}
                                                                         </div>
 
                                                                         {/* Trainer Feedback Section */}
@@ -932,7 +1055,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                     </div>
                                                                 </div>
                                                             );
-                                                        })}
+                                                        });
+                                                        })()}
                                                     </div>
                                                 </div>
                                             );
@@ -969,6 +1093,147 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     </div>
                 </div>
             </main>
+
+            {/* Folder Upload Modal */}
+            {uploadFolderModalOpen && (
+                <div className="modal-overlay animate-fade-in" style={{ zIndex: 9999 }}>
+                    <div className="modal-content" style={{ maxWidth: '500px' }}>
+                        <div className="modal-header">
+                            <h3>Upload Custom Folder</h3>
+                            <button className="close-modal-btn" onClick={() => setUploadFolderModalOpen(false)}>×</button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                <label>Folder Name:</label>
+                                <input 
+                                    type="text" 
+                                    className="modal-input" 
+                                    value={customFolderName} 
+                                    onChange={(e) => setCustomFolderName(e.target.value)} 
+                                    placeholder="e.g. Purchase Parts"
+                                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                                />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                <label>Select Folder:</label>
+                                <div 
+                                    className="upload-dropzone" 
+                                    onClick={() => folderInputRef.current?.click()}
+                                    style={{ border: '2px dashed #ccc', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '8px', marginTop: '0.5rem' }}
+                                >
+                                    <UploadCloud size={32} style={{ color: '#666', marginBottom: '10px' }} />
+                                    <p>Click to select a folder from your computer</p>
+                                    <input 
+                                        type="file" 
+                                        multiple 
+                                        // @ts-ignore
+                                        webkitdirectory="true" 
+                                        directory="true"
+                                        ref={folderInputRef} 
+                                        style={{ display: 'none' }} 
+                                        onChange={handleFolderFilesSelect} 
+                                    />
+                                </div>
+                            </div>
+                            {folderFiles.length > 0 && (
+                                <div className="selected-files-summary">
+                                    <p><strong>{folderFiles.length} files selected</strong></p>
+                                    <ul style={{ maxHeight: '100px', overflowY: 'auto', fontSize: '12px', paddingLeft: '1rem', marginTop: '0.5rem' }}>
+                                        {folderFiles.slice(0, 5).map((f, i) => (
+                                            <li key={i}>{f.webkitRelativePath || f.name}</li>
+                                        ))}
+                                        {folderFiles.length > 5 && <li>...and {folderFiles.length - 5} more</li>}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
+                            <button className="btn-secondary" onClick={() => setUploadFolderModalOpen(false)}>Cancel</button>
+                            <button className="btn-primary" onClick={submitFolderUpload} disabled={isZipping || folderFiles.length === 0 || !customFolderName.trim()}>
+                                {isZipping ? 'Compressing & Uploading...' : 'Upload'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {trashModalOpen && (
+                <div className="modal-overlay animate-fade-in" style={{ zIndex: 9999 }}>
+                    <div className="modal-content" style={{ maxWidth: '600px', width: '90%' }}>
+                        <div className="modal-header">
+                            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                                <Trash2 size={20} color="#f87171" /> 
+                                Trash Bin
+                            </h3>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                {trashSubmissions.length > 0 && (
+                                    <button 
+                                        onClick={handleEmptyTrash}
+                                        style={{ background: 'transparent', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}
+                                        onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
+                                        onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                                    >
+                                        Empty Trash
+                                    </button>
+                                )}
+                                <button className="close-modal-btn" onClick={() => setTrashModalOpen(false)}>×</button>
+                            </div>
+                        </div>
+                        <div className="modal-body" style={{ maxHeight: '60vh', overflowY: 'auto', padding: '1.5rem' }}>
+                            {loadingTrash ? (
+                                <div style={{ textAlign: 'center', padding: '2rem' }}>Loading trash...</div>
+                            ) : trashSubmissions.length === 0 ? (
+                                <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#94a3b8' }}>
+                                    <Trash2 size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
+                                    <p>Trash is empty</p>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    {trashSubmissions.map(sub => (
+                                        <div key={sub.id} style={{
+                                            background: 'rgba(255,255,255,0.05)',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            borderRadius: '8px',
+                                            padding: '1rem',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            gap: '1rem',
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: '1 1 200px', minWidth: 0 }}>
+                                                <span style={{ fontWeight: 600, color: '#f8fafc', wordBreak: 'break-all' }}>
+                                                    {sub.submission_file_path?.split(/[\\/]/).pop()}
+                                                </span>
+                                                <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+                                                    Deleted: {new Date(sub.updated_at || sub.submitted_at).toLocaleString()}
+                                                </span>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+                                                <button 
+                                                    style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
+                                                    onClick={() => handleRestore(sub.id)}
+                                                    onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'; }}
+                                                    onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)'; }}
+                                                >
+                                                    <RotateCcw size={16} /> Restore
+                                                </button>
+                                                <button 
+                                                    style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
+                                                    onClick={() => handlePermanentDelete(sub.id)}
+                                                    onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'; }}
+                                                    onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
+                                                >
+                                                    <Trash2 size={16} /> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

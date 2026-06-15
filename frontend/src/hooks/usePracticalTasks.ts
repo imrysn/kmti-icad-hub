@@ -12,6 +12,8 @@ export const usePracticalTasks = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [expandedFeedbackId, setExpandedFeedbackId] = useState<number | null>(null);
   const [uploadingTaskId, setUploadingTaskId] = useState<number | null>(null);
+  const [trashSubmissions, setTrashSubmissions] = useState<AssessmentSubmission[]>([]);
+  const [loadingTrash, setLoadingTrash] = useState(false);
 
   const fetchData = useCallback(async (isSilent = false) => {
     if (!isSilent) setLoading(true);
@@ -180,10 +182,10 @@ export const usePracticalTasks = () => {
   }, [showNotification, handleDownloadFeedback]);
 
   const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D') => {
-    const validExtensions = ['.dwg', '.icd', '.dxf', '.step', '.stp', '.iges', '.igs', '.sat', '.3dm'];
+    const validExtensions = ['.dwg', '.icd', '.dxf', '.step', '.stp', '.iges', '.igs', '.sat', '.3dm', '.zip', '.rar'];
     const ext = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
     if (!validExtensions.includes(ext)) {
-      showNotification('Please upload a valid CAD file (.dwg, .icd, .dxf, .step, etc.).', 'error');
+      showNotification('Please upload a valid CAD or compressed file (.dwg, .icd, .dxf, .zip, .rar, etc.).', 'error');
       return;
     }
 
@@ -232,6 +234,65 @@ export const usePracticalTasks = () => {
     }
   }, [showNotification, fetchData]);
 
+  const handleBulkDelete = useCallback(async (taskIds: number[]) => {
+    if (window.confirm("Are you sure you want to delete all submissions for this unit? They will be moved to the Trash.")) {
+      try {
+        await assessmentService.bulkDeleteSubmissions(taskIds);
+        showNotification('Unit submissions moved to Trash.', 'success');
+        fetchData(true);
+      } catch (err) {
+        showNotification('Failed to delete submissions.', 'error');
+      }
+    }
+  }, [showNotification, fetchData]);
+
+  const fetchTrash = useCallback(async () => {
+    setLoadingTrash(true);
+    try {
+      const trash = await assessmentService.getTrashSubmissions();
+      setTrashSubmissions(trash);
+    } catch (err) {
+      showNotification('Failed to load trash.', 'error');
+    } finally {
+      setLoadingTrash(false);
+    }
+  }, [showNotification]);
+
+  const handleRestore = useCallback(async (subId: number) => {
+    try {
+      await assessmentService.restoreSubmission(subId);
+      showNotification('Submission restored.', 'success');
+      fetchData(true);
+      fetchTrash();
+    } catch (err) {
+      showNotification('Failed to restore submission.', 'error');
+    }
+  }, [showNotification, fetchData, fetchTrash]);
+
+  const handlePermanentDelete = useCallback(async (subId: number) => {
+    if (window.confirm("Are you sure you want to permanently delete this submission? This cannot be undone.")) {
+      try {
+        await assessmentService.permanentDeleteSubmission(subId);
+        showNotification('Submission permanently deleted.', 'success');
+        fetchTrash();
+      } catch (err) {
+        showNotification('Failed to delete permanently.', 'error');
+      }
+    }
+  }, [showNotification, fetchTrash]);
+
+  const handleEmptyTrash = useCallback(async () => {
+    if (window.confirm("Are you sure you want to permanently delete all items in the trash? This cannot be undone.")) {
+      try {
+        await assessmentService.emptyTrash();
+        showNotification('Trash emptied successfully.', 'success');
+        setTrashSubmissions([]); // Clear state immediately
+      } catch (err) {
+        showNotification('Failed to empty trash.', 'error');
+      }
+    }
+  }, [showNotification]);
+
   return {
     tasks,
     submissions,
@@ -250,6 +311,13 @@ export const usePracticalTasks = () => {
     handleFileUpload,
     uploadTaskFile,
     handleDeleteSubmission,
-    handleReplyToFeedback
+    handleReplyToFeedback,
+    trashSubmissions,
+    loadingTrash,
+    fetchTrash,
+    handleRestore,
+    handlePermanentDelete,
+    handleBulkDelete,
+    handleEmptyTrash
   };
 };
