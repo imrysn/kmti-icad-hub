@@ -195,10 +195,21 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         assessmentService.getMySubmissions()
                     ]);
                     
-                    // A task is completed if it has an approved submission with assessment_type === '3D' (or missing)
-                    const isPracticalCompleted = tasksData.length > 0 && tasksData.every(task => 
-                        submissionsData.some(sub => sub.task_id === task.id && sub.status === 'approved' && (sub.assessment_type || '3D') === '3D')
-                    );
+                    // Group tasks by set_number to see which sets the user is mapped to
+                    const requiredSets = new Set(tasksData.map((t: any) => t.set_number));
+                    
+                    // A set is completed if ANY task within that set has an approved 3D submission
+                    const isPracticalCompleted = requiredSets.size > 0 && Array.from(requiredSets).every(setNum => {
+                        const tasksInSet = tasksData.filter((t: any) => t.set_number === setNum);
+                        return tasksInSet.some((task: any) => 
+                            submissionsData.some((sub: any) => 
+                                sub.task_id === task.id && 
+                                sub.status === 'approved' && 
+                                (sub.assessment_type || '3D') === '3D'
+                            )
+                        );
+                    });
+                    
                     setIs3DAssessmentCompleted(isPracticalCompleted);
                 } catch (e) {
                     console.error('Failed to check 3D practical assessment prerequisite:', e);
@@ -333,6 +344,92 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (viewer) viewer.scrollTo({ top: 0, behavior: 'instant' });
     }, [activeLessonId]);
 
+    // Real-time Activity Tracking
+    const coursesRef = useRef(courses);
+    const activeLessonIdRef = useRef(activeLessonId);
+    
+    useEffect(() => {
+        coursesRef.current = courses;
+        activeLessonIdRef.current = activeLessonId;
+    }, [courses, activeLessonId]);
+
+    useEffect(() => {
+        const sendActivity = async (tabName?: string | null) => {
+            const allCourses = coursesRef.current || [];
+            const lessonId = activeLessonIdRef.current;
+            
+            let lessonTitle = 'Select a Lesson';
+            let courseTitle = '';
+            for (const course of allCourses) {
+                const lessonsList = course.lessons || [];
+                for (const lesson of lessonsList) {
+                    if (lesson.id === lessonId) {
+                        lessonTitle = lesson.title;
+                        courseTitle = course.title;
+                    }
+                    if (lesson.children) {
+                        const child = lesson.children.find(c => c.id === lessonId);
+                        if (child) {
+                            lessonTitle = child.title;
+                            courseTitle = course.title;
+                        }
+                    }
+                }
+            }
+
+            let activityStr = '';
+            if (courseTitle) {
+                // E.g. "3D Modeling Course" or "2D Detailing Course"
+                // Let's ensure the word "Course" is present if it's not already
+                if (!courseTitle.toLowerCase().includes('course') && courseTitle !== 'Practical Assessment') {
+                    activityStr += `${courseTitle} Course `;
+                } else {
+                    activityStr += `${courseTitle} `;
+                }
+            }
+
+            if (lessonTitle !== 'Select a Lesson') {
+                activityStr += `${lessonTitle} lesson`;
+            } else {
+                activityStr += lessonTitle;
+            }
+
+            if (tabName && typeof tabName === 'string' && tabName.trim()) {
+                let cleanTab = tabName.replace(/-tab/gi, '').replace(/-/g, ' ').trim();
+                cleanTab = cleanTab.replace(/\b\w/g, l => l.toUpperCase());
+                activityStr += ` (${cleanTab} Tab)`;
+            }
+            
+            authService.updateActivity(activityStr);
+        };
+
+        if (activeLessonId) {
+            let currentTabId = null;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.includes('-tab') || key.includes('ActiveTab') || key.includes('active-tab'))) {
+                    if (key.toLowerCase().includes(activeLessonId.toLowerCase())) {
+                        currentTabId = localStorage.getItem(key);
+                        break;
+                    }
+                }
+            }
+            sendActivity(currentTabId);
+        }
+
+        const originalSetItem = localStorage.setItem;
+        localStorage.setItem = function(key: string, value: string) {
+            originalSetItem.apply(this, [key as any, value as any]);
+            if (key.includes('-tab') || key.includes('ActiveTab') || key.includes('active-tab')) {
+                sendActivity(value);
+            }
+        };
+
+        return () => {
+            localStorage.setItem = originalSetItem;
+        };
+    }, [activeLessonId]);
+
     // Handlers and Helpers
     const toggleExpand = useCallback((id: string) => {
         setExpandedIds(prev => {
@@ -363,6 +460,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
         if (currentLessonIndex < allLessonIds.length - 1) {
             const nextId = allLessonIds[currentLessonIndex + 1];
+            
+            // Clear only the NEXT lesson's tab state so it starts fresh when advancing via completion
+            Object.keys(localStorage).forEach(key => {
+                if (key.toLowerCase().includes(nextId.toLowerCase()) && 
+                    (key.includes('-tab') || key.includes('ActiveTab') || key.includes('active-tab'))) {
+                    localStorage.removeItem(key);
+                }
+            });
+
             console.log('Navigating to next lesson:', { 
                 currentId: activeLessonId, 
                 nextId: nextId, 

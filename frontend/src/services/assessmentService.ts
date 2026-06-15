@@ -219,5 +219,32 @@ export const assessmentService = {
     deleteSubmission: async (submissionId: number) => {
         const response = await api.delete(`/api/v1/assessments/submissions/${submissionId}`);
         return response.data;
+    },
+
+    getTrashSubmissions: async (): Promise<AssessmentSubmission[]> => {
+        const response = await api.get('/api/v1/assessments/submissions/trash');
+        return response.data;
+    },
+
+    restoreSubmission: async (submissionId: number) => {
+        const response = await api.post(`/api/v1/assessments/submissions/${submissionId}/restore`);
+        return response.data;
+    },
+
+    permanentDeleteSubmission: async (submissionId: number) => {
+        const response = await api.delete(`/api/v1/assessments/submissions/${submissionId}/permanent`);
+        return response.data;
+    },
+
+    bulkDeleteSubmissions: async (taskIds: number[]) => {
+        const response = await api.post('/api/v1/assessments/submissions/bulk-delete', {
+            task_ids: taskIds
+        });
+        return response.data;
+    },
+
+    emptyTrash: async () => {
+        const response = await api.delete('/api/v1/assessments/submissions/trash/empty');
+        return response.data;
     }
 };

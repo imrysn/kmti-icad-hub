@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from fastapi.responses import FileResponse
 from ..database import get_db
 from sqlalchemy.orm import joinedload
-from ..models import AssessmentTask, AssessmentSubmission, AssessmentFeedback, TrainerTraineeMapping, User, Notification
+from ..models import AssessmentTask, AssessmentSubmission, AssessmentFeedback, TrainerTraineeMapping, User, Notification, TraineeSetMapping, UserActivity
 from ..schemas import (
     AssessmentTaskResponse, AssessmentSubmissionResponse, 
     AssessmentFeedbackResponse, AssessmentSubmissionCreate,
@@ -120,7 +120,22 @@ def get_my_submissions(
         joinedload(AssessmentSubmission.feedback),
         joinedload(AssessmentSubmission.task)
     ).filter(
-        AssessmentSubmission.user_id == current_user.id
+        AssessmentSubmission.user_id == current_user.id,
+        AssessmentSubmission.is_deleted == False
+    ).order_by(AssessmentSubmission.submitted_at.desc()).all()
+
+@router.get("/submissions/trash", response_model=List[AssessmentSubmissionResponse])
+def get_trash_submissions(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get all soft-deleted submissions for the currently logged-in user."""
+    return db.query(AssessmentSubmission).options(
+        joinedload(AssessmentSubmission.feedback),
+        joinedload(AssessmentSubmission.task)
+    ).filter(
+        AssessmentSubmission.user_id == current_user.id,
+        AssessmentSubmission.is_deleted == True
     ).order_by(AssessmentSubmission.submitted_at.desc()).all()
 
 # --- Admin Endpoints ---
@@ -510,17 +525,35 @@ async def submit_task(
 
     # Create a new submission record for every attempt (Work History)
     # However, if the user re-uploads while the status is still 'pending', we replace the file for that specific record.
-    submission = db.query(AssessmentSubmission).filter(
+    # For CAD files, we match by extension. For .zip/.rar folders, we match by the exact filename so multiple folders can exist.
+    pending_submissions = db.query(AssessmentSubmission).filter(
         AssessmentSubmission.user_id == current_user.id,
         AssessmentSubmission.task_id == task_id,
         AssessmentSubmission.assessment_type == assessment_type,
         AssessmentSubmission.status == "pending"
-    ).order_by(AssessmentSubmission.submitted_at.desc()).first()
+    ).all()
 
-    if submission:
+    target_submission = None
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    
+    for sub in pending_submissions:
+        if sub.submission_file_path:
+            existing_name = os.path.basename(sub.submission_file_path)
+            existing_ext = os.path.splitext(existing_name)[1].lower()
+            if file_ext in ['.zip', '.rar']:
+                if existing_name == file.filename:
+                    target_submission = sub
+                    break
+            else:
+                if existing_ext == file_ext:
+                    target_submission = sub
+                    break
+
+    if target_submission:
         # Update current pending submission
-        submission.submission_file_path = file_path
-        submission.submitted_at = datetime.now()
+        target_submission.submission_file_path = file_path
+        target_submission.submitted_at = datetime.now()
+        submission = target_submission
     else:
         # Create a new attempt
         submission = AssessmentSubmission(
@@ -647,7 +680,7 @@ def get_trainer_submissions(
         joinedload(AssessmentSubmission.user),
         joinedload(AssessmentSubmission.task),
         joinedload(AssessmentSubmission.feedback)
-    )
+    ).filter(AssessmentSubmission.is_deleted == False)
     
     if status != "all":
         query = query.filter(AssessmentSubmission.status == status)
@@ -833,6 +866,35 @@ async def reply_to_feedback(
 
     return {"message": "Reply saved successfully"}
 
+@router.delete("/submissions/trash/empty")
+def empty_trash(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Permanently delete all soft-deleted submissions for the current user."""
+    try:
+        submissions = db.query(AssessmentSubmission).filter(
+            AssessmentSubmission.user_id == current_user.id,
+            AssessmentSubmission.is_deleted == True
+        ).all()
+        
+        count = 0
+        for sub in submissions:
+            file_to_delete = sub.submission_file_path
+            db.delete(sub)
+            if file_to_delete and os.path.exists(file_to_delete):
+                try:
+                    os.remove(file_to_delete)
+                except Exception as e:
+                    print(f"Cleanup Warning: Could not delete physical file {file_to_delete}: {e}")
+            count += 1
+            
+        db.commit()
+        return {"message": f"Successfully emptied {count} files from trash"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.delete("/submissions/{submission_id}")
 def delete_submission(
     submission_id: int,
@@ -852,25 +914,100 @@ def delete_submission(
         # Store file path before deleting record
         file_to_delete = submission.submission_file_path
 
-        # 1. Delete from Database first to allow UI to reset
-        db.delete(submission)
+        # 1. Soft Delete from Database (mark as deleted)
+        submission.is_deleted = True
         db.commit()
 
-        # 2. Try to delete the physical file (Optional, don't fail if file is locked)
-        if file_to_delete and os.path.exists(file_to_delete):
-            try:
-                os.remove(file_to_delete)
-            except Exception as e:
-                # Log but don't return error to user since DB record is already gone
-                print(f"Cleanup Warning: Could not delete physical file {file_to_delete}: {e}")
-
-        return {"message": "Submission deleted successfully"}
+        return {"message": "Submission moved to trash"}
         
     except HTTPException as he:
         raise he
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+class BulkDeleteRequest(BaseModel):
+    task_ids: List[int]
+
+@router.post("/submissions/bulk-delete")
+def bulk_delete_submissions(
+    request: BulkDeleteRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Soft-delete multiple submissions for a set of tasks."""
+    try:
+        submissions = db.query(AssessmentSubmission).filter(
+            AssessmentSubmission.user_id == current_user.id,
+            AssessmentSubmission.task_id.in_(request.task_ids),
+            AssessmentSubmission.is_deleted == False
+        ).all()
+        
+        count = 0
+        for sub in submissions:
+            sub.is_deleted = True
+            count += 1
+            
+        db.commit()
+        return {"message": f"{count} submissions moved to trash"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/submissions/{submission_id}/restore")
+def restore_submission(
+    submission_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Restore a soft-deleted submission."""
+    try:
+        submission = db.query(AssessmentSubmission).filter(
+            AssessmentSubmission.id == submission_id,
+            AssessmentSubmission.user_id == current_user.id
+        ).first()
+        
+        if not submission:
+            raise HTTPException(status_code=404, detail="Submission not found")
+            
+        submission.is_deleted = False
+        db.commit()
+        return {"message": "Submission restored successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete("/submissions/{submission_id}/permanent")
+def permanent_delete_submission(
+    submission_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Permanently delete a submission and its physical file."""
+    try:
+        submission = db.query(AssessmentSubmission).filter(
+            AssessmentSubmission.id == submission_id,
+            AssessmentSubmission.user_id == current_user.id
+        ).first()
+        
+        if not submission:
+            raise HTTPException(status_code=404, detail="Submission not found")
+            
+        file_to_delete = submission.submission_file_path
+        db.delete(submission)
+        db.commit()
+        
+        if file_to_delete and os.path.exists(file_to_delete):
+            try:
+                os.remove(file_to_delete)
+            except Exception as e:
+                print(f"Cleanup Warning: Could not delete physical file {file_to_delete}: {e}")
+                
+        return {"message": "Submission permanently deleted"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/trainer/trainees-progress")
 def get_trainer_trainees_progress(
@@ -913,11 +1050,64 @@ def get_trainer_trainees_progress(
         pending_submissions = [s for s in submissions if s.status == "pending"]
         rejected_submissions = [s for s in submissions if s.status == "rejected"]
         
+        # Practical Assessment (3D) Progress
+        trainee_mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee.id).all()
+        total_3d_practical = len(trainee_mappings)
+        completed_3d_practical = 0
+        if total_3d_practical > 0:
+            assigned_actual_sets = [m.actual_set_number for m in trainee_mappings]
+            for set_num in assigned_actual_sets:
+                is_completed = db.query(AssessmentSubmission).join(AssessmentTask).filter(
+                    AssessmentSubmission.user_id == trainee.id,
+                    AssessmentSubmission.status == 'approved',
+                    AssessmentTask.set_number == set_num,
+                    (AssessmentSubmission.assessment_type == '3D') | (AssessmentSubmission.assessment_type == None)
+                ).first()
+                if is_completed:
+                    completed_3d_practical += 1
+                    
+        # Practical Assessment (2D) Progress
+        total_2d_practical = db.query(AssessmentTask).filter(AssessmentTask.is_assembly == True).count()
+        completed_2d_practical = db.query(AssessmentSubmission).join(AssessmentTask).filter(
+            AssessmentSubmission.user_id == trainee.id,
+            AssessmentSubmission.status == 'approved',
+            AssessmentSubmission.assessment_type == '2D',
+            AssessmentTask.is_assembly == True
+        ).group_by(AssessmentTask.id).count()
+
+        # Determine current activity (from realtime tracker or fallback to most recent quiz/submission)
+        current_activity = "Not started yet"
+        
+        realtime_activity = db.query(UserActivity).filter(UserActivity.user_id == trainee.id).first()
+        if realtime_activity and realtime_activity.current_activity:
+            current_activity = realtime_activity.current_activity
+        else:
+            recent_quiz = db.query(QuizScore).filter(QuizScore.user_id == str(trainee.id)).order_by(QuizScore.completed_at.desc()).first()
+            recent_submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.user_id == trainee.id).order_by(AssessmentSubmission.submitted_at.desc()).first()
+            
+            last_quiz_time = recent_quiz.completed_at if recent_quiz and recent_quiz.completed_at else None
+            last_sub_time = recent_submission.submitted_at if recent_submission and recent_submission.submitted_at else None
+            
+            if last_quiz_time and last_sub_time:
+                if last_quiz_time > last_sub_time:
+                    activity_str = recent_quiz.lesson_id.replace('-', ' ').title() if recent_quiz.lesson_id else "Quiz"
+                    current_activity = f"Course: {activity_str}"
+                else:
+                    task_title = recent_submission.task.title if recent_submission.task else "Task"
+                    current_activity = f"Practical: {task_title}"
+            elif last_quiz_time:
+                activity_str = recent_quiz.lesson_id.replace('-', ' ').title() if recent_quiz.lesson_id else "Quiz"
+                current_activity = f"Course: {activity_str}"
+            elif last_sub_time:
+                task_title = recent_submission.task.title if recent_submission.task else "Task"
+                current_activity = f"Practical: {task_title}"
+
         results.append({
             "id": trainee.id,
             "username": trainee.username,
             "full_name": trainee.full_name,
             "email": trainee.email,
+            "current_activity": current_activity,
             "progress": {
                 "course_3d": {
                     "completed": len(completed_3d),
@@ -928,6 +1118,16 @@ def get_trainer_trainees_progress(
                     "completed": len(completed_2d),
                     "total": total_2d,
                     "percentage": round((len(completed_2d) / total_2d * 100), 1) if total_2d > 0 else 0.0
+                },
+                "practical_3d": {
+                    "completed": completed_3d_practical,
+                    "total": total_3d_practical,
+                    "percentage": round((completed_3d_practical / total_3d_practical * 100), 1) if total_3d_practical > 0 else 0.0
+                },
+                "practical_2d": {
+                    "completed": completed_2d_practical,
+                    "total": total_2d_practical,
+                    "percentage": round((completed_2d_practical / total_2d_practical * 100), 1) if total_2d_practical > 0 else 0.0
                 },
                 "assessments": {
                     "approved": len(approved_submissions),
