@@ -1149,9 +1149,9 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                             </ul>
                         </div>
                     )}
-                    <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-                        <button className="btn-secondary" onClick={() => setUploadFolderModalOpen(false)}>Cancel</button>
-                        <button className="btn-primary" onClick={submitFolderUpload} disabled={isZipping || folderFiles.length === 0 || !customFolderName.trim()}>
+                    <div className="global-modal-footer" style={{ marginTop: '1rem' }}>
+                        <button className="global-btn-secondary" onClick={() => setUploadFolderModalOpen(false)}>Cancel</button>
+                        <button className="global-btn-primary" onClick={submitFolderUpload} disabled={isZipping || folderFiles.length === 0 || !customFolderName.trim()}>
                             {isZipping ? 'Compressing & Uploading...' : 'Upload'}
                         </button>
                     </div>
@@ -1181,7 +1181,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         )}
                     </div>
 
-                    <div className="modal-body" style={{ maxHeight: '60vh', overflowY: 'auto', padding: 0 }}>
+                    <div className="global-modal-body" style={{ maxHeight: '60vh', overflowY: 'auto', padding: 0 }}>
                         {loadingTrash ? (
                             <div style={{ textAlign: 'center', padding: '2rem' }}>Loading trash...</div>
                         ) : trashSubmissions.length === 0 ? (

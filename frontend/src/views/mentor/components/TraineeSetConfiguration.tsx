@@ -3,7 +3,11 @@ import { Settings, Save, Plus, Trash2, AlertCircle, FileText } from 'lucide-reac
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { useNotification } from '../../../context/NotificationContext';
 
-export const TraineeSetConfiguration: React.FC = () => {
+interface TraineeSetConfigurationProps {
+    searchTerm?: string;
+}
+
+export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = ({ searchTerm = '' }) => {
     const { showNotification } = useNotification();
     const [trainees, setTrainees] = useState<any[]>([]);
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
@@ -16,6 +20,14 @@ export const TraineeSetConfiguration: React.FC = () => {
     const [showReference, setShowReference] = useState(false);
     const [forceCustom, setForceCustom] = useState<number[]>([]);
     const [expandedMappingTasks, setExpandedMappingTasks] = useState<Record<string, boolean>>({});
+
+    const filteredTrainees = trainees.filter(trainee => {
+        if (!searchTerm) return true;
+        return (
+            trainee.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            trainee.username?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    });
 
     useEffect(() => {
         fetchData();
@@ -118,7 +130,7 @@ export const TraineeSetConfiguration: React.FC = () => {
     }
 
     return (
-        <div className="set-configuration-wrapper" style={{ padding: '20px' }}>
+        <div className="set-configuration-wrapper" style={{ flex: 1, overflowY: 'auto', padding: '20px', minHeight: 0 }}>
             <div style={{ marginBottom: '20px', background: 'rgba(59, 130, 246, 0.1)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.2)', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <AlertCircle size={20} style={{ color: 'var(--accent-blue)', marginTop: '2px' }} />
                 <div>
@@ -171,8 +183,14 @@ export const TraineeSetConfiguration: React.FC = () => {
                         <h3>No trainees assigned</h3>
                         <p>Assign trainees before configuring their sets.</p>
                     </div>
+                ) : filteredTrainees.length === 0 ? (
+                    <div className="no-submissions" style={{ gridColumn: '1 / -1' }}>
+                        <Settings size={48} />
+                        <h3>No matching trainees found</h3>
+                        <p>Try adjusting your search query.</p>
+                    </div>
                 ) : (
-                    trainees.map(trainee => (
+                    filteredTrainees.map(trainee => (
                         <div key={trainee.id} className="trainee-group-card" style={{ marginBottom: '20px', background: 'var(--card-bg)' }}>
                             <div className="trainee-group-header" style={{ cursor: 'default' }}>
                                 <div className="trainee-info">

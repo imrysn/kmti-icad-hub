@@ -1,20 +1,28 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder, UploadCloud } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder, UploadCloud, Download } from 'lucide-react';
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { authService, User } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
-import { useUI } from '../../../context/UIContext';
-import { FileManagerModal } from './FileManagerModal';
-import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { Modal } from '../../../components/Modal';
+import { FileManagerModal } from './FileManagerModal';
 import '../../../styles/admin/PracticalManagement.css';
 
 export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
-    const { requestConfirmation } = useUI();
+    const location = useLocation();
     const [activeSubTab, setActiveSubTab] = useState<'tasks' | 'assignments'>('tasks');
+    
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const subtab = params.get('subtab');
+        if (subtab && (subtab === 'tasks' || subtab === 'assignments')) {
+            setActiveSubTab(subtab as 'tasks' | 'assignments');
+        }
+    }, [location.search]);
+    
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
-    const [setFilter, setSetFilter] = useState<number | 'all'>(1);
+    const [setFilter, setSetFilter] = useState<number | 'all'>('all');
     const [allUsers, setAllUsers] = useState<User[]>([]);
     const [mappings, setMappings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -25,15 +33,13 @@ export const PracticalManagement: React.FC = () => {
     const [isBulkMode, setIsBulkMode] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
-
+    // Form State for New Task
     const [newTask, setNewTask] = useState({
         set_number: 1,
         task_code: '',
         title: '',
         description: '',
-        master_file_path: '',
-        is_assembly: false
+        master_file_path: ''
     });
 
     // Form State for Assignment
@@ -47,6 +53,10 @@ export const PracticalManagement: React.FC = () => {
     // Drag and Drop State
     const [draggedTaskId, setDraggedTaskId] = useState<number | null>(null);
     const [dragOverTaskId, setDragOverTaskId] = useState<number | null>(null);
+
+    // Modal state for form conversion
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showAssignModal, setShowAssignModal] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -84,7 +94,8 @@ export const PracticalManagement: React.FC = () => {
         try {
             await assessmentService.createTask(newTask, taskFile);
             showNotification('Unit created successfully.', 'success');
-            setNewTask({ set_number: 1, task_code: '', title: '', description: '', master_file_path: '', is_assembly: false });
+            setShowCreateModal(false);
+            setNewTask({ set_number: 1, task_code: '', title: '', description: '', master_file_path: '' });
             setTaskFile(null);
             fetchData();
         } catch (err) {
@@ -94,14 +105,22 @@ export const PracticalManagement: React.FC = () => {
         }
     };
 
-    const handleSyncTasks = async () => {
+    const handleBulkUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (bulkFiles.length === 0) {
+            showNotification('Please select at least one .dwg file.', 'warning');
+            return;
+        }
+
         setIsSubmitting(true);
         try {
-            await assessmentService.syncTasks();
-            showNotification('Successfully synced tasks from the server folder.', 'success');
+            await assessmentService.bulkCreateTasks(newTask.set_number, bulkFiles);
+            showNotification(`Successfully created ${bulkFiles.length} units.`, 'success');
+            setShowCreateModal(false);
+            setBulkFiles([]);
             fetchData();
         } catch (err) {
-            showNotification('Sync failed.', 'error');
+            showNotification('Bulk upload failed.', 'error');
         } finally {
             setIsSubmitting(false);
         }
@@ -113,6 +132,7 @@ export const PracticalManagement: React.FC = () => {
         try {
             await assessmentService.assignTrainer({ trainer_id: selectedTrainer, trainee_id: selectedTrainee });
             showNotification('Trainer assigned successfully.', 'success');
+            setShowAssignModal(false);
             fetchData();
         } catch (err) {
             showNotification('Assignment failed.', 'error');
@@ -120,13 +140,7 @@ export const PracticalManagement: React.FC = () => {
     };
 
     const handleDeleteTask = async (taskId: number) => {
-        const confirmed = await requestConfirmation({
-            title: 'Delete Unit',
-            message: 'Are you sure you want to delete this assessment unit?',
-            confirmText: 'Delete',
-            type: 'danger'
-        });
-        if (!confirmed) return;
+        if (!window.confirm('Are you sure you want to delete this assessment unit?')) return;
         try {
             await assessmentService.deleteTask(taskId);
             showNotification('Unit deleted successfully.', 'success');
@@ -137,13 +151,7 @@ export const PracticalManagement: React.FC = () => {
     };
 
     const handleDeleteMapping = async (mappingId: number) => {
-        const confirmed = await requestConfirmation({
-            title: 'Remove Assignment',
-            message: 'Are you sure you want to remove this trainer assignment?',
-            confirmText: 'Remove',
-            type: 'danger'
-        });
-        if (!confirmed) return;
+        if (!window.confirm('Are you sure you want to remove this trainer assignment?')) return;
         try {
             await assessmentService.deleteMapping(mappingId);
             showNotification('Mapping removed successfully.', 'success');
@@ -195,8 +203,8 @@ export const PracticalManagement: React.FC = () => {
         // Only allow reordering within the same set
         // Important: Extract ONLY the tasks from the specific set being interacted with,
         // otherwise if 'All Sets' is selected, task codes will bleed continuously (e.g. A, B... Z) across sets.
-        const setLocalTasks = tasks.filter(t => t.set_number === setNumber).sort((a, b) => (a.task_code || '').localeCompare(b.task_code || ''));
-
+        const setLocalTasks = tasks.filter(t => t.set_number === setNumber).sort((a, b) => a.order - b.order);
+        
         const draggedIndex = setLocalTasks.findIndex(t => t.id === draggedTaskId);
         const targetIndex = setLocalTasks.findIndex(t => t.id === targetTaskId);
 
@@ -223,7 +231,7 @@ export const PracticalManagement: React.FC = () => {
             // Then sort them so the UI reflects the new correct order immediately
             return updated.sort((a, b) => {
                 if (a.set_number !== b.set_number) return a.set_number - b.set_number;
-                return (a.task_code || '').localeCompare(b.task_code || '');
+                return a.order - b.order;
             });
         });
 
@@ -249,241 +257,194 @@ export const PracticalManagement: React.FC = () => {
 
     const trainers = allUsers.filter(u => u.role === 'employee' || u.role === 'admin');
     const trainees = allUsers.filter(u => u.role === 'trainee');
-    const filteredTasks = useMemo(() => {
-        const filtered = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
-
-        // Group by set_number to arrange each set individually
-        const sets: Record<number, AssessmentTask[]> = {};
-        filtered.forEach(t => {
-            if (!sets[t.set_number]) sets[t.set_number] = [];
-            sets[t.set_number].push(t);
-        });
-
-        const arrangedTasks: AssessmentTask[] = [];
-
-        Object.keys(sets).sort((a, b) => parseInt(a) - parseInt(b)).forEach(setStr => {
-            const setNum = parseInt(setStr);
-            const setTasks = sets[setNum];
-
-            const arranged = [...setTasks].sort((a, b) => {
-                const isPartA = !a.is_assembly;
-                const isPartB = !b.is_assembly;
-                if (isPartA !== isPartB) return isPartA ? -1 : 1; // Parts first
-
-                const codeA = a.task_code || '';
-                const codeB = b.task_code || '';
-                // Sort missing codes to the bottom
-                if (!codeA && codeB) return 1;
-                if (codeA && !codeB) return -1;
-                return codeA.localeCompare(codeB, undefined, { numeric: true });
-            });
-
-            arrangedTasks.push(...arranged);
-        });
-
-        return arrangedTasks;
-    }, [tasks, setFilter]);
+    const filteredTasks = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
 
     return (
-        <section className="practical-management animate-fade-in">
-            <div className="management-header" style={{ borderBottom: '1px solid var(--border-color)', marginBottom: '2rem' }}>
-                <div className="tab-navigation" style={{ display: 'flex', gap: '2rem', marginBottom: '1rem' }}>
-                    <button
-                        className={`tab-btn ${activeSubTab === 'tasks' ? 'active' : ''}`}
-                        onClick={() => setActiveSubTab('tasks')}
-                    >
-                        Units & Tasks
-                    </button>
-                    <button
-                        className={`tab-btn ${activeSubTab === 'assignments' ? 'active' : ''}`}
-                        onClick={() => setActiveSubTab('assignments')}
-                    >
-                        Trainer Assignments
-                    </button>
-                </div>
-            </div>
+        <div className="practical-management animate-fade-in">
 
             {activeSubTab === 'tasks' ? (
                 <div className="tasks-management">
+                    <div className="toolbar">
+                        <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <label style={{ whiteSpace: 'nowrap' }}>Filter by Set:</label>
+                            <select
+                                value={setFilter}
+                                onChange={(e) => setSetFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
+                                className="admin-input-styled"
+                                style={{ padding: '0.25rem 0.5rem', borderRadius: '4px' }}
+                            >
+                                <option value="all">All Sets</option>
+                                {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                            </select>
+                        </div>
+                        <button className="add-user-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowCreateModal(true)}>
+                            <Plus size={16} /> New Assessment Unit
+                        </button>
+                    </div>
 
-                    <div className="management-grid">
-                        <div className="creation-form-card">
-                            <div className="form-header-toggle">
-                                <h4>{isBulkMode ? 'Sync Units' : 'Create New Unit'}</h4>
-                                <button
-                                    className="btn-outline"
-                                    onClick={() => setIsBulkMode(!isBulkMode)}
-                                >
-                                    {isBulkMode ? 'Switch to Single' : 'Switch to Sync'}
-                                </button>
-                            </div>
+                    <Modal
+                        isOpen={showCreateModal}
+                        onClose={() => setShowCreateModal(false)}
+                        title={isBulkMode ? 'Bulk Upload Units' : 'Create New Unit'}
+                        size="md"
+                        tag="CREATE_UNIT"
+                    >
+                        <div className="form-header-toggle" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                            <button
+                                className="btn-outline"
+                                onClick={() => setIsBulkMode(!isBulkMode)}
+                            >
+                                {isBulkMode ? 'Switch to Single' : 'Switch to Bulk'}
+                            </button>
+                        </div>
 
-                            {!isBulkMode ? (
-                                <form onSubmit={handleCreateTask}>
-                                    <div className="form-row">
-                                        <div className="form-group">
-                                            <label>Set Number</label>
-                                            <select
-                                                value={newTask.set_number}
-                                                onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
-                                            >
-                                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
-                                            </select>
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Type</label>
-                                            <select
-                                                value={newTask.is_assembly ? 'assembly' : 'part'}
-                                                onChange={(e) => {
-                                                    const isAssembly = e.target.value === 'assembly';
-                                                    setNewTask({ ...newTask, is_assembly: isAssembly, task_code: '' });
-                                                }}
-                                            >
-                                                <option value="part">Part</option>
-                                                <option value="assembly">Assembly</option>
-                                            </select>
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Unit Code</label>
-                                            <input
-                                                type="text"
-                                                placeholder={newTask.is_assembly ? "e.g. A1" : "e.g. P1"}
-                                                value={newTask.task_code}
-                                                onChange={(e) => {
-                                                    const val = e.target.value.toUpperCase();
-                                                    if (newTask.is_assembly) {
-                                                        if (/^A\d*$/.test(val) || val === '') setNewTask({ ...newTask, task_code: val });
-                                                    } else {
-                                                        if (/^P\d*$/.test(val) || val === '') setNewTask({ ...newTask, task_code: val });
-                                                    }
-                                                }}
-                                                required
-                                            />
-                                        </div>
+                        {!isBulkMode ? (
+                            <form onSubmit={handleCreateTask}>
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>Set Number</label>
+                                        <select
+                                            value={newTask.set_number}
+                                            onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
+                                        >
+                                            {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                        </select>
                                     </div>
                                     <div className="form-group">
-                                        <label>Unit Title</label>
+                                        <label>Task Code</label>
                                         <input
                                             type="text"
-                                            placeholder="e.g. Flange Assembly Drafting"
-                                            value={newTask.title}
-                                            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                                            value={newTask.task_code}
+                                            onChange={(e) => setNewTask({ ...newTask, task_code: e.target.value })}
+                                            placeholder="e.g. A"
                                             required
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label>Master File (.dwg, .zip)</label>
-                                        <div className="file-input-wrapper-styled">
-                                            <input
-                                                type="file"
-                                                id="task-file"
-                                                accept=".dwg,.zip"
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0] || null;
-                                                    setTaskFile(file);
-                                                    if (file) {
-                                                        const titleWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-                                                        setNewTask({ ...newTask, title: titleWithoutExt });
-                                                    }
-                                                }}
-                                                className="hidden-file-input"
-                                                required
-                                            />
-                                            <label htmlFor="task-file" className="custom-file-upload">
-                                                <Upload size={20} className="upload-icon" />
-                                                <div className="upload-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                                                    {taskFile ? (
-                                                        <span className="file-name-highlight">{taskFile.name}</span>
-                                                    ) : (
-                                                        <span>CHOOSE MASTER FILE</span>
-                                                    )}
-                                                </div>
-                                            </label>
-                                        </div>
+                                </div>
+                                <div className="form-group">
+                                    <label>Title</label>
+                                    <input
+                                        type="text"
+                                        value={newTask.title}
+                                        onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                                        placeholder="e.g. Foundation Plan"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Description</label>
+                                    <textarea
+                                        value={newTask.description}
+                                        onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                                        placeholder="Brief instructions..."
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Master Drafting File (.dwg)</label>
+                                    <div className="file-upload-area">
+                                        <input
+                                            type="file"
+                                            id="master-file"
+                                            accept=".dwg"
+                                            onChange={(e) => setTaskFile(e.target.files?.[0] || null)}
+                                            required
+                                        />
+                                        <label htmlFor="master-file">
+                                            <UploadCloud size={24} />
+                                            <span>{taskFile ? taskFile.name : 'Choose File or Drag & Drop'}</span>
+                                        </label>
                                     </div>
-                                    <div className="form-group">
-                                        <label>Instructions (Optional)</label>
-                                        <textarea
-                                            placeholder="Provide unit instructions..."
-                                            value={newTask.description}
-                                            onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-                                        ></textarea>
-                                    </div>
-                                    <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                                        {isSubmitting ? 'Creating...' : <><Plus size={18} /> Create Unit</>}
-                                    </button>
-                                </form>
-                            ) : (
-                                <div className="sync-tasks-card" style={{ padding: '2rem', textAlign: 'center' }}>
-                                    <Folder size={48} style={{ color: 'var(--brand-primary)', marginBottom: '1rem' }} />
-                                    <h3 style={{ marginBottom: '0.5rem' }}>Sync Units from Server</h3>
-                                    <p style={{ color: 'var(--text-dim)', marginBottom: '1.5rem' }}>
-                                        Automatically scan the <code>uploads/Unts & Tasks</code> folder and build the assessment hierarchy for all Sets (1-10).
-                                    </p>
-                                    <button
-                                        className="btn-primary"
-                                        onClick={handleSyncTasks}
-                                        disabled={isSubmitting}
-                                        style={{ width: '100%', justifyContent: 'center' }}
-                                    >
-                                        {isSubmitting ? 'Syncing...' : <><Upload size={18} /> Sync Tasks</>}
+                                </div>
+                                <div className="global-modal-footer" style={{ marginTop: '2rem' }}>
+                                    <button type="button" className="global-btn-secondary" onClick={() => setShowCreateModal(false)}>Cancel</button>
+                                    <button type="submit" className="global-btn-primary" disabled={isSubmitting}>
+                                        {isSubmitting ? 'Creating...' : <><Save size={16} /> Create Unit</>}
                                     </button>
                                 </div>
-                            )}
-                        </div>
-
-                        <div className="task-inventory">
-                            <div className="inventory-header" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                                <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <label style={{ whiteSpace: 'nowrap' }}>Filter by Set:</label>
+                            </form>
+                        ) : (
+                            <form onSubmit={handleBulkUpload}>
+                                <div className="form-group">
+                                    <label>Target Set</label>
                                     <select
-                                        value={setFilter}
-                                        onChange={(e) => setSetFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
-                                        className="admin-input-styled"
-                                        style={{ padding: '0.25rem 0.5rem', borderRadius: '4px' }}
+                                        value={newTask.set_number}
+                                        onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
                                     >
-                                        <option value="all">All Sets</option>
-                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
                                     </select>
-                                    <button
-                                        className={`btn-primary ${isBulkDownloading ? 'disabled' : ''}`}
-                                        onClick={() => handleBulkDownload(filteredTasks)}
-                                        disabled={isBulkDownloading || filteredTasks.length === 0}
-                                        title="Download All Filtered Tasks"
-                                        style={{ padding: '0.4rem 0.8rem', marginLeft: '0.5rem' }}
-                                    >
-                                        <UploadCloud size={16} style={{ transform: 'rotate(180deg)' }} /> Download Filtered
+                                </div>
+                                <div className="form-group">
+                                    <label>Select Multiple Files (.dwg, .zip)</label>
+                                    <div className="file-upload-area bulk">
+                                        <input
+                                            type="file"
+                                            id="bulk-files"
+                                            accept=".dwg,.zip"
+                                            multiple
+                                            onChange={(e) => setBulkFiles(Array.from(e.target.files || []))}
+                                            required
+                                        />
+                                        <label htmlFor="bulk-files">
+                                            <Upload size={24} />
+                                            <span>{bulkFiles.length > 0 ? `${bulkFiles.length} files selected` : 'Select Files to Bulk Create'}</span>
+                                        </label>
+                                    </div>
+                                    <p className="dim-text small">Task codes (A, B, C...) and titles will be auto-generated from filenames.</p>
+                                </div>
+                                <div className="global-modal-footer" style={{ marginTop: '2rem' }}>
+                                    <button type="button" className="global-btn-secondary" onClick={() => setShowCreateModal(false)}>Cancel</button>
+                                    <button type="submit" className="global-btn-primary" disabled={isSubmitting}>
+                                        {isSubmitting ? 'Uploading...' : <><Upload size={18} /> Bulk Upload</>}
                                     </button>
                                 </div>
-                            </div>
+                            </form>
+                        )}
+                    </Modal>
+
+                    <div className="management-grid">
+                        <div className="task-inventory">
                             {filteredTasks.length > 0 ? (
                                 <table className="admin-table">
                                     <thead>
                                         <tr>
+                                            <th style={{ width: '40px' }}></th>
                                             <th>Set</th>
-                                            <th>Unit</th>
+                                            <th>Code</th>
                                             <th>Title</th>
-                                            <th>File Name</th>
-                                            <th>Type</th>
+                                            <th>File Path</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {filteredTasks.map(task => (
-                                            <tr key={task.id}>
-                                                <td><span className="set-pill-mini">S{task.set_number}</span></td>
-                                                <td><strong>{task.task_code || '-'}</strong></td>
-                                                <td>{task.title}</td>
-                                                <td className="dim-text">{task.file_name}</td>
-                                                <td>
-                                                    {task.is_assembly ? (
-                                                        <span className="role-tag admin" style={{ fontSize: '0.7rem' }}>Assembly</span>
-                                                    ) : (
-                                                        <span className="role-tag trainee" style={{ fontSize: '0.7rem' }}>Part</span>
-                                                    )}
+                                            <tr 
+                                                key={task.id}
+                                                draggable
+                                                onDragStart={() => handleDragStart(task.id)}
+                                                onDragOver={(e) => handleDragOver(e, task.id)}
+                                                onDrop={(e) => handleDrop(e, task.id, task.set_number)}
+                                                className={`
+                                                    ${draggedTaskId === task.id ? 'opacity-50' : ''} 
+                                                    ${dragOverTaskId === task.id ? 'bg-indigo-50 border-t-2 border-indigo-500' : ''}
+                                                    cursor-move transition-all
+                                                `}
+                                            >
+                                                <td className="text-gray-400 cursor-grab active:cursor-grabbing text-center">
+                                                    <GripVertical size={16} />
                                                 </td>
+                                                <td><span className="set-pill-mini">{task.set_number}</span></td>
+                                                <td><strong>{task.task_code}</strong></td>
+                                                <td>{task.title}</td>
+                                                <td className="dim-text">{task.master_file_path}</td>
                                                 <td>
                                                     <div className="table-actions-horizontal">
+                                                        <button
+                                                            className="btn-ghost"
+                                                            onClick={() => setFileManagerTask(task)}
+                                                            title="Manage Files & Folders"
+                                                        >
+                                                            <Folder size={16} />
+                                                        </button>
                                                         <button
                                                             className="btn-ghost"
                                                             onClick={() => handleEditTask(task)}
@@ -515,39 +476,52 @@ export const PracticalManagement: React.FC = () => {
                 </div>
             ) : (
                 <div className="assignments-management">
-                    <div className="management-grid">
-                        <div className="creation-form-card">
-                            <h4>Assign Trainer</h4>
-                            <form onSubmit={handleAssignTrainer}>
-                                <div className="form-group">
-                                    <label>Trainee</label>
-                                    <select
-                                        value={selectedTrainee}
-                                        onChange={(e) => setSelectedTrainee(parseInt(e.target.value))}
-                                        required
-                                    >
-                                        <option value={0}>Select Trainee...</option>
-                                        {trainees.map(t => <option key={t.id} value={t.id}>{t.full_name} (@{t.username})</option>)}
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label>Trainer (Employee/Admin)</label>
-                                    <select
-                                        value={selectedTrainer}
-                                        onChange={(e) => setSelectedTrainer(parseInt(e.target.value))}
-                                        required
-                                    >
-                                        <option value={0}>Select Trainer...</option>
-                                        {trainers.map(t => <option key={t.id} value={t.id}>{t.full_name} (@{t.username})</option>)}
-                                    </select>
-                                </div>
-                                <button className="btn-primary" onClick={handleAssignTrainer} disabled={isSubmitting}>
-                                    <UserPlus size={18} />
-                                    {isSubmitting ? 'Assigning...' : 'Assign Trainer'}
-                                </button>
-                            </form>
-                        </div>
+                    <div className="toolbar">
+                        <button className="add-user-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowAssignModal(true)}>
+                            <Plus size={16} /> Assign Trainer
+                        </button>
+                    </div>
 
+                    <Modal
+                        isOpen={showAssignModal}
+                        onClose={() => setShowAssignModal(false)}
+                        title="Assign Trainer"
+                        size="md"
+                        tag="ASSIGN_TRAINER"
+                    >
+                        <form onSubmit={handleAssignTrainer}>
+                            <div className="form-group">
+                                <label>Trainee</label>
+                                <select
+                                    value={selectedTrainee}
+                                    onChange={(e) => setSelectedTrainee(parseInt(e.target.value))}
+                                    required
+                                >
+                                    <option value={0}>Select Trainee...</option>
+                                    {trainees.map(t => <option key={t.id} value={t.id}>{t.full_name} (@{t.username})</option>)}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Trainer (Employee/Admin)</label>
+                                <select
+                                    value={selectedTrainer}
+                                    onChange={(e) => setSelectedTrainer(parseInt(e.target.value))}
+                                    required
+                                >
+                                    <option value={0}>Select Trainer...</option>
+                                    {trainers.map(t => <option key={t.id} value={t.id}>{t.full_name} (@{t.username})</option>)}
+                                </select>
+                            </div>
+                            <div className="global-modal-footer" style={{ marginTop: '2rem' }}>
+                                <button type="button" className="global-btn-secondary" onClick={() => setShowAssignModal(false)}>Cancel</button>
+                                <button type="submit" className="global-btn-primary" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Assigning...' : <><UserPlus size={16} /> Assign Trainer</>}
+                                </button>
+                            </div>
+                        </form>
+                    </Modal>
+
+                    <div className="management-grid">
                         <div className="mapping-list">
                             {mappings.length > 0 ? (
                                 <div className="mapping-grid">
@@ -586,135 +560,101 @@ export const PracticalManagement: React.FC = () => {
             )}
 
             {showEditModal && editingTask && (
-                <Modal
-                    isOpen={showEditModal}
-                    onClose={() => setShowEditModal(false)}
-                    title="Edit Assessment Unit"
+                <Modal 
+                    isOpen={showEditModal} 
+                    onClose={() => setShowEditModal(false)} 
+                    title="Edit Assessment Unit" 
                     tag="UNIT_EDIT"
                     size="md"
                 >
-                    <form onSubmit={handleUpdateTask} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div className="form-row" style={{ display: 'flex', gap: '1rem' }}>
-                            <div className="form-group" style={{ flex: 1 }}>
-                                <label>Set Number</label>
-                                <select
-                                    value={editingTask.set_number}
-                                    onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
-                                    className="admin-input-styled"
-                                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
-                                >
-                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>Set {n}</option>)}
-                                </select>
+                    <div className="global-modal-body">
+                        <form onSubmit={handleUpdateTask} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Set Number</label>
+                                    <select
+                                        value={editingTask.set_number}
+                                        onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
+                                        className="admin-input-styled"
+                                    >
+                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Unit Code</label>
+                                    <input
+                                        type="text"
+                                        value={editingTask.task_code}
+                                        onChange={(e) => setEditingTask({ ...editingTask, task_code: e.target.value.toUpperCase() })}
+                                        required
+                                        className="admin-input-styled"
+                                    />
+                                </div>
                             </div>
-                            <div className="form-group" style={{ flex: 1 }}>
-                                <label>Type</label>
-                                <select
-                                    value={editingTask.is_assembly ? 'assembly' : 'part'}
-                                    onChange={(e) => {
-                                        const isAssembly = e.target.value === 'assembly';
-                                        setEditingTask({ ...editingTask, is_assembly: isAssembly, task_code: '' });
-                                    }}
-                                    className="admin-input-styled"
-                                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
-                                >
-                                    <option value="part">Part</option>
-                                    <option value="assembly">Assembly</option>
-                                </select>
-                            </div>
-                            <div className="form-group" style={{ flex: 1 }}>
-                                <label>Unit Code</label>
+                            <div className="form-group">
+                                <label>Unit Title</label>
                                 <input
                                     type="text"
-                                    placeholder={editingTask.is_assembly ? "e.g. A1" : "e.g. P1"}
-                                    value={editingTask.task_code || ''}
-                                    onChange={(e) => {
-                                        const val = e.target.value.toUpperCase();
-                                        if (editingTask.is_assembly) {
-                                            if (/^A\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
-                                        } else {
-                                            if (/^P\d*$/.test(val) || val === '') setEditingTask({ ...editingTask, task_code: val });
-                                        }
-                                    }}
+                                    value={editingTask.title}
+                                    onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
                                     required
                                     className="admin-input-styled"
-                                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
                                 />
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label>Unit Title</label>
-                            <input
-                                type="text"
-                                value={editingTask.title}
-                                onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
-                                required
-                                className="admin-input-styled"
-                                style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Master File (Optional) (.dwg, .zip)</label>
-                            <div className="file-input-wrapper-styled">
-                                <input
-                                    type="file"
-                                    accept=".dwg,.zip"
-                                    id="edit-file-upload"
-                                    onChange={(e) => {
-                                        const file = e.target.files ? e.target.files[0] : null;
-                                        setEditFile(file);
-                                        if (file) {
-                                            const titleWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-                                            setEditingTask({ ...editingTask, title: titleWithoutExt });
-                                        }
-                                    }}
-                                    className="hidden-file-input"
-                                />
-                                <label htmlFor="edit-file-upload" className="custom-file-upload">
-                                    <Upload size={20} className="upload-icon" />
-                                    <div className="upload-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                                        {editFile ? (
-                                            <span className="file-name-highlight">{editFile.name}</span>
-                                        ) : (
-                                            <>
+                            <div className="form-group">
+                                <label>Master File (Optional) (.dwg, .zip)</label>
+                                <div className="file-input-wrapper-styled">
+                                    <input
+                                        type="file"
+                                        accept=".dwg,.zip"
+                                        id="edit-file-upload"
+                                        onChange={(e) => setEditFile(e.target.files ? e.target.files[0] : null)}
+                                        className="hidden-file-input"
+                                    />
+                                    <label htmlFor="edit-file-upload" className="custom-file-upload">
+                                        <Upload size={20} className="upload-icon" />
+                                        <div className="upload-text">
+                                            {editFile ? (
+                                                <span className="file-name-highlight">{editFile.name}</span>
+                                            ) : (
                                                 <span>Click to replace master DWG</span>
-                                                {editingTask.master_file_path && (
-                                                    <div className="current-file-badge" style={{ marginTop: '0' }}>
-                                                        <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
-                                                    </div>
-                                                )}
-                                            </>
-                                        )}
+                                            )}
+                                        </div>
+                                    </label>
+                                </div>
+                                {editingTask.master_file_path && !editFile && (
+                                    <div className="current-file-badge">
+                                        <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
                                     </div>
-                                </label>
+                                )}
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label>Instructions</label>
-                            <textarea
-                                value={editingTask.description}
-                                onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
-                                rows={4}
-                                placeholder="Provide unit instructions..."
-                                className="admin-input-styled"
-                                style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
-                            ></textarea>
-                        </div>
-                        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-                            <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                                {isSubmitting ? 'Saving...' : 'Save Changes'}
-                            </button>
-                            <button type="button" className="btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
-                        </div>
-                    </form>
+                            <div className="form-group">
+                                <label>Instructions</label>
+                                <textarea
+                                    value={editingTask.description}
+                                    onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+                                    rows={4}
+                                    placeholder="Provide unit instructions..."
+                                    className="admin-input-styled"
+                                ></textarea>
+                            </div>
+                            <div className="global-modal-footer">
+                                <button type="button" className="global-btn-secondary" onClick={() => setShowEditModal(false)}>Cancel</button>
+                                <button type="submit" className="global-btn-primary" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </Modal>
             )}
 
             {fileManagerTask && (
-                <FileManagerModal
-                    task={fileManagerTask}
-                    onClose={() => setFileManagerTask(null)}
+                <FileManagerModal 
+                    task={fileManagerTask} 
+                    onClose={() => setFileManagerTask(null)} 
                 />
             )}
-        </section>
+        </div>
     );
 };

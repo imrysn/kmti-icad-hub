@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { XCircle } from 'lucide-react';
 import { useAdminDashboard } from '../../hooks/useAdminDashboard';
 import '../../styles/AdminMode.css'; 
@@ -17,8 +17,9 @@ import { AssessmentManagement } from './components/AssessmentManagement';
 import { PracticalManagement } from './components/PracticalManagement';
 import { BroadcastCenter } from './components/BroadcastCenter';
 import { UserModal } from './components/UserModal';
+import { PracticalTrainerDashboard } from '../mentor/components/PracticalTrainerDashboard';
 
-export type AdminTab = 'overview' | 'users' | 'progress' | 'assessments' | 'practical' | 'logs';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'assessments' | 'practical' | 'logs' | 'trainees';
 
 export const AdminMode: React.FC = () => {
     const location = useLocation();
@@ -101,16 +102,25 @@ export const AdminMode: React.FC = () => {
                             </ErrorBoundary>
                         } />
                         <Route path="progress" element={ <ErrorBoundary>
-                                {!selectedTrainee ? (
-                                    <PerformanceDirectory progress={progress} setSelectedTrainee={setSelectedTrainee} />
-                                ) : (
-                                    <TraineeDetail 
-                                        selectedTrainee={selectedTrainee} 
-                                        setSelectedTrainee={setSelectedTrainee} 
-                                        onExport={handleExport} 
-                                        onRefresh={fetchData} 
-                                    />
-                                )}
+                                {(() => {
+                                    const params = new URLSearchParams(location.search);
+                                    const subtab = params.get('subtab') || 'overview';
+                                    
+                                    if (subtab === 'assessments' || subtab === 'sets') {
+                                        return <PracticalTrainerDashboard />;
+                                    }
+
+                                    return !selectedTrainee ? (
+                                        <PerformanceDirectory progress={progress} setSelectedTrainee={setSelectedTrainee} />
+                                    ) : (
+                                        <TraineeDetail 
+                                            selectedTrainee={selectedTrainee} 
+                                            setSelectedTrainee={setSelectedTrainee} 
+                                            onExport={handleExport} 
+                                            onRefresh={fetchData} 
+                                        />
+                                    );
+                                })()}
                             </ErrorBoundary>
                         } />
 

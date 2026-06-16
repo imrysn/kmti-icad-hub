@@ -141,6 +141,63 @@ body {
    Typography
    ============================================================ */
 
+/* --- Global Page Header --- */
+.page-header {
+  padding: 1rem 2rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+/* --- Global Page Content --- */
+.page-content {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header .header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.page-header .header-left h1 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-white);
+  letter-spacing: -0.02em;
+}
+
+.page-header .subtitle {
+  display: block;
+  font-size: 0.75rem !important;
+  color: var(--text-muted) !important;
+  font-weight: 400 !important;
+  margin: 0.125rem 0 0 !important;
+  text-align: left;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-actions .subtitle {
+  margin: 0 !important;
+  text-align: right;
+}
+
 h1,
 h2,
 h3,
@@ -303,6 +360,34 @@ button:disabled {
 .btn-ghost:hover:not(:disabled) {
   background: rgba(221, 77, 250, 0.1) !important;
   color: var(--primary) !important;
+}
+
+/* Sub-tab Button (Header Navigation) */
+.sub-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: none !important;
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+.sub-tab-btn:hover {
+  background: var(--color-secondary-glow) !important;
+  color: var(--text-main) !important;
+  transform: none;
+}
+
+.sub-tab-btn.active {
+  background: var(--color-primary-glow) !important;
+  color: var(--color-primary) !important;
 }
 
 /* ============================================================

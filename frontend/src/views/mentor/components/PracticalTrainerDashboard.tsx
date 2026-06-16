@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2 } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2, LayoutDashboard } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { api } from '../../../services/api';
@@ -76,6 +76,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const { requestConfirmation } = useUI();
     const location = useLocation();
     const navigate = useNavigate();
+    const isAdmin = location.pathname.startsWith('/admin');
+    const getTabUrl = (subtab: string) => {
+        return isAdmin 
+            ? `/admin/trainees?subtab=${subtab}` 
+            : `/assistant?tab=assessment&subtab=${subtab}`;
+    };
     const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -102,8 +108,16 @@ export const PracticalTrainerDashboard: React.FC = () => {
         if (subtabParam === 'assessments' || subtabParam === 'progress' || subtabParam === 'sets' || subtabParam === 'notifications') {
             return subtabParam as any;
         }
-        return 'assessments';
+        return 'progress';
     });
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const subtabParam = params.get('subtab');
+        if (subtabParam && ['assessments', 'progress', 'sets', 'notifications'].includes(subtabParam)) {
+            setActiveMainTab(subtabParam as any);
+        }
+    }, [location.search]);
     const [traineeProgressData, setTraineeProgressData] = useState<any[]>([]);
     const [loadingProgress, setLoadingProgress] = useState(false);
     const [isTelemetryOpen, setIsTelemetryOpen] = useState(true);
@@ -554,100 +568,77 @@ export const PracticalTrainerDashboard: React.FC = () => {
     }
 
     return (
-        <div className="practical-trainer-wrapper" style={{ display: 'flex', height: '100%', width: '100%', overflow: 'hidden' }}>
-            <div className="admin-sidebar" style={{ height: '100%', borderRight: '1px solid var(--border-color)', background: 'var(--bg-surface)' }}>
-                <div className="sidebar-nav" style={{ paddingTop: '1.5rem' }}>
-
-                    <button
-                        className={`nav-item ${activeMainTab === 'assessments' ? 'active' : ''}`}
-                        onClick={() => navigate('/assistant?tab=assessment&subtab=assessments')}
-                        data-tooltip="Practical Submissions"
-                    >
-                        <div className="nav-icon"><FileText size={20} /></div>
-                    </button>
-                    <button
-                        className={`nav-item ${activeMainTab === 'progress' ? 'active' : ''}`}
-                        onClick={() => navigate('/assistant?tab=assessment&subtab=progress')}
-                        data-tooltip="Trainee Progress Tracker"
-                    >
-                        <div className="nav-icon"><CheckCircle2 size={20} /></div>
-                    </button>
-                    <button
-                        className={`nav-item ${activeMainTab === 'sets' ? 'active' : ''}`}
-                        onClick={() => navigate('/assistant?tab=assessment&subtab=sets')}
-                        data-tooltip="Set Configuration"
-                    >
-                        <div className="nav-icon"><Settings size={20} /></div>
-                    </button>
-                </div>
-            </div>
-
-            <div className="trainer-dashboard animate-fade-in">
-
-                <div className="trainer-header">
-                    <div className="header-info">
-                        <h2>
-                            {activeMainTab === 'assessments' ? "Assessment Review Portal" :
-                                activeMainTab === 'progress' ? "Trainee Progress Tracker" :
-                                activeMainTab === 'notifications' ? "Recent Activity Notifications" :
-                                    "Trainee Set Configuration"}
-                        </h2>
-                        <p>
-                            {activeMainTab === 'assessments'
-                                ? "Manage and verify practical drafting submissions from trainees"
-                                : activeMainTab === 'progress'
-                                    ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
-                                    : activeMainTab === 'notifications'
-                                        ? "Review real-time trainee actions, submissions, and course completions"
-                                        : "Configure which assessment sets each trainee can see and access"}
-                        </p>
+        <div className="practical-trainer-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', overflow: 'hidden' }}>
+            {!isAdmin && (
+                <header className="page-header">
+                    <div className="header-left">
+                        <h1>Trainee Overview</h1>
+                        <p className="subtitle">Monitor practical drafting attempts, course progression, and config mappings</p>
                     </div>
-                    <div className="header-controls">
+                    <div className="header-right" style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            className={`sub-tab-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
+                            onClick={() => navigate(getTabUrl('progress'))}
+                        >
+                            <LayoutDashboard size={16} /> Overview & Telemetry
+                        </button>
+                        <button
+                            className={`sub-tab-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
+                            onClick={() => navigate(getTabUrl('assessments'))}
+                        >
+                            <FileText size={16} /> Practical Submissions
+                        </button>
+                        <button
+                            className={`sub-tab-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
+                            onClick={() => navigate(getTabUrl('sets'))}
+                        >
+                            <Settings size={16} /> Set Configuration
+                        </button>
+                    </div>
+                </header>
+            )}
+
+            <div style={{ display: 'flex', flex: 1, width: '100%', overflow: 'hidden' }}>
+                <div className="page-content trainer-dashboard animate-fade-in" style={{ flex: 1, height: '100%' }}>
+
+                <div className="toolbar">
+                    <div className="search-box">
+                        <Search size={16} color="#94a3b8" />
+                        <input
+                            type="text"
+                            placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         {activeMainTab === 'assessments' && (
-                            <div className="admin-sub-tabs">
+                            <>
                                 <button
                                     className={`sub-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
                                     onClick={() => setStatusFilter('pending')}
                                 >
-                                    <Clock size={16} /> Pending Reviews
+                                    <Clock size={14} /> Pending Reviews
                                 </button>
                                 <button
                                     className={`sub-tab-btn ${statusFilter === 'all' ? 'active' : ''}`}
                                     onClick={() => setStatusFilter('all')}
                                 >
-                                    <CheckCircle2 size={16} /> Review History
+                                    <CheckCircle2 size={14} /> Review History
                                 </button>
-                            </div>
+                            </>
                         )}
-                        <div className="search-bar">
-                            <Search size={18} />
-                            <input
-                                type="text"
-                                placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
                         <button
                             onClick={() => setIsTelemetryOpen(!isTelemetryOpen)}
-                            className={`sub-tab-btn ${isTelemetryOpen ? 'active' : ''}`}
-                            style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '6px', 
-                                height: '38px', 
-                                padding: '0 12px',
-                                border: '1px solid var(--border-color)',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
-                                background: isTelemetryOpen ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
-                                color: isTelemetryOpen ? 'var(--accent-blue)' : 'var(--text-main)',
-                                transition: 'all 0.2s ease',
-                                fontWeight: 500
+                            className="add-user-btn"
+                            style={{
+                                background: isTelemetryOpen ? 'rgba(221, 77, 250, 0.1)' : undefined,
+                                borderColor: isTelemetryOpen ? '#DD4DFA' : undefined,
+                                color: isTelemetryOpen ? '#DD4DFA' : undefined,
                             }}
-                            title="Toggle Telemetry Sidebar"
+                            title="Toggle Trainee Presence"
                         >
-                            <User size={16} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
+                            <User size={14} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
                         </button>
                     </div>
                 </div>
@@ -722,7 +713,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                             setIsReviewingSet(true);
                                                                         }}
                                                                         title="Review Entire Set"
-                                                                        style={{ padding: '0.2rem 0.5rem', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px', color: '#fff' }}
+                                                                        style={{ padding: '0.35rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}
                                                                     >
                                                                         <Eye size={14} style={{ marginRight: '4px' }} /> Review Set {setNum}
                                                                     </button>
@@ -747,7 +738,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                         }}
                                                                         disabled={isBulkDownloading}
                                                                         title="Download Trainee Submissions"
-                                                                        style={{ padding: '0.2rem 0.5rem', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px', color: '#fff' }}
+                                                                        style={{ padding: '0.35rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}
                                                                     >
                                                                         <UploadCloud size={14} style={{ transform: 'rotate(180deg)', marginRight: '4px' }} /> Download Submissions
                                                                     </button>
@@ -937,7 +928,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                 {/* Set Configuration Tab */}
                 {activeMainTab === 'sets' && (
-                    <TraineeSetConfiguration />
+                    <TraineeSetConfiguration searchTerm={searchTerm} />
                 )}
 
                 {/* Notifications Tab */}
@@ -1142,7 +1133,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
                 {/* Review Modal with History & Chat */}
                 <Modal
-                    isOpen={isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0}
+                    isOpen={!!(isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0)}
                     onClose={() => setIsReviewing(false)}
                     title={`Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Unit ${selectedTaskSubmissions?.[0]?.task?.task_code}`}
                     tag="SUBMISSION_REVIEW"
@@ -1278,20 +1269,20 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <div className="modal-action-buttons" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                                    <div className="global-modal-footer" style={{ marginTop: '1rem' }}>
                                         <button
-                                            className="btn-reject"
+                                            className="global-btn-danger"
                                             onClick={() => handleSubmitFeedback('rejected')}
                                             disabled={isSubmittingFeedback}
-                                            style={{ flex: 1, padding: '0.6rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: 'var(--color-error)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
                                         >
                                             <XCircle size={16} /> Reject
                                         </button>
                                         <button
-                                            className="btn-approve"
+                                            className="global-btn-success"
                                             onClick={() => handleSubmitFeedback('approved')}
                                             disabled={isSubmittingFeedback}
-                                            style={{ flex: 1, padding: '0.6rem', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', color: 'var(--color-success)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
                                         >
                                             <CheckCircle2 size={16} /> Approve
                                         </button>
@@ -1304,7 +1295,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
             {/* Bulk Review Modal for Entire Set */}
             <Modal
-                isOpen={isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0}
+                isOpen={!!(isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0)}
                 onClose={() => setIsReviewingSet(false)}
                 title={`Review Entire Set ${selectedSetSubmissions?.[0]?.task?.set_number} for ${selectedSetSubmissions?.[0]?.user?.full_name}`}
                 tag="BULK_SET_REVIEW"
@@ -1373,20 +1364,20 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="modal-action-buttons" style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
+                            <div className="global-modal-footer" style={{ marginTop: '1.5rem' }}>
                                 <button
-                                    className="btn-reject"
+                                    className="global-btn-danger"
                                     onClick={() => handleBulkSubmitFeedback('rejected')}
                                     disabled={isSubmittingFeedback}
-                                    style={{ flex: 1, padding: '0.6rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: 'var(--color-error)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                    style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
                                 >
                                     <XCircle size={16} /> Reject Entire Set
                                 </button>
                                 <button
-                                    className="btn-approve"
+                                    className="global-btn-success"
                                     onClick={() => handleBulkSubmitFeedback('approved')}
                                     disabled={isSubmittingFeedback}
-                                    style={{ flex: 1, padding: '0.6rem', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', color: 'var(--color-success)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                    style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
                                 >
                                     <CheckCircle2 size={16} /> Approve Entire Set
                                 </button>
@@ -1481,6 +1472,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     </div>
                 </div>
             )}
+            </div>
         </div>
     );
 };
