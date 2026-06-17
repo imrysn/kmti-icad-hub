@@ -94,8 +94,11 @@ function AppContent() {
         }
         window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
         notificationTriggered = true;
+      } else if (data.event === "ASSESSMENT_UNLOCKED" && role === 'trainee') {
+        showNotification(data.message || `A new assessment set has been unlocked by your trainer.`, 'info', 0, '/mentor?mode=assessment');
+        window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
+        notificationTriggered = true;
       }
-
       if (notificationTriggered) {
         fetchUnreadCount();
         if (window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {

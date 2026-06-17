@@ -90,8 +90,8 @@ class UserCreate(BaseModel):
     @field_validator("password")
     @classmethod
     def password_strength(cls, v: str) -> str:
-        if len(v) < 6:
-            raise ValueError("Password must be at least 6 characters")
+        if len(v) < 4:
+            raise ValueError("Password must be at least 4 characters")
         return v
 
     @field_validator("full_name")
@@ -265,6 +265,7 @@ class AssessmentTaskBase(BaseModel):
     order: int = 0
     file_name: Optional[str] = None
     is_assembly: bool = False
+    assessment_type: Optional[str] = "3D"
 
 class AssessmentTaskCreate(AssessmentTaskBase):
     pass
@@ -272,7 +273,7 @@ class AssessmentTaskCreate(AssessmentTaskBase):
 class AssessmentTaskResponse(AssessmentTaskBase):
     id: int
     master_file_path: Optional[str] = None
-    created_at: datetime
+    created_at: Optional[datetime] = None
     class Config:
         from_attributes = True
 

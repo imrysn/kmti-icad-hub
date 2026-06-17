@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'; import { Shield, Activity, Users, BarChart3, Brain, MessageSquare, ClipboardList, Zap } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom'; import { Shield, Activity, Users, BarChart3, Brain, MessageSquare, ClipboardList, Zap, GraduationCap } from 'lucide-react';
 import { User } from '../../../services/authService';
 
 interface AdminSidebarProps {
@@ -20,7 +20,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
                     { id: 'users', icon: Users, label: 'Users' },
                     { id: 'progress', icon: BarChart3, label: 'Performance' },
                     { id: 'assessments', icon: ClipboardList, label: 'Quizzes' },
-                    { id: 'practical', icon: Zap, label: 'Practical Units' },
+                    { id: 'practical', icon: Zap, label: 'Training Set' },
                     { id: 'logs', icon: Shield, label: 'Audit Logs' }
                 ].map((item) => (
                     <button key={item.id} className={`nav-item ${activeTab === item.id ? 'active' : ''}`} onClick={() => navigate(`/admin/${item.id}`)}

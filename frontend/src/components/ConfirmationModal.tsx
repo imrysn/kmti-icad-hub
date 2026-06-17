@@ -1,5 +1,6 @@
 import React from 'react';
-import { AlertTriangle, Info, CheckCircle2, X } from 'lucide-react';
+import { AlertTriangle, Info, CheckCircle2 } from 'lucide-react';
+import { Modal } from './Modal';
 import '../styles/ConfirmationModal.css';
 
 export interface ConfirmationModalProps {
@@ -26,7 +27,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     if (!isOpen) return null;
 
     const getIcon = () => {
-        const iconSize = 18;
+        const iconSize = 24;
         switch (type) {
             case 'danger': return <AlertTriangle size={iconSize} />;
             case 'info': return <Info size={iconSize} />;
@@ -35,38 +36,30 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     };
 
     return (
-        <div className="modal-overlay hybrid-overlay" onClick={onCancel}>
-            <div className={`hybrid-modal-container ${type}`} onClick={e => e.stopPropagation()}>
-                {/* Subtle Technical Markers */}
-                <div className="hybrid-marker tl" />
-                <div className="hybrid-marker br" />
-                
-                <div className="hybrid-modal-header">
-                    <div className="hybrid-context-tag">
-                        <span className="bit" />
-                        SYSTEM_REQUEST // {type.toUpperCase()}
-                    </div>
+        <Modal 
+            isOpen={isOpen} 
+            onClose={onCancel} 
+            title={title} 
+            tag={`SYSTEM_REQUEST // ${type.toUpperCase()}`}
+            size="sm"
+        >
+            <div className="hybrid-modal-body">
+                <div className={`hybrid-icon-wrapper ${type}`}>
+                    {getIcon()}
                 </div>
-
-                <div className="hybrid-modal-body">
-                    <div className={`hybrid-icon-wrapper ${type}`}>
-                        {getIcon()}
-                    </div>
-                    <div className="hybrid-text-wrapper">
-                        <h3 className="hybrid-title">{title}</h3>
-                        <p className="hybrid-message">{message}</p>
-                    </div>
-                </div>
-                
-                <div className="hybrid-modal-footer">
-                    <button className="hybrid-btn-secondary" onClick={onCancel}>
-                        {cancelText}
-                    </button>
-                    <button className={`hybrid-btn-primary ${type}`} onClick={onConfirm}>
-                        {confirmText}
-                    </button>
+                <div className="hybrid-text-wrapper">
+                    <p className="hybrid-message">{message}</p>
                 </div>
             </div>
-        </div>
+            
+            <div className="global-modal-footer">
+                <button className="global-btn-secondary" onClick={onCancel}>
+                    {cancelText}
+                </button>
+                <button className={`global-btn-${type === 'danger' ? 'danger' : 'primary'}`} onClick={onConfirm}>
+                    {confirmText}
+                </button>
+            </div>
+        </Modal>
     );
 };

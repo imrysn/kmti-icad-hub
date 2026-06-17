@@ -50,7 +50,7 @@ class TestRegister:
         assert response.status_code == 422  # Pydantic validation error
 
     def test_register_short_password_rejected(self, client):
-        payload = {**self.VALID_PAYLOAD, "username": "validuser3", "email": "v3@test.kmti", "password": "short"}
+        payload = {**self.VALID_PAYLOAD, "username": "validuser3", "email": "v3@test.kmti", "password": "sh"}
         response = client.post(self.ENDPOINT, json=payload)
         assert response.status_code == 422
 

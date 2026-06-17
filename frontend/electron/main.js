@@ -9,6 +9,14 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
+// Disable hardware acceleration to prevent GPU process crash (exit_code=-1073741515)
+app.disableHardwareAcceleration();
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+app.commandLine.appendSwitch('disable-gpu-compositing');
+
+
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 1280,
@@ -134,11 +142,21 @@ function createWindow() {
                 }
             }
 
+            if (fs.existsSync(localPath) && fs.statSync(localPath).isDirectory()) {
+                fs.rmSync(localPath, { recursive: true, force: true });
+            }
+
             const file = fs.createWriteStream(localPath);
             const safeUrl = url.replace('localhost', '127.0.0.1');
             const protocol = safeUrl.startsWith('https') ? https : http;
 
             return new Promise((resolve, reject) => {
+                file.on('error', (err) => {
+                    file.close();
+                    fs.unlink(localPath, () => {});
+                    reject(err);
+                });
+
                 const request = protocol.get(safeUrl, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }, (response) => {
@@ -220,15 +238,15 @@ function createWindow() {
             try {
                 let relativePath = task.target_relative_path;
                 if (!relativePath) {
-                    relativePath = `Unts & Tasks/Set ${task.set_number || 'unknown'}/${task.task_code || 'unknown'}_Master.dwg`;
+                    relativePath = `Units & Tasks/Set ${task.set_number || 'unknown'}/${task.task_code || 'unknown'}_Master.dwg`;
                 }
 
                 // Ensure no path traversal tricks and remove any prefixes before the actual Set folders
                 relativePath = relativePath.replace(/\\/g, '/');
                 let safeRelativePath = path.normalize(relativePath).replace(/^(\.\.[\/\\])+/, '');
                 
-                // Extract everything after "Unts & Tasks/" to keep exactly the "1st Set Parts/..." structure
-                const match = safeRelativePath.match(/Unts & Tasks[\/\\](.*)/i);
+                // Extract everything after "Unts & Tasks/" or "Units & Tasks/" to keep exactly the "1st Set Parts/..." structure
+                const match = safeRelativePath.match(/(?:Unts|Units) & Tasks[\/\\](.*)/i);
                 if (match) {
                     safeRelativePath = match[1];
                 }
@@ -240,12 +258,22 @@ function createWindow() {
                     fs.mkdirSync(fileDir, { recursive: true });
                 }
 
+                if (fs.existsSync(localPath) && fs.statSync(localPath).isDirectory()) {
+                    fs.rmSync(localPath, { recursive: true, force: true });
+                }
+
                 // If file exists, maybe overwrite it
                 const file = fs.createWriteStream(localPath);
                 const safeUrl = task.url.replace('localhost', '127.0.0.1');
                 const protocol = safeUrl.startsWith('https') ? https : http;
 
                 await new Promise((resolve, reject) => {
+                    file.on('error', (err) => {
+                        file.close();
+                        fs.unlink(localPath, () => {});
+                        reject(err);
+                    });
+
                     const request = protocol.get(safeUrl, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }, (response) => {

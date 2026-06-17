@@ -104,18 +104,18 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
             <div className="flex-col tab-content fade-in">
               {activeTab === 'shotblasting' && (
                 <div className="text-[15px] leading-relaxed text-gray-800" style={{ padding: "1rem" }}>
-                  <p className="mb-4" style={{textIndent: "3rem"}}>
-                    Before the Application of Surface Treatment/ Coating, the black skin of the material must be removed first to the part. There are two (2) processes that we can apply on the part to remove the black skin; <br/>
+                  <p className="mb-4" style={{ textIndent: "3rem" }}>
+                    Before the Application of Surface Treatment/ Coating, the black skin of the material must be removed first to the part. There are two (2) processes that we can apply on the part to remove the black skin; <br />
                     <strong style={{ color: 'red', fontStyle: 'italic' }}>(1) Shotblasting(Black skin Removal)</strong> and <strong style={{ color: 'red', fontStyle: 'italic' }}>(2) Machining</strong> .
                   </p>
 
                   <p className="mb-4">
-                    <strong style={{ color: 'red', marginLeft: "3rem"}}>1. Shotblasting</strong> is an operation of forcibly propelling a stream of abrasive material against a surface under high pressure to <span style={{ color: 'red' }}>smooth a rough surface, roughen a smooth surface, shape a surface or remove surface contaminants</span>.<br/>
-                    <span style={{ marginLeft: "3rem"}}> </span> There are two(2) classification of Shotblasting base on the purpose of application, process needed to apply on the part and purpose of the part.
+                    <strong style={{ color: 'red', marginLeft: "3rem" }}>1. Shotblasting</strong> is an operation of forcibly propelling a stream of abrasive material against a surface under high pressure to <span style={{ color: 'red' }}>smooth a rough surface, roughen a smooth surface, shape a surface or remove surface contaminants</span>.<br />
+                    <span style={{ marginLeft: "3rem" }}> </span> There are two(2) classification of Shotblasting base on the purpose of application, process needed to apply on the part and purpose of the part.
                   </p>
 
                   <div className="mb-4 ml-8">
-                    <strong style={{ color: 'red', marginLeft: "3rem"}}>a. Shotblasting is commonly used for:</strong>
+                    <strong style={{ color: 'red', marginLeft: "3rem" }}>a. Shotblasting is commonly used for:</strong>
                     <ul style={{ listStyleType: "none", paddingLeft: "6rem", margin: 0, marginTop: "0.25rem" }} className="space-y-1">
                       <li>- removal of stress after welding process</li>
                       <li>- removal of stress or deformation after refine machining process</li>
@@ -127,7 +127,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
 
                   <p style={{ color: 'red', fontStyle: 'italic', fontWeight: 'bold' }} className="mb-2">Example:</p>
                   <img src={shotblast1Img} alt="Shotblasting Application" className="software-screenshot screenshot-wide mb-2" />
-                  <p className="mb-8" style={{textIndent: "3rem"}}>
+                  <p className="mb-8" style={{ textIndent: "3rem" }}>
                     For this part , <strong style={{ color: 'red' }}>shotblasting</strong> is applied to remove the stress from the welding process and in preparation of painting.
                   </p>
 
@@ -142,7 +142,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
 
                   <p style={{ color: 'red', fontStyle: 'italic', fontWeight: 'bold' }} className="mb-2">Example:</p>
                   <img src={shotblast2Img} alt="Black Skin Removal" className="software-screenshot screenshot-wide mb-2" />
-                  <p className="mb-4" style={{textIndent: "3rem"}}>
+                  <p className="mb-4" style={{ textIndent: "3rem" }}>
                     For the given example, <strong style={{ color: 'red' }}>shotblasting</strong> is applied because the part is attached to an adjusting bracket which increases the possibility of corrosion due to friction and heat. Since shotblasting have a property where it increases the resistance to corrosion and fatigue of the material which is suitable to apply on the part.
                   </p>
                 </div>

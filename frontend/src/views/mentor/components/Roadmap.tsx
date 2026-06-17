@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Trophy, Target, Award, Star, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { Modal } from '../../../components/Modal';
 import './Roadmap.css';
 
 interface SkillNode {
@@ -74,19 +75,14 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
     const radarPoints = generateRadarPoints(skillData);
 
     return (
-        <div className="roadmap-overlay">
-            <div className="roadmap-modal animate-scale-in">
-                <header className="roadmap-header">
-                    <div className="header-info">
-                        <Trophy className="trophy-icon" />
-                        <div>
-                            <h2>Candidate Roadmap</h2>
-                            <p>Skill Mastery & Certification Progress</p>
-                        </div>
-                    </div>
-                    <button className="close-roadmap" onClick={onClose}>×</button>
-                </header>
-
+        <Modal
+            isOpen={true}
+            onClose={onClose}
+            title="Candidate Roadmap"
+            tag="ROADMAP"
+            size="xl"
+        >
+            <div className="global-modal-body">
                 <div className="roadmap-grid">
                     {/* Left: Skill Radar */}
                     <div className="roadmap-section skill-analysis">
@@ -97,8 +93,8 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                         
                         <div className="radar-container">
                             <svg viewBox="0 0 200 200" className="radar-svg">
-                                {/* Grid Webs */}
-                                {[0.2, 0.4, 0.6, 0.8, 1].map(scale => (
+                                {/* Background Grid */}
+                                {[0.25, 0.5, 0.75, 1].map(scale => (
                                     <polygon 
                                         key={scale}
                                         points={skillData.map((_, i) => {
@@ -207,6 +203,6 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                     </div>
                 </div>
             </div>
-        </div>
+        </Modal>
     );
 };
