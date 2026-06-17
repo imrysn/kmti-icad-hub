@@ -51,9 +51,19 @@ def sync_table_data(table_name: str, sqlite_conn, mysql_conn):
         mysql_result = mysql_conn.execute(text(f"SELECT {pk_col} FROM {table_name}"))
         existing_pks = {row[0] for row in mysql_result.fetchall()}
         
+        # Check for existing usernames to prevent IntegrityErrors
+        existing_usernames = set()
+        if table_name == "users":
+            uname_result = mysql_conn.execute(text("SELECT username FROM users"))
+            existing_usernames = {row[0] for row in uname_result.fetchall()}
+        
         for row in sqlite_rows:
             pk_val = row[pk_col]
             if pk_val not in existing_pks:
+                # If username already exists in MySQL (with a different id), skip to avoid unique constraint conflict
+                if table_name == "users" and row.get("username") in existing_usernames:
+                    continue
+                
                 # Insert missing record
                 cols = ", ".join(row.keys())
                 placeholders = ", ".join([f":{col}" for col in row.keys()])
@@ -87,7 +97,18 @@ def sync_table_data(table_name: str, sqlite_conn, mysql_conn):
                             )
         
     except Exception as e:
-        logger.error(f"Error syncing table {table_name}: {e}")
+        # Sanitize error message to prevent data leakage (e.g. hashed passwords or emails) in logs
+        err_msg = str(e)
+        if hasattr(e, 'orig') and e.orig:
+            # log underlying driver DB error only, which describes the constraint but excludes SQL parameter dumps
+            err_msg = f"DB Error: {e.orig}"
+        else:
+            # Fallback sanitation: strip out parameters if they look like SQL dump
+            import re
+            err_msg = re.sub(r"\[parameters:.*\]", "[parameters: <REDACTED>]", err_msg, flags=re.DOTALL)
+            err_msg = re.sub(r"hashed_password.*", "hashed_password: [REDACTED]", err_msg)
+            
+        logger.error(f"Error syncing table {table_name}: {err_msg}")
         raise  # Let caller handle transaction rollback
 
 def run_sync():

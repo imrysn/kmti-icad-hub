@@ -18,6 +18,22 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({ glbUrl }) => {
     useEffect(() => {
         if (!containerRef.current || !canvasRef.current) return;
 
+        // Check WebGL availability beforehand to avoid noisy console errors from Three.js
+        const hasWebGL = (() => {
+            try {
+                const c = document.createElement('canvas');
+                return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('webgl2')));
+            } catch (e) {
+                return false;
+            }
+        })();
+
+        if (!hasWebGL) {
+            setWebglError(true);
+            setLoading(false);
+            return;
+        }
+
         const container = containerRef.current;
         const canvas = canvasRef.current;
 

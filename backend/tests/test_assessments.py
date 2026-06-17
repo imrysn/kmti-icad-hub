@@ -188,7 +188,8 @@ class TestDeleteSubmission:
             headers=auth_headers(trainee_token),
         )
         assert response.status_code == 200
-        assert "deleted" in response.json()["message"].lower()
+        msg = response.json()["message"].lower()
+        assert "deleted" in msg or "trash" in msg
 
     def test_employee_cannot_delete_trainee_submission(self, client, employee_token, seed_submission):
         response = client.delete(

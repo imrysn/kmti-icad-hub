@@ -28,8 +28,16 @@ def fix_schema():
                 print("Adding replied_at column to assessment_feedback...")
                 cursor.execute("ALTER TABLE assessment_feedback ADD COLUMN replied_at DATETIME NULL")
             
+            print("Checking assessment_tasks table...")
+            cursor.execute("DESCRIBE assessment_tasks")
+            task_columns = [c[0] for c in cursor.fetchall()]
+            
+            if "assessment_type" not in task_columns:
+                print("Adding assessment_type column to assessment_tasks...")
+                cursor.execute("ALTER TABLE assessment_tasks ADD COLUMN assessment_type VARCHAR(50) DEFAULT '3D'")
+            
             conn.commit()
-            print("Successfully updated assessment_feedback schema.")
+            print("Successfully updated database schema.")
             
     except Exception as e:
         print(f"Error updating schema: {e}")
