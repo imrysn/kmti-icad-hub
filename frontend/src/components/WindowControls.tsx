@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Minus, Square } from 'lucide-react';
+import kmtiLogo from '../assets/kmti-training-hub.png';
 import '../styles/WindowControls.css';
 
 interface WindowControlsProps {
@@ -40,9 +41,9 @@ const WindowControls: React.FC<WindowControlsProps> = ({ buttonsOnly = false }) 
       {/* Draggable Area */}
       <div className="window-drag-region">
         <div className="window-title-content">
-          <img src="/kmti_logo.png" alt="KMTI" className="window-mini-logo" onError={(e) => (e.currentTarget.style.display = 'none')} 
+          <img src={kmtiLogo} alt="KMTI" className="window-mini-logo" onError={(e) => (e.currentTarget.style.display = 'none')} 
           />
-          <span>KMTI iCAD Hub</span>
+          <span>KMTI Training Hub</span>
         </div>
       </div>
 

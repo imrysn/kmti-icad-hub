@@ -55,13 +55,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       let errorMessage = 'Login failed. Please try again.';
 
       if (err.response) {
-        if (err.response.data?.detail) {
-          errorMessage = err.response.data.detail;
-        } else if (err.response.status === 401) {
-          errorMessage = 'Invalid username or password.';
-        }
+        const status = err.response.status;
+        const reqUrl = err.config?.url || 'API';
+        const detail = err.response.data?.detail || err.response.statusText || 'Not Found';
+        errorMessage = `Error ${status} at ${reqUrl}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`;
       } else if (err.message) {
-        errorMessage = err.message;
+        const reqUrl = err.config?.url || 'API';
+        errorMessage = `Network Error connecting to ${reqUrl}: ${err.message}`;
       }
 
       setError(errorMessage);

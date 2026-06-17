@@ -74,9 +74,9 @@ if USE_MYSQL:
         
         MySQLSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=mysql_engine)
         DB_MODE = "mysql"
-        logger.info(f"✅ Connected to MySQL database at {DB_HOST}")
+        logger.info(f"[+] Connected to MySQL database at {DB_HOST}")
     except Exception as e:
-        logger.warning(f"⚠️ MySQL connection failed on startup: {e}. Falling back to SQLite.")
+        logger.warning(f"[!] MySQL connection failed on startup: {e}. Falling back to SQLite.")
         DB_MODE = "sqlite"
 
 # Expose a default 'engine' variable for migrations and backwards compatibility
@@ -97,7 +97,7 @@ def check_mysql_recovery():
                 with mysql_engine.connect() as conn:
                     conn.execute(text("SELECT 1"))
                 DB_MODE = "mysql"
-                logger.info("⚡ MySQL has recovered! Switching database mode to MySQL.")
+                logger.info("[+] MySQL has recovered! Switching database mode to MySQL.")
             except Exception:
                 pass
 
@@ -117,7 +117,7 @@ def get_db():
             # Validate by making a lightweight call
             db.execute(text("SELECT 1"))
         except Exception as e:
-            logger.warning(f"⚠️ MySQL session failed at runtime: {e}. Falling back to SQLite.")
+            logger.warning(f"[!] MySQL session failed at runtime: {e}. Falling back to SQLite.")
             DB_MODE = "sqlite"
             if db:
                 db.close()

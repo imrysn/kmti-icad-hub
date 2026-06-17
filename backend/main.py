@@ -3,7 +3,8 @@ from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 
 # Load environment variables from the project root
-load_dotenv(find_dotenv(), override=True)
+env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
+load_dotenv(env_path, override=True)
 
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,7 +21,7 @@ import json
 try:
     Base.metadata.create_all(bind=engine)
 except Exception as e:
-    print(f"⚠️ Warning: Could not create tables on startup: {e}")
+    print(f"[!] Warning: Could not create tables on startup: {e}")
 
 app = FastAPI(title="KMTI iCAD Hub API")
 
@@ -81,7 +82,7 @@ assets_path = os.getenv("STATIC_ASSETS_PATH", default_src_path)
 if os.path.exists(assets_path):
     app.mount("/src", StaticFiles(directory=assets_path), name="src")
 else:
-    print(f"⚠️ Warning: Static assets path not found: {assets_path}")
+    print(f"[!] Warning: Static assets path not found: {assets_path}")
 
 from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings
 

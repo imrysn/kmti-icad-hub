@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock, Settings } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth'; import { authService } from '../services/authService';
 import '../styles/LoginView.css';
-import kmtiLogo from '../assets/kmti_logo.png';
+import kmtiLogo from '../assets/kmti-training-hub.png';
 import LightPillar from '../components/LightPillar';
 import { parseBackendError } from '../utils/errorUtils';
 import { Modal } from '../components/Modal';

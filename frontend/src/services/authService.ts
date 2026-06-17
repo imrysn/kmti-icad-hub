@@ -1,8 +1,18 @@
 import axios from 'axios';
 
+// Auto-migrate legacy port 8000 to 3001
+if (typeof window !== 'undefined') {
+    const legacyUrl = window.localStorage.getItem('custom_api_url');
+    if (legacyUrl && legacyUrl.includes(':8000')) {
+        const migratedUrl = legacyUrl.replace(':8000', ':3001');
+        window.localStorage.setItem('custom_api_url', migratedUrl);
+    }
+}
+
 const isElectron = navigator.userAgent.toLowerCase().includes('electron');
 const defaultHost = isElectron ? '127.0.0.1' : (typeof window !== 'undefined' && window.location && window.location.hostname ? window.location.hostname : '127.0.0.1');
-const API_BASE_URL = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:3001`;
+const storedApiUrl = typeof window !== 'undefined' ? window.localStorage.getItem('custom_api_url') : null;
+const API_BASE_URL = storedApiUrl || (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:3001`;
 
 export interface LoginCredentials {
     username: string;

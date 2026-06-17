@@ -24,9 +24,10 @@ echo Building Standalone EXE...
 :: --name: Name of the output file
 :: --add-data: Include static files if needed (though we'll look for them externally)
 :: --hidden-import: Ensure all FastAPI/Uvicorn modules are included
-python -m PyInstaller --onefile ^
+python -m PyInstaller --onefile --noconsole ^
     --name KMTI_iCAD_Server ^
-    --icon=NONE ^
+    --icon=kmti_logo.ico ^
+    --add-data="kmti_logo.ico;." ^
     --hidden-import=uvicorn.logging ^
     --hidden-import=uvicorn.loops ^
     --hidden-import=uvicorn.loops.auto ^

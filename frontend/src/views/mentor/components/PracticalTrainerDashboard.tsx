@@ -1142,7 +1142,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
                 {/* Review Modal with History & Chat */}
                 <Modal
-                    isOpen={isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0}
+                    isOpen={!!(isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0)}
                     onClose={() => setIsReviewing(false)}
                     title={`Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Unit ${selectedTaskSubmissions?.[0]?.task?.task_code}`}
                     tag="SUBMISSION_REVIEW"
@@ -1304,7 +1304,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
             {/* Bulk Review Modal for Entire Set */}
             <Modal
-                isOpen={isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0}
+                isOpen={!!(isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0)}
                 onClose={() => setIsReviewingSet(false)}
                 title={`Review Entire Set ${selectedSetSubmissions?.[0]?.task?.set_number} for ${selectedSetSubmissions?.[0]?.user?.full_name}`}
                 tag="BULK_SET_REVIEW"

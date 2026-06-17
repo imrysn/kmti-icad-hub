@@ -19,7 +19,7 @@ import ThemeToggle from './components/ThemeToggle';
 import { getSystemStatus, api } from './services/api';
 import { authService } from './services/authService';
 
-import kmtiLogo from './assets/kmti_logo.png';
+import kmtiLogo from './assets/kmti-training-hub.png';
 import './styles/App.css';
 
 function AppContent() {
@@ -222,7 +222,7 @@ function AppContent() {
                     userSelect: 'none'
                   }}
                 />
-                <span>KMTI iCAD Hub</span>
+                 <span>KMTI Training Hub</span>
               </div>
 
               {!dbStatus.nas_reachable && (
