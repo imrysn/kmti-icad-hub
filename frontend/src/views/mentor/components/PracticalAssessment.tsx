@@ -70,12 +70,25 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         handleRestore,
         handlePermanentDelete,
         handleBulkDelete,
-        handleEmptyTrash
+        handleEmptyTrash,
+        mySetMappings
     } = usePracticalTasks(assessmentType);
 
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
 
     const [trashModalOpen, setTrashModalOpen] = useState(false);
+
+    // Get dynamic display name for a set from tasks, fallback to ordinal label
+    const getSetDisplayName = useCallback((s: number): string => {
+        const setTask = tasks.find(t => t.set_number === s && t.set_name);
+        if (setTask && setTask.set_name) {
+            return setTask.set_name;
+        }
+        const ordinals = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
+        const prefix = ordinals[s - 1] || `${s}th`;
+        const suffix = s <= 3 ? 'Set Parts' : 'Set Parts and Assembly';
+        return `${prefix} ${suffix}`;
+    }, [tasks]);
 
     // Auto-select correct Set from URL parameter
     useEffect(() => {
@@ -168,6 +181,44 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     };
 
     const isSetLocked = useCallback((s: number) => {
+        // If trainee has custom set mappings from the trainer
+        if (mySetMappings && mySetMappings.length > 0) {
+            // Find if this display set is mapped (comparing absolute value)
+            const mapping = mySetMappings.find((m: any) => Math.abs(m.display_set_number) === s);
+            if (!mapping) return true; // If not mapped, it's locked/hidden
+
+            // If trainer explicitly unlocked this set (indicated by a negative display_set_number)
+            if (mapping.display_set_number < 0) {
+                return false;
+            }
+
+            // Find the minimum display set number in mappings (using absolute values)
+            const displaySetNums = mySetMappings.map((m: any) => Math.abs(m.display_set_number)).sort((a, b) => a - b);
+            const minDisplaySet = displaySetNums[0];
+
+            if (s === minDisplaySet) {
+                if (assessmentType === '3D') {
+                    return !is3DCompleted;
+                }
+                return false; // For 2D, first set is unlocked
+            }
+
+            // Find the display set immediately preceding `s` in the mappings
+            const prevDisplaySet = displaySetNums.filter(num => num < s).pop();
+            if (!prevDisplaySet) return true;
+
+            const prevSetTasks = tasks.filter(t => t.set_number === prevDisplaySet);
+            const prevCompleted = prevSetTasks.length > 0 && prevSetTasks.every(t =>
+                submissions.some(sub => sub.task_id === t.id && sub.status === 'approved' && (sub.assessment_type || '3D') === assessmentType)
+            );
+            
+            if (assessmentType === '3D') {
+                return !prevCompleted || !is3DCompleted;
+            }
+            return !prevCompleted;
+        }
+
+        // Default logic (no mappings)
         if (assessmentType === '3D') {
             if (s === 1) {
                 return !is3DCompleted; // Ensure 3D is completed to unlock 1st set
@@ -189,7 +240,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                 return !prevCompleted;
             }
         }
-    }, [assessmentType, is3DCompleted, tasks, submissions]);
+    }, [assessmentType, is3DCompleted, tasks, submissions, mySetMappings]);
 
     const isCurrentSetLocked = useMemo(() => {
         return isSetLocked(activeSet);
@@ -203,9 +254,10 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         }
 
         if (assessmentType === '2D') {
-            // 2D course only focuses on Assembly tasks
-            const assemblySets = uniqueSets.filter(s => tasks.some(t => t.set_number === s && t.is_assembly));
-            return assemblySets.length > 0 ? assemblySets : uniqueSets.filter(s => s >= 4);
+            // Default 2D sets are Set 4, Set 5, Set 6, and Set 7.
+            // We also include any other sets >= 4 that exist in tasks (e.g. Set 8, Set 9).
+            const otherSets = uniqueSets.filter(s => s >= 4);
+            return Array.from(new Set([4, 5, 6, 7, ...otherSets])).sort((a, b) => a - b);
         }
 
         return uniqueSets;
@@ -260,7 +312,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                     <span className="sidebar-set-indicator">
                                         {isLocked ? <Lock size={14} /> : isCompleted ? <CheckCircle2 size={14} /> : <span className="set-number-badge">{s}</span>}
                                     </span>
-                                    <span className="sidebar-set-label">{getSetLabel(s)}</span>
+                                    <span className="sidebar-set-label">{getSetDisplayName(s)}</span>
                                     <span className="sidebar-set-task-count">{setTasks.length} tasks</span>
                                 </button>
                             );
@@ -275,7 +327,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                 <div className="sticky-lesson-controls" style={{ justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)' }}>
-                            {getSetLabel(activeSet)}
+                            {getSetDisplayName(activeSet)}
                         </h3>
                         <span className="task-count">{currentSetTasks.length} Tasks</span>
                     </div>
@@ -698,7 +750,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             <div className="lock-icon-container">
                                                 <Lock size={32} className="lock-icon-animated" />
                                             </div>
-                                            <h3>{getSetLabel(activeSet)} Locked</h3>
+                                            <h3>{getSetDisplayName(activeSet)} Locked</h3>
                                             <p className="lock-explanation">
                                                 {activeSet >= 4 && !is3DCompleted ? (
                                                     <>
@@ -939,7 +991,91 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                         {/* Trainer Feedback Section */}
                                                                         <div className="task-row-feedback">
                                                                             <span className="task-row-section-label">Trainer Feedback</span>
-                                                                            {feedbackSubmission?.status && feedbackSubmission.status !== 'pending' ? (
+                                                                            {latestSubmission?.status === 'pending' ? (
+                                                                                <>
+                                                                                    {feedbackSubmission && feedbackSubmission.id !== latestSubmission.id ? (
+                                                                                        <>
+                                                                                            {expandedFeedbackId === feedbackSubmission.id ? (
+                                                                                                <div className={`feedback-container pending animate-scale-in`}>
+                                                                                                    <div className="feedback-header-row" onClick={() => setExpandedFeedbackId(null)}>
+                                                                                                        <div className="feedback-status-info">
+                                                                                                            <Clock size={16} />
+                                                                                                            <span>Revision Resubmitted (Pending Review)</span>
+                                                                                                        </div>
+                                                                                                        <span className="close-feedback-btn">Close</span>
+                                                                                                    </div>
+
+                                                                                                    {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
+                                                                                                        <div className="feedback-details">
+                                                                                                            <div style={{ padding: '8px 12px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '6px', fontSize: '0.85rem', color: '#fdba74', marginBottom: '10px' }}>
+                                                                                                                Your corrected work has been submitted and is currently pending trainer review. Below is the feedback from your previous attempt.
+                                                                                                            </div>
+                                                                                                            {feedbackSubmission.feedback[0].comments && (
+                                                                                                                <div className="feedback-comment">
+                                                                                                                    <p>{feedbackSubmission.feedback[0].comments}</p>
+                                                                                                                </div>
+                                                                                                            )}
+
+                                                                                                            {/* Trainee Reply Display */}
+                                                                                                            {feedbackSubmission.feedback[0].trainee_reply && (
+                                                                                                                <div className="feedback-trainee-reply">
+                                                                                                                    <div className="reply-header">
+                                                                                                                        <span className="reply-badge">Your Reply</span>
+                                                                                                                        {feedbackSubmission.feedback[0].replied_at && (
+                                                                                                                            <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
+                                                                                                                        )}
+                                                                                                                    </div>
+                                                                                                                    <p>{feedbackSubmission.feedback[0].trainee_reply}</p>
+                                                                                                                </div>
+                                                                                                            )}
+
+                                                                                                            {feedbackSubmission.feedback[0].checkback_file_path && (
+                                                                                                                <div className="feedback-file-actions">
+                                                                                                                    <button
+                                                                                                                        className="checkback-open-btn"
+                                                                                                                        onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
+                                                                                                                    >
+                                                                                                                        <FileSpreadsheet size={16} />
+                                                                                                                        Open in Excel
+                                                                                                                    </button>
+                                                                                                                    <a
+                                                                                                                        href="#"
+                                                                                                                        className="checkback-download-icon-btn"
+                                                                                                                        title="Download copy"
+                                                                                                                        onClick={(e) => {
+                                                                                                                            e.preventDefault();
+                                                                                                                            e.stopPropagation();
+                                                                                                                            handleDownloadFeedback(feedbackSubmission);
+                                                                                                                        }}
+                                                                                                                    >
+                                                                                                                        <Download size={14} />
+                                                                                                                    </a>
+                                                                                                                </div>
+                                                                                                            )}
+                                                                                                        </div>
+                                                                                                    )}
+                                                                                                </div>
+                                                                                            ) : (
+                                                                                                <div
+                                                                                                    className={`feedback-message pending clickable animate-fade-in`}
+                                                                                                    onClick={() => setExpandedFeedbackId(feedbackSubmission.id)}
+                                                                                                >
+                                                                                                    <Clock size={14} style={{ color: '#f59e0b' }} />
+                                                                                                    <span className="feedback-preview-text" style={{ color: '#fdba74' }}>
+                                                                                                        Pending Review (Corrected Work Submitted) - View previous feedback
+                                                                                                    </span>
+                                                                                                    <ChevronRight size={14} className="expand-icon" />
+                                                                                                </div>
+                                                                                            )}
+                                                                                        </>
+                                                                                    ) : (
+                                                                                        <div className="feedback-message empty">
+                                                                                            <Clock size={14} />
+                                                                                            <span>Waiting for trainer review</span>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </>
+                                                                            ) : feedbackSubmission?.status && feedbackSubmission.status !== 'pending' ? (
                                                                                 <>
                                                                                     {expandedFeedbackId === feedbackSubmission.id ? (
                                                                                         <div className={`feedback-container ${feedbackSubmission.status} animate-scale-in`}>
@@ -1073,7 +1209,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                 <Zap size={64} className="portal-icon" />
                                             </div>
                                             <h2>No Tasks Available</h2>
-                                            <p>There are no tasks assigned for {getSetLabel(activeSet)} yet. Check back later or contact your trainer.</p>
+                                            <p>There are no tasks assigned for {getSetDisplayName(activeSet)} yet. Check back later or contact your trainer.</p>
                                             <div className="portal-hint">
                                                 <div className="hint-item">
                                                     <div className="hint-dot"></div>

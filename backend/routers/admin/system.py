@@ -83,7 +83,7 @@ def create_broadcast(
     message: str,
     level: str = "info",
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """Create a new system-wide broadcast message"""
     broadcast = Broadcast(message=message, level=level, created_by=admin.id)
@@ -128,4 +128,21 @@ def get_training_heatmap(
      .group_by(UserProgress.course_id).all()
     
     return [{"course_id": s[0], "count": s[1]} for s in stats]
+
+
+@router.delete("/broadcasts/{broadcast_id}")
+def delete_broadcast(
+    broadcast_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("employee"))
+):
+    """Delete a system-wide broadcast message"""
+    broadcast = db.query(Broadcast).filter(Broadcast.id == broadcast_id).first()
+    if not broadcast:
+        raise HTTPException(status_code=404, detail="Broadcast not found")
+    
+    db.delete(broadcast)
+    db.commit()
+    return {"message": "Broadcast deleted successfully"}
+
 

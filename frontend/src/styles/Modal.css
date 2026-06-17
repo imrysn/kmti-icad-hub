@@ -285,8 +285,8 @@
 .global-btn-secondary:hover { background: rgba(255, 255, 255, 0.05); }
 .global-btn-primary { padding: 0 1.25rem; border-radius: 8px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--primary); color: white; border: none; }
 .global-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-.global-btn-danger { padding: 0 1.25rem; border-radius: 8px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: transparent; color: #ef4444; border: none; }
-.global-btn-danger:hover { opacity: 0.7; transform: translateY(-1px); background: transparent; border: none; }
+.global-btn-danger { padding: 0 1.25rem; border-radius: 8px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-error); color: white; border: none; }
+.global-btn-danger:hover { opacity: 0.9; transform: translateY(-1px); }
 
 .global-btn-success { padding: 0 1.25rem; border-radius: 8px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-success); color: white; border: none; }
 .global-btn-success:hover { opacity: 0.9; transform: translateY(-1px); }

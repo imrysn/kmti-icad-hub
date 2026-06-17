@@ -1,12 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, AlertTriangle, Info, Megaphone, MessageSquare, ChevronDown } from 'lucide-react'; import { adminService } from '../../../services/adminService';
+import { Send, AlertTriangle, Info, Megaphone, MessageSquare, ChevronDown, Trash2, Clock } from 'lucide-react';
+import { adminService } from '../../../services/adminService';
 import '../../../styles/BroadcastCenter.css';
 
 export const BroadcastCenter: React.FC = () => {
-    const [isExpanded, setIsExpanded] = useState(false); const [message, setMessage] = useState('');
-    const [level, setLevel] = useState<'info' | 'warning' | 'critical'>('info'); const [isSending, setIsSending] = useState(false);
-    const [status, setStatus] = useState<{ type: 'success' | 'error', text: string } | null>(null); const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [message, setMessage] = useState('');
+    const [level, setLevel] = useState<'info' | 'warning' | 'critical'>('info');
+    const [isSending, setIsSending] = useState(false);
+    const [status, setStatus] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
+    const [broadcasts, setBroadcasts] = useState<any[]>([]);
+    
     const containerRef = useRef<HTMLDivElement>(null);
     const dragStartRef = useRef({ x: 0, y: 0 });
     const hasMovedRef = useRef(false);
@@ -69,6 +75,21 @@ export const BroadcastCenter: React.FC = () => {
         };
     }, [isDragging]);
 
+    const fetchBroadcasts = async () => {
+        try {
+            const data = await adminService.getActiveBroadcasts();
+            setBroadcasts(data);
+        } catch (err) {
+            console.error('Failed to fetch broadcasts', err);
+        }
+    };
+
+    useEffect(() => {
+        if (isExpanded) {
+            fetchBroadcasts();
+        }
+    }, [isExpanded]);
+
     const handleSend = async () => {
         if (!message.trim()) return;
 
@@ -78,11 +99,33 @@ export const BroadcastCenter: React.FC = () => {
             await adminService.sendBroadcast(message, level);
             setStatus({ type: 'success', text: 'Broadcast sent successfully!' });
             setMessage('');
+            fetchBroadcasts();
             setTimeout(() => setStatus(null), 3000);
         } catch (err) {
             setStatus({ type: 'error', text: 'Failed to send broadcast.' });
         } finally {
             setIsSending(false);
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        try {
+            await adminService.deleteBroadcast(id);
+            setStatus({ type: 'success', text: 'Broadcast deleted successfully!' });
+            fetchBroadcasts();
+            setTimeout(() => setStatus(null), 3000);
+        } catch (err) {
+            setStatus({ type: 'error', text: 'Failed to delete broadcast.' });
+        }
+    };
+
+    const formatDateTime = (dateStr: string) => {
+        try {
+            const d = new Date(dateStr);
+            const pad = (n: number) => n.toString().padStart(2, '0');
+            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        } catch (e) {
+            return dateStr;
         }
     };
 
@@ -106,7 +149,7 @@ export const BroadcastCenter: React.FC = () => {
 
     return (
         <div className="broadcast-center-floating" ref={containerRef} style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
-            <div className="chatbox-expanded">
+            <div className="chatbox-expanded" style={{ display: 'flex', flexDirection: 'column', maxHeight: '550px' }}>
                 <div className="chatbox-header">
                     <h3>
                         <MessageSquare size={18} />
@@ -119,7 +162,7 @@ export const BroadcastCenter: React.FC = () => {
                     </button>
                 </div>
 
-                <div className="chatbox-form">
+                <div className="chatbox-form" style={{ flex: 1, overflowY: 'auto' }}>
                     <textarea placeholder="Broadcast message to all users..." value={message} onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
@@ -158,6 +201,47 @@ export const BroadcastCenter: React.FC = () => {
                             {status.text}
                         </div>
                     )}
+
+                    <div className="active-broadcasts-section" style={{ marginTop: '10px', borderTop: '1px solid var(--border-color)', paddingTop: '15px' }}>
+                        <h4 style={{ margin: '0 0 10px 0', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                            Active Broadcasts ({broadcasts.length})
+                        </h4>
+
+                        {broadcasts.length === 0 ? (
+                            <div style={{ padding: '15px 0', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.85rem', fontStyle: 'italic' }}>
+                                No active broadcasts.
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                {broadcasts.map((b) => (
+                                    <div key={b.id} className={`active-broadcast-item level-${b.level}`} style={{ padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '6px', background: 'rgba(255,255,255,0.01)', position: 'relative' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '10px' }}>
+                                            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-light)', lineHeight: '1.4', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                                                {b.message}
+                                            </p>
+                                            <button 
+                                                onClick={() => handleDelete(b.id)}
+                                                style={{ background: 'none', border: 'none', color: 'var(--error-color)', cursor: 'pointer', padding: '2px', display: 'flex', alignItems: 'center', opacity: 0.7 }}
+                                                title="Delete Broadcast"
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                        
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '2px' }}>
+                                            <span style={{ textTransform: 'capitalize', fontWeight: 600, color: b.level === 'critical' ? 'var(--error-color)' : b.level === 'warning' ? 'var(--warning-color)' : 'var(--accent-blue)' }}>
+                                                {b.level === 'critical' ? 'URGENT' : b.level}
+                                            </span>
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                <Clock size={12} />
+                                                {formatDateTime(b.created_at)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

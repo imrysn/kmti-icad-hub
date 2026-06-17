@@ -214,6 +214,7 @@ class AssessmentTask(Base):
     master_file_path = Column(String(500)) # Path to master .dwg
     file_name = Column(String(200), nullable=True) # Name of the file
     is_assembly = Column(Boolean, default=False) # True if it's the master assembly
+    assessment_type = Column(String(50), default="3D") # "3D" or "2D"
     order = Column(Integer, default=0)
     created_at = Column(DateTime, default=func.now())
     

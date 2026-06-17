@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import fallbackImg from '../assets/froming4.webp';
 
 interface ModelViewer3DProps {
     glbUrl: string;
@@ -12,6 +13,7 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({ glbUrl }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const modelRef = useRef<THREE.Group | null>(null);
     const [loading, setLoading] = useState(true);
+    const [webglError, setWebglError] = useState(false);
 
     useEffect(() => {
         if (!containerRef.current || !canvasRef.current) return;
@@ -32,11 +34,20 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({ glbUrl }) => {
         camera.position.set(0, 0, 10);
 
         // 3. Renderer setup
-        const renderer = new THREE.WebGLRenderer({
-            canvas,
-            antialias: true,
-            alpha: true // Transparent background to integrate with glassmorphic cards
-        });
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({
+                canvas,
+                antialias: true,
+                alpha: true // Transparent background to integrate with glassmorphic cards
+            });
+        } catch (e) {
+            console.error('Failed to create WebGL context:', e);
+            setWebglError(true);
+            setLoading(false);
+            return;
+        }
+
         renderer.setSize(container.clientWidth, container.clientHeight, false);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -191,6 +202,24 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({ glbUrl }) => {
             }
         };
     }, [glbUrl]);
+
+    if (webglError) {
+        return (
+            <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                <img 
+                    src={fallbackImg} 
+                    alt="3D Preview Fallback" 
+                    style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'cover', 
+                        borderRadius: '8px',
+                        opacity: 0.8
+                    }} 
+                />
+            </div>
+        );
+    }
 
     return (
         <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative', pointerEvents: 'none' }}>

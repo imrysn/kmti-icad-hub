@@ -22,7 +22,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
     const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const subtab = params.get('subtab') || (activeTab === 'assessments' ? '3D_Modeling' : (activeTab === 'practical' ? 'tasks' : 'overview'));
+    const subtab = params.get('subtab') || (activeTab === 'assessments' ? '3D_Modeling' : (activeTab === 'practical' ? 'tasks_3d' : 'overview'));
 
     return (
         <header className="page-header">
@@ -42,7 +42,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'progress' && (selectedTrainee ? `Overview: ${selectedTrainee.full_name}` : `Trainee performance and mastery tracking`)}
                     {activeTab === 'logs' && `Detailed record of critical system security events`}
                     {activeTab === 'assessments' && `Create and manage quizzes, questions, and evaluation criteria`}
-                    {activeTab === 'practical' && `Manage assessment units and assign to trainers`}
+                    {activeTab === 'practical' && `Manage 3D and 2D assessment units and assign to trainers`}
                     {activeTab === 'trainees' && `Monitor practical drafting attempts, course progression, and config mappings`}
                 </p>
             </div>
@@ -89,10 +89,16 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
             {activeTab === 'practical' && (
                 <div className="header-right" style={{ display: 'flex', gap: '10px' }}>
                     <button
-                        className={`sub-tab-btn ${subtab === 'tasks' ? 'active' : ''}`}
-                        onClick={() => navigate('/admin/practical?subtab=tasks')}
+                        className={`sub-tab-btn ${subtab === 'tasks_3d' ? 'active' : ''}`}
+                        onClick={() => navigate('/admin/practical?subtab=tasks_3d')}
                     >
-                        <ClipboardList size={16} /> Units & Tasks
+                        <Box size={16} /> 3D Units & Tasks
+                    </button>
+                    <button
+                        className={`sub-tab-btn ${subtab === 'tasks_2d' ? 'active' : ''}`}
+                        onClick={() => navigate('/admin/practical?subtab=tasks_2d')}
+                    >
+                        <PenTool size={16} /> 2D Units & Tasks
                     </button>
                     <button
                         className={`sub-tab-btn ${subtab === 'assignments' ? 'active' : ''}`}

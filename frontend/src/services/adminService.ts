@@ -115,6 +115,10 @@ export const adminService = {
         return response.data;
     },
 
+    async deleteBroadcast(broadcastId: number): Promise<void> {
+        await api.delete(`/admin/broadcasts/${broadcastId}`);
+    },
+
     async getHeatmap(): Promise<{ course_id: string; count: number }[]> {
         const response = await api.get('/admin/heatmap');
         return response.data;

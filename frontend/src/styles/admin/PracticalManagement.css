@@ -597,3 +597,8 @@ select.admin-input-styled option {
     box-shadow: 0 -3px 0 0 #DD4DFA inset;
     background: rgba(221, 77, 250, 0.06) !important;
 }
+
+.set-option-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2, LayoutDashboard } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2, Unlock } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { api } from '../../../services/api';
@@ -58,11 +58,11 @@ const TraineeStatusLabel: React.FC<{ isOnline: boolean; lastUpdated: string | nu
     }, [isOnline, lastUpdated]);
 
     return (
-        <span style={{ 
-            fontSize: '0.75rem', 
-            color: isOnline ? 'var(--accent-green, #22c55e)' : 'var(--text-muted, #64748b)', 
-            background: isOnline ? 'rgba(34, 197, 94, 0.1)' : 'rgba(100, 116, 139, 0.1)', 
-            padding: '2px 6px', 
+        <span style={{
+            fontSize: '0.75rem',
+            color: isOnline ? 'var(--accent-green, #22c55e)' : 'var(--text-muted, #64748b)',
+            background: isOnline ? 'rgba(34, 197, 94, 0.1)' : 'rgba(100, 116, 139, 0.1)',
+            padding: '2px 6px',
             borderRadius: '4px',
             fontWeight: 600
         }}>
@@ -78,8 +78,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const navigate = useNavigate();
     const isAdmin = location.pathname.startsWith('/admin');
     const getTabUrl = (subtab: string) => {
-        return isAdmin 
-            ? `/admin/trainees?subtab=${subtab}` 
+        return isAdmin
+            ? `/admin/trainees?subtab=${subtab}`
             : `/assistant?tab=assessment&subtab=${subtab}`;
     };
     const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
@@ -95,7 +95,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const [feedbackComments, setFeedbackComments] = useState('');
     const [feedbackFile, setFeedbackFile] = useState<File | null>(null);
     const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
-    const [statusFilter, setStatusFilter] = useState<'pending' | 'all'>('pending');
+    const [statusFilter, setStatusFilter] = useState<'pending' | 'reviewed'>('pending');
     const [expandedTrainees, setExpandedTrainees] = useState<number[]>([]);
     const [expandedSets, setExpandedSets] = useState<string[]>([]);
 
@@ -108,7 +108,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
         if (subtabParam === 'assessments' || subtabParam === 'progress' || subtabParam === 'sets' || subtabParam === 'notifications') {
             return subtabParam as any;
         }
-        return 'progress';
+        return 'assessments';
     });
 
     useEffect(() => {
@@ -204,6 +204,56 @@ export const PracticalTrainerDashboard: React.FC = () => {
         }
     };
 
+    const handleOpenNextSet = async (traineeId: number, currentSetNum: number, notifId?: number) => {
+        try {
+            const nextSetNum = currentSetNum + 1;
+            const res = await api.get(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
+            const currentMappings = res.data;
+
+            const existingMapping = currentMappings.find((m: any) => m.actual_set_number === nextSetNum);
+            let newMappings;
+
+            if (existingMapping) {
+                if (existingMapping.display_set_number < 0) {
+                    showNotification(`Set ${nextSetNum} is already open.`, 'info');
+                    if (notifId) handleDeleteNotification(notifId);
+                    return;
+                }
+                // Update display_set_number to be negative (explicitly unlocked)
+                newMappings = currentMappings.map((m: any) =>
+                    m.actual_set_number === nextSetNum
+                        ? { ...m, display_set_number: -Math.abs(m.display_set_number) }
+                        : m
+                );
+            } else {
+                if (currentMappings.length === 0) {
+                    // Trainee was on default progression. We map both Set 1 (standard) and Set 2 (unlocked/negative).
+                    newMappings = [
+                        { actual_set_number: 1, display_set_number: 1 },
+                        { actual_set_number: nextSetNum, display_set_number: -nextSetNum }
+                    ];
+                } else {
+                    const maxDisplay = Math.max(...currentMappings.map((m: any) => Math.abs(m.display_set_number)));
+                    newMappings = [...currentMappings, { actual_set_number: nextSetNum, display_set_number: -(maxDisplay + 1) }];
+                }
+            }
+
+            await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, newMappings);
+            showNotification(`Set ${nextSetNum} opened for trainee!`, 'success');
+
+            if (notifId) handleDeleteNotification(notifId);
+        } catch (error) {
+            showNotification('Failed to open next set.', 'error');
+        }
+    };
+
+    const handleReviewLaterAndOpenNext = async (notif: any) => {
+        const traineeId = notif.sender_id;
+        const match = notif.message.match(/Set (\d+)/);
+        if (!match || !traineeId) return;
+        await handleOpenNextSet(traineeId, parseInt(match[1]), notif.id);
+    };
+
     useEffect(() => {
         fetchTraineeProgress();
         fetchNotifications();
@@ -295,14 +345,14 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const fetchSubmissions = useCallback(async (silent = false) => {
         if (!silent) setLoading(true);
         try {
-            const data = await assessmentService.getTrainerSubmissions(statusFilter);
+            const data = await assessmentService.getTrainerSubmissions('all');
             setSubmissions(data);
         } catch (err) {
             showNotification('Failed to load submissions.', 'error');
         } finally {
             if (!silent) setLoading(false);
         }
-    }, [statusFilter, showNotification]);
+    }, [showNotification]);
 
     useEffect(() => {
         fetchSubmissions();
@@ -568,86 +618,162 @@ export const PracticalTrainerDashboard: React.FC = () => {
     }
 
     return (
-        <div className="practical-trainer-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', overflow: 'hidden' }}>
-            {!isAdmin && (
-                <header className="page-header">
-                    <div className="header-left">
-                        <h1>Trainee Overview</h1>
-                        <p className="subtitle">Monitor practical drafting attempts, course progression, and config mappings</p>
-                    </div>
-                    <div className="header-right" style={{ display: 'flex', gap: '10px' }}>
-                        <button
-                            className={`sub-tab-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
-                            onClick={() => navigate(getTabUrl('progress'))}
-                        >
-                            <LayoutDashboard size={16} /> Overview & Telemetry
-                        </button>
-                        <button
-                            className={`sub-tab-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
-                            onClick={() => navigate(getTabUrl('assessments'))}
-                        >
-                            <FileText size={16} /> Practical Submissions
-                        </button>
-                        <button
-                            className={`sub-tab-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
-                            onClick={() => navigate(getTabUrl('sets'))}
-                        >
-                            <Settings size={16} /> Set Configuration
-                        </button>
-                    </div>
-                </header>
-            )}
+        <div className="practical-trainer-wrapper" style={{ display: 'flex', height: '100%', width: '100%', overflow: 'hidden' }}>
+            <div className="trainer-dashboard animate-fade-in">
+                <div className="dashboard-sub-header">
+                    {!isAdmin ? (
+                        <>
+                            <div className="sub-header-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                <div className="header-title-area">
+                                    <h2>
+                                        {activeMainTab === 'assessments' ? "Assessment Review Portal" :
+                                            activeMainTab === 'progress' ? "Trainee Progress Tracker" :
+                                                activeMainTab === 'notifications' ? "Recent Activity Notifications" :
+                                                    "Trainee Set Configuration"}
+                                    </h2>
+                                    <p className="subtitle">
+                                        {activeMainTab === 'assessments'
+                                            ? "Manage and verify practical drafting submissions from trainees"
+                                            : activeMainTab === 'progress'
+                                                ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
+                                                : activeMainTab === 'notifications'
+                                                    ? "Review real-time trainee actions, submissions, and course completions"
+                                                    : "Configure which assessment sets each trainee can see and access"}
+                                    </p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                    <button
+                                        className={`sub-tab-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
+                                        onClick={() => navigate(getTabUrl('assessments'))}
+                                        style={{ height: '36px' }}
+                                    >
+                                        <FileText size={16} /> Practical Submissions
+                                    </button>
+                                    <button
+                                        className={`sub-tab-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
+                                        onClick={() => navigate(getTabUrl('progress'))}
+                                        style={{ height: '36px' }}
+                                    >
+                                        <CheckCircle2 size={16} /> Trainee Progress Tracker
+                                    </button>
+                                    <button
+                                        className={`sub-tab-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
+                                        onClick={() => navigate(getTabUrl('sets'))}
+                                        style={{ height: '36px' }}
+                                    >
+                                        <Settings size={16} /> Set Configuration
+                                    </button>
+                                    <div style={{ width: '1px', height: '20px', background: 'var(--border-color)', margin: '0 0.5rem' }} />
+                                    <button
+                                        onClick={() => setIsTelemetryOpen(!isTelemetryOpen)}
+                                        className={`presence-toggle-btn ${isTelemetryOpen ? 'active' : ''}`}
+                                        title="Toggle Telemetry Sidebar"
+                                        style={{ height: '36px' }}
+                                    >
+                                        <User size={16} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
+                                    </button>
+                                </div>
+                            </div>
 
-            <div style={{ display: 'flex', flex: 1, width: '100%', overflow: 'hidden' }}>
-                <div className="page-content trainer-dashboard animate-fade-in" style={{ flex: 1, height: '100%' }}>
-
-                <div className="toolbar">
-                    <div className="search-box">
-                        <Search size={16} color="#94a3b8" />
-                        <input
-                            type="text"
-                            placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                        {activeMainTab === 'assessments' && (
-                            <>
+                            <div className="sub-header-bottom">
+                                <div className="search-bar">
+                                    <Search size={18} />
+                                    <input
+                                        type="text"
+                                        placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                                {activeMainTab === 'assessments' && (
+                                    <div className="review-filter-tabs">
+                                        <button
+                                            className={`filter-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
+                                            onClick={() => setStatusFilter('pending')}
+                                        >
+                                            <Clock size={16} /> Pending Reviews
+                                        </button>
+                                        <button
+                                            className={`filter-tab-btn ${statusFilter === 'reviewed' ? 'active' : ''}`}
+                                            onClick={() => setStatusFilter('reviewed')}
+                                        >
+                                            <CheckCircle2 size={16} /> Approved History
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="sub-header-bottom" style={{ width: '100%', padding: '0.25rem 0' }}>
+                            <div className="search-bar">
+                                <Search size={18} />
+                                <input
+                                    type="text"
+                                    placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                {activeMainTab === 'assessments' && (
+                                    <div className="review-filter-tabs">
+                                        <button
+                                            className={`filter-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
+                                            onClick={() => setStatusFilter('pending')}
+                                        >
+                                            <Clock size={16} /> Pending Reviews
+                                        </button>
+                                        <button
+                                            className={`filter-tab-btn ${statusFilter === 'reviewed' ? 'active' : ''}`}
+                                            onClick={() => setStatusFilter('reviewed')}
+                                        >
+                                            <CheckCircle2 size={16} /> Review History
+                                        </button>
+                                    </div>
+                                )}
                                 <button
-                                    className={`sub-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
-                                    onClick={() => setStatusFilter('pending')}
+                                    onClick={() => setIsTelemetryOpen(!isTelemetryOpen)}
+                                    className={`presence-toggle-btn ${isTelemetryOpen ? 'active' : ''}`}
+                                    title="Toggle Telemetry Sidebar"
                                 >
-                                    <Clock size={14} /> Pending Reviews
+                                    <User size={16} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
                                 </button>
-                                <button
-                                    className={`sub-tab-btn ${statusFilter === 'all' ? 'active' : ''}`}
-                                    onClick={() => setStatusFilter('all')}
-                                >
-                                    <CheckCircle2 size={14} /> Review History
-                                </button>
-                            </>
-                        )}
-                        <button
-                            onClick={() => setIsTelemetryOpen(!isTelemetryOpen)}
-                            className="add-user-btn"
-                            style={{
-                                background: isTelemetryOpen ? 'rgba(221, 77, 250, 0.1)' : undefined,
-                                borderColor: isTelemetryOpen ? '#DD4DFA' : undefined,
-                                color: isTelemetryOpen ? '#DD4DFA' : undefined,
-                            }}
-                            title="Toggle Trainee Presence"
-                        >
-                            <User size={14} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
-                        </button>
-                    </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Assessments Tab */}
                 {activeMainTab === 'assessments' && (
                     <div className="grouped-submissions-container">
-                        {Object.keys(grouped).length > 0 ? (
-                            Object.values(grouped).map((traineeGroup: any) => {
+                        {(() => {
+                            const renderedTrainees = Object.values(grouped).filter((traineeGroup: any) => {
+                                let hasMatchingTask = false;
+                                Object.values(traineeGroup.sets).forEach((setGroup: any) => {
+                                    Object.values(setGroup.tasks).forEach((subs: any) => {
+                                        const latest = subs.sort((a: any, b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())[0];
+                                        const matchesFilter = statusFilter === 'pending'
+                                            ? latest.status === 'pending'
+                                            : (latest.status === 'approved' || latest.status === 'rejected');
+                                        if (matchesFilter) {
+                                            hasMatchingTask = true;
+                                        }
+                                    });
+                                });
+                                return hasMatchingTask;
+                            });
+
+                            if (renderedTrainees.length === 0) {
+                                return (
+                                    <div className="no-submissions">
+                                        <CheckCircle2 size={48} />
+                                        <h3>All caught up!</h3>
+                                        <p>No submissions match your current filter.</p>
+                                    </div>
+                                );
+                            }
+
+                            return renderedTrainees.map((traineeGroup: any) => {
                                 const traineeId = traineeGroup.user.id;
                                 const isTraineeExpanded = expandedTrainees.includes(traineeId);
 
@@ -679,126 +805,167 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                                         {isTraineeExpanded && (
                                             <div className="trainee-group-body">
-                                                {Object.keys(traineeGroup.sets).sort((a, b) => Number(a) - Number(b)).map(setNum => {
-                                                    const setKey = `${traineeId}-${setNum}`;
-                                                    const isSetExpanded = expandedSets.includes(setKey);
-                                                    const tasks = Object.values(traineeGroup.sets[setNum].tasks);
+                                                {Object.keys(traineeGroup.sets)
+                                                    .sort((a, b) => Number(a) - Number(b))
+                                                    .filter(setNum => {
+                                                        const tasksInSet = Object.values(traineeGroup.sets[setNum].tasks);
+                                                        return tasksInSet.some((subs: any) => {
+                                                            const latest = subs.sort((a: any, b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())[0];
+                                                            return statusFilter === 'pending'
+                                                                ? latest.status === 'pending'
+                                                                : (latest.status === 'approved' || latest.status === 'rejected');
+                                                        });
+                                                    })
+                                                    .map((setNum, index) => {
+                                                        const displaySetNum = index + 1;
+                                                        const setKey = `${traineeId}-${setNum}`;
+                                                        const isSetExpanded = expandedSets.includes(setKey);
 
-                                                    return (
-                                                        <div key={setKey} className="set-group">
-                                                            <div className="set-group-header" onClick={() => toggleSet(setKey)}>
-                                                                <h4>Set {setNum} <span className="task-count-dim">({tasks.length} tasks)</span></h4>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                                    <button
-                                                                        className="task-action-btn primary"
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            const latestSubmissions = tasks.flatMap((subs: any) => {
-                                                                                const latestByKey: Record<string, any> = {};
-                                                                                for (const sub of subs) {
-                                                                                    const fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'unknown';
-                                                                                    const ext = fileName.split('.').pop()?.toLowerCase() || 'unknown';
-                                                                                    const key = (ext === 'zip' || ext === 'rar') ? fileName : ext;
-                                                                                    if (!latestByKey[key]) {
-                                                                                        latestByKey[key] = sub;
+                                                        const allTasks = Object.values(traineeGroup.sets[setNum].tasks);
+                                                        const filteredTasks = allTasks.filter((subs: any) => {
+                                                            const latest = subs.sort((a: any, b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())[0];
+                                                            return statusFilter === 'pending'
+                                                                ? latest.status === 'pending'
+                                                                : (latest.status === 'approved' || latest.status === 'rejected');
+                                                        });
+
+                                                        const tasks = filteredTasks.sort((a: any, b: any) => {
+                                                            const taskA = a[0]?.task;
+                                                            const taskB = b[0]?.task;
+                                                            if (!taskA || !taskB) return 0;
+
+                                                            // A1-Ax before P1-Px
+                                                            const isAssemblyA = taskA.is_assembly || taskA.task_code?.startsWith('A');
+                                                            const isAssemblyB = taskB.is_assembly || taskB.task_code?.startsWith('A');
+
+                                                            if (isAssemblyA !== isAssemblyB) {
+                                                                return isAssemblyA ? -1 : 1;
+                                                            }
+
+                                                            // Natural sort on task_code (e.g. A1, A2, P1, P2)
+                                                            const codeA = taskA.task_code || '';
+                                                            const codeB = taskB.task_code || '';
+                                                            return codeA.localeCompare(codeB, undefined, { numeric: true, sensitivity: 'base' });
+                                                        });
+
+                                                        return (
+                                                            <div key={setKey} className="set-group">
+                                                                <div className="set-group-header" onClick={() => toggleSet(setKey)}>
+                                                                    <h4>Set {displaySetNum} <span className="task-count-dim">({tasks.length} tasks)</span></h4>
+                                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                        <button
+                                                                            className="task-action-btn secondary"
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                handleOpenNextSet(traineeId, Number(setNum));
+                                                                            }}
+                                                                            title="Review Later & Open Next Set"
+                                                                            style={{ padding: '0.35rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}
+                                                                        >
+                                                                            <Unlock size={14} style={{ marginRight: '4px' }} /> Review Later & Open Next Set
+                                                                        </button>
+                                                                        <button
+                                                                            className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                // Get the latest submission for each file extension per task
+                                                                                const latestSubmissions = tasks.flatMap((subs: any) => {
+                                                                                    const latestByKey: Record<string, any> = {};
+                                                                                    for (const sub of subs) {
+                                                                                        const fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'unknown';
+                                                                                        const ext = fileName.split('.').pop()?.toLowerCase() || 'unknown';
+                                                                                        const key = (ext === 'zip' || ext === 'rar') ? fileName : ext;
+                                                                                        if (!latestByKey[key]) {
+                                                                                            latestByKey[key] = sub;
+                                                                                        }
                                                                                     }
-                                                                                }
-                                                                                return Object.values(latestByKey);
-                                                                            });
-                                                                            if (latestSubmissions.length === 0) {
-                                                                                showNotification('No submissions to review in this set.', 'info');
-                                                                                return;
-                                                                            }
-                                                                            setSelectedSetSubmissions(latestSubmissions);
-                                                                            setIsReviewingSet(true);
-                                                                        }}
-                                                                        title="Review Entire Set"
-                                                                        style={{ padding: '0.35rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}
-                                                                    >
-                                                                        <Eye size={14} style={{ marginRight: '4px' }} /> Review Set {setNum}
-                                                                    </button>
-                                                                    <button
-                                                                        className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            // Get the latest submission for each file extension per task
-                                                                            const latestSubmissions = tasks.flatMap((subs: any) => {
-                                                                                const latestByKey: Record<string, any> = {};
-                                                                                for (const sub of subs) {
-                                                                                    const fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'unknown';
-                                                                                    const ext = fileName.split('.').pop()?.toLowerCase() || 'unknown';
-                                                                                    const key = (ext === 'zip' || ext === 'rar') ? fileName : ext;
-                                                                                    if (!latestByKey[key]) {
-                                                                                        latestByKey[key] = sub;
-                                                                                    }
-                                                                                }
-                                                                                return Object.values(latestByKey);
-                                                                            });
-                                                                            handleBulkDownload(latestSubmissions, 'submissions');
-                                                                        }}
-                                                                        disabled={isBulkDownloading}
-                                                                        title="Download Trainee Submissions"
-                                                                        style={{ padding: '0.35rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}
-                                                                    >
-                                                                        <UploadCloud size={14} style={{ transform: 'rotate(180deg)', marginRight: '4px' }} /> Download Submissions
-                                                                    </button>
-                                                                    {isSetExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                                                                    return Object.values(latestByKey);
+                                                                                });
+                                                                                handleBulkDownload(latestSubmissions, 'submissions');
+                                                                            }}
+                                                                            disabled={isBulkDownloading}
+                                                                            title="Download Trainee Submissions"
+                                                                            style={{ padding: '0.35rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}
+                                                                        >
+                                                                            <UploadCloud size={14} style={{ transform: 'rotate(180deg)', marginRight: '4px' }} /> Download Submissions
+                                                                        </button>
+                                                                        {isSetExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                            {isSetExpanded && (
-                                                                <div className="set-tasks-grid">
-                                                                    {tasks.map((taskSubmissions: any) => {
-                                                                        const sortedSubs = [...taskSubmissions].sort((a: any, b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime());
-                                                                        const latestSub = sortedSubs[0];
+                                                                {isSetExpanded && (
+                                                                    <div className="set-tasks-list">
+                                                                        {tasks.map((taskSubmissions: any) => {
+                                                                            const sortedSubs = [...taskSubmissions].sort((a: any, b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime());
+                                                                            const latestSub = sortedSubs[0];
 
-                                                                        return (
-                                                                            <div key={latestSub.task.id} className="submission-card small">
-                                                                                <div className="card-header compact">
-                                                                                    <span className="set-tag">Unit {latestSub.task.task_code}</span>
-                                                                                    <div className={`status-badge ${latestSub.status}`}>
-                                                                                        {latestSub.status === 'approved' && <CheckCircle2 size={12} />}
-                                                                                        {latestSub.status === 'pending' && <Clock size={12} />}
-                                                                                        {latestSub.status === 'rejected' && <XCircle size={12} />}
-                                                                                        <span>{latestSub.status.charAt(0).toUpperCase() + latestSub.status.slice(1)}</span>
+                                                                            return (
+                                                                                <div key={latestSub.task.id} className="task-list-row">
+                                                                                    <div className="task-list-left">
+                                                                                        <div className={`task-status-dot ${latestSub.status}`} title={latestSub.status.toUpperCase()}>
+                                                                                            {latestSub.status === 'approved' && <CheckCircle2 size={14} />}
+                                                                                            {latestSub.status === 'pending' && <Clock size={14} />}
+                                                                                            {latestSub.status === 'rejected' && <XCircle size={14} />}
+                                                                                        </div>
+                                                                                        <span className="task-code-badge">Unit {latestSub.task.task_code}</span>
+                                                                                        <span className="task-list-title" title={latestSub.task.title}>{latestSub.task.title}</span>
+                                                                                    </div>
+                                                                                    <div className="task-list-right">
+                                                                                        {sortedSubs.length > 1 && <span className="task-attempt-tag">{sortedSubs.length} attempts</span>}
+                                                                                        <span className="task-date"><Clock size={12} /> {new Date(latestSub.submitted_at).toLocaleDateString()} {new Date(latestSub.submitted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                                                        <div className="task-row-actions">
+                                                                                            <button className="row-btn-primary" onClick={() => {
+                                                                                                setSelectedTaskSubmissions(sortedSubs);
+                                                                                                setIsReviewing(true);
+                                                                                            }}>
+                                                                                                <Eye size={13} /> Review
+                                                                                            </button>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <h3 className="task-title-trunc">{latestSub.task.title}</h3>
-                                                                                <div className="submission-meta compact-meta">
-                                                                                    <Clock size={12} /> {new Date(latestSub.submitted_at).toLocaleDateString()}
-                                                                                    {sortedSubs.length > 1 && <span className="attempt-badge">{sortedSubs.length} Attempts</span>}
-                                                                                </div>
-                                                                                <div className="card-actions compact-actions">
-                                                                                    <button className="btn-secondary" onClick={() => handleDownloadTraineeFile(latestSub)}>
-                                                                                        <Download size={14} /> DWG
-                                                                                    </button>
-                                                                                    <button className="btn-primary" onClick={() => {
-                                                                                        setSelectedTaskSubmissions(sortedSubs);
-                                                                                        setIsReviewing(true);
-                                                                                    }}>
-                                                                                        <Eye size={14} /> Review
-                                                                                    </button>
-                                                                                </div>
-                                                                            </div>
-                                                                        );
-                                                                    })}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    );
-                                                })}
+                                                                            );
+                                                                        })}
+                                                                        <div style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'center' }}>
+                                                                            <button
+                                                                                className="task-action-btn primary"
+                                                                                onClick={(e) => {
+                                                                                    e.stopPropagation();
+                                                                                    const latestSubmissions = tasks.flatMap((subs: any) => {
+                                                                                        const latestByKey: Record<string, any> = {};
+                                                                                        for (const sub of subs) {
+                                                                                            const fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'unknown';
+                                                                                            const ext = fileName.split('.').pop()?.toLowerCase() || 'unknown';
+                                                                                            const key = (ext === 'zip' || ext === 'rar') ? fileName : ext;
+                                                                                            if (!latestByKey[key]) {
+                                                                                                latestByKey[key] = sub;
+                                                                                            }
+                                                                                        }
+                                                                                        return Object.values(latestByKey);
+                                                                                    });
+                                                                                    if (latestSubmissions.length === 0) {
+                                                                                        showNotification('No submissions to review in this set.', 'info');
+                                                                                        return;
+                                                                                    }
+                                                                                    setSelectedSetSubmissions(latestSubmissions);
+                                                                                    setIsReviewingSet(true);
+                                                                                }}
+                                                                                title={`Review Set ${displaySetNum}`}
+                                                                                style={{ width: '100%', padding: '0.75rem', background: '#DD3DFA', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600, boxShadow: '0 2px 8px rgba(221, 61, 250, 0.3)' }}
+                                                                            >
+                                                                                <Eye size={16} /> REVIEW SET {displaySetNum}
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
                                             </div>
                                         )}
                                     </div>
                                 );
-                            })
-                        ) : (
-                            <div className="no-submissions">
-                                <CheckCircle2 size={48} />
-                                <h3>All caught up!</h3>
-                                <p>No pending submissions require your review at this time.</p>
-                            </div>
-                        )}
+                            });
+                        })()}
                     </div>
                 )}
 
@@ -825,7 +992,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                     t.username?.toLowerCase().includes(searchTerm.toLowerCase())
                                 )
                                 .map((trainee: any) => (
-                                                                    <div key={trainee.id} className="trainee-group-card">
+                                    <div key={trainee.id} className="trainee-group-card">
                                         <div className="trainee-group-header" style={{ cursor: 'default' }}>
                                             <div className="trainee-info">
                                                 <div style={{ position: 'relative' }}>
@@ -852,83 +1019,83 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className="trainee-group-body" style={{ padding: '12px 16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '16px' }}>
-                                        {/* 3D Modeling Course Progress */}
-                                        <div className="set-group" style={{ margin: 0 }}>
-                                            <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                <h4>3D Modeling Course</h4>
-                                                <span className="task-count-dim">{trainee.progress?.course_3d?.completed || 0}/{trainee.progress?.course_3d?.total || 0} completed</span>
+                                            {/* 3D Modeling Course Progress */}
+                                            <div className="set-group" style={{ margin: 0 }}>
+                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
+                                                    <h4>3D Modeling Course</h4>
+                                                    <span className="task-count-dim">{trainee.progress?.course_3d?.completed || 0}/{trainee.progress?.course_3d?.total || 0} completed</span>
+                                                </div>
+                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
+                                                    <div style={{
+                                                        height: '100%',
+                                                        borderRadius: '3px',
+                                                        background: 'var(--accent-blue, #3b82f6)',
+                                                        width: `${trainee.progress?.course_3d?.percentage || 0}%`,
+                                                        transition: 'width 0.4s ease'
+                                                    }} />
+                                                </div>
                                             </div>
-                                            <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                <div style={{
-                                                    height: '100%',
-                                                    borderRadius: '3px',
-                                                    background: 'var(--accent-blue, #3b82f6)',
-                                                    width: `${trainee.progress?.course_3d?.percentage || 0}%`,
-                                                    transition: 'width 0.4s ease'
-                                                }} />
-                                            </div>
-                                        </div>
 
-                                        {/* 3D Practical Assessment */}
-                                        <div className="set-group" style={{ margin: 0 }}>
-                                            <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                <h4>3D Practical Assessment</h4>
-                                                <span className="task-count-dim">{trainee.progress?.practical_3d?.completed || 0}/{trainee.progress?.practical_3d?.total || 0} approved</span>
+                                            {/* 3D Practical Assessment */}
+                                            <div className="set-group" style={{ margin: 0 }}>
+                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
+                                                    <h4>3D Practical Assessment</h4>
+                                                    <span className="task-count-dim">{trainee.progress?.practical_3d?.completed || 0}/{trainee.progress?.practical_3d?.total || 0} approved</span>
+                                                </div>
+                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
+                                                    <div style={{
+                                                        height: '100%',
+                                                        borderRadius: '3px',
+                                                        background: 'var(--accent-green, #22c55e)',
+                                                        width: `${trainee.progress?.practical_3d?.percentage || 0}%`,
+                                                        transition: 'width 0.4s ease'
+                                                    }} />
+                                                </div>
                                             </div>
-                                            <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                <div style={{
-                                                    height: '100%',
-                                                    borderRadius: '3px',
-                                                    background: 'var(--accent-green, #22c55e)',
-                                                    width: `${trainee.progress?.practical_3d?.percentage || 0}%`,
-                                                    transition: 'width 0.4s ease'
-                                                }} />
-                                            </div>
-                                        </div>
 
-                                        {/* 2D Detailing Course Progress */}
-                                        <div className="set-group" style={{ margin: 0 }}>
-                                            <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                <h4>2D Detailing Course</h4>
-                                                <span className="task-count-dim">{trainee.progress?.course_2d?.completed || 0}/{trainee.progress?.course_2d?.total || 0} completed</span>
+                                            {/* 2D Detailing Course Progress */}
+                                            <div className="set-group" style={{ margin: 0 }}>
+                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
+                                                    <h4>2D Detailing Course</h4>
+                                                    <span className="task-count-dim">{trainee.progress?.course_2d?.completed || 0}/{trainee.progress?.course_2d?.total || 0} completed</span>
+                                                </div>
+                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
+                                                    <div style={{
+                                                        height: '100%',
+                                                        borderRadius: '3px',
+                                                        background: 'var(--color-secondary, #ec4899)',
+                                                        width: `${trainee.progress?.course_2d?.percentage || 0}%`,
+                                                        transition: 'width 0.4s ease'
+                                                    }} />
+                                                </div>
                                             </div>
-                                            <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                <div style={{
-                                                    height: '100%',
-                                                    borderRadius: '3px',
-                                                    background: 'var(--color-secondary, #ec4899)',
-                                                    width: `${trainee.progress?.course_2d?.percentage || 0}%`,
-                                                    transition: 'width 0.4s ease'
-                                                }} />
-                                            </div>
-                                        </div>
 
-                                        {/* 2D Detailing Assessment */}
-                                        <div className="set-group" style={{ margin: 0 }}>
-                                            <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                <h4>2D Detailing Assessment</h4>
-                                                <span className="task-count-dim">{trainee.progress?.practical_2d?.completed || 0}/{trainee.progress?.practical_2d?.total || 0} approved</span>
-                                            </div>
-                                            <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                <div style={{
-                                                    height: '100%',
-                                                    borderRadius: '3px',
-                                                    background: 'var(--accent-orange, #f59e0b)',
-                                                    width: `${trainee.progress?.practical_2d?.percentage || 0}%`,
-                                                    transition: 'width 0.4s ease'
-                                                }} />
+                                            {/* 2D Detailing Assessment */}
+                                            <div className="set-group" style={{ margin: 0 }}>
+                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
+                                                    <h4>2D Detailing Assessment</h4>
+                                                    <span className="task-count-dim">{trainee.progress?.practical_2d?.completed || 0}/{trainee.progress?.practical_2d?.total || 0} approved</span>
+                                                </div>
+                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
+                                                    <div style={{
+                                                        height: '100%',
+                                                        borderRadius: '3px',
+                                                        background: 'var(--accent-orange, #f59e0b)',
+                                                        width: `${trainee.progress?.practical_2d?.percentage || 0}%`,
+                                                        transition: 'width 0.4s ease'
+                                                    }} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))
-                    )}
-                </div>
-            )}
+                                ))
+                        )}
+                    </div>
+                )}
 
                 {/* Set Configuration Tab */}
                 {activeMainTab === 'sets' && (
-                    <TraineeSetConfiguration searchTerm={searchTerm} />
+                    <TraineeSetConfiguration />
                 )}
 
                 {/* Notifications Tab */}
@@ -938,7 +1105,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                             <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Recent Activities</h3>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
                                 {unreadCount > 0 && (
-                                    <button 
+                                    <button
                                         onClick={handleMarkAllAsRead}
                                         style={{
                                             background: 'rgba(59, 130, 246, 0.1)',
@@ -962,7 +1129,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                     </button>
                                 )}
                                 {notifications.length > 0 && (
-                                    <button 
+                                    <button
                                         onClick={handleClearAll}
                                         style={{
                                             background: 'rgba(239, 68, 68, 0.1)',
@@ -1108,19 +1275,45 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     {notif.message}
                                                 </p>
                                                 {notif.type && (
-                                                    <div style={{ marginTop: '4px' }}>
+                                                    <div style={{ marginTop: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                         <span style={{
                                                             fontSize: '0.75rem',
                                                             textTransform: 'uppercase',
                                                             letterSpacing: '0.05em',
                                                             fontWeight: 600,
                                                             color: notif.type === 'new_submission' ? 'var(--accent-blue, #3b82f6)' :
-                                                                   notif.type === 'feedback_reply' ? 'var(--accent-orange, #f59e0b)' :
-                                                                   notif.type === 'course_completed' ? 'var(--accent-green, #22c55e)' :
-                                                                   'var(--text-muted)'
+                                                                notif.type === 'feedback_reply' ? 'var(--accent-orange, #f59e0b)' :
+                                                                    notif.type === 'course_completed' ? 'var(--accent-green, #22c55e)' :
+                                                                        notif.type === 'assessment_completion' ? 'var(--accent-purple, #a855f7)' :
+                                                                            'var(--text-muted)'
                                                         }}>
                                                             {notif.type.replace('_', ' ')}
                                                         </span>
+                                                        {notif.type === 'assessment_completion' && notif.sender_id && (
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleReviewLaterAndOpenNext(notif);
+                                                                }}
+                                                                style={{
+                                                                    padding: '4px 8px',
+                                                                    fontSize: '0.75rem',
+                                                                    background: 'var(--bg-main)',
+                                                                    border: '1px solid var(--border-color)',
+                                                                    borderRadius: '4px',
+                                                                    color: 'var(--text-main)',
+                                                                    cursor: 'pointer',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: '4px',
+                                                                    transition: 'all 0.2s'
+                                                                }}
+                                                                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                                                onMouseLeave={(e) => e.currentTarget.style.background = 'var(--bg-main)'}
+                                                            >
+                                                                <Unlock size={12} /> Review Later & Open Next Set
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
@@ -1133,111 +1326,142 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
                 {/* Review Modal with History & Chat */}
                 <Modal
-                    isOpen={!!(isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0)}
+                    isOpen={isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0}
                     onClose={() => setIsReviewing(false)}
                     title={`Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Unit ${selectedTaskSubmissions?.[0]?.task?.task_code}`}
                     tag="SUBMISSION_REVIEW"
                     size="xl"
                 >
                     {selectedTaskSubmissions && selectedTaskSubmissions.length > 0 && (
-                        <div className="modal-body split-layout" style={{ display: 'flex', gap: '2rem', height: '100%', minHeight: '500px' }}>
+                        <div className="modal-body split-layout" style={{ display: 'flex', gap: '2.5rem', height: '100%', minHeight: '550px', padding: '1rem 0.5rem' }}>
                             {/* Left Side: Submission History & Chat */}
-                            <div className="history-chat-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem', borderRight: '1px solid var(--border-color)', paddingRight: '1.5rem', maxHeight: '70vh', overflowY: 'auto' }}>
-                                <h4><MessageSquare size={16} /> Submission History & Feedback</h4>
-                                <div className="history-timeline">
-                                    {selectedTaskSubmissions.map((sub, index) => (
-                                        <div key={sub.id} className="history-node" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-                                            <div className="node-marker" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                <div className={`node-dot ${sub.status}`} style={{ width: '12px', height: '12px', borderRadius: '50%', background: sub.status === 'approved' ? 'var(--color-success)' : sub.status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)' }}></div>
-                                                {index !== selectedTaskSubmissions.length - 1 && <div className="node-line" style={{ width: '2px', flex: 1, background: 'var(--border-color)', marginTop: '4px' }}></div>}
-                                            </div>
-                                            <div className="node-content" style={{ flex: 1 }}>
-                                                <div className="node-header" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                                                    <span className="node-title" style={{ fontWeight: 600 }}>Attempt {selectedTaskSubmissions.length - index}</span>
-                                                    <span className="node-date">{new Date(sub.submitted_at).toLocaleString()}</span>
+                            <div className="history-chat-panel" style={{ flex: '1.2', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingRight: '1rem', maxHeight: '70vh', overflowY: 'auto' }}>
+                                <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)', margin: 0, paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <MessageSquare size={18} style={{ color: 'var(--accent-blue)' }} /> Submission History & Feedback
+                                </h4>
+                                <div className="history-timeline" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingLeft: '0.5rem' }}>
+                                    {selectedTaskSubmissions.map((sub, index) => {
+                                        const isApproved = sub.status === 'approved';
+                                        const isRejected = sub.status === 'rejected';
+                                        const statusColor = isApproved ? 'var(--color-success)' : isRejected ? 'var(--color-error)' : 'var(--color-warning)';
+                                        return (
+                                            <div key={sub.id} className="history-node" style={{ display: 'flex', gap: '1.5rem', marginBottom: '0.5rem' }}>
+                                                <div className="node-marker" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0.25rem' }}>
+                                                    <div className={`node-dot ${sub.status}`} style={{ width: '14px', height: '14px', borderRadius: '50%', background: statusColor, boxShadow: `0 0 12px ${statusColor}` }}></div>
+                                                    {index !== selectedTaskSubmissions.length - 1 && <div className="node-line" style={{ width: '2px', flex: 1, background: 'linear-gradient(to bottom, rgba(255,255,255,0.1), transparent)', marginTop: '8px', minHeight: '40px' }}></div>}
                                                 </div>
-                                                <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px', marginBottom: '0.75rem' }}>
-                                                    <FileText size={14} />
-                                                    <span className="file-name" title={sub.submission_file_path?.split(/[\\/]/).pop()} style={{ fontSize: '0.85rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                        {sub.submission_file_path?.split(/[\\/]/).pop()}
-                                                    </span>
-                                                    <div className="node-file-actions" style={{ display: 'flex', gap: '0.5rem' }}>
-                                                        <button
-                                                            className="action-icon-btn primary"
-                                                            onClick={() => handleOpenInIJCAD(sub)}
-                                                            title="Open in CAD"
-                                                            style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
-                                                        >
-                                                            <Play size={14} /> Open
-                                                        </button>
-                                                        <button
-                                                            className="action-icon-btn"
-                                                            onClick={() => handleDownloadTraineeFile(sub)}
-                                                            title="Download File"
-                                                            style={{ padding: '0.25rem' }}
-                                                        >
-                                                            <Download size={14} />
-                                                        </button>
+                                                <div className="node-content" style={{ flex: 1, background: 'rgba(255,255,255,0.015)', borderRadius: '12px', padding: '1.25rem', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.3s ease' }}
+                                                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'; }}
+                                                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.015)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+                                                >
+                                                    <div className="node-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                                        <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Attempt {selectedTaskSubmissions.length - index}</span>
+                                                        <span className="node-date" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'rgba(0,0,0,0.2)', padding: '4px 10px', borderRadius: '20px' }}>{new Date(sub.submitted_at).toLocaleString()}</span>
                                                     </div>
-                                                </div>
-
-                                                {/* Chat / Feedback Section */}
-                                                {sub.feedback && sub.feedback.length > 0 ? (
-                                                    sub.feedback.map(fb => (
-                                                        <div key={fb.id} className="chat-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                                            <div className="chat-bubble trainer-chat" style={{ background: 'rgba(221, 77, 250, 0.05)', border: '1px solid rgba(221, 77, 250, 0.1)', padding: '0.75rem', borderRadius: '8px', width: 'fit-content', maxWidth: '85%' }}>
-                                                                <span className="chat-author" style={{ fontSize: '0.7rem', color: 'var(--primary)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>You (Trainer)</span>
-                                                                <p style={{ margin: 0, fontSize: '0.85rem' }}>{fb.comments || "No comments provided."}</p>
-                                                                {fb.checkback_file_path && (
-                                                                    <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--primary)', marginTop: '0.5rem', textDecoration: 'underline' }}>
-                                                                        <FileText size={12} /> Checkback File
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            {fb.trainee_reply && (
-                                                                <div className="chat-bubble trainee-chat" style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-color)', padding: '0.75rem', borderRadius: '8px', width: 'fit-content', maxWidth: '85%', alignSelf: 'flex-end', marginLeft: 'auto' }}>
-                                                                    <span className="chat-author" style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>{sub.user?.full_name} (Trainee)</span>
-                                                                    <p style={{ margin: 0, fontSize: '0.85rem' }}>{fb.trainee_reply}</p>
-                                                                    {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.65rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.25rem', textAlign: 'right' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
-                                                                </div>
-                                                            )}
+                                                    <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '1.25rem' }}>
+                                                        <div style={{ padding: '8px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '6px', color: 'var(--accent-blue)' }}>
+                                                            <FileText size={18} />
                                                         </div>
-                                                    ))
-                                                ) : (
-                                                    <div className="empty-chat-state" style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-muted)' }}>
-                                                        <MessageSquare size={24} className="empty-chat-icon" style={{ opacity: 0.5, marginBottom: '0.5rem' }} />
-                                                        <p style={{ margin: 0, fontSize: '0.8rem' }}>{sub.status === 'pending' ? 'Awaiting your review. This is the first attempt.' : 'No feedback left for this attempt.'}</p>
+                                                        <span className="file-name" title={sub.submission_file_path?.split(/[\\/]/).pop()} style={{ fontSize: '0.9rem', fontWeight: 500, flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-light)' }}>
+                                                            {sub.submission_file_path?.split(/[\\/]/).pop()}
+                                                        </span>
+                                                        <div className="node-file-actions" style={{ display: 'flex', gap: '0.5rem' }}>
+                                                            <button
+                                                                className="action-icon-btn primary"
+                                                                onClick={() => handleOpenInIJCAD(sub)}
+                                                                title="Open in CAD"
+                                                                style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', background: 'var(--accent-blue)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.4)'; }}
+                                                                onMouseLeave={(e) => { e.currentTarget.style.filter = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+                                                            >
+                                                                <Play size={14} /> Open
+                                                            </button>
+                                                            <button
+                                                                className="action-icon-btn"
+                                                                onClick={() => handleDownloadTraineeFile(sub)}
+                                                                title="Download File"
+                                                                style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-light)', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
+                                                                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
+                                                            >
+                                                                <Download size={16} />
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                )}
+
+                                                    {/* Chat / Feedback Section */}
+                                                    <div style={{ background: 'rgba(0,0,0,0.15)', borderRadius: '10px', padding: '1rem', border: '1px solid rgba(255,255,255,0.02)' }}>
+                                                        {sub.feedback && sub.feedback.length > 0 ? (
+                                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                                                {sub.feedback.map(fb => (
+                                                                    <div key={fb.id} className="chat-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                                                        <div className="chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                                                            <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /> You (Trainer)</span>
+                                                                            <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-light)' }}>{fb.comments || "No comments provided."}</p>
+                                                                            {fb.checkback_file_path && (
+                                                                                <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#e879f9', marginTop: '0.75rem', padding: '6px 10px', background: 'rgba(221, 77, 250, 0.1)', borderRadius: '6px', transition: 'all 0.2s', fontWeight: 600 }}
+                                                                                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(221, 77, 250, 0.2)'; }}
+                                                                                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(221, 77, 250, 0.1)'; }}
+                                                                                >
+                                                                                    <FileText size={14} /> Download Checkback
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                        {fb.trainee_reply && (
+                                                                            <div className="chat-bubble trainee-chat" style={{ background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '12px 12px 0 12px', width: 'fit-content', maxWidth: '90%', alignSelf: 'flex-end', marginLeft: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                                                                <span className="chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{sub.user?.full_name} (Trainee) <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} /></span>
+                                                                                <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-main)' }}>{fb.trainee_reply}</p>
+                                                                                {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.5rem', textAlign: 'right' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <div className="empty-chat-state" style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--text-muted)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '8px' }}>
+                                                                <MessageSquare size={32} className="empty-chat-icon" style={{ opacity: 0.3, marginBottom: '1rem' }} />
+                                                                <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 500 }}>
+                                                                    {sub.status === 'pending'
+                                                                        ? `Awaiting your review (Attempt ${selectedTaskSubmissions.length - index}).`
+                                                                        : 'No feedback history for this attempt.'
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
 
                             {/* Right Side: Action Form */}
-                            <div className="action-panel" style={{ width: '300px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                                <div className="review-task-info">
-                                    <span className="label" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Current Status</span>
-                                    <div className={`status-badge large ${selectedTaskSubmissions[0].status}`} style={{ fontSize: '1rem', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '6px', textAlign: 'center', marginTop: '0.25rem', width: '100%', background: selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.1)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)', color: selectedTaskSubmissions[0].status === 'approved' ? 'var(--color-success)' : selectedTaskSubmissions[0].status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)' }}>
-                                        {selectedTaskSubmissions[0].status.toUpperCase()}
+                            <div className="action-panel" style={{ flex: '0.8', minWidth: '340px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem', background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
+                                <div className="review-task-info" style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.03)' }}>
+                                    <span className="label" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '1px' }}>Current Status</span>
+                                    <div className={`status-badge large ${selectedTaskSubmissions[0].status}`} style={{ fontSize: '1.1rem', fontWeight: 800, padding: '0.75rem 1rem', borderRadius: '8px', textAlign: 'center', marginTop: '0.5rem', width: '100%', textTransform: 'uppercase', letterSpacing: '2px', background: selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.15)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)', color: selectedTaskSubmissions[0].status === 'approved' ? 'var(--color-success)' : selectedTaskSubmissions[0].status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)', border: `1px solid ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.3)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`, boxShadow: `0 0 15px ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.1)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)'}` }}>
+                                        {selectedTaskSubmissions[0].status}
                                     </div>
                                 </div>
 
-                                <div className="feedback-form-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    <h4>Provide Feedback</h4>
-                                    <div className="form-group">
-                                        <label>Comments</label>
+                                <div className="feedback-form-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
+                                    <h4 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)', margin: 0, borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>Provide Feedback</h4>
+
+                                    <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Comments</label>
                                         <textarea
-                                            placeholder="Provide constructive comments..."
+                                            placeholder="Write your feedback here..."
                                             value={feedbackComments}
                                             onChange={(e) => setFeedbackComments(e.target.value)}
-                                            style={{ width: '100%', minHeight: '100px', padding: '0.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
+                                            style={{ width: '100%', minHeight: '140px', padding: '1rem', borderRadius: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-light)', fontSize: '0.9rem', lineHeight: 1.5, resize: 'vertical', outline: 'none', transition: 'border-color 0.2s, box-shadow 0.2s' }}
+                                            onFocus={(e) => { e.target.style.borderColor = 'var(--accent-blue)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                            onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}
                                         ></textarea>
                                     </div>
 
-                                    <div className="form-group">
-                                        <label>Excel Checkback File (Optional)</label>
+                                    <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Excel Checkback (Optional)</label>
                                         <div className="file-upload-area" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             <input
                                                 type="file"
@@ -1246,9 +1470,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
                                                 style={{ display: 'none' }}
                                             />
-                                            <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>
+                                            <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.8rem', background: feedbackFile ? 'rgba(59, 130, 246, 0.1)' : 'rgba(0,0,0,0.2)', border: feedbackFile ? '1px solid var(--accent-blue)' : '1px dashed rgba(255,255,255,0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.85rem', color: feedbackFile ? 'var(--accent-blue)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: 500 }}
+                                                onMouseEnter={(e) => { if (!feedbackFile) { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; } }}
+                                                onMouseLeave={(e) => { if (!feedbackFile) { e.currentTarget.style.background = 'rgba(0,0,0,0.2)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; } }}
+                                            >
                                                 <Upload size={18} />
-                                                <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
+                                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>{feedbackFile ? feedbackFile.name : 'Upload File'}</span>
                                             </label>
                                             {feedbackFile && (
                                                 <button
@@ -1260,31 +1487,39 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         const fileInput = document.getElementById('checkback-file') as HTMLInputElement;
                                                         if (fileInput) fileInput.value = '';
                                                     }}
-                                                    title="Remove selected file"
-                                                    style={{ padding: '0.25rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)' }}
+                                                    title="Remove file"
+                                                    style={{ padding: '0.5rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', cursor: 'pointer', color: 'var(--color-error)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+                                                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'; }}
+                                                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
                                                 >
-                                                    <XCircle size={16} />
+                                                    <XCircle size={18} />
                                                 </button>
                                             )}
                                         </div>
                                     </div>
 
-                                    <div className="global-modal-footer" style={{ marginTop: '1rem' }}>
+                                    <div style={{ flex: 1 }}></div>
+
+                                    <div className="modal-action-buttons" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                                         <button
-                                            className="global-btn-danger"
+                                            className="btn-reject"
                                             onClick={() => handleSubmitFeedback('rejected')}
                                             disabled={isSubmittingFeedback}
-                                            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                            style={{ flex: 1, padding: '0.8rem', background: 'linear-gradient(to bottom, #ef4444, #dc2626)', border: 'none', color: '#fff', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.95rem', boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)', transition: 'all 0.2s', opacity: isSubmittingFeedback ? 0.7 : 1 }}
+                                            onMouseEnter={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.4)'; } }}
+                                            onMouseLeave={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(239, 68, 68, 0.3)'; } }}
                                         >
-                                            <XCircle size={16} /> Reject
+                                            <XCircle size={18} /> Reject
                                         </button>
                                         <button
-                                            className="global-btn-success"
+                                            className="btn-approve"
                                             onClick={() => handleSubmitFeedback('approved')}
                                             disabled={isSubmittingFeedback}
-                                            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                            style={{ flex: 1, padding: '0.8rem', background: 'linear-gradient(to bottom, #22c55e, #16a34a)', border: 'none', color: '#fff', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.95rem', boxShadow: '0 4px 15px rgba(34, 197, 94, 0.3)', transition: 'all 0.2s', opacity: isSubmittingFeedback ? 0.7 : 1 }}
+                                            onMouseEnter={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(34, 197, 94, 0.4)'; } }}
+                                            onMouseLeave={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(34, 197, 94, 0.3)'; } }}
                                         >
-                                            <CheckCircle2 size={16} /> Approve
+                                            <CheckCircle2 size={18} /> Approve
                                         </button>
                                     </div>
                                 </div>
@@ -1293,99 +1528,99 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     )}
                 </Modal>
 
-            {/* Bulk Review Modal for Entire Set */}
-            <Modal
-                isOpen={!!(isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0)}
-                onClose={() => setIsReviewingSet(false)}
-                title={`Review Entire Set ${selectedSetSubmissions?.[0]?.task?.set_number} for ${selectedSetSubmissions?.[0]?.user?.full_name}`}
-                tag="BULK_SET_REVIEW"
-                size="lg"
-            >
-                {selectedSetSubmissions && selectedSetSubmissions.length > 0 && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div className="bulk-review-info" style={{ padding: '1rem', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
-                            <h4 style={{ margin: '0 0 0.5rem 0', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <Eye size={18} /> You are reviewing {selectedSetSubmissions.length} tasks
-                            </h4>
-                            <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                                The feedback and status you provide below will be applied to all <strong>{selectedSetSubmissions.length}</strong> tasks simultaneously.
-                            </p>
-                            <div style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                {selectedSetSubmissions.map(sub => (
-                                    <span key={sub.id} style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
-                                        Unit {sub.task?.task_code}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="feedback-form-panel" style={{ background: 'rgba(255,255,255,0.01)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <h4>Provide Bulk Feedback</h4>
-                            <div className="form-group">
-                                <label>Overall Comments</label>
-                                <textarea
-                                    placeholder="Provide overall feedback for the entire set..."
-                                    value={feedbackComments}
-                                    onChange={(e) => setFeedbackComments(e.target.value)}
-                                    style={{ width: '100%', minHeight: '120px', padding: '0.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
-                                ></textarea>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Excel Checkback File (Optional, applies to all)</label>
-                                <div className="file-upload-area" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <input
-                                        type="file"
-                                        id="bulk-checkback-file"
-                                        accept=".xlsx,.xls"
-                                        onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
-                                        style={{ display: 'none' }}
-                                    />
-                                    <label htmlFor="bulk-checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>
-                                        <Upload size={18} />
-                                        <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
-                                    </label>
-                                    {feedbackFile && (
-                                        <button
-                                            type="button"
-                                            className="clear-file-btn"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setFeedbackFile(null);
-                                                const fileInput = document.getElementById('bulk-checkback-file') as HTMLInputElement;
-                                                if (fileInput) fileInput.value = '';
-                                            }}
-                                            title="Remove selected file"
-                                            style={{ padding: '0.25rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)' }}
-                                        >
-                                            <XCircle size={16} />
-                                        </button>
-                                    )}
+                {/* Bulk Review Modal for Entire Set */}
+                <Modal
+                    isOpen={isReviewingSet && selectedSetSubmissions && selectedSetSubmissions.length > 0}
+                    onClose={() => setIsReviewingSet(false)}
+                    title={`Review Entire Set ${selectedSetSubmissions?.[0]?.task?.set_number} for ${selectedSetSubmissions?.[0]?.user?.full_name}`}
+                    tag="BULK_SET_REVIEW"
+                    size="lg"
+                >
+                    {selectedSetSubmissions && selectedSetSubmissions.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div className="bulk-review-info" style={{ padding: '1rem', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+                                <h4 style={{ margin: '0 0 0.5rem 0', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <Eye size={18} /> You are reviewing {selectedSetSubmissions.length} tasks
+                                </h4>
+                                <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                                    The feedback and status you provide below will be applied to all <strong>{selectedSetSubmissions.length}</strong> tasks simultaneously.
+                                </p>
+                                <div style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {selectedSetSubmissions.map(sub => (
+                                        <span key={sub.id} style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
+                                            Unit {sub.task?.task_code}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
 
-                            <div className="global-modal-footer" style={{ marginTop: '1.5rem' }}>
-                                <button
-                                    className="global-btn-danger"
-                                    onClick={() => handleBulkSubmitFeedback('rejected')}
-                                    disabled={isSubmittingFeedback}
-                                    style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
-                                >
-                                    <XCircle size={16} /> Reject Entire Set
-                                </button>
-                                <button
-                                    className="global-btn-success"
-                                    onClick={() => handleBulkSubmitFeedback('approved')}
-                                    disabled={isSubmittingFeedback}
-                                    style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
-                                >
-                                    <CheckCircle2 size={16} /> Approve Entire Set
-                                </button>
+                            <div className="feedback-form-panel" style={{ background: 'rgba(255,255,255,0.01)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <h4>Provide Bulk Feedback</h4>
+                                <div className="form-group">
+                                    <label>Overall Comments</label>
+                                    <textarea
+                                        placeholder="Provide overall feedback for the entire set..."
+                                        value={feedbackComments}
+                                        onChange={(e) => setFeedbackComments(e.target.value)}
+                                        style={{ width: '100%', minHeight: '120px', padding: '0.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
+                                    ></textarea>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Excel Checkback File (Optional, applies to all)</label>
+                                    <div className="file-upload-area" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <input
+                                            type="file"
+                                            id="bulk-checkback-file"
+                                            accept=".xlsx,.xls"
+                                            onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
+                                            style={{ display: 'none' }}
+                                        />
+                                        <label htmlFor="bulk-checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>
+                                            <Upload size={18} />
+                                            <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
+                                        </label>
+                                        {feedbackFile && (
+                                            <button
+                                                type="button"
+                                                className="clear-file-btn"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setFeedbackFile(null);
+                                                    const fileInput = document.getElementById('bulk-checkback-file') as HTMLInputElement;
+                                                    if (fileInput) fileInput.value = '';
+                                                }}
+                                                title="Remove selected file"
+                                                style={{ padding: '0.25rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)' }}
+                                            >
+                                                <XCircle size={16} />
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="modal-action-buttons" style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
+                                    <button
+                                        className="btn-reject"
+                                        onClick={() => handleBulkSubmitFeedback('rejected')}
+                                        disabled={isSubmittingFeedback}
+                                        style={{ flex: 1, padding: '0.6rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: 'var(--color-error)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                    >
+                                        <XCircle size={16} /> Reject Entire Set
+                                    </button>
+                                    <button
+                                        className="btn-approve"
+                                        onClick={() => handleBulkSubmitFeedback('approved')}
+                                        disabled={isSubmittingFeedback}
+                                        style={{ flex: 1, padding: '0.6rem', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', color: 'var(--color-success)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                    >
+                                        <CheckCircle2 size={16} /> Approve Entire Set
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            </Modal>
+                    )}
+                </Modal>
             </div>
 
             {/* Right Telemetry Sidebar Panel */}
@@ -1450,9 +1685,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         </div>
                                         <TraineeStatusLabel isOnline={!!trainee.is_online} lastUpdated={trainee.last_updated} />
                                     </div>
-                                    <div style={{ 
-                                        padding: '6px 8px', 
-                                        background: trainee.is_online ? 'rgba(34, 197, 94, 0.04)' : 'rgba(255,255,255,0.01)', 
+                                    <div style={{
+                                        padding: '6px 8px',
+                                        background: trainee.is_online ? 'rgba(34, 197, 94, 0.04)' : 'rgba(255,255,255,0.01)',
                                         borderRadius: '4px',
                                         fontSize: '0.75rem',
                                         color: 'var(--text-main)',
@@ -1472,7 +1707,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     </div>
                 </div>
             )}
-            </div>
         </div>
     );
 };

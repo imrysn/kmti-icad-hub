@@ -27,7 +27,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     if (!isOpen) return null;
 
     const getIcon = () => {
-        const iconSize = 18;
+        const iconSize = 24;
         switch (type) {
             case 'danger': return <AlertTriangle size={iconSize} />;
             case 'info': return <Info size={iconSize} />;
@@ -43,14 +43,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             tag={`SYSTEM_REQUEST // ${type.toUpperCase()}`}
             size="sm"
         >
-            <div className="global-modal-body">
-                <div className="hybrid-modal-body" style={{ padding: 0 }}>
-                    <div className={`hybrid-icon-wrapper ${type}`}>
-                        {getIcon()}
-                    </div>
-                    <div className="hybrid-text-wrapper">
-                        <p className="hybrid-message">{message}</p>
-                    </div>
+            <div className="hybrid-modal-body">
+                <div className={`hybrid-icon-wrapper ${type}`}>
+                    {getIcon()}
+                </div>
+                <div className="hybrid-text-wrapper">
+                    <p className="hybrid-message">{message}</p>
                 </div>
             </div>
             

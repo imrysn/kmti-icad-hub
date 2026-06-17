@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Plus, Users, BookOpen, Save, Trash2, Edit3, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder, UploadCloud, Download } from 'lucide-react';
+import { Plus, Users, BookOpen, Save, Trash2, Edit2, Edit3, Check, ChevronDown, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder, UploadCloud, Download, RefreshCw } from 'lucide-react';
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { authService, User } from '../../../services/authService';
 import { useNotification } from '../../../context/NotificationContext';
@@ -11,21 +11,176 @@ import '../../../styles/admin/PracticalManagement.css';
 export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
     const location = useLocation();
-    const [activeSubTab, setActiveSubTab] = useState<'tasks' | 'assignments'>('tasks');
+    const [activeSubTab, setActiveSubTab] = useState<'tasks_3d' | 'tasks_2d' | 'assignments'>('tasks_3d');
     
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const subtab = params.get('subtab');
-        if (subtab && (subtab === 'tasks' || subtab === 'assignments')) {
-            setActiveSubTab(subtab as 'tasks' | 'assignments');
+        if (subtab && (subtab === 'tasks_3d' || subtab === 'tasks_2d' || subtab === 'assignments')) {
+            setActiveSubTab(subtab as 'tasks_3d' | 'tasks_2d' | 'assignments');
+        } else if (subtab === 'tasks') {
+            setActiveSubTab('tasks_3d');
         }
     }, [location.search]);
+
+    useEffect(() => {
+        setSetFilter('all');
+    }, [activeSubTab]);
     
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
     const [setFilter, setSetFilter] = useState<number | 'all'>('all');
     const [allUsers, setAllUsers] = useState<User[]>([]);
     const [mappings, setMappings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [availableSets, setAvailableSets] = useState<number[]>([]);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [customSetNames, setCustomSetNames] = useState<Record<number, string>>(() => {
+        try {
+            const saved = localStorage.getItem('custom_set_names');
+            return saved ? JSON.parse(saved) : {};
+        } catch {
+            return {};
+        }
+    });
+    
+    useEffect(() => {
+        const dbSets = tasks.map(t => t.set_number);
+        const customSets = Object.keys(customSetNames).map(Number);
+        
+        if (activeSubTab === 'tasks_2d') {
+            const defaultSets = [4, 5, 6, 7];
+            const filteredDbSets = dbSets.filter(s => s >= 4);
+            const filteredCustomSets = customSets.filter(s => s >= 4);
+            const allSets = Array.from(new Set([...defaultSets, ...filteredDbSets, ...filteredCustomSets])).sort((a, b) => a - b);
+            setAvailableSets(allSets);
+        } else {
+            const defaultSets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const allSets = Array.from(new Set([...defaultSets, ...dbSets, ...customSets])).sort((a, b) => a - b);
+            setAvailableSets(allSets);
+        }
+    }, [tasks, customSetNames, activeSubTab]);
+
+    useEffect(() => {
+        const handleOutsideClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (!target.closest('.filter-group')) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener('click', handleOutsideClick);
+        return () => document.removeEventListener('click', handleOutsideClick);
+    }, []);
+
+    useEffect(() => {
+        if (tasks.length > 0) {
+            const namesFromTasks: Record<number, string> = {};
+            tasks.forEach(t => {
+                if (t.set_number && t.set_name) {
+                    namesFromTasks[t.set_number] = t.set_name;
+                }
+            });
+            setCustomSetNames(prev => {
+                const updated = { ...prev, ...namesFromTasks };
+                localStorage.setItem('custom_set_names', JSON.stringify(updated));
+                return updated;
+            });
+        }
+    }, [tasks]);
+
+    const getSetDisplayName = (setNum: number) => {
+        if (customSetNames[setNum]) {
+            return customSetNames[setNum];
+        }
+        const setTask = tasks.find(t => t.set_number === setNum && t.set_name);
+        if (setTask?.set_name) return setTask.set_name;
+        if (setNum >= 100) {
+            return `Set ${setNum - 100}`;
+        }
+        return `Set ${setNum}`;
+    };
+
+    const [showRenameModal, setShowRenameModal] = useState(false);
+    const [renameSetNum, setRenameSetNum] = useState<number | null>(null);
+    const [renameSetNameValue, setRenameSetNameValue] = useState('');
+
+    const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+    const [deleteSetNum, setDeleteSetNum] = useState<number | null>(null);
+
+    const handleRenameSetPrompt = (setNum: number, currentName: string) => {
+        setRenameSetNum(setNum);
+        setRenameSetNameValue(currentName);
+        setShowRenameModal(true);
+        setDropdownOpen(false);
+    };
+
+    const submitRenameSet = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (renameSetNum === null) return;
+        const trimmedName = renameSetNameValue.trim();
+        if (!trimmedName) return;
+
+        // Optimistically update local state & localStorage immediately
+        const updatedNames = { ...customSetNames, [renameSetNum]: trimmedName };
+        setCustomSetNames(updatedNames);
+        localStorage.setItem('custom_set_names', JSON.stringify(updatedNames));
+
+        try {
+            await assessmentService.renameSet(renameSetNum, trimmedName);
+            showNotification(`Set ${renameSetNum} renamed to "${trimmedName}".`, 'success');
+            fetchData();
+        } catch (err) {
+            showNotification('Failed to rename set on server, but local name updated.', 'warning');
+        } finally {
+            setShowRenameModal(false);
+            setRenameSetNum(null);
+            setRenameSetNameValue('');
+        }
+    };
+
+    const handleDeleteSetBtn = (setNum: number) => {
+        setDeleteSetNum(setNum);
+        setShowDeleteConfirmModal(true);
+        setDropdownOpen(false);
+    };
+
+    const submitDeleteSet = async () => {
+        if (deleteSetNum === null) return;
+
+        try {
+            await assessmentService.deleteSet(deleteSetNum);
+            // Also remove from local state
+            const updatedNames = { ...customSetNames };
+            delete updatedNames[deleteSetNum];
+            setCustomSetNames(updatedNames);
+            localStorage.setItem('custom_set_names', JSON.stringify(updatedNames));
+
+            showNotification(`Set ${deleteSetNum} deleted successfully.`, 'success');
+            if (setFilter === deleteSetNum) {
+                setSetFilter('all');
+            }
+            fetchData();
+        } catch (err) {
+            showNotification('Failed to delete set.', 'error');
+        } finally {
+            setShowDeleteConfirmModal(false);
+            setDeleteSetNum(null);
+        }
+    };
+
+    const [isSyncing, setIsSyncing] = useState(false);
+
+    const handleSyncTasks = async () => {
+        setIsSyncing(true);
+        try {
+            await assessmentService.syncTasks();
+            showNotification('Successfully synced tasks from the server folder.', 'success');
+            fetchData();
+        } catch (err) {
+            showNotification('Failed to sync tasks.', 'error');
+        } finally {
+            setIsSyncing(false);
+        }
+    };
 
     const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
     const [taskFile, setTaskFile] = useState<File | null>(null);
@@ -39,7 +194,8 @@ export const PracticalManagement: React.FC = () => {
         task_code: '',
         title: '',
         description: '',
-        master_file_path: ''
+        master_file_path: '',
+        is_assembly: false
     });
 
     // Form State for Assignment
@@ -62,10 +218,18 @@ export const PracticalManagement: React.FC = () => {
         fetchData();
     }, [activeSubTab]);
 
+    useEffect(() => {
+        if (showCreateModal && typeof setFilter === 'number') {
+            setNewTask(prev => ({ ...prev, set_number: setFilter }));
+        } else if (showCreateModal) {
+            setNewTask(prev => ({ ...prev, set_number: activeSubTab === 'tasks_2d' ? 4 : 1 }));
+        }
+    }, [showCreateModal, setFilter, activeSubTab]);
+
     const fetchData = async () => {
         setLoading(true);
         try {
-            if (activeSubTab === 'tasks') {
+            if (activeSubTab === 'tasks_3d' || activeSubTab === 'tasks_2d') {
                 const data = await assessmentService.getTasks();
                 setTasks(data);
             } else {
@@ -90,12 +254,27 @@ export const PracticalManagement: React.FC = () => {
             return;
         }
 
+        const taskCode = newTask.task_code.trim();
+        const isAssembly = newTask.is_assembly;
+        if (isAssembly && !taskCode.toUpperCase().startsWith('A')) {
+            showNotification("Task code must start with 'A' for Assembly units (e.g. A6).", 'warning');
+            return;
+        }
+        if (!isAssembly && !taskCode.toUpperCase().startsWith('P')) {
+            showNotification("Task code must start with 'P' for Part units (e.g. P6).", 'warning');
+            return;
+        }
+
         setIsSubmitting(true);
         try {
-            await assessmentService.createTask(newTask, taskFile);
+            const taskWithSetName = {
+                ...newTask,
+                set_name: customSetNames[newTask.set_number] || ''
+            };
+            await assessmentService.createTask(taskWithSetName, taskFile);
             showNotification('Unit created successfully.', 'success');
             setShowCreateModal(false);
-            setNewTask({ set_number: 1, task_code: '', title: '', description: '', master_file_path: '' });
+            setNewTask({ set_number: newTask.set_number, task_code: '', title: '', description: '', master_file_path: '', is_assembly: false });
             setTaskFile(null);
             fetchData();
         } catch (err) {
@@ -114,7 +293,8 @@ export const PracticalManagement: React.FC = () => {
 
         setIsSubmitting(true);
         try {
-            await assessmentService.bulkCreateTasks(newTask.set_number, bulkFiles);
+            const setName = customSetNames[newTask.set_number] || '';
+            await assessmentService.bulkCreateTasks(newTask.set_number, bulkFiles, setName, newTask.is_assembly);
             showNotification(`Successfully created ${bulkFiles.length} units.`, 'success');
             setShowCreateModal(false);
             setBulkFiles([]);
@@ -150,6 +330,45 @@ export const PracticalManagement: React.FC = () => {
         }
     };
 
+    const handleDeleteAllInSet = async () => {
+        if (setFilter === 'all') return;
+        const confirmed = window.confirm(`Are you absolutely sure you want to delete ALL ${filteredTasks.length} units in Set ${setFilter}? This action cannot be undone.`);
+        if (!confirmed) return;
+        
+        setLoading(true);
+        try {
+            for (const task of filteredTasks) {
+                await assessmentService.deleteTask(task.id);
+            }
+            showNotification(`All units in Set ${setFilter} deleted successfully.`, 'success');
+            fetchData();
+        } catch (err) {
+            showNotification('Failed to delete some units.', 'error');
+            fetchData();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDeleteAllTasks = async () => {
+        const confirmed = window.confirm(`WARNING: Are you absolutely sure you want to delete ALL ${tasks.length} units across ALL sets? This will wipe the entire training set repository! This action cannot be undone.`);
+        if (!confirmed) return;
+        
+        setLoading(true);
+        try {
+            for (const task of tasks) {
+                await assessmentService.deleteTask(task.id);
+            }
+            showNotification('All tasks deleted successfully.', 'success');
+            fetchData();
+        } catch (err) {
+            showNotification('Failed to delete some tasks.', 'error');
+            fetchData();
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleDeleteMapping = async (mappingId: number) => {
         if (!window.confirm('Are you sure you want to remove this trainer assignment?')) return;
         try {
@@ -169,6 +388,17 @@ export const PracticalManagement: React.FC = () => {
     const handleUpdateTask = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!editingTask) return;
+        const taskCode = editingTask.task_code.trim();
+        const isAssembly = editingTask.is_assembly;
+        if (isAssembly && !taskCode.toUpperCase().startsWith('A')) {
+            showNotification("Task code must start with 'A' for Assembly units (e.g. A6).", 'warning');
+            return;
+        }
+        if (!isAssembly && !taskCode.toUpperCase().startsWith('P')) {
+            showNotification("Task code must start with 'P' for Part units (e.g. P6).", 'warning');
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             await assessmentService.updateTask(editingTask.id, editingTask, editFile || undefined);
@@ -215,11 +445,23 @@ export const PracticalManagement: React.FC = () => {
         newTasks.splice(targetIndex, 0, draggedItem);
 
         // Update task codes based on new order
-        const reorderedTasks = newTasks.map((task, index) => ({
-            ...task,
-            task_code: String.fromCharCode(65 + index),
-            order: index + 1
-        }));
+        let assemblyCount = 0;
+        let partCount = 0;
+        const reorderedTasks = newTasks.map((task, index) => {
+            let task_code = task.task_code;
+            if (task.is_assembly) {
+                assemblyCount++;
+                task_code = `A${assemblyCount}`;
+            } else {
+                partCount++;
+                task_code = `P${partCount}`;
+            }
+            return {
+                ...task,
+                task_code,
+                order: index + 1
+            };
+        });
 
         // Optimistically update UI
         setTasks(prev => {
@@ -257,29 +499,271 @@ export const PracticalManagement: React.FC = () => {
 
     const trainers = allUsers.filter(u => u.role === 'employee' || u.role === 'admin');
     const trainees = allUsers.filter(u => u.role === 'trainee');
-    const filteredTasks = tasks.filter(task => setFilter === 'all' || task.set_number === setFilter);
+    const filteredTasks = tasks
+        .filter(task => {
+            if (activeSubTab === 'tasks_2d') {
+                if (task.set_number < 4) return false;
+            }
+            return setFilter === 'all' || task.set_number === setFilter;
+        })
+        .sort((a, b) => {
+            if (a.set_number !== b.set_number) {
+                return a.set_number - b.set_number;
+            }
+            const codeA = a.task_code || '';
+            const codeB = b.task_code || '';
+            return codeA.localeCompare(codeB, undefined, { numeric: true, sensitivity: 'base' });
+        });
 
     return (
         <div className="practical-management animate-fade-in">
 
-            {activeSubTab === 'tasks' ? (
+            {activeSubTab === 'tasks_3d' || activeSubTab === 'tasks_2d' ? (
                 <div className="tasks-management">
-                    <div className="toolbar">
-                        <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div className="toolbar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative' }}>
                             <label style={{ whiteSpace: 'nowrap' }}>Filter by Set:</label>
-                            <select
-                                value={setFilter}
-                                onChange={(e) => setSetFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
-                                className="admin-input-styled"
-                                style={{ padding: '0.25rem 0.5rem', borderRadius: '4px' }}
-                            >
-                                <option value="all">All Sets</option>
-                                {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
-                            </select>
+                            
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                                    className="admin-input-styled"
+                                    style={{
+                                        padding: '0.35rem 1rem',
+                                        borderRadius: '8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        gap: '1.5rem',
+                                        background: 'var(--bg-card)',
+                                        border: '1px solid var(--border-color)',
+                                        color: 'var(--text-main)',
+                                        cursor: 'pointer',
+                                        minWidth: '160px',
+                                        height: '38px',
+                                        textAlign: 'left'
+                                    }}
+                                >
+                                    <span>
+                                        {setFilter === 'all' ? 'All Sets' : getSetDisplayName(setFilter)}
+                                    </span>
+                                    <ChevronDown size={16} style={{ color: 'var(--text-dim)' }} />
+                                </button>
+                                
+                                {dropdownOpen && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '100%',
+                                        left: 0,
+                                        marginTop: '0.25rem',
+                                        background: '#1a1d24',
+                                        border: '1px solid #2d323e',
+                                        borderRadius: '8px',
+                                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)',
+                                        zIndex: 1000,
+                                        minWidth: '240px',
+                                        overflow: 'hidden',
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}>
+                                        <div
+                                            onClick={() => {
+                                                setSetFilter('all');
+                                                setDropdownOpen(false);
+                                            }}
+                                            style={{
+                                                padding: '0.6rem 1rem',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                                background: setFilter === 'all' ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                                borderBottom: '1px solid #2d323e'
+                                            }}
+                                            className="set-option-item"
+                                        >
+                                            <span style={{ fontWeight: setFilter === 'all' ? 700 : 500, color: 'var(--text-main)' }}>All Sets</span>
+                                            {setFilter === 'all' && <Check size={14} color="#DD4DFA" />}
+                                        </div>
+                                        
+                                        <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                                            {availableSets.map(n => {
+                                                const displayName = getSetDisplayName(n);
+                                                const isSelected = setFilter === n;
+                                                return (
+                                                    <div
+                                                        key={n}
+                                                        style={{
+                                                            padding: '0.6rem 1rem',
+                                                            cursor: 'pointer',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            background: isSelected ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                                            gap: '0.5rem'
+                                                        }}
+                                                        className="set-option-item"
+                                                        onClick={() => {
+                                                            setSetFilter(n);
+                                                            setDropdownOpen(false);
+                                                        }}
+                                                    >
+                                                        <span style={{
+                                                            fontWeight: isSelected ? 700 : 500,
+                                                            color: 'var(--text-main)',
+                                                            flex: 1,
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                            whiteSpace: 'nowrap'
+                                                        }}>
+                                                            {displayName}
+                                                        </span>
+                                                        <div 
+                                                            style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }} 
+                                                            onClick={e => e.stopPropagation()}
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleRenameSetPrompt(n, displayName);
+                                                                }}
+                                                                title="Rename Set"
+                                                                style={{
+                                                                    background: 'none',
+                                                                    border: 'none',
+                                                                    color: 'var(--text-dim)',
+                                                                    cursor: 'pointer',
+                                                                    padding: '6px',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center'
+                                                                }}
+                                                            >
+                                                                <Edit2 size={12} />
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleDeleteSetBtn(n);
+                                                                }}
+                                                                title="Delete Set"
+                                                                style={{
+                                                                    background: 'none',
+                                                                    border: 'none',
+                                                                    color: '#f87171',
+                                                                    cursor: 'pointer',
+                                                                    padding: '6px',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center'
+                                                                }}
+                                                            >
+                                                                <Trash2 size={12} />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                        
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const nextSet = availableSets.length > 0 ? availableSets[availableSets.length - 1] + 1 : 1;
+                                                
+                                                // Register immediately in customSetNames to prevent dynamic useEffect pruning
+                                                const updatedNames = { ...customSetNames, [nextSet]: `Set ${nextSet}` };
+                                                setCustomSetNames(updatedNames);
+                                                localStorage.setItem('custom_set_names', JSON.stringify(updatedNames));
+
+                                                setAvailableSets([...availableSets, nextSet]);
+                                                setSetFilter(nextSet);
+                                                showNotification(`Set ${nextSet} added.`, 'success');
+                                            }}
+                                            style={{
+                                                padding: '0.6rem 1rem',
+                                                background: 'transparent',
+                                                border: 'none',
+                                                borderTop: '1px solid #2d323e',
+                                                color: '#DD4DFA',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: '0.25rem',
+                                                fontWeight: 600,
+                                                fontSize: '0.8rem',
+                                                width: '100%',
+                                                textAlign: 'center'
+                                            }}
+                                        >
+                                            <Plus size={14} /> Add Set
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        <button className="add-user-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowCreateModal(true)}>
-                            <Plus size={16} /> New Assessment Unit
-                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <button 
+                                className="add-user-btn" 
+                                onClick={handleSyncTasks} 
+                                disabled={isSyncing}
+                                style={{
+                                    background: 'transparent',
+                                    border: '1px solid var(--primary)',
+                                    color: 'var(--primary)',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    cursor: isSyncing ? 'not-allowed' : 'pointer'
+                                }}
+                            >
+                                <RefreshCw size={16} className={isSyncing ? 'animate-spin' : ''} />
+                                {isSyncing ? 'Syncing...' : 'Sync Tasks'}
+                            </button>
+                            <button className="add-user-btn" onClick={() => setShowCreateModal(true)}>
+                                <Plus size={16} /> New Assessment Unit
+                            </button>
+                            {setFilter !== 'all' && filteredTasks.length > 0 && (
+                                <button
+                                    onClick={handleDeleteAllInSet}
+                                    className="global-btn-danger"
+                                    style={{
+                                        padding: '0 1rem',
+                                        height: '38px',
+                                        fontSize: '0.875rem',
+                                        borderRadius: '8px',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    <Trash2 size={16} />
+                                    Delete All in Set {setFilter}
+                                </button>
+                            )}
+                            {setFilter === 'all' && tasks.length > 0 && (
+                                <button
+                                    onClick={handleDeleteAllTasks}
+                                    className="global-btn-danger"
+                                    style={{
+                                        padding: '0 1rem',
+                                        height: '38px',
+                                        fontSize: '0.875rem',
+                                        borderRadius: '8px',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    <Trash2 size={16} />
+                                    Delete All Tasks
+                                </button>
+                            )}
+                        </div>
                     </div>
 
                     <Modal
@@ -289,28 +773,19 @@ export const PracticalManagement: React.FC = () => {
                         size="md"
                         tag="CREATE_UNIT"
                     >
-                        <div className="form-header-toggle" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-                            <button
-                                className="btn-outline"
-                                onClick={() => setIsBulkMode(!isBulkMode)}
-                            >
-                                {isBulkMode ? 'Switch to Single' : 'Switch to Bulk'}
-                            </button>
-                        </div>
-
                         {!isBulkMode ? (
                             <form onSubmit={handleCreateTask}>
-                                <div className="form-row">
-                                    <div className="form-group">
+                                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem', marginBottom: '1.25rem' }}>
+                                    <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
                                         <label>Set Number</label>
                                         <select
                                             value={newTask.set_number}
                                             onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
                                         >
-                                            {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
+                                            {availableSets.map(n => <option key={n} value={n}>{getSetDisplayName(n)}</option>)}
                                         </select>
                                     </div>
-                                    <div className="form-group">
+                                    <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
                                         <label>Task Code</label>
                                         <input
                                             type="text"
@@ -319,6 +794,26 @@ export const PracticalManagement: React.FC = () => {
                                             placeholder="e.g. A"
                                             required
                                         />
+                                    </div>
+                                    <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                                        <label>Unit Type</label>
+                                        <select
+                                            value={newTask.is_assembly ? 'assembly' : 'part'}
+                                            onChange={(e) => setNewTask({ ...newTask, is_assembly: e.target.value === 'assembly' })}
+                                        >
+                                            <option value="part">Part</option>
+                                            <option value="assembly">Assembly</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <button
+                                            type="button"
+                                            className="btn-outline"
+                                            onClick={() => setIsBulkMode(true)}
+                                            style={{ height: '42px', whiteSpace: 'nowrap' }}
+                                        >
+                                            Switch to Bulk
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -364,14 +859,36 @@ export const PracticalManagement: React.FC = () => {
                             </form>
                         ) : (
                             <form onSubmit={handleBulkUpload}>
-                                <div className="form-group">
-                                    <label>Target Set</label>
-                                    <select
-                                        value={newTask.set_number}
-                                        onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
-                                    >
-                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
-                                    </select>
+                                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem', marginBottom: '1.25rem' }}>
+                                    <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                                        <label>Target Set</label>
+                                        <select
+                                            value={newTask.set_number}
+                                            onChange={(e) => setNewTask({ ...newTask, set_number: parseInt(e.target.value) })}
+                                        >
+                                            {availableSets.map(n => <option key={n} value={n}>{getSetDisplayName(n)}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                                        <label>Unit Type</label>
+                                        <select
+                                            value={newTask.is_assembly ? 'assembly' : 'part'}
+                                            onChange={(e) => setNewTask({ ...newTask, is_assembly: e.target.value === 'assembly' })}
+                                        >
+                                            <option value="part">Part</option>
+                                            <option value="assembly">Assembly</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <button
+                                            type="button"
+                                            className="btn-outline"
+                                            onClick={() => setIsBulkMode(false)}
+                                            style={{ height: '42px', whiteSpace: 'nowrap' }}
+                                        >
+                                            Switch to Single
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label>Select Multiple Files (.dwg, .zip)</label>
@@ -432,19 +949,12 @@ export const PracticalManagement: React.FC = () => {
                                                 <td className="text-gray-400 cursor-grab active:cursor-grabbing text-center">
                                                     <GripVertical size={16} />
                                                 </td>
-                                                <td><span className="set-pill-mini">{task.set_number}</span></td>
+                                                <td><span className="set-pill-mini">{getSetDisplayName(task.set_number)}</span></td>
                                                 <td><strong>{task.task_code}</strong></td>
                                                 <td>{task.title}</td>
                                                 <td className="dim-text">{task.master_file_path}</td>
                                                 <td>
                                                     <div className="table-actions-horizontal">
-                                                        <button
-                                                            className="btn-ghost"
-                                                            onClick={() => setFileManagerTask(task)}
-                                                            title="Manage Files & Folders"
-                                                        >
-                                                            <Folder size={16} />
-                                                        </button>
                                                         <button
                                                             className="btn-ghost"
                                                             onClick={() => handleEditTask(task)}
@@ -567,85 +1077,94 @@ export const PracticalManagement: React.FC = () => {
                     tag="UNIT_EDIT"
                     size="md"
                 >
-                    <div className="global-modal-body">
-                        <form onSubmit={handleUpdateTask} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label>Set Number</label>
-                                    <select
-                                        value={editingTask.set_number}
-                                        onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
-                                        className="admin-input-styled"
-                                    >
-                                        {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>Set {n}</option>)}
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label>Unit Code</label>
-                                    <input
-                                        type="text"
-                                        value={editingTask.task_code}
-                                        onChange={(e) => setEditingTask({ ...editingTask, task_code: e.target.value.toUpperCase() })}
-                                        required
-                                        className="admin-input-styled"
-                                    />
-                                </div>
+                    <form onSubmit={handleUpdateTask} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Set Number</label>
+                                <select
+                                    value={editingTask.set_number}
+                                    onChange={(e) => setEditingTask({ ...editingTask, set_number: parseInt(e.target.value) })}
+                                    className="admin-input-styled"
+                                >
+                                    {availableSets.map(n => <option key={n} value={n}>{getSetDisplayName(n)}</option>)}
+                                </select>
                             </div>
                             <div className="form-group">
-                                <label>Unit Title</label>
+                                <label>Unit Code</label>
                                 <input
                                     type="text"
-                                    value={editingTask.title}
-                                    onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
+                                    value={editingTask.task_code}
+                                    onChange={(e) => setEditingTask({ ...editingTask, task_code: e.target.value.toUpperCase() })}
                                     required
                                     className="admin-input-styled"
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Master File (Optional) (.dwg, .zip)</label>
-                                <div className="file-input-wrapper-styled">
-                                    <input
-                                        type="file"
-                                        accept=".dwg,.zip"
-                                        id="edit-file-upload"
-                                        onChange={(e) => setEditFile(e.target.files ? e.target.files[0] : null)}
-                                        className="hidden-file-input"
-                                    />
-                                    <label htmlFor="edit-file-upload" className="custom-file-upload">
-                                        <Upload size={20} className="upload-icon" />
-                                        <div className="upload-text">
-                                            {editFile ? (
-                                                <span className="file-name-highlight">{editFile.name}</span>
-                                            ) : (
-                                                <span>Click to replace master DWG</span>
-                                            )}
-                                        </div>
-                                    </label>
-                                </div>
-                                {editingTask.master_file_path && !editFile && (
-                                    <div className="current-file-badge">
-                                        <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="form-group">
-                                <label>Instructions</label>
-                                <textarea
-                                    value={editingTask.description}
-                                    onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
-                                    rows={4}
-                                    placeholder="Provide unit instructions..."
+                                <label>Unit Type</label>
+                                <select
+                                    value={editingTask.is_assembly ? 'assembly' : 'part'}
+                                    onChange={(e) => setEditingTask({ ...editingTask, is_assembly: e.target.value === 'assembly' })}
                                     className="admin-input-styled"
-                                ></textarea>
+                                >
+                                    <option value="part">Part</option>
+                                    <option value="assembly">Assembly</option>
+                                </select>
                             </div>
-                            <div className="global-modal-footer">
-                                <button type="button" className="global-btn-secondary" onClick={() => setShowEditModal(false)}>Cancel</button>
-                                <button type="submit" className="global-btn-primary" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
-                                </button>
+                        </div>
+                        <div className="form-group">
+                            <label>Unit Title</label>
+                            <input
+                                type="text"
+                                value={editingTask.title}
+                                onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
+                                required
+                                className="admin-input-styled"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Master File (Optional) (.dwg, .zip)</label>
+                            <div className="file-input-wrapper-styled">
+                                <input
+                                    type="file"
+                                    accept=".dwg,.zip"
+                                    id="edit-file-upload"
+                                    onChange={(e) => setEditFile(e.target.files ? e.target.files[0] : null)}
+                                    className="hidden-file-input"
+                                />
+                                <label htmlFor="edit-file-upload" className="custom-file-upload">
+                                    <Upload size={20} className="upload-icon" />
+                                    <div className="upload-text">
+                                        {editFile ? (
+                                            <span className="file-name-highlight">{editFile.name}</span>
+                                        ) : (
+                                            <span>Click to replace master DWG</span>
+                                        )}
+                                    </div>
+                                </label>
                             </div>
-                        </form>
-                    </div>
+                            {editingTask.master_file_path && !editFile && (
+                                <div className="current-file-badge">
+                                    <small>Current: {editingTask.master_file_path.split(/[\\/]/).pop()}</small>
+                                </div>
+                            )}
+                        </div>
+                        <div className="form-group">
+                            <label>Instructions</label>
+                            <textarea
+                                value={editingTask.description}
+                                onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+                                rows={4}
+                                placeholder="Provide unit instructions..."
+                                className="admin-input-styled"
+                            ></textarea>
+                        </div>
+                        <div className="global-modal-footer">
+                            <button type="button" className="global-btn-secondary" onClick={() => setShowEditModal(false)}>Cancel</button>
+                            <button type="submit" className="global-btn-primary" disabled={isSubmitting}>
+                                {isSubmitting ? 'Saving...' : 'Save Changes'}
+                            </button>
+                        </div>
+                    </form>
                 </Modal>
             )}
 
@@ -654,6 +1173,90 @@ export const PracticalManagement: React.FC = () => {
                     task={fileManagerTask} 
                     onClose={() => setFileManagerTask(null)} 
                 />
+            )}
+
+            {showRenameModal && renameSetNum !== null && (
+                <Modal
+                    isOpen={showRenameModal}
+                    onClose={() => {
+                        setShowRenameModal(false);
+                        setRenameSetNum(null);
+                    }}
+                    title={`Rename Set ${renameSetNum}`}
+                    tag="RENAME_SET"
+                    size="sm"
+                >
+                    <form onSubmit={submitRenameSet} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        <div className="form-group">
+                            <label>Set Name</label>
+                            <input
+                                type="text"
+                                value={renameSetNameValue}
+                                onChange={(e) => setRenameSetNameValue(e.target.value)}
+                                required
+                                className="admin-input-styled"
+                                placeholder={`e.g. Set ${renameSetNum}`}
+                                autoFocus
+                            />
+                        </div>
+                        <div className="global-modal-footer">
+                            <button 
+                                type="button" 
+                                className="global-btn-secondary" 
+                                onClick={() => {
+                                    setShowRenameModal(false);
+                                    setRenameSetNum(null);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button type="submit" className="global-btn-primary">
+                                Rename Set
+                            </button>
+                        </div>
+                    </form>
+                </Modal>
+            )}
+
+            {showDeleteConfirmModal && deleteSetNum !== null && (
+                <Modal
+                    isOpen={showDeleteConfirmModal}
+                    onClose={() => {
+                        setShowDeleteConfirmModal(false);
+                        setDeleteSetNum(null);
+                    }}
+                    title={`Delete Set ${deleteSetNum}`}
+                    tag="DELETE_SET_CONFIRM"
+                    size="sm"
+                >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        <p style={{ color: 'var(--text-main)', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                            Are you absolutely sure you want to delete ALL units/tasks in <strong>{getSetDisplayName(deleteSetNum)}</strong>?
+                        </p>
+                        <p style={{ color: '#f87171', fontSize: '0.85rem', fontWeight: 600 }}>
+                            ⚠️ This will delete the entire set from the database and cannot be undone!
+                        </p>
+                        <div className="global-modal-footer">
+                            <button 
+                                type="button" 
+                                className="global-btn-secondary" 
+                                onClick={() => {
+                                    setShowDeleteConfirmModal(false);
+                                    setDeleteSetNum(null);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                type="button" 
+                                className="global-btn-danger" 
+                                onClick={submitDeleteSet}
+                            >
+                                Yes, Delete Set
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
             )}
         </div>
     );
