@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Search, Plus, Edit2, Trash2, ChevronRight, ChevronLeft, Save, X, CheckCircle2, AlertCircle, List, FileText } from 'lucide-react';
 import { adminService, Quiz, Question } from '../../../services/adminService';
 import { useUI } from '../../../context/UIContext';
@@ -17,14 +18,25 @@ export const AssessmentManagement: React.FC = () => {
     const [hasRestored, setHasRestored] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const location = useLocation();
+    
     const [assessmentTab, setAssessmentTab] = useState<'2D_Drawing' | '3D_Modeling'>(
         (localStorage.getItem('kmti_adminAssessmentTab') as '2D_Drawing' | '3D_Modeling') || '3D_Modeling'
     );
     
     // Persist tab and selection
     useEffect(() => {
-        localStorage.setItem('kmti_adminAssessmentTab', assessmentTab);
-    }, [assessmentTab]);
+        const params = new URLSearchParams(location.search);
+        const subtab = params.get('subtab');
+        if (subtab && (subtab === '3D_Modeling' || subtab === '2D_Drawing')) {
+            if (assessmentTab !== subtab) {
+                setAssessmentTab(subtab);
+                localStorage.setItem('kmti_adminAssessmentTab', subtab);
+                setSelectedQuiz(null);
+                localStorage.removeItem('kmti_adminSelectedQuizId');
+            }
+        }
+    }, [location.search, assessmentTab]);
 
     // Restore selected quiz on mount (Directly, without waiting for full list)
     useEffect(() => {
@@ -292,6 +304,7 @@ export const AssessmentManagement: React.FC = () => {
     if (selectedQuiz && !isEditingQuiz) {
         return (
             <div className="assessment-detail">
+                <style>{`.page-header { display: none !important; }`}</style>
                 <div className="detail-header">
                     <button className="back-btn" onClick={() => {
                         localStorage.removeItem('kmti_adminSelectedQuizId');
@@ -422,14 +435,6 @@ export const AssessmentManagement: React.FC = () => {
     return (
         <section className="assessment-management">
             <div className="management-header">
-                <div className="tab-navigation">
-                    <button className={`tab-btn ${assessmentTab === '3D_Modeling' ? 'active' : ''}`} onClick={() => setAssessmentTab('3D_Modeling')}>
-                        3D Modeling
-                    </button>
-                    <button className={`tab-btn ${assessmentTab === '2D_Drawing' ? 'active' : ''}`} onClick={() => setAssessmentTab('2D_Drawing')}>
-                        2D Drawing
-                    </button>
-                </div>
                 <div className="toolbar">
                     <div className="search-box">
                         <Search size={16} color="#94a3b8" />

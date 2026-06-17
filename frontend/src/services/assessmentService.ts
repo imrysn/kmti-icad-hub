@@ -4,6 +4,7 @@ import { User } from './authService';
 export interface AssessmentTask {
     id: number;
     set_number: number;
+    set_name?: string;
     task_code?: string;
     unit_name?: string;
     file_name?: string;
@@ -37,6 +38,11 @@ export const assessmentService = {
 
     getMySubmissions: async (): Promise<AssessmentSubmission[]> => {
         const response = await api.get('/api/v1/assessments/my-submissions');
+        return response.data;
+    },
+
+    getMySetMappings: async (): Promise<{actual_set_number: number, display_set_number: number}[]> => {
+        const response = await api.get('/api/v1/assessments/my-set-mappings');
         return response.data;
     },
 
@@ -133,14 +139,17 @@ export const assessmentService = {
         if (taskData.description) formData.append('description', taskData.description);
         formData.append('is_assembly', taskData.is_assembly ? 'true' : 'false');
         formData.append('file', file);
+        if (taskData.set_name) formData.append('set_name', taskData.set_name);
 
         const response = await api.post('/api/v1/assessments/admin/tasks', formData);
         return response.data;
     },
 
-    bulkCreateTasks: async (setNumber: number, files: File[]) => {
+    bulkCreateTasks: async (setNumber: number, files: File[], setName?: string, isAssembly: boolean = false) => {
         const formData = new FormData();
         formData.append('set_number', setNumber.toString());
+        if (setName) formData.append('set_name', setName);
+        formData.append('is_assembly', isAssembly ? 'true' : 'false');
         files.forEach(file => {
             formData.append('files', file);
         });
@@ -245,6 +254,14 @@ export const assessmentService = {
 
     emptyTrash: async () => {
         const response = await api.delete('/api/v1/assessments/submissions/trash/empty');
+        return response.data;
+    },
+    renameSet: async (setNumber: number, setName: string) => {
+        const response = await api.put(`/api/v1/assessments/admin/sets/${setNumber}/rename`, { set_name: setName });
+        return response.data;
+    },
+    deleteSet: async (setNumber: number) => {
+        const response = await api.delete(`/api/v1/assessments/admin/sets/${setNumber}`);
         return response.data;
     }
 };

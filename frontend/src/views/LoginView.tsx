@@ -135,7 +135,8 @@ export const LoginView: React.FC = () => {
                     border: 'none',
                     color: '#a0aec0',
                     cursor: 'pointer',
-                    zIndex: 100,
+                    zIndex: 110,
+                    WebkitAppRegion: 'no-drag',
                     padding: '8px',
                     borderRadius: '50%',
                     display: 'flex',
@@ -181,7 +182,7 @@ export const LoginView: React.FC = () => {
                         {isLoggingIn ? 'Logging...' : 'SIGN IN'}
                     </button>
 
-                    <div style={{ textAlign: 'right', marginTop: '8px' }}>
+                    <div style={{ textAlign: 'center', marginTop: '16px' }}>
                         <button type="button" className="forgot-password-btn" onClick={handleForgotPassword}>
                             Forgot Password?
                         </button>

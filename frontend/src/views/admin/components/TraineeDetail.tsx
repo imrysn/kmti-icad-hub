@@ -178,6 +178,23 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
         window.print();
     };
 
+    const getScopeBtnStyle = (scope: 'all' | '2D_Drawing' | '3D_Modeling') => {
+        const isActive = targetScope === scope;
+        return {
+            flex: 1,
+            padding: '0.4rem',
+            fontSize: '0.7rem',
+            borderRadius: '6px',
+            border: 'none',
+            background: isActive ? 'var(--bg-surface)' : 'transparent',
+            color: isActive ? 'var(--text-main)' : 'var(--text-muted)',
+            boxShadow: isActive ? '0 1px 3px rgba(0,0,0,0.15)' : 'none',
+            fontWeight: isActive ? 600 : 400,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease'
+        };
+    };
+
     return (
         <section className="trainee-detail-view">
             <button className="back-btn" onClick={() => setSelectedTrainee(null)}>
@@ -195,7 +212,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             <span className="lab">Weighted Mastery Index</span>
                         </div>
                         {selectedTrainee.raw_average_score !== undefined && (
-                            <div className="stat-sub-info" style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>
+                            <div className="stat-sub-info" style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
                                 Raw Success Rate: {selectedTrainee.raw_average_score}%
                             </div>
                         )}
@@ -207,26 +224,26 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                         </button>
 
                         <div className="admin-action-scope" style={{ marginTop: '2rem' }}>
-                            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem', fontWeight: 600, letterSpacing: '0.05em' }}>BULK ACTION SCOPE</p>
-                            <div className="scope-toggle" style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '2px', marginBottom: '1rem' }}>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 600, letterSpacing: '0.05em' }}>BULK ACTION SCOPE</p>
+                            <div className="scope-toggle" style={{ display: 'flex', background: 'var(--bg-hover)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '2px', marginBottom: '1rem' }}>
                                 <button
                                     className={`scope-btn ${targetScope === 'all' ? 'active' : ''}`}
                                     onClick={() => setTargetScope('all')}
-                                    style={{ flex: 1, padding: '0.4rem', fontSize: '0.7rem', borderRadius: '6px', border: 'none', background: targetScope === 'all' ? 'rgba(255,255,255,0.1)' : 'transparent', color: targetScope === 'all' ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
+                                    style={getScopeBtnStyle('all')}
                                 >
                                     ALL
                                 </button>
                                 <button
                                     className={`scope-btn ${targetScope === '2D_Drawing' ? 'active' : ''}`}
                                     onClick={() => setTargetScope('2D_Drawing')}
-                                    style={{ flex: 1, padding: '0.4rem', fontSize: '0.7rem', borderRadius: '6px', border: 'none', background: targetScope === '2D_Drawing' ? 'rgba(255,255,255,0.1)' : 'transparent', color: targetScope === '2D_Drawing' ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
+                                    style={getScopeBtnStyle('2D_Drawing')}
                                 >
                                     2D
                                 </button>
                                 <button
                                     className={`scope-btn ${targetScope === '3D_Modeling' ? 'active' : ''}`}
                                     onClick={() => setTargetScope('3D_Modeling')}
-                                    style={{ flex: 1, padding: '0.4rem', fontSize: '0.7rem', borderRadius: '6px', border: 'none', background: targetScope === '3D_Modeling' ? 'rgba(255,255,255,0.1)' : 'transparent', color: targetScope === '3D_Modeling' ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
+                                    style={getScopeBtnStyle('3D_Modeling')}
                                 >
                                     3D
                                 </button>
@@ -305,11 +322,11 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                 </div>
 
                                                 <div className="efficiency-breakdown" style={{ marginTop: '0.5rem', display: 'flex', gap: '0.8rem', fontSize: '0.7rem' }}>
-                                                    <div className="eff-item" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                                                    <div className="eff-item" style={{ color: 'var(--text-muted)' }}>
                                                         1st Try: <span style={{ color: q.first_attempt_score && q.first_attempt_score >= 80 ? '#34d399' : '#f87171' }}>{q.first_attempt_score ?? 'N/A'}%</span>
                                                     </div>
                                                     <div className="eff-item" style={{
-                                                        color: q.attempts_count > 5 ? '#fbbf24' : 'rgba(255,255,255,0.4)',
+                                                        color: q.attempts_count > 5 ? '#fbbf24' : 'var(--text-muted)',
                                                         fontWeight: q.attempts_count > 5 ? 600 : 400
                                                     }}>
                                                         Struggle Factor: {q.attempts_count > 5 ? 'High' : (q.attempts_count > 2 ? 'Moderate' : 'Low')}
@@ -322,7 +339,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                             marginLeft: 'auto',
                                                             background: 'none',
                                                             border: 'none',
-                                                            color: '#60a5fa',
+                                                            color: 'var(--accent-blue, #60a5fa)',
                                                             fontSize: '0.7rem',
                                                             textDecoration: 'underline',
                                                             cursor: 'pointer',
@@ -381,6 +398,35 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                 <div className={`status-pill ${q.score >= 80 ? 'pass' : 'fail'}`}>
                                                     {q.score >= 80 ? <Check size={12} /> : <X size={12} />}
                                                     {q.score >= 80 ? 'Passed' : 'Failed'}
+                                                </div>
+
+                                                <div className="efficiency-breakdown" style={{ marginTop: '0.5rem', display: 'flex', gap: '0.8rem', fontSize: '0.7rem' }}>
+                                                    <div className="eff-item" style={{ color: 'var(--text-muted)' }}>
+                                                        1st Try: <span style={{ color: q.first_attempt_score && q.first_attempt_score >= 80 ? '#34d399' : '#f87171' }}>{q.first_attempt_score ?? 'N/A'}%</span>
+                                                    </div>
+                                                    <div className="eff-item" style={{
+                                                        color: q.attempts_count > 5 ? '#fbbf24' : 'var(--text-muted)',
+                                                        fontWeight: q.attempts_count > 5 ? 600 : 400
+                                                    }}>
+                                                        Struggle Factor: {q.attempts_count > 5 ? 'High' : (q.attempts_count > 2 ? 'Moderate' : 'Low')}
+                                                    </div>
+                                                    <button
+                                                        className="view-breakdown-link"
+                                                        onClick={() => handleViewBreakdown(q.lesson_id)}
+                                                        disabled={loadingBreakdownId === q.lesson_id}
+                                                        style={{
+                                                            marginLeft: 'auto',
+                                                            background: 'none',
+                                                            border: 'none',
+                                                            color: 'var(--accent-blue, #60a5fa)',
+                                                            fontSize: '0.7rem',
+                                                            textDecoration: 'underline',
+                                                            cursor: 'pointer',
+                                                            padding: 0
+                                                        }}
+                                                    >
+                                                        {loadingBreakdownId === q.lesson_id ? 'Loading...' : 'View Breakdown'}
+                                                    </button>
                                                 </div>
                                             </div>
                                             <div className="assessment-actions">

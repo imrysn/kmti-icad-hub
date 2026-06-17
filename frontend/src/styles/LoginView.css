@@ -72,7 +72,8 @@
 .login-form-wrapper {
   width: 95%;
   max-width: 400px;
-  z-index: 10;
+  z-index: 110;
+  -webkit-app-region: no-drag;
 }
 
 .glass-form {
@@ -207,4 +208,22 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.forgot-password-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s, text-decoration 0.2s;
+  outline: none;
+}
+
+.forgot-password-btn:hover {
+  color: #dd4dfa;
+  text-decoration: underline;
 }

@@ -41,7 +41,7 @@ export const useBulkDownload = () => {
                             const rawCode = taskObj.task_code ?? item.task_code;
                             const taskCode = (rawCode !== undefined && rawCode !== 'undefined' && rawCode !== null) ? rawCode : 'unknown';
                             
-                            masterPath = `Unts & Tasks/Set ${setNumber}/${taskCode}_Master.dwg`;
+                            masterPath = `Units & Tasks/Set ${setNumber}/${taskCode}_Master.dwg`;
                         }
                         
                         // Extract just the directory from the master path
@@ -61,7 +61,7 @@ export const useBulkDownload = () => {
                         url = assessmentService.getDownloadUrl(item.id);
                         let fallbackSet = item.set_number !== undefined && item.set_number !== null ? item.set_number : 'unknown';
                         let fallbackCode = item.task_code || 'unknown';
-                        relativePath = item.master_file_path || `Unts & Tasks/Set ${fallbackSet}/${fallbackCode}_Master.dwg`;
+                        relativePath = item.master_file_path || `Units & Tasks/Set ${fallbackSet}/${fallbackCode}_Master.dwg`;
                     }
 
                     return {

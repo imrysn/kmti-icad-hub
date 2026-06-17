@@ -102,8 +102,8 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
                     </div>
                 </div>
 
-                <div className="admin-modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-                    <button type="submit" className="admin-btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center' }}>
+                <div className="global-modal-footer" style={{ marginTop: '1rem' }}>
+                    <button type="submit" className="global-btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center' }}>
                         {loading ? <div className="spinner-small"></div> : <Save size={16} />}
                         {user ? 'Update User' : 'Create User'}
                     </button>

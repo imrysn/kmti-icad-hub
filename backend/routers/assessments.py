@@ -69,6 +69,17 @@ def handle_task_upload(file: UploadFile, set_number: int, task_code: str) -> str
             shutil.copyfileobj(file.file, buffer)
         return str(file_path)
 
+def resequence_set_task_codes(db: Session, set_number: int):
+    tasks = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).order_by(AssessmentTask.order, AssessmentTask.id).all()
+    assemblies = [t for t in tasks if t.is_assembly]
+    parts = [t for t in tasks if not t.is_assembly]
+    
+    for i, a in enumerate(assemblies):
+        a.task_code = f"A{i+1}"
+    for i, p in enumerate(parts):
+        p.task_code = f"P{i+1}"
+    db.commit()
+
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
 # --- Trainee Endpoints ---
@@ -98,7 +109,7 @@ def get_assessment_tasks(
     mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
     
     if mappings:
-        mapping_dict = {m.actual_set_number: m.display_set_number for m in mappings}
+        mapping_dict = {m.actual_set_number: abs(m.display_set_number) for m in mappings}
         filtered_tasks = []
         for t in tasks:
             if t.set_number in mapping_dict:
@@ -109,6 +120,15 @@ def get_assessment_tasks(
         return filtered_tasks
 
     return tasks
+
+@router.get("/my-set-mappings", response_model=List[TraineeSetMappingResponse])
+def get_my_set_mappings(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get explicitly unlocked set mappings for the current trainee."""
+    from ..models import TraineeSetMapping
+    return db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
 
 @router.get("/my-submissions", response_model=List[AssessmentSubmissionResponse])
 def get_my_submissions(
@@ -148,6 +168,7 @@ async def create_task(
     description: Optional[str] = Form(None),
     is_assembly: bool = Form(False),
     file: UploadFile = File(...),
+    set_name: Optional[str] = Form(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -158,8 +179,15 @@ async def create_task(
     # Save the master file
     file_path = handle_task_upload(file, set_number, task_code)
     
+    # If set_name not passed, try to look up existing set_name in DB for this set
+    if not set_name:
+        existing = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number, AssessmentTask.set_name.isnot(None)).first()
+        if existing:
+            set_name = existing.set_name
+
     db_task = AssessmentTask(
         set_number=set_number,
+        set_name=set_name,
         task_code=task_code,
         title=title,
         description=description,
@@ -168,6 +196,7 @@ async def create_task(
     )
     db.add(db_task)
     db.commit()
+    resequence_set_task_codes(db, set_number)
     db.refresh(db_task)
     return db_task
 
@@ -176,7 +205,7 @@ async def trigger_folder_sync(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Admin only: Trigger the script to sync tasks from local Unts & Tasks folder."""
+    """Admin only: Trigger the script to sync tasks from local Units & Tasks folder."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
     
@@ -193,6 +222,8 @@ async def trigger_folder_sync(
 async def bulk_create_tasks(
     set_number: int = Form(...),
     files: List[UploadFile] = File(...),
+    set_name: Optional[str] = Form(None),
+    is_assembly: bool = Form(False),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -201,12 +232,22 @@ async def bulk_create_tasks(
         raise HTTPException(status_code=403, detail="Admin only")
     
     created_tasks = []
-    # Start task code from A, B, C...
-    # We'll need to check existing tasks in the set to continue the sequence
-    existing_count = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).count()
+    # Start task code based on existing count of the same unit type (Part/Assembly)
+    existing_count = db.query(AssessmentTask).filter(
+        AssessmentTask.set_number == set_number,
+        AssessmentTask.is_assembly == is_assembly
+    ).count()
     
+    total_existing = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).count()
+    
+    # If set_name not passed, try to look up existing
+    if not set_name:
+        existing = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number, AssessmentTask.set_name.isnot(None)).first()
+        if existing:
+            set_name = existing.set_name
+    prefix = "A" if is_assembly else "P"
     for i, file in enumerate(files):
-        task_code = f"A{existing_count + i + 1}"
+        task_code = f"{prefix}{existing_count + i + 1}"
         
         file_path = handle_task_upload(file, set_number, task_code)
         
@@ -216,15 +257,18 @@ async def bulk_create_tasks(
         
         db_task = AssessmentTask(
             set_number=set_number,
+            set_name=set_name,
             task_code=task_code,
             title=title,
             master_file_path=file_path,
-            order=existing_count + i
+            is_assembly=is_assembly,
+            order=total_existing + i
         )
         db.add(db_task)
         created_tasks.append(db_task)
     
     db.commit()
+    resequence_set_task_codes(db, set_number)
     return {"message": f"Successfully created {len(created_tasks)} units for Set {set_number}"}
 
 @router.get("/admin/mappings", response_model=List[TrainerTraineeMappingResponse])
@@ -264,14 +308,17 @@ def reorder_tasks(
     """Admin only: Bulk-update task_code, set_number and order for drag-and-drop reordering."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
+    affected_sets = set()
     for item in updates:
         task = db.query(AssessmentTask).filter(AssessmentTask.id == int(item["id"])).first()
         if task:
+            affected_sets.add(task.set_number)
+            affected_sets.add(int(item["set_number"]))
             task.set_number = int(item["set_number"])
             task.order = int(item["order"])
-            if "task_code" in item:
-                task.task_code = str(item["task_code"])
     db.commit()
+    for set_num in affected_sets:
+        resequence_set_task_codes(db, set_num)
     return {"message": "Tasks reordered successfully"}
 
 @router.delete("/admin/tasks/{task_id}")
@@ -288,9 +335,38 @@ def delete_task(
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
+    set_num = task.set_number
     db.delete(task)
     db.commit()
+    resequence_set_task_codes(db, set_num)
     return {"message": "Task deleted successfully"}
+
+@router.put("/admin/sets/{set_number}/rename")
+def rename_set(
+    set_number: int,
+    set_name: str = Body(..., embed=True),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    tasks = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).all()
+    for task in tasks:
+        task.set_name = set_name
+    db.commit()
+    return {"message": "Set renamed successfully"}
+
+@router.delete("/admin/sets/{set_number}")
+def delete_set(
+    set_number: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).delete()
+    db.commit()
+    return {"message": "Set deleted successfully"}
 
 @router.put("/admin/tasks/{task_id}", response_model=AssessmentTaskResponse)
 async def update_task(
@@ -324,6 +400,7 @@ async def update_task(
         db_task.master_file_path = file_path
     
     db.commit()
+    resequence_set_task_codes(db, set_number)
     db.refresh(db_task)
     return db_task
 
@@ -511,7 +588,7 @@ async def submit_task(
         raise HTTPException(status_code=404, detail="Task not found")
 
     # Define upload directory mirroring the master structure
-    # e.g., master path: "Unts & Tasks/4th Set Parts And Assembly/2655RCGR/Parts/part.dwg"
+    # e.g., master path: "Units & Tasks/4th Set Parts And Assembly/2655RCGR/Parts/part.dwg"
     master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""
     base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
     upload_dir = os.path.join(base_upload_dir, "submissions", str(current_user.id), master_dir)
@@ -530,7 +607,8 @@ async def submit_task(
         AssessmentSubmission.user_id == current_user.id,
         AssessmentSubmission.task_id == task_id,
         AssessmentSubmission.assessment_type == assessment_type,
-        AssessmentSubmission.status == "pending"
+        AssessmentSubmission.status == "pending",
+        AssessmentSubmission.is_deleted == False
     ).all()
 
     target_submission = None
@@ -583,7 +661,7 @@ async def submit_task(
         # Set is finished! Find the assigned trainer
         mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
         if mapping:
-            notification_msg = f"Trainee {current_user.full_name or current_user.username} finished Set {task.set_number}. Please review his work or choose review later and open the next set."
+            notification_msg = f"Trainee {current_user.full_name or current_user.username} finished Set {task.set_number}. You can now review their submissions."
             new_notif = Notification(
                 recipient_id=mapping.trainer_id,
                 sender_id=current_user.id,
@@ -658,6 +736,30 @@ def update_trainee_set_mappings(
         )
         db.add(new_map)
     db.commit()
+    
+    # Notify trainee to refresh sets
+    db_notification = Notification(
+        recipient_id=trainee_id,
+        sender_id=current_user.id,
+        message="A new assessment set has been unlocked by your trainer.",
+        type="assessment_unlocked"
+    )
+    db.add(db_notification)
+    db.commit()
+    
+    import asyncio
+    from ..websocket_manager import notification_manager
+    try:
+        asyncio.create_task(notification_manager.send_personal_message(
+            {
+                "event": "ASSESSMENT_UNLOCKED",
+                "message": "A new assessment set has been unlocked by your trainer."
+            },
+            trainee_id
+        ))
+    except Exception as e:
+        print(f"Error sending WebSocket message: {e}")
+    
     return {"message": "Mappings updated"}
 
 @router.get("/trainer/submissions", response_model=List[AssessmentSubmissionResponse])
@@ -682,7 +784,9 @@ def get_trainer_submissions(
         joinedload(AssessmentSubmission.feedback)
     ).filter(AssessmentSubmission.is_deleted == False)
     
-    if status != "all":
+    if status == "reviewed":
+        query = query.filter(AssessmentSubmission.status.in_(["approved", "rejected"]))
+    elif status != "all":
         query = query.filter(AssessmentSubmission.status == status)
     
     if current_user.role != "admin":

@@ -7,6 +7,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   const { showNotification } = useNotification();
   const [tasks, setTasks] = useState<AssessmentTask[]>([]);
   const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
+  const [mySetMappings, setMySetMappings] = useState<{actual_set_number: number, display_set_number: number}[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeSet, setActiveSet] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,18 +19,30 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   const fetchData = useCallback(async (isSilent = false) => {
     if (!isSilent) setLoading(true);
     try {
-      const [tasksData, submissionsData] = await Promise.all([
+      const [tasksData, submissionsData, mappingsData] = await Promise.all([
         assessmentService.getTasks(),
-        assessmentService.getMySubmissions()
+        assessmentService.getMySubmissions(),
+        assessmentService.getMySetMappings().catch(() => [])
       ]);
-      setTasks(tasksData);
+      
+      let processedTasks = tasksData;
+      if (assessmentType === '2D') {
+        processedTasks = tasksData
+          .filter(t => t.set_number >= 100)
+          .map(t => ({ ...t, set_number: t.set_number - 100 }));
+      } else {
+        processedTasks = tasksData.filter(t => t.set_number < 100);
+      }
+      
+      setTasks(processedTasks);
       setSubmissions(submissionsData);
+      setMySetMappings(mappingsData);
     } catch (err) {
       if (!isSilent) showNotification('Failed to load assessment data.', 'error');
     } finally {
       if (!isSilent) setLoading(false);
     }
-  }, [showNotification]);
+  }, [showNotification, assessmentType]);
 
   useEffect(() => {
     fetchData();
@@ -323,6 +336,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
     handleRestore,
     handlePermanentDelete,
     handleBulkDelete,
-    handleEmptyTrash
+    handleEmptyTrash,
+    mySetMappings
   };
 };
