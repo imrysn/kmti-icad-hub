@@ -597,6 +597,6 @@ select.admin-input-styled option {
 }
 
 .set-option-item:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: var(--bg-hover) !important;
 }
 

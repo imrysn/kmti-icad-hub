@@ -630,10 +630,10 @@ export const PracticalManagement: React.FC = () => {
                                         top: '100%',
                                         left: 0,
                                         marginTop: '0.25rem',
-                                        background: '#1a1d24',
-                                        border: '1px solid #2d323e',
+                                        background: 'var(--glass-bg)',
+                                        border: '1px solid var(--glass-border)',
                                         borderRadius: '8px',
-                                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)',
+                                        boxShadow: 'var(--shadow-card)',
                                         zIndex: 1000,
                                         minWidth: '240px',
                                         overflow: 'hidden',
@@ -651,13 +651,13 @@ export const PracticalManagement: React.FC = () => {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'space-between',
-                                                background: setFilter === 'all' ? 'rgba(255,255,255,0.05)' : 'transparent',
-                                                borderBottom: '1px solid #2d323e'
+                                                background: setFilter === 'all' ? 'var(--bg-hover)' : 'transparent',
+                                                borderBottom: '1px solid var(--border-color)'
                                             }}
                                             className="set-option-item"
                                         >
                                             <span style={{ fontWeight: setFilter === 'all' ? 700 : 500, color: 'var(--text-main)' }}>All Sets</span>
-                                            {setFilter === 'all' && <Check size={14} color="#DD4DFA" />}
+                                            {setFilter === 'all' && <Check size={14} color="var(--primary)" />}
                                         </div>
                                         
                                         <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
@@ -673,7 +673,7 @@ export const PracticalManagement: React.FC = () => {
                                                             display: 'flex',
                                                             alignItems: 'center',
                                                             justifyContent: 'space-between',
-                                                            background: isSelected ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                                            background: isSelected ? 'var(--bg-hover)' : 'transparent',
                                                             gap: '0.5rem'
                                                         }}
                                                         className="set-option-item"
@@ -725,7 +725,7 @@ export const PracticalManagement: React.FC = () => {
                                                                 style={{
                                                                     background: 'none',
                                                                     border: 'none',
-                                                                    color: '#f87171',
+                                                                    color: 'var(--error)',
                                                                     cursor: 'pointer',
                                                                     padding: '6px',
                                                                     display: 'flex',
@@ -762,8 +762,8 @@ export const PracticalManagement: React.FC = () => {
                                                 padding: '0.6rem 1rem',
                                                 background: 'transparent',
                                                 border: 'none',
-                                                borderTop: '1px solid #2d323e',
-                                                color: '#DD4DFA',
+                                                borderTop: '1px solid var(--border-color)',
+                                                color: 'var(--primary)',
                                                 cursor: 'pointer',
                                                 display: 'flex',
                                                 alignItems: 'center',

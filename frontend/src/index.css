@@ -56,6 +56,7 @@
   --bg-dark: #000000;
   --bg-surface: #0e0e0e;
   --bg-card: #000000;
+  --bg-hover: rgba(255, 255, 255, 0.08);
 
   --glass-bg: #21262d;
   --glass-border: #444c56;
@@ -89,6 +90,7 @@
   --bg-dark: #e2e8f0;
   --bg-surface: #ffffff;
   --bg-card: #f3f4f6;
+  --bg-hover: rgba(0, 0, 0, 0.05);
 
   --glass-bg: #ffffff;
   --glass-border: #cbd5e1;
