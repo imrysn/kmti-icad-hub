@@ -11,10 +11,11 @@ const http = require('http');
 
 // Enable hardware acceleration for smooth rendering performance.
 // (Only disable if running in headless environments or VMs lacking DirectX runtimes)
-// app.disableHardwareAcceleration();
-// app.commandLine.appendSwitch('disable-gpu');
-// app.commandLine.appendSwitch('disable-software-rasterizer');
-// app.commandLine.appendSwitch('disable-gpu-compositing');
+app.disableHardwareAcceleration();
+app.commandLine.appendSwitch('no-sandbox');
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-gpu-sandbox');
+
 
 
 
