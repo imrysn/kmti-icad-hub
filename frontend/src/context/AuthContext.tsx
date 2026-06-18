@@ -55,13 +55,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       let errorMessage = 'Login failed. Please try again.';
 
       if (err.response) {
-        const status = err.response.status;
-        const reqUrl = err.config?.url || 'API';
-        const detail = err.response.data?.detail || err.response.statusText || 'Not Found';
-        errorMessage = `Error ${status} at ${reqUrl}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`;
+        const detail = err.response.data?.detail || err.response.statusText || 'Login failed. Please try again.';
+        errorMessage = typeof detail === 'string' ? detail : JSON.stringify(detail);
       } else if (err.message) {
-        const reqUrl = err.config?.url || 'API';
-        errorMessage = `Network Error connecting to ${reqUrl}: ${err.message}`;
+        errorMessage = 'Unable to connect to the server. Please make sure the backend server is running.';
       }
 
       setError(errorMessage);

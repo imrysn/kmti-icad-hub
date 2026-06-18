@@ -13,6 +13,7 @@ import { Modal } from '../../../components/Modal';
 import { TraineeTelemetrySidebar } from './TraineeTelemetrySidebar';
 import { NotificationCenter } from './NotificationCenter';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
+import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
 
 export const PracticalTrainerDashboard: React.FC = () => {
     const { showNotification } = useNotification();
@@ -850,7 +851,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                                             {latestSub.status === 'pending' && <Clock size={14} />}
                                                                                             {latestSub.status === 'rejected' && <XCircle size={14} />}
                                                                                         </div>
-                                                                                        <span className="task-code-badge">Unit {latestSub.task.task_code}</span>
+                                                                                        <span className={`task-code-badge ${getUnitCodeBadgeClass(latestSub.task.task_code)}`}>Unit {latestSub.task.task_code}</span>
                                                                                         <span className="task-list-title" title={latestSub.task.title}>{latestSub.task.title}</span>
                                                                                     </div>
                                                                                     <div className="task-list-right">
@@ -1038,7 +1039,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                 {/* Set Configuration Tab */}
                 {activeMainTab === 'sets' && (
-                    <TraineeSetConfiguration />
+                    <TraineeSetConfiguration searchTerm={searchTerm} />
                 )}
 
                 {/* Notifications Tab */}
@@ -1278,7 +1279,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 </p>
                                 <div style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                     {selectedSetSubmissions.map(sub => (
-                                        <span key={sub.id} style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
+                                        <span key={sub.id} className={`task-code-badge ${getUnitCodeBadgeClass(sub.task?.task_code)}`} style={{ fontSize: '0.85rem' }}>
                                             Unit {sub.task?.task_code}
                                         </span>
                                     ))}

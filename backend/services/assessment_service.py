@@ -1,8 +1,11 @@
 from sqlalchemy.orm import Session
 from ..models import AssessmentTask
 
-def resequence_set_task_codes(db: Session, set_number: int):
-    tasks = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).order_by(AssessmentTask.order, AssessmentTask.id).all()
+def resequence_set_task_codes(db: Session, set_number: int, assessment_type: str = "3D"):
+    tasks = db.query(AssessmentTask).filter(
+        AssessmentTask.set_number == set_number,
+        AssessmentTask.assessment_type == assessment_type
+    ).order_by(AssessmentTask.order, AssessmentTask.id).all()
     assemblies = [t for t in tasks if t.is_assembly]
     parts = [t for t in tasks if not t.is_assembly]
     

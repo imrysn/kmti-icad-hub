@@ -54,13 +54,23 @@ def get_assessment_tasks(
     mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
     
     if mappings:
-        mapping_dict = {m.actual_set_number: abs(m.display_set_number) for m in mappings}
+        mapping_dict_3d = {m.actual_set_number: abs(m.display_set_number) for m in mappings if m.assessment_type != "2D"}
+        mapping_dict_2d = {m.actual_set_number: abs(m.display_set_number) for m in mappings if m.assessment_type == "2D"}
+        
         filtered_tasks = []
         for t in tasks:
-            if t.set_number in mapping_dict:
-                db.expunge(t)
-                t.set_number = mapping_dict[t.set_number]
+            is_2d = (t.assessment_type == "2D")
+            m_dict = mapping_dict_2d if is_2d else mapping_dict_3d
+            has_mappings_of_type = len(m_dict) > 0
+            
+            if has_mappings_of_type:
+                if t.set_number in m_dict:
+                    db.expunge(t)
+                    t.set_number = m_dict[t.set_number]
+                    filtered_tasks.append(t)
+            else:
                 filtered_tasks.append(t)
+                
         filtered_tasks.sort(key=lambda x: (x.set_number, x.order))
         return filtered_tasks
 
@@ -114,6 +124,7 @@ async def create_task(
     is_assembly: bool = Form(False),
     file: UploadFile = File(...),
     set_name: Optional[str] = Form(None),
+    assessment_type: str = Form("3D"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -137,7 +148,8 @@ async def create_task(
         title=title,
         description=description,
         master_file_path=file_path,
-        is_assembly=is_assembly
+        is_assembly=is_assembly,
+        assessment_type=assessment_type
     )
     db.add(db_task)
     db.commit()
@@ -169,6 +181,7 @@ async def bulk_create_tasks(
     files: List[UploadFile] = File(...),
     set_name: Optional[str] = Form(None),
     is_assembly: bool = Form(False),
+    assessment_type: str = Form("3D"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -180,14 +193,22 @@ async def bulk_create_tasks(
     # Start task code based on existing count of the same unit type (Part/Assembly)
     existing_count = db.query(AssessmentTask).filter(
         AssessmentTask.set_number == set_number,
-        AssessmentTask.is_assembly == is_assembly
+        AssessmentTask.is_assembly == is_assembly,
+        AssessmentTask.assessment_type == assessment_type
     ).count()
     
-    total_existing = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).count()
+    total_existing = db.query(AssessmentTask).filter(
+        AssessmentTask.set_number == set_number,
+        AssessmentTask.assessment_type == assessment_type
+    ).count()
     
     # If set_name not passed, try to look up existing
     if not set_name:
-        existing = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number, AssessmentTask.set_name.isnot(None)).first()
+        existing = db.query(AssessmentTask).filter(
+            AssessmentTask.set_number == set_number,
+            AssessmentTask.assessment_type == assessment_type,
+            AssessmentTask.set_name.isnot(None)
+        ).first()
         if existing:
             set_name = existing.set_name
     prefix = "A" if is_assembly else "P"
@@ -207,13 +228,14 @@ async def bulk_create_tasks(
             title=title,
             master_file_path=file_path,
             is_assembly=is_assembly,
+            assessment_type=assessment_type,
             order=total_existing + i
         )
         db.add(db_task)
         created_tasks.append(db_task)
     
     db.commit()
-    resequence_set_task_codes(db, set_number)
+    resequence_set_task_codes(db, set_number, assessment_type)
     return {"message": f"Successfully created {len(created_tasks)} units for Set {set_number}"}
 
 @router.get("/admin/mappings", response_model=List[TrainerTraineeMappingResponse])
@@ -253,17 +275,17 @@ def reorder_tasks(
     """Admin only: Bulk-update task_code, set_number and order for drag-and-drop reordering."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    affected_sets = set()
+    affected_sets_and_types = set()
     for item in updates:
         task = db.query(AssessmentTask).filter(AssessmentTask.id == int(item["id"])).first()
         if task:
-            affected_sets.add(task.set_number)
-            affected_sets.add(int(item["set_number"]))
+            affected_sets_and_types.add((task.set_number, task.assessment_type))
+            affected_sets_and_types.add((int(item["set_number"]), task.assessment_type))
             task.set_number = int(item["set_number"])
             task.order = int(item["order"])
     db.commit()
-    for set_num in affected_sets:
-        resequence_set_task_codes(db, set_num)
+    for set_num, task_type in affected_sets_and_types:
+        resequence_set_task_codes(db, set_num, task_type)
     return {"message": "Tasks reordered successfully"}
 
 @router.delete("/admin/tasks/{task_id}")
@@ -281,21 +303,49 @@ def delete_task(
         raise HTTPException(status_code=404, detail="Task not found")
     
     set_num = task.set_number
+    task_type = task.assessment_type or "3D"
     db.delete(task)
     db.commit()
-    resequence_set_task_codes(db, set_num)
+    resequence_set_task_codes(db, set_num, task_type)
     return {"message": "Task deleted successfully"}
 
-@router.put("/admin/sets/{set_number}/rename")
-def rename_set(
-    set_number: int,
-    set_name: str = Body(..., embed=True),
+class BulkTasksDeleteRequest(BaseModel):
+    task_ids: List[int]
+
+@router.post("/admin/tasks/bulk-delete")
+def bulk_delete_tasks(
+    req: BulkTasksDeleteRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    tasks = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).all()
+    
+    tasks = db.query(AssessmentTask).filter(AssessmentTask.id.in_(req.task_ids)).all()
+    affected = set((t.set_number, t.assessment_type or "3D") for t in tasks)
+    
+    db.query(AssessmentTask).filter(AssessmentTask.id.in_(req.task_ids)).delete(synchronize_session=False)
+    db.commit()
+    
+    for set_num, task_type in affected:
+        resequence_set_task_codes(db, set_num, task_type)
+        
+    return {"message": f"Successfully deleted {len(req.task_ids)} tasks"}
+
+@router.put("/admin/sets/{set_number}/rename")
+def rename_set(
+    set_number: int,
+    set_name: str = Body(..., embed=True),
+    assessment_type: str = "3D",
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    tasks = db.query(AssessmentTask).filter(
+        AssessmentTask.set_number == set_number,
+        AssessmentTask.assessment_type == assessment_type
+    ).all()
     for task in tasks:
         task.set_name = set_name
     db.commit()
@@ -304,12 +354,16 @@ def rename_set(
 @router.delete("/admin/sets/{set_number}")
 def delete_set(
     set_number: int,
+    assessment_type: str = "3D",
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number).delete()
+    db.query(AssessmentTask).filter(
+        AssessmentTask.set_number == set_number,
+        AssessmentTask.assessment_type == assessment_type
+    ).delete()
     db.commit()
     return {"message": "Set deleted successfully"}
 
@@ -321,6 +375,7 @@ async def update_task(
     title: str = Form(...),
     description: Optional[str] = Form(None),
     is_assembly: bool = Form(False),
+    assessment_type: Optional[str] = Form(None),
     file: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -338,6 +393,8 @@ async def update_task(
     db_task.title = title
     db_task.description = description
     db_task.is_assembly = is_assembly
+    if assessment_type:
+        db_task.assessment_type = assessment_type
     
     if file:
         # Save new file
@@ -345,7 +402,7 @@ async def update_task(
         db_task.master_file_path = file_path
     
     db.commit()
-    resequence_set_task_codes(db, set_number)
+    resequence_set_task_codes(db, set_number, db_task.assessment_type or "3D")
     db.refresh(db_task)
     return db_task
 
@@ -664,20 +721,25 @@ def get_trainee_set_mappings(
 def update_trainee_set_mappings(
     trainee_id: int,
     mappings: List[TraineeSetMappingCreate] = Body(...),
+    assessment_type: str = "3D",
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     if current_user.role not in ["employee", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
         
-    db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee_id).delete()
+    db.query(TraineeSetMapping).filter(
+        TraineeSetMapping.trainee_id == trainee_id,
+        TraineeSetMapping.assessment_type == assessment_type
+    ).delete()
     
     for m in mappings:
         new_map = TraineeSetMapping(
             trainee_id=trainee_id,
             trainer_id=current_user.id,
             display_set_number=m.display_set_number,
-            actual_set_number=m.actual_set_number
+            actual_set_number=m.actual_set_number,
+            assessment_type=assessment_type
         )
         db.add(new_map)
     db.commit()
@@ -1072,12 +1134,13 @@ def get_trainer_trainees_progress(
     if current_user.role not in ["employee", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
     
-    # 1. Fetch assigned mappings
-    mappings = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainer_id == current_user.id).all()
-    trainee_ids = [m.trainee_id for m in mappings]
-    
-    # 2. Fetch all trainees' details
-    trainees = db.query(User).filter(User.id.in_(trainee_ids)).all()
+    # 1. Fetch trainees based on role
+    if current_user.role == "admin":
+        trainees = db.query(User).filter(User.role == "trainee").all()
+    else:
+        mappings = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainer_id == current_user.id).all()
+        trainee_ids = [m.trainee_id for m in mappings]
+        trainees = db.query(User).filter(User.id.in_(trainee_ids)).all()
     
     results = []
     for trainee in trainees:

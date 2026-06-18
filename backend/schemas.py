@@ -332,6 +332,7 @@ class TraineeSetMappingBase(BaseModel):
     trainee_id: int
     display_set_number: int
     actual_set_number: int
+    assessment_type: Optional[str] = "3D"
 
 class TraineeSetMappingCreate(TraineeSetMappingBase):
     pass

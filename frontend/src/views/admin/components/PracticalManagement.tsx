@@ -7,6 +7,7 @@ import { useNotification } from '../../../context/NotificationContext';
 import { Modal } from '../../../components/Modal';
 import { FileManagerModal } from './FileManagerModal';
 import '../../../styles/admin/PracticalManagement.css';
+import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
 
 export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
@@ -34,24 +35,42 @@ export const PracticalManagement: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [availableSets, setAvailableSets] = useState<number[]>([]);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [customSetNames, setCustomSetNames] = useState<Record<number, string>>(() => {
+    const [confirmModal, setConfirmModal] = useState<{
+        isOpen: boolean;
+        title: string;
+        message: string;
+        isDanger?: boolean;
+        onConfirm: () => void;
+    }>({
+        isOpen: false,
+        title: '',
+        message: '',
+        isDanger: false,
+        onConfirm: () => {}
+    });
+    const [customSetNames, setCustomSetNames] = useState<Record<'3D' | '2D', Record<number, string>>>(() => {
         try {
-            const saved = localStorage.getItem('custom_set_names');
-            return saved ? JSON.parse(saved) : {};
+            const saved = localStorage.getItem('custom_set_names_v2');
+            return saved ? JSON.parse(saved) : { '3D': {}, '2D': {} };
         } catch {
-            return {};
+            return { '3D': {}, '2D': {} };
         }
     });
     
     useEffect(() => {
-        const dbSets = tasks.map(t => t.set_number);
-        const customSets = Object.keys(customSetNames).map(Number);
+        const typeKey = activeSubTab === 'tasks_2d' ? '2D' : '3D';
+        const activeTasks = tasks.filter(t => 
+            activeSubTab === 'tasks_2d'
+                ? t.assessment_type === '2D'
+                : ((t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7))
+        );
+        const dbSets = activeTasks.map(t => t.set_number);
+        const customSets = Object.keys(customSetNames[typeKey] || {}).map(Number);
         
         if (activeSubTab === 'tasks_2d') {
             const defaultSets = [4, 5, 6, 7];
-            const filteredDbSets = dbSets.filter(s => s >= 4);
             const filteredCustomSets = customSets.filter(s => s >= 4);
-            const allSets = Array.from(new Set([...defaultSets, ...filteredDbSets, ...filteredCustomSets])).sort((a, b) => a - b);
+            const allSets = Array.from(new Set([...defaultSets, ...dbSets, ...filteredCustomSets])).sort((a, b) => a - b);
             setAvailableSets(allSets);
         } else {
             const defaultSets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -73,30 +92,38 @@ export const PracticalManagement: React.FC = () => {
 
     useEffect(() => {
         if (tasks.length > 0) {
-            const namesFromTasks: Record<number, string> = {};
+            const namesFromTasks: Record<'3D' | '2D', Record<number, string>> = { '3D': {}, '2D': {} };
             tasks.forEach(t => {
                 if (t.set_number && t.set_name) {
-                    namesFromTasks[t.set_number] = t.set_name;
+                    const type = (t.assessment_type === '2D' ? '2D' : '3D') as '3D' | '2D';
+                    namesFromTasks[type][t.set_number] = t.set_name;
                 }
             });
             setCustomSetNames(prev => {
-                const updated = { ...prev, ...namesFromTasks };
-                localStorage.setItem('custom_set_names', JSON.stringify(updated));
+                const updated = {
+                    '3D': { ...prev['3D'], ...namesFromTasks['3D'] },
+                    '2D': { ...prev['2D'], ...namesFromTasks['2D'] }
+                };
+                localStorage.setItem('custom_set_names_v2', JSON.stringify(updated));
                 return updated;
             });
         }
     }, [tasks]);
 
     const getSetDisplayName = (setNum: number) => {
-        if (customSetNames[setNum]) {
-            return customSetNames[setNum];
+        const typeKey = activeSubTab === 'tasks_2d' ? '2D' : '3D';
+        if (customSetNames[typeKey]?.[setNum]) {
+            return customSetNames[typeKey][setNum];
         }
-        const setTask = tasks.find(t => t.set_number === setNum && t.set_name);
+        const setTask = tasks.find(t => t.set_number === setNum && (t.assessment_type || '3D') === typeKey && t.set_name);
         if (setTask?.set_name) return setTask.set_name;
         if (setNum >= 100) {
             return `Set ${setNum - 100}`;
         }
-        return `Set ${setNum}`;
+        const ordinals = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
+        const prefix = ordinals[setNum - 1] || `${setNum}th`;
+        const suffix = setNum <= 3 ? 'Set Parts' : 'Set Parts and Assembly';
+        return `${prefix} ${suffix}`;
     };
 
     const [showRenameModal, setShowRenameModal] = useState(false);
@@ -120,12 +147,16 @@ export const PracticalManagement: React.FC = () => {
         if (!trimmedName) return;
 
         // Optimistically update local state & localStorage immediately
-        const updatedNames = { ...customSetNames, [renameSetNum]: trimmedName };
+        const typeKey = activeSubTab === 'tasks_2d' ? '2D' : '3D';
+        const updatedNames = {
+            ...customSetNames,
+            [typeKey]: { ...customSetNames[typeKey], [renameSetNum]: trimmedName }
+        };
         setCustomSetNames(updatedNames);
-        localStorage.setItem('custom_set_names', JSON.stringify(updatedNames));
+        localStorage.setItem('custom_set_names_v2', JSON.stringify(updatedNames));
 
         try {
-            await assessmentService.renameSet(renameSetNum, trimmedName);
+            await assessmentService.renameSet(renameSetNum, trimmedName, typeKey);
             showNotification(`Set ${renameSetNum} renamed to "${trimmedName}".`, 'success');
             fetchData();
         } catch (err) {
@@ -147,12 +178,16 @@ export const PracticalManagement: React.FC = () => {
         if (deleteSetNum === null) return;
 
         try {
-            await assessmentService.deleteSet(deleteSetNum);
+            const typeKey = activeSubTab === 'tasks_2d' ? '2D' : '3D';
+            await assessmentService.deleteSet(deleteSetNum, typeKey);
             // Also remove from local state
-            const updatedNames = { ...customSetNames };
-            delete updatedNames[deleteSetNum];
+            const updatedNames = {
+                ...customSetNames,
+                [typeKey]: { ...customSetNames[typeKey] }
+            };
+            delete updatedNames[typeKey][deleteSetNum];
             setCustomSetNames(updatedNames);
-            localStorage.setItem('custom_set_names', JSON.stringify(updatedNames));
+            localStorage.setItem('custom_set_names_v2', JSON.stringify(updatedNames));
 
             showNotification(`Set ${deleteSetNum} deleted successfully.`, 'success');
             if (setFilter === deleteSetNum) {
@@ -267,9 +302,11 @@ export const PracticalManagement: React.FC = () => {
 
         setIsSubmitting(true);
         try {
+            const type = activeSubTab === 'tasks_2d' ? '2D' : '3D';
             const taskWithSetName = {
                 ...newTask,
-                set_name: customSetNames[newTask.set_number] || ''
+                set_name: customSetNames[type][newTask.set_number] || '',
+                assessment_type: type
             };
             await assessmentService.createTask(taskWithSetName, taskFile);
             showNotification('Unit created successfully.', 'success');
@@ -293,8 +330,9 @@ export const PracticalManagement: React.FC = () => {
 
         setIsSubmitting(true);
         try {
-            const setName = customSetNames[newTask.set_number] || '';
-            await assessmentService.bulkCreateTasks(newTask.set_number, bulkFiles, setName, newTask.is_assembly);
+            const type = activeSubTab === 'tasks_2d' ? '2D' : '3D';
+            const setName = customSetNames[type][newTask.set_number] || '';
+            await assessmentService.bulkCreateTasks(newTask.set_number, bulkFiles, setName, newTask.is_assembly, type);
             showNotification(`Successfully created ${bulkFiles.length} units.`, 'success');
             setShowCreateModal(false);
             setBulkFiles([]);
@@ -319,65 +357,96 @@ export const PracticalManagement: React.FC = () => {
         }
     };
 
-    const handleDeleteTask = async (taskId: number) => {
-        if (!window.confirm('Are you sure you want to delete this assessment unit?')) return;
-        try {
-            await assessmentService.deleteTask(taskId);
-            showNotification('Unit deleted successfully.', 'success');
-            fetchData();
-        } catch (err) {
-            showNotification('Failed to delete unit.', 'error');
-        }
+    const handleDeleteTask = (taskId: number) => {
+        setConfirmModal({
+            isOpen: true,
+            title: 'Delete Assessment Unit',
+            message: 'Are you sure you want to delete this assessment unit? This action cannot be undone.',
+            isDanger: true,
+            onConfirm: async () => {
+                setConfirmModal(prev => ({ ...prev, isOpen: false }));
+                try {
+                    await assessmentService.deleteTask(taskId);
+                    showNotification('Unit deleted successfully.', 'success');
+                    fetchData();
+                } catch (err) {
+                    showNotification('Failed to delete unit.', 'error');
+                }
+            }
+        });
     };
 
-    const handleDeleteAllInSet = async () => {
+    const handleDeleteAllInSet = () => {
         if (setFilter === 'all') return;
-        const confirmed = window.confirm(`Are you absolutely sure you want to delete ALL ${filteredTasks.length} units in Set ${setFilter}? This action cannot be undone.`);
-        if (!confirmed) return;
-        
-        setLoading(true);
-        try {
-            for (const task of filteredTasks) {
-                await assessmentService.deleteTask(task.id);
+        setConfirmModal({
+            isOpen: true,
+            title: `Delete All in Set ${setFilter}`,
+            message: `Are you absolutely sure you want to delete ALL ${filteredTasks.length} units in Set ${setFilter}? This action cannot be undone.`,
+            isDanger: true,
+            onConfirm: async () => {
+                setConfirmModal(prev => ({ ...prev, isOpen: false }));
+                setLoading(true);
+                try {
+                    const taskIds = filteredTasks.map(t => t.id);
+                    await assessmentService.bulkDeleteTasks(taskIds);
+                    showNotification(`All units in Set ${setFilter} deleted successfully.`, 'success');
+                    fetchData();
+                } catch (err) {
+                    showNotification('Failed to delete units.', 'error');
+                    fetchData();
+                } finally {
+                    setLoading(false);
+                }
             }
-            showNotification(`All units in Set ${setFilter} deleted successfully.`, 'success');
-            fetchData();
-        } catch (err) {
-            showNotification('Failed to delete some units.', 'error');
-            fetchData();
-        } finally {
-            setLoading(false);
-        }
+        });
     };
 
-    const handleDeleteAllTasks = async () => {
-        const confirmed = window.confirm(`WARNING: Are you absolutely sure you want to delete ALL ${tasks.length} units across ALL sets? This will wipe the entire training set repository! This action cannot be undone.`);
-        if (!confirmed) return;
-        
-        setLoading(true);
-        try {
-            for (const task of tasks) {
-                await assessmentService.deleteTask(task.id);
+    const handleDeleteAllTasks = () => {
+        const tabTasks = tasks.filter(task => {
+            const is2d = task.assessment_type === '2D';
+            return activeSubTab === 'tasks_2d' ? is2d : !is2d;
+        });
+        const typeName = activeSubTab === 'tasks_2d' ? '2D' : '3D';
+        setConfirmModal({
+            isOpen: true,
+            title: `Delete All ${typeName} Tasks`,
+            message: `WARNING: Are you absolutely sure you want to delete ALL ${tabTasks.length} ${typeName} units across ALL sets? This will wipe the entire ${typeName} training set repository! This action cannot be undone.`,
+            isDanger: true,
+            onConfirm: async () => {
+                setConfirmModal(prev => ({ ...prev, isOpen: false }));
+                setLoading(true);
+                try {
+                    const taskIds = tabTasks.map(t => t.id);
+                    await assessmentService.bulkDeleteTasks(taskIds);
+                    showNotification(`All ${typeName} tasks deleted successfully.`, 'success');
+                    fetchData();
+                } catch (err) {
+                    showNotification('Failed to delete tasks.', 'error');
+                    fetchData();
+                } finally {
+                    setLoading(false);
+                }
             }
-            showNotification('All tasks deleted successfully.', 'success');
-            fetchData();
-        } catch (err) {
-            showNotification('Failed to delete some tasks.', 'error');
-            fetchData();
-        } finally {
-            setLoading(false);
-        }
+        });
     };
 
-    const handleDeleteMapping = async (mappingId: number) => {
-        if (!window.confirm('Are you sure you want to remove this trainer assignment?')) return;
-        try {
-            await assessmentService.deleteMapping(mappingId);
-            showNotification('Mapping removed successfully.', 'success');
-            fetchData();
-        } catch (err) {
-            showNotification('Failed to remove mapping.', 'error');
-        }
+    const handleDeleteMapping = (mappingId: number) => {
+        setConfirmModal({
+            isOpen: true,
+            title: 'Remove Trainer Assignment',
+            message: 'Are you sure you want to remove this trainer assignment?',
+            isDanger: true,
+            onConfirm: async () => {
+                setConfirmModal(prev => ({ ...prev, isOpen: false }));
+                try {
+                    await assessmentService.deleteMapping(mappingId);
+                    showNotification('Mapping removed successfully.', 'success');
+                    fetchData();
+                } catch (err) {
+                    showNotification('Failed to remove mapping.', 'error');
+                }
+            }
+        });
     };
 
     const handleEditTask = (task: AssessmentTask) => {
@@ -501,8 +570,12 @@ export const PracticalManagement: React.FC = () => {
     const trainees = allUsers.filter(u => u.role === 'trainee');
     const filteredTasks = tasks
         .filter(task => {
+            const is2d = task.assessment_type === '2D';
             if (activeSubTab === 'tasks_2d') {
-                if (task.set_number < 4) return false;
+                if (!is2d) return false;
+            } else {
+                const isShared2DSet = is2d && task.set_number >= 4 && task.set_number <= 7;
+                if (is2d && !isShared2DSet) return false;
             }
             return setFilter === 'all' || task.set_number === setFilter;
         })
@@ -670,13 +743,17 @@ export const PracticalManagement: React.FC = () => {
                                         <button
                                             type="button"
                                             onClick={() => {
-                                                const nextSet = availableSets.length > 0 ? availableSets[availableSets.length - 1] + 1 : 1;
+                                                const nextSet = availableSets.length > 0 ? availableSets[availableSets.length - 1] + 1 : (activeSubTab === 'tasks_2d' ? 4 : 1);
+                                                const typeKey = activeSubTab === 'tasks_2d' ? '2D' : '3D';
                                                 
                                                 // Register immediately in customSetNames to prevent dynamic useEffect pruning
-                                                const updatedNames = { ...customSetNames, [nextSet]: `Set ${nextSet}` };
+                                                const updatedNames = {
+                                                    ...customSetNames,
+                                                    [typeKey]: { ...customSetNames[typeKey], [nextSet]: `Set ${nextSet}` }
+                                                };
                                                 setCustomSetNames(updatedNames);
-                                                localStorage.setItem('custom_set_names', JSON.stringify(updatedNames));
-
+                                                localStorage.setItem('custom_set_names_v2', JSON.stringify(updatedNames));
+ 
                                                 setAvailableSets([...availableSets, nextSet]);
                                                 setSetFilter(nextSet);
                                                 showNotification(`Set ${nextSet} added.`, 'success');
@@ -744,7 +821,7 @@ export const PracticalManagement: React.FC = () => {
                                     Delete All in Set {setFilter}
                                 </button>
                             )}
-                            {setFilter === 'all' && tasks.length > 0 && (
+                            {setFilter === 'all' && tasks.filter(task => activeSubTab === 'tasks_2d' ? task.assessment_type === '2D' : (task.assessment_type || '3D') === '3D').length > 0 && (
                                 <button
                                     onClick={handleDeleteAllTasks}
                                     className="global-btn-danger"
@@ -950,7 +1027,7 @@ export const PracticalManagement: React.FC = () => {
                                                     <GripVertical size={16} />
                                                 </td>
                                                 <td><span className="set-pill-mini">{getSetDisplayName(task.set_number)}</span></td>
-                                                <td><strong>{task.task_code}</strong></td>
+                                                <td><span className={`task-code-badge ${getUnitCodeBadgeClass(task.task_code)}`}>{task.task_code}</span></td>
                                                 <td>{task.title}</td>
                                                 <td className="dim-text">{task.master_file_path}</td>
                                                 <td>
@@ -1253,6 +1330,38 @@ export const PracticalManagement: React.FC = () => {
                                 onClick={submitDeleteSet}
                             >
                                 Yes, Delete Set
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
+
+            {confirmModal.isOpen && (
+                <Modal
+                    isOpen={confirmModal.isOpen}
+                    onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+                    title={confirmModal.title}
+                    tag="CONFIRM_MODAL"
+                    size="sm"
+                >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        <p style={{ color: 'var(--text-main)', fontSize: '0.95rem', lineHeight: '1.5', margin: 0 }}>
+                            {confirmModal.message}
+                        </p>
+                        <div className="global-modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+                            <button 
+                                type="button" 
+                                className="global-btn-secondary" 
+                                onClick={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                type="button" 
+                                className={confirmModal.isDanger ? "global-btn-danger" : "global-btn-primary"} 
+                                onClick={confirmModal.onConfirm}
+                            >
+                                Confirm
                             </button>
                         </div>
                     </div>

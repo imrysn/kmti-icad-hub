@@ -93,22 +93,10 @@ def sync_tasks():
                     title=title,
                     master_file_path=str(rel_path).replace("\\", "/"),
                     file_name=file,
-                    is_assembly=is_assembly
+                    is_assembly=is_assembly,
+                    assessment_type='2D' if 4 <= set_number <= 7 else '3D'
                 )
                 tasks_to_add.append(task)
-                
-                # Duplicate Sets 4-7 as 2D tasks (104-107)
-                if 4 <= set_number <= 7:
-                    task_2d = AssessmentTask(
-                        set_number=set_number + 100,
-                        set_name=set_name,
-                        unit_name=unit_name,
-                        title=title,
-                        master_file_path=str(rel_path).replace("\\", "/"),
-                        file_name=file,
-                        is_assembly=is_assembly
-                    )
-                    tasks_to_add.append(task_2d)
                 
     if tasks_to_add:
         db.add_all(tasks_to_add)
@@ -119,15 +107,16 @@ def sync_tasks():
         all_tasks = db.query(AssessmentTask).order_by(AssessmentTask.set_number, AssessmentTask.id).all()
         sets = {}
         for t in all_tasks:
-            if t.set_number not in sets:
-                sets[t.set_number] = {'assemblies': [], 'parts': []}
+            key = (t.set_number, t.assessment_type or '3D')
+            if key not in sets:
+                sets[key] = {'assemblies': [], 'parts': []}
             if t.is_assembly:
-                sets[t.set_number]['assemblies'].append(t)
+                sets[key]['assemblies'].append(t)
             else:
-                sets[t.set_number]['parts'].append(t)
+                sets[key]['parts'].append(t)
                 
         count = 0
-        for s, data in sets.items():
+        for key, data in sets.items():
             for i, a in enumerate(data['assemblies']):
                 a.task_code = f"A{i+1}"
                 count += 1

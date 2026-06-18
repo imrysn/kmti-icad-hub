@@ -8,6 +8,7 @@ import '../../../styles/mentor/PracticalAssessment.css';
 import '../../../styles/3D_Modeling/CourseLesson.css';
 import { Modal } from '../../../components/Modal';
 import JSZip from 'jszip';
+import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
 
 interface PracticalAssessmentProps {
     onBack: () => void;
@@ -881,7 +882,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                     {/* Row Header */}
                                                                     <div className="task-row-header">
                                                                         <div className="task-row-info">
-                                                                            <div className="task-row-code" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', width: 'auto', borderRadius: '4px' }}>
+                                                                            <div className={`task-row-code code-${getUnitCodeBadgeClass(task.task_code).replace('badge-', '')}`} style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', width: 'auto', borderRadius: '4px' }}>
                                                                                 {task.task_code || (task.is_assembly ? 'ASM' : 'PRT')}
                                                                             </div>
                                                                             <div className="task-row-meta">

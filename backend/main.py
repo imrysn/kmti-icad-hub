@@ -20,8 +20,19 @@ import json
 # Create database tables on startup (only if SQLite, or MySQL is ready)
 try:
     Base.metadata.create_all(bind=engine)
+    
+    # Auto-migration for trainee_set_mappings assessment_type column
+    from sqlalchemy import text, inspect
+    with engine.connect() as conn:
+        inspector = inspect(engine)
+        if "trainee_set_mappings" in inspector.get_table_names():
+            columns = [c["name"] for c in inspector.get_columns("trainee_set_mappings")]
+            if "assessment_type" not in columns:
+                print("Adding assessment_type column to trainee_set_mappings table...")
+                conn.execute(text("ALTER TABLE trainee_set_mappings ADD COLUMN assessment_type VARCHAR(50) DEFAULT '3D'"))
+                print("Successfully added assessment_type column.")
 except Exception as e:
-    print(f"[!] Warning: Could not create tables on startup: {e}")
+    print(f"[!] Warning: Could not create tables or run startup migrations: {e}")
 
 app = FastAPI(title="KMTI iCAD Hub API")
 

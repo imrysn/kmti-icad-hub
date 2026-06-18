@@ -28,10 +28,10 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
       let processedTasks = tasksData;
       if (assessmentType === '2D') {
         processedTasks = tasksData
-          .filter(t => t.set_number >= 100)
-          .map(t => ({ ...t, set_number: t.set_number - 100 }));
+          .filter(t => t.assessment_type === '2D' || t.set_number >= 100)
+          .map(t => ({ ...t, set_number: t.set_number >= 100 ? t.set_number - 100 : t.set_number }));
       } else {
-        processedTasks = tasksData.filter(t => t.set_number < 100);
+        processedTasks = tasksData.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7));
       }
       
       setTasks(processedTasks);

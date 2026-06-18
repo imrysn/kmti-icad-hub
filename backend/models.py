@@ -274,6 +274,7 @@ class TraineeSetMapping(Base):
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     display_set_number = Column(Integer, nullable=False)
     actual_set_number = Column(Integer, nullable=False)
+    assessment_type = Column(String(50), default="3D", server_default="3D")
     created_at = Column(DateTime, default=func.now())
 
     trainee = relationship("User", foreign_keys=[trainee_id])

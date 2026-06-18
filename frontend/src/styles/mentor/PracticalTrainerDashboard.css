@@ -1289,14 +1289,35 @@
 }
 
 .task-code-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.72rem;
     font-weight: 700;
-    background: rgba(221, 77, 250, 0.1);
-    color: var(--primary);
     padding: 2px 8px;
     border-radius: 4px;
     flex-shrink: 0;
+    border: 1px solid var(--unit-parts-border);
+    background: var(--unit-parts-bg);
+    color: var(--unit-parts-color);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.task-code-badge.badge-assembly {
+    background: var(--unit-assembly-bg);
+    color: var(--unit-assembly-color);
+    border-color: var(--unit-assembly-border);
+}
+
+.task-code-badge.badge-parts {
+    background: var(--unit-parts-bg);
+    color: var(--unit-parts-color);
+    border-color: var(--unit-parts-border);
+}
+
+.task-code-badge.badge-extra {
+    background: var(--unit-extra-bg);
+    color: var(--unit-extra-color);
+    border-color: var(--unit-extra-border);
 }
 
 .task-list-title {

@@ -181,13 +181,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--primary);
-    color: #fff;
+    background: var(--unit-parts-bg);
+    color: var(--unit-parts-color);
+    border: 1px solid var(--unit-parts-border);
     border-radius: 10px;
     font-weight: 800;
     font-size: 0.85rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    letter-spacing: 0.02em;
+}
+
+.task-row-code.code-assembly {
+    background: var(--unit-assembly-bg);
+    color: var(--unit-assembly-color);
+    border-color: var(--unit-assembly-border);
+    box-shadow: 0 2px 8px rgba(221, 77, 250, 0.2);
+}
+
+.task-row-code.code-parts {
+    background: var(--unit-parts-bg);
+    color: var(--unit-parts-color);
+    border-color: var(--unit-parts-border);
+    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.15);
+}
+
+.task-row-code.code-extra {
+    background: var(--unit-extra-bg);
+    color: var(--unit-extra-color);
+    border-color: var(--unit-extra-border);
+    box-shadow: 0 2px 8px rgba(124, 111, 160, 0.12);
 }
 
 .task-row-meta {
@@ -809,7 +833,7 @@
     opacity: 0.9;
 }
 
-/* „Ÿ„Ÿ Resubmit Action „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ */
+/* ï¿½ï¿½ï¿½ï¿½ Resubmit Action ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .feedback-resubmit-action {
     margin-top: 1.5rem;
     padding-top: 1rem;
@@ -832,7 +856,7 @@
     box-shadow: 0 4px 15px rgba(221, 77, 250, 0.3);
 }
 
-/* „Ÿ„Ÿ Submissions History „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ */
+/* ï¿½ï¿½ï¿½ï¿½ Submissions History ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .upload-header-row {
     display: flex;
     justify-content: space-between;
@@ -932,3 +956,4 @@
     font-weight: 500;
     margin: 0;
 }
+

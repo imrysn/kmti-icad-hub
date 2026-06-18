@@ -28,6 +28,24 @@
   --success: var(--color-success);
   --error: var(--color-error);
   --warning: var(--color-warning);
+
+  /* ── Unit Code Colors (A = Assembly, P = Parts, E = Extra) ── */
+  /* Dark → Light: A is heaviest, E is most subtle */
+
+  /* A = Assembly → darkest/most vivid purple (primary accent) */
+  --unit-assembly-color: #f0d4ff;
+  --unit-assembly-bg: rgba(221, 77, 250, 0.22);
+  --unit-assembly-border: rgba(221, 77, 250, 0.45);
+
+  /* P = Parts → mid-weight lavender */
+  --unit-parts-color: #c4b5fd;
+  --unit-parts-bg: rgba(167, 139, 250, 0.13);
+  --unit-parts-border: rgba(167, 139, 250, 0.28);
+
+  /* E = Extra → lightest, barely-there dim violet */
+  --unit-extra-color: #9d8fc0;
+  --unit-extra-bg: rgba(124, 111, 160, 0.07);
+  --unit-extra-border: rgba(124, 111, 160, 0.16);
 }
 
 /* === DARK THEME (GitHub-Inspired) === */
@@ -95,6 +113,20 @@
 
   --color-primary-glow: rgba(181, 23, 158, 0.12);
   --color-secondary-glow: rgba(87, 96, 106, 0.15);
+
+  /* ── Unit Code Colors (A = Assembly, P = Parts, E = Extra) ── */
+  /* Dark → Light: A is heaviest, E is most subtle */
+  --unit-assembly-color: #9b1fbc;   /* dark vivid purple */
+  --unit-assembly-bg: rgba(221, 77, 250, 0.10);
+  --unit-assembly-border: rgba(221, 77, 250, 0.30);
+
+  --unit-parts-color: #5b4fa8;   /* dark mid-purple */
+  --unit-parts-bg: rgba(167, 139, 250, 0.08);
+  --unit-parts-border: rgba(167, 139, 250, 0.22);
+
+  --unit-extra-color: #6b5e8a;   /* muted dark violet */
+  --unit-extra-bg: rgba(124, 111, 160, 0.06);
+  --unit-extra-border: rgba(124, 111, 160, 0.15);
 }
 
 :root {
@@ -454,4 +486,40 @@ button:disabled {
 
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* ============================================================
+   Task Code Badge (Shared UI Component)
+   ============================================================ */
+.task-code-badge {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid var(--unit-parts-border);
+  background: var(--unit-parts-bg);
+  color: var(--unit-parts-color);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.task-code-badge.badge-assembly {
+  background: var(--unit-assembly-bg);
+  color: var(--unit-assembly-color);
+  border-color: var(--unit-assembly-border);
+}
+
+.task-code-badge.badge-parts {
+  background: var(--unit-parts-bg);
+  color: var(--unit-parts-color);
+  border-color: var(--unit-parts-border);
+}
+
+.task-code-badge.badge-extra {
+  background: var(--unit-extra-bg);
+  color: var(--unit-extra-color);
+  border-color: var(--unit-extra-border);
 }

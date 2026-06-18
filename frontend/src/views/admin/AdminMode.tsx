@@ -142,7 +142,7 @@ export const AdminMode: React.FC = () => {
                         </ErrorBoundary>
                     </div>
 
-                    <div style={{ display: activeTab === 'practical' ? 'block' : 'none' }}>
+                    <div style={{ display: activeTab === 'practical' ? 'flex' : 'none', flex: 1, flexDirection: 'column', minHeight: 0 }}>
                         <ErrorBoundary>
                             <PracticalManagement />
                         </ErrorBoundary>

@@ -13,6 +13,7 @@ export interface AssessmentTask {
     description: string;
     master_file_path: string;
     order: number;
+    assessment_type?: string;
 }
 
 export interface AssessmentSubmission {
@@ -113,9 +114,11 @@ export const assessmentService = {
         return cachedGet(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
     },
 
-    updateTraineeSetMapping: async (traineeId: number, mappings: { display_set_number: number, actual_set_number: number }[]) => {
+    updateTraineeSetMapping: async (traineeId: number, mappings: { display_set_number: number, actual_set_number: number, assessment_type?: string }[], assessmentType?: string) => {
         const payload = mappings.map(m => ({ ...m, trainee_id: traineeId }));
-        const response = await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, payload);
+        const response = await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, payload, {
+            params: { assessment_type: assessmentType }
+        });
         return response.data;
     },
 
@@ -133,16 +136,18 @@ export const assessmentService = {
         formData.append('is_assembly', taskData.is_assembly ? 'true' : 'false');
         formData.append('file', file);
         if (taskData.set_name) formData.append('set_name', taskData.set_name);
+        if (taskData.assessment_type) formData.append('assessment_type', taskData.assessment_type);
 
         const response = await api.post('/api/v1/assessments/admin/tasks', formData);
         return response.data;
     },
 
-    bulkCreateTasks: async (setNumber: number, files: File[], setName?: string, isAssembly: boolean = false) => {
+    bulkCreateTasks: async (setNumber: number, files: File[], setName?: string, isAssembly: boolean = false, assessmentType: string = '3D') => {
         const formData = new FormData();
         formData.append('set_number', setNumber.toString());
         if (setName) formData.append('set_name', setName);
         formData.append('is_assembly', isAssembly ? 'true' : 'false');
+        formData.append('assessment_type', assessmentType);
         files.forEach(file => {
             formData.append('files', file);
         });
@@ -178,6 +183,7 @@ export const assessmentService = {
         formData.append('title', taskData.title);
         if (taskData.description) formData.append('description', taskData.description);
         if (taskData.is_assembly !== undefined) formData.append('is_assembly', taskData.is_assembly ? 'true' : 'false');
+        if (taskData.assessment_type) formData.append('assessment_type', taskData.assessment_type);
         if (file) formData.append('file', file);
 
         for (let pair of formData.entries()) {
@@ -249,12 +255,20 @@ export const assessmentService = {
         const response = await api.delete('/api/v1/assessments/submissions/trash/empty');
         return response.data;
     },
-    renameSet: async (setNumber: number, setName: string) => {
-        const response = await api.put(`/api/v1/assessments/admin/sets/${setNumber}/rename`, { set_name: setName });
+    renameSet: async (setNumber: number, setName: string, assessmentType: string = '3D') => {
+        const response = await api.put(`/api/v1/assessments/admin/sets/${setNumber}/rename`, { set_name: setName }, {
+            params: { assessment_type: assessmentType }
+        });
         return response.data;
     },
-    deleteSet: async (setNumber: number) => {
-        const response = await api.delete(`/api/v1/assessments/admin/sets/${setNumber}`);
+    deleteSet: async (setNumber: number, assessmentType: string = '3D') => {
+        const response = await api.delete(`/api/v1/assessments/admin/sets/${setNumber}`, {
+            params: { assessment_type: assessmentType }
+        });
+        return response.data;
+    },
+    bulkDeleteTasks: async (taskIds: number[]) => {
+        const response = await api.post('/api/v1/assessments/admin/tasks/bulk-delete', { task_ids: taskIds });
         return response.data;
     }
 };
