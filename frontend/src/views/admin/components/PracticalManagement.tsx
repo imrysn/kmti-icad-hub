@@ -388,7 +388,7 @@ export const PracticalManagement: React.FC = () => {
     const handleUpdateTask = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!editingTask) return;
-        const taskCode = editingTask.task_code.trim();
+        const taskCode = (editingTask.task_code || '').trim();
         const isAssembly = editingTask.is_assembly;
         if (isAssembly && !taskCode.toUpperCase().startsWith('A')) {
             showNotification("Task code must start with 'A' for Assembly units (e.g. A6).", 'warning');

@@ -25,8 +25,10 @@ export const useAdminDashboard = (activeTab: string) => {
     setLoading(true);
     setError(null);
     try {
-      const me = await authService.getCurrentUser();
-      setCurrentUser(me);
+      if (!currentUser) {
+        const me = await authService.getCurrentUser();
+        setCurrentUser(me);
+      }
 
       if (activeTab === 'overview') {
         const [s, h] = await Promise.all([
@@ -55,7 +57,7 @@ export const useAdminDashboard = (activeTab: string) => {
     } finally {
       setLoading(false);
     }
-  }, [activeTab, selectedTrainee]);
+  }, [activeTab, selectedTrainee, currentUser]);
 
   // Trigger data fetching on mount and when tab changes
   useEffect(() => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TraineeProgress } from '../../../services/adminService';
 import { assessmentService } from '../../../services/assessmentService';
+import { useWebSocket } from '../../../context/WebSocketContext';
 
 interface PerformanceDirectoryProps {
     progress: TraineeProgress[];
@@ -9,6 +10,7 @@ interface PerformanceDirectoryProps {
 
 export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ progress, setSelectedTrainee }) => {
     const [telemetryMap, setTelemetryMap] = useState<Record<number, any>>({});
+    const { subscribe } = useWebSocket();
 
     useEffect(() => {
         const fetchTelemetry = async () => {
@@ -25,10 +27,31 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
         };
 
         fetchTelemetry();
-        // Optional: refresh every 10 seconds or listen to event
-        const interval = setInterval(fetchTelemetry, 15000);
-        return () => clearInterval(interval);
-    }, []);
+        // Fallback REST API refresh every 60 seconds
+        const interval = setInterval(fetchTelemetry, 60000);
+
+        // Real-time WebSocket telemetry updates
+        const unsub = subscribe('TRAINEE_TELEMETRY', (data: any) => {
+            setTelemetryMap(prev => {
+                const current = prev[data.trainee_id];
+                if (!current) return prev;
+                return {
+                    ...prev,
+                    [data.trainee_id]: {
+                        ...current,
+                        is_online: data.is_online,
+                        current_activity: data.current_activity,
+                        last_seen: data.last_updated || data.last_seen
+                    }
+                };
+            });
+        });
+
+        return () => {
+            clearInterval(interval);
+            unsub();
+        };
+    }, [subscribe]);
 
     return (
         <section className="trainee-progress">

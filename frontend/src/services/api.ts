@@ -48,10 +48,21 @@ api.interceptors.request.use(
     }
 );
 
-// Response interceptor to handle 401 errors
+// Response interceptor to handle 401 errors and automatic cache invalidation
 api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        const method = response.config.method?.toLowerCase();
+        if (method && ['post', 'put', 'delete', 'patch'].includes(method)) {
+            invalidateCache();
+        }
+        return response;
+    },
     (error) => {
+        const method = error.config?.method?.toLowerCase();
+        if (method && ['post', 'put', 'delete', 'patch'].includes(method)) {
+            invalidateCache();
+        }
+
         // Token expired or invalid - clear auth and redirect to login
         const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
@@ -68,6 +79,33 @@ api.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+// Simple in-memory cache for GET requests
+const requestCache = new Map<string, { data: any; timestamp: number }>();
+
+export const cachedGet = async (url: string, ttlMs: number = 15000, options: any = {}) => {
+    const cacheKey = `${url}_${JSON.stringify(options.params || {})}`;
+    const cached = requestCache.get(cacheKey);
+    const now = Date.now();
+    if (cached && (now - cached.timestamp < ttlMs)) {
+        return cached.data;
+    }
+    const response = await api.get(url, options);
+    requestCache.set(cacheKey, { data: response.data, timestamp: now });
+    return response.data;
+};
+
+export const invalidateCache = (urlPattern?: string) => {
+    if (!urlPattern) {
+        requestCache.clear();
+    } else {
+        for (const key of requestCache.keys()) {
+            if (key.includes(urlPattern)) {
+                requestCache.delete(key);
+            }
+        }
+    }
+};
 
 export default api;
 export { api };

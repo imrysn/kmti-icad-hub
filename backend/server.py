@@ -122,22 +122,20 @@ if __name__ == "__main__":
         # Run Tkinter GUI on main thread, and Uvicorn on background thread
         import threading
         import webbrowser
+        import queue
         import tkinter as tk
         from tkinter import scrolledtext
         
-        # Redirection helper to capture print outputs to GUI console
+        # Redirection helper to capture print outputs to GUI console safely via thread-safe queue
+        log_queue = queue.Queue()
+
         class TextRedirector:
-            def __init__(self, widget):
+            def __init__(self, widget, msg_queue):
                 self.widget = widget
+                self.msg_queue = msg_queue
 
             def write(self, string):
-                try:
-                    self.widget.configure(state="normal")
-                    self.widget.insert("end", string)
-                    self.widget.see("end")
-                    self.widget.configure(state="disabled")
-                except Exception:
-                    pass
+                self.msg_queue.put(string)
                 if sys.__stdout__ is not None:
                     sys.__stdout__.write(string)
 
@@ -273,8 +271,30 @@ if __name__ == "__main__":
         log_widget.pack(fill="both", expand=True, padx=20, pady=(0, 20))
 
         # Redirect standard stdout/stderr to Tkinter console
-        sys.stdout = TextRedirector(log_widget)
+        sys.stdout = TextRedirector(log_widget, log_queue)
         sys.stderr = sys.stdout
+
+        # Periodic processing queue loop to insert logs on the main thread safely
+        def process_log_queue():
+            try:
+                changed = False
+                while True:
+                    try:
+                        string = log_queue.get_nowait()
+                        log_widget.configure(state="normal")
+                        log_widget.insert("end", string)
+                        log_widget.configure(state="disabled")
+                        changed = True
+                    except queue.Empty:
+                        break
+                if changed:
+                    log_widget.see("end")
+            except Exception:
+                pass
+            root.after(50, process_log_queue)
+
+        # Start periodic log update loop
+        root.after(50, process_log_queue)
 
         print("=======================================================================")
         print("    KMTI Training Hub Standalone Server Running Successfully")

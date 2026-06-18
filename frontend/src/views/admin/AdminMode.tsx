@@ -28,6 +28,14 @@ export const AdminMode: React.FC = () => {
     const pathParts = location.pathname.split('/');
     const activeTab = (pathParts[pathParts.length - 1] as AdminTab) || 'overview';
 
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        const path = location.pathname;
+        if (path === '/admin' || path === '/admin/') {
+            navigate('/admin/overview', { replace: true });
+        }
+    }, [location.pathname, navigate]);
+
     const {
         stats,
         users,
@@ -80,55 +88,71 @@ export const AdminMode: React.FC = () => {
                         </div>
                     )}
 
-                    <Routes>
-                        <Route path="overview" element={ <ErrorBoundary>
-                                {stats && (
-                                    <div className="dashboard-scrollable">
-                                        <SystemAnalytics stats={stats} cpuLoad={cpuLoad} memoryUsage={memoryUsage} sysStatus={sysStatus} heatmap={heatmap} />
-                                    </div>
-                                )}
-                            </ErrorBoundary>
-                        } />
-                        <Route path="users" element={ <ErrorBoundary>
-                                <UserManagement users={users} currentUser={currentUser} searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleToggleStatus={handleToggleStatus} handleDeleteUser={handleDeleteUser} onAddUser={() => {
-                                        setSelectedUser(null);
-                                        setIsUserModalOpen(true);
-                                    }}
-                                    onEditUser={(user) => {
-                                        setSelectedUser(user);
-                                        setIsUserModalOpen(true);
-                                    }}
-                                 />
-                            </ErrorBoundary>
-                        } />
-                        <Route path="progress" element={ <ErrorBoundary>
-                                {(() => {
-                                    const params = new URLSearchParams(location.search);
-                                    const subtab = params.get('subtab') || 'overview';
-                                    
-                                    if (subtab === 'assessments' || subtab === 'sets') {
-                                        return <PracticalTrainerDashboard />;
-                                    }
+                    <div style={{ display: activeTab === 'overview' ? 'block' : 'none' }}>
+                        <ErrorBoundary>
+                            {stats && (
+                                <div className="dashboard-scrollable">
+                                    <SystemAnalytics stats={stats} cpuLoad={cpuLoad} memoryUsage={memoryUsage} sysStatus={sysStatus} heatmap={heatmap} />
+                                </div>
+                            )}
+                        </ErrorBoundary>
+                    </div>
 
-                                    return !selectedTrainee ? (
-                                        <PerformanceDirectory progress={progress} setSelectedTrainee={setSelectedTrainee} />
-                                    ) : (
-                                        <TraineeDetail 
-                                            selectedTrainee={selectedTrainee} 
-                                            setSelectedTrainee={setSelectedTrainee} 
-                                            onExport={handleExport} 
-                                            onRefresh={fetchData} 
-                                        />
-                                    );
-                                })()}
-                            </ErrorBoundary>
-                        } />
+                    <div style={{ display: activeTab === 'users' ? 'block' : 'none' }}>
+                        <ErrorBoundary>
+                            <UserManagement users={users} currentUser={currentUser} searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleToggleStatus={handleToggleStatus} handleDeleteUser={handleDeleteUser} onAddUser={() => {
+                                    setSelectedUser(null);
+                                    setIsUserModalOpen(true);
+                                }}
+                                onEditUser={(user) => {
+                                    setSelectedUser(user);
+                                    setIsUserModalOpen(true);
+                                }}
+                             />
+                        </ErrorBoundary>
+                    </div>
 
-                        <Route path="assessments" element={<ErrorBoundary><AssessmentManagement /></ErrorBoundary>} />
-                        <Route path="practical" element={<ErrorBoundary><PracticalManagement /></ErrorBoundary>} />
-                        <Route path="logs" element={<ErrorBoundary><AuditLogs logs={logs} /></ErrorBoundary>} />
-                        <Route path="/" element={<Navigate to="overview" replace />} />
-                    </Routes>
+                    <div style={{ display: activeTab === 'progress' ? 'block' : 'none' }}>
+                        <ErrorBoundary>
+                            {(() => {
+                                const params = new URLSearchParams(location.search);
+                                const subtab = params.get('subtab') || 'overview';
+                                
+                                if (subtab === 'assessments' || subtab === 'sets') {
+                                    return <PracticalTrainerDashboard />;
+                                }
+
+                                return !selectedTrainee ? (
+                                    <PerformanceDirectory progress={progress} setSelectedTrainee={setSelectedTrainee} />
+                                ) : (
+                                    <TraineeDetail 
+                                        selectedTrainee={selectedTrainee} 
+                                        setSelectedTrainee={setSelectedTrainee} 
+                                        onExport={handleExport} 
+                                        onRefresh={fetchData} 
+                                    />
+                                );
+                            })()}
+                        </ErrorBoundary>
+                    </div>
+
+                    <div style={{ display: activeTab === 'assessments' ? 'block' : 'none' }}>
+                        <ErrorBoundary>
+                            <AssessmentManagement />
+                        </ErrorBoundary>
+                    </div>
+
+                    <div style={{ display: activeTab === 'practical' ? 'block' : 'none' }}>
+                        <ErrorBoundary>
+                            <PracticalManagement />
+                        </ErrorBoundary>
+                    </div>
+
+                    <div style={{ display: activeTab === 'logs' ? 'block' : 'none' }}>
+                        <ErrorBoundary>
+                            <AuditLogs logs={logs} />
+                        </ErrorBoundary>
+                    </div>
 
                     {showLoader && (
                         <div className="loading-overlay">

@@ -47,8 +47,8 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   useEffect(() => {
     fetchData();
     
-    // Polling for updates every 10 seconds (silent background refresh)
-    const pollInterval = setInterval(() => fetchData(true), 10000);
+    // Polling for updates every 60 seconds (silent background refresh)
+    const pollInterval = setInterval(() => fetchData(true), 60000);
     
     const handleRefresh = () => {
       fetchData(true);

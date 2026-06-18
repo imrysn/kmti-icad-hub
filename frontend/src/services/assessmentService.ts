@@ -1,4 +1,4 @@
-import api from './api';
+import api, { cachedGet } from './api';
 import { User } from './authService';
 
 export interface AssessmentTask {
@@ -32,18 +32,15 @@ export interface AssessmentSubmission {
 
 export const assessmentService = {
     getTasks: async (): Promise<AssessmentTask[]> => {
-        const response = await api.get('/api/v1/assessments/tasks');
-        return response.data;
+        return cachedGet('/api/v1/assessments/tasks');
     },
 
     getMySubmissions: async (): Promise<AssessmentSubmission[]> => {
-        const response = await api.get('/api/v1/assessments/my-submissions');
-        return response.data;
+        return cachedGet('/api/v1/assessments/my-submissions');
     },
 
     getMySetMappings: async (): Promise<{actual_set_number: number, display_set_number: number}[]> => {
-        const response = await api.get('/api/v1/assessments/my-set-mappings');
-        return response.data;
+        return cachedGet('/api/v1/assessments/my-set-mappings');
     },
 
     getMasterFileBlob: async (taskId: number): Promise<Blob> => {
@@ -78,10 +75,9 @@ export const assessmentService = {
     },
 
     getTrainerSubmissions: async (status: string = 'pending'): Promise<AssessmentSubmission[]> => {
-        const response = await api.get(`/api/v1/assessments/trainer/submissions`, {
+        return cachedGet(`/api/v1/assessments/trainer/submissions`, 15000, {
             params: { status }
         });
-        return response.data;
     },
 
     provideFeedback: async (submissionId: number, status: 'approved' | 'rejected', file?: File, comments?: string) => {
@@ -110,13 +106,11 @@ export const assessmentService = {
     },
 
     getTrainerTraineesProgress: async (): Promise<any[]> => {
-        const response = await api.get('/api/v1/assessments/trainer/trainees-progress');
-        return response.data;
+        return cachedGet('/api/v1/assessments/trainer/trainees-progress');
     },
 
     getTraineeSetMappings: async (traineeId: number) => {
-        const response = await api.get(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
-        return response.data;
+        return cachedGet(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
     },
 
     updateTraineeSetMapping: async (traineeId: number, mappings: { display_set_number: number, actual_set_number: number }[]) => {
@@ -127,8 +121,7 @@ export const assessmentService = {
 
     // Admin Methods
     getTrainerMappings: async () => {
-        const response = await api.get('/api/v1/assessments/admin/mappings');
-        return response.data;
+        return cachedGet('/api/v1/assessments/admin/mappings');
     },
 
     createTask: async (taskData: any, file: File) => {

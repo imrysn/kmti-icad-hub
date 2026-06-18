@@ -9,11 +9,12 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
-// Disable hardware acceleration to prevent GPU process crash (exit_code=-1073741515)
-app.disableHardwareAcceleration();
-app.commandLine.appendSwitch('disable-gpu');
-app.commandLine.appendSwitch('disable-software-rasterizer');
-app.commandLine.appendSwitch('disable-gpu-compositing');
+// Enable hardware acceleration for smooth rendering performance.
+// (Only disable if running in headless environments or VMs lacking DirectX runtimes)
+// app.disableHardwareAcceleration();
+// app.commandLine.appendSwitch('disable-gpu');
+// app.commandLine.appendSwitch('disable-software-rasterizer');
+// app.commandLine.appendSwitch('disable-gpu-compositing');
 
 
 

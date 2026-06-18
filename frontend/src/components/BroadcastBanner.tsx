@@ -149,7 +149,7 @@ export const BroadcastBanner: React.FC = () => {
 
     useEffect(() => {
         fetchBroadcasts();
-        const interval = setInterval(fetchBroadcasts, 5000);
+        const interval = setInterval(fetchBroadcasts, 60000);
         return () => clearInterval(interval);
     }, []);
 

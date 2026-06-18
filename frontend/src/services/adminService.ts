@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api, cachedGet } from './api';
 
 export interface KBFile {
     name: string;
@@ -78,18 +78,15 @@ export interface Question {
 
 export const adminService = {
     async getStats(): Promise<SystemStats> {
-        const response = await api.get('/admin/stats');
-        return response.data;
+        return cachedGet('/admin/stats');
     },
 
     async getTraineeProgress(): Promise<TraineeProgress[]> {
-        const response = await api.get('/admin/progress');
-        return response.data;
+        return cachedGet('/admin/progress');
     },
 
     async getLogs(): Promise<SystemAuditLog[]> {
-        const response = await api.get('/admin/logs');
-        return response.data;
+        return cachedGet('/admin/logs');
     },
 
     async deleteUser(userId: number): Promise<void> {
@@ -120,8 +117,7 @@ export const adminService = {
     },
 
     async getHeatmap(): Promise<{ course_id: string; count: number }[]> {
-        const response = await api.get('/admin/heatmap');
-        return response.data;
+        return cachedGet('/admin/heatmap');
     },
 
     async triggerReindex(): Promise<void> {
@@ -182,13 +178,11 @@ export const adminService = {
 
     // Assessment Management
     async getQuizzes(): Promise<Quiz[]> {
-        const response = await api.get('/admin/quizzes');
-        return response.data;
+        return cachedGet('/admin/quizzes');
     },
 
     async getQuizDetail(quizId: number): Promise<Quiz> {
-        const response = await api.get(`/admin/quizzes/${quizId}`);
-        return response.data;
+        return cachedGet(`/admin/quizzes/${quizId}`);
     },
 
     async createQuiz(data: Partial<Quiz>): Promise<Quiz> {

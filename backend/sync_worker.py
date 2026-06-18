@@ -51,17 +51,17 @@ def sync_table_data(table_name: str, sqlite_conn, mysql_conn):
         mysql_result = mysql_conn.execute(text(f"SELECT {pk_col} FROM {table_name}"))
         existing_pks = {row[0] for row in mysql_result.fetchall()}
         
-        # Check for existing usernames to prevent IntegrityErrors
+        # Check for existing usernames to prevent IntegrityErrors (case-insensitive check)
         existing_usernames = set()
         if table_name == "users":
             uname_result = mysql_conn.execute(text("SELECT username FROM users"))
-            existing_usernames = {row[0] for row in uname_result.fetchall()}
+            existing_usernames = {row[0].lower() for row in uname_result.fetchall() if row[0]}
         
         for row in sqlite_rows:
             pk_val = row[pk_col]
             if pk_val not in existing_pks:
                 # If username already exists in MySQL (with a different id), skip to avoid unique constraint conflict
-                if table_name == "users" and row.get("username") in existing_usernames:
+                if table_name == "users" and row.get("username") and row.get("username").lower() in existing_usernames:
                     continue
                 
                 # Insert missing record
