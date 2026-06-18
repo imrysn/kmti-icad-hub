@@ -783,7 +783,7 @@ export const PracticalManagement: React.FC = () => {
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                             <button 
-                                className="add-user-btn" 
+                                className="toolbar-btn" 
                                 onClick={handleSyncTasks} 
                                 disabled={isSyncing}
                                 style={{
@@ -799,7 +799,7 @@ export const PracticalManagement: React.FC = () => {
                                 <RefreshCw size={16} className={isSyncing ? 'animate-spin' : ''} />
                                 {isSyncing ? 'Syncing...' : 'Sync Tasks'}
                             </button>
-                            <button className="add-user-btn" onClick={() => setShowCreateModal(true)}>
+                            <button className="toolbar-btn" onClick={() => setShowCreateModal(true)}>
                                 <Plus size={16} /> New Assessment Unit
                             </button>
                             {setFilter !== 'all' && filteredTasks.length > 0 && (
@@ -1064,7 +1064,7 @@ export const PracticalManagement: React.FC = () => {
             ) : (
                 <div className="assignments-management">
                     <div className="toolbar">
-                        <button className="add-user-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowAssignModal(true)}>
+                        <button className="toolbar-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowAssignModal(true)}>
                             <Plus size={16} /> Assign Trainer
                         </button>
                     </div>

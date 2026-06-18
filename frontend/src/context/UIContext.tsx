@@ -3,12 +3,17 @@ import { ConfirmationModal, ConfirmationModalProps } from '../components/Confirm
 
 interface UIContextType {
     requestConfirmation: (options: Omit<ConfirmationModalProps, 'isOpen' | 'onConfirm' | 'onCancel'>) => Promise<boolean>;
+    isTelemetryOpen: boolean;
+    toggleTelemetry: () => void;
 }
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [modalState, setModalState] = useState<ConfirmationModalProps & { resolve: (val: boolean) => void } | null>(null);
+    const [isTelemetryOpen, setIsTelemetryOpen] = useState(false);
+
+    const toggleTelemetry = useCallback(() => setIsTelemetryOpen(prev => !prev), []);
 
     const requestConfirmation = useCallback((options: Omit<ConfirmationModalProps, 'isOpen' | 'onConfirm' | 'onCancel'>) => {
         console.log('UIContext: requestConfirmation called', options);
@@ -30,7 +35,7 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     }, []);
 
     return (
-        <UIContext.Provider value={{ requestConfirmation }}>
+        <UIContext.Provider value={{ requestConfirmation, isTelemetryOpen, toggleTelemetry }}>
             {children}
             {modalState && (
                 <ConfirmationModal {...modalState} />

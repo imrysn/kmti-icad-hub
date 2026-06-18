@@ -23,6 +23,8 @@ APP_PATH = get_app_path()
 env_path = os.getenv("ENV_FILE_PATH", os.path.join(APP_PATH, ".env"))
 load_dotenv(env_path, override=True)
 
+Base = declarative_base()
+
 # Configuration
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"
 SQLITE_URL = f"sqlite:///{os.path.join(APP_PATH, 'kmti_icad.db')}"
@@ -75,14 +77,44 @@ if USE_MYSQL:
         MySQLSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=mysql_engine)
         DB_MODE = "mysql"
         logger.info(f"[+] Connected to MySQL database at {DB_HOST}")
+        try:
+            Base.metadata.create_all(bind=mysql_engine)
+            logger.info("[+] MySQL tables created/verified successfully on startup connection.")
+        except Exception as startup_err:
+            logger.warning(f"[!] MySQL table creation failed on startup: {startup_err}")
     except Exception as e:
         logger.warning(f"[!] MySQL connection failed on startup: {e}. Falling back to SQLite.")
         DB_MODE = "sqlite"
 
 # Expose a default 'engine' variable for migrations and backwards compatibility
 engine = mysql_engine if DB_MODE == "mysql" else sqlite_engine
-SessionLocal = MySQLSessionLocal if DB_MODE == "mysql" else SQLiteSessionLocal
-Base = declarative_base()
+
+class DynamicSessionmaker:
+    def __call__(self, *args, **kwargs):
+        global DB_MODE
+        if DB_MODE == "sqlite" and USE_MYSQL:
+            check_mysql_recovery()
+        if DB_MODE == "mysql" and MySQLSessionLocal is not None:
+            try:
+                db = MySQLSessionLocal(*args, **kwargs)
+                db.execute(text("SELECT 1"))
+                return db
+            except Exception as e:
+                logger.warning(f"[!] MySQL session failed at runtime (DynamicSessionmaker): {e}. Falling back to SQLite.")
+                DB_MODE = "sqlite"
+                try:
+                    if db:
+                        db.close()
+                except Exception:
+                    pass
+        return SQLiteSessionLocal(*args, **kwargs)
+
+    def configure(self, **kwargs):
+        if MySQLSessionLocal:
+            MySQLSessionLocal.configure(**kwargs)
+        SQLiteSessionLocal.configure(**kwargs)
+
+SessionLocal = DynamicSessionmaker()
 
 import time
 last_mysql_check = 0
@@ -98,6 +130,11 @@ def check_mysql_recovery():
                     conn.execute(text("SELECT 1"))
                 DB_MODE = "mysql"
                 logger.info("[+] MySQL has recovered! Switching database mode to MySQL.")
+                try:
+                    Base.metadata.create_all(bind=mysql_engine)
+                    logger.info("[+] MySQL tables created/verified successfully on recovery.")
+                except Exception as recovery_err:
+                    logger.warning(f"[!] MySQL table creation failed on recovery: {recovery_err}")
             except Exception:
                 pass
 

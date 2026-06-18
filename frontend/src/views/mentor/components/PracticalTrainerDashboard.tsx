@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2, Unlock } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2, Unlock, Box, PenTool } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { api } from '../../../services/api';
@@ -12,6 +12,9 @@ import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { Modal } from '../../../components/Modal';
 import { TraineeTelemetrySidebar } from './TraineeTelemetrySidebar';
 import { NotificationCenter } from './NotificationCenter';
+import { PerformanceDirectory } from '../../admin/components/PerformanceDirectory';
+import { TraineeDetail } from '../../admin/components/TraineeDetail';
+import { TraineeProgress } from '../../../services/adminService';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
 
@@ -62,11 +65,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
             setActiveMainTab(subtabParam as any);
         }
     }, [location.search]);
-    const [traineeProgressData, setTraineeProgressData] = useState<any[]>([]);
+    const [performanceData, setPerformanceData] = useState<TraineeProgress[]>([]);
+    const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null);
     const [loadingProgress, setLoadingProgress] = useState(false);
-    const [isTelemetryOpen, setIsTelemetryOpen] = useState(true);
     const [notifications, setNotifications] = useState<any[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
+    const [activeType, setActiveType] = useState<'3D' | '2D'>('3D');
 
     const fetchNotifications = async () => {
         try {
@@ -247,8 +251,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const fetchTraineeProgress = async (silent = false) => {
         if (!silent) setLoadingProgress(true);
         try {
-            const data = await assessmentService.getTrainerTraineesProgress();
-            setTraineeProgressData(data);
+            const data = await assessmentService.getTrainerProgress();
+            setPerformanceData(data);
         } catch (err) {
             showNotification('Failed to load trainee progress data.', 'error');
         } finally {
@@ -336,8 +340,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
             let shouldToast = false;
             let traineeName = '';
 
-            setTraineeProgressData(prev => {
-                const target = prev.find(t => t.id === data.trainee_id);
+            setPerformanceData((prev: TraineeProgress[]) => {
+                const target = prev.find((t: TraineeProgress) => t.id === data.trainee_id);
                 if (target) {
                     traineeName = target.full_name || target.username;
                     // Only toast if status transitions from offline to online
@@ -345,7 +349,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         shouldToast = true;
                     }
                 }
-                return prev.map(t => {
+                return prev.map((t: TraineeProgress) => {
                     if (t.id === data.trainee_id) {
                         return {
                             ...t,
@@ -565,92 +569,55 @@ export const PracticalTrainerDashboard: React.FC = () => {
         <div className="practical-trainer-wrapper" style={{ display: 'flex', height: '100%', width: '100%', overflow: 'hidden' }}>
             <div className="trainer-dashboard animate-fade-in">
                 <div className="dashboard-sub-header">
-                    {!isAdmin ? (
-                        <>
-                            <div className="sub-header-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                                <div className="header-title-area">
-                                    <h2>
-                                        {activeMainTab === 'assessments' ? "Assessment Review Portal" :
-                                            activeMainTab === 'progress' ? "Trainee Progress Tracker" :
-                                                activeMainTab === 'notifications' ? "Recent Activity Notifications" :
-                                                    "Trainee Set Configuration"}
-                                    </h2>
-                                    <p className="subtitle">
-                                        {activeMainTab === 'assessments'
-                                            ? "Manage and verify practical drafting submissions from trainees"
-                                            : activeMainTab === 'progress'
-                                                ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
-                                                : activeMainTab === 'notifications'
-                                                    ? "Review real-time trainee actions, submissions, and course completions"
-                                                    : "Configure which assessment sets each trainee can see and access"}
-                                    </p>
-                                </div>
-                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    <button
-                                        className={`sub-tab-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
-                                        onClick={() => navigate(getTabUrl('assessments'))}
-                                        style={{ height: '36px' }}
-                                    >
-                                        <FileText size={16} /> Practical Submissions
-                                    </button>
-                                    <button
-                                        className={`sub-tab-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
-                                        onClick={() => navigate(getTabUrl('progress'))}
-                                        style={{ height: '36px' }}
-                                    >
-                                        <CheckCircle2 size={16} /> Trainee Progress Tracker
-                                    </button>
-                                    <button
-                                        className={`sub-tab-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
-                                        onClick={() => navigate(getTabUrl('sets'))}
-                                        style={{ height: '36px' }}
-                                    >
-                                        <Settings size={16} /> Set Configuration
-                                    </button>
-                                    <div style={{ width: '1px', height: '20px', background: 'var(--border-color)', margin: '0 0.5rem' }} />
-                                    <button
-                                        onClick={() => setIsTelemetryOpen(!isTelemetryOpen)}
-                                        className={`presence-toggle-btn ${isTelemetryOpen ? 'active' : ''}`}
-                                        title="Toggle Telemetry Sidebar"
-                                        style={{ height: '36px' }}
-                                    >
-                                        <User size={16} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
-                                    </button>
-                                </div>
+                    {!isAdmin && (
+                        <div className="sub-header-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                            <div className="header-title-area">
+                                <h2>
+                                    {activeMainTab === 'assessments' ? "Assessment Review Portal" :
+                                        activeMainTab === 'progress' ? "Trainee Progress Tracker" :
+                                            activeMainTab === 'notifications' ? "Recent Activity Notifications" :
+                                                "Trainee Set Configuration"}
+                                </h2>
+                                <p className="subtitle">
+                                    {activeMainTab === 'assessments'
+                                        ? "Manage and verify practical drafting submissions from trainees"
+                                        : activeMainTab === 'progress'
+                                            ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
+                                            : activeMainTab === 'notifications'
+                                                ? "Review real-time trainee actions, submissions, and course completions"
+                                                : "Configure which assessment sets each trainee can see and access"}
+                                </p>
                             </div>
+                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                <button
+                                    className={`sub-tab-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
+                                    onClick={() => navigate(getTabUrl('assessments'))}
+                                    style={{ height: '36px' }}
+                                >
+                                    <FileText size={16} /> Practical Submissions
+                                </button>
+                                <button
+                                    className={`sub-tab-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
+                                    onClick={() => navigate(getTabUrl('progress'))}
+                                    style={{ height: '36px' }}
+                                >
+                                    <CheckCircle2 size={16} /> Trainee Progress Tracker
+                                </button>
+                                <button
+                                    className={`sub-tab-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
+                                    onClick={() => navigate(getTabUrl('sets'))}
+                                    style={{ height: '36px' }}
+                                >
+                                    <Settings size={16} /> Set Configuration
+                                </button>
+                            </div>
+                        </div>
+                    )}
 
-                            <div className="sub-header-bottom">
-                                <div className="search-bar">
-                                    <Search size={18} />
-                                    <input
-                                        type="text"
-                                        placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                    />
-                                </div>
-                                {activeMainTab === 'assessments' && (
-                                    <div className="review-filter-tabs">
-                                        <button
-                                            className={`filter-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
-                                            onClick={() => setStatusFilter('pending')}
-                                        >
-                                            <Clock size={16} /> Pending Reviews
-                                        </button>
-                                        <button
-                                            className={`filter-tab-btn ${statusFilter === 'reviewed' ? 'active' : ''}`}
-                                            onClick={() => setStatusFilter('reviewed')}
-                                        >
-                                            <CheckCircle2 size={16} /> Approved History
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        </>
-                    ) : (
-                        <div className="sub-header-bottom" style={{ width: '100%', padding: '0.25rem 0' }}>
-                            <div className="search-bar">
-                                <Search size={18} />
+                    {activeMainTab !== 'notifications' && (
+                        <div className="toolbar">
+                            <div className="search-box">
+                                <Search size={16} color="#94a3b8" />
                                 <input
                                     type="text"
                                     placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
@@ -671,17 +638,26 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                             className={`filter-tab-btn ${statusFilter === 'reviewed' ? 'active' : ''}`}
                                             onClick={() => setStatusFilter('reviewed')}
                                         >
-                                            <CheckCircle2 size={16} /> Review History
+                                            <CheckCircle2 size={16} /> Approved History
                                         </button>
                                     </div>
                                 )}
-                                <button
-                                    onClick={() => setIsTelemetryOpen(!isTelemetryOpen)}
-                                    className={`presence-toggle-btn ${isTelemetryOpen ? 'active' : ''}`}
-                                    title="Toggle Telemetry Sidebar"
-                                >
-                                    <User size={16} /> {isTelemetryOpen ? "Hide Presence" : "Show Presence"}
-                                </button>
+                                {activeMainTab === 'sets' && (
+                                    <div className="review-filter-tabs">
+                                        <button
+                                            className={`filter-tab-btn ${activeType === '3D' ? 'active' : ''}`}
+                                            onClick={() => setActiveType('3D')}
+                                        >
+                                            <Box size={16} /> 3D Modeling Sets
+                                        </button>
+                                        <button
+                                            className={`filter-tab-btn ${activeType === '2D' ? 'active' : ''}`}
+                                            onClick={() => setActiveType('2D')}
+                                        >
+                                            <PenTool size={16} /> 2D Drawing Sets
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -912,7 +888,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         })()}
                     </div>
                 )}
-
                 {/* Progress Tab */}
                 {activeMainTab === 'progress' && (
                     <div className="progress-tracker-container">
@@ -922,124 +897,42 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 <div className="skeleton-card"></div>
                                 <div className="skeleton-card"></div>
                             </div>
-                        ) : traineeProgressData.length === 0 ? (
+                        ) : performanceData.length === 0 ? (
                             <div className="no-submissions">
                                 <TrendingUp size={48} />
                                 <h3>No progress data available</h3>
-                                <p>Trainee progress will appear here once they begin their curriculum.</p>
+                                <p>Trainee progress will appear here once you have assigned trainees and they begin their curriculum.</p>
                             </div>
+                        ) : selectedTrainee ? (
+                            <TraineeDetail
+                                selectedTrainee={selectedTrainee}
+                                setSelectedTrainee={setSelectedTrainee}
+                                onExport={async (id) => {
+                                    window.open(`/api/v1/assessments/export/progress?user_id=${id}`, '_blank');
+                                }}
+                                onRefresh={async () => {
+                                    await fetchTraineeProgress(true);
+                                    if (selectedTrainee) {
+                                        const updated = performanceData.find(t => t.id === selectedTrainee.id);
+                                        if (updated) setSelectedTrainee(updated);
+                                    }
+                                }}
+                            />
                         ) : (
-                            traineeProgressData
-                                .filter((t: any) =>
-                                    !searchTerm ||
-                                    t.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    t.username?.toLowerCase().includes(searchTerm.toLowerCase())
-                                )
-                                .map((trainee: any) => (
-                                    <div key={trainee.id} className="trainee-group-card">
-                                        <div className="trainee-group-header" style={{ cursor: 'default' }}>
-                                            <div className="trainee-info">
-                                                <div style={{ position: 'relative' }}>
-                                                    <div className="avatar-circle">
-                                                        {trainee.full_name?.[0] || 'U'}
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <h4>{trainee.full_name}</h4>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                                                        <span style={{ color: 'var(--text-muted)' }}>@{trainee.username}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="trainee-header-right">
-                                                <span className="status-badge approved">
-                                                    {trainee.progress?.assessments?.approved || 0} Approved Submissions
-                                                </span>
-                                                {trainee.progress?.assessments?.pending > 0 && (
-                                                    <span className="status-badge pending">
-                                                        {trainee.progress?.assessments?.pending} Pending Review
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="trainee-group-body" style={{ padding: '12px 16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '16px' }}>
-                                            {/* 3D Modeling Course Progress */}
-                                            <div className="set-group" style={{ margin: 0 }}>
-                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                    <h4>3D Modeling Course</h4>
-                                                    <span className="task-count-dim">{trainee.progress?.course_3d?.completed || 0}/{trainee.progress?.course_3d?.total || 0} completed</span>
-                                                </div>
-                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                    <div style={{
-                                                        height: '100%',
-                                                        borderRadius: '3px',
-                                                        background: 'var(--accent-blue, #3b82f6)',
-                                                        width: `${trainee.progress?.course_3d?.percentage || 0}%`,
-                                                        transition: 'width 0.4s ease'
-                                                    }} />
-                                                </div>
-                                            </div>
-
-                                            {/* 3D Practical Assessment */}
-                                            <div className="set-group" style={{ margin: 0 }}>
-                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                    <h4>3D Practical Assessment</h4>
-                                                    <span className="task-count-dim">{trainee.progress?.practical_3d?.completed || 0}/{trainee.progress?.practical_3d?.total || 0} approved</span>
-                                                </div>
-                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                    <div style={{
-                                                        height: '100%',
-                                                        borderRadius: '3px',
-                                                        background: 'var(--accent-green, #22c55e)',
-                                                        width: `${trainee.progress?.practical_3d?.percentage || 0}%`,
-                                                        transition: 'width 0.4s ease'
-                                                    }} />
-                                                </div>
-                                            </div>
-
-                                            {/* 2D Detailing Course Progress */}
-                                            <div className="set-group" style={{ margin: 0 }}>
-                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                    <h4>2D Detailing Course</h4>
-                                                    <span className="task-count-dim">{trainee.progress?.course_2d?.completed || 0}/{trainee.progress?.course_2d?.total || 0} completed</span>
-                                                </div>
-                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                    <div style={{
-                                                        height: '100%',
-                                                        borderRadius: '3px',
-                                                        background: 'var(--color-secondary, #ec4899)',
-                                                        width: `${trainee.progress?.course_2d?.percentage || 0}%`,
-                                                        transition: 'width 0.4s ease'
-                                                    }} />
-                                                </div>
-                                            </div>
-
-                                            {/* 2D Detailing Assessment */}
-                                            <div className="set-group" style={{ margin: 0 }}>
-                                                <div className="set-group-header" style={{ cursor: 'default', borderRadius: '6px' }}>
-                                                    <h4>2D Detailing Assessment</h4>
-                                                    <span className="task-count-dim">{trainee.progress?.practical_2d?.completed || 0}/{trainee.progress?.practical_2d?.total || 0} approved</span>
-                                                </div>
-                                                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--border-color, #334155)', marginTop: '6px', overflow: 'hidden' }}>
-                                                    <div style={{
-                                                        height: '100%',
-                                                        borderRadius: '3px',
-                                                        background: 'var(--accent-orange, #f59e0b)',
-                                                        width: `${trainee.progress?.practical_2d?.percentage || 0}%`,
-                                                        transition: 'width 0.4s ease'
-                                                    }} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
+                            <PerformanceDirectory 
+                                progress={performanceData.filter(p =>
+                                    p.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    p.username?.toLowerCase().includes(searchTerm.toLowerCase())
+                                )} 
+                                setSelectedTrainee={setSelectedTrainee} 
+                            />
                         )}
                     </div>
                 )}
 
                 {/* Set Configuration Tab */}
                 {activeMainTab === 'sets' && (
-                    <TraineeSetConfiguration searchTerm={searchTerm} />
+                    <TraineeSetConfiguration searchTerm={searchTerm} activeType={activeType} />
                 )}
 
                 {/* Notifications Tab */}
@@ -1355,11 +1248,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 </Modal>
             </div>
 
-            {/* Right Telemetry Sidebar Panel */}
-            <TraineeTelemetrySidebar
-                isTelemetryOpen={isTelemetryOpen}
-                traineeProgressData={traineeProgressData}
-            />
+
         </div>
     );
 };

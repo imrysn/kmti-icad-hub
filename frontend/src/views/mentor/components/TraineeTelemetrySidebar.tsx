@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, User } from 'lucide-react';
+import { useUI } from '../../../context/UIContext';
+import { useWebSocket } from '../../../context/WebSocketContext';
+import { assessmentService } from '../../../services/assessmentService';
 
 const TraineeStatusLabel: React.FC<{ isOnline: boolean; lastUpdated: string | null | undefined }> = ({ isOnline, lastUpdated }) => {
     const [statusText, setStatusText] = useState<string>('');
@@ -60,15 +63,43 @@ const TraineeStatusLabel: React.FC<{ isOnline: boolean; lastUpdated: string | nu
     );
 };
 
-interface TraineeTelemetrySidebarProps {
-    isTelemetryOpen: boolean;
-    traineeProgressData: any[];
-}
+export const TraineeTelemetrySidebar: React.FC = () => {
+    const { isTelemetryOpen } = useUI();
+    const { subscribe } = useWebSocket();
+    const [traineeProgressData, setTraineeProgressData] = useState<any[]>([]);
 
-export const TraineeTelemetrySidebar: React.FC<TraineeTelemetrySidebarProps> = ({
-    isTelemetryOpen,
-    traineeProgressData
-}) => {
+    useEffect(() => {
+        if (!isTelemetryOpen) return;
+
+        let isMounted = true;
+        const fetchTelemetry = async () => {
+            try {
+                const data = await assessmentService.getTrainerTraineesProgress();
+                if (isMounted) setTraineeProgressData(data);
+            } catch (err) {
+                console.error("Failed to fetch telemetry", err);
+            }
+        };
+
+        fetchTelemetry();
+
+        const unsub = subscribe('TRAINEE_TELEMETRY', (data: any) => {
+            setTraineeProgressData(prev => {
+                const targetId = data.trainee_id || data.user_id;
+                const existing = prev.find(t => t.id === targetId);
+                if (existing) {
+                    return prev.map(t => t.id === targetId ? { ...t, is_online: data.is_online, last_active_at: data.timestamp || data.last_updated || data.last_seen || t.last_active_at } : t);
+                }
+                return prev;
+            });
+        });
+
+        return () => {
+            isMounted = false;
+            unsub();
+        };
+    }, [isTelemetryOpen, subscribe]);
+
     if (!isTelemetryOpen) return null;
 
     return (
@@ -79,7 +110,6 @@ export const TraineeTelemetrySidebar: React.FC<TraineeTelemetrySidebarProps> = (
             background: 'var(--bg-surface)',
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
             overflow: 'hidden'
         }}>
             <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

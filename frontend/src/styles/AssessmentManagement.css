@@ -71,34 +71,7 @@
 
 
 
-.assessment-management .search-box {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    background: var(--bg-dark);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0 1rem;
-    height: 40px;
-    transition: all 0.2s ease;
-}
 
-.assessment-management .search-box:focus-within {
-    border-color: var(--primary);
-}
-
-.assessment-management .search-box input {
-    background: transparent;
-    border: none;
-    color: var(--text-main);
-    width: 100%;
-    margin-left: 0.75rem;
-    font-size: 0.9rem;
-}
-
-.assessment-management .search-box input:focus {
-    outline: none;
-}
 
 .assessment-management .save-btn {
     display: flex;

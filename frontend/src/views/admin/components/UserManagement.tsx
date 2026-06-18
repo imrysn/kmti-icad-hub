@@ -36,7 +36,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                     <input type="text" placeholder="Search by name, email, or role..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <button className="add-user-btn" onClick={onAddUser}>
+                <button className="toolbar-btn" onClick={onAddUser}>
                     <UserPlus size={16} /> Add New User
                 </button>
             </div>

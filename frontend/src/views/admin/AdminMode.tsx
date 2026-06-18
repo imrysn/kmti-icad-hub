@@ -112,7 +112,7 @@ export const AdminMode: React.FC = () => {
                         </ErrorBoundary>
                     </div>
 
-                    <div style={{ display: activeTab === 'progress' ? 'block' : 'none' }}>
+                    <div style={{ display: activeTab === 'progress' ? 'flex' : 'none', flex: 1, flexDirection: 'column', minHeight: 0 }}>
                         <ErrorBoundary>
                             {(() => {
                                 const params = new URLSearchParams(location.search);
@@ -136,7 +136,7 @@ export const AdminMode: React.FC = () => {
                         </ErrorBoundary>
                     </div>
 
-                    <div style={{ display: activeTab === 'assessments' ? 'block' : 'none' }}>
+                    <div style={{ display: activeTab === 'assessments' ? 'flex' : 'none', flex: 1, flexDirection: 'column', minHeight: 0 }}>
                         <ErrorBoundary>
                             <AssessmentManagement />
                         </ErrorBoundary>

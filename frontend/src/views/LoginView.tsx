@@ -129,8 +129,8 @@ export const LoginView: React.FC = () => {
                 title="API Server Settings"
                 style={{
                     position: 'absolute',
-                    top: '20px',
-                    right: '20px',
+                    top: '16px',
+                    right: '16px',
                     background: 'none',
                     border: 'none',
                     color: '#a0aec0',
@@ -142,7 +142,7 @@ export const LoginView: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                }}
+                } as any}
             >
                 <Settings size={20} />
             </button>
@@ -150,7 +150,7 @@ export const LoginView: React.FC = () => {
             <div className="login-brand-header">
                 <span className="login-logo-text">KMTI</span>
                 <div className="brand-subtitle">ICAD MANUAL</div>
-                <div className="brand-subtitle">TRAINING AND ASSISTANT</div>
+                <div className="brand-subtitle">TRAINING & STANDARD</div>
             </div>
 
             <div className="login-form-wrapper">

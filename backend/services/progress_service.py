@@ -1,10 +1,18 @@
 from sqlalchemy.orm import Session
-from ..models import User, UserProgress, QuizScore
+from ..models import User, UserProgress, QuizScore, TrainerTraineeMapping
 
-def calculate_all_trainee_progress(db: Session):
+def calculate_all_trainee_progress(db: Session, trainer_id: int = None):
     """Get aggregated and detailed progress for all trainees (WMI calculation)"""
     # Fetch all trainees
-    users = db.query(User).filter(User.role != "admin").all()
+    query = db.query(User).filter(User.role != "admin")
+    
+    if trainer_id:
+        # Filter by trainees mapped to this trainer
+        mappings = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainer_id == trainer_id).all()
+        trainee_ids = [m.trainee_id for m in mappings]
+        query = query.filter(User.id.in_(trainee_ids))
+        
+    users = query.all()
     user_ids = [u.id for u in users]
     
     # Batch fetch all progress and scores to avoid N+1 problem
@@ -78,3 +86,44 @@ def calculate_all_trainee_progress(db: Session):
         })
         
     return results
+
+def update_user_course_progress(db: Session, user_id: int, course_id: str):
+    """Recalculate overall course progress percentage and update/create UserProgress (milestone) entry."""
+    from ..models import Quiz, QuizScore, UserProgress
+    from datetime import datetime, timezone
+    
+    course_type = "3D_Modeling" if course_id == "1" else "2D_Drawing"
+    total_quizzes = db.query(Quiz).filter(Quiz.course_type == course_type).count()
+    
+    passed_quizzes = db.query(QuizScore).filter(
+        QuizScore.user_id == user_id,
+        QuizScore.course_id == course_id,
+        QuizScore.score >= 80.0
+    ).count()
+    
+    progress_pct = 0.0
+    if total_quizzes > 0:
+        progress_pct = round((passed_quizzes / total_quizzes) * 100.0, 1)
+        
+    progress_record = db.query(UserProgress).filter(
+        UserProgress.user_id == user_id,
+        UserProgress.course_id == course_id
+    ).first()
+    
+    if progress_pct > 0.0:
+        if not progress_record:
+            progress_record = UserProgress(
+                user_id=user_id,
+                course_id=course_id,
+                progress_percentage=progress_pct,
+                last_accessed=datetime.now(timezone.utc)
+            )
+            db.add(progress_record)
+        else:
+            progress_record.progress_percentage = progress_pct
+            progress_record.last_accessed = datetime.now(timezone.utc)
+    else:
+        if progress_record:
+            db.delete(progress_record)
+            
+    db.commit()

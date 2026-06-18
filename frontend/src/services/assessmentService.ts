@@ -110,6 +110,10 @@ export const assessmentService = {
         return cachedGet('/api/v1/assessments/trainer/trainees-progress');
     },
 
+    getTrainerProgress: async (): Promise<any[]> => {
+        return cachedGet('/api/v1/assessments/trainer/progress');
+    },
+
     getTraineeSetMappings: async (traineeId: number) => {
         return cachedGet(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
     },

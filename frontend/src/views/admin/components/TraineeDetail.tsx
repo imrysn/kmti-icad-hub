@@ -217,11 +217,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             </div>
                         )}
 
-                        <button className="btn-secondary export-detail-btn" onClick={handlePrintReport}
-                            style={{ marginTop: '1.5rem', width: '100%', gap: '0.5rem' }}
-                        >
-                            <FileText size={16} /> Export Progress Report
-                        </button>
+
 
                         <div className="admin-action-scope" style={{ marginTop: '2rem' }}>
                             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 600, letterSpacing: '0.05em' }}>BULK ACTION SCOPE</p>

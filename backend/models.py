@@ -294,3 +294,17 @@ class Notification(Base):
 
     recipient = relationship("User", foreign_keys=[recipient_id])
     sender = relationship("User", foreign_keys=[sender_id])
+
+
+class QueryCache(Base):
+    """Semantic search query cache for AI Instructor responses"""
+    __tablename__ = "query_cache"
+
+    query_hash = Column(String(64), primary_key=True, index=True)
+    query_text = Column(String(2000))
+    answer = Column(Text)
+    sources_json = Column(Text)
+    hit_count = Column(Integer, default=0)
+    created_at = Column(DateTime, default=func.now())
+    expires_at = Column(DateTime, index=True)
+

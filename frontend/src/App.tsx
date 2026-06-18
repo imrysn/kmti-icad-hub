@@ -18,6 +18,8 @@ import WindowControls from './components/WindowControls';
 import ThemeToggle from './components/ThemeToggle';
 import { getSystemStatus, api } from './services/api';
 import { authService } from './services/authService';
+import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTelemetrySidebar';
+import { useUI } from './context/UIContext';
 
 import kmtiLogo from './assets/kmti-training-hub.png';
 import './styles/App.css';
@@ -25,6 +27,7 @@ import './styles/App.css';
 function AppContent() {
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const { showNotification } = useNotification();
+  const { isTelemetryOpen, toggleTelemetry } = useUI();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -219,13 +222,13 @@ function AppContent() {
                   alt="KMTI Logo"
                   draggable={false}
                   style={{
-                    width: '18px',
-                    height: '18px',
+                    width: '30px',
+                    height: '30px',
                     objectFit: 'contain',
                     userSelect: 'none'
                   }}
                 />
-                 <span>KMTI Training Hub</span>
+                <span>KMTI Training Hub</span>
               </div>
 
               {!dbStatus.nas_reachable && (
@@ -253,12 +256,12 @@ function AppContent() {
               {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
                   <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title="iCAD Manuals and Standard">
-                      <GraduationCap size={18} />
-                      <span>iCAD Manuals and Standard</span>
+                    <GraduationCap size={18} />
+                    <span>iCAD Manuals and Standard</span>
                   </button>
                   <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
-                      <ClipboardList size={18} />
-                      <span>Trainee Overview</span>
+                    <ClipboardList size={18} />
+                    <span>Trainee Overview</span>
                   </button>
                 </nav>
               )}
@@ -279,7 +282,7 @@ function AppContent() {
                   }}
                   className="theme-toggle-btn"
                   title="Notifications"
-                  style={{ position: 'relative', marginRight: '0.25rem' }}
+                  style={{ position: 'relative' }}
                 >
                   <Bell size={20} className="theme-toggle-icon" />
                   {unreadCount > 0 && (
@@ -304,6 +307,17 @@ function AppContent() {
                   )}
                 </button>
 
+                {(user?.role === 'admin' || user?.role === 'employee') && (
+                  <button
+                    onClick={toggleTelemetry}
+                    className={`theme-toggle-btn ${isTelemetryOpen ? 'active' : ''}`}
+                    title="Toggle Trainee Presence"
+                    style={{ background: isTelemetryOpen ? 'var(--accent-blue-transparent, rgba(59, 130, 246, 0.15))' : undefined }}
+                  >
+                    <UserIcon size={20} className="theme-toggle-icon" style={{ color: isTelemetryOpen ? 'var(--accent-blue, #3b82f6)' : undefined }} />
+                  </button>
+                )}
+
                 <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
                 <button
@@ -325,17 +339,20 @@ function AppContent() {
           </header>
 
           {/* Render Selected Mode via Routes */}
-          <main className="app-content">
-            <ErrorBoundary>
-              <Routes>
-                <Route path="/mentor" element={<MentorMode isEmployeeSide={user?.role?.toLowerCase() !== 'trainee'} />} />
-                <Route path="/assistant" element={<AssistantMode />} />
-                <Route path="/admin/*" element={<AdminMode />} />
-                <Route path="/" element={<Navigate to={user?.role === 'admin' ? "/admin" : (user?.role === 'employee' ? "/assistant" : "/mentor")} replace />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </ErrorBoundary>
-          </main>
+          <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+            <main className="app-content" style={{ flex: 1 }}>
+              <ErrorBoundary>
+                <Routes>
+                  <Route path="/mentor" element={<MentorMode isEmployeeSide={user?.role?.toLowerCase() !== 'trainee'} />} />
+                  <Route path="/assistant" element={<AssistantMode />} />
+                  <Route path="/admin/*" element={<AdminMode />} />
+                  <Route path="/" element={<Navigate to={user?.role === 'admin' ? "/admin" : (user?.role === 'employee' ? "/assistant" : "/mentor")} replace />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </ErrorBoundary>
+            </main>
+            {(user?.role === 'admin' || user?.role === 'employee') && <TraineeTelemetrySidebar />}
+          </div>
         </>
       )}
     </div>

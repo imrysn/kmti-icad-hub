@@ -45,6 +45,10 @@ export interface TraineeProgress {
         completed_at: string | null;
         first_attempt_at?: string | null;
     }[];
+    is_online?: boolean;
+    current_activity?: string;
+    online_since?: string;
+    last_updated?: string;
 }
 
 export interface SystemAuditLog {

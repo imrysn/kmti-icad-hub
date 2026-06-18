@@ -6,19 +6,20 @@ import { getUnitCodeBadgeClass, getUnitCodeInlineStyle } from '../../../utils/un
 
 interface TraineeSetConfigurationProps {
     searchTerm?: string;
+    activeType: '3D' | '2D';
 }
 
-export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = ({ searchTerm = '' }) => {
+export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = ({ searchTerm = '', activeType }) => {
     const { showNotification } = useNotification();
     const [trainees, setTrainees] = useState<any[]>([]);
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeType, setActiveType] = useState<'3D' | '2D'>('3D');
 
     // state: traineeId -> array of { display_set_number, actual_set_number, assessment_type }
     const [mappings, setMappings] = useState<Record<number, { display_set_number: number, actual_set_number: number, assessment_type?: string }[]>>({});
     const [isSaving, setIsSaving] = useState<Record<number, boolean>>({});
     const [showReference, setShowReference] = useState(false);
+
     const [forceCustom, setForceCustom] = useState<number[]>([]);
     const [expandedMappingTasks, setExpandedMappingTasks] = useState<Record<string, boolean>>({});
 
@@ -203,6 +204,10 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
         }
     };
 
+    useEffect(() => {
+        setShowReference(false);
+    }, [activeType]);
+
     if (loading) {
         return (
             <div className="skeleton-cards" style={{ padding: '20px' }}>
@@ -214,39 +219,6 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
 
     return (
         <div className="set-configuration-wrapper" style={{ flex: 1, overflowY: 'auto', padding: '20px', minHeight: 0 }}>
-            {/* 2D / 3D Selection Tabs */}
-            <div className="tab-navigation" style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <button
-                    onClick={() => { setActiveType('3D'); setShowReference(false); }}
-                    style={{
-                        padding: '10px 20px',
-                        background: activeType === '3D' ? 'var(--accent-blue)' : 'var(--bg-card)',
-                        color: activeType === '3D' ? '#fff' : 'var(--text-main)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                        transition: 'all 0.2s'
-                    }}
-                >
-                    3D Modeling Sets
-                </button>
-                <button
-                    onClick={() => { setActiveType('2D'); setShowReference(false); }}
-                    style={{
-                        padding: '10px 20px',
-                        background: activeType === '2D' ? 'var(--accent-blue)' : 'var(--bg-card)',
-                        color: activeType === '2D' ? '#fff' : 'var(--text-main)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                        transition: 'all 0.2s'
-                    }}
-                >
-                    2D Drawing Sets
-                </button>
-            </div>
 
             <div style={{ marginBottom: '20px', background: 'rgba(59, 130, 246, 0.1)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.2)', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <AlertCircle size={20} style={{ color: 'var(--accent-blue)', marginTop: '2px' }} />

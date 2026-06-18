@@ -24,6 +24,7 @@ from pathlib import Path
 
 from ..services.storage_service import get_safe_path, handle_task_upload
 from ..services.assessment_service import resequence_set_task_codes
+from ..services.progress_service import calculate_all_trainee_progress
 
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
@@ -1118,6 +1119,21 @@ def permanent_delete_submission(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/trainer/progress")
+def get_trainer_progress(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get the standard Performance Directory progress for assigned trainees."""
+    if current_user.role not in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # If admin, fetch all, otherwise pass trainer_id
+    trainer_id = current_user.id if current_user.role == "employee" else None
+    return calculate_all_trainee_progress(db, trainer_id=trainer_id)
+
 
 
 @router.get("/trainer/trainees-progress")

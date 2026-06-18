@@ -440,7 +440,7 @@ export const AssessmentManagement: React.FC = () => {
                         <Search size={16} color="#94a3b8" />
                         <input type="text" placeholder="Search assessments..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                     </div>
-                    <button className="add-quiz-btn" onClick={() => { setCurrentQuiz({ course_type: '2D_Drawing' }); setIsEditingQuiz(true); }}>
+                    <button className="toolbar-btn" onClick={() => { setCurrentQuiz({ course_type: '2D_Drawing' }); setIsEditingQuiz(true); }}>
                         <Plus size={16} /> New Assessment
                     </button>
                 </div>

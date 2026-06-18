@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Auto-migrate legacy port 8000 to 3001
+// Auto-migrate legacy port 8000 to 3001 (only for local dev loopbacks)
 if (typeof window !== 'undefined') {
     const legacyUrl = window.localStorage.getItem('custom_api_url');
-    if (legacyUrl && legacyUrl.includes(':8000')) {
+    if (legacyUrl && (legacyUrl.includes('localhost:8000') || legacyUrl.includes('127.0.0.1:8000'))) {
         const migratedUrl = legacyUrl.replace(':8000', ':3001');
         window.localStorage.setItem('custom_api_url', migratedUrl);
     }

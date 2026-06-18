@@ -337,6 +337,11 @@ def submit_quiz_score(
     
     db.commit()
     
+    # Update curriculum progress milestones
+    if submission.course_id:
+        from ..services.progress_service import update_user_course_progress
+        update_user_course_progress(db, current_user.id, submission.course_id)
+    
     # Save individual question attempts for analytics
     if submission.answers:
         # Find the quiz ID by slug (lesson_id in submission matches slug in Quiz)

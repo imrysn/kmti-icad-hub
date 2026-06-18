@@ -35,7 +35,7 @@ def reopen_assessment(
     user_id: int,
     quiz_slug: str,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """
     Delete a trainee's quiz score and question attempts for a specific assessment.
@@ -70,6 +70,12 @@ def reopen_assessment(
     db.add(log_entry)
     db.commit()
     
+    # Update progress milestones
+    if quiz:
+        from ...services.progress_service import update_user_course_progress
+        course_id = "1" if quiz.course_type == "3D_Modeling" else "2"
+        update_user_course_progress(db, user_id, course_id)
+    
     return {"message": f"Assessment '{quiz_slug}' has been reopened for user {user_id}"}
 
 
@@ -78,7 +84,7 @@ def reopen_all_assessments(
     user_id: int,
     course_type: str = None,  # "2D_Drawing" or "3D_Modeling" or None for all
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """
     Delete quiz scores and question attempts for a trainee.
@@ -116,6 +122,15 @@ def reopen_all_assessments(
     db.add(log_entry)
     db.commit()
     
+    # Update progress milestones
+    from ...services.progress_service import update_user_course_progress
+    if course_type:
+        internal_course_id = "1" if course_type == "3D_Modeling" else "2"
+        update_user_course_progress(db, user_id, internal_course_id)
+    else:
+        update_user_course_progress(db, user_id, "1")
+        update_user_course_progress(db, user_id, "2")
+        
     return {"message": f"Assessments have been reopened for user {user_id}"}
 
 
@@ -124,7 +139,7 @@ def close_all_assessments(
     user_id: int,
     course_type: str = None, # "2D_Drawing" or "3D_Modeling" or None for all
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """
     Mark assessments as completed with 100% score for a trainee.
@@ -170,6 +185,15 @@ def close_all_assessments(
     db.add(log_entry)
     db.commit()
     
+    # Update progress milestones
+    from ...services.progress_service import update_user_course_progress
+    if course_type:
+        internal_course_id = "1" if course_type == "3D_Modeling" else "2"
+        update_user_course_progress(db, user_id, internal_course_id)
+    else:
+        update_user_course_progress(db, user_id, "1")
+        update_user_course_progress(db, user_id, "2")
+        
     return {"message": f"Assessments have been marked as completed for user {user_id}"}
 
 
@@ -177,7 +201,7 @@ def close_all_assessments(
 def export_trainee_progress(
     user_id: int = None,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """Export granular trainee progress data as CSV"""
     # Optimized query: Fetch progress and join with users
@@ -441,7 +465,7 @@ def get_trainee_quiz_attempts(
     user_id: int,
     quiz_slug: str,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_role("employee"))
 ):
     """Get detailed question-by-question attempts for a trainee in a specific quiz"""
     # 1. Find the quiz

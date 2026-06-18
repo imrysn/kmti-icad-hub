@@ -314,10 +314,11 @@ p {
 /* --- Global Button Design System --- */
 button {
   font-family: var(--font-main);
-  border-radius: 12px;
+  border-radius: 8px;
   /* Standardized radius */
   border: 1px solid var(--border-color);
-  padding: 0.7rem 1.25rem;
+  padding: 0 1.25rem;
+  height: 38px;
   font-size: 0.875rem;
   font-weight: 700;
   /* Bolder font for premium look */
@@ -357,7 +358,9 @@ button:disabled {
   border: none !important;
   align-items: center;
   box-shadow: 0 4px 12px rgba(221, 77, 250, 0.2);
-  padding: 0.7rem 2rem;
+  padding: 0 2rem;
+  border-radius: 8px !important;
+  height: 38px;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -399,8 +402,9 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-md);
+  padding: 0 1rem;
+  height: 38px;
+  border-radius: 8px !important;
   border: none !important;
   background: transparent !important;
   color: var(--text-muted) !important;
