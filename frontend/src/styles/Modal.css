@@ -281,12 +281,13 @@
 }
 
 /* Standard Modal Buttons */
-.global-btn-secondary { padding: 0 1rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-.global-btn-secondary:hover { background: rgba(255, 255, 255, 0.05); }
-.global-btn-primary { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--primary); color: white; border: none; }
-.global-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-.global-btn-danger { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-error); color: white; border: none; }
-.global-btn-danger:hover { opacity: 0.9; transform: translateY(-1px); }
+.global-btn-secondary { padding: 0 1rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; }
+.global-btn-secondary:hover { background: var(--bg-hover) !important; }
+.global-btn-primary { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--primary) !important; color: white !important; border: none !important; }
+.global-btn-primary:hover:not(:disabled) { opacity: 0.9 !important; transform: translateY(-1px) !important; }
+.global-btn-danger { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-error) !important; color: white !important; border: none !important; }
+.global-btn-danger:hover:not(:disabled) { opacity: 0.9 !important; transform: translateY(-1px) !important; }
 
-.global-btn-success { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-success); color: white; border: none; }
-.global-btn-success:hover { opacity: 0.9; transform: translateY(-1px); }
+.global-btn-success { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-success) !important; color: white !important; border: none !important; }
+.global-btn-success:hover:not(:disabled) { opacity: 0.9 !important; transform: translateY(-1px) !important; }
+
