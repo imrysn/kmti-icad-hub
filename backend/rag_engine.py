@@ -45,6 +45,7 @@ class RAGEngine:
         
         self.bm25 = None
         self.cached_doc_ids = set()
+        self.cached_docs = None
     
     def ingest_documents(self, documents: List[Dict[str, str]]):
         """
@@ -69,6 +70,7 @@ class RAGEngine:
         
         self.bm25 = None
         self.cached_doc_ids = set()
+        self.cached_docs = None
         
         print(f"✅ Ingested {len(documents)} documents into ChromaDB")
     
@@ -139,22 +141,31 @@ class RAGEngine:
 
     def _lexical_search(self, query: str, n_results: int = 10) -> List[Dict]:
         """Simple BM25 search over the current collection"""
-        # Use simple lazy indexing for this implementation
-        docs = self.collection.get()
-        if not docs['documents']:
-            return []
-            
         import re
         
         def tokenize(text):
             return re.sub(r'[^a-zA-Z0-9\s]', '', text.lower()).split()
         
-        doc_ids_set = set(docs['ids'])
-        if self.bm25 is None or doc_ids_set != self.cached_doc_ids:
+        # Optimize: Only retrieve all documents if corpus has changed or cache is missing
+        collection_count = self.collection.count()
+        if (self.bm25 is None or 
+            self.cached_docs is None or 
+            collection_count != len(self.cached_doc_ids)):
+            
+            docs = self.collection.get()
+            if not docs['documents']:
+                self.cached_docs = None
+                self.bm25 = None
+                self.cached_doc_ids = set()
+                return []
+                
             from rank_bm25 import BM25Okapi
             tokenized_corpus = [tokenize(doc) for doc in docs['documents']]
             self.bm25 = BM25Okapi(tokenized_corpus)
-            self.cached_doc_ids = doc_ids_set
+            self.cached_doc_ids = set(docs['ids'])
+            self.cached_docs = docs
+        else:
+            docs = self.cached_docs
             
         bm25 = self.bm25
         
@@ -194,6 +205,7 @@ class RAGEngine:
             self.collection.delete(ids=results['ids'])
         self.bm25 = None
         self.cached_doc_ids = set()
+        self.cached_docs = None
         print("✅ Cleared documents from collection")
 
 # Singleton instance

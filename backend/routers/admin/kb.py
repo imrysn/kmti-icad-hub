@@ -168,6 +168,10 @@ def delete_kb_file(
     admin: User = Depends(require_role("admin"))
 ):
     """Delete a file from the knowledge base"""
+    # Sanitize — no path traversal
+    if "/" in filename or "\\" in filename or ".." in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+
     file_path = os.path.join(KB_DIR, filename)
     
     if not os.path.exists(file_path):

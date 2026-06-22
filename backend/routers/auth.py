@@ -395,7 +395,7 @@ async def submit_quiz_score(
                 if quiz:
                     total_quizzes = db.query(Quiz).filter(Quiz.course_type == quiz.course_type).count()
                     passed_quizzes = db.query(QuizScore).filter(
-                        QuizScore.user_id == str(current_user.id),
+                        QuizScore.user_id == current_user.id,
                         QuizScore.course_id == submission.course_id,
                         QuizScore.score >= 80.0
                     ).count()

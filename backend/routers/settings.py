@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List
 from .. import models, schemas
 from ..database import get_db
+from ..auth.dependencies import get_current_user, require_role
+from ..models import User
 
 router = APIRouter(
     prefix="/settings",
@@ -10,7 +12,10 @@ router = APIRouter(
 )
 
 @router.get("/", response_model=List[schemas.SystemSettingResponse])
-def get_all_settings(db: Session = Depends(get_db)):
+def get_all_settings(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     settings = db.query(models.SystemSettings).all()
     # Default fallback for chatbot_enabled if it doesn't exist
     has_chatbot = any(s.key == "chatbot_enabled" for s in settings)
@@ -28,7 +33,11 @@ def get_all_settings(db: Session = Depends(get_db)):
     return settings
 
 @router.get("/{key}", response_model=schemas.SystemSettingResponse)
-def get_setting(key: str, db: Session = Depends(get_db)):
+def get_setting(
+    key: str, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     setting = db.query(models.SystemSettings).filter(models.SystemSettings.key == key).first()
     if not setting:
         if key == "chatbot_enabled":
@@ -37,7 +46,12 @@ def get_setting(key: str, db: Session = Depends(get_db)):
     return setting
 
 @router.put("/{key}", response_model=schemas.SystemSettingResponse)
-def update_setting(key: str, setting_update: schemas.SystemSettingUpdate, db: Session = Depends(get_db)):
+def update_setting(
+    key: str, 
+    setting_update: schemas.SystemSettingUpdate, 
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin"))
+):
     setting = db.query(models.SystemSettings).filter(models.SystemSettings.key == key).first()
     if not setting:
         # Allow creating new setting if missing

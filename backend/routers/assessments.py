@@ -1193,7 +1193,7 @@ def get_trainer_trainees_progress(
     results = []
     for trainee in trainees:
         # Fetch Quiz Scores (Lessons completed/passed)
-        scores = db.query(QuizScore).filter(QuizScore.user_id == str(trainee.id)).all()
+        scores = db.query(QuizScore).filter(QuizScore.user_id == trainee.id).all()
         
         # Calculate completion metrics
         # Course 1 is 3D Modeling, Course 2 is 2D Drawing
@@ -1244,7 +1244,7 @@ def get_trainer_trainees_progress(
             current_activity = realtime_activity.current_activity
             last_updated = realtime_activity.last_updated
         else:
-            recent_quiz = db.query(QuizScore).filter(QuizScore.user_id == str(trainee.id)).order_by(QuizScore.completed_at.desc()).first()
+            recent_quiz = db.query(QuizScore).filter(QuizScore.user_id == trainee.id).order_by(QuizScore.completed_at.desc()).first()
             recent_submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.user_id == trainee.id).order_by(AssessmentSubmission.submitted_at.desc()).first()
             last_quiz_time = recent_quiz.completed_at if recent_quiz and recent_quiz.completed_at else None
             last_sub_time = recent_submission.submitted_at if recent_submission and recent_submission.submitted_at else None

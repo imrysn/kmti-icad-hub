@@ -48,8 +48,22 @@ def sync_table_data(table_name: str, sqlite_conn, mysql_conn):
         # We assume first column is 'id' unless it's system_settings ('key')
         pk_col = "key" if table_name == "system_settings" else "id"
         
-        mysql_result = mysql_conn.execute(text(f"SELECT {pk_col} FROM {table_name}"))
-        existing_pks = {row[0] for row in mysql_result.fetchall()}
+        # Determine timestamp column beforehand
+        time_col = None
+        if "updated_at" in columns:
+            time_col = "updated_at"
+        elif "submitted_at" in columns:
+            time_col = "submitted_at"
+
+        # Batch query MySQL for primary keys and timestamps (if time_col exists)
+        if time_col:
+            mysql_result = mysql_conn.execute(text(f"SELECT {pk_col}, {time_col} FROM {table_name}"))
+            mysql_data = {row[0]: row[1] for row in mysql_result.fetchall()}
+            existing_pks = set(mysql_data.keys())
+        else:
+            mysql_result = mysql_conn.execute(text(f"SELECT {pk_col} FROM {table_name}"))
+            existing_pks = {row[0] for row in mysql_result.fetchall()}
+            mysql_data = {}
         
         # Check for existing usernames to prevent IntegrityErrors (case-insensitive check)
         existing_usernames = set()
@@ -72,29 +86,17 @@ def sync_table_data(table_name: str, sqlite_conn, mysql_conn):
                     row
                 )
             else:
-                # Update if there is an 'updated_at' or 'submitted_at' timestamp
-                time_col = None
-                if "updated_at" in row:
-                    time_col = "updated_at"
-                elif "submitted_at" in row:
-                    time_col = "submitted_at"
-                    
+                # Update if there is a timestamp column and the SQLite record is newer
                 if time_col and row[time_col]:
-                    # Check if SQLite record is newer
-                    mysql_time_res = mysql_conn.execute(
-                        text(f"SELECT {time_col} FROM {table_name} WHERE {pk_col} = :pk"),
-                        {"pk": pk_val}
-                    ).fetchone()
+                    sqlite_time = row[time_col]
+                    mysql_time = mysql_data.get(pk_val)
                     
-                    if mysql_time_res and mysql_time_res[0]:
-                        sqlite_time = row[time_col]
-                        mysql_time = mysql_time_res[0]
-                        if str(sqlite_time) > str(mysql_time):
-                            set_clause = ", ".join([f"{col} = :{col}" for col in row.keys() if col != pk_col])
-                            mysql_conn.execute(
-                                text(f"UPDATE {table_name} SET {set_clause} WHERE {pk_col} = :key_val"),
-                                {**row, "key_val": pk_val}
-                            )
+                    if not mysql_time or str(sqlite_time) > str(mysql_time):
+                        set_clause = ", ".join([f"{col} = :{col}" for col in row.keys() if col != pk_col])
+                        mysql_conn.execute(
+                            text(f"UPDATE {table_name} SET {set_clause} WHERE {pk_col} = :key_val"),
+                            {**row, "key_val": pk_val}
+                        )
         
     except Exception as e:
         # Sanitize error message to prevent data leakage (e.g. hashed passwords or emails) in logs

@@ -84,7 +84,7 @@ def ingest_excel_file(excel_path: str, text_columns: Optional[List[str]] = None)
     print(f"   Total documents: {stats['total_documents']}")
     print(f"   Vector DB: {stats['persist_directory']}")
 
-def ingest_media_mappings(csv_path: str):
+def ingest_media_mappings(csv_path: str, clear_existing: bool = True):
     """
     Read media mappings CSV and populate MediaMetadata table.
     """
@@ -94,9 +94,8 @@ def ingest_media_mappings(csv_path: str):
     
     with SessionLocal() as db:
         # Clear existing mappings to avoid duplicates on re-index
-        # We only clear mappings referenced in this CSV or just all?
-        # Usually re-index implies a fresh start for the controlled directory.
-        db.query(MediaMetadata).delete()
+        if clear_existing:
+            db.query(MediaMetadata).delete()
         
         count = 0
         for _, row in df.iterrows():
@@ -136,9 +135,9 @@ def ingest_directory(directory: str):
     # Ingest Media Mappings CSV
     mapping_files = list(dir_path.glob("media_mappings*.csv"))
     print(f"Found {len(mapping_files)} mapping files")
-    for filepath in mapping_files:
+    for i, filepath in enumerate(mapping_files):
         try:
-            ingest_media_mappings(str(filepath))
+            ingest_media_mappings(str(filepath), clear_existing=(i == 0))
         except Exception as e:
             print(f"❌ Error processing {filepath}: {e}")
 
