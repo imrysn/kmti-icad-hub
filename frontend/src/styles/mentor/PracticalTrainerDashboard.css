@@ -1219,6 +1219,8 @@
     flex-direction: column;
     border-top: 1px solid var(--border-color);
     background: var(--bg-surface);
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 .task-list-row {

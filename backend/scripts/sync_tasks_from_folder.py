@@ -17,7 +17,7 @@ else:
 
 UPLOAD_DIR = base_path / "Units & Tasks"
 if not UPLOAD_DIR.exists():
-    UPLOAD_DIR = base_path / "Unts & Tasks"
+    UPLOAD_DIR = base_path / "Units & Tasks"
 
 def sync_tasks():
     if not UPLOAD_DIR.exists():

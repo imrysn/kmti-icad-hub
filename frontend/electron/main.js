@@ -132,7 +132,7 @@ function createWindow() {
             if (!localPath.startsWith(draftsDir)) {
                 throw new Error('Path traversal detected');
             }
-            
+
             // If file exists, try to check if it's writable. If not, use a unique name.
             if (fs.existsSync(localPath)) {
                 try {
@@ -155,7 +155,7 @@ function createWindow() {
             return new Promise((resolve, reject) => {
                 file.on('error', (err) => {
                     file.close();
-                    fs.unlink(localPath, () => {});
+                    fs.unlink(localPath, () => { });
                     reject(err);
                 });
 
@@ -164,7 +164,7 @@ function createWindow() {
                 }, (response) => {
                     if (response.statusCode !== 200) {
                         file.close();
-                        fs.unlink(localPath, () => {});
+                        fs.unlink(localPath, () => { });
                         reject(new Error(`Failed to download: ${response.statusCode}`));
                         return;
                     }
@@ -180,7 +180,7 @@ function createWindow() {
                             if (appName.toLowerCase() === 'ijcad') {
                                 cmd = `start gcad.exe "${localPath}"`;
                             } else if (appName.toLowerCase() === 'nanocad') {
-                                cmd = `start ncad.exe "${localPath}"`; 
+                                cmd = `start ncad.exe "${localPath}"`;
                             } else if (appName.toLowerCase() === 'icad') {
                                 cmd = `start icad.exe "${localPath}"`;
                             } else if (appName.toLowerCase() === 'solidworks') {
@@ -212,7 +212,7 @@ function createWindow() {
 
                 request.on('error', (err) => {
                     file.close();
-                    fs.unlink(localPath, () => {});
+                    fs.unlink(localPath, () => { });
                     reject(err);
                 });
 
@@ -230,7 +230,7 @@ function createWindow() {
 
     ipcMain.handle('download-bulk-files', async (event, { tasks, token }) => {
         const { shell } = require('electron');
-        
+
         // Auto-save directly to Downloads instead of prompting
         const targetDir = app.getPath('downloads');
         const downloadedFiles = [];
@@ -246,15 +246,15 @@ function createWindow() {
                 // Ensure no path traversal tricks and remove any prefixes before the actual Set folders
                 relativePath = relativePath.replace(/\\/g, '/');
                 let safeRelativePath = path.normalize(relativePath).replace(/^(\.\.[\/\\])+/, '');
-                
-                // Extract everything after "Unts & Tasks/" or "Units & Tasks/" to keep exactly the "1st Set Parts/..." structure
+
+                // Extract everything after "Units & Tasks/" or "Units & Tasks/" to keep exactly the "1st Set Parts/..." structure
                 const match = safeRelativePath.match(/(?:Unts|Units) & Tasks[\/\\](.*)/i);
                 if (match) {
                     safeRelativePath = match[1];
                 }
 
                 const localPath = path.join(targetDir, safeRelativePath);
-                
+
                 const fileDir = path.dirname(localPath);
                 if (!fs.existsSync(fileDir)) {
                     fs.mkdirSync(fileDir, { recursive: true });
@@ -272,7 +272,7 @@ function createWindow() {
                 await new Promise((resolve, reject) => {
                     file.on('error', (err) => {
                         file.close();
-                        fs.unlink(localPath, () => {});
+                        fs.unlink(localPath, () => { });
                         reject(err);
                     });
 
@@ -281,7 +281,7 @@ function createWindow() {
                     }, (response) => {
                         if (response.statusCode !== 200) {
                             file.close();
-                            fs.unlink(localPath, () => {});
+                            fs.unlink(localPath, () => { });
                             reject(new Error(`Failed to download: ${response.statusCode}`));
                             return;
                         }
@@ -295,7 +295,7 @@ function createWindow() {
 
                     request.on('error', (err) => {
                         file.close();
-                        fs.unlink(localPath, () => {});
+                        fs.unlink(localPath, () => { });
                         reject(err);
                     });
 
@@ -304,7 +304,7 @@ function createWindow() {
                         reject(new Error('Download timeout'));
                     });
                 });
-                
+
                 downloadedFiles.push(localPath);
             } catch (err) {
                 console.error(`Error downloading task ${task.id}:`, err);
