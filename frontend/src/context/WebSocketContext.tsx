@@ -48,21 +48,24 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
   const handlersRef = useRef<Map<string, Set<WSEventHandler>>>(new Map());
   const isMountedRef = useRef(true);
 
-  const buildWsUrl = useCallback((): string => {
+  const buildWsUrl = useCallback((tokenVal: string | null): string => {
     const apiBase = api.defaults.baseURL || '';
+    let wsUrl = '';
     if (apiBase.startsWith('http')) {
       try {
         const parsed = new URL(apiBase);
         const proto = parsed.protocol === 'https:' ? 'wss:' : 'ws:';
-        return `${proto}//${parsed.host}/api/v1/notifications/ws`;
+        wsUrl = `${proto}//${parsed.host}/api/v1/notifications/ws`;
       } catch {
         const cleaned = apiBase.replace(/^https?:\/\//i, '');
         const proto = apiBase.startsWith('https') ? 'wss:' : 'ws:';
-        return `${proto}//${cleaned}/api/v1/notifications/ws`;
+        wsUrl = `${proto}//${cleaned}/api/v1/notifications/ws`;
       }
+    } else {
+      const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      wsUrl = `${proto}//${window.location.hostname || '127.0.0.1'}:3001/api/v1/notifications/ws`;
     }
-    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    return `${proto}//${window.location.hostname || '127.0.0.1'}:3001/api/v1/notifications/ws`;
+    return tokenVal ? `${wsUrl}?token=${encodeURIComponent(tokenVal)}` : wsUrl;
   }, []);
 
   const connect = useCallback(() => {
@@ -72,8 +75,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
       wsRef.current.close();
     }
 
-    const wsUrl = buildWsUrl();
-    const ws = new WebSocket(wsUrl, token);
+    const wsUrl = buildWsUrl(token);
+    const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
     ws.onopen = () => {
@@ -100,14 +103,14 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
       }
     };
 
-    ws.onclose = () => {
+    ws.onclose = (event) => {
       if (!isMountedRef.current) return;
       setIsConnected(false);
       if (token) {
         // Exponential backoff, cap at 30s
         const delay = Math.min(reconnectDelayRef.current, 30000);
         reconnectDelayRef.current = delay * 1.5;
-        console.log(`[WS] Disconnected. Reconnecting in ${delay}ms...`);
+        console.log(`[WS] Disconnected (Code: ${event.code}, Reason: "${event.reason || 'None'}"). Reconnecting in ${delay}ms...`);
         reconnectTimeoutRef.current = setTimeout(connect, delay);
       }
     };
