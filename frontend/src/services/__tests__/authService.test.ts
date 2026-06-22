@@ -72,39 +72,48 @@ describe('authService.logout()', () => {
     setToken(TEST_TOKEN);
     // Mock window.location.href (can't actually redirect in jsdom without error)
     const originalLocation = window.location;
-    Object.defineProperty(window, 'location', {
-      value: { href: '/' },
-      writable: true,
-      configurable: true,
-    });
-    authService.logout();
-    expect(sessionStorage.getItem('access_token')).toBeNull();
-    Object.defineProperty(window, 'location', {
-      value: originalLocation,
-      writable: true,
-      configurable: true,
-    });
+    try {
+      Object.defineProperty(window, 'location', {
+        value: { href: '/' },
+        writable: true,
+        configurable: true,
+      });
+      authService.logout();
+      expect(sessionStorage.getItem('access_token')).toBeNull();
+    } finally {
+      Object.defineProperty(window, 'location', {
+        value: originalLocation,
+        writable: true,
+        configurable: true,
+      });
+    }
   });
 
   it('removes user from sessionStorage', () => {
     setToken(TEST_TOKEN);
     setUser(TEST_USERS.trainee);
     const originalLocation = window.location;
-    Object.defineProperty(window, 'location', { value: { href: '/' }, writable: true, configurable: true });
-    authService.logout();
-    expect(sessionStorage.getItem('user')).toBeNull();
-    Object.defineProperty(window, 'location', { value: originalLocation, writable: true, configurable: true });
+    try {
+      Object.defineProperty(window, 'location', { value: { href: '/' }, writable: true, configurable: true });
+      authService.logout();
+      expect(sessionStorage.getItem('user')).toBeNull();
+    } finally {
+      Object.defineProperty(window, 'location', { value: originalLocation, writable: true, configurable: true });
+    }
   });
 
   it('clears kmti_ prefixed localStorage keys', () => {
     localStorage.setItem('kmti_u1_progress', 'somedata');
     localStorage.setItem('unrelated_key', 'keep');
     const originalLocation = window.location;
-    Object.defineProperty(window, 'location', { value: { href: '/' }, writable: true, configurable: true });
-    authService.logout();
-    expect(localStorage.getItem('kmti_u1_progress')).toBeNull();
-    expect(localStorage.getItem('unrelated_key')).toBe('keep');
-    Object.defineProperty(window, 'location', { value: originalLocation, writable: true, configurable: true });
+    try {
+      Object.defineProperty(window, 'location', { value: { href: '/' }, writable: true, configurable: true });
+      authService.logout();
+      expect(localStorage.getItem('kmti_u1_progress')).toBeNull();
+      expect(localStorage.getItem('unrelated_key')).toBe('keep');
+    } finally {
+      Object.defineProperty(window, 'location', { value: originalLocation, writable: true, configurable: true });
+    }
   });
 });
 

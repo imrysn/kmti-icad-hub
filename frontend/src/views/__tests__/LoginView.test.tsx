@@ -61,8 +61,12 @@ const renderLogin = () =>
 
 beforeEach(() => {
   vi.clearAllMocks();
-  sessionStorage.clear();
-  localStorage.clear();
+  if (typeof sessionStorage !== 'undefined' && typeof sessionStorage.clear === 'function') {
+    sessionStorage.clear();
+  }
+  if (typeof localStorage !== 'undefined' && typeof localStorage.clear === 'function') {
+    localStorage.clear();
+  }
 });
 
 // ══════════════════════════════════════════════════════════════════
@@ -207,5 +211,63 @@ describe('LoginView — password toggle', () => {
     const toggleBtn = screen.getByRole('button', { name: '' }); // eye icon button
     await user.click(toggleBtn);
     expect(screen.getByPlaceholderText('••••••••')).toHaveAttribute('type', 'text');
+  });
+});
+
+// ══════════════════════════════════════════════════════════════════
+// Remember Me checkbox
+// ══════════════════════════════════════════════════════════════════
+
+describe('LoginView — Remember Me checkbox', () => {
+  it('toggles remember me state and saves username on successful login', async () => {
+    const user = userEvent.setup();
+    mockLogin.mockResolvedValue({ user: TEST_USERS.trainee, access_token: TEST_TOKEN });
+    renderLogin();
+
+    const checkbox = screen.getByLabelText(/remember me/i);
+    expect(checkbox).not.toBeChecked();
+
+    await user.click(checkbox);
+    expect(checkbox).toBeChecked();
+
+    await user.type(screen.getByPlaceholderText('Enter username'), 'trainee_test');
+    await user.type(screen.getByPlaceholderText('••••••••'), 'Trainee@12345');
+    await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(localStorage.getItem('remembered_username')).toBe('trainee_test');
+    });
+  });
+
+  it('pre-fills username when remembered_username exists in localStorage', () => {
+    localStorage.setItem('remembered_username', 'remembered_user');
+    renderLogin();
+    expect(screen.getByPlaceholderText('Enter username')).toHaveValue('remembered_user');
+    expect(screen.getByLabelText(/remember me/i)).toBeChecked();
+  });
+});
+
+// ══════════════════════════════════════════════════════════════════
+// Close button
+// ══════════════════════════════════════════════════════════════════
+
+describe('LoginView — Close button', () => {
+  it('renders close button and calls window.electronAPI.close on click', async () => {
+    const mockClose = vi.fn();
+    // @ts-ignore
+    window.electronAPI = { close: mockClose };
+
+    const user = userEvent.setup();
+    renderLogin();
+
+    const closeBtn = screen.getByTitle(/close application/i);
+    expect(closeBtn).toBeInTheDocument();
+
+    await user.click(closeBtn);
+    expect(mockClose).toHaveBeenCalled();
+
+    // Clean up mock
+    // @ts-ignore
+    delete window.electronAPI;
   });
 });

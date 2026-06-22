@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock, Settings } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock, X } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth'; import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti-training-hub.png';
@@ -124,27 +124,17 @@ export const LoginView: React.FC = () => {
 
             <button
                 type="button"
-                className="login-settings-btn"
-                onClick={() => setShowApiSettingsModal(true)}
-                title="API Server Settings"
-                style={{
-                    position: 'absolute',
-                    top: '16px',
-                    right: '16px',
-                    background: 'none',
-                    border: 'none',
-                    color: '#a0aec0',
-                    cursor: 'pointer',
-                    zIndex: 110,
-                    WebkitAppRegion: 'no-drag',
-                    padding: '8px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                } as any}
+                className="login-close-btn"
+                onClick={() => {
+                    if (window.electronAPI) {
+                        window.electronAPI.close();
+                    } else {
+                        window.close();
+                    }
+                }}
+                title="Close Application"
             >
-                <Settings size={20} />
+                <X size={20} />
             </button>
 
             <div className="login-brand-header">
@@ -176,17 +166,25 @@ export const LoginView: React.FC = () => {
                         </div>
                     </div>
 
+                    <div className="login-options-row">
+                        <label className="remember-me-checkbox">
+                            <input
+                                type="checkbox"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                            />
+                            <span>REMEMBER ME</span>
+                        </label>
+                        <button type="button" className="forgot-password-btn" onClick={handleForgotPassword}>
+                            Forgot Password?
+                        </button>
+                    </div>
+
                     {localError && <div className="local-error-msg">{localError}</div>}
 
                     <button type="submit" className="glass-login-btn" disabled={isLoggingIn}>
                         {isLoggingIn ? 'Logging...' : 'SIGN IN'}
                     </button>
-
-                    <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                        <button type="button" className="forgot-password-btn" onClick={handleForgotPassword}>
-                            Forgot Password?
-                        </button>
-                    </div>
                 </form>
             </div>
 

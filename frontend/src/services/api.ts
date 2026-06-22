@@ -1,18 +1,20 @@
 import axios from 'axios';
 
 // Auto-migrate legacy port 8000 to 3001 (only for local dev loopbacks)
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.getItem === 'function') {
     const legacyUrl = window.localStorage.getItem('custom_api_url');
     if (legacyUrl && (legacyUrl.includes('localhost:8000') || legacyUrl.includes('127.0.0.1:8000'))) {
         const migratedUrl = legacyUrl.replace(':8000', ':3001');
-        window.localStorage.setItem('custom_api_url', migratedUrl);
+        if (typeof window.localStorage.setItem === 'function') {
+            window.localStorage.setItem('custom_api_url', migratedUrl);
+        }
     }
 }
 
 const isElectron = navigator.userAgent.toLowerCase().includes('electron');
 const defaultHost = isElectron ? '127.0.0.1' : (typeof window !== 'undefined' && window.location && window.location.hostname ? window.location.hostname : '127.0.0.1');
 
-const storedApiUrl = typeof window !== 'undefined' ? window.localStorage.getItem('custom_api_url') : null;
+const storedApiUrl = (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.getItem === 'function') ? window.localStorage.getItem('custom_api_url') : null;
 const API_BASE_URL = storedApiUrl || (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:3001`;
 
 const api = axios.create({
