@@ -269,6 +269,29 @@
   letter-spacing: 0.05em;
 }
 
+.login-settings-btn {
+  position: absolute;
+  top: 16px;
+  right: 56px;
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  z-index: 110;
+  -webkit-app-region: no-drag;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-settings-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
 .login-close-btn {
   position: absolute;
   top: 16px;

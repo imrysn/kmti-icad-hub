@@ -39,9 +39,14 @@ api.interceptors.request.use(
             config.url = `/api/v1${config.url.startsWith('/') ? '' : '/'}${config.url}`;
         }
         // Prepend baseURL explicitly for relative URLs to avoid errors in JSDOM environment
-        const base = config.baseURL || API_BASE_URL;
+        let base = config.baseURL || API_BASE_URL;
         if (config.url && !config.url.startsWith('http') && !config.url.startsWith('//') && base) {
-            config.url = `${base.replace(/\/$/, '')}${config.url}`;
+            base = base.replace(/\/$/, '');
+            let url = config.url;
+            if (base.endsWith('/api/v1') && url.startsWith('/api/v1')) {
+                url = url.substring(7); // Remove duplicate '/api/v1' segment
+            }
+            config.url = `${base}${url}`;
         }
         return config;
     },

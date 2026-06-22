@@ -104,8 +104,22 @@ if __name__ == "__main__":
     try:
         import uvicorn
         from backend.main import app
-        from backend.database import get_db_mode
+        from backend.database import get_db_mode, engine, SessionLocal
+        from backend.models import Base, User
+        from backend.create_test_users import create_test_users
         
+        # 4. Verify/initialize database schema and seed default users if empty
+        try:
+            print("Verifying database schema...")
+            Base.metadata.create_all(bind=engine)
+            db = SessionLocal()
+            if db.query(User).count() == 0:
+                print("No users found in database. Seeding default accounts (admin, employee, trainee)...")
+                create_test_users()
+            db.close()
+        except Exception as db_init_err:
+            print(f"[!] Database initialization/seeding warning: {db_init_err}")
+
         # Start SQLite-to-MySQL background sync worker
         try:
             from backend.sync_worker import start_sync_worker

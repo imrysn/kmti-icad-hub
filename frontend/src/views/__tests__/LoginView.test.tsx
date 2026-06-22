@@ -251,7 +251,7 @@ describe('LoginView — Remember Me checkbox', () => {
 // Close button
 // ══════════════════════════════════════════════════════════════════
 
-describe('LoginView — Close button', () => {
+describe('LoginView — Top-Right Control Buttons', () => {
   it('renders close button and calls window.electronAPI.close on click', async () => {
     const mockClose = vi.fn();
     // @ts-ignore
@@ -269,5 +269,21 @@ describe('LoginView — Close button', () => {
     // Clean up mock
     // @ts-ignore
     delete window.electronAPI;
+  });
+
+  it('renders settings button and opens API Configuration modal on click', async () => {
+    const user = userEvent.setup();
+    renderLogin();
+
+    const settingsBtn = screen.getByTitle(/api server settings/i);
+    expect(settingsBtn).toBeInTheDocument();
+
+    // Modal should be closed initially
+    expect(screen.queryByText(/api server configuration/i)).not.toBeInTheDocument();
+
+    await user.click(settingsBtn);
+
+    // Modal should now be open
+    expect(screen.getByText(/api server configuration/i)).toBeInTheDocument();
   });
 });
