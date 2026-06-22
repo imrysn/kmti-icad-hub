@@ -71,8 +71,14 @@ authApi.interceptors.request.use((config) => {
         if (!url.startsWith('/api/v1')) {
             url = `/api/v1${url.startsWith('/') ? '' : '/'}${url}`;
         }
-        const base = config.baseURL || API_BASE_URL;
-        url = `${base.replace(/\/$/, '')}${url}`;
+        let base = config.baseURL || API_BASE_URL;
+        base = base.replace(/\/$/, '');
+        
+        // Strip duplicate /api/v1 if base already contains it
+        if (base.endsWith('/api/v1') && url.startsWith('/api/v1')) {
+            url = url.substring(7); // Remove the '/api/v1' segment
+        }
+        url = `${base}${url}`;
     }
     config.url = url;
     console.log('[authApi request URL]', config.url);

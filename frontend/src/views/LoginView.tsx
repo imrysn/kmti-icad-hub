@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock, X, Settings } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth'; import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import kmtiLogo from '../assets/kmti-training-hub.png';
@@ -107,8 +107,11 @@ export const LoginView: React.FC = () => {
     };
 
     const handleSaveApiUrl = () => {
-        if (customApiUrl.trim()) {
-            localStorage.setItem('custom_api_url', customApiUrl.trim());
+        let url = customApiUrl.trim();
+        if (url) {
+            // Strip trailing slashes and duplicate /api/v1 suffix to avoid double pathing
+            url = url.replace(/\/$/, '').replace(/\/api\/v1$/, '');
+            localStorage.setItem('custom_api_url', url);
         } else {
             localStorage.removeItem('custom_api_url');
         }
@@ -121,6 +124,15 @@ export const LoginView: React.FC = () => {
             <div className="app-drag-region"></div>
             <LightPillar />
             <div className="ambient-particles"></div>
+
+            <button
+                type="button"
+                className="login-settings-btn"
+                onClick={() => setShowApiSettingsModal(true)}
+                title="API Server Settings"
+            >
+                <Settings size={20} />
+            </button>
 
             <button
                 type="button"
