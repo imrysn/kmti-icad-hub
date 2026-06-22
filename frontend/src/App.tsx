@@ -20,6 +20,7 @@ import { getSystemStatus, api } from './services/api';
 import { authService } from './services/authService';
 import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTelemetrySidebar';
 import { useUI } from './context/UIContext';
+import { assessmentService } from './services/assessmentService';
 
 import kmtiLogo from './assets/kmti-training-hub.png';
 import './styles/App.css';
@@ -42,6 +43,7 @@ function AppContent() {
   // Centralized WebSocket notification receiver — now via WebSocketContext
   const { subscribe } = useWebSocket();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [hasTrainees, setHasTrainees] = useState<boolean | null>(null); // null = not yet checked
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const fetchUnreadCount = async () => {
@@ -58,6 +60,13 @@ function AppContent() {
   useEffect(() => {
     if (isAuthenticated) {
       fetchUnreadCount();
+      // Check if employee has any assigned trainees
+      const role = user?.role?.toLowerCase()?.trim();
+      if (role === 'employee') {
+        assessmentService.getTrainerTraineesProgress()
+          .then((trainees: any[]) => setHasTrainees(trainees.length > 0))
+          .catch(() => setHasTrainees(false));
+      }
     }
   }, [isAuthenticated]);
 
@@ -253,7 +262,7 @@ function AppContent() {
                   </button>
                 </nav>
               )}
-              {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && (
+              {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && hasTrainees && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
                   <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title="iCAD Manuals and Standard">
                     <GraduationCap size={18} />

@@ -118,15 +118,18 @@
 
   /* ── Unit Code Colors (A = Assembly, P = Parts, E = Extra) ── */
   /* Dark → Light: A is heaviest, E is most subtle */
-  --unit-assembly-color: #9b1fbc;   /* dark vivid purple */
+  --unit-assembly-color: #9b1fbc;
+  /* dark vivid purple */
   --unit-assembly-bg: rgba(221, 77, 250, 0.10);
   --unit-assembly-border: rgba(221, 77, 250, 0.30);
 
-  --unit-parts-color: #5b4fa8;   /* dark mid-purple */
+  --unit-parts-color: #5b4fa8;
+  /* dark mid-purple */
   --unit-parts-bg: rgba(167, 139, 250, 0.08);
   --unit-parts-border: rgba(167, 139, 250, 0.22);
 
-  --unit-extra-color: #6b5e8a;   /* muted dark violet */
+  --unit-extra-color: #6b5e8a;
+  /* muted dark violet */
   --unit-extra-bg: rgba(124, 111, 160, 0.06);
   --unit-extra-border: rgba(124, 111, 160, 0.15);
 }
