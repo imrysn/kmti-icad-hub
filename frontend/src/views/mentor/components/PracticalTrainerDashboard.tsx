@@ -186,7 +186,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 }
             }
 
-            await api.post(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`, newMappings);
+            await assessmentService.updateTraineeSetMapping(traineeId, newMappings, activeType);
             showNotification(`Set ${nextSetNum} opened for trainee!`, 'success');
 
             if (notifId) handleDeleteNotification(notifId);
@@ -370,23 +370,25 @@ export const PracticalTrainerDashboard: React.FC = () => {
         return () => unsub();
     }, [subscribe]);
 
-    const handleDownloadTraineeFile = (submission: AssessmentSubmission) => {
-        const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
-        const token = authService.getToken();
-
-        fetch(url, { headers: { 'Authorization': `Bearer ${token}` } })
-            .then(res => res.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
-                a.download = `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-            })
-            .catch(err => showNotification('Download failed.', 'error'));
+    const handleDownloadTraineeFile = async (submission: AssessmentSubmission) => {
+        try {
+            const response = await api.get(`/api/v1/assessments/submissions/${submission.id}/download`, {
+                responseType: 'blob'
+            });
+            const blob = response.data;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
+            const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
+            a.download = attachedFilename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            showNotification('Download failed.', 'error');
+        }
     };
 
     const handleOpenInIJCAD = async (submission: AssessmentSubmission, appName?: string) => {
@@ -395,10 +397,10 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
                 const token = authService.getToken() || '';
                 const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
-                const filename = `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
+                const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
 
                 showNotification(`Opening submission in ${appName ? appName : 'CAD'}...`, 'info');
-                await window.electronAPI.downloadAndOpen({ url, filename, token, appName });
+                await window.electronAPI.downloadAndOpen({ url, filename: attachedFilename, token, appName });
                 showNotification(`Submission opened.`, 'success');
             } catch (err) {
                 console.error('Failed to open in CAD:', err);
@@ -411,14 +413,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
     };
 
     const handleDownloadCheckback = async (feedback: any) => {
-        const token = authService.getToken();
-        if (!token) return;
         try {
-            const response = await fetch(assessmentService.getFeedbackDownloadUrl(feedback.id), {
-                headers: { 'Authorization': `Bearer ${token}` }
+            const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
+                responseType: 'blob'
             });
-            if (!response.ok) throw new Error('Download failed');
-            const blob = await response.blob();
+            const blob = response.data;
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -426,6 +425,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
             document.body.appendChild(a);
             a.click();
             a.remove();
+            window.URL.revokeObjectURL(url);
         } catch (err) {
             showNotification('Failed to download checkback file.', 'error');
         }

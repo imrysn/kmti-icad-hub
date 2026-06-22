@@ -83,8 +83,8 @@ class UserCreate(BaseModel):
     @field_validator("username")
     @classmethod
     def username_min_length(cls, v: str) -> str:
-        if len(v.strip()) < 3:
-            raise ValueError("Username must be at least 3 characters")
+        if len(v.strip()) < 2:
+            raise ValueError("Username must be at least 2 characters")
         return v.strip()
 
     @field_validator("password")

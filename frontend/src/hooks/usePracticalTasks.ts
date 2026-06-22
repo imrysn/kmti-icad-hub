@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { assessmentService, AssessmentTask, AssessmentSubmission } from '../services/assessmentService';
 import { authService } from '../services/authService';
 import { useNotification } from '../context/NotificationContext';
+import { api } from '../services/api';
 
 export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   const { showNotification } = useNotification();
@@ -88,31 +89,9 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   }, [showNotification]);
 
   const handleDownloadTask = useCallback(async (task: AssessmentTask) => {
-    const token = authService.getToken();
-
-    if (!token) {
-      showNotification('Session expired. Please login again.', 'error');
-      return;
-    }
-
     try {
       showNotification('Preparing task template download...', 'info');
-      const response = await fetch(assessmentService.getDownloadUrl(task.id), {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        if (response.status === 403 || response.status === 401) {
-          showNotification('Authentication failed. Please login again.', 'error');
-        } else {
-          throw new Error('Download failed');
-        }
-        return;
-      }
-
-      const blob = await response.blob();
+      const blob = await assessmentService.getMasterFileBlob(task.id);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.style.display = 'none';
@@ -135,31 +114,13 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission) => {
     if (!submission.feedback || submission.feedback.length === 0) return;
     const feedback = submission.feedback[0];
-    const token = authService.getToken();
-
-    if (!token) {
-      showNotification('Session expired. Please login again.', 'error');
-      return;
-    }
 
     try {
       showNotification('Preparing download...', 'info');
-      const response = await fetch(assessmentService.getFeedbackDownloadUrl(feedback.id), {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
+        responseType: 'blob'
       });
-
-      if (!response.ok) {
-        if (response.status === 403 || response.status === 401) {
-          showNotification('Authentication failed. Please login again.', 'error');
-        } else {
-          throw new Error('Download failed');
-        }
-        return;
-      }
-
-      const blob = await response.blob();
+      const blob = response.data;
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.style.display = 'none';

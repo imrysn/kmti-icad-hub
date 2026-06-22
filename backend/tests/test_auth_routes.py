@@ -45,7 +45,7 @@ class TestRegister:
         assert "already registered" in response.json()["detail"].lower()
 
     def test_register_short_username_rejected(self, client):
-        payload = {**self.VALID_PAYLOAD, "username": "ab"}  # < 3 chars
+        payload = {**self.VALID_PAYLOAD, "username": "a"}  # < 2 chars
         response = client.post(self.ENDPOINT, json=payload)
         assert response.status_code == 422  # Pydantic validation error
 

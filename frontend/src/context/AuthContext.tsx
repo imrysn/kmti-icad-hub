@@ -44,6 +44,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     checkAuth();
   }, []);
 
+  // Handle session expiration events from axios interceptors without full page reloads
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      console.warn('AuthProvider: session expired event received, logging out');
+      logout();
+    };
+    window.addEventListener('kmti-auth-expired', handleAuthExpired);
+    return () => {
+      window.removeEventListener('kmti-auth-expired', handleAuthExpired);
+    };
+  }, []);
+
   const login = async (credentials: LoginCredentials): Promise<void> => {
     setIsLoggingIn(true);
     setError(null);
@@ -74,6 +86,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('icad_chatbot_history');
     authService.logout();
     setUser(null);
+    window.location.hash = '#/login';
   };
 
   return (
