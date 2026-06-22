@@ -560,7 +560,7 @@ def download_master_file(
     # Prepend dynamic 'uploads' path if missing, since path from sync is relative to uploads directory
     base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
     full_path = task.master_file_path
-    if not os.path.isabs(full_path) and not full_path.startswith(base_upload_dir):
+    if not os.path.isabs(full_path) and not os.path.exists(full_path) and not full_path.startswith(base_upload_dir):
         if full_path.startswith("uploads/"):
             full_path = full_path.replace("uploads/", "", 1)
         elif full_path.startswith("uploads\\"):

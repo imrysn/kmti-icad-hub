@@ -17,7 +17,7 @@ const LightPillar: React.FC = () => {
         // Calculate dynamic dimensions for rotation coverage
         let diagonal = Math.sqrt(width * width + height * height);
 
-        const lineCount = 10;
+        const lineCount = 5;
         const speed = 0.002;
         let time = 0;
 
@@ -54,7 +54,8 @@ const LightPillar: React.FC = () => {
                 // Draw along the diagonal length (taller than screen height)
                 const limit = diagonal * 0.8;
 
-                for (let y = -limit; y < limit; y += 15) {
+                // Optimization: increase step from 15 to 50 to drastically reduce math ops (coarse step is smoothed by CSS blur anyway)
+                for (let y = -limit; y < limit; y += 50) {
                     const offset = Math.sin(y * this.frequency + time + this.phase) *
                         Math.sin(y * this.frequency * 0.5 + time * 1.5) *
                         this.amplitude;
@@ -94,8 +95,23 @@ const LightPillar: React.FC = () => {
             }
         };
 
-        const animate = () => {
+        // Frame rate throttling for RDP & low-end VM rendering environment stability (target 30fps)
+        let lastTime = 0;
+        const fpsLimit = 30;
+        const interval = 1000 / fpsLimit;
+
+        const animate = (timestamp: number) => {
             if (!ctx) return;
+
+            animationFrameId = requestAnimationFrame(animate);
+
+            if (!lastTime) lastTime = timestamp;
+            const elapsed = timestamp - lastTime;
+
+            if (elapsed < interval) return;
+
+            // Adjust lastTime to account for excess elapsed time
+            lastTime = timestamp - (elapsed % interval);
 
             // 1. Clear Canvas (Transparent)
             ctx.clearRect(0, 0, width, height);
@@ -120,13 +136,11 @@ const LightPillar: React.FC = () => {
             rays.forEach(ray => ray.draw());
 
             ctx.restore();
-
-            animationFrameId = requestAnimationFrame(animate);
         };
 
         window.addEventListener('resize', init);
         init();
-        animate();
+        requestAnimationFrame((t) => animate(t));
 
         return () => {
             window.removeEventListener('resize', init);

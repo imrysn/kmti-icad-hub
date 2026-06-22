@@ -92,15 +92,16 @@ authApi.interceptors.response.use(
         // Only redirect if NOT a login attempt AND not already on the login page.
         // This prevents failed logins from refreshing the page and clearing error messages.
         const isLoginRequest = error?.config?.url?.includes('login');
-        const isAtLoginRoot = window.location.pathname === '/' || window.location.pathname === '/login';
+        const isAtLoginRoot = window.location.hash === '#/' || window.location.hash.startsWith('#/login');
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
             console.warn('Authentication failure - clearing session and redirecting');
             sessionStorage.removeItem('access_token');
             sessionStorage.removeItem('user');
             
-            if (window.location.pathname !== '/' && window.location.pathname !== '/login') {
-                window.location.href = '/';
+            if (window.location.hash !== '#/' && !window.location.hash.startsWith('#/login')) {
+                window.location.hash = '#/login';
+                window.dispatchEvent(new CustomEvent('kmti-auth-expired'));
             }
         }
         return Promise.reject(error);
@@ -202,7 +203,6 @@ export const authService = {
         
         sessionStorage.removeItem('access_token');
         sessionStorage.removeItem('user');
-        window.location.href = '/login';
     },
 
     /**

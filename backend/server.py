@@ -193,7 +193,7 @@ if __name__ == "__main__":
         
         title_label = tk.Label(
             header_frame, 
-            text="KMTI TRAINING HUB STANDALONE SERVER", 
+            text="KMTI TRAINING HUB SERVER", 
             font=("Segoe UI", 14, "bold"), 
             bg="#1e293b", 
             fg="#38bdf8" # Sky 400
