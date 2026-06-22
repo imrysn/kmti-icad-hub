@@ -50,6 +50,7 @@
     "build": {
         "appId": "com.kmti.icad.hub",
         "productName": "KMTI Training Hub",
+        "icon": "src/assets/kmti-training-hub.png",
         "directories": {
             "output": "dist-electron"
         },
@@ -59,7 +60,7 @@
             "package.json"
         ],
         "win": {
-            "icon": "build/icon.ico",
+            "icon": "src/assets/kmti-training-hub.png",
             "target": "nsis"
         },
         "nsis": {

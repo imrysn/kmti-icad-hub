@@ -10,7 +10,19 @@ from pathlib import Path
 # Add backend to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from backend.database import engine, SQLALCHEMY_DATABASE_URL, USE_MYSQL
+from backend.database import engine, USE_MYSQL
+import os
+if USE_MYSQL:
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = os.getenv("DB_PORT", "3306")
+    DB_NAME = os.getenv("DB_NAME", "kmtihub")
+    DB_USER = os.getenv("DB_USER", "root")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+    SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+else:
+    from backend.database import SQLITE_URL
+    SQLALCHEMY_DATABASE_URL = SQLITE_URL
+
 from backend.models import Base
 
 def test_connection():

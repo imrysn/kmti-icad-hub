@@ -11,7 +11,8 @@ import { http, HttpResponse } from 'msw';
 import { server } from '../../test/mocks/server';
 import { assessmentService } from '../assessmentService';
 
-const API = 'http://127.0.0.1:3001';
+const API_BASE = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || 'http://127.0.0.1:3001';
+const API = API_BASE.replace(/\/$/, '');
 
 beforeEach(() => {
   sessionStorage.setItem('access_token', 'mock.jwt.token');

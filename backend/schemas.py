@@ -356,3 +356,23 @@ class NotificationResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
+class ImagePayload(BaseModel):
+    data: str
+    mime: str
+
+class ChatRequest(BaseModel):
+    message: str
+    images: Optional[List[ImagePayload]] = None
+
+    @field_validator("images")
+    @classmethod
+    def limit_images(cls, v: Optional[List[ImagePayload]]) -> Optional[List[ImagePayload]]:
+        if v and len(v) > 3:
+            raise ValueError("Cannot upload more than 3 images")
+        return v
+
