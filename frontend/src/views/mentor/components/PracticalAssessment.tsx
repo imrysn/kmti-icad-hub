@@ -1187,8 +1187,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 </>
                                                                             ) : (
                                                                                 <div className="feedback-message empty">
-                                                                                    {latestSubmission?.status === 'pending' ? <Clock size={14} /> : <FileText size={14} />}
-                                                                                    <span>{latestSubmission?.status === 'pending' ? 'Waiting for trainer review' : 'No feedback yet'}</span>
+                                                                                    {latestSubmission ? <Clock size={14} /> : <FileText size={14} />}
+                                                                                    <span>{latestSubmission ? 'Waiting for trainer review' : 'No feedback yet'}</span>
                                                                                 </div>
                                                                             )}
                                                                         </div>

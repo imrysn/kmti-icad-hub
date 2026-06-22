@@ -291,7 +291,7 @@ def get_course_progress(
     ]
 
 @router.post("/submit-quiz")
-def submit_quiz_score(
+async def submit_quiz_score(
     submission: QuizSubmission,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -358,14 +358,14 @@ def submit_quiz_score(
                 )
                 db.add(attempt)
             db.commit()
-
+ 
     # Dispatch Trainer progress updates
     if is_new_pass:
         try:
             quiz = db.query(Quiz).filter(Quiz.slug == submission.lesson_id).first()
             quiz_title = quiz.title if quiz else submission.lesson_id
             course_name = "3D Modeling" if submission.course_id == "1" else "2D Drawing" if submission.course_id == "2" else "Curriculum"
-
+ 
             mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
             if mapping:
                 # 1. Save and dispatch lesson completion
@@ -378,9 +378,8 @@ def submit_quiz_score(
                 )
                 db.add(new_notif)
                 db.commit()
-
-                import asyncio
-                asyncio.create_task(notification_manager.send_personal_message(
+ 
+                await notification_manager.send_personal_message(
                     {
                         "event": "TRAINEE_PROGRESS",
                         "trainee_name": current_user.full_name or current_user.username,
@@ -390,8 +389,8 @@ def submit_quiz_score(
                         "message": msg
                     },
                     mapping.trainer_id
-                ))
-
+                )
+ 
                 # 2. Check and dispatch course completion
                 if quiz:
                     total_quizzes = db.query(Quiz).filter(Quiz.course_type == quiz.course_type).count()
@@ -400,7 +399,7 @@ def submit_quiz_score(
                         QuizScore.course_id == submission.course_id,
                         QuizScore.score >= 80.0
                     ).count()
-
+ 
                     if passed_quizzes >= total_quizzes and total_quizzes > 0:
                         course_msg = f"Trainee {current_user.full_name or current_user.username} completed the ENTIRE {course_name} Course!"
                         course_notif = Notification(
@@ -411,8 +410,8 @@ def submit_quiz_score(
                         )
                         db.add(course_notif)
                         db.commit()
-
-                        asyncio.create_task(notification_manager.send_personal_message(
+ 
+                        await notification_manager.send_personal_message(
                             {
                                 "event": "TRAINEE_COURSE_COMPLETED",
                                 "trainee_name": current_user.full_name or current_user.username,
@@ -421,7 +420,7 @@ def submit_quiz_score(
                                 "message": course_msg
                             },
                             mapping.trainer_id
-                        ))
+                        )
         except Exception as e:
             print(f"Error triggering progress notifications: {e}")
     

@@ -28,6 +28,44 @@ from ..services.progress_service import calculate_all_trainee_progress
 
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
+def resolve_master_path(master_file_path: str) -> str:
+    if not master_file_path:
+        return ""
+    
+    # If it's already an absolute path and exists, use it
+    if os.path.isabs(master_file_path) and os.path.exists(master_file_path):
+        return master_file_path
+        
+    base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
+    
+    # Clean relative path prefix
+    rel_path = master_file_path
+    if rel_path.startswith("uploads/"):
+        rel_path = rel_path.replace("uploads/", "", 1)
+    elif rel_path.startswith("uploads\\"):
+        rel_path = rel_path.replace("uploads\\", "", 1)
+        
+    # Build standard full path
+    full_path = os.path.join(base_upload_dir, rel_path)
+    
+    # Check if standard path exists
+    if os.path.exists(full_path):
+        return full_path
+        
+    # If not found, try correcting Units & Tasks <-> Unts & Tasks spelling mismatch
+    if "Units & Tasks" in rel_path:
+        alt_rel_path = rel_path.replace("Units & Tasks", "Unts & Tasks")
+        alt_path = os.path.join(base_upload_dir, alt_rel_path)
+        if os.path.exists(alt_path):
+            return alt_path
+    elif "Unts & Tasks" in rel_path:
+        alt_rel_path = rel_path.replace("Unts & Tasks", "Units & Tasks")
+        alt_path = os.path.join(base_upload_dir, alt_rel_path)
+        if os.path.exists(alt_path):
+            return alt_path
+            
+    return full_path
+
 # --- Trainee Endpoints ---
 
 @router.get("/tasks", response_model=List[AssessmentTaskResponse])
@@ -420,7 +458,7 @@ def get_task_file_tree(
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
         
-    master_path = task.master_file_path
+    master_path = resolve_master_path(task.master_file_path)
     if not master_path or not os.path.exists(master_path):
         return {"tree": []}
         
@@ -463,7 +501,8 @@ def create_task_subfolder(
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
         
-    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    master_path = resolve_master_path(task.master_file_path)
+    base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
     
     # Secure path boundary check
     new_dir = get_safe_path(base_dir, req.path)
@@ -486,7 +525,8 @@ async def upload_task_file(
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
         
-    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    master_path = resolve_master_path(task.master_file_path)
+    base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
     
     # Secure path boundary check
     target_dir = get_safe_path(base_dir, path if path and path != "/" else "")
@@ -514,7 +554,8 @@ def delete_task_file(
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
         
-    base_dir = task.master_file_path if os.path.isdir(task.master_file_path) else os.path.dirname(task.master_file_path)
+    master_path = resolve_master_path(task.master_file_path)
+    base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
     
     # Secure path boundary check
     target_path = get_safe_path(base_dir, req.path)
@@ -557,15 +598,7 @@ def download_master_file(
     if not task or not task.master_file_path:
         raise HTTPException(status_code=404, detail="Master file not found")
     
-    # Prepend dynamic 'uploads' path if missing, since path from sync is relative to uploads directory
-    base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
-    full_path = task.master_file_path
-    if not os.path.isabs(full_path) and not os.path.exists(full_path) and not full_path.startswith(base_upload_dir):
-        if full_path.startswith("uploads/"):
-            full_path = full_path.replace("uploads/", "", 1)
-        elif full_path.startswith("uploads\\"):
-            full_path = full_path.replace("uploads\\", "", 1)
-        full_path = os.path.join(base_upload_dir, full_path)
+    full_path = resolve_master_path(task.master_file_path)
         
     if not os.path.exists(full_path):
         raise HTTPException(status_code=404, detail="File does not exist on server")
@@ -719,7 +752,7 @@ def get_trainee_set_mappings(
     return db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee_id).all()
 
 @router.post("/trainer/trainees/{trainee_id}/set-mappings")
-def update_trainee_set_mappings(
+async def update_trainee_set_mappings(
     trainee_id: int,
     mappings: List[TraineeSetMappingCreate] = Body(...),
     assessment_type: str = "3D",
@@ -755,16 +788,15 @@ def update_trainee_set_mappings(
     db.add(db_notification)
     db.commit()
     
-    import asyncio
     from ..websocket_manager import notification_manager
     try:
-        asyncio.create_task(notification_manager.send_personal_message(
+        await notification_manager.send_personal_message(
             {
                 "event": "ASSESSMENT_UNLOCKED",
                 "message": "A new assessment set has been unlocked by your trainer."
             },
             trainee_id
-        ))
+        )
     except Exception as e:
         print(f"Error sending WebSocket message: {e}")
     

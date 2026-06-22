@@ -150,7 +150,26 @@ export const BroadcastBanner: React.FC = () => {
     useEffect(() => {
         fetchBroadcasts();
         const interval = setInterval(fetchBroadcasts, 60000);
-        return () => clearInterval(interval);
+        
+        const handleLocalBroadcast = (e: CustomEvent) => {
+            if (e.detail) {
+                const newBroadcast: Broadcast = {
+                    id: Date.now(),
+                    message: e.detail.message || 'Test Broadcast',
+                    level: e.detail.level || 'info',
+                    sender_name: e.detail.sender_name || 'Test Administrator',
+                    created_at: new Date().toISOString()
+                };
+                setBroadcasts(prev => [newBroadcast, ...prev]);
+            }
+        };
+        
+        window.addEventListener('kmti-test-broadcast', handleLocalBroadcast as EventListener);
+        
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('kmti-test-broadcast', handleLocalBroadcast as EventListener);
+        };
     }, []);
 
     const dismiss = (id: number) => {
