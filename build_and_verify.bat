@@ -51,6 +51,7 @@ node build-all.js
 if %ERRORLEVEL% neq 0 (
     echo.
     echo ERROR: Build orchestration failed.
+    
     pause
     exit /b 1
 )

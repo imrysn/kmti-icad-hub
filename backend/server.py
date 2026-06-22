@@ -140,7 +140,7 @@ if __name__ == "__main__":
         import tkinter as tk
         from tkinter import scrolledtext
         
-        # Redirection helper to capture print outputs to GUI console safely via thread-safe queue
+        # Redirection helper to capture print outputs to GUI console safely via thread-safe queuec
         log_queue = queue.Queue()
 
         class TextRedirector:
@@ -149,7 +149,7 @@ if __name__ == "__main__":
                 self.msg_queue = msg_queue
 
             def write(self, string):
-                self.msg_queue.put(string)
+                self.msg_queue.put(string)c
                 if sys.__stdout__ is not None:
                     sys.__stdout__.write(string)
 

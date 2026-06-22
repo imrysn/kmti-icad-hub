@@ -8,7 +8,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 from fastapi.responses import FileResponse
-from ..database import get_db
+from ..database import get_db, APP_PATH
 from sqlalchemy.orm import joinedload
 from ..models import AssessmentTask, AssessmentSubmission, AssessmentFeedback, TrainerTraineeMapping, User, Notification, TraineeSetMapping, UserActivity
 from ..schemas import (
@@ -36,7 +36,7 @@ def resolve_master_path(master_file_path: str) -> str:
     if os.path.isabs(master_file_path) and os.path.exists(master_file_path):
         return master_file_path
         
-    base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
+    base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
     
     # Clean relative path prefix
     rel_path = master_file_path
@@ -52,14 +52,14 @@ def resolve_master_path(master_file_path: str) -> str:
     if os.path.exists(full_path):
         return full_path
         
-    # If not found, try correcting Units & Tasks <-> Unts & Tasks spelling mismatch
+    # If not found, try correcting Units & Tasks <-> Units & Tasks spelling mismatch
     if "Units & Tasks" in rel_path:
-        alt_rel_path = rel_path.replace("Units & Tasks", "Unts & Tasks")
+        alt_rel_path = rel_path.replace("Units & Tasks", "Units & Tasks")
         alt_path = os.path.join(base_upload_dir, alt_rel_path)
         if os.path.exists(alt_path):
             return alt_path
-    elif "Unts & Tasks" in rel_path:
-        alt_rel_path = rel_path.replace("Unts & Tasks", "Units & Tasks")
+    elif "Units & Tasks" in rel_path:
+        alt_rel_path = rel_path.replace("Units & Tasks", "Units & Tasks")
         alt_path = os.path.join(base_upload_dir, alt_rel_path)
         if os.path.exists(alt_path):
             return alt_path
@@ -626,7 +626,7 @@ async def submit_task(
     # Define upload directory mirroring the master structure
     # e.g., master path: "Units & Tasks/4th Set Parts And Assembly/2655RCGR/Parts/part.dwg"
     master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""
-    base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
+    base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
     upload_dir = os.path.join(base_upload_dir, "submissions", str(current_user.id), master_dir)
     os.makedirs(upload_dir, exist_ok=True)
     
@@ -879,7 +879,7 @@ async def provide_feedback(
     
     file_path = None
     if file:
-        base_upload_dir = os.getenv("UPLOAD_DIR", "uploads")
+        base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
         feedback_dir = os.path.join(base_upload_dir, "feedback", str(submission.user_id))
         os.makedirs(feedback_dir, exist_ok=True)
         safe_fb_filename = os.path.basename(file.filename) if file.filename else "feedback"

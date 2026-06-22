@@ -31,6 +31,7 @@ vi.mock('../../assets/kmti_logo.png', () => ({ default: 'logo.png' }));
 
 // ── Mock AuthContext (useAuth hook) ───────────────────────────────
 
+
 const mockLogin = vi.fn();
 const mockNavigate = vi.fn();
 
