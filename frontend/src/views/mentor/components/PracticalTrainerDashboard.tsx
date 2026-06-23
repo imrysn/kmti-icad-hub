@@ -154,40 +154,74 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
     const handleOpenNextSet = async (traineeId: number, currentSetNum: number, notifId?: number) => {
         try {
-            const nextSetNum = currentSetNum + 1;
             const res = await api.get(`/api/v1/assessments/trainer/trainees/${traineeId}/set-mappings`);
             const currentMappings = res.data;
+            const activeCourseMappings = currentMappings.filter((m: any) => (m.assessment_type || '3D') === activeType);
 
-            const existingMapping = currentMappings.find((m: any) => m.actual_set_number === nextSetNum);
-            let newMappings;
+            let newMappingsForActiveType = [...activeCourseMappings];
 
-            if (existingMapping) {
-                if (existingMapping.display_set_number < 0) {
-                    showNotification(`Set ${nextSetNum} is already open.`, 'info');
-                    if (notifId) handleDeleteNotification(notifId);
-                    return;
-                }
-                // Update display_set_number to be negative (explicitly unlocked)
-                newMappings = currentMappings.map((m: any) =>
-                    m.actual_set_number === nextSetNum
-                        ? { ...m, display_set_number: -Math.abs(m.display_set_number) }
-                        : m
-                );
+            if (currentMappings.length === 0) {
+                // Trainee was on default progression. We map both Set 1 (standard) and Set 2 (unlocked/negative).
+                const nextSetNum = currentSetNum + 1;
+                newMappingsForActiveType = [
+                    { actual_set_number: 1, display_set_number: 1, assessment_type: activeType },
+                    { actual_set_number: nextSetNum, display_set_number: -nextSetNum, assessment_type: activeType }
+                ];
+                await assessmentService.updateTraineeSetMapping(traineeId, newMappingsForActiveType, activeType);
+                showNotification(`Set ${nextSetNum} opened for trainee!`, 'success');
             } else {
-                if (currentMappings.length === 0) {
-                    // Trainee was on default progression. We map both Set 1 (standard) and Set 2 (unlocked/negative).
-                    newMappings = [
-                        { actual_set_number: 1, display_set_number: 1 },
-                        { actual_set_number: nextSetNum, display_set_number: -nextSetNum }
-                    ];
+                const currentMap = activeCourseMappings.find((m: any) => m.actual_set_number === currentSetNum);
+
+                if (currentMap) {
+                    activeCourseMappings.sort((a: any, b: any) => Math.abs(a.display_set_number) - Math.abs(b.display_set_number));
+                    const nextIndex = activeCourseMappings.findIndex((m: any) => Math.abs(m.display_set_number) > Math.abs(currentMap.display_set_number));
+
+                    if (nextIndex !== -1) {
+                        const nextMap = activeCourseMappings[nextIndex];
+                        if (nextMap.display_set_number < 0) {
+                            showNotification(`Set ${Math.abs(nextMap.display_set_number)} is already open.`, 'info');
+                        } else {
+                            newMappingsForActiveType = activeCourseMappings.map((m: any) =>
+                                m.actual_set_number === nextMap.actual_set_number
+                                    ? { ...m, display_set_number: -Math.abs(m.display_set_number) }
+                                    : m
+                            );
+                            await assessmentService.updateTraineeSetMapping(traineeId, newMappingsForActiveType, activeType);
+                            showNotification(`Set ${Math.abs(nextMap.display_set_number)} opened for trainee!`, 'success');
+                        }
+                    } else {
+                        // Reached end of current activeType. Let's try to open next course if activeType is 3D
+                        if (activeType === '3D') {
+                            const nextCourseMappings = currentMappings.filter((m: any) => m.assessment_type === '2D');
+                            if (nextCourseMappings.length > 0) {
+                                nextCourseMappings.sort((a: any, b: any) => Math.abs(a.display_set_number) - Math.abs(b.display_set_number));
+                                const firstNextCourseMap = nextCourseMappings[0];
+                                if (firstNextCourseMap.display_set_number > 0) {
+                                    const newNextCourseMappings = nextCourseMappings.map((m: any) => 
+                                        m.actual_set_number === firstNextCourseMap.actual_set_number
+                                            ? { ...m, display_set_number: -Math.abs(m.display_set_number) }
+                                            : m
+                                    );
+                                    await assessmentService.updateTraineeSetMapping(traineeId, newNextCourseMappings, '2D');
+                                    showNotification(`Completed 3D course! Unlocked 2D Set ${Math.abs(firstNextCourseMap.display_set_number)}.`, 'success');
+                                } else {
+                                    showNotification(`Completed 3D course! 2D course is already unlocked.`, 'info');
+                                }
+                            } else {
+                                showNotification(`Completed 3D course! No 2D sets configured.`, 'info');
+                            }
+                        } else {
+                            showNotification(`No more sets configured for this trainee!`, 'info');
+                        }
+                    }
                 } else {
-                    const maxDisplay = Math.max(...currentMappings.map((m: any) => Math.abs(m.display_set_number)));
-                    newMappings = [...currentMappings, { actual_set_number: nextSetNum, display_set_number: -(maxDisplay + 1) }];
+                    const nextSetNum = currentSetNum + 1;
+                    const maxDisplay = activeCourseMappings.length > 0 ? Math.max(...activeCourseMappings.map((m: any) => Math.abs(m.display_set_number))) : 0;
+                    newMappingsForActiveType = [...activeCourseMappings, { actual_set_number: nextSetNum, display_set_number: -(maxDisplay + 1), assessment_type: activeType }];
+                    await assessmentService.updateTraineeSetMapping(traineeId, newMappingsForActiveType, activeType);
+                    showNotification(`Set ${nextSetNum} opened for trainee!`, 'success');
                 }
             }
-
-            await assessmentService.updateTraineeSetMapping(traineeId, newMappings, activeType);
-            showNotification(`Set ${nextSetNum} opened for trainee!`, 'success');
 
             if (notifId) handleDeleteNotification(notifId);
         } catch (error) {
@@ -740,7 +774,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         });
                                                     })
                                                     .map((setNum, index) => {
-                                                        const displaySetNum = index + 1;
+                                                        const displaySetNum = setNum;
                                                         const setKey = `${traineeId}-${setNum}`;
                                                         const isSetExpanded = expandedSets.includes(setKey);
 

@@ -32,12 +32,24 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
     });
 
     // Derive active type sets and tasks dynamically
-    const activeTasks = activeType === '3D'
-        ? tasks.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7))
-        : tasks.filter(t => t.assessment_type === '2D' || t.set_number >= 100).map(t => t.set_number >= 100 ? { ...t, set_number: t.set_number - 100 } : t);
+    const activeTasks = (activeType === '3D'
+        ? tasks.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && Number(t.set_number) >= 4 && Number(t.set_number) <= 7))
+        : tasks.filter(t => t.assessment_type === '2D' || Number(t.set_number) >= 100)).map(t => {
+            const rawSetNum = Number(t.set_number);
+            return {
+                ...t,
+                set_number: (activeType === '2D' && rawSetNum >= 100) ? rawSetNum - 100 : rawSetNum
+            };
+        });
     const dbSets = activeTasks.map(t => t.set_number);
     const defaultSets = activeType === '2D' ? [4, 5, 6, 7] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const availableSets = Array.from(new Set([...defaultSets, ...dbSets])).sort((a, b) => a - b);
+    
+    // Ensure all currently mapped sets are available so they can be removed if needed
+    const mappedSets = Object.values(mappings).flatMap(traineeMappings => 
+        traineeMappings.filter(m => (m.assessment_type || '3D') === activeType).map(m => Number(m.actual_set_number))
+    );
+    
+    const availableSets = Array.from(new Set([...defaultSets, ...dbSets, ...mappedSets])).sort((a, b) => a - b);
 
     const getSetDisplayName = (setNum: number) => {
         const targetType = (activeType === '3D' && setNum >= 4 && setNum <= 7) ? '2D' : activeType;

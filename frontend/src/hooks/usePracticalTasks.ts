@@ -8,7 +8,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   const { showNotification } = useNotification();
   const [tasks, setTasks] = useState<AssessmentTask[]>([]);
   const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
-  const [mySetMappings, setMySetMappings] = useState<{actual_set_number: number, display_set_number: number}[]>([]);
+  const [mySetMappings, setMySetMappings] = useState<{ actual_set_number: number, display_set_number: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeSet, setActiveSet] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,16 +25,19 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
         assessmentService.getMySubmissions(),
         assessmentService.getMySetMappings().catch(() => [])
       ]);
-      
-      let processedTasks = tasksData;
+
+      let processedTasks = tasksData.map(t => ({
+        ...t,
+        set_number: Number(t.set_number)
+      }));
       if (assessmentType === '2D') {
-        processedTasks = tasksData
+        processedTasks = processedTasks
           .filter(t => t.assessment_type === '2D' || t.set_number >= 100)
           .map(t => ({ ...t, set_number: t.set_number >= 100 ? t.set_number - 100 : t.set_number }));
       } else {
-        processedTasks = tasksData.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7));
+        processedTasks = processedTasks.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7));
       }
-      
+
       setTasks(processedTasks);
       setSubmissions(submissionsData);
       setMySetMappings(mappingsData);
@@ -47,15 +50,15 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
 
   useEffect(() => {
     fetchData();
-    
+
     // Polling for updates every 60 seconds (silent background refresh)
     const pollInterval = setInterval(() => fetchData(true), 60000);
-    
+
     const handleRefresh = () => {
       fetchData(true);
     };
     window.addEventListener('kmti-refresh-my-submissions', handleRefresh);
-    
+
     return () => {
       clearInterval(pollInterval);
       window.removeEventListener('kmti-refresh-my-submissions', handleRefresh);
@@ -66,7 +69,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
       try {
         const url = assessmentService.getDownloadUrl(task.id);
-        const originalFilename = task.master_file_path 
+        const originalFilename = task.master_file_path
           ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
           : `Set${task.set_number}_${task.task_code}_Master.dwg`;
         const token = authService.getToken();
@@ -96,7 +99,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
-      const originalFilename = task.master_file_path 
+      const originalFilename = task.master_file_path
         ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
         : `Set${task.set_number}_${task.task_code}_Master.dwg`;
       a.download = originalFilename;
@@ -206,8 +209,8 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
       fetchData(true);
     } catch (err: any) {
       const errorData = err.response?.data?.detail;
-      const errorMsg = Array.isArray(errorData) 
-        ? errorData[0].msg 
+      const errorMsg = Array.isArray(errorData)
+        ? errorData[0].msg
         : (typeof errorData === 'string' ? errorData : 'Failed to send reply.');
       showNotification(errorMsg, 'error');
     }

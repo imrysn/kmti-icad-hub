@@ -104,8 +104,6 @@ def get_assessment_tasks(
             
             if has_mappings_of_type:
                 if t.set_number in m_dict:
-                    db.expunge(t)
-                    t.set_number = m_dict[t.set_number]
                     filtered_tasks.append(t)
             else:
                 filtered_tasks.append(t)

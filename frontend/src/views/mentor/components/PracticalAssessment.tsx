@@ -79,17 +79,29 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     const [trashModalOpen, setTrashModalOpen] = useState(false);
 
+    const getSetDisplayNumber = useCallback((s: number): number => {
+        if (mySetMappings && mySetMappings.length > 0) {
+            const mapping = mySetMappings.find((m: any) => Number(m.actual_set_number) === s && (m.assessment_type || '3D') === assessmentType);
+            if (mapping) {
+                return Math.abs(mapping.display_set_number);
+            }
+        }
+        return s;
+    }, [mySetMappings, assessmentType]);
+
     // Get dynamic display name for a set from tasks, fallback to ordinal label
     const getSetDisplayName = useCallback((s: number): string => {
+        const displayNum = getSetDisplayNumber(s);
+
         const setTask = tasks.find(t => t.set_number === s && t.set_name);
         if (setTask && setTask.set_name) {
             return setTask.set_name;
         }
         const ordinals = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
-        const prefix = ordinals[s - 1] || `${s}th`;
-        const suffix = s <= 3 ? 'Set Parts' : 'Set Parts and Assembly';
+        const prefix = ordinals[displayNum - 1] || `${displayNum}th`;
+        const suffix = displayNum <= 3 ? 'Set Parts' : 'Set Parts and Assembly';
         return `${prefix} ${suffix}`;
-    }, [tasks]);
+    }, [tasks, getSetDisplayNumber]);
 
     // Auto-select correct Set from URL parameter
     useEffect(() => {
@@ -184,8 +196,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     const isSetLocked = useCallback((s: number) => {
         // If trainee has custom set mappings from the trainer
         if (mySetMappings && mySetMappings.length > 0) {
-            // Find if this display set is mapped (comparing absolute value)
-            const mapping = mySetMappings.find((m: any) => Math.abs(m.display_set_number) === s);
+            const activeCourseMappings = mySetMappings.filter((m: any) => (m.assessment_type || '3D') === assessmentType);
+            const mapping = activeCourseMappings.find((m: any) => Number(m.actual_set_number) === s);
             if (!mapping) return true; // If not mapped, it's locked/hidden
 
             // If trainer explicitly unlocked this set (indicated by a negative display_set_number)
@@ -194,21 +206,25 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             }
 
             // Find the minimum display set number in mappings (using absolute values)
-            const displaySetNums = mySetMappings.map((m: any) => Math.abs(m.display_set_number)).sort((a, b) => a - b);
+            const displaySetNums = activeCourseMappings.map((m: any) => Math.abs(m.display_set_number)).sort((a, b) => a - b);
             const minDisplaySet = displaySetNums[0];
 
-            if (s === minDisplaySet) {
+            if (Math.abs(mapping.display_set_number) === minDisplaySet) {
                 if (assessmentType === '3D') {
                     return !is3DCompleted;
                 }
                 return false; // For 2D, first set is unlocked
             }
 
-            // Find the display set immediately preceding `s` in the mappings
-            const prevDisplaySet = displaySetNums.filter(num => num < s).pop();
+            // Find the display set immediately preceding `s` in the mappings sequence
+            const prevDisplaySet = displaySetNums.filter(num => num < Math.abs(mapping.display_set_number)).pop();
             if (!prevDisplaySet) return true;
 
-            const prevSetTasks = tasks.filter(t => t.set_number === prevDisplaySet);
+            const prevMapping = activeCourseMappings.find((m: any) => Math.abs(m.display_set_number) === prevDisplaySet);
+            if (!prevMapping) return true;
+
+            const prevActualSet = Number(prevMapping.actual_set_number);
+            const prevSetTasks = tasks.filter(t => t.set_number === prevActualSet);
             const prevCompleted = prevSetTasks.length > 0 && prevSetTasks.every(t =>
                 submissions.some(sub => sub.task_id === t.id && sub.status === 'approved' && (sub.assessment_type || '3D') === assessmentType)
             );
@@ -248,6 +264,20 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     }, [activeSet, isSetLocked]);
 
     const sets = useMemo(() => {
+        if (mySetMappings && mySetMappings.length > 0) {
+            const activeCourseMappings = mySetMappings.filter((m: any) => (m.assessment_type || '3D') === assessmentType);
+            if (activeCourseMappings.length > 0) {
+                const mappedSetNums = activeCourseMappings
+                    .map((m: any) => Number(m.actual_set_number))
+                    .sort((a: number, b: number) => {
+                        const mapA = activeCourseMappings.find((m: any) => Number(m.actual_set_number) === a);
+                        const mapB = activeCourseMappings.find((m: any) => Number(m.actual_set_number) === b);
+                        return Math.abs(mapA.display_set_number) - Math.abs(mapB.display_set_number);
+                    });
+                return Array.from(new Set(mappedSetNums));
+            }
+        }
+
         const uniqueSets = Array.from(new Set(tasks.map(t => t.set_number))).sort((a, b) => a - b);
         
         if (uniqueSets.length === 0) {
@@ -262,7 +292,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         }
 
         return uniqueSets;
-    }, [tasks, assessmentType]);
+    }, [tasks, assessmentType, mySetMappings]);
         
     useEffect(() => {
         if (sets.length > 0 && !sets.includes(activeSet)) {
@@ -311,7 +341,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                     }}
                                 >
                                     <span className="sidebar-set-indicator">
-                                        {isLocked ? <Lock size={14} /> : isCompleted ? <CheckCircle2 size={14} /> : <span className="set-number-badge">{s}</span>}
+                                        {isLocked ? <Lock size={14} /> : isCompleted ? <CheckCircle2 size={14} /> : <span className="set-number-badge">{getSetDisplayNumber(s)}</span>}
                                     </span>
                                     <span className="sidebar-set-label">{getSetDisplayName(s)}</span>
                                     <span className="sidebar-set-task-count">{setTasks.length} tasks</span>
