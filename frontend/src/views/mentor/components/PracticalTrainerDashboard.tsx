@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2, Unlock, Box, PenTool } from 'lucide-react';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
@@ -534,18 +534,21 @@ export const PracticalTrainerDashboard: React.FC = () => {
         setExpandedSets(prev => prev.includes(key) ? [] : [key]);
     };
 
+    const hasAutoExpanded = useRef(false);
+
     useEffect(() => {
         // Only run default expand if there are no deep-link parameters in URL
         const params = new URLSearchParams(location.search);
         if (params.get('traineeId')) return;
 
-        if (Object.keys(grouped).length > 0 && expandedTrainees.length === 0) {
+        if (Object.keys(grouped).length > 0 && expandedTrainees.length === 0 && !hasAutoExpanded.current) {
             const firstTraineeId = Number(Object.keys(grouped)[0]);
             setExpandedTrainees([firstTraineeId]);
             const firstSet = Object.keys(grouped[firstTraineeId].sets)[0];
             if (firstSet) {
                 setExpandedSets([`${firstTraineeId}-${firstSet}`]);
             }
+            hasAutoExpanded.current = true;
         }
     }, [grouped, expandedTrainees.length, location.search]);
 
@@ -566,8 +569,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
     }
 
     return (
-        <div className="practical-trainer-wrapper" style={{ display: 'flex', height: '100%', width: '100%', overflow: 'hidden' }}>
-            <div className="trainer-dashboard animate-fade-in">
+        <div className="practical-trainer-wrapper" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, height: '100%', width: '100%', overflow: 'hidden' }}>
+            <div className="trainer-dashboard animate-fade-in" style={{ flex: 1, minHeight: 0 }}>
                 <div className="dashboard-sub-header">
                     {!isAdmin && (
                         <div className="sub-header-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
