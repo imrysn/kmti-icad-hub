@@ -28,6 +28,8 @@ python -m PyInstaller --onefile --noconsole ^
     --name KMTI_iCAD_Server ^
     --icon=kmti_logo.ico ^
     --add-data="kmti_logo.ico;." ^
+    --distpath=dist ^
+    --workpath=build ^
     --hidden-import=uvicorn.logging ^
     --hidden-import=uvicorn.loops ^
     --hidden-import=uvicorn.loops.auto ^

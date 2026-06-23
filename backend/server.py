@@ -149,7 +149,7 @@ if __name__ == "__main__":
                 self.msg_queue = msg_queue
 
             def write(self, string):
-                self.msg_queue.put(string)c
+                self.msg_queue.put(string)
                 if sys.__stdout__ is not None:
                     sys.__stdout__.write(string)
 
