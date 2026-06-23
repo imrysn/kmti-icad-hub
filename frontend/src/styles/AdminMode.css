@@ -1128,12 +1128,30 @@
   margin-top: 0.5rem;
   padding: 0.2rem 0.5rem;
   background: var(--color-accent);
-  color: white;
+  color: rgb(255, 255, 255);
   border-radius: var(--radius-sm);
   font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+[data-theme='light'] .road-map .history-item {
+  background: transparent;
+}
+
+[data-theme='light'] .road-map .item-v-line {
+  background: var(--border-color);
+}
+
+[data-theme='light'] .road-map .icon-circle {
+  background: var(--bg-surface);
+  border-color: var(--primary);
+}
+
+[data-theme='light'] .achievement-pill {
+  background: var(--color-primary-glow);
+  color: var(--primary);
 }
 
 .matrix-section {

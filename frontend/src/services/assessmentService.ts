@@ -46,7 +46,8 @@ export const assessmentService = {
 
     getMasterFileBlob: async (taskId: number): Promise<Blob> => {
         const response = await api.get(`/api/v1/assessments/tasks/${taskId}/download`, {
-            responseType: 'blob'
+            responseType: 'blob',
+            timeout: 120000  // 2 minutes – large CAD files can be slow
         });
         return response.data;
     },

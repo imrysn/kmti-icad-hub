@@ -843,8 +843,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                         <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#f8fafc', fontWeight: 600 }}>{unitName}</h3>
                                                         <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem' }}>{unitTasks.length} Files</span>
                                                         <button
+                                                            type="button"
                                                             className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
-                                                            onClick={() => handleBulkDownload(sortedUnitTasks)}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                                handleBulkDownload(sortedUnitTasks);
+                                                            }}
                                                             disabled={isBulkDownloading}
                                                             title="Download All Unit Files"
                                                             style={{ marginLeft: '0.5rem', padding: '0.4rem 0.8rem' }}
@@ -925,10 +930,18 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                         <div className="task-row-actions">
                                                                             {!task.is_virtual_extra && (
                                                                                 <>
-                                                                                    <button className="task-action-btn primary" onClick={() => handleOpenInIJCAD(task)}>
+                                                                                    <button type="button" className="task-action-btn primary" onClick={(e) => {
+                                                                                        e.preventDefault();
+                                                                                        e.stopPropagation();
+                                                                                        handleOpenInIJCAD(task);
+                                                                                    }}>
                                                                                         <Play size={14} /> Open in iJCAD
                                                                                     </button>
-                                                                                    <button className="task-action-btn secondary" onClick={() => handleDownloadTask(task)}>
+                                                                                    <button type="button" className="task-action-btn secondary" onClick={(e) => {
+                                                                                        e.preventDefault();
+                                                                                        e.stopPropagation();
+                                                                                        handleDownloadTask(task);
+                                                                                    }}>
                                                                                         <Download size={14} /> Download
                                                                                     </button>
                                                                                 </>

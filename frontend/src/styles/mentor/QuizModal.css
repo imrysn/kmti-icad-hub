@@ -137,7 +137,8 @@
 /* Content Layout */
 .quiz-modal-content {
   flex: 1;
-  min-height: 0; /* Critical for flex child scrolling */
+  min-height: 0;
+  /* Critical for flex child scrolling */
   padding: 0 3rem 2.5rem;
   overflow-y: auto;
   overflow-x: hidden;
@@ -164,7 +165,8 @@
 
 .quiz-progress-segments {
   display: grid;
-  grid-template-columns: repeat(10, 1fr); /* Default for 10 questions */
+  grid-template-columns: repeat(10, 1fr);
+  /* Default for 10 questions */
   gap: 0.5rem;
   height: 10px;
   width: 100%;
@@ -173,7 +175,8 @@
 .progress-segment {
   height: 100%;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05); /* Pending */
+  background: rgba(255, 255, 255, 0.05);
+  /* Pending */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -195,7 +198,10 @@
 .progress-segment.active::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: shimmer 1.5s infinite;
 }
@@ -222,7 +228,7 @@
   flex-direction: column;
   gap: 2rem;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   padding: 2.5rem;
   height: auto;
@@ -269,7 +275,8 @@
   padding: 1.15rem 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Explicitly align left */
+  justify-content: flex-start;
+  /* Explicitly align left */
   gap: 1.25rem;
   text-align: left;
   cursor: pointer;
@@ -277,11 +284,16 @@
   width: 100%;
   font-family: inherit;
   color: inherit;
+  height: auto;
+  min-height: min-content;
 }
 
 .option-text {
   font-size: 0.85rem;
   line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+  flex: 1;
 }
 
 [data-theme='light'] .quiz-option-btn {
@@ -423,7 +435,8 @@
 }
 
 .quiz-next-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #4f46e5, #4338ca); /* Darker indigo for hover */
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  /* Darker indigo for hover */
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(79, 70, 229, 0.4);
 }
@@ -622,10 +635,12 @@
 .quiz-content-frame {
   position: relative;
   width: 100%;
-  overflow: hidden; /* Hide the sliding questions */
+  overflow: hidden;
+  /* Hide the sliding questions */
   min-height: 400px;
   height: auto;
-  flex-shrink: 0; /* Critical: Prevent flex shrinking which causes clipping */
+  flex-shrink: 0;
+  /* Critical: Prevent flex shrinking which causes clipping */
 }
 
 .streak-badge {
@@ -641,8 +656,13 @@
 }
 
 @keyframes streak-glow {
-  from { box-shadow: 0 0 5px rgba(255, 165, 0, 0.2); }
-  to { box-shadow: 0 0 15px rgba(255, 165, 0, 0.4); }
+  from {
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.2);
+  }
+
+  to {
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.4);
+  }
 }
 
 .streak-flame {
@@ -657,11 +677,13 @@
 }
 
 .final-score {
-  font-variant-numeric: tabular-nums; /* Prevent flickering during count-up */
+  font-variant-numeric: tabular-nums;
+  /* Prevent flickering during count-up */
 }
 
 .quiz-option-btn:hover:not(.dimmed) {
-  transform: scale(1.01); /* Subtle zoom for options */
+  transform: scale(1.01);
+  /* Subtle zoom for options */
 }
 
 /* Warning Screen Styles */

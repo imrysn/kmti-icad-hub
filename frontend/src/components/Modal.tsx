@@ -13,6 +13,7 @@ export interface ModalProps {
     tag?: string;
     overlayClassName?: string;
     containerClassName?: string;
+    closeOnOutsideClick?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -24,12 +25,13 @@ export const Modal: React.FC<ModalProps> = ({
     showCloseButton = true,
     tag,
     overlayClassName = '',
-    containerClassName = ''
+    containerClassName = '',
+    closeOnOutsideClick = true
 }) => {
     // Escape key listener to close modal
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
+            if (e.key === 'Escape' && closeOnOutsideClick) {
                 onClose();
             }
         };
@@ -39,12 +41,12 @@ export const Modal: React.FC<ModalProps> = ({
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isOpen, onClose]);
+    }, [isOpen, onClose, closeOnOutsideClick]);
 
     if (!isOpen) return null;
 
     return createPortal(
-        <div className={`global-modal-overlay ${overlayClassName}`} onClick={onClose}>
+        <div className={`global-modal-overlay ${overlayClassName}`} onClick={closeOnOutsideClick ? onClose : undefined}>
             <div 
                 className={`global-modal-container ${size} ${containerClassName}`} 
                 onClick={e => e.stopPropagation()}

@@ -65,32 +65,6 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
     };
   }, [fetchData]);
 
-  const handleOpenInIJCAD = useCallback(async (task: AssessmentTask) => {
-    if (window.electronAPI && window.electronAPI.downloadAndOpen) {
-      try {
-        const url = assessmentService.getDownloadUrl(task.id);
-        const originalFilename = task.master_file_path
-          ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
-          : `Set${task.set_number}_${task.task_code}_Master.dwg`;
-        const token = authService.getToken();
-
-        if (!token) {
-          showNotification('Session expired. Please login again.', 'error');
-          return;
-        }
-
-        showNotification(`Preparing ${task.title}...`, 'info');
-        await window.electronAPI.downloadAndOpen({ url, filename: originalFilename, token });
-        showNotification(`${task.title} opened in iJCAD.`, 'success');
-      } catch (err) {
-        console.error('Failed to open in iJCAD:', err);
-        showNotification('Failed to launch iJCAD. Please check if it is installed.', 'error');
-      }
-    } else {
-      showNotification('iJCAD integration is only available in the Desktop App.', 'warning');
-    }
-  }, [showNotification]);
-
   const handleDownloadTask = useCallback(async (task: AssessmentTask) => {
     try {
       showNotification('Preparing task template download...', 'info');
@@ -113,6 +87,34 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
       showNotification('Failed to download task template.', 'error');
     }
   }, [showNotification]);
+
+  const handleOpenInIJCAD = useCallback(async (task: AssessmentTask) => {
+    if (window.electronAPI && window.electronAPI.downloadAndOpen) {
+      try {
+        const url = assessmentService.getDownloadUrl(task.id);
+        const originalFilename = task.master_file_path
+          ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
+          : `Set${task.set_number}_${task.task_code}_Master.dwg`;
+        const token = authService.getToken();
+
+        if (!token) {
+          showNotification('Session expired. Please login again.', 'error');
+          return;
+        }
+
+        showNotification(`Preparing ${task.title}...`, 'info');
+        await window.electronAPI.downloadAndOpen({ url, filename: originalFilename, token });
+        showNotification(`${task.title} opened in iJCAD.`, 'success');
+      } catch (err) {
+        console.error('Failed to open in iJCAD:', err);
+        showNotification('Failed to launch iJCAD. Please check if it is installed.', 'error');
+      }
+    } else {
+      // Web fallback: download the master file directly
+      showNotification('iJCAD desktop integration is not available here. Downloading the file instead...', 'info');
+      await handleDownloadTask(task);
+    }
+  }, [showNotification, handleDownloadTask]);
 
   const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission) => {
     if (!submission.feedback || submission.feedback.length === 0) return;

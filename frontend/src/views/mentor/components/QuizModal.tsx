@@ -16,10 +16,10 @@ interface QuizModalProps {
   onSuccessContinue?: () => void;
 }
 
-export const QuizModal: React.FC<QuizModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  quiz, 
+export const QuizModal: React.FC<QuizModalProps> = ({
+  isOpen,
+  onClose,
+  quiz,
   lessonId,
   onComplete,
   onSuccessContinue
@@ -61,22 +61,22 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     }
   };
 
-  const [currentIdx, setCurrentIdx] = useState(0); 
-  const [selectedOpt, setSelectedOpt] = useState<number | null>(null); 
-  const [answers, setAnswers] = useState<number[]>([]); 
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
   const [isFinished, setIsFinished] = useState(false);
-  const [score, setScore] = useState(0); 
+  const [score, setScore] = useState(0);
   const [displayScore, setDisplayScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
-  
-  const [timeLeft, setTimeLeft] = useState(120); // 120 seconds = 2 minutes
+
+  const [timeLeft, setTimeLeft] = useState(60); // 60 seconds = 1 minutes
   const [durations, setDurations] = useState<number[]>([]); // Track time spent per question
   const [shuffledQuestions, setShuffledQuestions] = useState<any[]>([]);
   const [showWarning, setShowWarning] = useState(true);
-  
+
   // Shuffle Utility
   const shuffleArray = <T,>(array: T[]): T[] => {
     const shuffled = [...array];
@@ -92,20 +92,20 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       const processed = quiz.questions.map(q => {
         const opts = (q as any).options || JSON.parse((q as any).options_json || '[]');
         const correct = (q as any).correctAnswer !== undefined ? (q as any).correctAnswer : (q as any).correct_answer;
-        
+
         // Map options to track original index
         const mappedOpts = opts.map((text: string, idx: number) => ({
           text,
           originalIdx: idx
         }));
-        
+
         return {
           ...q,
           displayOptions: shuffleArray(mappedOpts),
           originalCorrectIdx: correct
         };
       });
-      
+
       // Shuffle all available questions and take ONLY 10 for this attempt
       const selectedQuestions = shuffleArray(processed).slice(0, 10);
       setShuffledQuestions(selectedQuestions);
@@ -142,7 +142,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     setMaxStreak(0);
     setIsAnswerChecked(false);
     setDirection(0);
-    setTimeLeft(120);
+    setTimeLeft(60);
     setDurations([]);
     setShowWarning(true);
     initQuestions(); // Re-shuffle for retake
@@ -170,23 +170,23 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   // Reset timer when question changes
   useEffect(() => {
     if (isOpen && !isFinished && !isAnswerChecked) {
-      setTimeLeft(120);
+      setTimeLeft(60);
     }
   }, [currentIdx]);
 
   const handleTimeUp = () => {
     playSound('error');
-    const timeSpent = 120 - timeLeft;
-    
+    const timeSpent = 60 - timeLeft;
+
     // Safety check to prevent array desync if state was misaligned by reload
     const safeAnswers = answers.slice(0, currentIdx);
     const safeDurations = durations.slice(0, currentIdx);
-    
+
     const newAnswers = [...safeAnswers, -1]; // -1 indicates timeout/wrong
     const newDurations = [...safeDurations, timeSpent];
     setAnswers(newAnswers);
     setDurations(newDurations);
-    
+
     // Auto-advance logic
     if (currentIdx < shuffledQuestions.length - 1) {
       setDirection(1);
@@ -205,9 +205,9 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       const correct = qObj.originalCorrectIdx;
       return ans === correct ? acc + 1 : acc;
     }, 0);
-    
+
     const finalScore = (correctCount / shuffledQuestions.length) * 100;
-    
+
     let currentStreak = 0;
     let highestStreak = 0;
     finalAnswers.forEach((ans, idx) => {
@@ -274,7 +274,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       // Initialize or reset quiz state when opened
       resetQuiz();
     }
-    
+
     // Toggle global class for header blurring
     document.documentElement.classList.toggle('quiz-mode-active', isOpen);
 
@@ -286,12 +286,12 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   // 2. Save state to storage on changes
   useEffect(() => {
     if (isOpen && storageKey && !isFinished) {
-      const state = { 
-        currentIdx, 
-        answers, 
-        score, 
-        shuffledQuestions, 
-        showWarning 
+      const state = {
+        currentIdx,
+        answers,
+        score,
+        shuffledQuestions,
+        showWarning
       };
       localStorage.setItem(storageKey, JSON.stringify(state));
     }
@@ -306,13 +306,13 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       const end = Math.round(score);
       const duration = 1000;
       const increment = end / (duration / 16);
-      
+
       const timer = setInterval(() => {
         start += increment;
         if (start >= end) {
           setDisplayScore(end);
           clearInterval(timer);
-          
+
           // Trigger celebration for perfect score
           if (end === 100) {
             confetti({
@@ -333,7 +333,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   if (!quiz || !shuffledQuestions || shuffledQuestions.length === 0) return null;
 
   const currentQuestion = shuffledQuestions[currentIdx];
-  
+
   // Normalize question fields
   const qText = currentQuestion.text;
   const qOptions = currentQuestion.displayOptions; // Array of {text, originalIdx}
@@ -356,19 +356,19 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     if (selectedOpt === null) return;
 
     if (!isAnswerChecked) {
-      const timeSpent = 120 - timeLeft;
+      const timeSpent = 60 - timeLeft;
       const selectedOriginalIdx = qOptions[selectedOpt].originalIdx;
-      
+
       // Safety check to prevent array desync if state was misaligned by reload
       const safeAnswers = answers.slice(0, currentIdx);
       const safeDurations = durations.slice(0, currentIdx);
-      
+
       const newAnswers = [...safeAnswers, selectedOriginalIdx];
       const newDurations = [...safeDurations, timeSpent];
       setAnswers(newAnswers);
       setDurations(newDurations);
       setIsAnswerChecked(true);
-      
+
       const isCorrect = selectedOriginalIdx === qCorrectOriginal;
       if (isCorrect) playSound('success');
       else playSound('error');
@@ -400,6 +400,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       tag="MODULE ASSESSMENT"
       size="lg"
       showCloseButton={showWarning || isFinished}
+      closeOnOutsideClick={showWarning || isFinished}
     >
       <div className="quiz-modal-content">
         {showWarning ? (
@@ -408,7 +409,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
               <ShieldAlert className="warning-icon" size={80} />
               <h3 className="warning-title">Assessment Protocol</h3>
               <p className="warning-intro">Please review the rules before initiating the assessment:</p>
-              
+
               <div className="warning-list">
                 <div className="warning-item">
                   <span className="warning-label">No-Exit Policy:</span>
@@ -416,7 +417,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 </div>
                 <div className="warning-item">
                   <span className="warning-label">Time Constraints:</span>
-                  <p>Each question has a strict 2-minute limit. Timeouts are marked as incorrect.</p>
+                  <p>Each question has a strict 1-minute limit. Timeouts are marked as incorrect.</p>
                 </div>
                 <div className="warning-item">
                   <span className="warning-label">Randomized Loadout:</span>
@@ -436,9 +437,9 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 <div className="progress-text" style={{ margin: 0 }}>
                   Question <span>{currentIdx + 1}</span> of {shuffledQuestions.length}
                 </div>
-                <div className={`timer-display ${timeLeft <= 30 ? 'urgent' : ''}`} style={{ 
-                  fontSize: '0.9rem', 
-                  fontWeight: 800, 
+                <div className={`timer-display ${timeLeft <= 30 ? 'urgent' : ''}`} style={{
+                  fontSize: '0.9rem',
+                  fontWeight: 800,
                   fontFamily: 'monospace',
                   color: timeLeft <= 30 ? '#ef4444' : 'var(--primary)',
                   background: 'rgba(255,255,255,0.03)',
@@ -459,13 +460,13 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                   const correctIdx = shuffledQuestions[idx].originalCorrectIdx;
                   const isCorrect = isAnswered && answers[idx] === correctIdx;
                   const isActive = idx === currentIdx;
-                  
+
                   let statusClass = 'pending';
                   if (isAnswered) statusClass = isCorrect ? 'correct' : 'wrong';
                   else if (isActive) statusClass = 'active';
 
                   return (
-                    <motion.div 
+                    <motion.div
                       key={idx}
                       className={`progress-segment ${statusClass}`}
                       initial={false}
@@ -524,15 +525,15 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                       const isSelected = selectedOpt === idx;
                       const isCorrect = idx === qCorrectUIIdx;
                       const isWrong = isAnswerChecked && isSelected && !isCorrect;
-                      
+
                       return (
-                        <motion.button 
+                        <motion.button
                           type="button"
-                          key={idx} 
-                          className={`quiz-option-btn ${ isSelected ? 'active' : '' } ${ isAnswerChecked && isCorrect && isSelected ? 'correct' : '' } ${ isWrong ? 'wrong' : '' } ${ isAnswerChecked && !isSelected ? 'dimmed' : '' }`} 
+                          key={idx}
+                          className={`quiz-option-btn ${isSelected ? 'active' : ''} ${isAnswerChecked && isCorrect && isSelected ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${isAnswerChecked && !isSelected ? 'dimmed' : ''}`}
                           onClick={() => handleSelect(idx)}
                           whileTap={{ scale: 0.98 }}
-                          animate={isWrong ? { 
+                          animate={isWrong ? {
                             x: [0, -10, 10, -10, 10, 0],
                             transition: { duration: 0.4 }
                           } : {}}
@@ -583,7 +584,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
 
             <div className="results-feedback">
               <p>
-                {passed 
+                {passed
                   ? "Congratulations! You've successfully demonstrated competency in this module. The next section of the curriculum is now unlocked."
                   : "You did not reach the 80% competency threshold. Precision is critical in industrial modeling. Please review the lesson material and try again."}
               </p>
