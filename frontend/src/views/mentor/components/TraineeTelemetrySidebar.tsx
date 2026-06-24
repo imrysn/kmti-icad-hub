@@ -88,7 +88,12 @@ export const TraineeTelemetrySidebar: React.FC = () => {
                 const targetId = data.trainee_id || data.user_id;
                 const existing = prev.find(t => t.id === targetId);
                 if (existing) {
-                    return prev.map(t => t.id === targetId ? { ...t, is_online: data.is_online, last_active_at: data.timestamp || data.last_updated || data.last_seen || t.last_active_at } : t);
+                    return prev.map(t => t.id === targetId ? { 
+                        ...t, 
+                        is_online: data.is_online, 
+                        current_activity: data.current_activity || t.current_activity,
+                        last_updated: data.last_updated || data.timestamp || data.last_seen || t.last_updated
+                    } : t);
                 }
                 return prev;
             });
