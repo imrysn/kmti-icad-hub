@@ -28,6 +28,12 @@ export const useLessons = (courseId: string | number | undefined) => {
         };
 
         fetchLessons();
+
+        const handleGlobalRefresh = () => {
+            fetchLessons();
+        };
+        window.addEventListener('kmti-global-refresh', handleGlobalRefresh);
+        return () => window.removeEventListener('kmti-global-refresh', handleGlobalRefresh);
     }, [courseId]);
 
     const allLessonIds = useMemo(() => {

@@ -21,6 +21,12 @@ export const useCourses = () => {
         };
 
         fetchCourses();
+
+        const handleGlobalRefresh = () => {
+            fetchCourses();
+        };
+        window.addEventListener('kmti-global-refresh', handleGlobalRefresh);
+        return () => window.removeEventListener('kmti-global-refresh', handleGlobalRefresh);
     }, []);
 
     return { courses, loading, error };

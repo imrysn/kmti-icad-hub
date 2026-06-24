@@ -5,7 +5,7 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
-/* Import images */
+/* Import images */z
 import imgToolbar from "../../assets/2D_Image_File/2D_standard_part_library.png";
 import imgSafetyColor from "../../assets/2D_Image_File/2D_standard_part_library_safety_color.png";
 import imgRevHistory1 from "../../assets/2D_Image_File/2D_standard_part_library_revision_history_1.jpg";

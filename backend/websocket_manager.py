@@ -53,4 +53,19 @@ class NotificationManager:
             for conn in dead_connections:
                 self.disconnect(conn, user_id)
 
+    async def broadcast(self, message: dict):
+        """Sends a message to all connected clients across all users."""
+        dead_connections = []
+        for user_id, connections in self.active_connections.items():
+            for connection in connections:
+                try:
+                    await connection.send_text(json.dumps(message))
+                except Exception as e:
+                    logger.error(f"Error broadcasting to user {user_id}: {e}")
+                    dead_connections.append((connection, user_id))
+        
+        # Cleanup dead connections
+        for conn, user_id in dead_connections:
+            self.disconnect(conn, user_id)
+
 notification_manager = NotificationManager()

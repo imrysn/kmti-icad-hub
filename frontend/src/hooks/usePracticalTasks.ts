@@ -58,10 +58,12 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
       fetchData(true);
     };
     window.addEventListener('kmti-refresh-my-submissions', handleRefresh);
+    window.addEventListener('kmti-global-refresh', handleRefresh);
 
     return () => {
       clearInterval(pollInterval);
       window.removeEventListener('kmti-refresh-my-submissions', handleRefresh);
+      window.removeEventListener('kmti-global-refresh', handleRefresh);
     };
   }, [fetchData]);
 

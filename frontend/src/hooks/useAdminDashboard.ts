@@ -65,6 +65,15 @@ export const useAdminDashboard = (activeTab: string) => {
     if (activeTab !== 'progress') setSelectedTrainee(null);
   }, [activeTab]);
 
+  useEffect(() => {
+    const handleGlobalRefresh = () => {
+      fetchData();
+    };
+    window.addEventListener('kmti-global-refresh', handleGlobalRefresh);
+    return () => window.removeEventListener('kmti-global-refresh', handleGlobalRefresh);
+  }, [fetchData]);
+
+
   const handleToggleStatus = useCallback(async (userId: number) => {
     try {
       const updated = await authService.toggleUserStatus(userId);

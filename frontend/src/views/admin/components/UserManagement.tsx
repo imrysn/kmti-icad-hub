@@ -77,7 +77,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                                         {u.is_active ? 'Active' : 'Inactive'}
                                     </span>
                                 </td>
-                                <td>{new Date(u.created_at || '').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                                <td>{u.created_at ? new Date(u.created_at.endsWith('Z') || u.created_at.includes('+') ? u.created_at : u.created_at + 'Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}</td>
                                 <td className="actions-cell">
                                     <div className="action-buttons">
                                         <button className="action-icon-btn edit-btn" onClick={() => onEditUser(u)}

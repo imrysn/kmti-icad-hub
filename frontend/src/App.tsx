@@ -110,6 +110,8 @@ function AppContent() {
         showNotification(data.message || `A new assessment set has been unlocked by your trainer.`, 'info', 0, '/mentor?mode=assessment');
         window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
         notificationTriggered = true;
+      } else if (data.event === "GLOBAL_REFRESH") {
+        window.dispatchEvent(new CustomEvent('kmti-global-refresh'));
       }
       if (notificationTriggered) {
         fetchUnreadCount();

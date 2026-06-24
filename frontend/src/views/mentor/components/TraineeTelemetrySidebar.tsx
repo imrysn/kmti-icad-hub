@@ -18,7 +18,8 @@ const TraineeStatusLabel: React.FC<{ isOnline: boolean; lastUpdated: string | nu
                 setStatusText('Inactive');
                 return;
             }
-            const date = new Date(lastUpdated);
+            const dateStr = typeof lastUpdated === 'string' && !lastUpdated.endsWith('Z') && !lastUpdated.includes('+') ? lastUpdated + 'Z' : lastUpdated;
+            const date = new Date(dateStr);
             const diffMs = new Date().getTime() - date.getTime();
             if (diffMs <= 0) {
                 setStatusText('Active just now');

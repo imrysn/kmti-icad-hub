@@ -52,14 +52,14 @@ def resolve_master_path(master_file_path: str) -> str:
     if os.path.exists(full_path):
         return full_path
         
-    # If not found, try correcting Units & Tasks <-> Unts & Tasks spelling mismatch
+    # If not found, try correcting Units & Tasks <-> Units & Tasks spelling mismatch
     if "Units & Tasks" in rel_path:
-        alt_rel_path = rel_path.replace("Units & Tasks", "Unts & Tasks")
+        alt_rel_path = rel_path.replace("Units & Tasks", "Units & Tasks")
         alt_path = os.path.join(base_upload_dir, alt_rel_path)
         if os.path.exists(alt_path):
             return alt_path
-    elif "Unts & Tasks" in rel_path:
-        alt_rel_path = rel_path.replace("Unts & Tasks", "Units & Tasks")
+    elif "Units & Tasks" in rel_path:
+        alt_rel_path = rel_path.replace("Units & Tasks", "Units & Tasks")
         alt_path = os.path.join(base_upload_dir, alt_rel_path)
         if os.path.exists(alt_path):
             return alt_path

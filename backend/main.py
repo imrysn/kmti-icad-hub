@@ -59,6 +59,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from starlette.middleware.base import BaseHTTPMiddleware
+from backend.websocket_manager import notification_manager
+import asyncio
+
+class GlobalRefreshMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        if request.method in ["POST", "PUT", "DELETE", "PATCH"]:
+            if 200 <= response.status_code < 300:
+                if request.url.path.startswith("/api/"):
+                    # Fire and forget the broadcast so it doesn't block the response
+                    asyncio.create_task(notification_manager.broadcast({"event": "GLOBAL_REFRESH"}))
+        return response
+
+app.add_middleware(GlobalRefreshMiddleware)
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     # Pydantic v2 validation errors can contain ValueError or other non-serializable objects inside ctx.
