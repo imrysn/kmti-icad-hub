@@ -198,3 +198,10 @@ def delete_notification(
     db.commit()
     return {"status": "success"}
 
+@router.get("/debug/connections")
+def get_debug_connections():
+    conns = {}
+    for uid, sockets in notification_manager.active_connections.items():
+        conns[uid] = len(sockets)
+    return conns
+

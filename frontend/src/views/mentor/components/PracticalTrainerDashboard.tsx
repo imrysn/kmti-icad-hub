@@ -351,6 +351,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
             fetchNotifications();
             window.dispatchEvent(new CustomEvent('kmti-refresh-trainee-progress', { detail: { silent: true } }));
             if (data?.message) {
+                if (data?.event === 'ASSESSMENT_UNLOCKED' || data?.event === 'ASSESSMENT_REVIEWED') return;
                 showNotification(data.message, 'info');
                 if (window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
                     window.electronAPI.flashWindow();

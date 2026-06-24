@@ -92,13 +92,17 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     // Get dynamic display name for a set from tasks, fallback to ordinal label
     const getSetDisplayName = useCallback((s: number): string => {
         const displayNum = getSetDisplayNumber(s);
+        const ordinals = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
+        const prefix = ordinals[displayNum - 1] || `${displayNum}th`;
 
         const setTask = tasks.find(t => t.set_number === s && t.set_name);
         if (setTask && setTask.set_name) {
+            // Replace standard set ordinal prefixes with the mapped display prefix (e.g. "9th Set" -> "8th Set")
+            if (/^\d+(?:st|nd|rd|th)\s+Set/i.test(setTask.set_name)) {
+                return setTask.set_name.replace(/^\d+(?:st|nd|rd|th)\s+Set/i, `${prefix} Set`);
+            }
             return setTask.set_name;
         }
-        const ordinals = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
-        const prefix = ordinals[displayNum - 1] || `${displayNum}th`;
         const suffix = displayNum <= 3 ? 'Set Parts' : 'Set Parts and Assembly';
         return `${prefix} ${suffix}`;
     }, [tasks, getSetDisplayNumber]);

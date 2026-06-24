@@ -37,6 +37,22 @@ function createWindow() {
         },
     });
 
+    // Register local shortcuts for DevTools (Ctrl+Shift+I / F12) and Reload (Ctrl+R)
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+        if (input.type === 'keyDown') {
+            if ((input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i') {
+                mainWindow.webContents.toggleDevTools();
+                event.preventDefault();
+            } else if (input.key === 'F12') {
+                mainWindow.webContents.toggleDevTools();
+                event.preventDefault();
+            } else if ((input.control || input.meta) && input.key.toLowerCase() === 'r') {
+                mainWindow.webContents.reload();
+                event.preventDefault();
+            }
+        }
+    });
+
     // Handle development shortcuts and DevTools
     if (!app.isPackaged) {
         const devUrl = 'http://localhost:5173';
@@ -47,25 +63,6 @@ function createWindow() {
 
         // DevTools auto-open disabled to prevent "Failed to fetch" console errors
         // mainWindow.webContents.openDevTools();
-
-        // Register shortcuts for development
-        app.on('browser-window-focus', () => {
-            globalShortcut.register('CommandOrControl+Shift+I', () => {
-                mainWindow.webContents.toggleDevTools();
-            });
-            globalShortcut.register('CommandOrControl+R', () => {
-                mainWindow.webContents.reload();
-            });
-            globalShortcut.register('F12', () => {
-                mainWindow.webContents.toggleDevTools();
-            });
-        });
-
-        app.on('browser-window-blur', () => {
-            globalShortcut.unregister('CommandOrControl+Shift+I');
-            globalShortcut.unregister('CommandOrControl+R');
-            globalShortcut.unregister('F12');
-        });
     } else {
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
         mainWindow.removeMenu();
