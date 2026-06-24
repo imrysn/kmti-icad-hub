@@ -49,4 +49,3 @@ echo   Build Complete!
 echo   Output: backend/dist/KMTI_iCAD_Server.exe
 echo ===================================================
 popd
-pause
