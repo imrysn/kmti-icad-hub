@@ -1,0 +1,170 @@
+.tutorial-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.tutorial-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tutorial-image-container {
+  position: relative;
+  display: inline-block;
+  /* Shrink wraps the image so spotlight percentages are relative to the actual image size */
+}
+
+.tutorial-image {
+  display: block;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
+  object-fit: contain; 
+}
+
+.tutorial-spotlight-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.tutorial-spotlight-cutout {
+  position: absolute;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+  border: 3px solid #3b82f6; /* Changed to a nice blue highlight box */
+  border-radius: 4px; 
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+/* Floating Subtitle Box that moves near the highlight */
+.tutorial-subtitle-box {
+  position: absolute;
+  width: 400px;
+  background: rgba(20, 20, 25, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+  z-index: 25;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none; /* Let clicks pass through if needed, though modal is full screen */
+}
+
+.tutorial-step-indicator {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #60a5fa;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.tutorial-title {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.tutorial-description {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+/* Slimmed down control card for just the buttons */
+.tutorial-control-card {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(20, 20, 25, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  padding: 12px 24px;
+  color: #fff;
+  z-index: 30;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  animation: slideUpFade 0.5s ease-out;
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tutorial-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tutorial-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.tutorial-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tutorial-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tutorial-btn.primary {
+  background: #3b82f6;
+}
+
+.tutorial-btn.primary:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.tutorial-btn.exit {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 8px 16px;
+}
+.tutorial-btn.exit:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Save, Monitor, Layers, ZoomIn, Box, Compass,
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
 import ToolbarExplorer from "./ToolbarExplorer";
+import VideoTutorialModal, { TutorialStep } from "./VideoTutorialModal";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Toolbar image imports */
@@ -36,7 +37,10 @@ const ICAD_TOOLBARS = [
   { id: "entry-control", title: "Entry Control", description: "The method for entity selection and coordinate entry can be specified", features: ["Entity Selection", "Coordinate Entry", "AP/Magnet Tools"], imageSrc: tbEntryControl, icon: <MousePointer2 size={18} /> },
 ];
 
+import { TOOLBAR_TUTORIAL_STEPS } from "./VideoTutorialData/ToolBarsTutorial";
+
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { PlayCircle } from 'lucide-react';
 
 interface ToolBarsLessonProps {
   onNextLesson?: () => void;
@@ -55,6 +59,8 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
     currentCharIndex
   } = useLessonCore('toolbars');
 
+  const [isTutorialOpen, setIsTutorialOpen] = React.useState(false);
+
   const toolbarNarration = [
     "The software features a comprehensive set of toolbars optimized for both 2D and 3D operations. Each toolbar is designed to provide quick access to essential modeling commands.",
     "Use the interactive toolbar explorer below to see detailed information about each icon group, including File management, View controls, Shading options, and System settings.",
@@ -71,17 +77,34 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
       </div>
 
       <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-          <KaraokeLessonText
-            as="span"
-            text={introTitle}
-            isActive={isSpeaking && currentIndex === 0}
-            currentCharIndex={currentCharIndex}
-          />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            speak([introTitle, introSubtitle, ...toolbarNarration]);
-          }} onStop={stop} />
-        </h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+          <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ margin: 0 }}>
+            <KaraokeLessonText
+              as="span"
+              text={introTitle}
+              isActive={isSpeaking && currentIndex === 0}
+              currentCharIndex={currentCharIndex}
+            />
+            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
+              speak([introTitle, introSubtitle, ...toolbarNarration]);
+            }} onStop={stop} />
+          </h3>
+          <button 
+            onClick={() => setIsTutorialOpen(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px', 
+              background: '#3b82f6', color: 'white', border: 'none', 
+              padding: '8px 14px', borderRadius: '6px', cursor: 'pointer',
+              fontSize: '0.9rem', fontWeight: 500, transition: 'background 0.2s',
+              whiteSpace: 'nowrap'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.background = '#2563eb'}
+            onMouseOut={(e) => e.currentTarget.style.background = '#3b82f6'}
+          >
+            <PlayCircle size={16} />
+            Watch Video Tutorial
+          </button>
+        </div>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
           data-reading-index="1"
@@ -124,6 +147,8 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
           </div>
         </div>
       </div>
+
+      <VideoTutorialModal isOpen={isTutorialOpen} onClose={() => setIsTutorialOpen(false)} steps={TOOLBAR_TUTORIAL_STEPS} />
     </div>
   );
 };
