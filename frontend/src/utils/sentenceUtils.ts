@@ -34,6 +34,7 @@ export const normalizeSpeechText = (text: string): string => {
 
   return text
     .replace(/<[^>]*>?/gm, '') // Remove HTML
+    .replace(/i\s*CAD/ig, 'eyekad') // Fix pronunciation (supports "iCAD", "i CAD", etc.)
     .replace(/>/g, ' then ') // Replace > with "then" (common in our lessons)
     .replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')

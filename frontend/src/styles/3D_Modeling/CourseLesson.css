@@ -895,15 +895,15 @@
 .p-4 { padding: 1rem !important; }
 
 .interactive-stage-container {
-  background: rgba(0, 0, 0, 0.02);
+  background: transparent;
   border-radius: 20px;
-  padding: 1.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 0;
+  border: none;
 }
 
 [data-theme='dark'] .interactive-stage-container {
-  background: rgba(255, 255, 255, 0.02);
-  border-color: rgba(255, 255, 255, 0.05);
+  background: transparent;
+  border-color: transparent;
 }
 
 /* --- Quick Access Chips --- */

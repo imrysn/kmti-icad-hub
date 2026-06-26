@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Layout, PlayCircle } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { KaraokeLessonText } from "../KaraokeLessonText";
-import InteractiveImageMap from "./InteractiveImageMap";
-import VideoTutorialModal, { TutorialStep } from "./VideoTutorialModal";
+import VideoTutorialViewer from "./VideoTutorialViewer";
 import icadWindowStructure from "../../assets/3D_Image_File/icad_window_structure.png";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
@@ -39,8 +38,6 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
     currentCharIndex
   } = useLessonCore('interface', INTERFACE_STEPS);
 
-  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
-
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
@@ -50,43 +47,11 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
       {/* Main Interactive Stage */}
       <div className="lesson-grid interactive-layout single-card">
         <div className={`lesson-card tab-content fade-in ${currentIndex >= 0 ? 'reading-active' : ''}`}
-          data-reading-index={currentIndex >= 0 && currentIndex <= 11 ? "0" : undefined}>
-          <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div className="header-with-icon">
-              <div className="icon-box"><Layout size={18} /></div>
-              <h3>iCAD Window Structure</h3>
-            </div>
-            <button 
-              onClick={() => setIsTutorialOpen(true)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '8px', 
-                background: '#3b82f6', color: 'white', border: 'none', 
-                padding: '8px 14px', borderRadius: '6px', cursor: 'pointer',
-                fontSize: '0.9rem', fontWeight: 500, transition: 'background 0.2s'
-              }}
-              onMouseOver={(e) => e.currentTarget.style.background = '#2563eb'}
-              onMouseOut={(e) => e.currentTarget.style.background = '#3b82f6'}
-            >
-              <PlayCircle size={16} />
-              Watch Video Tutorial
-            </button>
-          </div>
-
-          <div className={`compact-intro-area ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
-            <KaraokeLessonText
-              text={INTERFACE_STEPS[0]}
-              isActive={isSpeaking && currentIndex === 0}
-              currentCharIndex={currentCharIndex}
-              className="p-flush"
-            />
-          </div>
+          data-reading-index={currentIndex >= 0 && currentIndex <= 11 ? "0" : undefined}
+          style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
           <div className="interactive-stage-container">
-            <InteractiveImageMap
-              imageSrc={icadWindowStructure}
-              externalIndex={(isSpeaking && currentIndex >= 2) ? currentIndex - 2 : -1}
-              externalCharIndex={currentCharIndex}
-            />
+            <VideoTutorialViewer steps={TUTORIAL_STEPS} />
           </div>
 
           <div className="lesson-navigation">
@@ -96,7 +61,6 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
         </div>
       </div>
 
-      <VideoTutorialModal isOpen={isTutorialOpen} onClose={() => setIsTutorialOpen(false)} steps={TUTORIAL_STEPS} />
     </div>
   );
 };

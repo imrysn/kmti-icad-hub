@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, X, Play, Square, GripHorizontal } from 'lucide-react';
-import './VideoTutorialModal.css';
+import { ChevronLeft, ChevronRight, Play, Square, GripHorizontal, Maximize, Minimize, X } from 'lucide-react';
+import './VideoTutorialViewer.css';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
@@ -22,17 +22,16 @@ export interface TutorialStep {
   subtitlePos: React.CSSProperties;
 }
 
-interface VideoTutorialModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface VideoTutorialViewerProps {
   steps: TutorialStep[];
 }
 
-const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose, steps }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
 
@@ -67,31 +66,28 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       synthRef.current = window.speechSynthesis;
     }
+    
+    // Cleanup on unmount
+    return () => {
+      if (synthRef.current) synthRef.current.cancel();
+    };
   }, []);
 
   useEffect(() => {
-    if (!isOpen) {
-      if (synthRef.current) {
-        synthRef.current.cancel();
-      }
-      setIsPlaying(false);
-      setCurrentStep(0);
-      setCurrentCharIndex(0);
-      return;
-    }
-
     if (isPlaying) {
       speakCurrentStep();
     } else {
       setCurrentCharIndex(0);
+      if (synthRef.current) synthRef.current.cancel();
     }
-  }, [isOpen, currentStep, isPlaying]);
+  }, [currentStep, isPlaying]);
 
-  // Keyboard navigation
+  // Keyboard navigation (only active when fullscreen or maybe always if focused, but let's just keep it)
   useEffect(() => {
-    if (!isOpen) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Only process keyboard shortcuts if fullscreen or if they click inside the viewer
+      if (!isFullscreen) return;
+
       if (e.key === 'ArrowRight') {
         e.preventDefault();
         handleNext();
@@ -103,13 +99,13 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
         togglePlayback();
       } else if (e.key === 'Escape') {
         e.preventDefault();
-        handleClose();
+        setIsFullscreen(false);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, currentStep, isPlaying]);
+  }, [currentStep, isPlaying, isFullscreen]);
 
   const speakCurrentStep = () => {
     if (!synthRef.current) return;
@@ -196,7 +192,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
       if (currentStep < steps.length - 1) {
         // slight pause before next step
         setTimeout(() => {
-          if (isOpen && isPlaying) {
+          if (isPlaying) {
             setCurrentStep(prev => prev + 1);
           }
         }, 1000);
@@ -206,7 +202,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     };
 
     titleUtterance.onend = () => {
-      if (isOpen && isPlaying && synthRef.current) {
+      if (isPlaying && synthRef.current) {
         synthRef.current.speak(textUtterance);
       }
     };
@@ -264,20 +260,28 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     }
   };
 
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+    setNavPos({ x: 0, y: 0 }); // reset control position when switching modes
+  };
+
   const handleClose = () => {
     if (synthRef.current) {
       synthRef.current.cancel();
     }
     setIsPlaying(false);
-    onClose();
+    setCurrentStep(0);
+    setCurrentCharIndex(0);
   };
 
-  if (!isOpen || !steps || steps.length === 0) return null;
+  if (!steps || steps.length === 0) return null;
 
   const currentData = steps[currentStep];
+  
+  const containerClass = isFullscreen ? 'tutorial-viewer-container fullscreen' : 'tutorial-viewer-container inline';
 
-  return createPortal(
-    <div className="tutorial-overlay">
+  const viewerJSX = (
+    <div className={containerClass}>
       <div className="tutorial-viewport">
         <div
           className="tutorial-image-container"
@@ -287,7 +291,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
             display: 'block',
             width: '100%',
             maxWidth: '100%',
-            maxHeight: '100vh',
+            maxHeight: isFullscreen ? '100vh' : 'calc(100vh - 200px)',
             aspectRatio: '16 / 9',
             minWidth: 0,
             minHeight: 0
@@ -333,6 +337,15 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
             ...currentData.subtitlePos
           }}
         >
+          {currentStep > 0 && (
+            <button
+              className="tutorial-subtitle-close"
+              onClick={handleClose}
+              title="Close Step (Back to Intro)"
+            >
+              <X size={18} />
+            </button>
+          )}
           <h2 className="tutorial-title">{currentData.title}</h2>
           {renderKaraokeText()}
         </div>
@@ -374,22 +387,32 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
           </button>
 
           <button
-            className="tutorial-btn primary"
+            className="tutorial-btn"
             onClick={handleNext}
             disabled={currentStep === steps.length - 1}
           >
             <ChevronRight size={18} />
           </button>
 
-          <button className="tutorial-btn exit" onClick={handleClose}>
-            Exit Tutorial <X size={18} />
+          <button className="tutorial-btn expand" onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
+            {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
           </button>
+
+          {currentStep > 0 && (
+            <button className="tutorial-btn exit" onClick={handleClose} title="Close Step (Back to Intro)">
+              <X size={18} /> Close
+            </button>
+          )}
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
+
+  if (isFullscreen) {
+    return createPortal(viewerJSX, document.body);
+  }
+
+  return viewerJSX;
 };
 
-export default VideoTutorialModal;
-// Trigger recompile
+export default VideoTutorialViewer;

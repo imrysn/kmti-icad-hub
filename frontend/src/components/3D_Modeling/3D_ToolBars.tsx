@@ -2,8 +2,7 @@ import React from "react";
 import { ChevronLeft, ChevronRight, Save, Monitor, Layers, ZoomIn, Box, Compass, Edit2, Sun, Scissors, Layout, Info, Cpu, MousePointer2 } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { ReadAloudButton } from "../ReadAloudButton";
-import ToolbarExplorer from "./ToolbarExplorer";
-import VideoTutorialModal, { TutorialStep } from "./VideoTutorialModal";
+import VideoTutorialViewer from "./VideoTutorialViewer";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Toolbar image imports */
@@ -59,7 +58,7 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
     currentCharIndex
   } = useLessonCore('toolbars');
 
-  const [isTutorialOpen, setIsTutorialOpen] = React.useState(false);
+
 
   const toolbarNarration = [
     "The software features a comprehensive set of toolbars optimized for both 2D and 3D operations. Each toolbar is designed to provide quick access to essential modeling commands.",
@@ -76,69 +75,15 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-          <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ margin: 0 }}>
-            <KaraokeLessonText
-              as="span"
-              text={introTitle}
-              isActive={isSpeaking && currentIndex === 0}
-              currentCharIndex={currentCharIndex}
-            />
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              speak([introTitle, introSubtitle, ...toolbarNarration]);
-            }} onStop={stop} />
-          </h3>
-          <button 
-            onClick={() => setIsTutorialOpen(true)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: '8px', 
-              background: '#3b82f6', color: 'white', border: 'none', 
-              padding: '8px 14px', borderRadius: '6px', cursor: 'pointer',
-              fontSize: '0.9rem', fontWeight: 500, transition: 'background 0.2s',
-              whiteSpace: 'nowrap'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.background = '#2563eb'}
-            onMouseOut={(e) => e.currentTarget.style.background = '#3b82f6'}
-          >
-            <PlayCircle size={16} />
-            Watch Video Tutorial
-          </button>
-        </div>
-        <KaraokeLessonText
-          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-          data-reading-index="1"
-          text={introSubtitle}
-          isActive={isSpeaking && currentIndex === 1}
-          currentCharIndex={currentCharIndex}
-        />
-      </section>
+
 
       {/* Main Interactive Stage */}
       <div className="lesson-grid interactive-layout single-card">
-        <div className="lesson-card tab-content fade-in">
-          <div className="card-header">
-             <div className="header-with-icon">
-                <div className="icon-box"><Layout size={18} /></div>
-                <h3>Toolbar Explorer</h3>
-             </div>
-          </div>
+        <div className="lesson-card tab-content fade-in" style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
-          <div className={`compact-intro-area ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-            <KaraokeLessonText 
-              text={toolbarNarration[0]} 
-              isActive={isSpeaking && currentIndex === 2} 
-              currentCharIndex={currentCharIndex} 
-              className="p-flush"
-            />
-          </div>
 
           <div className="interactive-stage-container">
-            <ToolbarExplorer
-              toolbars={ICAD_TOOLBARS}
-              externalIndex={currentIndex - 4}
-              externalCharIndex={currentCharIndex}
-            />
+            <VideoTutorialViewer steps={TOOLBAR_TUTORIAL_STEPS} />
           </div>
 
           <div className="lesson-navigation">
@@ -148,7 +93,6 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
         </div>
       </div>
 
-      <VideoTutorialModal isOpen={isTutorialOpen} onClose={() => setIsTutorialOpen(false)} steps={TOOLBAR_TUTORIAL_STEPS} />
     </div>
   );
 };
