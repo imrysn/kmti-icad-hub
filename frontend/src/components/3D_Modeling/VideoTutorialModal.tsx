@@ -201,7 +201,11 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
           }
         }, 1000);
       } else {
-        setIsPlaying(false);
+        // Wait 1.5 seconds after final narration ends, then reset to Overview step
+        setTimeout(() => {
+          setIsPlaying(false);
+          setCurrentStep(0);
+        }, 1500);
       }
     };
 
