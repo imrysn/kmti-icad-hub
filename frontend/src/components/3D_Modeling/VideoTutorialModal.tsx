@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, X, Play, Square, GripHorizontal } from 'lucide-react';
 import './VideoTutorialModal.css';
+import { api } from '../../services/api';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
@@ -34,6 +35,8 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const synthRef = useRef<SpeechSynthesis | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
 
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -67,12 +70,33 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       synthRef.current = window.speechSynthesis;
     }
+    
+    // Cleanup on unmount
+    return () => {
+      if (synthRef.current) synthRef.current.cancel();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (activeIntervalRef.current) {
+        clearInterval(activeIntervalRef.current);
+        activeIntervalRef.current = null;
+      }
+    };
   }, []);
 
   useEffect(() => {
     if (!isOpen) {
       if (synthRef.current) {
         synthRef.current.cancel();
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (activeIntervalRef.current) {
+        clearInterval(activeIntervalRef.current);
+        activeIntervalRef.current = null;
       }
       setIsPlaying(false);
       setCurrentStep(0);
@@ -84,6 +108,17 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
       speakCurrentStep();
     } else {
       setCurrentCharIndex(0);
+      if (synthRef.current) {
+        synthRef.current.cancel();
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (activeIntervalRef.current) {
+        clearInterval(activeIntervalRef.current);
+        activeIntervalRef.current = null;
+      }
     }
   }, [isOpen, currentStep, isPlaying]);
 
@@ -112,113 +147,236 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
   }, [isOpen, currentStep, isPlaying]);
 
   const speakCurrentStep = () => {
-    if (!synthRef.current) return;
-
-    synthRef.current.cancel();
+    if (activeIntervalRef.current) {
+      clearInterval(activeIntervalRef.current);
+      activeIntervalRef.current = null;
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    if (synthRef.current) {
+      synthRef.current.cancel();
+    }
     setCurrentCharIndex(0);
 
     const title = steps[currentStep].title;
     const text = steps[currentStep].text;
 
-    // Pronunciation fix: replace "iCAD"/"ICAD" or "i CAD"/"I CAD" with "eyekad" for correct speech synthesis pronunciation
-    const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eyekad');
+    const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
     const spokenText = sanitizeSpeech(text);
+    const spokenTitle = sanitizeSpeech(title);
 
-    const titleUtterance = new SpeechSynthesisUtterance(sanitizeSpeech(title));
-    titleUtterance.rate = 0.9;
+    const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
+    const isKokoro = savedVoice.startsWith('kokoro://');
+    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
 
-    const textUtterance = new SpeechSynthesisUtterance(spokenText);
-    textUtterance.rate = 0.9;
+    if (isKokoro) {
+      const voiceName = savedVoice.replace('kokoro://', '');
+      const apiBase = api.defaults.baseURL || '';
+      
+      const titleUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenTitle)}&voice=${voiceName}&speed=${savedRate}`;
+      const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
+      
+      const titleAudio = new Audio(titleUrl);
+      audioRef.current = titleAudio;
 
-    const words = text.split(/\s+/).filter(w => w.length > 0);
-    const estimatedDuration = (text.length * 60) / textUtterance.rate;
-    let boundaryFired = false;
-    let fallbackInterval: NodeJS.Timeout | null = null;
+      const textAudio = new Audio(textUrl);
+      textAudio.load(); // Preload text audio immediately in the background
 
-    const getOriginalIndex = (spokenIdx: number) => {
-      if (text.length === spokenText.length) return spokenIdx;
-      const regex = /i\s*cad/ig;
-      let match;
-      let shift = 0;
-      regex.lastIndex = 0;
-      while ((match = regex.exec(text)) !== null) {
-        const matchIdx = match.index;
-        const matchText = match[0];
-        const diff = 7 - matchText.length; // "eyekad" (7) - matchText.length
-        if (matchIdx + shift < spokenIdx) {
-          shift += diff;
-        } else {
-          break;
-        }
-      }
-      return Math.max(0, spokenIdx - shift);
-    };
+      titleAudio.onended = () => {
+        if (!isOpen || !isPlaying) return;
+        
+        audioRef.current = textAudio;
 
-    textUtterance.onstart = () => {
-      setTimeout(() => {
-        if (!boundaryFired && synthRef.current) {
-          let wordIdx = 0;
-          let searchFrom = 0;
-          const msPerChar = estimatedDuration / (text.length || 1);
+        const words = text.split(/\s+/).filter(w => w.length > 0);
+        const estimatedDuration = (text.length * 60) / savedRate;
 
-          fallbackInterval = setInterval(() => {
-            if (wordIdx < words.length) {
-              const currentWord = words[wordIdx];
-              const wordStart = text.indexOf(currentWord, searchFrom);
-              if (wordStart !== -1) {
-                setCurrentCharIndex(wordStart);
-                searchFrom = wordStart + currentWord.length;
+        let wordIdx = 0;
+        let searchFrom = 0;
+
+        textAudio.onplaying = () => {
+          if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
+          
+          setCurrentCharIndex(searchFrom);
+          const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration)) 
+            ? textAudio.duration 
+            : (estimatedDuration / 1000);
+          const totalMs = durationSec * 1000;
+          const msPerChar = totalMs / (text.length || 1);
+          
+          activeIntervalRef.current = setInterval(() => {
+              if (wordIdx < words.length) {
+                  const currentWord = words[wordIdx];
+                  const wordStart = text.indexOf(currentWord, searchFrom);
+                  if (wordStart !== -1) {
+                      setCurrentCharIndex(wordStart);
+                      searchFrom = wordStart + currentWord.length;
+                  }
+                  wordIdx++;
+              } else {
+                  if (activeIntervalRef.current) {
+                      clearInterval(activeIntervalRef.current);
+                      activeIntervalRef.current = null;
+                  }
               }
-              wordIdx++;
-            } else {
-              if (fallbackInterval) clearInterval(fallbackInterval);
-            }
           }, (text.length / (words.length || 1)) * msPerChar);
-        }
-      }, 300);
-    };
+        };
 
-    textUtterance.onboundary = (e) => {
-      if (e.name === 'word') {
-        boundaryFired = true;
-        if (fallbackInterval) {
-          clearInterval(fallbackInterval);
-          fallbackInterval = null;
-        }
-        setCurrentCharIndex(getOriginalIndex(e.charIndex));
-      }
-    };
-
-    textUtterance.onend = () => {
-      if (fallbackInterval) clearInterval(fallbackInterval);
-      setCurrentCharIndex(0);
-      // Auto-advance if not on the last step
-      if (currentStep < steps.length - 1) {
-        // slight pause before next step
-        setTimeout(() => {
-          if (isOpen && isPlaying) {
-            setCurrentStep(prev => prev + 1);
+        textAudio.onpause = () => {
+          if (activeIntervalRef.current) {
+            clearInterval(activeIntervalRef.current);
+            activeIntervalRef.current = null;
           }
-        }, 1000);
-      } else {
-        // Wait 1.5 seconds after final narration ends, then reset to Overview step
-        setTimeout(() => {
+        };
+
+        textAudio.onwaiting = () => {
+          if (activeIntervalRef.current) {
+            clearInterval(activeIntervalRef.current);
+            activeIntervalRef.current = null;
+          }
+        };
+
+        textAudio.onended = () => {
+          if (activeIntervalRef.current) {
+            clearInterval(activeIntervalRef.current);
+            activeIntervalRef.current = null;
+          }
+          setCurrentCharIndex(0);
+          
+          if (currentStep < steps.length - 1) {
+            setTimeout(() => {
+              if (isOpen && isPlaying) {
+                setCurrentStep(prev => prev + 1);
+              }
+            }, 1000);
+          } else {
+            setTimeout(() => {
+              setIsPlaying(false);
+              setCurrentStep(0);
+            }, 1500);
+          }
+        };
+
+        textAudio.onerror = (err) => {
+          console.error('Kokoro Text Audio Error:', err);
+          if (activeIntervalRef.current) {
+            clearInterval(activeIntervalRef.current);
+            activeIntervalRef.current = null;
+          }
           setIsPlaying(false);
-          setCurrentStep(0);
-        }, 1500);
-      }
-    };
+        };
 
-    titleUtterance.onend = () => {
-      if (isOpen && isPlaying && synthRef.current) {
-        synthRef.current.speak(textUtterance);
-      }
-    };
+        textAudio.play().catch(err => {
+          console.error("Text audio play failed:", err);
+          textAudio.onended?.(null as any);
+        });
+      };
 
-    if (window.speechSynthesis) {
-      window.speechSynthesis.resume();
+      titleAudio.onerror = (err) => {
+        console.error('Kokoro Title Audio Error:', err);
+        setIsPlaying(false);
+      };
+
+      titleAudio.play().catch(err => {
+        console.error("Title audio play failed:", err);
+        titleAudio.onended?.(null as any);
+      });
+    } else {
+      // Fallback: Browser Web Speech synthesis
+      if (!synthRef.current) return;
+      const titleUtterance = new SpeechSynthesisUtterance(spokenTitle);
+      titleUtterance.rate = savedRate * 0.9;
+
+      const textUtterance = new SpeechSynthesisUtterance(spokenText);
+      textUtterance.rate = savedRate * 0.9;
+
+      const words = text.split(/\s+/).filter(w => w.length > 0);
+      const estimatedDuration = (text.length * 60) / textUtterance.rate;
+      let boundaryFired = false;
+
+      const getOriginalIndex = (spokenIdx: number) => {
+        if (text.length === spokenText.length) return spokenIdx;
+        const regex = /i\s*cad/ig;
+        let match;
+        let shift = 0;
+        regex.lastIndex = 0;
+        while ((match = regex.exec(text)) !== null) {
+          const matchIdx = match.index;
+          const matchText = match[0];
+          const diff = 7 - matchText.length;
+          if (matchIdx + shift < spokenIdx) {
+            shift += diff;
+          } else {
+            break;
+          }
+        }
+        return Math.max(0, spokenIdx - shift);
+      };
+
+      textUtterance.onstart = () => {
+        setTimeout(() => {
+          if (!boundaryFired && synthRef.current) {
+            let wordIdx = 0;
+            let searchFrom = 0;
+            const msPerChar = estimatedDuration / (text.length || 1);
+
+            activeIntervalRef.current = setInterval(() => {
+              if (wordIdx < words.length) {
+                const currentWord = words[wordIdx];
+                const wordStart = text.indexOf(currentWord, searchFrom);
+                if (wordStart !== -1) {
+                  setCurrentCharIndex(wordStart);
+                  searchFrom = wordStart + currentWord.length;
+                }
+                wordIdx++;
+              } else {
+                if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
+              }
+            }, (text.length / (words.length || 1)) * msPerChar);
+          }
+        }, 300);
+      };
+
+      textUtterance.onboundary = (e) => {
+        if (e.name === 'word') {
+          boundaryFired = true;
+          if (activeIntervalRef.current) {
+            clearInterval(activeIntervalRef.current);
+            activeIntervalRef.current = null;
+          }
+          setCurrentCharIndex(getOriginalIndex(e.charIndex));
+        }
+      };
+
+      textUtterance.onend = () => {
+        if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
+        setCurrentCharIndex(0);
+        if (currentStep < steps.length - 1) {
+          setTimeout(() => {
+            if (isOpen && isPlaying) {
+              setCurrentStep(prev => prev + 1);
+            }
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            setIsPlaying(false);
+            setCurrentStep(0);
+          }, 1500);
+        }
+      };
+
+      titleUtterance.onend = () => {
+        if (isOpen && isPlaying && synthRef.current) {
+          synthRef.current.speak(textUtterance);
+        }
+      };
+
+      if (window.speechSynthesis) {
+        window.speechSynthesis.resume();
+      }
+      synthRef.current.speak(titleUtterance);
     }
-    synthRef.current.speak(titleUtterance);
   };
 
   const renderKaraokeText = () => {

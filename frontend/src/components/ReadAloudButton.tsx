@@ -204,7 +204,7 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
               }}
             >
               <option value="">Default (Automatic Voice)</option>
-              {filteredVoices.map(v => (
+              {voices.map(v => (
                 <option key={v.voiceURI} value={v.voiceURI}>
                   {v.name} ({v.lang})
                 </option>
@@ -214,7 +214,7 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
 
           {/* Inline Info */}
           <div style={{ fontSize: '0.65rem', color: '#64748b', fontStyle: 'italic', display: 'flex', gap: '4px', alignItems: 'center' }}>
-            <span>Voice engine provided by local system browser.</span>
+            <span>Select a browser voice for standard text-to-speech.</span>
           </div>
         </div>
       )}

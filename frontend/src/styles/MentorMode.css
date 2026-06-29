@@ -443,6 +443,20 @@
   color: #ffffff !important;
 }
 
+.course-card button:hover {
+  background: #c72bfa !important;
+  border-color: #c72bfa !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(221, 77, 250, 0.4) !important;
+}
+
+[data-theme='light'] .course-card button:hover {
+  background: #9d1282 !important;
+  border-color: #9d1282 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(181, 23, 158, 0.3) !important;
+}
+
 /* Premium card hover state with Brand Magenta Glow */
 .course-card:hover {
   border-color: var(--primary);
@@ -1429,7 +1443,7 @@
 .exit-course-btn:hover {
   color: white;
   background: var(--error) !important;
-  border-color: var(--error);
+  border-color: transparent !important;
 }
 
 .sidebar-toggle {

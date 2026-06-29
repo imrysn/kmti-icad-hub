@@ -46,6 +46,7 @@
 
 .sidebar-set-pill:hover:not(.locked) {
     background: var(--bg-card);
+    border-color: #DD4DFA;
 }
 
 .sidebar-set-pill.active {
@@ -249,6 +250,28 @@
     flex-shrink: 0;
 }
 
+.trash-bin-header-btn {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--border-color, rgba(148, 163, 184, 0.35));
+    border-radius: 10px;
+    color: var(--text-main, #0f172a);
+    font-size: 0.8rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.trash-bin-header-btn:hover {
+    border-color: #EF4444 !important;
+    color: #EF4444 !important;
+}
+
 .task-action-btn {
     display: flex;
     align-items: center;
@@ -295,7 +318,8 @@
 .task-row-upload,
 .task-row-feedback {
     padding: 1rem 1.5rem;
-    min-width: 0; /* Prevents long content from pushing grid tracks */
+    min-width: 0;
+    /* Prevents long content from pushing grid tracks */
 }
 
 .task-row-upload {
@@ -417,7 +441,7 @@
 }
 
 .action-btn-styled.edit {
-    color: #6E7681 !important; 
+    color: #6E7681 !important;
 }
 
 .action-btn-styled.delete {
@@ -488,8 +512,13 @@
     gap: 0.75rem;
 }
 
-.feedback-container.approved { border-left: none; }
-.feedback-container.rejected { border-left: none; }
+.feedback-container.approved {
+    border-left: none;
+}
+
+.feedback-container.rejected {
+    border-left: none;
+}
 
 .feedback-status-info {
     display: flex;
@@ -499,8 +528,13 @@
     font-weight: 700;
 }
 
-.feedback-container.approved .feedback-status-info { color: #10b981; }
-.feedback-container.rejected .feedback-status-info { color: #ef4444; }
+.feedback-container.approved .feedback-status-info {
+    color: #10b981;
+}
+
+.feedback-container.rejected .feedback-status-info {
+    color: #ef4444;
+}
 
 .feedback-details {
     display: flex;
@@ -597,7 +631,8 @@
 
 .checkback-open-btn:hover {
     background: transparent !important;
-    transform: translateY(-1px);    
+    color: #3fb950 !important;
+    transform: translateY(-1px);
     border: 1px solid #3fb950 !important;
     box-shadow: 0 4px 12px rgba(26, 127, 55, 0.4);
 }
@@ -633,9 +668,20 @@
     text-transform: capitalize;
 }
 
-.assessment-status-badge.approved { color: #10b981; background: rgba(16, 185, 129, 0.1); }
-.assessment-status-badge.pending  { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
-.assessment-status-badge.rejected { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+.assessment-status-badge.approved {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.assessment-status-badge.pending {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.assessment-status-badge.rejected {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
 
 /* ── Portal Empty State ──────────────────────────────────────────────── */
 .no-task-selected-portal {
@@ -732,13 +778,27 @@
 
 /* ── Animations ──────────────────────────────────────────────────────── */
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeInSlideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-slide-up {
@@ -956,4 +1016,3 @@
     font-weight: 500;
     margin: 0;
 }
-

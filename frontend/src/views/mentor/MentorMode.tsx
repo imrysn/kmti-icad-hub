@@ -149,7 +149,27 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
             if (savedCourseId) {
                 console.log('Restoring course from storage:', savedCourseId);
-                const course = courses.find(c => c.id.toString() == savedCourseId.toString());
+                let course: Course | undefined;
+                if (savedCourseId === 'practical-assessment') {
+                    course = {
+                        id: 'practical-assessment',
+                        title: 'Practical Assessment',
+                        description: 'Sequential 7-set drafting tasks in iJCAD.',
+                        course_type: 'Practical',
+                        order: 99
+                    };
+                } else if (savedCourseId === '2d-assessment') {
+                    course = {
+                        id: '2d-assessment',
+                        title: '2D Detailing Assessment',
+                        description: 'Sequential 4-set drafting tasks in iJCAD.',
+                        course_type: 'Practical_2D',
+                        order: 100
+                    };
+                } else {
+                    course = courses.find(c => c.id.toString() == savedCourseId.toString());
+                }
+
                 if (course) {
                     console.log('Found course for restoration:', course.title);
                     setSelectedCourse(course);
@@ -348,6 +368,13 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (viewer) viewer.scrollTo({ top: 0, behavior: 'instant' });
     }, [activeLessonId]);
 
+    const isConnectedRef = useRef(isConnected);
+    const sendMessageRef = useRef(sendMessage);
+    useEffect(() => {
+        isConnectedRef.current = isConnected;
+        sendMessageRef.current = sendMessage;
+    }, [isConnected, sendMessage]);
+
     // Real-time Activity Tracking
     const coursesRef = useRef(courses);
     const activeLessonIdRef = useRef(activeLessonId);
@@ -411,8 +438,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
             // Store for heartbeat interval and send immediately
             lastActivityRef.current = activityStr;
-            if (isConnected) {
-                sendMessage({
+            if (isConnectedRef.current) {
+                sendMessageRef.current({
                     event: 'HEARTBEAT',
                     activity: activityStr
                 });
@@ -444,7 +471,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         return () => {
             localStorage.setItem = originalSetItem;
         };
-    }, [activeLessonId, isConnected, sendMessage]);
+    }, [activeLessonId]);
 
     // Periodic WebSocket Heartbeat
     useEffect(() => {
@@ -554,7 +581,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     };
 
     // Render Composition
-    if (loading || error || !selectedCourse) {
+    // Only show CourseSelector/Loader if we don't have courses loaded yet, or if no course is selected
+    if ((loading && courses.length === 0) || error || !selectedCourse) {
         return (
             <CourseSelector 
                 courses={courses} 

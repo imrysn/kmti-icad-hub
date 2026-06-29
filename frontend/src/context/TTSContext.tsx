@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useTTS } from '../hooks/useTTS';
 
+interface TTSVoice {
+  voiceURI: string;
+  name: string;
+  lang: string;
+  localService: boolean;
+  default: boolean;
+}
+
 interface TTSContextType {
   isSpeaking: boolean;
   currentIndex: number;
@@ -14,7 +22,7 @@ interface TTSContextType {
   stop: () => void;
   rate: number;
   setRate: (rate: number) => void;
-  voices: SpeechSynthesisVoice[];
+  voices: TTSVoice[];
   selectedVoiceURI: string | null;
   setSelectedVoiceURI: (uri: string | null) => void;
 }

@@ -112,7 +112,7 @@ if os.path.exists(assets_path):
 else:
     print(f"[!] Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -122,6 +122,7 @@ app.include_router(quizzes.router, prefix="/api/v1")
 app.include_router(assessments.router, prefix="/api/v1")
 app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(settings.router, prefix="/api/v1")
+app.include_router(tts.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():

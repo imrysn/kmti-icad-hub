@@ -175,7 +175,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             const zipFile = new File([zipBlob], `${customFolderName.trim()}.zip`, { type: 'application/zip' });
 
             await uploadTaskFile(zipFile, folderUploadTargetTask, assessmentType);
-            
+
             // Cleanup
             setUploadFolderModalOpen(false);
             setFolderFiles([]);
@@ -232,7 +232,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             const prevCompleted = prevSetTasks.length > 0 && prevSetTasks.every(t =>
                 submissions.some(sub => sub.task_id === t.id && sub.status === 'approved' && (sub.assessment_type || '3D') === assessmentType)
             );
-            
+
             if (assessmentType === '3D') {
                 return !prevCompleted || !is3DCompleted;
             }
@@ -276,14 +276,16 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     .sort((a: number, b: number) => {
                         const mapA = activeCourseMappings.find((m: any) => Number(m.actual_set_number) === a);
                         const mapB = activeCourseMappings.find((m: any) => Number(m.actual_set_number) === b);
-                        return Math.abs(mapA.display_set_number) - Math.abs(mapB.display_set_number);
+                        const valA = mapA?.display_set_number ? Math.abs(mapA.display_set_number) : 0;
+                        const valB = mapB?.display_set_number ? Math.abs(mapB.display_set_number) : 0;
+                        return valA - valB;
                     });
                 return Array.from(new Set(mappedSetNums));
             }
         }
 
         const uniqueSets = Array.from(new Set(tasks.map(t => t.set_number))).sort((a, b) => a - b);
-        
+
         if (uniqueSets.length === 0) {
             return assessmentType === '3D' ? Array.from({ length: 10 }, (_, i) => i + 1) : [4, 5, 6, 7];
         }
@@ -297,7 +299,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
         return uniqueSets;
     }, [tasks, assessmentType, mySetMappings]);
-        
+
     useEffect(() => {
         if (sets.length > 0 && !sets.includes(activeSet)) {
             setActiveSet(sets[0]);
@@ -367,19 +369,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         <span className="task-count">{currentSetTasks.length} Tasks</span>
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <button 
-                            className="task-action-btn"
-                            style={{ 
-                                padding: '0.4rem 1rem', 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '0.5rem',
-                                background: 'transparent',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                borderRadius: '4px',
-                                color: '#fff',
-                                fontSize: '0.85rem'
-                            }}
+                        <button
+                            className="trash-bin-header-btn"
                             onClick={() => {
                                 fetchTrash();
                                 setTrashModalOpen(true);
@@ -833,19 +824,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             return (
                                                 <div key={unitName} className="assessment-unit-group" style={{ marginBottom: '2.5rem' }}>
                                                     <div className="unit-header-bar" style={{
-                                                        background: 'rgba(15, 23, 42, 0.4)',
-                                                        border: '1px solid rgba(255,255,255,0.08)',
-                                                        borderRadius: '12px',
-                                                        padding: '1rem 1.5rem',
-                                                        marginBottom: '1rem',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '0.75rem',
-                                                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-                                                    }}>
-                                                        <Folder size={20} style={{ color: '#38bdf8' }} />
-                                                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#f8fafc', fontWeight: 600 }}>{unitName}</h3>
-                                                        <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem' }}>{unitTasks.length} Files</span>
+                                                         background: 'var(--bg-card, rgba(15, 23, 42, 0.45))',
+                                                         border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+                                                         borderRadius: '12px',
+                                                         padding: '1rem 1.5rem',
+                                                         marginBottom: '1rem',
+                                                         display: 'flex',
+                                                         alignItems: 'center',
+                                                         gap: '0.75rem',
+                                                         boxShadow: 'var(--shadow-card, 0 4px 6px -1px rgba(0, 0, 0, 0.1))'
+                                                     }}>
+                                                         <Folder size={20} style={{ color: 'var(--primary, #38bdf8)' }} />
+                                                         <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-main, #f8fafc)', fontWeight: 600 }}>{unitName}</h3>
+                                                         <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem', background: 'transparent', border: 'none', padding: 0, color: 'var(--text-muted, #94a3b8)' }}>{unitTasks.length} Files</span>
                                                         <button
                                                             type="button"
                                                             className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
@@ -864,12 +855,12 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                             className="task-action-btn danger"
                                                             onClick={() => handleBulkDelete(sortedUnitTasks.map(t => t.id))}
                                                             title="Delete All Uploaded Files"
-                                                            style={{ 
-                                                                marginLeft: '0.5rem', 
-                                                                padding: '0.4rem 0.8rem', 
-                                                                background: 'rgba(239, 68, 68, 0.1)', 
-                                                                border: '1px solid rgba(239, 68, 68, 0.3)', 
-                                                                color: '#fca5a5' 
+                                                            style={{
+                                                                marginLeft: '0.5rem',
+                                                                padding: '0.4rem 0.8rem',
+                                                                background: 'rgba(239, 68, 68, 0.1)',
+                                                                border: '1px solid rgba(239, 68, 68, 0.3)',
+                                                                color: '#fca5a5'
                                                             }}
                                                         >
                                                             <Trash2 size={16} />
@@ -906,343 +897,343 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                     taskSubmissions = taskSubmissions.filter(s => !s.submission_file_path?.match(/\.(zip|rar)$/i));
                                                                 }
 
-                                                            const latestSubmission = taskSubmissions[0];
-                                                            // Find the most recent submission that has feedback (for rejection comments)
-                                                            const feedbackSubmission = taskSubmissions.find(s => s.feedback && s.feedback.length > 0) || latestSubmission;
+                                                                const latestSubmission = taskSubmissions[0];
+                                                                // Find the most recent submission that has feedback (for rejection comments)
+                                                                const feedbackSubmission = taskSubmissions.find(s => s.feedback && s.feedback.length > 0) || latestSubmission;
 
-                                                            const isUploading = uploadingTaskId === task.id && isSubmitting;
-                                                            const params = new URLSearchParams(location.search);
-                                                            const targetUnit = params.get('unit');
-                                                            const isHighlighted = targetUnit === task.task_code;
-                                                            const uploadId = `cad-upload-${task.id}`;
+                                                                const isUploading = uploadingTaskId === task.id && isSubmitting;
+                                                                const params = new URLSearchParams(location.search);
+                                                                const targetUnit = params.get('unit');
+                                                                const isHighlighted = targetUnit === task.task_code;
+                                                                const uploadId = `cad-upload-${task.id}`;
 
-                                                            return (
-                                                                <div key={task.id} className={`task-row-card ${isHighlighted ? 'highlighted-task-row-card' : ''}`}>
-                                                                    {/* Row Header */}
-                                                                    <div className="task-row-header">
-                                                                        <div className="task-row-info">
-                                                                            <div className={`task-row-code code-${getUnitCodeBadgeClass(task.task_code).replace('badge-', '')}`} style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', width: 'auto', borderRadius: '4px' }}>
-                                                                                {task.task_code || (task.is_assembly ? 'ASM' : 'PRT')}
-                                                                            </div>
-                                                                            <div className="task-row-meta">
-                                                                                <h4 className="task-row-title">{task.title}</h4>
-                                                                                <p className="task-row-desc">
-                                                                                    {task.description || "Follow the drafting standards specified in the master drawing."}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="task-row-actions">
-                                                                            {!task.is_virtual_extra && (
-                                                                                <>
-                                                                                    <button type="button" className="task-action-btn primary" onClick={(e) => {
-                                                                                        e.preventDefault();
-                                                                                        e.stopPropagation();
-                                                                                        handleOpenInIJCAD(task);
-                                                                                    }}>
-                                                                                        <Play size={14} /> Open in iJCAD
-                                                                                    </button>
-                                                                                    <button type="button" className="task-action-btn secondary" onClick={(e) => {
-                                                                                        e.preventDefault();
-                                                                                        e.stopPropagation();
-                                                                                        handleDownloadTask(task);
-                                                                                    }}>
-                                                                                        <Download size={14} /> Download
-                                                                                    </button>
-                                                                                </>
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* Row Body: Upload + Feedback side by side */}
-                                                                    <div className="task-row-body">
-                                                                        {/* Upload Section */}
-                                                                        <div
-                                                                            className={`task-row-upload ${dragActiveTaskId === task.id ? 'drag-active' : ''}`}
-                                                                            onDragEnter={handleDrag}
-                                                                            onDragOver={(e) => handleDragOver(e, task.id)}
-                                                                            onDragLeave={handleDragLeave}
-                                                                            onDrop={(e) => handleDrop(e, task)}
-                                                                            style={{ position: 'relative' }}
-                                                                        >
-                                                                            {dragActiveTaskId === task.id && (
-                                                                                <div className="drag-drop-overlay">
-                                                                                    <UploadCloud size={36} className="drag-drop-icon" />
-                                                                                    <span>Drop CAD file to upload</span>
+                                                                return (
+                                                                    <div key={task.id} className={`task-row-card ${isHighlighted ? 'highlighted-task-row-card' : ''}`}>
+                                                                        {/* Row Header */}
+                                                                        <div className="task-row-header">
+                                                                            <div className="task-row-info">
+                                                                                <div className={`task-row-code code-${getUnitCodeBadgeClass(task.task_code).replace('badge-', '')}`} style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', width: 'auto', borderRadius: '4px' }}>
+                                                                                    {task.task_code || (task.is_assembly ? 'ASM' : 'PRT')}
                                                                                 </div>
-                                                                            )}
-                                                                            <div className="upload-header-row">
-                                                                                <span className="task-row-section-label">Your Submissions {taskSubmissions.length > 0 ? `(${taskSubmissions.length})` : ''}</span>
-                                                                                {task.is_virtual_extra ? (
-                                                                                    <button className={`resubmit-trigger-btn`} onClick={() => { setFolderUploadTargetTask(sortedUnitTasks[0]); setUploadFolderModalOpen(true); }}>
-                                                                                        <Upload size={14} /> {taskSubmissions.length > 0 ? 'Add Another Folder' : 'Upload Folder'}
-                                                                                    </button>
-                                                                                ) : (
-                                                                                    <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`}>
-                                                                                        <Upload size={14} /> {latestSubmission ? 'Resubmit' : 'Upload'}
-                                                                                    </label>
+                                                                                <div className="task-row-meta">
+                                                                                    <h4 className="task-row-title">{task.title}</h4>
+                                                                                    <p className="task-row-desc">
+                                                                                        {task.description || "Follow the drafting standards specified in the master drawing."}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="task-row-actions">
+                                                                                {!task.is_virtual_extra && (
+                                                                                    <>
+                                                                                        <button type="button" className="task-action-btn primary" onClick={(e) => {
+                                                                                            e.preventDefault();
+                                                                                            e.stopPropagation();
+                                                                                            handleOpenInIJCAD(task);
+                                                                                        }}>
+                                                                                            <Play size={14} /> Open in iJCAD
+                                                                                        </button>
+                                                                                        <button type="button" className="task-action-btn secondary" onClick={(e) => {
+                                                                                            e.preventDefault();
+                                                                                            e.stopPropagation();
+                                                                                            handleDownloadTask(task);
+                                                                                        }}>
+                                                                                            <Download size={14} /> Download
+                                                                                        </button>
+                                                                                    </>
                                                                                 )}
                                                                             </div>
+                                                                        </div>
 
-                                                                            <div className="submissions-history-list">
-                                                                                {taskSubmissions.length > 0 ? (
-                                                                                    taskSubmissions.map((sub, sIdx) => (
-                                                                                        <div key={sub.id} className={`uploaded-file-card history-item ${sIdx === 0 ? 'latest' : ''}`}>
-                                                                                            <div className="uploaded-file-info">
-                                                                                                <FileText size={18} />
-                                                                                                <div className="file-meta-stack">
-                                                                                                    <span className="uploaded-file-name">
-                                                                                                        {sub.submission_file_path?.split(/[\\/]/).pop()}
-                                                                                                    </span>
-                                                                                                    <div className="history-badges">
-                                                                                                        {!task.is_virtual_extra && sIdx === 0 && <span className="history-badge latest">Latest</span>}
-                                                                                                        {!task.is_virtual_extra && sIdx > 0 && <span className="history-badge resubmit">Attempt {taskSubmissions.length - sIdx}</span>}
-                                                                                                        <div className={`assessment-status-badge ${sub.status}`}>
-                                                                                                            {sub.status === 'approved' && <CheckCircle2 size={12} />}
-                                                                                                            {sub.status === 'pending' && <Clock size={12} />}
-                                                                                                            {sub.status === 'rejected' && <AlertCircle size={12} />}
-                                                                                                            <span>{sub.status}</span>
+                                                                        {/* Row Body: Upload + Feedback side by side */}
+                                                                        <div className="task-row-body">
+                                                                            {/* Upload Section */}
+                                                                            <div
+                                                                                className={`task-row-upload ${dragActiveTaskId === task.id ? 'drag-active' : ''}`}
+                                                                                onDragEnter={handleDrag}
+                                                                                onDragOver={(e) => handleDragOver(e, task.id)}
+                                                                                onDragLeave={handleDragLeave}
+                                                                                onDrop={(e) => handleDrop(e, task)}
+                                                                                style={{ position: 'relative' }}
+                                                                            >
+                                                                                {dragActiveTaskId === task.id && (
+                                                                                    <div className="drag-drop-overlay">
+                                                                                        <UploadCloud size={36} className="drag-drop-icon" />
+                                                                                        <span>Drop CAD file to upload</span>
+                                                                                    </div>
+                                                                                )}
+                                                                                <div className="upload-header-row">
+                                                                                    <span className="task-row-section-label">Your Submissions {taskSubmissions.length > 0 ? `(${taskSubmissions.length})` : ''}</span>
+                                                                                    {task.is_virtual_extra ? (
+                                                                                        <button className={`resubmit-trigger-btn`} onClick={() => { setFolderUploadTargetTask(sortedUnitTasks[0]); setUploadFolderModalOpen(true); }}>
+                                                                                            <Upload size={14} /> {taskSubmissions.length > 0 ? 'Add Another Folder' : 'Upload Folder'}
+                                                                                        </button>
+                                                                                    ) : (
+                                                                                        <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`}>
+                                                                                            <Upload size={14} /> {latestSubmission ? 'Resubmit' : 'Upload'}
+                                                                                        </label>
+                                                                                    )}
+                                                                                </div>
+
+                                                                                <div className="submissions-history-list">
+                                                                                    {taskSubmissions.length > 0 ? (
+                                                                                        taskSubmissions.map((sub, sIdx) => (
+                                                                                            <div key={sub.id} className={`uploaded-file-card history-item ${sIdx === 0 ? 'latest' : ''}`}>
+                                                                                                <div className="uploaded-file-info">
+                                                                                                    <FileText size={18} />
+                                                                                                    <div className="file-meta-stack">
+                                                                                                        <span className="uploaded-file-name">
+                                                                                                            {sub.submission_file_path?.split(/[\\/]/).pop()}
+                                                                                                        </span>
+                                                                                                        <div className="history-badges">
+                                                                                                            {!task.is_virtual_extra && sIdx === 0 && <span className="history-badge latest">Latest</span>}
+                                                                                                            {!task.is_virtual_extra && sIdx > 0 && <span className="history-badge resubmit">Attempt {taskSubmissions.length - sIdx}</span>}
+                                                                                                            <div className={`assessment-status-badge ${sub.status}`}>
+                                                                                                                {sub.status === 'approved' && <CheckCircle2 size={12} />}
+                                                                                                                {sub.status === 'pending' && <Clock size={12} />}
+                                                                                                                {sub.status === 'rejected' && <AlertCircle size={12} />}
+                                                                                                                <span>{sub.status}</span>
+                                                                                                            </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
+                                                                                                <div className="table-actions-horizontal">
+                                                                                                    <button
+                                                                                                        className="action-btn-styled delete"
+                                                                                                        title="Delete submission"
+                                                                                                        onClick={() => handleDeleteSubmission(sub.id)}
+                                                                                                    >
+                                                                                                        <Trash2 size={14} />
+                                                                                                    </button>
+                                                                                                </div>
                                                                                             </div>
-                                                                                            <div className="table-actions-horizontal">
-                                                                                                <button
-                                                                                                    className="action-btn-styled delete"
-                                                                                                    title="Delete submission"
-                                                                                                    onClick={() => handleDeleteSubmission(sub.id)}
-                                                                                                >
-                                                                                                    <Trash2 size={14} />
-                                                                                                </button>
+                                                                                        ))
+                                                                                    ) : (
+                                                                                        <div className="no-submissions-yet">
+                                                                                            <div className="empty-upload-placeholder">
+                                                                                                <UploadCloud size={24} />
+                                                                                                <p>No files uploaded yet. Drag & drop CAD or .zip file here or click Upload</p>
                                                                                             </div>
                                                                                         </div>
-                                                                                    ))
+                                                                                    )}
+                                                                                </div>
+                                                                                {!task.is_virtual_extra && (
+                                                                                    <input
+                                                                                        type="file" id={uploadId}
+                                                                                        accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
+                                                                                        onChange={(e) => handleFileUpload(e, task, assessmentType)}
+                                                                                        disabled={isUploading}
+                                                                                        style={{ display: 'none' }}
+                                                                                    />
+                                                                                )}
+                                                                            </div>
+
+                                                                            {/* Trainer Feedback Section */}
+                                                                            <div className="task-row-feedback">
+                                                                                <span className="task-row-section-label">Trainer Feedback</span>
+                                                                                {latestSubmission?.status === 'pending' ? (
+                                                                                    <>
+                                                                                        {feedbackSubmission && feedbackSubmission.id !== latestSubmission.id ? (
+                                                                                            <>
+                                                                                                {expandedFeedbackId === feedbackSubmission.id ? (
+                                                                                                    <div className={`feedback-container pending animate-scale-in`}>
+                                                                                                        <div className="feedback-header-row" onClick={() => setExpandedFeedbackId(null)}>
+                                                                                                            <div className="feedback-status-info">
+                                                                                                                <Clock size={16} />
+                                                                                                                <span>Revision Resubmitted (Pending Review)</span>
+                                                                                                            </div>
+                                                                                                            <span className="close-feedback-btn">Close</span>
+                                                                                                        </div>
+
+                                                                                                        {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
+                                                                                                            <div className="feedback-details">
+                                                                                                                <div style={{ padding: '8px 12px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '6px', fontSize: '0.85rem', color: '#fdba74', marginBottom: '10px' }}>
+                                                                                                                    Your corrected work has been submitted and is currently pending trainer review. Below is the feedback from your previous attempt.
+                                                                                                                </div>
+                                                                                                                {feedbackSubmission.feedback[0].comments && (
+                                                                                                                    <div className="feedback-comment">
+                                                                                                                        <p>{feedbackSubmission.feedback[0].comments}</p>
+                                                                                                                    </div>
+                                                                                                                )}
+
+                                                                                                                {/* Trainee Reply Display */}
+                                                                                                                {feedbackSubmission.feedback[0].trainee_reply && (
+                                                                                                                    <div className="feedback-trainee-reply">
+                                                                                                                        <div className="reply-header">
+                                                                                                                            <span className="reply-badge">Your Reply</span>
+                                                                                                                            {feedbackSubmission.feedback[0].replied_at && (
+                                                                                                                                <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
+                                                                                                                            )}
+                                                                                                                        </div>
+                                                                                                                        <p>{feedbackSubmission.feedback[0].trainee_reply}</p>
+                                                                                                                    </div>
+                                                                                                                )}
+
+                                                                                                                {feedbackSubmission.feedback[0].checkback_file_path && (
+                                                                                                                    <div className="feedback-file-actions">
+                                                                                                                        <button
+                                                                                                                            className="checkback-open-btn"
+                                                                                                                            onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
+                                                                                                                        >
+                                                                                                                            <FileSpreadsheet size={16} />
+                                                                                                                            Open in Excel
+                                                                                                                        </button>
+                                                                                                                        <a
+                                                                                                                            href="#"
+                                                                                                                            className="checkback-download-icon-btn"
+                                                                                                                            title="Download copy"
+                                                                                                                            onClick={(e) => {
+                                                                                                                                e.preventDefault();
+                                                                                                                                e.stopPropagation();
+                                                                                                                                handleDownloadFeedback(feedbackSubmission);
+                                                                                                                            }}
+                                                                                                                        >
+                                                                                                                            <Download size={14} />
+                                                                                                                        </a>
+                                                                                                                    </div>
+                                                                                                                )}
+                                                                                                            </div>
+                                                                                                        )}
+                                                                                                    </div>
+                                                                                                ) : (
+                                                                                                    <div
+                                                                                                        className={`feedback-message pending clickable animate-fade-in`}
+                                                                                                        onClick={() => setExpandedFeedbackId(feedbackSubmission.id)}
+                                                                                                    >
+                                                                                                        <Clock size={14} style={{ color: '#f59e0b' }} />
+                                                                                                        <span className="feedback-preview-text" style={{ color: '#fdba74' }}>
+                                                                                                            Pending Review (Corrected Work Submitted) - View previous feedback
+                                                                                                        </span>
+                                                                                                        <ChevronRight size={14} className="expand-icon" />
+                                                                                                    </div>
+                                                                                                )}
+                                                                                            </>
+                                                                                        ) : (
+                                                                                            <div className="feedback-message empty">
+                                                                                                <Clock size={14} />
+                                                                                                <span>Waiting for trainer review</span>
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </>
+                                                                                ) : feedbackSubmission?.status && feedbackSubmission.status !== 'pending' ? (
+                                                                                    <>
+                                                                                        {expandedFeedbackId === feedbackSubmission.id ? (
+                                                                                            <div className={`feedback-container ${feedbackSubmission.status} animate-scale-in`}>
+                                                                                                <div className="feedback-header-row" onClick={() => setExpandedFeedbackId(null)}>
+                                                                                                    <div className="feedback-status-info">
+                                                                                                        {feedbackSubmission.status === 'approved' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
+                                                                                                        <span>{feedbackSubmission.status === 'approved' ? 'Submission Approved' : 'Revision Required'}</span>
+                                                                                                    </div>
+                                                                                                    <span className="close-feedback-btn">Close</span>
+                                                                                                </div>
+
+                                                                                                {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
+                                                                                                    <div className="feedback-details">
+                                                                                                        {feedbackSubmission.feedback[0].comments && (
+                                                                                                            <div className="feedback-comment">
+                                                                                                                <p>{feedbackSubmission.feedback[0].comments}</p>
+                                                                                                            </div>
+                                                                                                        )}
+
+                                                                                                        {/* Trainee Reply Display */}
+                                                                                                        {feedbackSubmission.feedback[0].trainee_reply && (
+                                                                                                            <div className="feedback-trainee-reply">
+                                                                                                                <div className="reply-header">
+                                                                                                                    <span className="reply-badge">Your Reply</span>
+                                                                                                                    {feedbackSubmission.feedback[0].replied_at && (
+                                                                                                                        <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
+                                                                                                                    )}
+                                                                                                                </div>
+                                                                                                                <p>{feedbackSubmission.feedback[0].trainee_reply}</p>
+                                                                                                            </div>
+                                                                                                        )}
+
+                                                                                                        {/* Reply Input (only if no reply yet) */}
+                                                                                                        {!feedbackSubmission.feedback[0].trainee_reply && (
+                                                                                                            <div className="feedback-reply-input-group">
+                                                                                                                <textarea
+                                                                                                                    placeholder="Reply to trainer comment..."
+                                                                                                                    className="reply-textarea"
+                                                                                                                    id={`reply-to-${feedbackSubmission.feedback[0].id}`}
+                                                                                                                />
+                                                                                                                <button
+                                                                                                                    className="reply-submit-btn"
+                                                                                                                    onClick={async () => {
+                                                                                                                        const feedbackItems = feedbackSubmission.feedback;
+                                                                                                                        if (!feedbackItems || feedbackItems.length === 0) return;
+
+                                                                                                                        const feedbackId = feedbackItems[0].id;
+                                                                                                                        const textarea = document.getElementById(`reply-to-${feedbackId}`) as HTMLTextAreaElement;
+                                                                                                                        const text = textarea?.value?.trim();
+                                                                                                                        if (!text) return;
+
+                                                                                                                        await handleReplyToFeedback(feedbackId, text);
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    Send Reply
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        )}
+
+                                                                                                        {feedbackSubmission.feedback[0].checkback_file_path && (
+                                                                                                            <div className="feedback-file-actions">
+                                                                                                                <button
+                                                                                                                    className="checkback-open-btn"
+                                                                                                                    onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
+                                                                                                                >
+                                                                                                                    <FileSpreadsheet size={16} />
+                                                                                                                    Open in Excel
+                                                                                                                </button>
+                                                                                                                <a
+                                                                                                                    href="#"
+                                                                                                                    className="checkback-download-icon-btn"
+                                                                                                                    title="Download copy"
+                                                                                                                    onClick={(e) => {
+                                                                                                                        e.preventDefault();
+                                                                                                                        e.stopPropagation();
+                                                                                                                        handleDownloadFeedback(feedbackSubmission);
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <Download size={14} />
+                                                                                                                </a>
+                                                                                                            </div>
+                                                                                                        )}
+                                                                                                        {feedbackSubmission.status === 'rejected' && latestSubmission?.status === 'rejected' && (
+                                                                                                            <div className="feedback-resubmit-action">
+                                                                                                                <button
+                                                                                                                    className="btn-primary resubmit-work-btn"
+                                                                                                                    onClick={() => document.getElementById(uploadId)?.click()}
+                                                                                                                >
+                                                                                                                    <Upload size={14} /> Resubmit Corrected Work
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        )}
+                                                                                                    </div>
+                                                                                                )}
+                                                                                            </div>
+                                                                                        ) : (
+                                                                                            <div
+                                                                                                className={`feedback-message ${feedbackSubmission.status} clickable animate-fade-in`}
+                                                                                                onClick={() => setExpandedFeedbackId(feedbackSubmission.id)}
+                                                                                            >
+                                                                                                {feedbackSubmission.status === 'approved' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
+                                                                                                <span className="feedback-preview-text">
+                                                                                                    {feedbackSubmission.feedback?.[0]?.comments || (feedbackSubmission.status === 'approved' ? 'Approved by trainer' : 'Revision required')}
+                                                                                                </span>
+                                                                                                <ChevronRight size={14} className="expand-icon" />
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </>
                                                                                 ) : (
-                                                                                    <div className="no-submissions-yet">
-                                                                                        <div className="empty-upload-placeholder">
-                                                                                            <UploadCloud size={24} />
-                                                                                            <p>No files uploaded yet. Drag & drop CAD or .zip file here or click Upload</p>
-                                                                                        </div>
+                                                                                    <div className="feedback-message empty">
+                                                                                        {latestSubmission ? <Clock size={14} /> : <FileText size={14} />}
+                                                                                        <span>{latestSubmission ? 'Waiting for trainer review' : 'No feedback yet'}</span>
                                                                                     </div>
                                                                                 )}
                                                                             </div>
-                                                                            {!task.is_virtual_extra && (
-                                                                                <input
-                                                                                    type="file" id={uploadId}
-                                                                                    accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
-                                                                                    onChange={(e) => handleFileUpload(e, task, assessmentType)}
-                                                                                    disabled={isUploading}
-                                                                                    style={{ display: 'none' }}
-                                                                                />
-                                                                            )}
-                                                                        </div>
-
-                                                                        {/* Trainer Feedback Section */}
-                                                                        <div className="task-row-feedback">
-                                                                            <span className="task-row-section-label">Trainer Feedback</span>
-                                                                            {latestSubmission?.status === 'pending' ? (
-                                                                                <>
-                                                                                    {feedbackSubmission && feedbackSubmission.id !== latestSubmission.id ? (
-                                                                                        <>
-                                                                                            {expandedFeedbackId === feedbackSubmission.id ? (
-                                                                                                <div className={`feedback-container pending animate-scale-in`}>
-                                                                                                    <div className="feedback-header-row" onClick={() => setExpandedFeedbackId(null)}>
-                                                                                                        <div className="feedback-status-info">
-                                                                                                            <Clock size={16} />
-                                                                                                            <span>Revision Resubmitted (Pending Review)</span>
-                                                                                                        </div>
-                                                                                                        <span className="close-feedback-btn">Close</span>
-                                                                                                    </div>
-
-                                                                                                    {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
-                                                                                                        <div className="feedback-details">
-                                                                                                            <div style={{ padding: '8px 12px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '6px', fontSize: '0.85rem', color: '#fdba74', marginBottom: '10px' }}>
-                                                                                                                Your corrected work has been submitted and is currently pending trainer review. Below is the feedback from your previous attempt.
-                                                                                                            </div>
-                                                                                                            {feedbackSubmission.feedback[0].comments && (
-                                                                                                                <div className="feedback-comment">
-                                                                                                                    <p>{feedbackSubmission.feedback[0].comments}</p>
-                                                                                                                </div>
-                                                                                                            )}
-
-                                                                                                            {/* Trainee Reply Display */}
-                                                                                                            {feedbackSubmission.feedback[0].trainee_reply && (
-                                                                                                                <div className="feedback-trainee-reply">
-                                                                                                                    <div className="reply-header">
-                                                                                                                        <span className="reply-badge">Your Reply</span>
-                                                                                                                        {feedbackSubmission.feedback[0].replied_at && (
-                                                                                                                            <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
-                                                                                                                        )}
-                                                                                                                    </div>
-                                                                                                                    <p>{feedbackSubmission.feedback[0].trainee_reply}</p>
-                                                                                                                </div>
-                                                                                                            )}
-
-                                                                                                            {feedbackSubmission.feedback[0].checkback_file_path && (
-                                                                                                                <div className="feedback-file-actions">
-                                                                                                                    <button
-                                                                                                                        className="checkback-open-btn"
-                                                                                                                        onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
-                                                                                                                    >
-                                                                                                                        <FileSpreadsheet size={16} />
-                                                                                                                        Open in Excel
-                                                                                                                    </button>
-                                                                                                                    <a
-                                                                                                                        href="#"
-                                                                                                                        className="checkback-download-icon-btn"
-                                                                                                                        title="Download copy"
-                                                                                                                        onClick={(e) => {
-                                                                                                                            e.preventDefault();
-                                                                                                                            e.stopPropagation();
-                                                                                                                            handleDownloadFeedback(feedbackSubmission);
-                                                                                                                        }}
-                                                                                                                    >
-                                                                                                                        <Download size={14} />
-                                                                                                                    </a>
-                                                                                                                </div>
-                                                                                                            )}
-                                                                                                        </div>
-                                                                                                    )}
-                                                                                                </div>
-                                                                                            ) : (
-                                                                                                <div
-                                                                                                    className={`feedback-message pending clickable animate-fade-in`}
-                                                                                                    onClick={() => setExpandedFeedbackId(feedbackSubmission.id)}
-                                                                                                >
-                                                                                                    <Clock size={14} style={{ color: '#f59e0b' }} />
-                                                                                                    <span className="feedback-preview-text" style={{ color: '#fdba74' }}>
-                                                                                                        Pending Review (Corrected Work Submitted) - View previous feedback
-                                                                                                    </span>
-                                                                                                    <ChevronRight size={14} className="expand-icon" />
-                                                                                                </div>
-                                                                                            )}
-                                                                                        </>
-                                                                                    ) : (
-                                                                                        <div className="feedback-message empty">
-                                                                                            <Clock size={14} />
-                                                                                            <span>Waiting for trainer review</span>
-                                                                                        </div>
-                                                                                    )}
-                                                                                </>
-                                                                            ) : feedbackSubmission?.status && feedbackSubmission.status !== 'pending' ? (
-                                                                                <>
-                                                                                    {expandedFeedbackId === feedbackSubmission.id ? (
-                                                                                        <div className={`feedback-container ${feedbackSubmission.status} animate-scale-in`}>
-                                                                                            <div className="feedback-header-row" onClick={() => setExpandedFeedbackId(null)}>
-                                                                                                <div className="feedback-status-info">
-                                                                                                    {feedbackSubmission.status === 'approved' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
-                                                                                                    <span>{feedbackSubmission.status === 'approved' ? 'Submission Approved' : 'Revision Required'}</span>
-                                                                                                </div>
-                                                                                                <span className="close-feedback-btn">Close</span>
-                                                                                            </div>
-
-                                                                                            {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
-                                                                                                <div className="feedback-details">
-                                                                                                    {feedbackSubmission.feedback[0].comments && (
-                                                                                                        <div className="feedback-comment">
-                                                                                                            <p>{feedbackSubmission.feedback[0].comments}</p>
-                                                                                                        </div>
-                                                                                                    )}
-
-                                                                                                    {/* Trainee Reply Display */}
-                                                                                                    {feedbackSubmission.feedback[0].trainee_reply && (
-                                                                                                        <div className="feedback-trainee-reply">
-                                                                                                            <div className="reply-header">
-                                                                                                                <span className="reply-badge">Your Reply</span>
-                                                                                                                {feedbackSubmission.feedback[0].replied_at && (
-                                                                                                                    <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
-                                                                                                                )}
-                                                                                                            </div>
-                                                                                                            <p>{feedbackSubmission.feedback[0].trainee_reply}</p>
-                                                                                                        </div>
-                                                                                                    )}
-
-                                                                                                    {/* Reply Input (only if no reply yet) */}
-                                                                                                    {!feedbackSubmission.feedback[0].trainee_reply && (
-                                                                                                        <div className="feedback-reply-input-group">
-                                                                                                            <textarea
-                                                                                                                placeholder="Reply to trainer comment..."
-                                                                                                                className="reply-textarea"
-                                                                                                                id={`reply-to-${feedbackSubmission.feedback[0].id}`}
-                                                                                                            />
-                                                                                                            <button
-                                                                                                                className="reply-submit-btn"
-                                                                                                                onClick={async () => {
-                                                                                                                    const feedbackItems = feedbackSubmission.feedback;
-                                                                                                                    if (!feedbackItems || feedbackItems.length === 0) return;
-
-                                                                                                                    const feedbackId = feedbackItems[0].id;
-                                                                                                                    const textarea = document.getElementById(`reply-to-${feedbackId}`) as HTMLTextAreaElement;
-                                                                                                                    const text = textarea?.value?.trim();
-                                                                                                                    if (!text) return;
-
-                                                                                                                    await handleReplyToFeedback(feedbackId, text);
-                                                                                                                }}
-                                                                                                            >
-                                                                                                                Send Reply
-                                                                                                            </button>
-                                                                                                        </div>
-                                                                                                    )}
-
-                                                                                                    {feedbackSubmission.feedback[0].checkback_file_path && (
-                                                                                                        <div className="feedback-file-actions">
-                                                                                                            <button
-                                                                                                                className="checkback-open-btn"
-                                                                                                                onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
-                                                                                                            >
-                                                                                                                <FileSpreadsheet size={16} />
-                                                                                                                Open in Excel
-                                                                                                            </button>
-                                                                                                            <a
-                                                                                                                href="#"
-                                                                                                                className="checkback-download-icon-btn"
-                                                                                                                title="Download copy"
-                                                                                                                onClick={(e) => {
-                                                                                                                    e.preventDefault();
-                                                                                                                    e.stopPropagation();
-                                                                                                                    handleDownloadFeedback(feedbackSubmission);
-                                                                                                                }}
-                                                                                                            >
-                                                                                                                <Download size={14} />
-                                                                                                            </a>
-                                                                                                        </div>
-                                                                                                    )}
-                                                                                                    {feedbackSubmission.status === 'rejected' && latestSubmission?.status === 'rejected' && (
-                                                                                                        <div className="feedback-resubmit-action">
-                                                                                                            <button
-                                                                                                                className="btn-primary resubmit-work-btn"
-                                                                                                                onClick={() => document.getElementById(uploadId)?.click()}
-                                                                                                            >
-                                                                                                                <Upload size={14} /> Resubmit Corrected Work
-                                                                                                            </button>
-                                                                                                        </div>
-                                                                                                    )}
-                                                                                                </div>
-                                                                                            )}
-                                                                                        </div>
-                                                                                    ) : (
-                                                                                        <div
-                                                                                            className={`feedback-message ${feedbackSubmission.status} clickable animate-fade-in`}
-                                                                                            onClick={() => setExpandedFeedbackId(feedbackSubmission.id)}
-                                                                                        >
-                                                                                            {feedbackSubmission.status === 'approved' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
-                                                                                            <span className="feedback-preview-text">
-                                                                                                {feedbackSubmission.feedback?.[0]?.comments || (feedbackSubmission.status === 'approved' ? 'Approved by trainer' : 'Revision required')}
-                                                                                            </span>
-                                                                                            <ChevronRight size={14} className="expand-icon" />
-                                                                                        </div>
-                                                                                    )}
-                                                                                </>
-                                                                            ) : (
-                                                                                <div className="feedback-message empty">
-                                                                                    {latestSubmission ? <Clock size={14} /> : <FileText size={14} />}
-                                                                                    <span>{latestSubmission ? 'Waiting for trainer review' : 'No feedback yet'}</span>
-                                                                                </div>
-                                                                            )}
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            );
-                                                        });
+                                                                );
+                                                            });
                                                         })()}
                                                     </div>
                                                 </div>
@@ -1292,33 +1283,33 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div className="form-group">
                         <label>Folder Name:</label>
-                        <input 
-                            type="text" 
-                            className="modal-input" 
-                            value={customFolderName} 
-                            onChange={(e) => setCustomFolderName(e.target.value)} 
+                        <input
+                            type="text"
+                            className="modal-input"
+                            value={customFolderName}
+                            onChange={(e) => setCustomFolderName(e.target.value)}
                             placeholder="e.g. Purchase Parts"
                             style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)' }}
                         />
                     </div>
                     <div className="form-group">
                         <label>Select Folder:</label>
-                        <div 
-                            className="upload-dropzone" 
+                        <div
+                            className="upload-dropzone"
                             onClick={() => folderInputRef.current?.click()}
                             style={{ border: '2px dashed var(--border-color)', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '8px', marginTop: '0.5rem' }}
                         >
                             <UploadCloud size={32} style={{ color: 'var(--text-muted)', marginBottom: '10px' }} />
                             <p style={{ margin: 0, fontSize: '0.9rem' }}>Click to select a folder from your computer</p>
-                            <input 
-                                type="file" 
-                                multiple 
+                            <input
+                                type="file"
+                                multiple
                                 // @ts-ignore
-                                webkitdirectory="true" 
+                                webkitdirectory="true"
                                 directory="true"
-                                ref={folderInputRef} 
-                                style={{ display: 'none' }} 
-                                onChange={handleFolderFilesSelect} 
+                                ref={folderInputRef}
+                                style={{ display: 'none' }}
+                                onChange={handleFolderFilesSelect}
                             />
                         </div>
                     </div>
@@ -1354,7 +1345,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                         <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>Submissions deleted by trainee</p>
                         {trashSubmissions.length > 0 && (
-                            <button 
+                            <button
                                 onClick={handleEmptyTrash}
                                 style={{ background: 'transparent', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}
                                 onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
@@ -1377,7 +1368,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {trashSubmissions.map(sub => (
                                     <div key={sub.id} style={{
-                                        background: 'rgba(255,255,255,0.02)',
+                                        background: 'var(--bg-card-hover, rgba(0,0,0,0.02))',
                                         border: '1px solid var(--border-color)',
                                         borderRadius: '8px',
                                         padding: '1rem',
@@ -1388,15 +1379,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                         flexWrap: 'wrap'
                                     }}>
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: '1 1 200px', minWidth: 0 }}>
-                                            <span style={{ fontWeight: 600, color: '#f8fafc', wordBreak: 'break-all' }}>
+                                            <span style={{ fontWeight: 600, color: 'var(--text-main, #0f172a)', wordBreak: 'break-all' }}>
                                                 {sub.submission_file_path?.split(/[\\/]/).pop()}
                                             </span>
-                                            <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+                                            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted, #64748b)' }}>
                                                 Deleted: {new Date(sub.updated_at || sub.submitted_at).toLocaleString()}
                                             </span>
                                         </div>
                                         <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
-                                            <button 
+                                            <button
                                                 style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
                                                 onClick={() => handleRestore(sub.id)}
                                                 onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'; }}
@@ -1404,7 +1395,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             >
                                                 <RotateCcw size={16} /> Restore
                                             </button>
-                                            <button 
+                                            <button
                                                 style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
                                                 onClick={() => handlePermanentDelete(sub.id)}
                                                 onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'; }}
