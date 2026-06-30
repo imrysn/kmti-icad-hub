@@ -19,6 +19,11 @@ echo Cleaning old builds...
 if exist "dist" rd /s /q "dist"
 if exist "build" rd /s /q "build"
 
+set CACHE_ARG=
+if exist "tts_cache" (
+    set CACHE_ARG=--add-data="tts_cache;backend/tts_cache"
+)
+
 echo Building Standalone EXE...
 :: --onefile: Create a single executable
 :: --name: Name of the output file
@@ -28,6 +33,7 @@ python -m PyInstaller --onefile --noconsole ^
     --name KMTI_iCAD_Server ^
     --icon=kmti_logo.ico ^
     --add-data="kmti_logo.ico;." ^
+    %CACHE_ARG% ^
     --distpath=dist ^
     --workpath=build ^
     --hidden-import=uvicorn.logging ^
