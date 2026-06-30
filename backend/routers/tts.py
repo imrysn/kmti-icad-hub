@@ -1,10 +1,37 @@
 import os
 import io
 import logging
+import sys
+import hashlib
 import threading
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 import soundfile as sf
+
+def get_base_path():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    # This file is in backend/routers/tts.py, so parent of parent of parent is base path
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+BASE_PATH = get_base_path()
+
+# Determine writable and read-only cache directories
+if getattr(sys, 'frozen', False):
+    # Writable cache next to the executable
+    WRITABLE_CACHE_DIR = os.path.join(BASE_PATH, "tts_cache")
+    # Read-only bundled cache inside PyInstaller _MEIPASS
+    BUNDLED_CACHE_DIR = os.path.join(getattr(sys, '_MEIPASS', BASE_PATH), "backend", "tts_cache")
+else:
+    WRITABLE_CACHE_DIR = os.path.join(BASE_PATH, "backend", "tts_cache")
+    BUNDLED_CACHE_DIR = WRITABLE_CACHE_DIR
+
+# Ensure writable cache directory exists
+try:
+    os.makedirs(WRITABLE_CACHE_DIR, exist_ok=True)
+except Exception as e:
+    logging.warning(f"Could not create writable cache directory: {e}")
+
 
 # Explicitly load and configure espeak-ng on Windows
 try:
@@ -81,7 +108,28 @@ def get_kokoro_model():
             opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
             
             sess = ort.InferenceSession(ONNX_PATH, sess_options=opts, providers=['CPUExecutionProvider'])
-            _kokoro_instance = Kokoro.from_session(sess, VOICES_PATH)
+            
+            # Fix kokoro-onnx package bug where from_session calls get_voice_names()
+            # which does not exist in KoKoroConfig for this version.
+            try:
+                _kokoro_instance = Kokoro.from_session(sess, VOICES_PATH)
+            except AttributeError as ae:
+                if "get_voice_names" in str(ae):
+                    logger.info("Applying custom instantiation fallback for Kokoro TTS...")
+                    import numpy as np
+                    from kokoro_onnx.config import KoKoroConfig
+                    from kokoro_onnx.tokenizer import Tokenizer
+                    
+                    instance = Kokoro.__new__(Kokoro)
+                    instance.sess = sess
+                    instance.config = KoKoroConfig(sess._model_path, VOICES_PATH, None)
+                    instance.config.validate()
+                    instance.voices = np.load(VOICES_PATH)
+                    instance.tokenizer = Tokenizer(None)
+                    _kokoro_instance = instance
+                else:
+                    raise ae
+
             logger.info("Kokoro TTS loaded successfully with CPU optimizations!")
             return _kokoro_instance
         except Exception as e:
@@ -133,6 +181,31 @@ def synthesize(
     # Scale speed slightly to remove the slow-mo audiobook effect
     synthesis_speed = speed * 1.25
 
+    # Cache Lookup Logic
+    cache_string = f"{clean_text}_{voice}_{synthesis_speed}_{lang}"
+    cache_key = hashlib.sha256(cache_string.encode('utf-8')).hexdigest()
+    cache_filename = f"{cache_key}.wav"
+
+    # 1. Check read-only bundled cache first
+    bundled_file_path = os.path.join(BUNDLED_CACHE_DIR, cache_filename)
+    if os.path.exists(bundled_file_path):
+        logger.info(f"TTS Cache Hit (Bundled): '{clean_text[:30]}...' -> {cache_filename}")
+        return FileResponse(
+            bundled_file_path,
+            media_type="audio/wav",
+            headers={"Content-Disposition": f"inline; filename={cache_filename}"}
+        )
+
+    # 2. Check writable local cache
+    local_file_path = os.path.join(WRITABLE_CACHE_DIR, cache_filename)
+    if os.path.exists(local_file_path):
+        logger.info(f"TTS Cache Hit (Local): '{clean_text[:30]}...' -> {cache_filename}")
+        return FileResponse(
+            local_file_path,
+            media_type="audio/wav",
+            headers={"Content-Disposition": f"inline; filename={cache_filename}"}
+        )
+
     try:
         kokoro = get_kokoro_model()
         try:
@@ -172,15 +245,17 @@ def synthesize(
         if max_val > 0:
             samples = (samples / max_val) * 0.98
 
-        # Write samples to an in-memory buffer in WAV format
-        wav_buffer = io.BytesIO()
-        sf.write(wav_buffer, samples, sample_rate, format="WAV")
-        wav_buffer.seek(0)
+        # Write samples directly to local cache file
+        try:
+            sf.write(local_file_path, samples, sample_rate, format="WAV")
+            logger.info(f"TTS Cache Written: {cache_filename}")
+        except Exception as cache_write_err:
+            logger.warning(f"Failed to write TTS cache file: {cache_write_err}")
 
-        return StreamingResponse(
-            wav_buffer, 
+        return FileResponse(
+            local_file_path, 
             media_type="audio/wav",
-            headers={"Content-Disposition": "inline; filename=speech.wav"}
+            headers={"Content-Disposition": f"inline; filename={cache_filename}"}
         )
     except HTTPException:
         raise

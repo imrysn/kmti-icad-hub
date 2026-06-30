@@ -595,6 +595,19 @@ def download_master_file(
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task or not task.master_file_path:
         raise HTTPException(status_code=404, detail="Master file not found")
+
+    # Fix #5: Trainees may only download files for tasks in their assigned sets
+    if current_user.role == "trainee":
+        from ..models import TraineeSetMapping
+        mappings = db.query(TraineeSetMapping).filter(
+            TraineeSetMapping.trainee_id == current_user.id
+        ).all()
+        if mappings:
+            # If mappings exist, the task must be in an assigned set
+            allowed_sets = {m.actual_set_number for m in mappings}
+            if task.set_number not in allowed_sets:
+                raise HTTPException(status_code=403, detail="You are not assigned to this task set.")
+        # If no mappings exist, fall through — default locking is handled client-side
     
     full_path = resolve_master_path(task.master_file_path)
         
@@ -680,36 +693,37 @@ async def submit_task(
     db.commit()
     db.refresh(submission)
 
-    # --- Notification Logic ---
-    # Check if this submission completes the SET
-    set_tasks = db.query(AssessmentTask).filter(AssessmentTask.set_number == task.set_number).all()
-    set_task_ids = [t.id for t in set_tasks]
-    
-    # Count UNIQUE tasks submitted in this set to avoid double-counting attempts
-    user_submissions_count = db.query(AssessmentSubmission.task_id).filter(
-        AssessmentSubmission.user_id == current_user.id,
-        AssessmentSubmission.task_id.in_(set_task_ids)
-    ).distinct().count()
-
-    if user_submissions_count == len(set_tasks):
-        # Set is finished! Find the assigned trainer
-        mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
-        if mapping:
-            notification_msg = f"Trainee {current_user.full_name or current_user.username} finished Set {task.set_number}. You can now review their submissions."
-            new_notif = Notification(
-                recipient_id=mapping.trainer_id,
-                sender_id=current_user.id,
-                message=notification_msg,
-                type="assessment_completion"
-            )
-            db.add(new_notif)
-            db.commit()
-
-    # --- Real-Time Trainer Notification ---
+    # --- Real-Time Trainer Notification (consolidated, Fix #10) ---
+    # One notification per submission; includes set-completion context if all tasks are now submitted.
     mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
     if mapping:
         try:
-            notification_msg = f"Trainee {current_user.full_name or current_user.username} submitted Set {task.set_number} Unit {task.task_code} for review."
+            set_tasks = db.query(AssessmentTask).filter(
+                AssessmentTask.set_number == task.set_number,
+                AssessmentTask.assessment_type == assessment_type
+            ).all()
+            set_task_ids = [t.id for t in set_tasks]
+
+            user_sub_count = db.query(AssessmentSubmission.task_id).filter(
+                AssessmentSubmission.user_id == current_user.id,
+                AssessmentSubmission.task_id.in_(set_task_ids),
+                AssessmentSubmission.assessment_type == assessment_type,
+                AssessmentSubmission.is_deleted == False
+            ).distinct().count()
+
+            set_complete = (len(set_tasks) > 0 and user_sub_count == len(set_tasks))
+
+            if set_complete:
+                notification_msg = (
+                    f"{current_user.full_name or current_user.username} completed all tasks in "
+                    f"Set {task.set_number}! Ready for review."
+                )
+            else:
+                notification_msg = (
+                    f"{current_user.full_name or current_user.username} submitted "
+                    f"Set {task.set_number} Unit {task.task_code} for review."
+                )
+
             new_notif = Notification(
                 recipient_id=mapping.trainer_id,
                 sender_id=current_user.id,
@@ -722,12 +736,12 @@ async def submit_task(
             import asyncio
             asyncio.create_task(notification_manager.send_personal_message(
                 {
-                    "event": "NEW_SUBMISSION", 
+                    "event": "NEW_SUBMISSION",
                     "trainee_name": current_user.full_name or current_user.username,
                     "task_code": task.task_code,
                     "set_number": task.set_number,
                     "message": notification_msg
-                }, 
+                },
                 mapping.trainer_id
             ))
         except Exception as e:
@@ -845,6 +859,15 @@ def download_trainee_submission(
     submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.id == submission_id).first()
     if not submission or not submission.submission_file_path:
         raise HTTPException(status_code=404, detail="Submission file not found")
+
+    # Fix #4: Employees may only download submissions from trainees assigned to them
+    if current_user.role == "employee":
+        is_assigned = db.query(TrainerTraineeMapping).filter(
+            TrainerTraineeMapping.trainer_id == current_user.id,
+            TrainerTraineeMapping.trainee_id == submission.user_id
+        ).first()
+        if not is_assigned:
+            raise HTTPException(status_code=403, detail="You are not assigned to this trainee.")
     
     if not os.path.exists(submission.submission_file_path):
         raise HTTPException(status_code=404, detail="File does not exist on server")
@@ -1224,13 +1247,17 @@ def get_trainer_trainees_progress(
                 if is_completed:
                     completed_3d_practical += 1
                     
-        # Practical Assessment (2D) Progress
-        total_2d_practical = db.query(AssessmentTask).filter(AssessmentTask.is_assembly == True).count()
+        # Practical Assessment (2D) Progress — Fix #11: scope to 2D tasks only
+        total_2d_practical = db.query(AssessmentTask).filter(
+            AssessmentTask.is_assembly == True,
+            AssessmentTask.assessment_type == "2D"
+        ).count()
         completed_2d_practical = db.query(AssessmentSubmission).join(AssessmentTask).filter(
             AssessmentSubmission.user_id == trainee.id,
             AssessmentSubmission.status == 'approved',
             AssessmentSubmission.assessment_type == '2D',
-            AssessmentTask.is_assembly == True
+            AssessmentTask.is_assembly == True,
+            AssessmentTask.assessment_type == "2D"
         ).group_by(AssessmentTask.id).count()
 
         # Determine current activity (from realtime tracker or fallback to most recent quiz/submission)
