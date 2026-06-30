@@ -193,11 +193,66 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'cylinder';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
+
+  useEffect(() => {
+    const currentSteps = activeTab === 'cylinder' ? cylinderSteps :
+      activeTab === 'box' ? boxSteps :
+        activeTab === 'polygon' ? polygonSteps :
+          activeTab === 'cone' ? coneSteps : torusSteps;
+    const startIdx = activeTab === 'cylinder' ? 0 : 3;
+    registerText(currentSteps, startIdx);
+  }, [activeTab, registerText]);
+
+  const wasSpeakingRef = React.useRef(false);
+  const lastIndexRef = React.useRef(-1);
+  const shouldAutoPlayRef = React.useRef(false);
+
+  useEffect(() => {
+    if (currentIndex !== -1) {
+      lastIndexRef.current = currentIndex;
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (!isSpeaking && wasSpeakingRef.current) {
+      const stepsLength = activeTab === 'cylinder' ? cylinderSteps.length :
+        activeTab === 'box' ? boxSteps.length :
+          activeTab === 'polygon' ? polygonSteps.length :
+            activeTab === 'cone' ? coneSteps.length : torusSteps.length;
+      if (lastIndexRef.current === stepsLength - 1) {
+        const i = tabs.findIndex(t => t.id === activeTab);
+        if (i < tabs.length - 1) {
+          shouldAutoPlayRef.current = true;
+          handleNext();
+        }
+      }
+    }
+    wasSpeakingRef.current = isSpeaking;
+  }, [isSpeaking, activeTab]);
+
+  const prevTabRef = React.useRef(activeTab);
+
+  useEffect(() => {
+    if (activeTab !== prevTabRef.current) {
+      if (shouldAutoPlayRef.current) {
+        shouldAutoPlayRef.current = false;
+        setTimeout(() => {
+          const currentSteps = activeTab === 'cylinder' ? cylinderSteps :
+            activeTab === 'box' ? boxSteps :
+              activeTab === 'polygon' ? polygonSteps :
+                activeTab === 'cone' ? coneSteps : torusSteps;
+          const startIdx = activeTab === 'cylinder' ? 0 : 3;
+          speak(currentSteps, startIdx);
+        }, 300);
+      }
+      prevTabRef.current = activeTab;
+    }
+  }, [activeTab, speak]);
 
   const commonIntroSteps = [
     "Creating Basic Shapes",
@@ -207,42 +262,47 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   const cylinderSteps = [
     ...commonIntroSteps,
-    "CYLINDER",
+    "Let's start creating Cylinder",
     "Step 1: Select Arrange Cylinder from the icon menu.",
     "Step 2: On the bottom left corner, the item entry can be located. Specify the diameter and height of cylinder on the item entry.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
+    "This must be the preview if you follow correctly"
   ];
 
   const boxSteps = [
     ...commonIntroSteps,
-    "BOX",
+    "By creating Box, we must specify the depth, width, and height",
     "Step 1: Select Arrange Box from the icon menu.",
     "Step 2: Specify the depth, width and height of the box on the item entry.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
+    "This must be the preview if you follow correctly"
   ];
 
   const polygonSteps = [
     ...commonIntroSteps,
-    "POLYGON",
+    "By creating Polygon, we must specify the number of sides, diameter, and height",
     "Step 1: Select Arrange Polygonal Prism from the icon menu.",
     "Step 2: Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
+    "This must be the preview if you follow correctly"
   ];
 
   const coneSteps = [
     ...commonIntroSteps,
-    "CONE",
+    "By creating Cone, we must specify the number of sides, base diameter, top face diameter, and height",
     "Step 1: Select Arrange Cone from the icon menu.",
     "Step 2: Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry.",
-    "Step 3: On the Key Entry Area, enter the coordinates for the position (origin)."
+    "Step 3: On the Key Entry Area, enter the coordinates for the position (origin).",
+    "This must be the preview if you follow correctly"
   ];
 
   const torusSteps = [
     ...commonIntroSteps,
-    "TORUS",
+    "By creating Torus, we must specify the section diameter, path radius, and turn angle",
     "Step 1: Select Arrange Torus from the icon menu.",
     "Step 2: Specify the section diameter, path radius, and turn angle.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin)."
+    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
+    "This must be the preview if you follow correctly"
   ];
 
   const tabs = [
@@ -253,6 +313,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'torus', label: 'Torus' }];
 
   const handleNext = () => {
+    stop();
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -260,6 +321,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   const handlePrev = () => {
+    stop();
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -273,7 +335,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -291,7 +353,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 activeTab === 'box' ? boxSteps :
                   activeTab === 'polygon' ? polygonSteps :
                     activeTab === 'cone' ? coneSteps : torusSteps;
-              speak(currentSteps);
+              const startIdx = activeTab === 'cylinder' ? 0 : 3;
+              speak(currentSteps, startIdx);
             }}
             onStop={stop}
           />
@@ -318,7 +381,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cylinder' && (
           <div className="lesson-card tab-content fade-in">
 
-            <div className="card-header">
+            <div className="card-header" data-tts-text="Let's start creating Cylinder">
               <h4 className={`section-title ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ margin: 0 }}>
                 <KaraokeLessonText
                   as="span"
@@ -384,8 +447,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="card-header"><h4>PREVIEW</h4></div>
+            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
+                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+                  <KaraokeLessonText
+                    as="span"
+                    text="PREVIEW"
+                    isActive={isSpeaking && currentIndex === 7}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
+              </div>
               <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot mt-8" style={{ height: '500px' }} />
             </div>
 
@@ -399,7 +471,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'box' && (
           <div className="lesson-card tab-content fade-in">
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header">
+              <div className="card-header" data-tts-text="By creating Box, we must specify the depth, width, and height">
                 <h4 style={{ margin: 0 }}>
                   <KaraokeLessonText
                     as="span"
@@ -459,8 +531,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="card-header"><h4>PREVIEW</h4></div>
+            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
+                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+                  <KaraokeLessonText
+                    as="span"
+                    text="PREVIEW"
+                    isActive={isSpeaking && currentIndex === 7}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
+              </div>
               <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
@@ -474,7 +555,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'polygon' && (
           <div className="lesson-card tab-content fade-in">
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header">
+              <div className="card-header" data-tts-text="By creating Polygon, we must specify the number of sides, diameter, and height">
                 <h4 style={{ margin: 0 }}>
                   <KaraokeLessonText
                     as="span"
@@ -534,8 +615,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="card-header"><h4>PREVIEW</h4></div>
+            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
+                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+                  <KaraokeLessonText
+                    as="span"
+                    text="PREVIEW"
+                    isActive={isSpeaking && currentIndex === 7}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
+              </div>
               <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
@@ -549,7 +639,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cone' && (
           <div className="lesson-card tab-content fade-in">
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header">
+              <div className="card-header" data-tts-text="By creating Cone, we must specify the number of sides, base diameter, top face diameter, and height">
                 <h4 style={{ margin: 0 }}>
                   <KaraokeLessonText
                     as="span"
@@ -610,9 +700,18 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="card-header"><h4>PREVIEW</h4></div>
-              <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '500px' }} />
+            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
+                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+                  <KaraokeLessonText
+                    as="span"
+                    text="PREVIEW"
+                    isActive={isSpeaking && currentIndex === 7}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
+              </div>
+              <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -625,7 +724,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'torus' && (
           <div className="lesson-card tab-content fade-in">
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header">
+              <div className="card-header" data-tts-text="By creating Torus, we must specify the section diameter, path radius, and turn angle">
                 <h4 style={{ margin: 0 }}>
                   <KaraokeLessonText
                     as="span"
@@ -685,8 +784,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="card-header"><h4>PREVIEW</h4></div>
+            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
+                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
+                  <KaraokeLessonText
+                    as="span"
+                    text="PREVIEW"
+                    isActive={isSpeaking && currentIndex === 7}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </h4>
+              </div>
               <img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '500px' }} />
             </div>
 
@@ -707,11 +815,78 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'move';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
+
+  useEffect(() => {
+    const introTitle = "Move, Rotate, Copy, Mirror, Delete";
+    const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
+    const currentSteps = activeTab === 'move' ? moveSteps :
+      activeTab === 'rotate' ? rotateSteps :
+        activeTab === 'mirror' ? mirrorSteps :
+          activeTab === 'copy' ? copySteps :
+            activeTab === 'rotateCopy' ? rotateCopySteps :
+              activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
+    const fullSteps = [introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps];
+    const startIdx = activeTab === 'move' ? 0 : 2;
+    registerText(fullSteps, startIdx);
+  }, [activeTab, registerText]);
+
+  const wasSpeakingRef = React.useRef(false);
+  const lastIndexRef = React.useRef(-1);
+  const shouldAutoPlayRef = React.useRef(false);
+
+  useEffect(() => {
+    if (currentIndex !== -1) {
+      lastIndexRef.current = currentIndex;
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (!isSpeaking && wasSpeakingRef.current) {
+      const currentSteps = activeTab === 'move' ? moveSteps :
+        activeTab === 'rotate' ? rotateSteps :
+          activeTab === 'mirror' ? mirrorSteps :
+            activeTab === 'copy' ? copySteps :
+              activeTab === 'rotateCopy' ? rotateCopySteps :
+                activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
+      const stepsLength = 3 + currentSteps.length;
+      if (lastIndexRef.current === stepsLength - 1) {
+        const i = tabs.findIndex(t => t.id === activeTab);
+        if (i < tabs.length - 1) {
+          shouldAutoPlayRef.current = true;
+          handleNext();
+        }
+      }
+    }
+    wasSpeakingRef.current = isSpeaking;
+  }, [isSpeaking, activeTab]);
+
+  const prevTabRef = React.useRef(activeTab);
+
+  useEffect(() => {
+    if (activeTab !== prevTabRef.current) {
+      if (shouldAutoPlayRef.current) {
+        shouldAutoPlayRef.current = false;
+        setTimeout(() => {
+          const introTitle = "Move, Rotate, Copy, Mirror, Delete";
+          const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
+          const currentSteps = activeTab === 'move' ? moveSteps :
+            activeTab === 'rotate' ? rotateSteps :
+              activeTab === 'mirror' ? mirrorSteps :
+                activeTab === 'copy' ? copySteps :
+                  activeTab === 'rotateCopy' ? rotateCopySteps :
+                    activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
+          const startIdx = activeTab === 'move' ? 0 : 2;
+          speak([introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps], startIdx);
+        }, 300);
+      }
+      prevTabRef.current = activeTab;
+    }
+  }, [activeTab, speak]);
 
   const moveSteps = [
     "Step 1: Select Move from the icon menu.",
@@ -761,6 +936,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'delete', label: 'Delete' }];
 
   const handleNext = () => {
+    stop();
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -768,6 +944,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   const handlePrev = () => {
+    stop();
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -781,7 +958,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -801,7 +978,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   activeTab === 'copy' ? copySteps :
                     activeTab === 'rotateCopy' ? rotateCopySteps :
                       activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
-            speak([introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps]);
+            const startIdx = activeTab === 'move' ? 0 : 2;
+            speak([introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps], startIdx);
           }} onStop={stop} />
         </h3>
         <KaraokeLessonText
@@ -1238,11 +1416,75 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'sketch' | 'extrude' | 'revolve'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'sketch';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
+
+  useEffect(() => {
+    if (activeTab === 'sketch') {
+      const introTitle = "Sketch";
+      const introDesc = "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.";
+      registerText([introTitle, introDesc, ...sketchSteps], 0);
+    } else {
+      const introTitle = "Extrude and Revolve";
+      const introDesc = "Tools use to create solids from sketch in the 3D space.";
+      const steps = activeTab === 'extrude' ? extrudeSteps : revolveSteps;
+      const startIdx = activeTab === 'extrude' ? 0 : 2;
+      registerText([introTitle, introDesc, ...steps], startIdx);
+    }
+  }, [activeTab, registerText]);
+
+  const wasSpeakingRef = React.useRef(false);
+  const lastIndexRef = React.useRef(-1);
+  const shouldAutoPlayRef = React.useRef(false);
+
+  useEffect(() => {
+    if (currentIndex !== -1) {
+      lastIndexRef.current = currentIndex;
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (!isSpeaking && wasSpeakingRef.current) {
+      const stepsLength = activeTab === 'sketch' 
+        ? 2 + sketchSteps.length 
+        : 2 + (activeTab === 'extrude' ? extrudeSteps.length : revolveSteps.length);
+      if (lastIndexRef.current === stepsLength - 1) {
+        const i = tabs.findIndex(t => t.id === activeTab);
+        if (i < tabs.length - 1) {
+          shouldAutoPlayRef.current = true;
+          handleNext();
+        }
+      }
+    }
+    wasSpeakingRef.current = isSpeaking;
+  }, [isSpeaking, activeTab]);
+
+  const prevTabRef = React.useRef(activeTab);
+
+  useEffect(() => {
+    if (activeTab !== prevTabRef.current) {
+      if (shouldAutoPlayRef.current) {
+        shouldAutoPlayRef.current = false;
+        setTimeout(() => {
+          if (activeTab === 'sketch') {
+            const introTitle = "Sketch";
+            const introDesc = "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.";
+            speak([introTitle, introDesc, ...sketchSteps], 0);
+          } else {
+            const introTitle = "Extrude and Revolve";
+            const introDesc = "Tools use to create solids from sketch in the 3D space.";
+            const steps = activeTab === 'extrude' ? extrudeSteps : revolveSteps;
+            const startIdx = activeTab === 'extrude' ? 0 : 2;
+            speak([introTitle, introDesc, ...steps], startIdx);
+          }
+        }, 300);
+      }
+      prevTabRef.current = activeTab;
+    }
+  }, [activeTab, speak]);
 
   const sketchSteps = [
     "SKETCH",
@@ -1271,6 +1513,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   ];
 
   const handleNext = () => {
+    stop();
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1278,6 +1521,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   const handlePrev = () => {
+    stop();
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1291,7 +1535,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -1307,7 +1551,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
                 const introTitle = "Sketch";
                 const introDesc = "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.";
-                speak([introTitle, introDesc, ...sketchSteps]);
+                speak([introTitle, introDesc, ...sketchSteps], 0);
               }} onStop={stop} />
             </h3>
             <KaraokeLessonText
@@ -1332,7 +1576,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 const introTitle = "Extrude and Revolve";
                 const introDesc = "Tools use to create solids from sketch in the 3D space.";
                 const steps = activeTab === 'extrude' ? extrudeSteps : revolveSteps;
-                speak([introTitle, introDesc, ...steps]);
+                const startIdx = activeTab === 'extrude' ? 0 : 2;
+                speak([introTitle, introDesc, ...steps], startIdx);
               }} onStop={stop} />
             </h3>
             <KaraokeLessonText

@@ -3,7 +3,7 @@ import { TutorialStep } from "../VideoTutorialModal";
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 0,
-    title: "Overview",
+    title: "iCAD Interface",
     text: "Welcome to this iCAD interface tutorial. Today, we'll walk through the workspace, which is divided into several key functional areas designed for maximum modeling efficiency.",
     zoom: "scale(1)",
     origin: "50% 50%",

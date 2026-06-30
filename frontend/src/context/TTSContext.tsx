@@ -17,7 +17,8 @@ interface TTSContextType {
   currentSentenceIndex: number;
   activeParagraphText: string;
   currentText: string[];
-  registerText: (text: string[]) => void;
+  currentStartIndex: number;
+  registerText: (text: string[], startIndex?: number) => void;
   speak: (text: string[], startIndex?: number) => void;
   stop: () => void;
   rate: number;
@@ -32,9 +33,11 @@ const TTSContext = createContext<TTSContextType | undefined>(undefined);
 export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const tts = useTTS();
   const [currentText, setCurrentText] = useState<string[]>([]);
+  const [currentStartIndex, setCurrentStartIndex] = useState<number>(0);
 
-  const registerText = useCallback((text: string[]) => {
+  const registerText = useCallback((text: string[], startIndex: number = 0) => {
     setCurrentText(text);
+    setCurrentStartIndex(startIndex);
   }, []);
 
   return (
@@ -47,6 +50,7 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         currentSentenceIndex: tts.currentSentenceIndex,
         activeParagraphText: tts.activeParagraphText,
         currentText,
+        currentStartIndex,
         registerText,
         speak: tts.speak,
         stop: tts.stop,

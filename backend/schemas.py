@@ -199,6 +199,9 @@ class QuizResponse(QuizBase):
     updated_at: datetime
     questions: Optional[List[QuestionResponse]] = []
 
+    class Config:
+        from_attributes = True
+
 
 # --- Curriculum Management ---
 

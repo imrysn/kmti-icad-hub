@@ -89,22 +89,26 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 }) => {
   const { requestConfirmation } = useUI();
   const { user } = useAuth();
-  const { speak, stop, isSpeaking, currentText, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
+  const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
 
   const speakCurrent = useCallback(() => {
     // If the active lesson has already explicitly registered custom text paragraphs
     if (currentText && currentText.length > 0) {
-      speak(currentText);
+      speak(currentText, currentStartIndex);
       return;
     }
 
     // Dynamic Fallback: Scrape the DOM of the active lesson page for premium readable content
     const container = document.querySelector('.course-lesson-container');
     if (container) {
-      const elements = container.querySelectorAll('.section-title, p, .card-header, .step-header, .p-flush');
+      const elements = container.querySelectorAll('.section-title, p, .card-header, .step-header, .step-label, .p-flush');
       const paragraphs: string[] = [];
       elements.forEach(el => {
-        const text = el.textContent?.trim();
+        // Skip parent elements that contain another matched child to prevent duplicates (e.g. .step-header containing .step-label)
+        const hasMatchedChild = Array.from(elements).some(child => child !== el && el.contains(child));
+        if (hasMatchedChild) return;
+
+        const text = el.getAttribute('data-tts-text') || el.textContent?.trim();
         // Ignore buttons, navigation elements, or headers that are not part of lesson narration
         if (text && text.length > 2 && !el.closest('.lesson-navigation') && !el.closest('.lesson-tabs') && !el.closest('.tab-button')) {
           if (!paragraphs.includes(text)) {

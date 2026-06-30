@@ -24,12 +24,8 @@ if exist "tts_cache" (
     set CACHE_ARG=--add-data="tts_cache;backend/tts_cache"
 )
 
-echo Building Standalone EXE...
-:: --onefile: Create a single executable
-:: --name: Name of the output file
-:: --add-data: Include static files if needed (though we'll look for them externally)
-:: --hidden-import: Ensure all FastAPI/Uvicorn modules are included
-python -m PyInstaller --onefile --noconsole ^
+if exist "KMTI_iCAD_Server.spec" del /q "KMTI_iCAD_Server.spec"
+python -m PyInstaller --onefile --console ^
     --name KMTI_iCAD_Server ^
     --icon=kmti_logo.ico ^
     --add-data="kmti_logo.ico;." ^
@@ -48,6 +44,12 @@ python -m PyInstaller --onefile --noconsole ^
     --hidden-import=uvicorn.lifespan.on ^
     --hidden-import=pymysql ^
     --collect-all chromadb ^
+    --collect-all language_tags ^
+    --collect-all segments ^
+    --collect-all csvw ^
+    --collect-all espeakng_loader ^
+    --collect-all scipy ^
+    --collect-all librosa ^
     server.py
 
 echo ===================================================

@@ -38,7 +38,10 @@ def migrate():
 
             if not exists:
                 print("Column 'lesson_id' missing. Adding it now...")
-                conn.execute(text("ALTER TABLE quiz_scores ADD COLUMN lesson_id VARCHAR(100) AFTER course_id"))
+                if USE_MYSQL:
+                    conn.execute(text("ALTER TABLE quiz_scores ADD COLUMN lesson_id VARCHAR(100) AFTER course_id"))
+                else:
+                    conn.execute(text("ALTER TABLE quiz_scores ADD COLUMN lesson_id VARCHAR(100)"))
                 conn.execute(text("CREATE INDEX ix_quiz_scores_lesson_id ON quiz_scores (lesson_id)"))
                 print("Migration successful: added 'lesson_id' to 'quiz_scores'.")
             else:

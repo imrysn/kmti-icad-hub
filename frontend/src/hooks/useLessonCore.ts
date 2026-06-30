@@ -95,6 +95,7 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
     isSpeaking,
     currentIndex,
     currentSentenceIndex,
-    currentCharIndex
+    currentCharIndex,
+    registerText
   };
 };

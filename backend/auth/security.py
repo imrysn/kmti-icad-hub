@@ -13,11 +13,13 @@ from dotenv import load_dotenv, find_dotenv
 
 # Load environment variables from the project root
 env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
+print(f"DEBUG SECURITY: ENV_FILE_PATH={os.getenv('ENV_FILE_PATH')}, env_path={env_path}, exists={os.path.exists(env_path)}")
 load_dotenv(env_path, override=True)
 # JWT configuration
 SECRET_KEY = os.getenv("SECRET_KEY")
+print(f"DEBUG SECURITY: SECRET_KEY={SECRET_KEY}")
 if not SECRET_KEY:
-    raise RuntimeError("CRITICAL CONFIGURATION ERROR: SECRET_KEY environment variable is not defined in the environment or .env file.")
+    raise RuntimeError(f"CRITICAL CONFIGURATION ERROR: SECRET_KEY environment variable is not defined in the environment or .env file (env_path={env_path}, exists={os.path.exists(env_path)}).")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "600"))
 

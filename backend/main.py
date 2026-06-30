@@ -30,6 +30,7 @@ try:
             if "assessment_type" not in columns:
                 print("Adding assessment_type column to trainee_set_mappings table...")
                 conn.execute(text("ALTER TABLE trainee_set_mappings ADD COLUMN assessment_type VARCHAR(50) DEFAULT '3D'"))
+                conn.commit()
                 print("Successfully added assessment_type column.")
 except Exception as e:
     print(f"[!] Warning: Could not create tables or run startup migrations: {e}")

@@ -298,7 +298,7 @@ def assign_trainer(
     # Remove existing mapping for this trainee if any
     db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == mapping.trainee_id).delete()
     
-    db_mapping = TrainerTraineeMapping(**mapping.dict())
+    db_mapping = TrainerTraineeMapping(**mapping.model_dump())
     db.add(db_mapping)
     db.commit()
     return {"message": "Trainer assigned successfully"}

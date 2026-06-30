@@ -34,7 +34,22 @@ try {
     process.exit(1);
 }
 
-// Step 2: Build and package the frontend installer
+// Step 2: Populate backend/dist/tts_cache
+console.log('\nPopulating backend/dist/tts_cache directory...');
+const srcCacheDir = path.resolve(backendDir, 'tts_cache');
+const destCacheDir = path.resolve(backendDir, 'dist/tts_cache');
+try {
+    if (fs.existsSync(srcCacheDir)) {
+        fs.cpSync(srcCacheDir, destCacheDir, { recursive: true });
+        console.log('✅ tts_cache copied to backend/dist/tts_cache successfully.');
+    } else {
+        console.log('⚠️ Source tts_cache directory not found.');
+    }
+} catch (copyError) {
+    console.warn('⚠️ Warning: Failed to copy tts_cache:', copyError.message);
+}
+
+// Step 3: Build and package the frontend installer
 console.log('\n[2/2] Building and Packaging Electron Frontend...');
 try {
     execSync('npm run package', { 
