@@ -198,13 +198,19 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 return;
             }
 
+            // Fix #1: Guard — if the memo hasn't resolved yet, defer this check
+            if (completable3DCount === 0 || completable2DCount === 0) {
+                setIsCheckingPrereq(false);
+                return;
+            }
+
             try {
                 // Course ID '1' is 3D Modeling
                 const progress3D = await authService.getLessonProgress('1');
                 const completedCount3D = progress3D.filter((p: any) => p.is_completed).length;
                 
                 // Mark as completed if all quizzes are passed
-                setIs3DCompleted(completedCount3D >= completable3DCount && completable3DCount > 0);
+                setIs3DCompleted(completedCount3D >= completable3DCount);
 
                 // Check specifically for annotation quiz
                 const annotationProgress = progress3D.find((p: any) => p.lesson_id === 'annotation');
@@ -242,7 +248,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 // Course ID '2' is 2D Drawing
                 const progress2D = await authService.getLessonProgress('2');
                 const completedCount2D = progress2D.filter((p: any) => p.is_completed).length;
-                setIs2DCompleted(completedCount2D >= completable2DCount && completable2DCount > 0);
+                setIs2DCompleted(completedCount2D >= completable2DCount);
             } catch (err) {
                 console.error('Failed to check prerequisites:', err);
             } finally {
@@ -253,7 +259,11 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (authService.isAuthenticated()) {
             checkPrereq();
         }
-    }, [completable3DCount, canBypass]);
+    // Re-run when memo counts settle (Fix #1: completable counts are dependencies)
+    }, [completable3DCount, completable2DCount, canBypass]);
+
+    // Fix #9: Stable string fingerprint from expandedIds — prevents Set reference re-renders
+    const expandedIdsKey = useMemo(() => [...expandedIds].sort().join(','), [expandedIds]);
 
     // Session Persistence Sync (Save to LocalStorage)
     useEffect(() => {
@@ -271,13 +281,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 localStorage.removeItem(authService.getStorageKey('sidebarOpen'));
             }
         }
-    }, [selectedCourse, activeLessonId, expandedIds, sidebarOpen, isRestored]);
+    // Fix #9: Use expandedIdsKey (stable string) instead of expandedIds (Set reference)
+    }, [selectedCourse, activeLessonId, expandedIdsKey, sidebarOpen, isRestored]);
 
     // Filter completions to only include valid modules for this specific course
     const relevantCompletedCount = useMemo(() => 
         completedLessons.filter(id => completableModuleIds.includes(id)).length,
     [completedLessons, completableModuleIds]);
-    
+
+
     // Detect Course Switch or Exit and Reset Lesson State
     useEffect(() => {
         if (!selectedCourse) {
@@ -388,6 +400,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         currentLessonsRef.current = currentLessons;
     }, [courses, activeLessonId, selectedCourse, currentLessons]);
 
+    // Fix #2: Replace localStorage.setItem monkey-patch with a CustomEvent dispatcher.
+    // Lesson components that update their active tab should dispatch:
+    //   window.dispatchEvent(new CustomEvent('kmti-tab-change', { detail: { tabName: value } }))
+    // This avoids fragile global mutation and race conditions on rapid lesson switches.
     useEffect(() => {
         const sendActivity = async (tabName?: string | null) => {
             const lessonId = activeLessonIdRef.current;
@@ -413,8 +429,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
             let activityStr = '';
             if (courseTitle) {
-                // E.g. "3D Modeling Course" or "2D Detailing Course"
-                // Let's ensure the word "Course" is present if it's not already
                 if (!courseTitle.toLowerCase().includes('course') && courseTitle !== 'Practical Assessment') {
                     activityStr += `${courseTitle} Course `;
                 } else {
@@ -447,29 +461,28 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         };
 
         if (activeLessonId) {
-            let currentTabId = null;
+            // Read current tab state directly — no patching of localStorage
+            let currentTabId: string | null = null;
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key && (key.includes('-tab') || key.includes('ActiveTab') || key.includes('active-tab'))) {
-                    if (key.toLowerCase().includes(activeLessonId.toLowerCase())) {
-                        currentTabId = localStorage.getItem(key);
-                        break;
-                    }
+                if (key &&
+                    key.toLowerCase().includes(activeLessonId.toLowerCase()) &&
+                    (key.includes('-tab') || key.includes('ActiveTab') || key.includes('active-tab'))) {
+                    currentTabId = localStorage.getItem(key);
+                    break;
                 }
             }
             sendActivity(currentTabId);
         }
 
-        const originalSetItem = localStorage.setItem;
-        localStorage.setItem = function(key: string, value: string) {
-            originalSetItem.apply(this, [key as any, value as any]);
-            if (key.includes('-tab') || key.includes('ActiveTab') || key.includes('active-tab')) {
-                sendActivity(value);
-            }
+        // Listen for tab changes dispatched by lesson components via CustomEvent
+        const handleTabChange = (e: Event) => {
+            sendActivity((e as CustomEvent).detail?.tabName ?? null);
         };
+        window.addEventListener('kmti-tab-change', handleTabChange);
 
         return () => {
-            localStorage.setItem = originalSetItem;
+            window.removeEventListener('kmti-tab-change', handleTabChange);
         };
     }, [activeLessonId]);
 
@@ -504,7 +517,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     const goToNextLesson = useCallback(() => {
         if (activeLessonId === 'annotation') {
-            console.log('Annotation quiz completed. Routing to Practical Assessment.');
+            // Fix #12: demoted to debug-level logging
+            console.debug('Annotation quiz completed. Routing to Practical Assessment.');
             const assessmentCourse: Course = {
                 id: 'practical-assessment',
                 title: 'Practical Assessment',
@@ -548,7 +562,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 return nextSet;
             });
         } else {
-            console.warn('Cannot go to next lesson: already at the end of the course.');
+            console.debug('Cannot go to next lesson: already at end of course.');
         }
     }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons]);
 

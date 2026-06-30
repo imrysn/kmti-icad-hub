@@ -171,9 +171,9 @@ export const useTTS = () => {
     const item = queueRef.current[index];
     currentSentenceRef.current = index;
 
-    setCurrentIndex(item.paragraphIndex);
-    setCurrentSentenceIndex(item.sentenceIndex);
-    setActiveParagraphText(item.paragraphText);
+    // Do NOT set indexes here immediately to avoid highlighting the text
+    // while the audio file is loading over the network.
+    // They are set inside audio.onplaying and utterance.onstart below.
 
     const isKokoro = selectedVoiceURI?.startsWith('kokoro://');
     console.log("useTTS: speakSentence index:", index, "isKokoro:", isKokoro, "selectedVoiceURI:", selectedVoiceURI);
@@ -209,7 +209,7 @@ export const useTTS = () => {
       let wordIdx = 0;
       let lastOffset = 0;
 
-      audio.onplaying = () => {
+      const startHighlightTimer = () => {
         if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
 
         setCurrentCharIndex(item.offset + lastOffset);
@@ -236,6 +236,21 @@ export const useTTS = () => {
             }
           }
         }, (item.normalizedText.length / (words.length || 1)) * msPerChar);
+      };
+
+      audio.onloadedmetadata = () => {
+        // Adjust highlight speed dynamically once actual audio duration is fetched
+        if (audioRef.current === audio && !audio.paused) {
+          startHighlightTimer();
+        }
+      };
+
+      audio.onplaying = () => {
+        // Set indexes only when audio playback actually starts
+        setCurrentIndex(item.paragraphIndex);
+        setCurrentSentenceIndex(item.sentenceIndex);
+        setActiveParagraphText(item.paragraphText);
+        startHighlightTimer();
       };
 
       audio.onpause = () => {
@@ -311,6 +326,10 @@ export const useTTS = () => {
       let boundaryFired = false;
 
       utterance.onstart = () => {
+        // Set indexes only when Web Speech playback actually starts
+        setCurrentIndex(item.paragraphIndex);
+        setCurrentSentenceIndex(item.sentenceIndex);
+        setActiveParagraphText(item.paragraphText);
         setCurrentCharIndex(item.offset);
 
         setTimeout(() => {

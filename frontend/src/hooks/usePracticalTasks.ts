@@ -2,10 +2,18 @@ import { useState, useEffect, useCallback } from 'react';
 import { assessmentService, AssessmentTask, AssessmentSubmission } from '../services/assessmentService';
 import { authService } from '../services/authService';
 import { useNotification } from '../context/NotificationContext';
-import { api } from '../services/api';
+import { api, invalidateCache } from '../services/api';
 
-export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
+// Fix #7: confirmFn is injected by the parent component so the hook can
+// use the app's styled ConfirmationModal instead of window.confirm().
+// If not provided, falls back to a Promise-wrapped window.confirm (safe default).
+type ConfirmOptions = { title: string; message: string; confirmLabel?: string; variant?: string };
+type ConfirmFn = (options: ConfirmOptions) => Promise<boolean>;
+
+export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: ConfirmFn) => {
   const { showNotification } = useNotification();
+  // Default confirm: wraps window.confirm for environments that support it
+  const confirm: ConfirmFn = confirmFn ?? (({ message }) => Promise.resolve(window.confirm(message)));
   const [tasks, setTasks] = useState<AssessmentTask[]>([]);
   const [submissions, setSubmissions] = useState<AssessmentSubmission[]>([]);
   const [mySetMappings, setMySetMappings] = useState<{ actual_set_number: number, display_set_number: number }[]>([]);
@@ -35,6 +43,8 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
           .filter(t => t.assessment_type === '2D' || t.set_number >= 100)
           .map(t => ({ ...t, set_number: t.set_number >= 100 ? t.set_number - 100 : t.set_number }));
       } else {
+        // Sets 4, 5, 6, and 7 are marked as '2D' in the database but are part of the 
+        // 3D practical sequence. They must be allowed in the 3D view.
         processedTasks = processedTasks.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7));
       }
 
@@ -175,10 +185,23 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
       return;
     }
 
+    // Fix #6: Warn (don't block) on files >= 1 GB
+    const ONE_GB = 1024 * 1024 * 1024;
+    if (file.size >= ONE_GB) {
+      showNotification(
+        `Warning: This file is ${(file.size / ONE_GB).toFixed(2)} GB. Large uploads may take several minutes.`,
+        'info',
+        8000
+      );
+    }
+
     setUploadingTaskId(task.id);
     setIsSubmitting(true);
     try {
       await assessmentService.submitTask(task.id, file, assessmentType);
+      // Fix #8: Explicitly bust submission and task caches so UI reflects new state immediately
+      invalidateCache('/assessments/my-submissions');
+      invalidateCache('/assessments/tasks');
       showNotification('Task submitted successfully! Awaiting trainer review.', 'success');
       fetchData(true);
     } catch (err) {
@@ -194,8 +217,15 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
     await uploadTaskFile(e.target.files[0], task, assessmentType);
   }, [uploadTaskFile]);
 
+  // Fix #7: All destructive actions use injected confirmFn instead of window.confirm
   const handleDeleteSubmission = useCallback(async (subId: number) => {
-    if (window.confirm("Are you sure you want to delete this submission?")) {
+    const confirmed = await confirm({
+      title: 'Delete Submission',
+      message: 'Are you sure you want to move this submission to the Trash?',
+      confirmLabel: 'Move to Trash',
+      variant: 'danger'
+    });
+    if (confirmed) {
       try {
         await assessmentService.deleteSubmission(subId);
         showNotification('Submission deleted.', 'success');
@@ -204,7 +234,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
         showNotification('Failed to delete.', 'error');
       }
     }
-  }, [showNotification, fetchData]);
+  }, [showNotification, fetchData, confirm]);
 
   const handleReplyToFeedback = useCallback(async (feedbackId: number, text: string) => {
     try {
@@ -221,7 +251,13 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   }, [showNotification, fetchData]);
 
   const handleBulkDelete = useCallback(async (taskIds: number[]) => {
-    if (window.confirm("Are you sure you want to delete all submissions for this unit? They will be moved to the Trash.")) {
+    const confirmed = await confirm({
+      title: 'Delete Unit Submissions',
+      message: 'Are you sure you want to delete all submissions for this unit? They will be moved to the Trash.',
+      confirmLabel: 'Move to Trash',
+      variant: 'danger'
+    });
+    if (confirmed) {
       try {
         await assessmentService.bulkDeleteSubmissions(taskIds);
         showNotification('Unit submissions moved to Trash.', 'success');
@@ -230,7 +266,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
         showNotification('Failed to delete submissions.', 'error');
       }
     }
-  }, [showNotification, fetchData]);
+  }, [showNotification, fetchData, confirm]);
 
   const fetchTrash = useCallback(async () => {
     setLoadingTrash(true);
@@ -256,7 +292,13 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
   }, [showNotification, fetchData, fetchTrash]);
 
   const handlePermanentDelete = useCallback(async (subId: number) => {
-    if (window.confirm("Are you sure you want to permanently delete this submission? This cannot be undone.")) {
+    const confirmed = await confirm({
+      title: 'Permanently Delete',
+      message: 'Are you sure you want to permanently delete this submission? This cannot be undone.',
+      confirmLabel: 'Delete Forever',
+      variant: 'danger'
+    });
+    if (confirmed) {
       try {
         await assessmentService.permanentDeleteSubmission(subId);
         showNotification('Submission permanently deleted.', 'success');
@@ -265,10 +307,16 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
         showNotification('Failed to delete permanently.', 'error');
       }
     }
-  }, [showNotification, fetchTrash]);
+  }, [showNotification, fetchTrash, confirm]);
 
   const handleEmptyTrash = useCallback(async () => {
-    if (window.confirm("Are you sure you want to permanently delete all items in the trash? This cannot be undone.")) {
+    const confirmed = await confirm({
+      title: 'Empty Trash',
+      message: 'Are you sure you want to permanently delete all items in the Trash? This cannot be undone.',
+      confirmLabel: 'Empty Trash',
+      variant: 'danger'
+    });
+    if (confirmed) {
       try {
         await assessmentService.emptyTrash();
         showNotification('Trash emptied successfully.', 'success');
@@ -277,7 +325,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D') => {
         showNotification('Failed to empty trash.', 'error');
       }
     }
-  }, [showNotification]);
+  }, [showNotification, confirm]);
 
   return {
     tasks,
