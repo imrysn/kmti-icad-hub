@@ -81,13 +81,24 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
   };
 
 
-  useEffect(() => {
-    const steps = activeTab === 'part' ? partSteps : assemblySteps;
-    registerText(steps, 0);
-  }, [activeTab, registerText]);
+  const projectionsSteps = [
+    LESSON_DATA.projections.title,
+    LESSON_DATA.projections.subtitle,
+    LESSON_DATA.projections.importantNotes,
+  ];
 
-  const currentTabSteps = activeTab === 'part' ? partSteps : assemblySteps;
-  const tabsList = [{ id: 'part' }, { id: 'assembly' }];
+  const layoutSteps = [
+    LESSON_DATA.layout.title,
+    LESSON_DATA.layout.subtitle,
+    ...LESSON_DATA.layout.steps,
+  ];
+
+  const currentTabSteps = activeTab === 'projections' ? projectionsSteps : layoutSteps;
+  const tabsList = [{ id: 'projections' }, { id: 'layout' }];
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -263,10 +274,10 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev} disabled={!onPrevLesson && activeTab === 'projections'}>
+            <button className="nav-button" onClick={() => handlePrev()} disabled={!onPrevLesson && activeTab === 'projections'}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={handleNext}>
+            <button className="nav-button next" onClick={() => handleNext()}>
               {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>

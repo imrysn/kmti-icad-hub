@@ -200,33 +200,6 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
 
-  useEffect(() => {
-    const currentSteps = activeTab === 'cylinder' ? cylinderSteps :
-      activeTab === 'box' ? boxSteps :
-        activeTab === 'polygon' ? polygonSteps :
-          activeTab === 'cone' ? coneSteps : torusSteps;
-    const startIdx = activeTab === 'cylinder' ? 0 : 3;
-    registerText(currentSteps, startIdx);
-  }, [activeTab, registerText]);
-
-  const currentTabSteps = activeTab === 'cylinder' ? cylinderSteps :
-                          activeTab === 'box' ? boxSteps :
-                          activeTab === 'polygon' ? polygonSteps :
-                          activeTab === 'cone' ? coneSteps : torusSteps;
-  const startIdx = activeTab === 'cylinder' ? 0 : 3;
-
-  useTTSAutoplay(
-    isSpeaking,
-    currentIndex,
-    activeTab,
-    currentTabSteps.length,
-    tabs,
-    handleNext,
-    speak,
-    currentTabSteps,
-    startIdx
-  );
-
   const commonIntroSteps = [
     "Creating Basic Shapes",
     "When creating a 3D model, always start with the Front View.",
@@ -283,7 +256,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'box', label: 'Box' },
     { id: 'polygon', label: 'Polygon' },
     { id: 'cone', label: 'Cone' },
-    { id: 'torus', label: 'Torus' }];
+    { id: 'torus', label: 'Torus' }
+  ];
 
   const handleNext = (isAuto = false) => {
     stop();
@@ -293,7 +267,6 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
   };
 
   const handlePrev = (isAuto = false) => {
@@ -304,8 +277,29 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
   };
+
+  const currentTabSteps = activeTab === 'cylinder' ? cylinderSteps :
+                          activeTab === 'box' ? boxSteps :
+                          activeTab === 'polygon' ? polygonSteps :
+                          activeTab === 'cone' ? coneSteps : torusSteps;
+  const startIdx = activeTab === 'cylinder' ? 0 : 3;
+
+  useEffect(() => {
+    registerText(currentTabSteps, startIdx);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabs,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx
+  );
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -789,6 +783,74 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
 
+  const moveSteps = [
+    "Step 1: Select Move from the icon menu.",
+    "Step 2: Left-click on the entity to be moved and click GO.",
+    "Step 3: Specify the movement distance on the X, Y, and Z-axis on the item entry. Press Enter. Or after step 2, select a point on the entity then left-click on the desired location."
+  ];
+
+  const rotateSteps = [
+    "Step 1: Select Rotate from the icon menu.",
+    "Step 2: Left-click on the entity to be rotated and click GO.",
+    "Step 3: Select 2-points to set the axis of rotation.",
+    "Step 4: Specify the desired angle of rotation on the item entry and press Enter."
+  ];
+
+  const mirrorSteps = [
+    "Step 1: Select Mirror from the icon menu.",
+    "Step 2: Left-click on the entity to be mirrored and click GO.",
+    "Step 3: Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored."
+  ];
+
+  const copySteps = [
+    "Step 1: Select Copy from the icon menu.",
+    "Step 2: Left-click on the entity to be copied and click GO.",
+    "Step 3: Specify the distance on the X, Y and Z-axis and the number of copies needed then press Enter."
+  ];
+
+  const rotateCopySteps = [
+    "Step 1: Same as rotate tool but makes a rotated duplicate of the entity."
+  ];
+
+  const mirrorCopySteps = [
+    "Step 1: Same as mirror tool but makes a mirror duplicate of the entity."
+  ];
+
+  const deleteSteps = [
+    "Step 1: Select Delete from the icon menu.",
+    "Step 2: Left-click on the entity to delete."
+  ];
+
+  const tabs = [
+    { id: 'move', label: 'Move' },
+    { id: 'rotate', label: 'Rotate' },
+    { id: 'mirror', label: 'Mirror' },
+    { id: 'copy', label: 'Copy' },
+    { id: 'rotateCopy', label: 'Rotate Copy' },
+    { id: 'mirrorCopy', label: 'Mirror Copy' },
+    { id: 'delete', label: 'Delete' }
+  ];
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     const introTitle = "Move, Rotate, Copy, Mirror, Delete";
     const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
@@ -856,74 +918,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
   }, [activeTab, speak]);
 
-  const moveSteps = [
-    "Step 1: Select Move from the icon menu.",
-    "Step 2: Left-click on the entity to be moved and click GO.",
-    "Step 3: Specify the movement distance on the X, Y, and Z-axis on the item entry. Press Enter. Or after step 2, select a point on the entity then left-click on the desired location."
-  ];
 
-  const rotateSteps = [
-    "Step 1: Select Rotate from the icon menu.",
-    "Step 2: Left-click on the entity to be rotated and click GO.",
-    "Step 3: Select 2-points to set the axis of rotation.",
-    "Step 4: Specify the desired angle of rotation on the item entry and press Enter."
-  ];
-
-  const mirrorSteps = [
-    "Step 1: Select Mirror from the icon menu.",
-    "Step 2: Left-click on the entity to be mirrored and click GO.",
-    "Step 3: Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored."
-  ];
-
-  const copySteps = [
-    "Step 1: Select Copy from the icon menu.",
-    "Step 2: Left-click on the entity to be copied and click GO.",
-    "Step 3: Specify the distance on the X, Y and Z-axis and the number of copies needed then press Enter."
-  ];
-
-  const rotateCopySteps = [
-    "Step 1: Same as rotate tool but makes a rotated duplicate of the entity."
-  ];
-
-  const mirrorCopySteps = [
-    "Step 1: Same as mirror tool but makes a mirror duplicate of the entity."
-  ];
-
-  const deleteSteps = [
-    "Step 1: Select Delete from the icon menu.",
-    "Step 2: Left-click on the entity to delete."
-  ];
-
-  const tabs = [
-    { id: 'move', label: 'Move' },
-    { id: 'rotate', label: 'Rotate' },
-    { id: 'mirror', label: 'Mirror' },
-    { id: 'copy', label: 'Copy' },
-    { id: 'rotateCopy', label: 'Rotate Copy' },
-    { id: 'mirrorCopy', label: 'Mirror Copy' },
-    { id: 'delete', label: 'Delete' }];
-
-  const handleNext = (isAuto = false) => {
-    stop();
-    if (!isAuto) {
-      sessionStorage.setItem('tts-autoplay-active', 'false');
-    }
-    const i = tabs.findIndex(t => t.id === activeTab);
-    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  };
-
-  const handlePrev = (isAuto = false) => {
-    stop();
-    if (!isAuto) {
-      sessionStorage.setItem('tts-autoplay-active', 'false');
-    }
-    const i = tabs.findIndex(t => t.id === activeTab);
-    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  };
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -1385,6 +1380,52 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
 
+  const sketchSteps = [
+    "SKETCH",
+    "Tool used to create lines."
+  ];
+
+  const extrudeSteps = [
+    "EXTRUDE",
+    "Step 1: Select Extrude from the icon menu.",
+    "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
+    "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
+    "Step 4: Press ENTER to finalize."
+  ];
+
+  const revolveSteps = [
+    "REVOLVE",
+    "Step 1: Select Revolve from the icon menu.",
+    "Step 2: Select the perimeter of the sketch to be revolve then GO",
+    "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
+  ];
+
+  const tabs = [
+    { id: 'sketch', label: 'SKETCH' },
+    { id: 'extrude', label: 'EXTRUDE' },
+    { id: 'revolve', label: 'REVOLVE' }
+  ];
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+    const i = tabs.findIndex(t => t.id === activeTab);
+    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     if (activeTab === 'sketch') {
       const introTitle = "Sketch";
@@ -1449,53 +1490,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
   }, [activeTab, speak]);
 
-  const sketchSteps = [
-    "SKETCH",
-    "Tool used to create lines."
-  ];
 
-  const extrudeSteps = [
-    "EXTRUDE",
-    "Step 1: Select Extrude from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
-    "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
-    "Step 4: Press ENTER to finalize."
-  ];
-
-  const revolveSteps = [
-    "REVOLVE",
-    "Step 1: Select Revolve from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be revolve then GO",
-    "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
-  ];
-
-  const tabs = [
-    { id: 'sketch', label: 'SKETCH' },
-    { id: 'extrude', label: 'EXTRUDE' },
-    { id: 'revolve', label: 'REVOLVE' }
-  ];
-
-  const handleNext = (isAuto = false) => {
-    stop();
-    if (!isAuto) {
-      sessionStorage.setItem('tts-autoplay-active', 'false');
-    }
-    const i = tabs.findIndex(t => t.id === activeTab);
-    if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  };
-
-  const handlePrev = (isAuto = false) => {
-    stop();
-    if (!isAuto) {
-      sessionStorage.setItem('tts-autoplay-active', 'false');
-    }
-    const i = tabs.findIndex(t => t.id === activeTab);
-    if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  };
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>

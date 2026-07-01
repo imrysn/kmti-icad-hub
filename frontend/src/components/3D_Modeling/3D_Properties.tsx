@@ -534,8 +534,8 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
         )}
 
         <div className="lesson-navigation">
-          <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-          <button className="nav-button next" onClick={handleNext}>
+          <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+          <button className="nav-button next" onClick={() => handleNext()}>
             {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
           </button>
         </div>
