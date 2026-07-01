@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -49,8 +50,9 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   const unionSteps = [
     "UNION",
@@ -94,7 +96,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     { id: "separate", label: "Separate Entity" },
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "union") setActiveTab("subtract");
     else if (activeTab === "subtract") setActiveTab("intersect");
     else if (activeTab === "intersect") setActiveTab("separate");
@@ -102,7 +108,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "separate") setActiveTab("intersect");
     else if (activeTab === "intersect") setActiveTab("subtract");
     else if (activeTab === "subtract") setActiveTab("union");
@@ -112,6 +122,31 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
   const introTitle = "Boolean Operation";
   const introSubtitle = "Use boolean operations to join, cut, or intersect 3D entities.";
+
+
+  useEffect(() => {
+    const steps = activeTab === 'union' ? unionSteps :
+                  activeTab === 'subtract' ? subtractSteps :
+                  activeTab === 'intersect' ? intersectSteps : separateSteps;
+    registerText(steps, 0);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'union' ? unionSteps :
+                          activeTab === 'subtract' ? subtractSteps :
+                          activeTab === 'intersect' ? intersectSteps : separateSteps;
+  const tabsList = [{ id: 'union' }, { id: 'subtract' }, { id: 'intersect' }, { id: 'separate' }];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -124,7 +159,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
           <button
             key={tab.id}
             className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}
           >
             {tab.label}
           </button>
@@ -139,12 +174,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const currentSteps = activeTab === "union" ? unionSteps :
-              activeTab === "subtract" ? subtractSteps :
-                activeTab === "intersect" ? intersectSteps : separateSteps;
-            speak([introTitle, introSubtitle, ...currentSteps]);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

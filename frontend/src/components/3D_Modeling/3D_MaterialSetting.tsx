@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -40,8 +41,9 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   const material1Steps = [
     "MATERIAL SETTING",
@@ -69,13 +71,21 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     { id: "unlisted", label: "UNLISTED MATERIALS" },
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "set") setActiveTab("unlisted");
     else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "unlisted") setActiveTab("set");
     else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -83,6 +93,37 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
   const introTitle = "Material Setting";
   const introSubtitle = "Setting material is important in order to measure the weight of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part.";
+
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle
+  ];
+
+  const material1StepsTTS = [...commonIntroSteps, ...material1Steps];
+  const material2StepsTTS = [...commonIntroSteps, ...material2Steps];
+
+
+  useEffect(() => {
+    const steps = activeTab === 'set' ? material1StepsTTS : material2StepsTTS;
+    const startIdx = activeTab === 'set' ? 0 : 2;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'set' ? material1StepsTTS : material2StepsTTS;
+  const tabsList = [{ id: 'set' }, { id: 'unlisted' }];
+  const startIdx2 = activeTab === 'set' ? 0 : 2;
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx2
+  );
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -95,7 +136,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           <button
             key={tab.id}
             className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}
           >
             {tab.label}
           </button>

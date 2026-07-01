@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import '../../styles/3D_Modeling/CourseLesson.css';
@@ -37,8 +38,9 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`fairing-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore("fairing");
 
   useEffect(() => {
     localStorage.setItem('fairing-tab', activeTab);
@@ -73,14 +75,22 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     "RESULT"
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === 'chamfer') setActiveTab('fillet');
     else if (activeTab === 'fillet') setActiveTab('shell');
     else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === 'fillet') setActiveTab('chamfer');
     else if (activeTab === 'shell') setActiveTab('fillet');
     else if (onPrevLesson) onPrevLesson();
@@ -90,6 +100,40 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
   const introTitle = "Fairing";
   const introSubtitle = "Chamfer, Fillet, and Shell operations.";
 
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle
+  ];
+
+  const chamferStepsTTS = [...commonIntroSteps, ...chamferSteps];
+  const filletStepsTTS = [...commonIntroSteps, ...filletSteps];
+  const shellStepsTTS = [...commonIntroSteps, ...shellSteps];
+
+
+  useEffect(() => {
+    const steps = activeTab === 'chamfer' ? chamferStepsTTS :
+                  activeTab === 'fillet' ? filletStepsTTS : shellStepsTTS;
+    const startIdx = activeTab === 'chamfer' ? 0 : 2;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'chamfer' ? chamferStepsTTS :
+                          activeTab === 'fillet' ? filletStepsTTS : shellStepsTTS;
+  const tabsList = [{ id: 'chamfer' }, { id: 'fillet' }, { id: 'shell' }];
+  const startIdx2 = activeTab === 'chamfer' ? 0 : 2;
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx2
+  );
+
   return (
     <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
@@ -97,9 +141,9 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
       </div>
 
       <div className="lesson-tabs">
-        <button key="chamfer" className={`tab-button ${activeTab === 'chamfer' ? 'active' : ''}`} onClick={() => setActiveTab('chamfer')}>Chamfer</button>
-        <button key="fillet" className={`tab-button ${activeTab === 'fillet' ? 'active' : ''}`} onClick={() => setActiveTab('fillet')}>Fillet</button>
-        <button key="shell" className={`tab-button ${activeTab === 'shell' ? 'active' : ''}`} onClick={() => setActiveTab('shell')}>Shell</button>
+        <button key="chamfer" className={`tab-button ${activeTab === 'chamfer' ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab('chamfer'); }}>Chamfer</button>
+        <button key="fillet" className={`tab-button ${activeTab === 'fillet' ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab('fillet'); }}>Fillet</button>
+        <button key="shell" className={`tab-button ${activeTab === 'shell' ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab('shell'); }}>Shell</button>
       </div>
 
       <section className="lesson-intro">
@@ -110,11 +154,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const steps = activeTab === 'chamfer' ? chamferSteps :
-              activeTab === 'fillet' ? filletSteps : shellSteps;
-            speak([introTitle, introSubtitle, ...steps]);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // --- Assets ---
@@ -42,8 +43,9 @@ const PartLesson: React.FC<PartLessonProps> = ({
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   const createSteps = [
     "CREATE 3D PART",
@@ -69,13 +71,21 @@ const PartLesson: React.FC<PartLessonProps> = ({
     { id: "change", label: "Change 3D Part Name" },
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "create") setActiveTab("change");
     else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "change") setActiveTab("create");
     else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -83,6 +93,37 @@ const PartLesson: React.FC<PartLessonProps> = ({
 
   const introTitle = activeTab === 'create' ? 'Creating 3D Part' : 'Changing 3D Part Name';
   const introSubtitle = activeTab === 'create' ? "Tool use to name 3D parts and provide information." : "Tool use to Changes 3D part names, drawing names, and comments.";
+
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle
+  ];
+
+  const createStepsTTS = [...commonIntroSteps, ...createSteps];
+  const changeStepsTTS = [...commonIntroSteps, ...changeSteps];
+
+
+  useEffect(() => {
+    const steps = activeTab === 'create' ? createStepsTTS : changeStepsTTS;
+    const startIdx = activeTab === 'create' ? 0 : 2;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'create' ? createStepsTTS : changeStepsTTS;
+  const tabsList = [{ id: 'create' }, { id: 'change' }];
+  const startIdx2 = activeTab === 'create' ? 0 : 2;
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx2
+  );
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -95,7 +136,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
           <button
             key={tab.id}
             className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}
           >
             {tab.label}
           </button>
@@ -110,10 +151,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const steps = activeTab === 'create' ? createSteps : changeSteps;
-            speak([introTitle, introSubtitle, ...steps]);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

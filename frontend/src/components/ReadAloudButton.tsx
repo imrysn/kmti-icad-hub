@@ -28,8 +28,10 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
     e.stopPropagation();
     if (isSpeaking) {
       onStop();
+      sessionStorage.setItem('tts-autoplay-active', 'false');
     } else {
       onStart();
+      sessionStorage.setItem('tts-autoplay-active', 'true');
     }
   };
 

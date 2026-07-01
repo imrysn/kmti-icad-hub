@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
@@ -76,9 +77,6 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     "Displays the informations about the selected entity then Pick the solid entity then GO"
   ];
 
-  const currentSteps = activeTab === "color" ? colorSteps :
-    activeTab === "layer" ? layerSteps : infoSteps;
-
   const {
     scrollProgress,
     containerRef,
@@ -86,17 +84,26 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`, currentSteps);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "color") setActiveTab("layer");
     else if (activeTab === "layer") setActiveTab("info");
     else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "info") setActiveTab("layer");
     else if (activeTab === "layer") setActiveTab("color");
     else if (onPrevLesson) onPrevLesson();
@@ -111,7 +118,26 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     { id: "info", label: "Information" },
   ];
 
+  const currentTabSteps = activeTab === "color" ? colorSteps :
+                          activeTab === "layer" ? layerSteps : infoSteps;
 
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  const tabsList = [{ id: 'color' }, { id: 'layer' }, { id: 'info' }];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -119,14 +145,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-
-
       <div className="lesson-tabs">
         {tabs.map(tab => (
           <button
             key={tab.id}
             className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}
           >
             {tab.label}
           </button>

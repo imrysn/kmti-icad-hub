@@ -43,6 +43,7 @@ export const useTTS = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const preloadedAudioRef = useRef<{ index: number; audio: HTMLAudioElement } | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const sentenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isDebug = process.env.NODE_ENV === 'development';
 
   useEffect(() => {
@@ -121,6 +122,10 @@ export const useTTS = () => {
     if (activeIntervalRef.current) {
       clearInterval(activeIntervalRef.current);
       activeIntervalRef.current = null;
+    }
+    if (sentenceTimeoutRef.current) {
+      clearTimeout(sentenceTimeoutRef.current);
+      sentenceTimeoutRef.current = null;
     }
     setIsSpeaking(false);
     setCurrentIndex(-1);
@@ -273,7 +278,7 @@ export const useTTS = () => {
           activeIntervalRef.current = null;
         }
         setCurrentCharIndex(item.offset + item.text.length);
-        setTimeout(() => {
+        sentenceTimeoutRef.current = setTimeout(() => {
           if (currentSentenceRef.current === index) {
             speakSentence(index + 1);
           }
@@ -368,7 +373,7 @@ export const useTTS = () => {
         if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
         setCurrentCharIndex(item.offset + item.text.length);
 
-        setTimeout(() => {
+        sentenceTimeoutRef.current = setTimeout(() => {
           if (currentSentenceRef.current === index) {
             speakSentence(index + 1);
           }
@@ -403,6 +408,10 @@ export const useTTS = () => {
       clearInterval(activeIntervalRef.current);
       activeIntervalRef.current = null;
     }
+    if (sentenceTimeoutRef.current) {
+      clearTimeout(sentenceTimeoutRef.current);
+      sentenceTimeoutRef.current = null;
+    }
     if (!textArray || textArray.length === 0) return;
 
     const sentenceQueue: SentenceQueueItem[] = [];
@@ -424,6 +433,7 @@ export const useTTS = () => {
 
     queueRef.current = sentenceQueue;
     setIsSpeaking(true);
+    sessionStorage.setItem('tts-autoplay-active', 'true');
 
     const startSentenceIdx = sentenceQueue.findIndex(s => s.paragraphIndex === startIndex);
     const finalStartIdx = startSentenceIdx !== -1 ? startSentenceIdx : 0;

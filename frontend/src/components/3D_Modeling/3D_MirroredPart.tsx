@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -38,8 +39,9 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`mirrored-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   const mirrored1Steps = [
     "NORMAL PARTS",
@@ -58,31 +60,72 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
     "Step 4: Use Mirror to convert the 3D Model of Part A to Part B"
   ];
 
+  const introTitle = activeTab === 'mirrored-part' ? 'MIRRORED PARTS' : '3D MODELING OF MIRROR PARTS';
+  const introSubtitle = activeTab === 'mirrored-part' ? "Based on KEMCO Standard" : "Step-by-step guide on how to create and mirror parts correctly.";
+
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle
+  ];
+
+  const mirrored1StepsTTS = [...commonIntroSteps, ...mirrored1Steps];
+  const mirrored2StepsTTS = [...commonIntroSteps, ...mirrored2Steps];
+
   const handleTabChange = (tab: "mirrored-part" | "3d-modeling") => {
+    stop();
+    sessionStorage.setItem('tts-autoplay-active', 'false');
     setActiveTab(tab);
   };
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "mirrored-part") {
-      handleTabChange("3d-modeling");
+      setActiveTab("3d-modeling");
     } else if (onNextLesson) {
       onNextLesson();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === "3d-modeling") {
-      handleTabChange("mirrored-part");
+      setActiveTab("mirrored-part");
     } else if (onPrevLesson) {
       onPrevLesson();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const steps = activeTab === 'mirrored-part' ? mirrored1StepsTTS : mirrored2StepsTTS;
+    const startIdx = activeTab === 'mirrored-part' ? 0 : 2;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'mirrored-part' ? mirrored1StepsTTS : mirrored2StepsTTS;
+  const startIdx2 = activeTab === 'mirrored-part' ? 0 : 2;
+  const tabsList = [{ id: 'mirrored-part' }, { id: '3d-modeling' }];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx2
+  );
+
   const isMirrored1 = activeTab === "mirrored-part";
-  const introTitle = activeTab === 'mirrored-part' ? 'MIRRORED PARTS' : '3D MODELING OF MIRROR PARTS';
-  const introSubtitle = activeTab === 'mirrored-part' ? "Based on KEMCO Standard" : "Step-by-step guide on how to create and mirror parts correctly.";
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>

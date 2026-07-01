@@ -53,11 +53,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
       <section className="lesson-intro">
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           Interference Check
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "Interference Check";
-            const introDesc = "Interferences are overlapping areas of 3D entities. These are problems that must be fixed on the 3D Modeling. These following tools are used to detect interferences on the 3D Modeling.";
-            speak([introTitle, introDesc, ...interferenceSteps]);
-          }} onStop={stop} />
+          
         </h3>
         <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
          Interferences are overlapping areas of 3D entities. These are problems that must be fix on the 3D Modeling..

@@ -67,9 +67,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            speak([introTitle, introSubtitle, ...holeSteps]);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import '../../styles/3D_Modeling/CourseLesson.css';
@@ -25,7 +26,7 @@ interface ParasolidLessonProps {
 }
 
 const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'parasolid-1', onNextLesson, onPrevLesson, nextLabel }) => {
-  const [activeTab, setActiveTab] = React.useState<'import' | 'edit'>(() => {
+  const [activeTab, setActiveTab] = useState<'import' | 'edit'>(() => {
     return (localStorage.getItem('parasolid-tab') as any) || 'import';
   });
 
@@ -36,10 +37,11 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('parasolid-tab', activeTab);
   }, [activeTab]);
 
@@ -74,13 +76,21 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     "3.) Enter the comment for the specific part then Press OK"
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === 'import') setActiveTab('edit');
     else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     if (activeTab === 'edit') setActiveTab('import');
     else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -96,6 +106,36 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
   const introTitle = activeTab === 'import' ? 'Loading of Parasolid' : 'Loading of Parasolid';
   const introSubtitle = "Tools used to import and export parasolid data, and edit B-Rep solid for 3D Purchase Parts. This tool is use for creating 3D Purchase Parts.";
 
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle
+  ];
+
+  const importStepsTTS = [...commonIntroSteps, ...importSteps];
+  const editStepsTTS = [...commonIntroSteps, ...editSteps];
+
+  useEffect(() => {
+    const steps = activeTab === 'import' ? importStepsTTS : editStepsTTS;
+    const startIdx = activeTab === 'import' ? 0 : 2;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'import' ? importStepsTTS : editStepsTTS;
+  const startIdx2 = activeTab === 'import' ? 0 : 2;
+  const tabsList = [{ id: 'import' }, { id: 'edit' }];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx2
+  );
+
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
@@ -106,7 +146,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
           <button 
             key={tab.id}
             className={`tab-button ${activeTab === tab.id ? "active" : ""}`} 
-            onClick={() => setActiveTab(tab.id as any)} 
+            onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} 
           >
             {tab.label}
           </button>
@@ -121,10 +161,6 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const steps = activeTab === 'import' ? importSteps : editSteps;
-            speak([introTitle, introSubtitle, ...steps]);
-          }} onStop={stop} />
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

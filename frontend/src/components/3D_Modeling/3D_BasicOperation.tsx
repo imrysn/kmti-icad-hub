@@ -21,6 +21,7 @@ import {
   Zap
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from '../ReadAloudButton';
 import { KaraokeLessonText } from '../KaraokeLessonText';
 import '../../styles/3D_Modeling/CourseLesson.css';
@@ -208,51 +209,23 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     registerText(currentSteps, startIdx);
   }, [activeTab, registerText]);
 
-  const wasSpeakingRef = React.useRef(false);
-  const lastIndexRef = React.useRef(-1);
-  const shouldAutoPlayRef = React.useRef(false);
+  const currentTabSteps = activeTab === 'cylinder' ? cylinderSteps :
+                          activeTab === 'box' ? boxSteps :
+                          activeTab === 'polygon' ? polygonSteps :
+                          activeTab === 'cone' ? coneSteps : torusSteps;
+  const startIdx = activeTab === 'cylinder' ? 0 : 3;
 
-  useEffect(() => {
-    if (currentIndex !== -1) {
-      lastIndexRef.current = currentIndex;
-    }
-  }, [currentIndex]);
-
-  useEffect(() => {
-    if (!isSpeaking && wasSpeakingRef.current) {
-      const stepsLength = activeTab === 'cylinder' ? cylinderSteps.length :
-        activeTab === 'box' ? boxSteps.length :
-          activeTab === 'polygon' ? polygonSteps.length :
-            activeTab === 'cone' ? coneSteps.length : torusSteps.length;
-      if (lastIndexRef.current === stepsLength - 1) {
-        const i = tabs.findIndex(t => t.id === activeTab);
-        if (i < tabs.length - 1) {
-          shouldAutoPlayRef.current = true;
-          handleNext();
-        }
-      }
-    }
-    wasSpeakingRef.current = isSpeaking;
-  }, [isSpeaking, activeTab]);
-
-  const prevTabRef = React.useRef(activeTab);
-
-  useEffect(() => {
-    if (activeTab !== prevTabRef.current) {
-      if (shouldAutoPlayRef.current) {
-        shouldAutoPlayRef.current = false;
-        setTimeout(() => {
-          const currentSteps = activeTab === 'cylinder' ? cylinderSteps :
-            activeTab === 'box' ? boxSteps :
-              activeTab === 'polygon' ? polygonSteps :
-                activeTab === 'cone' ? coneSteps : torusSteps;
-          const startIdx = activeTab === 'cylinder' ? 0 : 3;
-          speak(currentSteps, startIdx);
-        }, 300);
-      }
-      prevTabRef.current = activeTab;
-    }
-  }, [activeTab, speak]);
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabs,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx
+  );
 
   const commonIntroSteps = [
     "Creating Basic Shapes",
@@ -312,16 +285,22 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'cone', label: 'Cone' },
     { id: 'torus', label: 'Torus' }];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
     stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
     stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -335,7 +314,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -346,18 +325,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton
-            isSpeaking={isSpeaking}
-            onStart={() => {
-              const currentSteps = activeTab === 'cylinder' ? cylinderSteps :
-                activeTab === 'box' ? boxSteps :
-                  activeTab === 'polygon' ? polygonSteps :
-                    activeTab === 'cone' ? coneSteps : torusSteps;
-              const startIdx = activeTab === 'cylinder' ? 0 : 3;
-              speak(currentSteps, startIdx);
-            }}
-            onStop={stop}
-          />
+          
         </h3>
         <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: "-1rem" }}>
           <KaraokeLessonText
@@ -935,16 +903,22 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'mirrorCopy', label: 'Mirror Copy' },
     { id: 'delete', label: 'Delete' }];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
     stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
     stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -958,7 +932,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -969,18 +943,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "Move, Rotate, Copy, Mirror, Delete";
-            const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
-            const currentSteps = activeTab === 'move' ? moveSteps :
-              activeTab === 'rotate' ? rotateSteps :
-                activeTab === 'mirror' ? mirrorSteps :
-                  activeTab === 'copy' ? copySteps :
-                    activeTab === 'rotateCopy' ? rotateCopySteps :
-                      activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
-            const startIdx = activeTab === 'move' ? 0 : 2;
-            speak([introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps], startIdx);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1512,16 +1475,22 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'revolve', label: 'REVOLVE' }
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
     stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
     stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1535,7 +1504,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -1548,11 +1517,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-                const introTitle = "Sketch";
-                const introDesc = "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.";
-                speak([introTitle, introDesc, ...sketchSteps], 0);
-              }} onStop={stop} />
+              
             </h3>
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1572,13 +1537,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-                const introTitle = "Extrude and Revolve";
-                const introDesc = "Tools use to create solids from sketch in the 3D space.";
-                const steps = activeTab === 'extrude' ? extrudeSteps : revolveSteps;
-                const startIdx = activeTab === 'extrude' ? 0 : 2;
-                speak([introTitle, introDesc, ...steps], startIdx);
-              }} onStop={stop} />
+              
             </h3>
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1826,7 +1785,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'showHide' | 'stretch' | 'resize'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'showHide';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
@@ -1903,11 +1862,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              const introTitle = "Show / Hide";
-              const introDesc = "Tools use to switch between displaying and hiding entities.";
-              speak([introTitle, introDesc, ...showHideSteps]);
-            }} onStop={stop} />
+            
           </h3>
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1929,11 +1884,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-              const introTitle = "Stretch / Shape / Cut";
-              const introDesc = "Tools used to modify the length and form of solid entities.";
-              speak([introTitle, introDesc, ...stretchSteps]);
-            }} onStop={stop} />
+            
           </h3>
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -2259,7 +2210,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(resizeSteps)} onStop={stop} />
+              
             </div>
 
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
@@ -2330,7 +2281,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'shapeSteels'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'shapeSteels';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`${subLessonId}-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
@@ -2363,11 +2314,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = "Creating Shape Steels";
-            const introDesc = "Learn how to arrange machine parts and steel profiles in 3D space.";
-            speak([introTitle, introDesc, ...shapeSteelsSteps]);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

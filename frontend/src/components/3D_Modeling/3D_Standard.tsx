@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Info, Play } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 // --- Assets ---
@@ -99,8 +100,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore((subLessonId === 'standard-1' || subLessonId === 'standard-4' || subLessonId === 'standard-6') ? `${subLessonId}-${activeTab}` : subLessonId);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   const getStepClass = (stepId: string) => "instruction-step";
 
@@ -169,6 +171,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
   ];
 
   const handleNext = () => {
+    stop();
     if (subLessonId === 'standard-1') {
       if (activeTab === 'pointer') setActiveTab('scale');
       else if (activeTab === 'scale') setActiveTab('gas');
@@ -193,6 +196,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
   };
 
   const handlePrev = () => {
+    stop();
     if (subLessonId === 'standard-1') {
       if (activeTab === 'sprocket') setActiveTab('oil');
       else if (activeTab === 'oil') setActiveTab('gas');
@@ -247,6 +251,78 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
   const currentLesson = LESSON_DATA[subLessonId] || { title: `STANDARD (${subLessonId})`, steps: [] };
 
+
+  // Register text dynamically on tab/activeTab changes
+  useEffect(() => {
+    let steps: string[] = [];
+    let startIdx = 0;
+    if (subLessonId === 'standard-1') {
+      steps = activeTab === 'pointer' ? pointerSteps :
+              activeTab === 'scale' ? scaleSteps :
+              activeTab === 'gas' ? gasSteps :
+              activeTab === 'oil' ? oilSteps : sprocketSteps;
+      startIdx = activeTab === 'pointer' ? 0 : 1; // standard intro bypass
+    } else if (subLessonId === 'standard-4') {
+      steps = activeTab === 'screw' ? ["Kusakabe Screw Codes: Follow these standard codes for screws, including specific designations for stainless steel parts."] :
+              activeTab === 'stainless' ? ["Stainless Steel Parts: Always check chemical properties and standard grades when modeling stainless parts."] :
+              activeTab === 'hardware' ? (LESSON_DATA['standard-5']?.steps || []) :
+              (LESSON_DATA['standard-5']?.steps || []);
+    } else if (subLessonId === 'standard-6') {
+      steps = activeTab === 'bolt length' ? boltLengthSteps :
+              activeTab === 'bolting setup' ? boltingSetupSteps :
+              activeTab === 'SLOTTED HOLE' ? slottedHoleSteps :
+              activeTab === 'CONNECTIONS' ? connectionSteps : sgpPipeSteps;
+      startIdx = activeTab === 'bolt length' ? 0 : 1;
+    }
+    if (steps.length > 0) {
+      registerText(steps, startIdx);
+    }
+  }, [subLessonId, activeTab, registerText]);
+
+  // Autoplay hook integration
+  const currentTabSteps = 
+    subLessonId === 'standard-1' ? (
+      activeTab === 'pointer' ? pointerSteps :
+      activeTab === 'scale' ? scaleSteps :
+      activeTab === 'gas' ? gasSteps :
+      activeTab === 'oil' ? oilSteps : sprocketSteps
+    ) : subLessonId === 'standard-4' ? (
+      activeTab === 'screw' ? ["Kusakabe Screw Codes: Follow these standard codes for screws, including specific designations for stainless steel parts."] :
+      activeTab === 'stainless' ? ["Stainless Steel Parts: Always check chemical properties and standard grades when modeling stainless parts."] :
+      activeTab === 'hardware' ? (LESSON_DATA['standard-5']?.steps || []) :
+      (LESSON_DATA['standard-5']?.steps || [])
+    ) : subLessonId === 'standard-6' ? (
+      activeTab === 'bolt length' ? boltLengthSteps :
+      activeTab === 'bolting setup' ? boltingSetupSteps :
+      activeTab === 'SLOTTED HOLE' ? slottedHoleSteps :
+      activeTab === 'CONNECTIONS' ? connectionSteps : sgpPipeSteps
+    ) : [];
+
+  const currentStartIdx = 
+    subLessonId === 'standard-1' ? (activeTab === 'pointer' ? 0 : 1) :
+    subLessonId === 'standard-6' ? (activeTab === 'bolt length' ? 0 : 1) : 0;
+
+  const currentTabsList = 
+    subLessonId === 'standard-1' ? [
+      { id: 'pointer' }, { id: 'scale' }, { id: 'gas' }, { id: 'oil' }, { id: 'sprocket' }
+    ] : subLessonId === 'standard-4' ? [
+      { id: 'screw' }, { id: 'stainless' }, { id: 'hardware' }, { id: 'bolt' }
+    ] : subLessonId === 'standard-6' ? [
+      { id: 'bolt length' }, { id: 'bolting setup' }, { id: 'SLOTTED HOLE' }, { id: 'CONNECTIONS' }, { id: 'sgp pipes' }
+    ] : [];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    currentTabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    currentStartIdx
+  );
+
   return (
     <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
@@ -257,7 +333,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
         <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
           <h3 className="section-title">
             {currentLesson.title}
-            <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(currentLesson.steps)} onStop={stop} />
+            
           </h3>
         </section>
       )}
@@ -274,7 +350,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <button 
               key={tab.id}
               className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => { stop(); setActiveTab(tab.id as any); }}
             >
               {tab.label}
             </button>
@@ -293,7 +369,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <button 
               key={tab.id}
               className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => { stop(); setActiveTab(tab.id as any); }}
             >
               {tab.label}
             </button>
@@ -313,7 +389,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <button 
               key={tab.id}
               className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => { stop(); setActiveTab(tab.id as any); }}
             >
               {tab.label}
             </button>
@@ -336,7 +412,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(pointerSteps)} onStop={stop} />
+                    
                   </div>
 
                   <div className={`${getStepClass("s1-1")} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
@@ -383,7 +459,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(scaleSteps)} onStop={stop} />
+                    
                   </div>
 
                     <div className={`step-description ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
@@ -412,7 +488,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(gasSteps)} onStop={stop} />
+                    
                   </div>
                   <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <KaraokeLessonText
@@ -442,7 +518,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(oilSteps)} onStop={stop} />
+                    
                   </div>
                   <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <KaraokeLessonText
@@ -479,7 +555,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sprocketSteps)} onStop={stop} />
+                    
                   </div>
                   <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <KaraokeLessonText
@@ -542,7 +618,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                    activeTab === 'bolt' ? 'BOLT HOLE DIAMETER STANDARD' : 
                    'Kusakabe Standard Code for Screw, etc.'}
                 </h4>
-                <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(activeTab === 'hardware' || activeTab === 'bolt' ? LESSON_DATA['standard-5']?.steps || [] : currentLesson.steps)} onStop={stop} />
+                
               </div>
 
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
@@ -728,7 +804,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boltLengthSteps)} onStop={stop} />
+                    
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
@@ -794,7 +870,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(boltingSetupSteps)} onStop={stop} />
+                    
                   </div>
                   <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <KaraokeLessonText
@@ -864,7 +940,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(slottedHoleSteps)} onStop={stop} />
+                    
                   </div>
                   <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <KaraokeLessonText
@@ -949,7 +1025,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(connectionSteps)} onStop={stop} />
+                    
                   </div>
                   <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-description">
@@ -1005,7 +1081,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
-                    <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(sgpPipeSteps)} onStop={stop} />
+                    
                   </div>
                   <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <div className="step-description">

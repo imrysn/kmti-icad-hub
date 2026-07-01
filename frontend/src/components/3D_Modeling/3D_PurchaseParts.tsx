@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -28,14 +29,16 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [activeTab, subLessonId]);
 
   const handleNext = () => {
+    stop();
     if (activeTab === 'part1') {
       setActiveTab('part2');
     } else if (onNextLesson) {
@@ -45,6 +48,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
   };
 
   const handlePrev = () => {
+    stop();
     if (activeTab === 'part2') {
       setActiveTab('part1');
     } else if (onPrevLesson) {
@@ -57,6 +61,43 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
   const introSubtitle = activeTab === 'part1' ? 
     "Relationship between vendor data, ICAD formatting, and assembly integration." : 
     "Protocol for synchronizing purchase parts with the central repository.";
+
+
+  const part1Steps = [
+    "PURCHASE PARTS MODELING",
+    "Relationship between vendor data, ICAD formatting, and assembly integration.",
+    "Step 1: Check dimensions from vendor catalogs.",
+    "Step 2: Simplify details (e.g. remove tiny fillets, gears) to save file size.",
+    "Step 3: Save as standard ICAD format in local library."
+  ];
+
+  const part2Steps = [
+    "SERVER UPLOAD PROTOCOL",
+    "Protocol for synchronizing purchase parts with the central repository.",
+    "Step 1: Upload process must follow KMTI numbering standard.",
+    "Step 2: Complete the registration form on the server.",
+    "Step 3: Double check dependencies before finalizing upload."
+  ];
+
+  useEffect(() => {
+    const steps = activeTab === 'part1' ? part1Steps : part2Steps;
+    registerText(steps, 0);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'part1' ? part1Steps : part2Steps;
+  const tabsList = [{ id: 'part1' }, { id: 'part2' }];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>

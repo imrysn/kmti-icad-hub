@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
@@ -31,8 +32,9 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`3d-origin-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore("3d-origin");
 
   useEffect(() => {
     localStorage.setItem('3d-origin-active-tab', activeTab);
@@ -77,6 +79,27 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+
+  useEffect(() => {
+    const steps = activeTab === 'part' ? partSteps : assemblySteps;
+    registerText(steps, 0);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'part' ? partSteps : assemblySteps;
+  const tabsList = [{ id: 'part' }, { id: 'assembly' }];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>

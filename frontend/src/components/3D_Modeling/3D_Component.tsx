@@ -6,6 +6,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import '../../styles/3D_Modeling/CourseLesson.css';
@@ -54,8 +55,9 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
@@ -118,6 +120,23 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     "Select components to be deleted."
   ];
 
+  const introTitle = "Move / Copy / Delete Component";
+  const introSubtitle = "These tools use to change the position, duplicate or delete components such as drill holes, cutouts, components or merged entities.";
+
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle
+  ];
+
+  const moveStepsTTS = [...commonIntroSteps, ...moveSteps];
+  const copyStepsTTS = [...commonIntroSteps, ...copySteps];
+  const mirrorStepsTTS = [...commonIntroSteps, ...mirrorSteps];
+  const rotateStepsTTS = [...commonIntroSteps, ...rotateSteps];
+  const repeatStepsTTS = [...commonIntroSteps, ...repeatSteps];
+  const rotateCopyStepsTTS = [...commonIntroSteps, ...rotateCopySteps];
+  const mirrorCopyStepsTTS = [...commonIntroSteps, ...mirrorCopySteps];
+  const deleteStepsTTS = [...commonIntroSteps, ...deleteSteps];
+
   const tabs = [
     { id: 'move', label: 'Move' },
     { id: 'copy', label: 'Copy' },
@@ -129,22 +148,61 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     { id: 'delete', label: 'Delete' }
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) { sessionStorage.setItem('tts-autoplay-active', 'false'); }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) setActiveTab(tabs[i + 1].id as any);
     else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) { sessionStorage.setItem('tts-autoplay-active', 'false'); }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) setActiveTab(tabs[i - 1].id as any);
     else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const introTitle = "Move / Copy / Delete Component";
-  const introSubtitle = "These tools use to change the position, duplicate or delete components such as drill holes, cutouts, components or merged entities.";
+
+  useEffect(() => {
+    const steps = activeTab === 'move' ? moveStepsTTS :
+                  activeTab === 'copy' ? copyStepsTTS :
+                  activeTab === 'mirror' ? mirrorStepsTTS :
+                  activeTab === 'rotate' ? rotateStepsTTS :
+                  activeTab === 'repeat' ? repeatStepsTTS :
+                  activeTab === 'rotateCopy' ? rotateCopyStepsTTS :
+                  activeTab === 'mirrorCopy' ? mirrorCopyStepsTTS : deleteStepsTTS;
+    const startIdx = activeTab === 'move' ? 0 : 2;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'move' ? moveStepsTTS :
+                          activeTab === 'copy' ? copyStepsTTS :
+                          activeTab === 'mirror' ? mirrorStepsTTS :
+                          activeTab === 'rotate' ? rotateStepsTTS :
+                          activeTab === 'repeat' ? repeatStepsTTS :
+                          activeTab === 'rotateCopy' ? rotateCopyStepsTTS :
+                          activeTab === 'mirrorCopy' ? mirrorCopyStepsTTS : deleteStepsTTS;
+  const startIdx2 = activeTab === 'move' ? 0 : 2;
+  const tabsList = [
+    { id: 'move' }, { id: 'copy' }, { id: 'mirror' }, { id: 'rotate' },
+    { id: 'repeat' }, { id: 'rotateCopy' }, { id: 'mirrorCopy' }, { id: 'delete' }
+  ];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx2
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -156,7 +214,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
           <button
             key={tab.id}
             className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}
             style={{ flex: 1, textAlign: 'center', padding: '0.5rem 0.6rem' }}
           >
             {tab.label}
@@ -172,16 +230,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const steps = activeTab === 'move' ? moveSteps :
-              activeTab === 'copy' ? copySteps :
-                activeTab === 'mirror' ? mirrorSteps :
-                  activeTab === 'rotate' ? rotateSteps :
-                    activeTab === 'repeat' ? repeatSteps :
-                      activeTab === 'rotateCopy' ? rotateCopySteps :
-                        activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
-            speak([introTitle, introSubtitle, ...steps]);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

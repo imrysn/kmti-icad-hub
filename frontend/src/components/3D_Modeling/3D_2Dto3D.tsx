@@ -7,6 +7,7 @@ import {
   Zap
 } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -50,7 +51,9 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     isSpeaking,
     currentIndex,
     currentCharIndex
-  } = useLessonCore(`2d-3d-1-${activeTab}`);
+,
+    registerText
+  } = useLessonCore("2d-3d-1");
 
   useEffect(() => {
     localStorage.setItem('2d-3d-1-tab', activeTab);
@@ -72,7 +75,11 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     { id: "commandMenu", label: "Command Menu" }
   ];
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex((t) => t.id === activeTab);
     if (i < tabs.length - 1) {
       setActiveTab(tabs[i + 1].id as any);
@@ -82,7 +89,11 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex((t) => t.id === activeTab);
     if (i > 0) {
       setActiveTab(tabs[i - 1].id as any);
@@ -92,15 +103,32 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const steps = activeTab === 'workPlane' ? workPlaneSteps : menuSteps;
+    registerText(steps, 0);
+  }, [activeTab, registerText]);
 
+  const currentTabSteps = activeTab === 'workPlane' ? workPlaneSteps : menuSteps;
+  const tabsList = [{ id: 'workPlane' }, { id: 'commandMenu' }];
 
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
   return (
     <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => setActiveTab(tab.id as any)} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
       </div>
 
 
@@ -117,7 +145,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(workPlaneSteps)} onStop={stop} />
+              
             </div>
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: "-3.4rem" }}>
               <KaraokeLessonText
@@ -159,7 +187,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={() => speak(menuSteps)} onStop={stop} />
+              
             </div>
             <KaraokeLessonText
               as="p"
@@ -199,13 +227,26 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     isSpeaking,
     currentIndex,
     currentCharIndex
-  } = useLessonCore(`2d-3d-2-${activeTab}`);
+,
+    registerText
+  } = useLessonCore("2d-3d-2");
 
   useEffect(() => {
     localStorage.setItem('2d-3d-2-tab', activeTab);
   }, [activeTab]);
 
+  const introTitle = "Extrude, Revolve, Spiral";
+  const introSubtitle = "These are the tools use for extruding 2D sketches to 3D Solid Entities";
+  const introSubtitle2 = "Most commonly used tools are the following:";
+
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle,
+    introSubtitle2
+  ];
+
   const extrudeSteps = [
+    ...commonIntroSteps,
     "EXTRUDE",
     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.",
     "Step 1: Select Extrude from the icon menu.",
@@ -217,6 +258,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "RESULT"
   ];
   const revolveStepsTTS = [
+    ...commonIntroSteps,
     "REVOLVE",
     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.",
     "Step 1: Select Revolve from the icon menu.",
@@ -225,6 +267,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "PROCESS OVERVIEW"
   ];
   const spiralSteps = [
+    ...commonIntroSteps,
     "SPIRAL FORM",
     "Creates a 3D spiral form from a section form created on a 2D sketch.",
     "Step 1: First do the sketch",
@@ -235,7 +278,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
   ];
 
   const tabs = [{ id: "extrude", label: "Extrude" }, { id: "revolve", label: "Revolve" }, { id: "spiral", label: "Spiral" },];
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex((t) => t.id === activeTab);
     if (i < tabs.length - 1) {
       setActiveTab(tabs[i + 1].id as any);
@@ -244,7 +291,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex((t) => t.id === activeTab);
     if (i > 0) {
       setActiveTab(tabs[i - 1].id as any);
@@ -254,17 +305,36 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const introTitle = "Extrude, Revolve, Spiral";
-  const introSubtitle = "These are the tools use for extruding 2D sketches to 3D Solid Entities";
-  const introSubtitle2 = "Most commonly used tools are the following:";
+  useEffect(() => {
+    const steps = activeTab === 'extrude' ? extrudeSteps :
+                  activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
+    const startIdx = activeTab === 'extrude' ? 0 : 3;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
 
+  const currentTabSteps2 = activeTab === 'extrude' ? extrudeSteps :
+                           activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
+  const tabsList2 = [{ id: 'extrude' }, { id: 'revolve' }, { id: 'spiral' }];
+  const startIdx2 = activeTab === 'extrude' ? 0 : 3;
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps2.length,
+    tabsList2,
+    handleNext,
+    speak,
+    currentTabSteps2,
+    startIdx2
+  );
   return (
     <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => setActiveTab(tab.id as any)} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
       </div>
 
       <section className="lesson-intro">
@@ -275,11 +345,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const steps = activeTab === 'extrude' ? extrudeSteps :
-              activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
-            speak([introTitle, introSubtitle, introSubtitle2, ...steps]);
-          }} onStop={stop} />
+          
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -604,12 +670,12 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
-              <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: '1rem' }}>
+              <div className={`instruction-box ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7" style={{ marginTop: '1rem' }}>
                 <KaraokeLessonText
                   as="p"
                   className="p-flush red-text"
                   text="Note: Pitch must be greater than Thickness."
-                  isActive={isSpeaking && currentIndex === 8}
+                  isActive={isSpeaking && currentIndex === 7}
                   currentCharIndex={currentCharIndex}
                 />
               </div>

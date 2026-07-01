@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Box as BoxIcon, Info } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
@@ -62,8 +63,10 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     speak,
     stop,
     isSpeaking,
-    currentIndex
-  } = useLessonCore(`${subLessonId}-${activeTab}`);
+    currentIndex,
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
@@ -114,6 +117,27 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
   const getStepClass = (stepId: string) => "instruction-step";
 
+
+  useEffect(() => {
+    const steps = activeTab === 'sample1' ? opSample1Steps : opSample2Steps;
+    registerText(steps, 0);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'sample1' ? opSample1Steps : opSample2Steps;
+  const tabsList = [{ id: 'sample1' }, { id: 'sample2' }];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
+
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
       <div className="lesson-progress-container">
@@ -129,13 +153,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           {activeTab === 'sample1' ? 'SAMPLE OF 3D MODELING OF PARTS' :
            '3D MODELING USING 2D SKETCH, KEY GROOVE, RETAINER RING GROOVE'}
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const introTitle = activeTab === 'sample1' ? 'SAMPLE OF 3D MODELING OF PARTS' :
-                               '3D MODELING USING 2D SKETCH, KEY GROOVE, RETAINER RING GROOVE';
-            const introDesc = "Here is the step-by-step procedure of creating 3D model.";
-            const steps = activeTab === 'sample1' ? opSample1Steps : opSample2Steps;
-            speak([introTitle, introDesc, ...steps]);
-          }} onStop={stop} />
+          
         </h3>
         <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
           Here is the step-by-step procedure of creating 3D model.

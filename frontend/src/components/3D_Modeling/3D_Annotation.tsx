@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -51,8 +52,9 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex
-  } = useLessonCore(`annotation-${activeTab}`);
+    currentCharIndex,
+    registerText
+  } = useLessonCore("annotation");
 
   const linearSteps = [
     "CREATE LINEAR DIMENSION",
@@ -105,36 +107,95 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
     "Changes the positions of drafting entities.",
   ];
 
+  const introTitle = "ANNOTATION";
+  const introSubtitle = "Tools use to create drafting entities such as dimension text and notes.";
+
+  const commonIntroSteps = [
+    introTitle,
+    introSubtitle
+  ];
+
+  const linearStepsTTS = [...commonIntroSteps, ...linearSteps];
+  const diameterStepsTTS = [...commonIntroSteps, ...diameterSteps];
+  const angularStepsTTS = [...commonIntroSteps, ...angularSteps];
+  const notesStepsTTS = [...commonIntroSteps, ...notesSteps];
+  const characterStepsTTS = [...commonIntroSteps, ...characterSteps];
+  const editsStepsTTS = [...commonIntroSteps, ...editsSteps];
+  const attributesStepsTTS = [...commonIntroSteps, ...attributesSteps];
+  const positionStepsTTS = [...commonIntroSteps, ...positionSteps];
+
   const handleTabChange = (tab: AnnotationTab) => {
+    stop();
+    sessionStorage.setItem('tts-autoplay-active', 'false');
     setActiveTab(tab);
   };
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const tabs: AnnotationTab[] = ["linear", "diameter", "angular", "notes", "character", "edits", "attributes", "position"];
     const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex < tabs.length - 1) {
-      handleTabChange(tabs[currentIndex + 1]);
+      setActiveTab(tabs[currentIndex + 1]);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
     } else {
       if (onNextLesson) onNextLesson();
     }
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const tabs: AnnotationTab[] = ["linear", "diameter", "angular", "notes", "character", "edits", "attributes", "position"];
     const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex > 0) {
-      handleTabChange(tabs[currentIndex - 1]);
+      setActiveTab(tabs[currentIndex - 1]);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
     } else {
       if (onPrevLesson) onPrevLesson();
     }
   };
 
-  const introTitle = "ANNOTATION";
-  const introSubtitle = "Tools use to create drafting entities such as dimension text and notes.";
+  useEffect(() => {
+    const steps = activeTab === 'linear' ? linearStepsTTS :
+                  activeTab === 'diameter' ? diameterStepsTTS :
+                  activeTab === 'angular' ? angularStepsTTS :
+                  activeTab === 'notes' ? notesStepsTTS :
+                  activeTab === 'character' ? characterStepsTTS :
+                  activeTab === 'edits' ? editsStepsTTS :
+                  activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
+    const startIdx = activeTab === 'linear' ? 0 : 2;
+    registerText(steps, startIdx);
+  }, [activeTab, registerText]);
+
+  const currentTabSteps = activeTab === 'linear' ? linearStepsTTS :
+                          activeTab === 'diameter' ? diameterStepsTTS :
+                          activeTab === 'angular' ? angularStepsTTS :
+                          activeTab === 'notes' ? notesStepsTTS :
+                          activeTab === 'character' ? characterStepsTTS :
+                          activeTab === 'edits' ? editsStepsTTS :
+                          activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
+  const startIdx2 = activeTab === 'linear' ? 0 : 2;
+  const tabsList = [
+    { id: 'linear' }, { id: 'diameter' }, { id: 'angular' }, { id: 'notes' },
+    { id: 'character' }, { id: 'edits' }, { id: 'attributes' }, { id: 'position' }
+  ];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    startIdx2
+  );
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -150,16 +211,6 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const steps = activeTab === 'linear' ? linearSteps :
-              activeTab === 'diameter' ? diameterSteps :
-                activeTab === 'angular' ? angularSteps :
-                  activeTab === 'notes' ? notesSteps :
-                    activeTab === 'character' ? characterSteps :
-                      activeTab === 'edits' ? editsSteps :
-                        activeTab === 'attributes' ? attributesSteps : positionSteps;
-            speak([introTitle, introSubtitle, ...steps]);
-          }} onStop={stop} />
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
