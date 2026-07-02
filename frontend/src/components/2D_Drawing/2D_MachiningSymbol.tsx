@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Machining Symbol */
@@ -22,7 +23,7 @@ interface MachiningSymbolLessonProps {
 const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
   onNextLesson,
   onPrevLesson, nextLabel }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-machining-symbol');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-machining-symbol');
 
   const machiningSteps = [
     ""
@@ -30,6 +31,39 @@ const MachiningSymbolLesson: React.FC<MachiningSymbolLessonProps> = ({
 
   const currentTitle = "MACHINING SYMBOL";
   const currentSubtitle = "Understanding machining symbols and surface condition requirements to ensure precision parts and required surface finishes.";
+  const currentTabSteps = [
+    currentTitle,
+    currentSubtitle,
+    "Machining Symbol. Note: Machining symbol with open & close parenthesis indicates that the part must be machined before welding. Machining after welding will be impossible.",
+    "Machining Surface Condition."
+  ];
+  const tabsList = [{ id: 'default' }];
+  const activeTab = 'default';
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [registerText]);
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
+    if (onNextLesson) onNextLesson();
+  };
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>

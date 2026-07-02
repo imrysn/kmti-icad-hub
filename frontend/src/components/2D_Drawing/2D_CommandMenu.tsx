@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -35,14 +36,19 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     return localStorage.getItem('2d-command-menu-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-command-menu-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-command-menu-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-command-menu-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentTabIndex < TABS.length - 1) {
       setActiveTab(TABS[currentTabIndex + 1].id);
@@ -52,7 +58,12 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentTabIndex > 0) {
       setActiveTab(TABS[currentTabIndex - 1].id);
@@ -66,7 +77,8 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     '2d-command-menu-line-properties': {
       title: 'Selectable and Unselectable Line Properties',
       steps: [
-
+        "All line type, line weight, and color are selectable when system is started.",
+        "Click on the entities to select and unselect line properties. Entities highlighted in blue are selectable."
       ]
     },
     '2d-command-menu-command-menu': {
@@ -78,18 +90,41 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
     '2d-command-menu-active-view': {
       title: 'ACTIVE VIEW',
       steps: [
-        "Each viewing has its own local view.<br />Highlighted one is activated. It means, all changes performed in that activated view is valid.<br />Unactivated view cannot select any line, so that no command will be performed.",
+        "Each viewing has its own local view. Highlighted one is activated. It means, all changes performed in that activated view is valid. Unactivated view cannot select any line, so that no command will be performed.",
       ]
     },
     '2d-command-menu-component': {
       title: 'Component highlighted / unhighlighted',
       steps: [
-        "<strong class=\"red-text\">Note:</strong> <br />The process of removing the chamfer is per orthographic view."
+        "The process of removing the chamfer is per orthographic view."
       ]
     }
   };
 
   const currentLesson = LESSON_DATA[`2d-command-menu-${activeTab}`] || { title: 'COMMAND MENU', steps: [] };
+
+  const currentTabSteps = [
+    currentLesson.title,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -116,49 +151,62 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
             <div className="flex-col tab-content fade-in">
               {activeTab === 'line-properties' && (
-                <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 4 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className={`instruction-step ${currentIndex >= 0 && currentIndex <= 2 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">2</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
                       text="Selectable and Unselectable Line Properties"
-                      isActive={isSpeaking && currentIndex === 1}
+                      isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
                   <img src={linePropsImg} alt="Line Properties" className="software-screenshot screenshot-wide mt-4" />
 
                   <div className="instruction-box mt-4">
-                    <p className="p-flush">All line type, line weight, and color are selectable when system is started.</p>
-                    <p className="p-flush mt-2">Click on the entities to select and unselect line properties.</p>
-                    <p className="p-flush mt-2">Entities highlighted in blue are selectable.</p>
+                    <div className={`instruction-step-inline ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+                      <KaraokeLessonText
+                        className="p-flush"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className={`instruction-step-inline ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "0.5rem" }}>
+                      <KaraokeLessonText
+                        className="p-flush"
+                        text={currentLesson.steps[1]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
                   </div>
-
-
 
                 </div>
               )}
 
               {activeTab === 'command-menu' && (
-                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className={`instruction-step ${currentIndex >= 0 && currentIndex <= 1 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">3</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
                       text="Command Menu"
-                      isActive={isSpeaking && currentIndex === 1}
+                      isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
                   <div className="step-description">
-                    <KaraokeLessonText
-                      className="p-flush"
-                      text={currentLesson.steps[0]}
-                      isActive={isSpeaking && currentIndex === 1}
-                      currentCharIndex={currentCharIndex}
-                    />
+                    <div className={`instruction-step-inline ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+                      <KaraokeLessonText
+                        className="p-flush"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
                     <img src={commandMenu1ImgA} alt="Command Menu Details" className="software-screenshot screenshot-wide mt-4" />
                     <img src={commandMenu1ImgB} alt="Command Menu Specifics" className="software-screenshot screenshot-wide mt-4" />
                   </div>
@@ -166,25 +214,26 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
               )}
 
               {activeTab === 'active-view' && (
-                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className={`instruction-step ${currentIndex >= 0 && currentIndex <= 1 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">3</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
                       text="Active View"
-                      isActive={isSpeaking && currentIndex === 1}
+                      isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
                   <div className="step-description">
-                    <KaraokeLessonText
-                      className="p-flush font-bold"
-                      text={currentLesson.steps[0]}
-                      isActive={isSpeaking && currentIndex === 1}
-                      currentCharIndex={currentCharIndex}
-                    />
-
+                    <div className={`instruction-step-inline ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
+                      <KaraokeLessonText
+                        className="p-flush font-bold"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
 
                     <img src={activeViewImg} alt="Active View Settings" className="software-screenshot screenshot-wide mt-4" />
                   </div>
@@ -192,14 +241,14 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
               )}
 
               {activeTab === 'component' && (
-                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className={`instruction-step ${currentIndex >= 0 && currentIndex <= 1 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">4</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
                       text="Component highlighted / unhighlighted"
-                      isActive={isSpeaking && currentIndex === 1}
+                      isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>

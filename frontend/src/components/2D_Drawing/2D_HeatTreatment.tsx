@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -25,14 +26,45 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
     return localStorage.getItem('2d-heat-treatment-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-heat-treatment-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-heat-treatment-${activeTab}`);
+
+  const LESSON_DATA = {
+    '1': {
+      title: 'HEAT TREATMENT MATERIAL STANDARDS',
+      subtitle: 'JIS and KEMCO standard styles for material thermal refining and hardening.',
+      steps: [
+        "Review the S35C, S45C, S50C, S55C, SCM435, and SCM440 standards in the table for hardness and revisions."
+      ]
+    },
+    '2': {
+      title: 'HEAT TREATMENT PROCESS STANDARDS',
+      subtitle: 'Review kind of process, indication of drawing, applicable material and hardness, purpose, and characteristics.',
+      steps: [
+        "Review Through Hardening, Vacuum Hardening, Thermal Refining, Annealing, Induction Hardening, QPQ, and other processes."
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[activeTab as '1' | '2'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...currentLesson.steps
+  ];
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
 
   useEffect(() => {
-    localStorage.setItem('2d-heat-treatment-active-tab', activeTab);
-    stop();
-  }, [activeTab, stop]);
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const idx = TABS.findIndex(tab => tab.id === activeTab);
     if (idx < TABS.length - 1) {
       setActiveTab(TABS[idx + 1].id);
@@ -42,7 +74,12 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const idx = TABS.findIndex(tab => tab.id === activeTab);
     if (idx > 0) {
       setActiveTab(TABS[idx - 1].id);
@@ -51,6 +88,23 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
+
+  useEffect(() => {
+    localStorage.setItem('2d-heat-treatment-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -86,7 +140,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className="instruction-step">
-                  <div className="lesson-table-container">
+                  <div className={`lesson-table-container ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                     <table className="lesson-table">
                       <colgroup>
                         <col style={{ width: "18%" }} />
@@ -294,7 +348,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
               {activeTab === '2' && (
                 <div className="flex-col">
-                  <div className="lesson-table-container">
+                  <div className={`lesson-table-container ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                     <table className="lesson-table">
                       <colgroup>
                         <col style={{ width: "14%" }} />

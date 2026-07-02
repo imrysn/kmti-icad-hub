@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -20,7 +21,41 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-surface-coating');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-surface-coating');
+
+  const currentTabSteps = [
+    "SURFACE COATING SIZE AND TOLERANCE",
+    "Review surface coating processes table including Hard Chromate, Chrome Plating, Nickel Plating, and Colored Plating.",
+    "Special Notes: Review the special notes indications in the drawing interface.",
+    "Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then GO. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity."
+  ];
+  const tabsList = [{ id: 'default' }];
+  const activeTab = 'default';
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [registerText]);
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
+    if (onNextLesson) onNextLesson();
+  };
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -44,7 +79,13 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
             <div className="flex-col tab-content fade-in">
 
               {/* === Table: Surface Coating Processes === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className="step-header">
+                  <span className="step-number">a</span>
+                  <KaraokeLessonText as="span" className="step-label" text="Surface Coating Processes" isActive={isSpeaking && currentIndex === 1} currentCharIndex={currentCharIndex} />
+                </div>
+              </div>
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="lesson-table-container">
                   <table className="lesson-table">
                     <colgroup>
@@ -168,10 +209,10 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
               </div>
 
               {/* === b. Special Notes === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">b</span>
-                  <span className="step-label">Special Notes</span>
+                  <KaraokeLessonText as="span" className="step-label" text="Special Notes" isActive={isSpeaking && currentIndex === 2} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
                   <img src={specialNotesImg} alt="Special Notes Interface" className="software-screenshot screenshot-wide" />
@@ -179,20 +220,15 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
               </div>
 
               {/* === c. Copy / Move === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">c</span>
-                  <span className="step-label">Copy / Move</span>
+                  <KaraokeLessonText as="span" className="step-label" text="Copy / Move" isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
                   <img src={copyMoveImg} alt="Copy Move Commands" className="software-screenshot screenshot-wide" />
                   <div className="instruction-box mt-6">
-                    <p className="p-flush" style={{ marginBottom: "0.75rem" }}>
-                      Copy and move has the same procedure. The only difference is that copy will multiply its quantity while move will only change location.
-                    </p>
-                    <p className="p-flush">1. Click copy command. Click P1 then "GO".</p>
-                    <p className="p-flush">2. Click P2 for reference.</p>
-                    <p className="p-flush">3. Click P3 for the new location of entity.</p>
+                    <KaraokeLessonText className="p-flush mb-4" text="Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then GO. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity." isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
                   </div>
                 </div>
               </div>

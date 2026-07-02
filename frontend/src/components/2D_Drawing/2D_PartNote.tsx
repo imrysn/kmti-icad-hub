@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -21,14 +22,48 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore('2d-part-note');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-part-note');
 
   const noteSteps = [
     "Note: Aside from the given samples, note command can be applied depends on the purpose and on the required process to be applied.",
+    "Text: Use the text input command to add text annotations to the drawing. You can configure text properties, size, alignment, and spacing to fit KEMCO design requirements."
   ];
-
   const currentTitle = "PART NOTE / TEXT";
-  const currentSubtitle = "";
+  const currentSubtitle = "General part annotations and text options.";
+
+  const currentTabSteps = [
+    currentTitle,
+    currentSubtitle,
+    noteSteps[0],
+    noteSteps[1]
+  ];
+  const tabsList = [{ id: 'default' }];
+  const activeTab = 'default';
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [registerText]);
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
+    if (onNextLesson) onNextLesson();
+  };
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -59,13 +94,27 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
               </div>
             </div>
 
-            <div className="instruction-step" style={{ marginTop: "1rem" }}>
+            <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
               <div className="step-header">
                 <span className="step-number">11</span>
-                <span className="step-label">Text</span>
+                <KaraokeLessonText
+                  as="span"
+                  className="step-label"
+                  text="Text"
+                  isActive={isSpeaking && currentIndex === 3}
+                  currentCharIndex={currentCharIndex}
+                />
               </div>
               <div className="step-description">
-                <img src={textNoteImg} alt="Text Configuration" className="software-screenshot screenshot-wide mt-4" />
+                <div className="instruction-box mb-4">
+                  <KaraokeLessonText
+                    className="p-flush"
+                    text={noteSteps[1]}
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+                <img src={textNoteImg} alt="Text Configuration" className="software-screenshot screenshot-wide" />
               </div>
             </div>
           </div>

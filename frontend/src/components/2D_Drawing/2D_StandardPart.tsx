@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -60,14 +61,19 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
     return localStorage.getItem('2d-standard-part-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-standard-part-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-standard-part-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-standard-part-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -77,7 +83,12 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -89,8 +100,8 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-standard-part-1': {
-      title: '',
-      subtitle: '',
+      title: 'PCD / TAPERED / STANDARD',
+      subtitle: 'Pitch Center Diameter, Rc Tapered Threads, and Standard Parts.',
       steps: [
         "is no longer used for KEMCO drawing to avoid misreading of dimension during fabrication.",
         "Based on the drawing, we must apply it on 2D detailing",
@@ -98,32 +109,32 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
       ]
     },
     '2d-standard-part-2': {
-      title: '',
-      subtitle: '',
+      title: 'OIL GROOVE',
+      subtitle: 'Lubrication groove detailing and oil holes.',
       steps: [
         "Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole."
       ]
     },
     '2d-standard-part-3': {
-      title: '',
-      subtitle: '',
+      title: 'SHAFT AND KEY',
+      subtitle: 'Tolerances and processing of shaft keyways.',
       steps: [
         "The shape after cutting must be free from burrs. Use flat bar material. The tolerance of the width groove must be f plus zero point three over plus zero point two.",
         "As much as possible, follow the way of detailing in this reference. Do not position the key groove below."
       ]
     },
     '2d-standard-part-4': {
-      title: '',
-      subtitle: '',
+      title: 'COLLAR',
+      subtitle: 'Detailing collar dimensions and alignment.',
       steps: [
-        "Used in machine, fitted on a shaft to prevent sliding movement. <br /> Also serves as mechanical stopper and stroke limiters.",
+        "Used in machine, fitted on a shaft to prevent sliding movement. Also serves as mechanical stopper and stroke limiters.",
         "Can used to hold urethane rubber and serve as stopper. To avoid over press of the material during tightening that causes the urethane to distort.",
         "As much as possible, follow the way of detailing in this reference."
       ]
     },
     '2d-standard-part-6': {
-      title: '',
-      subtitle: '',
+      title: 'SCALING RULES',
+      subtitle: 'Selecting standard and non-standard scales.',
       steps: [
         "Follow the standard scale given by KEMCO.",
         "On parts drawing, standard scale must be always used.",
@@ -131,8 +142,8 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
       ]
     },
     '2d-standard-part-7': {
-      title: '',
-      subtitle: '',
+      title: 'RELIEF PROCESS',
+      subtitle: 'Tool clearance and shaft shoulder processing.',
       steps: [
         "Often used at the end of the shoulder portion of a shaft to provide clearance for the cutting tool and also to avoid damaging it.",
         "There are four steps to show the detail on the template. Choose the required template and click OK."
@@ -141,6 +152,30 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
   };
 
   const currentLesson = LESSON_DATA[`2d-standard-part-${activeTab}`] || LESSON_DATA['2d-standard-part-1'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -167,7 +202,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className="flex-col">
-                  <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
                     <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">d</span>
                       <KaraokeLessonText

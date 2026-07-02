@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -36,14 +36,19 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     return localStorage.getItem('2d-additional-view-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-additional-view-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-additional-view-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-additional-view-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -53,7 +58,12 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -66,14 +76,14 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-additional-view-cross-section': {
       title: 'ADDITIONAL VIEW',
-      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      subtitle: 'Creating cross-sections and adjusting viewing depth in 2D drawings.',
       steps: [
         "There are some instances that the cross sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate uneccessary parts."
       ]
     },
     '2d-additional-view-partial-detail': {
       title: 'ADDITIONAL VIEW',
-      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      subtitle: 'Configuring partial sectional views and magnified detail drawings.',
       steps: [
         "Use to make a cross-section of a part partially",
         "Use to detail a view on a bigger scale from a different view."
@@ -81,7 +91,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     },
     '2d-additional-view-isometric': {
       title: 'ADDITIONAL VIEW',
-      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      subtitle: 'Adding 3D isometric representation views and depth boundaries.',
       steps: [
         "Isometric View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
         "There are some instances that the cross-sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate the unnecessary parts."
@@ -89,7 +99,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     },
     '2d-additional-view-trim': {
       title: 'ADDITIONAL VIEW',
-      subtitle: 'Creating and managing specialized cross-sections, details, and isometric projections in 2D drafting.',
+      subtitle: 'Trimming unwanted detail parts out of specific view bounds.',
       steps: [
         "Another way to eliminate parts that are not needed on a certain view. This can not be applied on Detail Drawing."
       ]
@@ -97,6 +107,30 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
   };
 
   const currentLesson = LESSON_DATA[`2d-additional-view-${activeTab}`] || LESSON_DATA['2d-additional-view-cross-section'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>

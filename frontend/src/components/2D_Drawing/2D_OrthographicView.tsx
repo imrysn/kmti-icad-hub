@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
@@ -38,14 +39,19 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
     return localStorage.getItem('2d-orthographic-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-orthographic-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-orthographic-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-orthographic-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -55,7 +61,12 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -104,6 +115,29 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 
   const currentLesson = LESSON_DATA[`2d-orthographic-${activeTab}`] || { title: 'ORTHOGRAPHIC VIEW', steps: [] };
 
+  const currentTabSteps = [
+    currentLesson.title,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
+
   return (
     <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
@@ -126,17 +160,16 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
         <div className="lesson-card">
           <div className="fade-in">
 
-
             <div className="flex-col tab-content fade-in">
               {activeTab === 'template' && (
-                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">1</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
                       text="Inserting Drawing Template"
-                      isActive={isSpeaking && currentIndex === 1}
+                      isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
@@ -147,14 +180,14 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
               )}
 
               {activeTab === 'views' && (
-                <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-2rem" }}>
+                <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">a</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
                       text="Creating Orthographic View / Delete Views"
-                      isActive={isSpeaking && currentIndex === 1}
+                      isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>

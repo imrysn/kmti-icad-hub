@@ -92,27 +92,46 @@ def get_kokoro_model():
         if _kokoro_instance is not None:
             return _kokoro_instance
 
-        if not os.path.exists(ONNX_PATH) or not os.path.exists(VOICES_PATH):
-            logger.error(f"Kokoro model files not found on NAS. ONNX: {ONNX_PATH}, Voices: {VOICES_PATH}")
-            raise HTTPException(
-                status_code=404, 
-                detail=f"Kokoro model files not found on NAS at {MODEL_DIR}. Please check the NAS path."
-            )
+        # 1. Try env variable
+        model_dir = os.getenv("TTS_MODEL_DIR")
+        
+        # 2. Try default NAS path
+        if not model_dir:
+            model_dir = r"\\KMTI-NAS\Shared\data\models\tts"
+            
+        onnx_path = os.path.join(model_dir, "kokoro-v1.0.onnx")
+        voices_path = os.path.join(model_dir, "voices-v1.0.bin")
+        
+        # 3. Try local fallback if not found
+        if not os.path.exists(onnx_path) or not os.path.exists(voices_path):
+            local_fallback = os.path.join(BASE_PATH, "backend", "models", "tts")
+            local_onnx = os.path.join(local_fallback, "kokoro-v1.0.onnx")
+            local_voices = os.path.join(local_fallback, "voices-v1.0.bin")
+            if os.path.exists(local_onnx) and os.path.exists(local_voices):
+                model_dir = local_fallback
+                onnx_path = local_onnx
+                voices_path = local_voices
+            else:
+                logger.error(f"Kokoro model files not found. Checked NAS: {onnx_path} and Local Fallback: {local_onnx}")
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"Kokoro model files not found. Please connect to KMTI-NAS or place the model files (kokoro-v1.0.onnx and voices-v1.0.bin) in '{local_fallback}'."
+                )
 
         try:
-            logger.info(f"Initializing Kokoro TTS from ONNX: {ONNX_PATH}...")
+            logger.info(f"Initializing Kokoro TTS from: {onnx_path}...")
             import onnxruntime as ort
             opts = ort.SessionOptions()
             opts.intra_op_num_threads = 4
             opts.inter_op_num_threads = 1
             opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
             
-            sess = ort.InferenceSession(ONNX_PATH, sess_options=opts, providers=['CPUExecutionProvider'])
+            sess = ort.InferenceSession(onnx_path, sess_options=opts, providers=['CPUExecutionProvider'])
             
             # Fix kokoro-onnx package bug where from_session calls get_voice_names()
             # which does not exist in KoKoroConfig for this version.
             try:
-                _kokoro_instance = Kokoro.from_session(sess, VOICES_PATH)
+                _kokoro_instance = Kokoro.from_session(sess, voices_path)
             except AttributeError as ae:
                 if "get_voice_names" in str(ae):
                     logger.info("Applying custom instantiation fallback for Kokoro TTS...")
@@ -122,9 +141,9 @@ def get_kokoro_model():
                     
                     instance = Kokoro.__new__(Kokoro)
                     instance.sess = sess
-                    instance.config = KoKoroConfig(sess._model_path, VOICES_PATH, None)
+                    instance.config = KoKoroConfig(sess._model_path, voices_path, None)
                     instance.config.validate()
-                    instance.voices = np.load(VOICES_PATH)
+                    instance.voices = np.load(voices_path)
                     instance.tokenizer = Tokenizer(None)
                     _kokoro_instance = instance
                 else:

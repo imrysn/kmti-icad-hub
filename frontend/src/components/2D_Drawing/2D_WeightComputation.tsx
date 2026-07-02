@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -21,7 +23,43 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef } = useLessonCore('2d-weight-computation');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-weight-computation');
+
+  const currentTabSteps = [
+    "Material Weight Computation",
+    "Review the specific gravity table for material types like SS400, S45C, STKM, SPCC, SCM440, Rubber, MC Nylon, Shape Steel, etc.",
+    "Plate computation: length by width by height by specific gravity. Note: dimension is always in millimeters, convert to meters upon computation.",
+    "Cylinder computation: pi times radius squared times length times specific gravity. Note: dimension is always in millimeters, radius or diameter needs to convert to meters.",
+    "Shape steel: cross-sectional area times length times specific gravity. Cross-sectional area refers to JIS and needs to be converted.",
+    "Square or rectangular pipe: cross-sectional area times length times specific gravity."
+  ];
+  const tabsList = [{ id: 'default' }];
+  const activeTab = 'default';
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [registerText]);
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
+    if (onNextLesson) onNextLesson();
+  };
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -45,13 +83,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             <div className="flex-col tab-content fade-in">
 
               {/* === Section Header === */}
-              <div className="step-header" style={{ marginTop: "-1rem", marginBottom:" -1rem" }}>
+              <div className={`step-header ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-1rem", marginBottom:" -1rem" }}>
                 <span className="step-number">15</span>
-                <span className="step-label">Material Weight Computation</span>
+                <KaraokeLessonText as="span" className="step-label" text="Material Weight Computation" isActive={isSpeaking && currentIndex === 0} currentCharIndex={currentCharIndex} />
               </div>
 
               {/* === Specific Gravity Table === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                 <div className="lesson-table-container">
                   <table className="lesson-table">
                     <colgroup>
@@ -88,10 +126,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               </div>
 
               {/* === a. Plate === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                 <div className="step-header">
                   <span className="step-number">a</span>
-                  <span className="step-label">Plate ( L × W × H × SG )</span>
+                  <KaraokeLessonText as="span" className="step-label" text="Plate ( L × W × H × SG )" isActive={isSpeaking && currentIndex === 2} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
                   <img src={plateExImg} alt="Plate Computation Example" className="software-screenshot screenshot-wide" />
@@ -105,10 +143,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               </div>
 
               {/* === b. Cylinder === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header">
                   <span className="step-number">b</span>
-                  <span className="step-label">Cylinder ( π × r² × L × SG )  or  [ ( π × d² × L × SG ) / 4 ]</span>
+                  <KaraokeLessonText as="span" className="step-label" text="Cylinder ( pi × r² × L × SG ) or [ ( pi × d² × L × SG ) / 4 ]" isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
                   <img src={cylinderExImg} alt="Cylinder Computation Example" className="software-screenshot screenshot-wide" />
@@ -122,10 +160,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               </div>
 
               {/* === c. Shape Steel === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header">
                   <span className="step-number">c</span>
-                  <span className="step-label">Shape Steel ( Cross Sectional Area × L × SG )</span>
+                  <KaraokeLessonText as="span" className="step-label" text="Shape Steel ( Cross Sectional Area × L × SG )" isActive={isSpeaking && currentIndex === 4} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
                   <img src={shapeSteelEx1Img} alt="Shape Steel Example 1" className="software-screenshot screenshot-wide" />
@@ -141,10 +179,10 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               </div>
 
               {/* === d. Square / Rectangular Pipe === */}
-              <div className="instruction-step">
+              <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                 <div className="step-header">
                   <span className="step-number">d</span>
-                  <span className="step-label">Square / Rectangular Pipe ( Cross Sectional Area × L × SG )</span>
+                  <KaraokeLessonText as="span" className="step-label" text="Square / Rectangular Pipe ( Cross Sectional Area × L × SG )" isActive={isSpeaking && currentIndex === 5} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
                   <img src={pipeExImg} alt="Square Rectangular Pipe Computation Example" className="software-screenshot screenshot-wide" />

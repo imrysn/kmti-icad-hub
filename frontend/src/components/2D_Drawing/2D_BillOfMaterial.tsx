@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -39,14 +39,19 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
     return localStorage.getItem('2d-bom-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-bom-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-bom-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-bom-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -56,7 +61,12 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -76,7 +86,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
     },
     '2d-bom-2': {
       title: 'BILL OF MATERIAL (BOM)',
-      subtitle: 'Displays part information particularly material, part specifications and weights. Located at upper right portion of the template.',
+      subtitle: 'BOM requirements for assembly drawings and Excel data organization.',
       steps: [
         "Excel Operations: Ensure material and finish weights use 2 decimal places. For Assembly BOMs, group items into Fabricated parts, Purchase parts, and Hardware. Use the delete abbreviation and sum parts buttons for cleanup.",
         "BOM Grouping: Arrange parts by drawing number, followed by purchase parts with English maker names, and finally hardware in decreasing size order."
@@ -84,7 +94,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
     },
     '2d-bom-3': {
       title: 'BILL OF MATERIAL (BOM)',
-      subtitle: 'Displays part information particularly material, part specifications and weights. Located at upper right portion of the template.',
+      subtitle: 'Standard numbering conventions and non-modifiable data entry rules.',
       steps: [
         "Standard Grouping: Maintain a clear gap of 20 numbers between the three BOM groups for assembly detail. Refer to the table for standard numbering conventions.",
         "Additional Information: Use the green columns in Excel for data that cannot be changed, ensuring consistency with KEMCO standards."
@@ -92,7 +102,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
     },
     '2d-bom-4': {
       title: 'BILL OF MATERIAL (BOM)',
-      subtitle: 'Displays part information particularly material, part specifications and weights. Located at upper right portion of the template.',
+      subtitle: 'Reviewing placed BOM entries and editing attributes in iCAD.',
       steps: [
         "Post-Insertion: Review the BOM after it's placed in iCAD. If text overflows, use the Edit Attribute command, select the affected row, and adjust the width and interval ratio in the dialog box."
       ]
@@ -100,6 +110,30 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
   };
 
   const currentLesson = LESSON_DATA[`2d-bom-${activeTab}`] || LESSON_DATA['2d-bom-1'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -125,97 +159,91 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
             <div className="flex-col tab-content fade-in">
               {activeTab === '1' && (
                 <div className="flex-col">
-                  <div className="instruction-step">
-                    <div className="step-header" style={{ marginTop: "-2rem" }}>
+                  <div className="instruction-step" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
                       <span className="step-number">16</span>
                       <span className="step-label">Bill Of Material (BOM)</span>
                     </div>
                     <p className="p-flush">displays part informations particularly material, part specifications and weights. Located at upper right portion of the template.</p>
                   </div>
 
-                  <div className="instruction-step">
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "1rem" }}>
                     <div className="step-header">
                       <span className="step-number">a</span>
-                      <span className="step-label">Part drawing</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Part drawing"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                     <div className="step-description">
                       <img src={bomPartDrawingImg} alt="BOM Part Drawing Entry" className="software-screenshot screenshot-wide" />
                       <img src={bomPartDrawingBImg} alt="BOM Template Selection" className="software-screenshot screenshot-wide mt-4" />
-                    </div>
-                  </div>
-
-                  <div className="instruction-step">
-                    <div className="step-header" style={{ marginLeft: "3rem" }}>
-                      <span className="step-number">c</span>
-                      <span className="step-label"></span>
-                    </div>
-                    <div className="step-description">
-                      <img src={bomPartDrawingCImg} alt="Excel BOM Generation" className="software-screenshot screenshot-wide" />
-                      <div className="instruction-box mt-6">
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>2. Rearrange the sequence of part specification in decreasing order. Make sure to select the entire row (including the data on column A).</p>
-                        <p className="p-flush">3. For parts detail, use letters for part balloon.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="instruction-step">
-                    <div className="step-header" style={{ marginLeft: "3rem" }}>
-                      <span className="step-number">d</span>
-                      <span className="step-label"></span>
-                    </div>
-                    <div className="step-description">
-                      <div className="screenshot-wrapper" style={{ position: "relative", width: "100%" }}>
-                        <img src={bomPartDrawingDImg} alt="BOM Single Multiple Parts" className="software-screenshot screenshot-wide" />
-
-                        {/* For Single Part Overlay */}
-                        <div className="image-overlay-badge" style={{
-                          position: "absolute",
-                          top: "28rem",
-                          left: "32rem",
-                          background: "rgba(17, 24, 39, 0.9)",
-                          backdropFilter: "blur(4px)",
-                          border: "1px solid rgba(255, 255, 255, 0.25)",
-                          borderRadius: "12px",
-                          padding: "0.5rem 0.75rem",
-                          color: "#ffffff",
-                          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
-                          zIndex: 5
-                        }}>
-                          <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{
-                              background: "#DD4DFA",
-                              color: "white",
-                              padding: "4px 8px",
-                              borderRadius: "6px",
-                              fontSize: "0.8rem",
-                              fontWeight: "bold",
-                              textTransform: "uppercase"
-                            }}>
-                              For Single Part
-                            </span>
-                          </div>
+                      
+                      <div style={{ marginTop: "2rem" }}>
+                        <img src={bomPartDrawingCImg} alt="Excel BOM Generation" className="software-screenshot screenshot-wide" />
+                        <div className="instruction-box mt-6">
+                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
+                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>2. Rearrange the sequence of part specification in decreasing order. Make sure to select the entire row (including the data on column A).</p>
+                          <p className="p-flush">3. For parts detail, use letters for part balloon.</p>
                         </div>
+                      </div>
 
-                        {/* Note Overlay */}
-                        <div className="image-overlay-note" style={{
-                          position: "absolute",
-                          top: "20rem",
-                          left: "35rem",
-                          background: "rgba(17, 24, 39, 0.9)",
-                          backdropFilter: "blur(4px)",
-                          border: "1px solid rgba(255, 255, 255, 0.25)",
-                          borderRadius: "12px",
-                          padding: "1rem",
-                          maxWidth: "320px",
-                          color: "#ffffff",
-                          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
-                          zIndex: 5
-                        }}>
-                          <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Note:</strong></p>
-                          <p className="p-flush" style={{ fontSize: "0.85rem", lineHeight: "1.4", color: "#e2e8f0" }}>
-                            Material weight and finish weight must be in 2 decimal places, but for some special cases, 3 decimal places is acceptable.
-                          </p>
+                      <div style={{ marginTop: "2rem" }}>
+                        <div className="screenshot-wrapper" style={{ position: "relative", width: "100%" }}>
+                          <img src={bomPartDrawingDImg} alt="BOM Single Multiple Parts" className="software-screenshot screenshot-wide" />
+
+                          {/* For Single Part Overlay */}
+                          <div className="image-overlay-badge" style={{
+                            position: "absolute",
+                            top: "28rem",
+                            left: "32rem",
+                            background: "rgba(17, 24, 39, 0.9)",
+                            backdropFilter: "blur(4px)",
+                            border: "1px solid rgba(255, 255, 255, 0.25)",
+                            borderRadius: "12px",
+                            padding: "0.5rem 0.75rem",
+                            color: "#ffffff",
+                            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+                            zIndex: 5
+                          }}>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                              <span style={{
+                                background: "#DD4DFA",
+                                color: "white",
+                                padding: "4px 8px",
+                                borderRadius: "6px",
+                                fontSize: "0.8rem",
+                                fontWeight: "bold",
+                                textTransform: "uppercase"
+                              }}>
+                                For Single Part
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Note Overlay */}
+                          <div className="image-overlay-note" style={{
+                            position: "absolute",
+                            top: "20rem",
+                            left: "35rem",
+                            background: "rgba(17, 24, 39, 0.9)",
+                            backdropFilter: "blur(4px)",
+                            border: "1px solid rgba(255, 255, 255, 0.25)",
+                            borderRadius: "12px",
+                            padding: "1rem",
+                            maxWidth: "320px",
+                            color: "#ffffff",
+                            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+                            zIndex: 5
+                          }}>
+                            <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Note:</strong></p>
+                            <p className="p-flush" style={{ fontSize: "0.85rem", lineHeight: "1.4", color: "#e2e8f0" }}>
+                              Material weight and finish weight must be in 2 decimal places, but for some special cases, 3 decimal places is acceptable.
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -226,10 +254,16 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
 
               {activeTab === '2' && (
                 <div className="flex-col">
-                  <div className="instruction-step">
-                    <div className="step-header" style={{ marginTop: "-2rem" }}>
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                    <div className="step-header">
                       <span className="step-number">b</span>
-                      <span className="step-label">Assembly drawing</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Assembly drawing"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                     <div className="step-description">
                       <div className="p-flush" style={{ marginBottom: "1rem" }}>
@@ -249,7 +283,23 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                         <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.5rem" }}>c. Hardware (HS,BS,CS,SS,SP,HN,FW,SW)</p>
                         <p className="p-flush" style={{ marginBottom: "0.5rem" }}>3. Click "delete abbreviation" button to delete hardware codes.</p>
                         <p className="p-flush" style={{ marginBottom: "0.5rem" }}>4. Click "sum the parts" button to combine quantity of same parts.</p>
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>5. Purchase parts must indicate the maker in English.</p>
+                        <p className="p-flush">5. Purchase parts must indicate the maker in English.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
+                    <div className="step-header">
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="BOM Grouping and Abbreviation Rules"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <div className="instruction-box">
                         <p className="p-flush" style={{ marginBottom: "0.5rem" }}>6. Hardwares arrange in decreasing order.</p>
                         <p className="p-flush">7. In terms of assembly detail, use number for parts balloon. Also, there must be a gap of 20 numbers in between the three groups.</p>
                       </div>

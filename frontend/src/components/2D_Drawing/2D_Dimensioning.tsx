@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -49,14 +50,19 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
     return localStorage.getItem('2d-dimensioning-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-dimensioning-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-dimensioning-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-dimensioning-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -66,7 +72,12 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -79,30 +90,35 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-dimensioning-1': {
       title: 'DIMENSIONING',
-      subtitle: '',
+      subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
       steps: [
         "Put all the dimensions, symbols, and notes required in the drawing.",
+        "This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
+        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain."
       ]
     },
     '2d-dimensioning-2': {
       title: 'DIMENSIONING',
       subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
       steps: [
-
+        "To add symbols like the diameter mark, select the edit characters command, click the dimension, and choose the symbol from the Mark dropdown.",
+        "If fitting tolerance is required, use the convert tool to display the appropriate JIC standard values.",
+        "These marks are generated automatically if your 3D model features were created correctly, so manual input is usually unnecessary.",
+        "Grinded materials like S45C-D and SS400-D have specific tolerance levels (like h9 or h7) and surface roughness requirements based on the grinding process."
       ]
     },
     '2d-dimensioning-3': {
       title: 'PART NOTE',
       subtitle: 'Guidelines for adding technical notes and material specifications.',
       steps: [
-
+        "Use this tool for automatic hole detailing and quantity callouts. Select the command and click the features to place the leader notes."
       ]
     },
     '2d-dimensioning-4': {
       title: 'CHANGE POSITION',
       subtitle: 'Adjusting dimension placement for clarity and alignment.',
       steps: [
-
+        "Ensure dimensions have enough space between them. Use the change position command, click the dimension, and pick its new location."
       ]
     },
     '2d-dimensioning-5': {
@@ -115,6 +131,30 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
   };
 
   const currentLesson = LESSON_DATA[`2d-dimensioning-${activeTab}`] || LESSON_DATA['2d-dimensioning-1'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -31,14 +31,19 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
     return localStorage.getItem('2d-geometric-tol-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-geometric-tol-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-geometric-tol-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-geometric-tol-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -48,7 +53,12 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -61,21 +71,45 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-geometric-tol-1': {
       title: 'GEOMETRIC TOLERANCE',
-      subtitle: '',
+      subtitle: 'System for defining engineering tolerances and accuracy.',
       steps: [
         "A system for defining allowable engineering tolerances. It tells what degree of accuracy and precision that needs to be applied on the part."
       ]
     },
     '2d-geometric-tol-2': {
       title: 'DATUM',
-      subtitle: '',
+      subtitle: 'Establishing reference points, lines, or surfaces.',
       steps: [
-        ""
+        "A datum is a reference point, line, or surface used as a target for measurements on a part."
       ]
     }
   };
 
   const currentLesson = LESSON_DATA[`2d-geometric-tol-${activeTab}`] || LESSON_DATA['2d-geometric-tol-1'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>

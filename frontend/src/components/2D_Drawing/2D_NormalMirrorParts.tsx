@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -30,14 +31,19 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
     return localStorage.getItem('2d-normal-mirror-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-normal-mirror-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-normal-mirror-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-normal-mirror-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -47,7 +53,12 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -62,18 +73,44 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
       title: 'NORMAL AND MIRROR PARTS',
       subtitle: 'Designating normal and mirror parts with standardized numbering and symmetry rules.',
       steps: [
-        "Norma. Example drawing number RTXXXXXN01. Mirror parts are parts that are symmetrically the same. Example drawing number RTXXXXXA01 & RTXXXXXB01.",
-        "Rule on how to detail a mirror parts: 1. Detail the first drawing, for example RTXXXXXA01. 2. Proceed to checking and editing of check back until finalized the part. 3. Save as RTXXXXXA01 to RTXXXXXB01. Replace part if it is already existed. 4. Properly mirror the part using mirror icon. Edit properties and part dimension affected by mirror process. 5. Proceed on editing 2D detailing. 6. View inside the box need to mirror, the reference is in origin same as what we do in 3D modeling. 7. Encircled view is right side view. Mirror it and change ownership to left side view. 8. Update isometric view, switch user view as needed. 9. Insert new title block to update the drawing number on template."
+        "Normal: Example drawing number RTXXXXXN01. Mirror parts are parts that are symmetrically the same. Example drawing number RTXXXXXA01 & RTXXXXXB01.",
+        "Rule on how to detail a mirror parts: 1. Detail the first drawing, for example RTXXXXXA01. 2. Proceed to checking and editing of check back until finalized the part. 3. Save as RTXXXXXA01 to RTXXXXXB01. Replace part if it already exists. 4. Properly mirror the part using mirror icon. Edit properties and part dimensions affected by the mirror process. 5. Proceed on editing 2D detailing. 6. View inside the box need to mirror, the reference is in origin same as what we do in 3D modeling. 7. Encircled view is right side view. Mirror it and change ownership to left side view. 8. Update isometric view, switch user view as needed. 9. Insert new title block to update the drawing number on template."
       ]
     },
     '2d-normal-mirror-mirror-command': {
       title: 'NORMAL AND MIRROR PARTS',
-      subtitle: 'Designating normal and mirror parts with standardized numbering and symmetry rules.',
-      steps: []
+      subtitle: 'Using the Mirror command in 2D detailing to reflect components.',
+      steps: [
+        "Mirror Command: Use the mirror command to create symmetric reflections of 2D entities. Verify the mirrored dimensions and ownership parameters after completing the operation."
+      ]
     }
   };
 
   const currentLesson = LESSON_DATA[`2d-normal-mirror-${activeTab}`] || LESSON_DATA['2d-normal-mirror-nomenclature'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -116,12 +153,37 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                         <strong className="red-text">Mirror parts</strong> are parts that are symmetrically the same.<br />
                         <span style={{ marginLeft: "6.1rem" }}>Example drawing number </span><span style={{ color: "#fff" }}>RTXXXXXA01 & RTXXXXXB01</span>
                       </p>
-                      <p className="p-flush"><strong className="red-text">※ Rule on how to detail a mirror parts</strong> </p>
                       <img src={img2} alt="Normal and Mirror parts drawing sheet" className="software-screenshot screenshot-wide mt-4" />
                     </div>
                   </div>
 
-
+                  <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
+                    <div className="step-header">
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Rules to detail mirror parts"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <div className="instruction-box">
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}><strong className="red-text">※ Rule on how to detail a mirror parts:</strong></p>
+                        <ol style={{ paddingLeft: "1.5rem", margin: 0, listStyleType: "decimal" }} className="space-y-1">
+                          <li>Detail the first drawing, for example RTXXXXXA01.</li>
+                          <li>Proceed to checking and editing of check back until finalized the part.</li>
+                          <li>Save as RTXXXXXA01 to RTXXXXXB01. Replace part if it is already existed.</li>
+                          <li>Properly mirror the part using mirror icon. Edit properties and part dimension affected by mirror process.</li>
+                          <li>Proceed on editing 2D detailing.</li>
+                          <li>View inside the box need to mirror, the reference is in origin same as what we do in 3D modeling.</li>
+                          <li>Encircled view is right side view. Mirror it and change ownership to left side view.</li>
+                          <li>Update isometric view, switch user view as needed.</li>
+                          <li>Insert new title block to update the drawing number on template.</li>
+                        </ol>
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -134,7 +196,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                       className="step-label"
                       text="Mirror Command on detailing"
                       isActive={isSpeaking && currentIndex === 2}
-                      currentCharIndex={currentIndex === 2 ? currentCharIndex : -1}
+                      currentCharIndex={currentCharIndex}
                     />
                   </div>
                   <div className="step-description">

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -19,8 +21,45 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { scrollProgress, containerRef } = useLessonCore('2d-balloon');
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-balloon');
   const [activeTab] = useState<string>('1');
+  const currentTabSteps = [
+    "BALLOON",
+    "Part drawing. A balloon will be placed where the part image is clearly shown.",
+    "Balloons should not overlap with other lines or dimensions.",
+    "If the details on the BOM are properly linked, part balloons are automatically displayed.",
+    "If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters/numbers in item entry box.",
+    "Text should not change using edit characters.",
+    "Assembly drawing",
+    "Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together.",
+    "Select the setup for Add Balloon. Click L1 of the part needed, then click P2 to place it beside the balloon where it will be attached."
+  ];
+  const tabsList = [{ id: '1' }];
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [registerText]);
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
+    if (onNextLesson) onNextLesson();
+  };
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   const TABS = [
     { id: '1', label: 'Balloon' }
@@ -51,45 +90,109 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
               {activeTab === '1' && (
                 <div className="flex-col">
                   {/* Part Balloon Intro */}
-                  <div className="instruction-step">
+                  <div className="instruction-step" data-reading-index="0">
                     <div className="step-header" style={{ marginTop: "-2rem" }}>
                       <span className="step-number">18</span>
-                      <span className="step-label">Balloon</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Balloon"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                   </div>
 
                   {/* Subsection a. Part drawing */}
-                  <div className="instruction-step" style={{ marginTop: "-3rem" }}>
+                  <div className={`instruction-step ${currentIndex >= 1 && currentIndex <= 5 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginTop: "-3rem" }}>
                     <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">a</span>
-                      <span className="step-label">Part drawing</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Part drawing"
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                     <div className="step-description">
                       <img src={balloonPartMenuImg} alt="Part Balloon Selection and Display" className="software-screenshot screenshot-wide" />
 
                       <div className="instruction-box mt-4">
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
-                          A balloon will be placed where the part image is clearly shown.
-                        </p>
+                        <KaraokeLessonText
+                          className="p-flush"
+                          style={{ marginBottom: "0.5rem" }}
+                          text="A balloon will be placed where the part image is clearly shown."
+                          isActive={isSpeaking && currentIndex === 1}
+                          currentCharIndex={currentCharIndex}
+                        />
                         <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Notes:</strong></p>
-                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}>1. Balloons should not overlap with other lines or dimensions.</p>
-                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}>2. If the details on the BOM are properly linked, part balloons are automatically displayed.</p>
-                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}>3. If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters/numbers in item entry box.</p>
-                        <p className="p-flush">4. Text should not change using edit characters.</p>
+                        <KaraokeLessonText
+                          className="p-flush"
+                          style={{ marginBottom: "0.25rem" }}
+                          text="1. Balloons should not overlap with other lines or dimensions."
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                        />
+                        <KaraokeLessonText
+                          className="p-flush"
+                          style={{ marginBottom: "0.25rem" }}
+                          text="2. If the details on the BOM are properly linked, part balloons are automatically displayed."
+                          isActive={isSpeaking && currentIndex === 3}
+                          currentCharIndex={currentCharIndex}
+                        />
+                        <KaraokeLessonText
+                          className="p-flush"
+                          style={{ marginBottom: "0.25rem" }}
+                          text="3. If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters/numbers in item entry box."
+                          isActive={isSpeaking && currentIndex === 4}
+                          currentCharIndex={currentCharIndex}
+                        />
+                        <KaraokeLessonText
+                          className="p-flush"
+                          text="4. Text should not change using edit characters."
+                          isActive={isSpeaking && currentIndex === 5}
+                          currentCharIndex={currentCharIndex}
+                        />
                       </div>
                     </div>
                   </div>
 
 
                   {/* Subsection b. Assembly drawing */}
-                  <div className="instruction-step">
+                  <div className={`instruction-step ${currentIndex >= 6 ? "reading-active" : ""}`} data-reading-index="6">
                     <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">b</span>
-                      <span className="step-label">Assembly drawing</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Assembly drawing"
+                        isActive={isSpeaking && currentIndex === 6}
+                        currentCharIndex={currentCharIndex}
+                      />
                     </div>
                     <div className="step-description">
                       <img src={balloonAssemblyMenuImg} alt="Assembly Add Balloon Settings" className="software-screenshot screenshot-wide" />
-                      <img src={balloonAssemblyMenu2Img} alt="Add Balloon Assembly Placement" className="software-screenshot screenshot-small" style={{ marginLeft: "26.5rem" }} />
+                      
+                      <div className={`instruction-box mt-6 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
+                        <KaraokeLessonText
+                          className="p-flush"
+                          text="Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together."
+                          isActive={isSpeaking && currentIndex === 7}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </div>
+
+                      <div className={`instruction-box mt-4 ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
+                        <KaraokeLessonText
+                          className="p-flush"
+                          text="Select the setup for Add Balloon. Click L-1 of the part needed, then click P-2 to place it beside the balloon where it will be attached."
+                          isActive={isSpeaking && currentIndex === 8}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </div>
+
+                      <img src={balloonAssemblyMenu2Img} alt="Add Balloon Assembly Placement" className="software-screenshot screenshot-small mt-6" style={{ marginLeft: "26.5rem" }} />
                     </div>
                   </div>
                 </div>

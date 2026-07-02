@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useLessonCore } from "../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -36,14 +36,19 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
     return localStorage.getItem('2d-operal-view-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(`2d-operal-view-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-operal-view-${activeTab}`);
 
   useEffect(() => {
     localStorage.setItem('2d-operal-view-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
-  const handleNext = () => {
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
@@ -53,7 +58,12 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex > 0) {
       setActiveTab(TABS[currentIndex - 1].id);
@@ -66,7 +76,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-operal-view-move-view': {
       title: 'OPERATE VIEW',
-      subtitle: 'Manipulating drafting views including moving, aligning, and managing projections.',
+      subtitle: 'Repositioning isometric and orthographic views on your drawing template.',
       steps: [
         "Move View: Use this command to reposition technical views on the template. For Isometric views, position them freely without overlapping. For Orthographic views, moving one will move all aligned views simultaneously.",
         "Alignment Standard: Position isometric views carefully—not too far or overlapping. Ensure all projected views remain parallel and aligned to maintain professional drafting standards."
@@ -74,7 +84,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
     },
     '2d-operal-view-alignment-delete': {
       title: 'OPERATE VIEW',
-      subtitle: 'Manipulating drafting views including moving, aligning, and managing projections.',
+      subtitle: 'Aligning projected views and deleting unnecessary views.',
       steps: [
         "View Alignment: If views are not aligned, use the create-three-view tool to adjust. Aligning lines will appear as guides to help you restore proper projection integrity.",
         "Delete View: Select any unnecessary views, click GO, and confirm in the dialog box to remove them from your drawing template."
@@ -83,6 +93,30 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
   };
 
   const currentLesson = LESSON_DATA[`2d-operal-view-${activeTab}`] || LESSON_DATA['2d-operal-view-move-view'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -176,10 +210,30 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
 
               {activeTab === 'alignment-delete' && (
                 <>
-
+                  <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
+                      <span className="step-number">a</span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="View Alignment"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="step-description">
+                      <KaraokeLessonText
+                        className="p-flush mb-4"
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={operateView2ImgB3} alt="Alignment Guides" className="software-screenshot screenshot-wide" />
+                    </div>
+                  </div>
 
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                    <div className="step-header" style={{ marginTop: "-3rem", marginLeft: "3rem" }}>
+                    <div className="step-header" style={{ marginLeft: "3rem" }}>
                       <span className="step-number">b</span>
                       <KaraokeLessonText
                         as="span"
