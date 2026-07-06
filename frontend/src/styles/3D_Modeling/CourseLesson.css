@@ -984,3 +984,16 @@
   color: var(--text-main);
 }
 
+/* --- PremiumVideoPlayer: Play Button Pulse Animation --- */
+@keyframes playPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(168, 85, 247, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+  }
+}
+

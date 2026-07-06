@@ -90,8 +90,34 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const { requestConfirmation } = useUI();
   const { user } = useAuth();
   const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
+  const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
+
+  useEffect(() => {
+    const handleTutorialPlay = () => setIsTutorialPlaying(true);
+    const handleTutorialStop = () => setIsTutorialPlaying(false);
+
+    window.addEventListener('kmti-tutorial-playing', handleTutorialPlay);
+    window.addEventListener('kmti-tutorial-stopped', handleTutorialStop);
+
+    return () => {
+      window.removeEventListener('kmti-tutorial-playing', handleTutorialPlay);
+      window.removeEventListener('kmti-tutorial-stopped', handleTutorialStop);
+    };
+  }, []);
+
+  const handleStop = useCallback(() => {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+      window.dispatchEvent(new CustomEvent('kmti-stop-tutorial'));
+    }
+    stop();
+  }, [activeLessonId, stop]);
 
   const speakCurrent = useCallback(() => {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+      window.dispatchEvent(new CustomEvent('kmti-play-tutorial'));
+      return;
+    }
+
     // If the active lesson has already explicitly registered custom text paragraphs
     if (currentText && currentText.length > 0) {
       speak(currentText, currentStartIndex);
@@ -120,7 +146,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         speak(paragraphs);
       }
     }
-  }, [speak, currentText]);
+  }, [speak, currentText, activeLessonId, currentStartIndex]);
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [activeQuiz, setActiveQuiz] = useState<any>(null);
@@ -389,7 +415,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
               top: '3rem', 
               pointerEvents: 'auto'
             }}>
-              <ReadAloudButton isSpeaking={isSpeaking} onStart={speakCurrent} onStop={stop} />
+              <ReadAloudButton isSpeaking={isSpeaking || isTutorialPlaying} onStart={speakCurrent} onStop={handleStop} />
             </div>
           </div>
 

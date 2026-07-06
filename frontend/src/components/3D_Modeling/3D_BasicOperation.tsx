@@ -18,16 +18,36 @@ import {
   ArrowDown,
   ArrowRight,
   Info,
-  Zap
+  Zap,
+  Play
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
-import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+
 import { ReadAloudButton } from '../ReadAloudButton';
 import { KaraokeLessonText } from '../KaraokeLessonText';
+import VideoTutorialViewer, { TutorialStep } from './VideoTutorialViewer';
+import {
+  cylinderTutorialSteps,
+  boxTutorialSteps,
+  polygonTutorialSteps,
+  coneTutorialSteps,
+  torusTutorialSteps
+} from './VideoTutorialData/basicOp1TutorialSteps';
 import '../../styles/3D_Modeling/CourseLesson.css';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
 import leftClick from '../../assets/3D_Image_File/left_click.png';
+
+// Video imports for replacing preview images
+import vidCylinder from '../../assets/3D_Video_Tutorial/basicOp_cylinder.mp4';
+import vidBox from '../../assets/3D_Video_Tutorial/basicOp_box.mp4';
+import vidPolygon from '../../assets/3D_Video_Tutorial/basicOp_polygon.mp4';
+import vidCone from '../../assets/3D_Video_Tutorial/basicOp_cone.mp4';
+import vidTorus from '../../assets/3D_Video_Tutorial/basicOp_torus.mp4';
+import vidMove from '../../assets/3D_Video_Tutorial/basicOp_move.mp4';
+import vidRotate from '../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
+import vidCopy from '../../assets/3D_Video_Tutorial/basicOp_copy.mp4';
+import vidMirror from '../../assets/3D_Video_Tutorial/basicOp_mirror.mp4';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (1)  ECREATING BASIC SHAPES */
 /* Lesson-item child ID: 'basic-op-1' */
@@ -167,7 +187,6 @@ import resize3_2 from '../../assets/3D_Image_File/basic_operation5_resize3_2.png
 /* ══════════════════════════════════════════════════════════════════════════ */
 
 import arrangeMachinePartMenu from '../../assets/3D_Image_File/basic_operation6_arrange_machine_part.png';
-/* dito nako haha */
 
 import arrangeMachinePartWindow from '../../assets/3D_Image_File/basic_operation6_arrange_machine_part_window.png';
 
@@ -181,6 +200,101 @@ import keyEntryArea from '../../assets/3D_Image_File/basic_operation1_key_entry_
 /* ────────────────────────────────────────────────────────────────────────── */
 /* Sub-lesson components */
 /* ────────────────────────────────────────────────────────────────────────── */
+interface PremiumVideoPlayerProps {
+  src: string;
+  style?: React.CSSProperties;
+  className?: string;
+}
+
+const PremiumVideoPlayer: React.FC<PremiumVideoPlayerProps> = ({ src, style, className }) => {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+
+  const handlePlayToggle = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().catch(err => console.log("Video play failed:", err));
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  return (
+    <div
+      className={`premium-video-wrapper ${className || ''}`}
+      style={{
+        position: 'relative',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        boxShadow: '0 12px 36px rgba(0,0,0,0.4)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        ...style
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'scale(1.015)';
+        e.currentTarget.style.boxShadow = '0 20px 48px rgba(0,0,0,0.5)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'scale(1)';
+        e.currentTarget.style.boxShadow = '0 12px 36px rgba(0,0,0,0.4)';
+      }}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        controls
+        loop
+        muted
+        style={{ width: '100%', height: '100%', display: 'block' }}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+      {!isPlaying && (
+        <div
+          onClick={handlePlayToggle}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.45)',
+            backdropFilter: 'blur(2px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'opacity 0.3s ease',
+            cursor: 'pointer',
+            zIndex: 2,
+          }}
+        >
+          <div
+            className="play-btn-pulse"
+            style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              background: 'rgba(168, 85, 247, 0.25)',
+              border: '2px solid #a855f7',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 0 20px rgba(168, 85, 247, 0.6)',
+              animation: 'playPulse 2s infinite',
+              transition: 'transform 0.2s ease, background-color 0.2s ease',
+            }}
+          >
+            <Play size={36} fill="#ffffff" color="#ffffff" style={{ marginLeft: '4px' }} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 /* ── Basic Operation (1): Creating Basic Shapes ── */
 
 interface SubLessonProps {
@@ -200,56 +314,54 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
 
-  const commonIntroSteps = [
-    "Creating Basic Shapes",
-    "When creating a 3D model, always start with the Front View.",
-    "On the command menu: Arrange Solid, then Select Y Orientation."
-  ];
+  const videoSectionRef = useRef<HTMLDivElement>(null);
+  const beforeYouStartRef = useRef<HTMLDivElement>(null);
 
-  const cylinderSteps = [
-    ...commonIntroSteps,
-    "Let's start creating Cylinder",
-    "Step 1: Select Arrange Cylinder from the icon menu.",
-    "Step 2: On the bottom left corner, the item entry can be located. Specify the diameter and height of cylinder on the item entry.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
-    "This must be the preview if you follow correctly"
-  ];
+  // ── Unified narrated tour (single script, auto-switches tabs) ────────────
+  // Memoised so the array reference is stable across renders, avoiding
+  // spurious re-registrations in the registerText useEffect below.
+  const lessonSteps = React.useMemo(() => [
+    "Creating Basic Shapes",                                                         // 0 heading
+    "In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus.", // 1 overview
+    "A Cylinder is a circular solid defined by its Diameter and Height — ideal for shafts, pins, bosses, and round posts.", // 2 → cylinder tab
+    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 → box tab
+    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height — useful for hexagonal bolts and multi-sided columns.", // 4 → polygon tab
+    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 → cone tab
+    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 → torus tab
+    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 → back to cylinder, scroll to Before You Start
+    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 → command menu step
+    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 → scroll to video
+  ], []);
 
-  const boxSteps = [
-    ...commonIntroSteps,
-    "By creating Box, we must specify the depth, width, and height",
-    "Step 1: Select Arrange Box from the icon menu.",
-    "Step 2: Specify the depth, width and height of the box on the item entry.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
-    "This must be the preview if you follow correctly"
-  ];
+  // Auto-switch tabs as TTS progresses through the narrated tour
+  useEffect(() => {
+    if (!isSpeaking) return;
+    if (currentIndex === 2) setActiveTab('cylinder');
+    else if (currentIndex === 3) setActiveTab('box');
+    else if (currentIndex === 4) setActiveTab('polygon');
+    else if (currentIndex === 5) setActiveTab('cone');
+    else if (currentIndex === 6) setActiveTab('torus');
+    else if (currentIndex === 7) {
+      // Back to Cylinder, scroll to Before You Start card
+      setActiveTab('cylinder');
+      setTimeout(() => {
+        beforeYouStartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 600);
+    } else if (currentIndex === 9) {
+      // Scroll to video tutorial
+      setTimeout(() => {
+        videoSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 600);
+    }
+  }, [currentIndex, isSpeaking]);
 
-  const polygonSteps = [
-    ...commonIntroSteps,
-    "By creating Polygon, we must specify the number of sides, diameter, and height",
-    "Step 1: Select Arrange Polygonal Prism from the icon menu.",
-    "Step 2: Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
-    "This must be the preview if you follow correctly"
-  ];
 
-  const coneSteps = [
-    ...commonIntroSteps,
-    "By creating Cone, we must specify the number of sides, base diameter, top face diameter, and height",
-    "Step 1: Select Arrange Cone from the icon menu.",
-    "Step 2: Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry.",
-    "Step 3: On the Key Entry Area, enter the coordinates for the position (origin).",
-    "This must be the preview if you follow correctly"
-  ];
+  useEffect(() => {
+    registerText(lessonSteps, 0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerText]);
 
-  const torusSteps = [
-    ...commonIntroSteps,
-    "By creating Torus, we must specify the section diameter, path radius, and turn angle",
-    "Step 1: Select Arrange Torus from the icon menu.",
-    "Step 2: Specify the section diameter, path radius, and turn angle.",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin).",
-    "This must be the preview if you follow correctly"
-  ];
+
 
   const tabs = [
     { id: 'cylinder', label: 'Cylinder' },
@@ -259,7 +371,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'torus', label: 'Torus' }
   ];
 
-  const handleNext = (isAuto = false) => {
+  const handleNext = (isAuto: boolean = false) => {
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -269,7 +381,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = (isAuto = false) => {
+  const handlePrev = (isAuto: boolean = false) => {
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -279,27 +391,11 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const currentTabSteps = activeTab === 'cylinder' ? cylinderSteps :
-                          activeTab === 'box' ? boxSteps :
-                          activeTab === 'polygon' ? polygonSteps :
-                          activeTab === 'cone' ? coneSteps : torusSteps;
-  const startIdx = activeTab === 'cylinder' ? 0 : 3;
 
-  useEffect(() => {
-    registerText(currentTabSteps, startIdx);
-  }, [activeTab, registerText]);
 
-  useTTSAutoplay(
-    isSpeaking,
-    currentIndex,
-    activeTab,
-    currentTabSteps.length,
-    tabs,
-    handleNext,
-    speak,
-    currentTabSteps,
-    startIdx
-  );
+
+
+
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -319,108 +415,80 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
         </h3>
-        <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: "-1rem" }}>
+
+        {/* TTS index 1 — overview narration */}
+        <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
           <KaraokeLessonText
-            text="When creating a 3D model, always start with the Front View."
+            text="In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus."
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
-          <img src={threeDView} alt="3D View" className="software-screenshot mt-8" style={{ width: '350px' }} />
         </div>
-        <div className={`instruction-box mt-8 instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
-          <KaraokeLessonText
-            text="On the command menu: [Arrange Solid] > [Select Y Orientation]"
-            isActive={isSpeaking && currentIndex === 2}
-            currentCharIndex={currentCharIndex}
-          />
-          <img src={cmdMenu} alt="Command Menu" className="software-screenshot" style={{ width: '200px', marginTop: "1rem" }} />
-        </div>
+
+        {/* Shape intro — tab-specific, shown here in the main intro card */}
+        {(() => {
+          const tabIntroIdx: Record<string, number> = { cylinder: 2, box: 3, polygon: 4, cone: 5, torus: 6 };
+          const idx = tabIntroIdx[activeTab] ?? 2;
+          return (
+            <div className={`instruction-step ${isSpeaking && currentIndex === idx ? 'reading-active' : ''}`} data-reading-index={idx} style={{ marginTop: '1rem' }}>
+              <KaraokeLessonText
+                text={lessonSteps[idx]}
+                isActive={isSpeaking && currentIndex === idx}
+                currentCharIndex={currentCharIndex}
+              />
+            </div>
+          );
+        })()}
       </section>
 
       <div className="lesson-grid single-card">
+        {/* Prerequisite steps card — always visible, scrolled to at TTS step 7 */}
+        <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
+          <div className="card-header">
+            <h4 style={{ margin: 0 }}>BEFORE YOU START</h4>
+          </div>
+
+          <div className={`instruction-step ${isSpeaking && currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{ marginTop: '1.5rem' }}>
+            <KaraokeLessonText
+              text="Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning."
+              isActive={isSpeaking && currentIndex === 7}
+              currentCharIndex={currentCharIndex}
+            />
+            <img src={threeDView} alt="3D View" className="software-screenshot mt-8" style={{ width: '350px' }} />
+          </div>
+
+          <div className={`instruction-box mt-8 instruction-step ${isSpeaking && currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
+            <KaraokeLessonText
+              text="On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis."
+              isActive={isSpeaking && currentIndex === 8}
+              currentCharIndex={currentCharIndex}
+            />
+            <img src={cmdMenu} alt="Command Menu" className="software-screenshot" style={{ width: '200px', marginTop: '1rem' }} />
+          </div>
+        </div>
+
+
         {activeTab === 'cylinder' && (
-          <div className="lesson-card tab-content fade-in">
-
-            <div className="card-header" data-tts-text="Let's start creating Cylinder">
-              <h4 className={`section-title ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ margin: 0 }}>
-                <KaraokeLessonText
-                  as="span"
-                  text="CYLINDER"
-                  isActive={isSpeaking && currentIndex === 3}
-                  currentCharIndex={currentCharIndex}
-                />
-              </h4>
+          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
+            <div className="card-header">
+              <h4 style={{ margin: 0 }}>CYLINDER TUTORIAL</h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="step-header">
-                <span className="step-number">1 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Select Arrange Cylinder from the icon menu"
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={arrangeCylinder} alt="Arrange Cylinder icon" className="software-screenshot" style={{ width: '550px', marginBottom: "-3rem" }} />
-              </div>
-            </div>
 
-            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="step-header">
-                <span className="step-number">2 </span>
+            {/* Watch tutorial prompt — shown at step 9 (closing message) */}
+            {currentIndex === 9 && isSpeaking && (
+              <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
                 <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="On the bottom left corner, the item entry can be located"
-                  isActive={isSpeaking && currentIndex === 5}
+                  text="Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD."
+                  isActive={true}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
-              <div className="step-description">
-                <img src={itemEntry} alt="Item Entry Cylinder" className="software-screenshot" style={{ width: '850px', marginTop: "-1rem", marginBottom: "-3rem" }} />
-                <KaraokeLessonText
-                  className="p-flush mt-4 text-highlight"
-                  style={{ marginBottom: "1rem" }}
-                  text="Specify the diameter and height of cylinder on the item entry"
-                  isActive={isSpeaking && currentIndex === 5}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-            </div>
+            )}
 
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="step-header">
-                <span className="step-number">3 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="In the Key Entry Area, enter the coordinates for the position (origin)"
-                  isActive={isSpeaking && currentIndex === 6}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={keyEntry} alt="Key Entry" className="software-screensho" style={{ height: 'auto', width: '200px' }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
-                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-                  <KaraokeLessonText
-                    as="span"
-                    text="PREVIEW"
-                    isActive={isSpeaking && currentIndex === 7}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
-              <img src={cylinderResult} alt="Cylinder Preview" className="software-screenshot mt-8" style={{ height: '500px' }} />
+            <div ref={videoSectionRef} style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
+              <VideoTutorialViewer steps={cylinderTutorialSteps} />
             </div>
 
             <div className="lesson-navigation">
@@ -431,80 +499,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'box' && (
-          <div className="lesson-card tab-content fade-in">
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header" data-tts-text="By creating Box, we must specify the depth, width, and height">
-                <h4 style={{ margin: 0 }}>
-                  <KaraokeLessonText
-                    as="span"
-                    text="BOX"
-                    isActive={isSpeaking && currentIndex === 3}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
+          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
+            <div className="card-header">
+              <h4 style={{ margin: 0 }}>BOX TUTORIAL</h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="step-header">
-                <span className="step-number">1 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Select Arrange Box from the icon menu"
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={arrangeBox} alt="Arrange Box icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
-              </div>
-            </div>
 
-            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="step-header">
-                <span className="step-number">2 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Specify the depth, width and height of the box on the item entry"
-                  isActive={isSpeaking && currentIndex === 5}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={itemEntryBox} alt="Item Entry Box" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="step-header">
-                <span className="step-number">3 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="In the Key Entry Area, enter the coordinates for the position (origin)"
-                  isActive={isSpeaking && currentIndex === 6}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={keyEntry} alt="Key Entry Box" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
-                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-                  <KaraokeLessonText
-                    as="span"
-                    text="PREVIEW"
-                    isActive={isSpeaking && currentIndex === 7}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
-              <img src={boxResult} alt="Box Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
+            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
+              <VideoTutorialViewer steps={boxTutorialSteps} />
             </div>
 
             <div className="lesson-navigation">
@@ -515,80 +517,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'polygon' && (
-          <div className="lesson-card tab-content fade-in">
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header" data-tts-text="By creating Polygon, we must specify the number of sides, diameter, and height">
-                <h4 style={{ margin: 0 }}>
-                  <KaraokeLessonText
-                    as="span"
-                    text="POLYGON"
-                    isActive={isSpeaking && currentIndex === 3}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
+          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
+            <div className="card-header">
+              <h4 style={{ margin: 0 }}>POLYGON TUTORIAL</h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="step-header">
-                <span className="step-number">1 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Select Arrange Polygonal Prism from the icon menu"
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={arrangePolygon} alt="Arrange Polygon icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
-              </div>
-            </div>
 
-            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="step-header">
-                <span className="step-number">2 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Specify the number of sides, diameter (circumscribed) and height of the polygon on the item entry"
-                  isActive={isSpeaking && currentIndex === 5}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={itemEntryPolygon} alt="Item Entry Polygon" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="step-header">
-                <span className="step-number">3 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="In the Key Entry Area, enter the coordinates for the position (origin)"
-                  isActive={isSpeaking && currentIndex === 6}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={keyEntry} alt="Key Entry Polygon" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
-                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-                  <KaraokeLessonText
-                    as="span"
-                    text="PREVIEW"
-                    isActive={isSpeaking && currentIndex === 7}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
-              <img src={polygonResult} alt="Polygon Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
+            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
+              <VideoTutorialViewer steps={polygonTutorialSteps} />
             </div>
 
             <div className="lesson-navigation">
@@ -599,81 +535,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'cone' && (
-          <div className="lesson-card tab-content fade-in">
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header" data-tts-text="By creating Cone, we must specify the number of sides, base diameter, top face diameter, and height">
-                <h4 style={{ margin: 0 }}>
-                  <KaraokeLessonText
-                    as="span"
-                    text="CONE"
-                    isActive={isSpeaking && currentIndex === 3}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
+          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
+            <div className="card-header">
+              <h4 style={{ margin: 0 }}>CONE TUTORIAL</h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="step-header">
-                <span className="step-number">1 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Select Arrange Cone from the icon menu"
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={arrangeCone} alt="Arrange Cone icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
-              </div>
-            </div>
 
-            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="step-header">
-                <span className="step-number">2 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  style={{ marginTop: "2rem" }}
-                  text="Specify the number of sides, base diameter (circumscribed), top face diameter (circumscribed) and height on the item entry"
-                  isActive={isSpeaking && currentIndex === 5}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={itemEntryCone} alt="Item Entry Cone" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="step-header">
-                <span className="step-number">3 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="On the Key Entry Area, enter the coordinates for the position (origin)"
-                  isActive={isSpeaking && currentIndex === 6}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={keyEntry} alt="Key Entry Cone" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
-                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-                  <KaraokeLessonText
-                    as="span"
-                    text="PREVIEW"
-                    isActive={isSpeaking && currentIndex === 7}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
-              <img src={coneResult} alt="Cone Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
+            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
+              <VideoTutorialViewer steps={coneTutorialSteps} />
             </div>
 
             <div className="lesson-navigation">
@@ -684,80 +553,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'torus' && (
-          <div className="lesson-card tab-content fade-in">
-            <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
-              <div className="card-header" data-tts-text="By creating Torus, we must specify the section diameter, path radius, and turn angle">
-                <h4 style={{ margin: 0 }}>
-                  <KaraokeLessonText
-                    as="span"
-                    text="TORUS"
-                    isActive={isSpeaking && currentIndex === 3}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
+          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
+            <div className="card-header">
+              <h4 style={{ margin: 0 }}>TORUS TUTORIAL</h4>
             </div>
 
-            <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="step-header">
-                <span className="step-number">1 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Select Arrange Torus from the icon menu"
-                  isActive={isSpeaking && currentIndex === 4}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={arrangeTorus} alt="Arrange Torus icon" className="software-screenshot" style={{ width: '450px', marginBottom: "-3rem" }} />
-              </div>
-            </div>
 
-            <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="step-header">
-                <span className="step-number">2 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="Specify the section diameter, path radius, and turn angle"
-                  isActive={isSpeaking && currentIndex === 5}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={itemEntryTorus} alt="Item Entry Torus" className="software-screenshot" style={{ width: '850px', height: 'auto', marginBottom: "-3rem" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="step-header">
-                <span className="step-number">3 </span>
-                <KaraokeLessonText
-                  as="span"
-                  className="step-label"
-                  text="In the Key Entry Area, enter the coordinates for the position (origin)"
-                  isActive={isSpeaking && currentIndex === 6}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-              <div className="step-description">
-                <img src={keyEntry} alt="Key Entry Torus" className="software-screenshot screenshot-small" style={{ height: 'auto', width: "200px" }} />
-              </div>
-            </div>
-
-            <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-              <div className="card-header" data-tts-text="This must be the preview if you follow correctly">
-                <h4 className={`${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
-                  <KaraokeLessonText
-                    as="span"
-                    text="PREVIEW"
-                    isActive={isSpeaking && currentIndex === 7}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </h4>
-              </div>
-              <img src={torusResult} alt="Torus Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '500px' }} />
+            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
+              <VideoTutorialViewer steps={torusTutorialSteps} />
             </div>
 
             <div className="lesson-navigation">
@@ -821,6 +624,22 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     "Step 2: Left-click on the entity to delete."
   ];
 
+  // Helper: returns the step array for the currently active tab.
+  // Extracted to eliminate the repeated ternary chains throughout this component.
+  type Op2Tab = 'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete';
+  const getSteps = (tab: Op2Tab): string[] => {
+    const map: Record<Op2Tab, string[]> = {
+      move: moveSteps,
+      rotate: rotateSteps,
+      mirror: mirrorSteps,
+      copy: copySteps,
+      rotateCopy: rotateCopySteps,
+      mirrorCopy: mirrorCopySteps,
+      delete: deleteSteps,
+    };
+    return map[tab] ?? deleteSteps;
+  };
+
   const tabs = [
     { id: 'move', label: 'Move' },
     { id: 'rotate', label: 'Rotate' },
@@ -831,7 +650,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'delete', label: 'Delete' }
   ];
 
-  const handleNext = (isAuto = false) => {
+  const handleNext = (isAuto: boolean = false) => {
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -841,7 +660,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = (isAuto = false) => {
+  const handlePrev = (isAuto: boolean = false) => {
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -854,15 +673,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   useEffect(() => {
     const introTitle = "Move, Rotate, Copy, Mirror, Delete";
     const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
-    const currentSteps = activeTab === 'move' ? moveSteps :
-      activeTab === 'rotate' ? rotateSteps :
-        activeTab === 'mirror' ? mirrorSteps :
-          activeTab === 'copy' ? copySteps :
-            activeTab === 'rotateCopy' ? rotateCopySteps :
-              activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
+    const currentSteps = getSteps(activeTab as Op2Tab);
     const fullSteps = [introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps];
     const startIdx = activeTab === 'move' ? 0 : 2;
     registerText(fullSteps, startIdx);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, registerText]);
 
   const wasSpeakingRef = React.useRef(false);
@@ -877,12 +692,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     if (!isSpeaking && wasSpeakingRef.current) {
-      const currentSteps = activeTab === 'move' ? moveSteps :
-        activeTab === 'rotate' ? rotateSteps :
-          activeTab === 'mirror' ? mirrorSteps :
-            activeTab === 'copy' ? copySteps :
-              activeTab === 'rotateCopy' ? rotateCopySteps :
-                activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
+      const currentSteps = getSteps(activeTab as Op2Tab);
       const stepsLength = 3 + currentSteps.length;
       if (lastIndexRef.current === stepsLength - 1) {
         const i = tabs.findIndex(t => t.id === activeTab);
@@ -893,6 +703,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       }
     }
     wasSpeakingRef.current = isSpeaking;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSpeaking, activeTab]);
 
   const prevTabRef = React.useRef(activeTab);
@@ -904,12 +715,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         setTimeout(() => {
           const introTitle = "Move, Rotate, Copy, Mirror, Delete";
           const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
-          const currentSteps = activeTab === 'move' ? moveSteps :
-            activeTab === 'rotate' ? rotateSteps :
-              activeTab === 'mirror' ? mirrorSteps :
-                activeTab === 'copy' ? copySteps :
-                  activeTab === 'rotateCopy' ? rotateCopySteps :
-                    activeTab === 'mirrorCopy' ? mirrorCopySteps : deleteSteps;
+          const currentSteps = getSteps(activeTab as Op2Tab);
           const startIdx = activeTab === 'move' ? 0 : 2;
           speak([introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps], startIdx);
         }, 300);
@@ -986,7 +792,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be move > GO"
+                    text="Left-click on the entity to be moved > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1019,7 +825,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>RESULT</h4></div>
-              <img src={moveResult} alt="Move Preview" className="software-screenshot screenshot-wide mt-8" />
+              <PremiumVideoPlayer src={vidMove} className="software-screenshot screenshot-wide mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1064,7 +870,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be rotate > GO"
+                    text="Left-click on the entity to be rotated > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1104,7 +910,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="card-header"><h4>RESULT</h4></div>
-            <img src={rotateAxis} alt="Axis of Rotation" className="software-screenshot" style={{ width: '900px', marginBottom: "-3rem" }} />
+            <PremiumVideoPlayer src={vidRotate} className="software-screenshot" style={{ width: '900px', marginBottom: "-3rem" }} />
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
@@ -1148,7 +954,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be mirror > GO"
+                    text="Left-click on the entity to be mirrored > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1173,7 +979,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <img src={mirrorResult} alt="Mirror Result" className="software-screenshot mt-8" style={{ width: '900px' }} />
+              <PremiumVideoPlayer src={vidMirror} className="software-screenshot mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1218,7 +1024,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be copy > GO"
+                    text="Left-click on the entity to be copied > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1245,7 +1051,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <img src={copyResult} alt="Copy Result" className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '600px' }} />
+              <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '600px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1406,7 +1212,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'revolve', label: 'REVOLVE' }
   ];
 
-  const handleNext = (isAuto = false) => {
+  const handleNext = (isAuto: boolean = false) => {
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -1416,7 +1222,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = (isAuto = false) => {
+  const handlePrev = (isAuto: boolean = false) => {
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -1629,7 +1435,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be extrude > GO"
+                    text="Select the perimeter of the sketch to be extruded > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1674,7 +1480,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <img src={revolveP1} alt="Extrude Result" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
+                  <img src={extrudeOneSide} alt="Extrude Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
               </div>
             </div>
@@ -1723,7 +1529,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be revolve > GO"
+                    text="Select the perimeter of the sketch to be revolved > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1824,19 +1630,42 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'stretch', label: 'Stretch' },
     { id: 'resize', label: 'Resize' }];
 
-  const handleNext = () => {
+  const handleNext = (isAuto: boolean = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
   };
 
-  const handlePrev = () => {
+  const handlePrev = (isAuto: boolean = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
   };
+
+  // Register TTS text per active tab so karaoke indices stay correct
+  // for each independently-structured sub-section.
+  useEffect(() => {
+    const introTitle = activeTab === 'showHide' ? "Show / Hide"
+      : activeTab === 'stretch' ? "Stretch / Shape / Cut"
+      : "Resize";
+    const introDesc = activeTab === 'showHide'
+      ? "Tools use to switch between displaying and hiding entities."
+      : activeTab === 'stretch'
+      ? "Tools used to modify the length and form of solid entities."
+      : "Tool used to scale up or scale down a solid entity.";
+    const steps = activeTab === 'showHide' ? showHideSteps
+      : activeTab === 'stretch' ? stretchSteps
+      : resizeSteps;
+    registerText([introTitle, introDesc, ...steps], 0);
+  }, [activeTab, registerText]);
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -1845,7 +1674,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       {activeTab === 'showHide' && (
@@ -2276,7 +2105,8 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'shapeSteels'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'shapeSteels';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  // Note: speak and stop are not used in this component's single-tab layout.
+  const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);

@@ -77,6 +77,11 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   const [shuffledQuestions, setShuffledQuestions] = useState<any[]>([]);
   const [showWarning, setShowWarning] = useState(true);
 
+  // Lockdown Keys & State
+  const failsKey = lessonId ? authService.getStorageKey(`quiz_fails_${lessonId}`) : null;
+  const lockUntilKey = lessonId ? authService.getStorageKey(`quiz_lock_until_${lessonId}`) : null;
+  const [lockTimeLeft, setLockTimeLeft] = useState<number>(0);
+
   // Shuffle Utility
   const shuffleArray = <T,>(array: T[]): T[] => {
     const shuffled = [...array];
@@ -148,6 +153,44 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     initQuestions(); // Re-shuffle for retake
     if (storageKey) localStorage.removeItem(storageKey);
   };
+
+  // 1. Initialize lockdown state on mount or when modal opens
+  useEffect(() => {
+    if (isOpen && lockUntilKey) {
+      const lockUntil = localStorage.getItem(lockUntilKey);
+      if (lockUntil) {
+        const remaining = Math.ceil((parseInt(lockUntil, 10) - Date.now()) / 1000);
+        if (remaining > 0) {
+          setLockTimeLeft(remaining);
+        } else {
+          setLockTimeLeft(0);
+          localStorage.removeItem(lockUntilKey);
+          if (failsKey) localStorage.removeItem(failsKey);
+        }
+      } else {
+        setLockTimeLeft(0);
+      }
+    }
+  }, [isOpen, lockUntilKey, failsKey]);
+
+  // 2. Active Lockdown Countdown Timer
+  useEffect(() => {
+    if (lockTimeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setLockTimeLeft(prev => {
+        if (prev <= 1) {
+          if (lockUntilKey) localStorage.removeItem(lockUntilKey);
+          if (failsKey) localStorage.removeItem(failsKey);
+          resetQuiz(); // Force a fresh start with new shuffled questions
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [lockTimeLeft, lockUntilKey, failsKey, resetQuiz]);
 
 
 
@@ -240,6 +283,23 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     if (storageKey) {
       localStorage.removeItem(storageKey);
     }
+
+    // Fail/Pass Tracking for Lockdown
+    if (finalScore >= 80) {
+      if (failsKey) localStorage.removeItem(failsKey);
+      if (lockUntilKey) localStorage.removeItem(lockUntilKey);
+    } else {
+      const currentFails = parseInt(localStorage.getItem(failsKey || '') || '0', 10) + 1;
+      if (failsKey) localStorage.setItem(failsKey, currentFails.toString());
+      if (currentFails >= 3) {
+        const lockUntil = Date.now() + 15 * 60 * 1000; // 15 minutes lock
+        if (lockUntilKey) {
+          localStorage.setItem(lockUntilKey, lockUntil.toString());
+          setLockTimeLeft(15 * 60);
+        }
+      }
+    }
+
     onComplete(finalScore, detailedAnswers);
   };
 
@@ -399,11 +459,47 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       title={quiz.title}
       tag="MODULE ASSESSMENT"
       size="lg"
-      showCloseButton={showWarning || isFinished}
-      closeOnOutsideClick={showWarning || isFinished}
+      showCloseButton={showWarning || isFinished || lockTimeLeft > 0}
+      closeOnOutsideClick={showWarning || isFinished || lockTimeLeft > 0}
     >
       <div className="quiz-modal-content">
-        {showWarning ? (
+        {lockTimeLeft > 0 ? (
+          <div className="quiz-warning-view">
+            <div className="warning-card" style={{ borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+              <ShieldAlert className="warning-icon alert" size={80} style={{ color: '#ef4444' }} />
+              <h3 className="warning-title" style={{ color: '#ef4444' }}>Assessment Lockdown</h3>
+              <p className="warning-intro" style={{ marginBottom: '1.5rem' }}>
+                You have failed this assessment 3 times in a row. To ensure thorough comprehension, you must review the module lessons before attempting again.
+              </p>
+
+              <div className="lockdown-timer-container" style={{
+                textAlign: 'center',
+                margin: '2rem 0',
+                padding: '1.5rem',
+                borderRadius: '12px',
+                background: 'rgba(239, 68, 68, 0.05)',
+                border: '1px solid rgba(239, 68, 68, 0.1)'
+              }}>
+                <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: '#9ca3af', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                  Lockdown Active
+                </p>
+                <div style={{
+                  fontSize: '3.5rem',
+                  fontWeight: 900,
+                  fontFamily: 'monospace',
+                  color: '#ef4444',
+                  textShadow: '0 0 10px rgba(239, 68, 68, 0.3)'
+                }}>
+                  {formatTime(lockTimeLeft)}
+                </div>
+              </div>
+
+              <button className="start-btn" onClick={onClose} style={{ width: '100%', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white' }}>
+                Return to Lesson
+              </button>
+            </div>
+          </div>
+        ) : showWarning ? (
           <div className="quiz-warning-view">
             <div className="warning-card">
               <ShieldAlert className="warning-icon" size={80} />

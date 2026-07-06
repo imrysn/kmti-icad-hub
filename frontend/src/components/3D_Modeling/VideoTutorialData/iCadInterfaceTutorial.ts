@@ -35,7 +35,37 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "1.7%", left: "0%", width: "100%", height: "2.6%", opacity: 1 },
-    subtitlePos: { top: "6.5%", left: "50%", transform: "translateX(-50%)" }
+    subtitlePos: { top: "6.5%", left: "50%", transform: "translateX(-50%)" },
+    wordSpotlights: [
+      {
+        words: ["file"],
+        spotlight: { top: "1.7%", left: "0.1%", width: "3.2%", height: "2.6%", opacity: 1 }
+      },
+      {
+        words: ["view"],
+        spotlight: { top: "1.7%", left: "3.5%", width: "2.6%", height: "2.6%", opacity: 1 }
+      },
+      {
+        words: ["information"],
+        spotlight: { top: "1.7%", left: "6.1%", width: "4.3%", height: "2.6%", opacity: 1 }
+      },
+      {
+        words: ["set"],
+        spotlight: { top: "1.7%", left: "10.4%", width: "2.5%", height: "2.6%", opacity: 1 }
+      },
+      {
+        words: ["tool"],
+        spotlight: { top: "1.7%", left: "12.8%", width: "3.5%", height: "2.6%", opacity: 1 }
+      },
+      {
+        words: ["window"],
+        spotlight: { top: "1.7%", left: "16.3%", width: "3.9%", height: "2.6%", opacity: 1 }
+      },
+      {
+        words: ["help"],
+        spotlight: { top: "1.7%", left: "20.3%", width: "3.2%", height: "2.6%", opacity: 1 }
+      }
+    ]
   },
   {
     id: 5,

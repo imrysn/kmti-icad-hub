@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, Play, Square, GripHorizontal, Maximize, Minimize, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause, Square, GripHorizontal, Maximize, Minimize, X } from 'lucide-react';
 import './VideoTutorialViewer.css';
 import { api } from '../../services/api';
 
@@ -21,6 +21,19 @@ export interface TutorialStep {
     opacity: number;
   };
   subtitlePos: React.CSSProperties;
+  wordSpotlights?: {
+    words: string[];
+    spotlight: {
+      top: string;
+      left: string;
+      width: string;
+      height: string;
+      opacity: number;
+    };
+  }[];
+  videoSrc?: string;
+  videoStart?: number;
+  videoEnd?: number;
 }
 
 interface VideoTutorialViewerProps {
@@ -30,11 +43,14 @@ interface VideoTutorialViewerProps {
 const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [videoTime, setVideoTime] = useState(0);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
 
@@ -78,28 +94,77 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
         audioRef.current = null;
       }
       if (activeIntervalRef.current) {
-        clearInterval(activeIntervalRef.current);
+        clearTimeout(activeIntervalRef.current);
         activeIntervalRef.current = null;
       }
     };
   }, []);
 
+  // Sync with global ReadAloudButton
+  useEffect(() => {
+    const playHandler = () => setIsPlaying(true);
+    const stopHandler = () => setIsPlaying(false);
+
+    window.addEventListener('kmti-play-tutorial', playHandler);
+    window.addEventListener('kmti-stop-tutorial', stopHandler);
+
+    return () => {
+      window.removeEventListener('kmti-play-tutorial', playHandler);
+      window.removeEventListener('kmti-stop-tutorial', stopHandler);
+    };
+  }, []);
+
+  // Broadcast local playback state changes
+  useEffect(() => {
+    if (isPlaying) {
+      window.dispatchEvent(new CustomEvent('kmti-tutorial-playing'));
+    } else {
+      window.dispatchEvent(new CustomEvent('kmti-tutorial-stopped'));
+    }
+    return () => {
+      window.dispatchEvent(new CustomEvent('kmti-tutorial-stopped'));
+    };
+  }, [isPlaying]);
+
   useEffect(() => {
     if (isPlaying) {
       speakCurrentStep();
     } else {
-      setCurrentCharIndex(0);
       if (synthRef.current) synthRef.current.cancel();
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
       if (activeIntervalRef.current) {
-        clearInterval(activeIntervalRef.current);
+        clearTimeout(activeIntervalRef.current);
         activeIntervalRef.current = null;
       }
     }
   }, [currentStep, isPlaying]);
+
+  useEffect(() => {
+    if (tutorialVideoRef.current) {
+      if (isPlaying && !isPaused) {
+        tutorialVideoRef.current.play().catch(err => console.log("Video play failed:", err));
+      } else {
+        tutorialVideoRef.current.pause();
+      }
+    }
+  }, [isPlaying, isPaused]);
+
+  useEffect(() => {
+    if (tutorialVideoRef.current && currentData) {
+      const video = tutorialVideoRef.current;
+      const start = currentData.videoStart || 0;
+      // Seek to step's videoStart if out of range, then play
+      if (video.currentTime < start || video.currentTime > (currentData.videoEnd || 9999)) {
+        video.currentTime = start;
+      }
+      if (isPlaying && !isPaused) {
+        video.play().catch(err => console.log("Video resume on step change failed:", err));
+      }
+    }
+  }, [currentStep]);
 
   // Keyboard navigation (only active when fullscreen or maybe always if focused, but let's just keep it)
   useEffect(() => {
@@ -138,6 +203,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       synthRef.current.cancel();
     }
     setCurrentCharIndex(0);
+    setIsPaused(false);
+
 
     const title = steps[currentStep].title;
     const text = steps[currentStep].text;
@@ -154,118 +221,93 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       const voiceName = savedVoice.replace('kokoro://', '');
       const apiBase = api.defaults.baseURL || '';
       
-      const titleUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenTitle)}&voice=${voiceName}&speed=${savedRate}`;
       const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
       
-      const titleAudio = new Audio(titleUrl);
-      audioRef.current = titleAudio;
-
       const textAudio = new Audio(textUrl);
-      textAudio.load(); // Preload text audio immediately in the background
+      audioRef.current = textAudio;
 
-      titleAudio.onended = () => {
-        if (!isPlaying) return;
+      const words = text.split(/\s+/).filter(w => w.length > 0);
+      const estimatedDuration = (text.length * 60) / savedRate;
+
+      let wordIdx = 0;
+      let searchFrom = 0;
+
+      textAudio.onplaying = () => {
+        if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
         
-        audioRef.current = textAudio;
-
-        const words = text.split(/\s+/).filter(w => w.length > 0);
-        const estimatedDuration = (text.length * 60) / savedRate;
-
-        let wordIdx = 0;
-        let searchFrom = 0;
-
-        textAudio.onplaying = () => {
-          if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
-          
-          setCurrentCharIndex(searchFrom);
-          const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration)) 
-            ? textAudio.duration 
-            : (estimatedDuration / 1000);
-          const totalMs = durationSec * 1000;
-          const msPerChar = totalMs / (text.length || 1);
-          
-          activeIntervalRef.current = setInterval(() => {
-              if (wordIdx < words.length) {
-                  const currentWord = words[wordIdx];
-                  const wordStart = text.indexOf(currentWord, searchFrom);
-                  if (wordStart !== -1) {
-                      setCurrentCharIndex(wordStart);
-                      searchFrom = wordStart + currentWord.length;
-                  }
-                  wordIdx++;
-              } else {
-                  if (activeIntervalRef.current) {
-                      clearInterval(activeIntervalRef.current);
-                      activeIntervalRef.current = null;
-                  }
-              }
-          }, (text.length / (words.length || 1)) * msPerChar);
-        };
-
-        textAudio.onpause = () => {
-          if (activeIntervalRef.current) {
-            clearInterval(activeIntervalRef.current);
-            activeIntervalRef.current = null;
+        setCurrentCharIndex(searchFrom);
+        const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration)) 
+          ? textAudio.duration 
+          : (estimatedDuration / 1000);
+        const totalMs = durationSec * 1000;
+        const msPerChar = totalMs / (text.length || 1);
+        
+        const highlightNextWord = () => {
+          if (!isPlaying) return;
+          if (wordIdx < words.length) {
+            const currentWord = words[wordIdx];
+            const wordStart = text.indexOf(currentWord, searchFrom);
+            if (wordStart !== -1) {
+              setCurrentCharIndex(wordStart);
+              searchFrom = wordStart + currentWord.length;
+            }
+            const delay = (currentWord.length + 1) * msPerChar;
+            wordIdx++;
+            activeIntervalRef.current = setTimeout(highlightNextWord, delay);
           }
         };
-
-        textAudio.onwaiting = () => {
-          if (activeIntervalRef.current) {
-            clearInterval(activeIntervalRef.current);
-            activeIntervalRef.current = null;
-          }
-        };
-
-        textAudio.onended = () => {
-          if (activeIntervalRef.current) {
-            clearInterval(activeIntervalRef.current);
-            activeIntervalRef.current = null;
-          }
-          setCurrentCharIndex(0);
-          
-          if (currentStep < steps.length - 1) {
-            setTimeout(() => {
-              if (isPlaying) {
-                setCurrentStep(prev => prev + 1);
-              }
-            }, 1000);
-          } else {
-            setTimeout(() => {
-              setIsPlaying(false);
-              setCurrentStep(0);
-            }, 1500);
-          }
-        };
-
-        textAudio.onerror = (err) => {
-          console.error('Kokoro Text Audio Error:', err);
-          if (activeIntervalRef.current) {
-            clearInterval(activeIntervalRef.current);
-            activeIntervalRef.current = null;
-          }
-          setIsPlaying(false);
-        };
-
-        textAudio.play().catch(err => {
-          console.error("Text audio play failed:", err);
-          textAudio.onended?.(null as any);
-        });
+        highlightNextWord();
       };
 
-      titleAudio.onerror = (err) => {
-        console.error('Kokoro Title Audio Error:', err);
+      textAudio.onpause = () => {
+        if (activeIntervalRef.current) {
+          clearTimeout(activeIntervalRef.current);
+          activeIntervalRef.current = null;
+        }
+      };
+
+      textAudio.onwaiting = () => {
+        if (activeIntervalRef.current) {
+          clearTimeout(activeIntervalRef.current);
+          activeIntervalRef.current = null;
+        }
+      };
+
+      textAudio.onended = () => {
+        if (activeIntervalRef.current) {
+          clearTimeout(activeIntervalRef.current);
+          activeIntervalRef.current = null;
+        }
+        setCurrentCharIndex(0);
+        if (currentStep < steps.length - 1) {
+          // Advance to next step; video resumes from its videoStart via the step-change useEffect
+          setTimeout(() => {
+            setCurrentStep(prev => prev + 1);
+          }, 400);
+        } else {
+          // Last step: if there is no video, stop playback automatically
+          if (!steps[currentStep].videoSrc) {
+            handleStop();
+          }
+        }
+      };
+
+      textAudio.onerror = (err) => {
+        console.error('Kokoro Text Audio Error:', err);
+        if (activeIntervalRef.current) {
+          clearTimeout(activeIntervalRef.current);
+          activeIntervalRef.current = null;
+        }
         setIsPlaying(false);
       };
 
-      titleAudio.play().catch(err => {
-        console.error("Title audio play failed:", err);
-        titleAudio.onended?.(null as any);
+      textAudio.play().catch(err => {
+        console.error("Text audio play failed:", err);
+        textAudio.onended?.(null as any);
       });
     } else {
       // Fallback: Browser Web Speech synthesis
       if (!synthRef.current) return;
-      const titleUtterance = new SpeechSynthesisUtterance(spokenTitle);
-      titleUtterance.rate = savedRate * 0.9;
 
       const textUtterance = new SpeechSynthesisUtterance(spokenText);
       textUtterance.rate = savedRate * 0.9;
@@ -300,7 +342,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             let searchFrom = 0;
             const msPerChar = estimatedDuration / (text.length || 1);
 
-            activeIntervalRef.current = setInterval(() => {
+            const highlightNextWord = () => {
               if (wordIdx < words.length) {
                 const currentWord = words[wordIdx];
                 const wordStart = text.indexOf(currentWord, searchFrom);
@@ -308,11 +350,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
                   setCurrentCharIndex(wordStart);
                   searchFrom = wordStart + currentWord.length;
                 }
+                const delay = (currentWord.length + 1) * msPerChar;
                 wordIdx++;
-              } else {
-                if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
+                activeIntervalRef.current = setTimeout(highlightNextWord, delay);
               }
-            }, (text.length / (words.length || 1)) * msPerChar);
+            };
+            highlightNextWord();
           }
         }, 300);
       };
@@ -321,7 +364,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
         if (e.name === 'word') {
           boundaryFired = true;
           if (activeIntervalRef.current) {
-            clearInterval(activeIntervalRef.current);
+            clearTimeout(activeIntervalRef.current);
             activeIntervalRef.current = null;
           }
           setCurrentCharIndex(getOriginalIndex(e.charIndex));
@@ -329,32 +372,25 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       };
 
       textUtterance.onend = () => {
-        if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
+        if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
         setCurrentCharIndex(0);
         if (currentStep < steps.length - 1) {
+          // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
-            if (isPlaying) {
-              setCurrentStep(prev => prev + 1);
-            }
-          }, 1000);
+            setCurrentStep(prev => prev + 1);
+          }, 400);
         } else {
-          setTimeout(() => {
-            setIsPlaying(false);
-            setCurrentStep(0);
-          }, 1500);
-        }
-      };
-
-      titleUtterance.onend = () => {
-        if (isPlaying && synthRef.current) {
-          synthRef.current.speak(textUtterance);
+          // Last step: if there is no video, stop playback automatically
+          if (!steps[currentStep].videoSrc) {
+            handleStop();
+          }
         }
       };
 
       if (window.speechSynthesis) {
         window.speechSynthesis.resume();
       }
-      synthRef.current.speak(titleUtterance);
+      synthRef.current.speak(textUtterance);
     }
   };
 
@@ -386,22 +422,111 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     );
   };
 
+  const getSubHighlightIndices = () => {
+    if (!currentData || !currentData.wordSpotlights) return [];
+    const text = currentData.text.toLowerCase();
+    return currentData.wordSpotlights
+      .map(ws => {
+        for (const w of ws.words) {
+          const idx = text.indexOf(w.toLowerCase());
+          if (idx !== -1) return idx;
+        }
+        return -1;
+      })
+      .filter(idx => idx !== -1)
+      .sort((a, b) => a - b);
+  };
+
   const handleNext = () => {
+    const subIndices = getSubHighlightIndices();
+    if (subIndices.length > 0) {
+      const nextIdx = subIndices.find(idx => idx > currentCharIndex);
+      if (nextIdx !== undefined) {
+        setCurrentCharIndex(nextIdx);
+        if (isPlaying && !isPaused) {
+          togglePlayback();
+        }
+        return;
+      }
+    }
+
     if (currentStep < steps.length - 1) {
       setCurrentStep(prev => prev + 1);
+      setCurrentCharIndex(0);
     }
   };
 
   const handlePrev = () => {
+    const subIndices = getSubHighlightIndices();
+    if (subIndices.length > 0 && currentCharIndex > 0) {
+      const prevIndices = subIndices.filter(idx => idx < currentCharIndex);
+      if (prevIndices.length > 0) {
+        const prevIdx = prevIndices[prevIndices.length - 1];
+        setCurrentCharIndex(prevIdx);
+        if (isPlaying && !isPaused) {
+          togglePlayback();
+        }
+        return;
+      } else {
+        setCurrentCharIndex(0);
+        if (isPlaying && !isPaused) {
+          togglePlayback();
+        }
+        return;
+      }
+    }
+
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
+      setCurrentCharIndex(0);
     }
   };
 
   const togglePlayback = () => {
-    setIsPlaying(!isPlaying);
-    if (isPlaying && synthRef.current) {
+    if (!isPlaying) {
+      setIsPlaying(true);
+      setIsPaused(false);
+    } else {
+      if (isPaused) {
+        setIsPaused(false);
+        if (audioRef.current) {
+          audioRef.current.play().catch(err => console.error("Audio resume failed:", err));
+        } else if (synthRef.current) {
+          synthRef.current.resume();
+        }
+      } else {
+        setIsPaused(true);
+        if (audioRef.current) {
+          audioRef.current.pause();
+        } else if (synthRef.current) {
+          synthRef.current.pause();
+        }
+        if (activeIntervalRef.current) {
+          clearTimeout(activeIntervalRef.current);
+          activeIntervalRef.current = null;
+        }
+      }
+    }
+  };
+
+  const handleStop = () => {
+    setIsPlaying(false);
+    setIsPaused(false);
+    setCurrentCharIndex(0);
+    if (synthRef.current) {
       synthRef.current.cancel();
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    if (activeIntervalRef.current) {
+      clearTimeout(activeIntervalRef.current);
+      activeIntervalRef.current = null;
+    }
+    if (tutorialVideoRef.current) {
+      tutorialVideoRef.current.pause();
+      tutorialVideoRef.current.currentTime = 0;
     }
   };
 
@@ -411,17 +536,37 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   };
 
   const handleClose = () => {
-    if (synthRef.current) {
-      synthRef.current.cancel();
-    }
-    setIsPlaying(false);
+    handleStop();
     setCurrentStep(0);
-    setCurrentCharIndex(0);
   };
 
   if (!steps || steps.length === 0) return null;
 
   const currentData = steps[currentStep];
+
+  const getActiveSpotlight = () => {
+    if (currentCharIndex === 0 || !currentData.wordSpotlights) {
+      return currentData.spotlight;
+    }
+
+    const text = currentData.text;
+    let startIdx = currentCharIndex;
+    while (startIdx < text.length && text[startIdx] === ' ') {
+      startIdx++;
+    }
+
+    let nextSpace = text.indexOf(' ', startIdx);
+    if (nextSpace === -1) nextSpace = text.length;
+
+    const currentWord = text.substring(startIdx, nextSpace);
+    const cleanWord = currentWord.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase();
+
+    const matched = currentData.wordSpotlights.find(ws =>
+      ws.words.some(w => w.toLowerCase() === cleanWord)
+    );
+
+    return matched ? matched.spotlight : currentData.spotlight;
+  };
   
   const containerClass = isFullscreen ? 'tutorial-viewer-container fullscreen' : 'tutorial-viewer-container inline';
 
@@ -442,21 +587,65 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             minHeight: 0
           }}
         >
-          <img
-            src={icadInterfaceImg}
-            alt="iCAD Interface"
-            className="tutorial-image"
-            style={{
-              display: 'block',
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain'
-            }}
-          />
+          {currentData.videoSrc ? (
+            <video
+              ref={tutorialVideoRef}
+              src={currentData.videoSrc}
+              className="tutorial-image"
+              style={{
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+              playsInline
+              muted
+              onTimeUpdate={(e) => {
+                const video = e.currentTarget;
+                const time = video.currentTime;
+                setVideoTime(time);
+                const end = currentData.videoEnd || 9999;
+                const isLastStep = currentStep === steps.length - 1;
+                if (time >= end && !video.paused) {
+                  if (isLastStep) {
+                    // Last step: stop the tutorial when video reaches videoEnd
+                    video.pause();
+                    video.currentTime = 0;
+                    setIsPlaying(false);
+                    setCurrentStep(0);
+                    setCurrentCharIndex(0);
+                  } else {
+                    // Mid step: pause video, let TTS finish, then TTS onended advances the step
+                    video.pause();
+                  }
+                }
+              }}
+              onEnded={(e) => {
+                setIsPlaying(false);
+                setCurrentStep(0);
+                setCurrentCharIndex(0);
+                const video = e.currentTarget;
+                video.currentTime = 0;
+                video.pause();
+              }}
+            />
+          ) : (
+            <img
+              src={icadInterfaceImg}
+              alt="iCAD Interface"
+              className="tutorial-image"
+              style={{
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          )}
           <div className="tutorial-spotlight-overlay">
             <div
               className="tutorial-spotlight-cutout"
-              style={currentData.spotlight}
+              style={getActiveSpotlight()}
             />
           </div>
         </div>
@@ -514,14 +703,45 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
         </div>
 
         <div className="tutorial-controls">
-          <button
-            className="tutorial-btn"
-            onClick={togglePlayback}
-            title={isPlaying ? "Stop Narration" : "Play Narration"}
-          >
-            {isPlaying ? <Square size={16} /> : <Play size={16} />}
-            {isPlaying ? "Stop" : "Play"}
-          </button>
+          {/* Live timestamp badge */}
+          {currentData.videoSrc && (
+            <span
+              className="tutorial-time-badge"
+              title={`Step ${currentStep + 1}/${steps.length} · videoStart:${currentData.videoStart ?? 0}s, videoEnd:${currentData.videoEnd ?? '?'}s`}
+            >
+              ▶ {videoTime.toFixed(1)}s
+              <span style={{ opacity: 0.55, marginLeft: '2px' }}>
+                / {currentData.videoEnd ?? '?'}s
+              </span>
+            </span>
+          )}
+          {!isPlaying ? (
+            <button
+              className="tutorial-btn"
+              onClick={togglePlayback}
+              title="Play Narration"
+            >
+              <Play size={16} /> Play
+            </button>
+          ) : (
+            <>
+              <button
+                className="tutorial-btn"
+                onClick={togglePlayback}
+                title={isPaused ? "Resume Narration" : "Pause Narration"}
+              >
+                {isPaused ? <Play size={16} /> : <Pause size={16} />}
+                {isPaused ? "Resume" : "Pause"}
+              </button>
+              <button
+                className="tutorial-btn"
+                onClick={handleStop}
+                title="Stop Narration"
+              >
+                <Square size={16} /> Stop
+              </button>
+            </>
+          )}
 
           <button
             className="tutorial-btn"
@@ -533,8 +753,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
 
           <button
             className="tutorial-btn"
-            onClick={handleNext}
-            disabled={currentStep === steps.length - 1}
+            onClick={currentStep === steps.length - 1 ? handleClose : handleNext}
+            title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}
           >
             <ChevronRight size={18} />
           </button>
