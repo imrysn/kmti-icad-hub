@@ -6,6 +6,8 @@ import { useLessons } from '../../../hooks/useLessons';
 import { useUI } from '../../../context/UIContext';
 import { ProgressReportPrint } from './ProgressReportPrint';
 import { Modal } from '../../../components/Modal';
+import { ICAD_3D_LESSONS, ICAD_2D_LESSONS, Lesson } from '../../mentor/mentorConstants';
+import '../../../styles/AssessmentManagement.css';
 
 interface TraineeDetailProps {
     selectedTrainee: TraineeProgress;
@@ -25,6 +27,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
     const [isReopeningAll, setIsReopeningAll] = useState(false);
     const [isClosingAll, setIsClosingAll] = useState(false);
     const [targetScope, setTargetScope] = useState<'all' | '2D_Drawing' | '3D_Modeling'>('all');
+    const [activeCourseTab, setActiveCourseTab] = useState<'all' | '3D' | '2D'>('3D');
 
     // Detailed Breakdown State
     const [breakdownData, setBreakdownData] = useState<any | null>(null);
@@ -33,6 +36,41 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
     // Fetch lessons for both courses to map IDs to titles
     const { lessons: modelingLessons } = useLessons(1);
     const { lessons: drawingLessons } = useLessons(2);
+
+    const globalOrder3D = React.useMemo(() => {
+        const ids: string[] = [];
+        const traverse = (list: Lesson[]) => {
+            list.forEach(l => {
+                if (l.quiz) ids.push(l.id);
+                if (l.children) traverse(l.children);
+            });
+        };
+        traverse(ICAD_3D_LESSONS);
+        return ids;
+    }, []);
+
+    const globalOrder2D = React.useMemo(() => {
+        const ids: string[] = [];
+        const traverse = (list: Lesson[]) => {
+            list.forEach(l => {
+                if (l.quiz) ids.push(l.id);
+                if (l.children) traverse(l.children);
+            });
+        };
+        traverse(ICAD_2D_LESSONS);
+        return ids;
+    }, []);
+
+    const getOrderDisplay = (courseId: string, lessonId: string) => {
+        if (courseId === '1') {
+            const idx = globalOrder3D.indexOf(lessonId);
+            return idx !== -1 ? `#${idx + 1}` : null;
+        } else if (courseId === '2') {
+            const idx = globalOrder2D.indexOf(lessonId);
+            return idx !== -1 ? `#${idx + 1}` : null;
+        }
+        return null;
+    };
 
     const getLessonTitle = (lessonId: string, courseId: string) => {
         const lessons = courseId === '2' ? drawingLessons : modelingLessons;
@@ -290,13 +328,29 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                     </div>
 
                     {/* Assessment Matrix - 3D Modeling */}
+                    {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
                     <div className="history-section matrix-section">
-                        <h3><BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING</h3>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none' }}><BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING</h3>
+                            {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
+                                <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
+                                    <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
+                                    <button className={`sub-tab-btn ${activeCourseTab === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
+                                </div>
+                            )}
+                        </div>
                         <div className="history-list">
                             {selectedTrainee.quizzes_history.filter(q => q.course_id === '1').length > 0 ? (
                                 [...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '1')
-                                    .sort((a, b) => new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime())
+                                    .sort((a, b) => {
+                                        const indexA = globalOrder3D.indexOf(a.lesson_id);
+                                        const indexB = globalOrder3D.indexOf(b.lesson_id);
+                                        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                                        if (indexA !== -1) return -1;
+                                        if (indexB !== -1) return 1;
+                                        return new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime();
+                                    })
                                     .map((q, i) => (
                                         <div key={i} className="history-item evaluation-card">
                                             <div className="score-pillar-container">
@@ -346,7 +400,12 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div className="assessment-actions">
+                                            <div className="assessment-actions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                                {getOrderDisplay('1', q.lesson_id) && (
+                                                    <span className={`order-badge 3D_Modeling`} style={{ marginBottom: '8px' }}>
+                                                        {getOrderDisplay('1', q.lesson_id)}
+                                                    </span>
+                                                )}
                                                 <div className="assessment-date">
                                                     {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
                                                 </div>
@@ -367,15 +426,32 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             )}
                         </div>
                     </div>
+                    )}
 
                     {/* Assessment Matrix - 2D Drawing */}
+                    {(activeCourseTab === 'all' || activeCourseTab === '2D') && (
                     <div className="history-section matrix-section">
-                        <h3><FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING</h3>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none' }}><FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING</h3>
+                            {activeCourseTab === '2D' && (
+                                <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
+                                    <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
+                                    <button className={`sub-tab-btn ${activeCourseTab === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
+                                </div>
+                            )}
+                        </div>
                         <div className="history-list">
                             {selectedTrainee.quizzes_history.filter(q => q.course_id === '2').length > 0 ? (
                                 [...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '2')
-                                    .sort((a, b) => new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime())
+                                    .sort((a, b) => {
+                                        const indexA = globalOrder2D.indexOf(a.lesson_id);
+                                        const indexB = globalOrder2D.indexOf(b.lesson_id);
+                                        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                                        if (indexA !== -1) return -1;
+                                        if (indexB !== -1) return 1;
+                                        return new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime();
+                                    })
                                     .map((q, i) => (
                                         <div key={i} className="history-item evaluation-card">
                                             <div className="score-pillar-container">
@@ -425,7 +501,12 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div className="assessment-actions">
+                                            <div className="assessment-actions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                                {getOrderDisplay('2', q.lesson_id) && (
+                                                    <span className={`order-badge 2D_Drawing`} style={{ marginBottom: '8px' }}>
+                                                        {getOrderDisplay('2', q.lesson_id)}
+                                                    </span>
+                                                )}
                                                 <div className="assessment-date">
                                                     {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
                                                 </div>
@@ -446,6 +527,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             )}
                         </div>
                     </div>
+                    )}
                 </div>
             </div>
             {/* Breakdown Modal */}
