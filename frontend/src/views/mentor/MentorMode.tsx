@@ -8,9 +8,15 @@ import { assessmentService } from '../../services/assessmentService';
 import { useWebSocket } from '../../context/WebSocketContext';
 
 // Extracted Components
-import { CourseSelector } from './components/CourseSelector'; import { MentorSidebar } from './components/MentorSidebar';
+import { CourseSelector } from './components/CourseSelector'; 
+import { MentorSidebar } from './components/MentorSidebar';
 import { LessonViewer } from './components/LessonViewer';
 import { PracticalAssessment } from './components/PracticalAssessment';
+
+// New Imports
+import { ICADStandardView } from './components/ICADStandardView';
+import { ICADCommandView } from './components/ICADCommandView';
+import { SolidworksManualView } from './components/SolidworksManualView';
 
 import '../../styles/MentorMode.css';
 
@@ -30,6 +36,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Router hooks for header mode-switcher integration
     const location = useLocation();
     const navigate = useNavigate();
+    
+    // Parse the view parameter from the URL
+    const searchParams = new URLSearchParams(location.search);
+    const currentView = searchParams.get('view') || searchParams.get('tab');
 
     // Data Hook
     const { courses, loading, error } = useCourses();
@@ -107,6 +117,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     const currentLessons = useMemo(() => {
         if (!selectedCourse) return [];
+        if (selectedCourse.id.toString().startsWith('mock-')) {
+            return [{
+                id: 'mock-lesson-1',
+                title: 'Content Coming Soon',
+                type: 'text',
+                content: 'This module is currently under development.',
+                isCategory: false
+            }] as any[];
+        }
         if (is2DDrawingCourse) return ICAD_2D_LESSONS;
         if (selectedCourse.id.toString() === '1') return ICAD_3D_LESSONS;
         return dbLessons;
@@ -593,6 +612,19 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         }
         return 'Select a Lesson';
     };
+
+    // Conditionally render the newly requested sub-views if no course is selected
+    if (!selectedCourse) {
+        if (currentView === 'icad_standard') {
+            return <ICADStandardView setSelectedCourse={setSelectedCourse} />;
+        }
+        if (currentView === 'icad_command') {
+            return <ICADCommandView setSelectedCourse={setSelectedCourse} />;
+        }
+        if (currentView === 'solidworks_manual') {
+            return <SolidworksManualView setSelectedCourse={setSelectedCourse} />;
+        }
+    }
 
     // Render Composition
     // Only show CourseSelector/Loader if we don't have courses loaded yet, or if no course is selected
