@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bell, Trash2, Unlock } from 'lucide-react';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface NotificationCenterProps {
     unreadCount: number;
@@ -151,7 +152,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                                     }} />
                                 )}
 
-                                <div className="avatar-circle" style={{ width: '40px', height: '40px', minWidth: '40px', fontSize: '1rem' }}>
+                                <div className="avatar-circle" style={{ width: '40px', height: '40px', minWidth: '40px', fontSize: '1rem', background: getAvatarColor(notif.sender?.full_name || 'System') }}>
                                     {notif.sender?.full_name?.[0] || 'S'}
                                 </div>
 

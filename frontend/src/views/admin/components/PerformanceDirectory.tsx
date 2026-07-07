@@ -5,6 +5,7 @@ import { authService } from '../../../services/authService';
 import { useAuthContext } from '../../../context/AuthContext';
 import { useWebSocket } from '../../../context/WebSocketContext';
 import { Search } from 'lucide-react';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface PerformanceDirectoryProps {
     progress: TraineeProgress[];
@@ -91,37 +92,33 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
     return (
         <section className="trainee-progress">
             {user?.role !== 'employee' && (
-                <div className="directory-controls" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <div className="search-box" style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-card)', padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', flex: 1, minWidth: '250px', maxWidth: '400px' }}>
-                        <Search size={16} color="#94a3b8" style={{ marginRight: '0.5rem' }} />
-                        <input
-                            type="text"
-                            placeholder="Search by name or username..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            style={{ border: 'none', background: 'transparent', color: 'var(--text-main)', outline: 'none', width: '100%' }}
-                        />
-                    </div>
-                    <div className="role-filters" style={{ display: 'flex', gap: '0.25rem', background: 'var(--bg-card)', padding: '0.25rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                        {(['all', 'trainee', 'employee'] as const).map(role => (
-                            <button
-                                key={role}
-                                onClick={() => setRoleFilter(role)}
-                                style={{
-                                    padding: '0.4rem 1rem',
-                                    borderRadius: '6px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontSize: '0.85rem',
-                                    fontWeight: 500,
-                                    background: roleFilter === role ? 'var(--accent-blue)' : 'transparent',
-                                    color: roleFilter === role ? '#fff' : 'var(--text-muted)',
-                                    transition: 'all 0.2s'
-                                }}
-                            >
-                                {role === 'all' ? 'All Roles' : role.charAt(0).toUpperCase() + role.slice(1)}
-                            </button>
-                        ))}
+                <div className="dashboard-sub-header">
+                    <div className="toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div className="search-box" style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-card)', padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', width: '350px' }}>
+                            <Search size={16} color="#94a3b8" style={{ marginRight: '0.5rem' }} />
+                            <input
+                                type="text"
+                                placeholder="Search by name or username..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                style={{ border: 'none', background: 'transparent', color: 'var(--text-main)', outline: 'none', width: '100%' }}
+                            />
+                        </div>
+                        <div className="review-filter-tabs" style={{ display: 'flex', gap: '0.25rem', padding: '0.25rem', borderRadius: '8px' }}>
+                            {(['all', 'trainee', 'employee'] as const).map(role => (
+                                <button
+                                    key={role}
+                                    onClick={() => setRoleFilter(role)}
+                                    className={`filter-tab-btn ${roleFilter === role ? 'active' : ''}`}
+                                    style={{
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    {role === 'all' ? 'All Roles' : role.charAt(0).toUpperCase() + role.slice(1)}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
@@ -135,7 +132,7 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
                         <div key={p.id} className="trainee-stat-card" onClick={() => setSelectedTrainee(p)}>
                             <div className="card-top">
                                 <div className="profile-brief">
-                                    <div className="mini-avatar" style={{ position: 'relative' }}>
+                                    <div className="mini-avatar" style={{ position: 'relative', background: getAvatarColor(p.full_name) }}>
                                         {p.full_name[0]}
                                         <span style={{
                                             position: 'absolute',
