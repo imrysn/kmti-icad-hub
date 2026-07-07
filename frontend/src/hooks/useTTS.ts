@@ -1,5 +1,4 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import i18n from 'i18next';
 import { splitIntoSentences, normalizeSpeechText, getSentenceMapping } from '../utils/sentenceUtils';
 import { api } from '../services/api';
 
@@ -181,23 +180,11 @@ export const useTTS = () => {
     // while the audio file is loading over the network.
     // They are set inside audio.onplaying and utterance.onstart below.
 
-    let activeVoiceURI = selectedVoiceURI;
-    const isJa = i18n.language === 'ja';
-    if (isJa) {
-      if (!activeVoiceURI || (!activeVoiceURI.startsWith('kokoro://jf_') && !activeVoiceURI.startsWith('kokoro://jm_'))) {
-        activeVoiceURI = 'kokoro://jf_alpha';
-      }
-    } else {
-      if (activeVoiceURI && (activeVoiceURI.startsWith('kokoro://jf_') || activeVoiceURI.startsWith('kokoro://jm_'))) {
-        activeVoiceURI = 'kokoro://af_sarah';
-      }
-    }
-
-    const isKokoro = activeVoiceURI?.startsWith('kokoro://');
-    console.log("useTTS: speakSentence index:", index, "isKokoro:", isKokoro, "selectedVoiceURI:", activeVoiceURI);
+    const isKokoro = selectedVoiceURI?.startsWith('kokoro://');
+    console.log("useTTS: speakSentence index:", index, "isKokoro:", isKokoro, "selectedVoiceURI:", selectedVoiceURI);
 
     if (isKokoro) {
-      const voiceName = activeVoiceURI!.replace('kokoro://', '');
+      const voiceName = selectedVoiceURI!.replace('kokoro://', '');
 
       let audio: HTMLAudioElement;
       if (preloadedAudioRef.current && preloadedAudioRef.current.index === index) {

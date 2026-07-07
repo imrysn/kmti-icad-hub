@@ -1,6 +1,4 @@
-import i18n from 'i18next';
-import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from '../../../hooks/useLessonCore';
 import VideoTutorialViewer from '../VideoTutorialViewer';
@@ -28,9 +26,8 @@ interface SubLessonProps {
 type Op2Tab = 'move' | 'rotate' | 'mirror' | 'copy' | 'rotateCopy' | 'mirrorCopy' | 'delete';
 
 const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Op2Tab>(() => {
-    return (localStorage.getItem(`${subLessonId}-tab`) as Op2Tab) || 'move';
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'move';
   });
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
@@ -52,18 +49,18 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     switch (tab) {
       case 'rotateCopy':
         return [
-          t('basic_op_2.rotate_copy_desc'),
-          t('basic_op_2.result')
+          "Same as rotate tool but makes a rotated duplicate of the entity.",
+          "RESULT"
         ];
       case 'mirrorCopy':
         return [
-          t('basic_op_2.mirror_copy_desc'),
-          t('basic_op_2.result')
+          "Same as mirror tool but makes a mirror duplicate of the entity.",
+          "RESULT"
         ];
       case 'delete':
         return [
-          t('basic_op_2.delete_step_1'),
-          t('basic_op_2.delete_step_2')
+          "Select Delete from the icon menu",
+          "Left-click on the entity to delete"
         ];
       default:
         return [];
@@ -73,8 +70,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   useEffect(() => {
     const isVideoTab = ['move', 'rotate', 'mirror', 'copy'].includes(activeTab);
     if (!isVideoTab) {
-      const introTitle = t('basic_op_2.intro_title');
-      const introDesc = t('basic_op_2.intro_desc');
+      const introTitle = "Move, Rotate, Copy, Mirror, Delete";
+      const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
       const currentSteps = getStepsText(activeTab);
       const fullSteps = [introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps];
       registerText(fullSteps, 2);
@@ -212,7 +209,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} 
             onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as Op2Tab); }}
           >
-            {i18n.t('tabs.' + tab.id, tab.label)}
+            {tab.label}
           </button>
         ))}
       </div>
@@ -221,7 +218,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {isVideoTab ? (
           <div className="lesson-card tab-content fade-in" style={{ position: 'relative', width: '100%' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('common.tutorial_header', { defaultValue: '{{tab}} TUTORIAL', tab: activeTab.toUpperCase() }).replace('{{tab}}', activeTab.toUpperCase())}</h4>
+              <h4 style={{ margin: 0 }}>{activeTab.toUpperCase()} TUTORIAL</h4>
             </div>
 
             <div className="interactive-stage-container" style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
@@ -277,8 +274,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             })()}
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         ) : (
@@ -289,7 +286,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <KaraokeLessonText
                       as="span"
-                      text={t('basic_op_2.rotate_copy_title')}
+                      text="ROTATE COPY"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -298,7 +295,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem", color: '#94a3b8' }}>
                   <KaraokeLessonText
                     as="span"
-                    text={t('basic_op_2.rotate_copy_desc')}
+                    text="Same as rotate tool but makes a rotated duplicate of the entity."
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -313,7 +310,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text={t('basic_op_2.result')}
+                        text="RESULT"
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -330,7 +327,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <KaraokeLessonText
                       as="span"
-                      text={t('basic_op_2.mirror_copy_title')}
+                      text="MIRROR COPY"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -339,7 +336,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem", color: '#94a3b8' }}>
                   <KaraokeLessonText
                     as="span"
-                    text={t('basic_op_2.mirror_copy_desc')}
+                    text="Same as mirror tool but makes a mirror duplicate of the entity."
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -354,7 +351,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text={t('basic_op_2.result')}
+                        text="RESULT"
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -371,7 +368,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <KaraokeLessonText
                       as="span"
-                      text={t('basic_op_2.delete_title')}
+                      text="DELETE"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -384,7 +381,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text={t('basic_op_2.delete_step_1')}
+                      text="Select Delete from the icon menu"
                       isActive={isSpeaking && currentIndex === 3}
                       currentCharIndex={currentCharIndex}
                     />
@@ -397,7 +394,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text={t('basic_op_2.delete_step_2')}
+                      text="Left-click on the entity to delete"
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
@@ -410,8 +407,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             )}
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{activeTab === 'delete' ? (nextLabel ? t('common.next_lesson') : t('common.next')) : t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>{activeTab === 'delete' ? (nextLabel || 'Next') : 'Next'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import i18n from 'i18next';
 import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, X, Play, Pause, Square, GripHorizontal } from 'lucide-react';
 import './VideoTutorialModal.css';
@@ -207,20 +206,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     const spokenTitle = sanitizeSpeech(title);
 
     const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
-    let activeVoice = savedVoice;
-    const isJa = i18n.language === 'ja';
-    if (isJa) {
-      if (!activeVoice || (!activeVoice.startsWith('kokoro://jf_') && !activeVoice.startsWith('kokoro://jm_'))) {
-        activeVoice = 'kokoro://jf_alpha';
-      }
-    } else {
-      if (activeVoice && (activeVoice.startsWith('kokoro://jf_') || activeVoice.startsWith('kokoro://jm_'))) {
-        activeVoice = 'kokoro://af_sarah';
-      }
-    }
-
-    const isKokoro = activeVoice.startsWith('kokoro://');
-    const voiceName = activeVoice.replace('kokoro://', '');
+    const isKokoro = savedVoice.startsWith('kokoro://');
     const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
 
     if (isKokoro) {

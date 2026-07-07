@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import i18n from 'i18next';
-import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from '../../../hooks/useLessonCore';
 import { KaraokeLessonText } from '../../KaraokeLessonText';
@@ -29,16 +27,10 @@ interface SubLessonProps {
 }
 
 const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'sketch' | 'extrude' | 'revolve'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'sketch';
   });
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
-
-  // Retrieve steps array from translation JSON dynamically
-  const sketchStepsTranslated = (t('basic_op_3.steps.sketch', { returnObjects: true }) as string[]) || sketchSteps;
-  const extrudeStepsTranslated = (t('basic_op_3.steps.extrude', { returnObjects: true }) as string[]) || extrudeSteps;
-  const revolveStepsTranslated = (t('basic_op_3.steps.revolve', { returnObjects: true }) as string[]) || revolveSteps;
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
@@ -72,17 +64,17 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     if (activeTab === 'sketch') {
-      const introTitle = t('basic_op_3.sketch_intro_title');
-      const introDesc = t('basic_op_3.sketch_intro_desc');
-      registerText([introTitle, introDesc, ...sketchStepsTranslated], 0);
+      const introTitle = "Sketch";
+      const introDesc = "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.";
+      registerText([introTitle, introDesc, ...sketchSteps], 0);
     } else {
-      const introTitle = t('basic_op_3.extrude_revolve_intro_title');
-      const introDesc = t('basic_op_3.extrude_revolve_intro_desc');
-      const steps = activeTab === 'extrude' ? extrudeStepsTranslated : revolveStepsTranslated;
+      const introTitle = "Extrude and Revolve";
+      const introDesc = "Tools use to create solids from sketch in the 3D space.";
+      const steps = activeTab === 'extrude' ? extrudeSteps : revolveSteps;
       const startIdx = activeTab === 'extrude' ? 0 : 2;
       registerText([introTitle, introDesc, ...steps], startIdx);
     }
-  }, [activeTab, registerText, sketchStepsTranslated, extrudeStepsTranslated, revolveStepsTranslated]);
+  }, [activeTab, registerText]);
 
   const wasSpeakingRef = React.useRef(false);
   const lastIndexRef = React.useRef(-1);
@@ -97,8 +89,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   useEffect(() => {
     if (!isSpeaking && wasSpeakingRef.current) {
       const stepsLength = activeTab === 'sketch' 
-        ? 2 + sketchStepsTranslated.length 
-        : 2 + (activeTab === 'extrude' ? extrudeStepsTranslated.length : revolveStepsTranslated.length);
+        ? 2 + sketchSteps.length 
+        : 2 + (activeTab === 'extrude' ? extrudeSteps.length : revolveSteps.length);
       if (lastIndexRef.current === stepsLength - 1) {
         const i = tabs.findIndex(t => t.id === activeTab);
         if (i < tabs.length - 1) {
@@ -108,7 +100,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       }
     }
     wasSpeakingRef.current = isSpeaking;
-  }, [isSpeaking, activeTab, sketchStepsTranslated, extrudeStepsTranslated, revolveStepsTranslated]);
+  }, [isSpeaking, activeTab]);
 
   const prevTabRef = React.useRef(activeTab);
 
@@ -118,13 +110,13 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         shouldAutoPlayRef.current = false;
         setTimeout(() => {
           if (activeTab === 'sketch') {
-            const introTitle = t('basic_op_3.sketch_intro_title');
-            const introDesc = t('basic_op_3.sketch_intro_desc');
-            speak([introTitle, introDesc, ...sketchStepsTranslated], 0);
+            const introTitle = "Sketch";
+            const introDesc = "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.";
+            speak([introTitle, introDesc, ...sketchSteps], 0);
           } else {
-            const introTitle = t('basic_op_3.extrude_revolve_intro_title');
-            const introDesc = t('basic_op_3.extrude_revolve_intro_desc');
-            const steps = activeTab === 'extrude' ? extrudeStepsTranslated : revolveStepsTranslated;
+            const introTitle = "Extrude and Revolve";
+            const introDesc = "Tools use to create solids from sketch in the 3D space.";
+            const steps = activeTab === 'extrude' ? extrudeSteps : revolveSteps;
             const startIdx = activeTab === 'extrude' ? 0 : 2;
             speak([introTitle, introDesc, ...steps], startIdx);
           }
@@ -132,7 +124,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       }
       prevTabRef.current = activeTab;
     }
-  }, [activeTab, speak, sketchStepsTranslated, extrudeStepsTranslated, revolveStepsTranslated]);
+  }, [activeTab, speak]);
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -141,7 +133,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{i18n.t('tabs.' + tab.id, tab.label)}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -150,7 +142,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <KaraokeLessonText
                 as="span"
-                text={t('basic_op_3.sketch_intro_title')}
+                text="Sketch"
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
@@ -158,7 +150,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
               data-reading-index="1"
-              text={t('basic_op_3.sketch_intro_desc')}
+              text="Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling."
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
@@ -169,7 +161,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <KaraokeLessonText
                 as="span"
-                text={t('basic_op_3.extrude_revolve_intro_title')}
+                text="Extrude and Revolve"
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
@@ -177,7 +169,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
               data-reading-index="1"
-              text={t('basic_op_3.extrude_revolve_intro_desc')}
+              text="Tools use to create solids from sketch in the 3D space"
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
@@ -193,7 +185,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text={sketchStepsTranslated[0]}
+                  text="SKETCH"
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -203,7 +195,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               className={`p-flush ${currentIndex === 3 ? 'reading-active' : ''}`}
               data-reading-index="3"
               style={{ marginTop: "-2rem" }}
-              text={sketchStepsTranslated[1]}
+              text="Tool used to create lines"
               isActive={isSpeaking && currentIndex === 3}
               currentCharIndex={currentCharIndex}
             />
@@ -219,8 +211,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -231,7 +223,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text={extrudeStepsTranslated[0]}
+                  text="EXTRUDE"
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -244,7 +236,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text={extrudeStepsTranslated[1]}
+                  text="Select Extrude from the icon menu"
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -269,7 +261,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text={extrudeStepsTranslated[2].split(' > ')[0] + ' > GO'}
+                    text="Select the perimeter of the sketch to be extruded > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -277,7 +269,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <br />
                   <KaraokeLessonText
                     as="span"
-                    text={extrudeStepsTranslated[2].split('. ')[1] || extrudeStepsTranslated[2]}
+                    text="A hatch will appear indicating the specified area to be extruded."
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex - 55}
                   />
@@ -291,7 +283,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text={extrudeStepsTranslated[3]}
+                  text="Specify the height of extrusion. Can also be set on the item entry"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -304,14 +296,14 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text={extrudeStepsTranslated[4]}
+                  text="Press ENTER"
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-                <div className="card-header"><h4>{t('common.process_overview')}</h4></div>
+                <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                   <img src={extrudeOneSide} alt="Extrude Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
@@ -319,8 +311,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -331,7 +323,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text={revolveStepsTranslated[0]}
+                  text="REVOLVE"
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -344,7 +336,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text={revolveStepsTranslated[1]}
+                  text="Select Revolve from the icon menu"
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -360,7 +352,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text={revolveStepsTranslated[2].split(' > ')[0] + ' > GO'}
+                    text="Select the perimeter of the sketch to be revolved > GO"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -373,7 +365,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text={revolveStepsTranslated[3].split(' > ')[0] + ' > GO'}
+                    text="Select the axis of rotation (pick points or edge) > GO"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -381,7 +373,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <br />
                   <KaraokeLessonText
                     as="span"
-                    text={revolveStepsTranslated[3].split('. ')[1] || revolveStepsTranslated[3]}
+                    text="A hatch will appear indicating the specified area to be revolved."
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex - 55}
                   />
@@ -389,7 +381,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
 
               <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-                <div className="card-header"><h4>{t('common.process_overview')}</h4></div>
+                <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                   <img src={revolveP2} alt="Revolve Result" className="software-screenshot" style={{ width: "900px" }} />
                 </div>
@@ -397,8 +389,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{nextLabel ? t('common.next_lesson') : t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}

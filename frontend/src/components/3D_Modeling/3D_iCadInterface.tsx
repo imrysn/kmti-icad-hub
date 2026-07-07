@@ -51,7 +51,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
           <div className="interactive-stage-container">
-            <VideoTutorialViewer steps={TUTORIAL_STEPS} tutorialId="interface" />
+            <VideoTutorialViewer steps={TUTORIAL_STEPS} />
           </div>
 
           <div className="lesson-navigation">

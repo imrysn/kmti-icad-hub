@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import i18n from 'i18next';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from '../../../hooks/useLessonCore';
 import { KaraokeLessonText } from '../../KaraokeLessonText';
@@ -22,7 +20,6 @@ interface SubLessonProps {
 }
 
 const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'shapeSteels'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'shapeSteels';
   });
@@ -34,18 +31,11 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
 
-  const shapeSteelsStepsTranslated = [
-    t('basic_op_5.types_title'),
-    t('basic_op_5.step1'),
-    t('basic_op_5.step2'),
-    t('basic_op_5.step3')
-  ];
-
   useEffect(() => {
-    const introTitle = t('basic_op_5.intro_title');
-    const introDesc = t('basic_op_5.intro_desc');
-    registerText([introTitle, introDesc, ...shapeSteelsStepsTranslated], 0);
-  }, [registerText, t]);
+    const introTitle = "Creating Shape Steels";
+    const introDesc = "Learn how to arrange machine parts and steel profiles in 3D space.";
+    registerText([introTitle, introDesc, ...shapeSteelsSteps], 0);
+  }, [registerText]);
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -54,14 +44,14 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{i18n.t('tabs.' + tab.id, tab.label)}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id as any)}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           <KaraokeLessonText
             as="span"
-            text={t('basic_op_5.intro_title')}
+            text="Creating Shape Steels"
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
@@ -69,7 +59,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
           data-reading-index="1"
-          text={t('basic_op_5.intro_desc')}
+          text="Learn how to arrange machine parts and steel profiles in 3D space."
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
@@ -83,7 +73,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text={t('basic_op_5.types_title')}
+                  text="Shape Steels Includes:"
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -102,7 +92,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text={t('basic_op_5.step1')}
+                  text="Select the Arrange Machine Part from the icon menu"
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -118,7 +108,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text={t('basic_op_5.step2')}
+                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK"
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
@@ -134,7 +124,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text={t('basic_op_5.step3')}
+                  text="In the Key Entry Area, enter the coordinates for the position (origin point)"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -149,7 +139,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <h4 className={`${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                   <KaraokeLessonText
                     as="span"
-                    text={t('basic_op_2.result')}
+                    text="RESULT"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -161,8 +151,8 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={onNextLesson}>{nextLabel ? t('common.next_lesson') : t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}

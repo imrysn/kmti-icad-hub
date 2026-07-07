@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import i18n from 'i18next';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, Play, Pause, Square, GripHorizontal, Maximize, Minimize, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause, Square, GripHorizontal, Maximize, Minimize, X, Check, Sparkles } from 'lucide-react';
 import './VideoTutorialViewer.css';
 import { api } from '../../services/api';
 
@@ -40,26 +39,9 @@ export interface TutorialStep {
 
 interface VideoTutorialViewerProps {
   steps: TutorialStep[];
-  tutorialId?: string;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps: originalSteps, tutorialId }) => {
-  const translatedSteps = React.useMemo(() => {
-    if (!tutorialId) return originalSteps;
-    return originalSteps.map(step => {
-      const keyTitle = `tutorials.${tutorialId}.step_${step.id}.title`;
-      const keyText = `tutorials.${tutorialId}.step_${step.id}.text`;
-      const hasTitle = i18n.exists(keyTitle);
-      const hasText = i18n.exists(keyText);
-      return {
-        ...step,
-        title: hasTitle ? i18n.t(keyTitle) : step.title,
-        text: hasText ? i18n.t(keyText) : step.text
-      };
-    });
-  }, [originalSteps, tutorialId, i18n.language]);
-
-  const steps = translatedSteps;
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -235,20 +217,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps: origin
     const spokenTitle = sanitizeSpeech(title);
 
     const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
-    let activeVoice = savedVoice;
-    const isJa = i18n.language === 'ja';
-    if (isJa) {
-      if (!activeVoice || (!activeVoice.startsWith('kokoro://jf_') && !activeVoice.startsWith('kokoro://jm_'))) {
-        activeVoice = 'kokoro://jf_alpha';
-      }
-    } else {
-      if (activeVoice && (activeVoice.startsWith('kokoro://jf_') || activeVoice.startsWith('kokoro://jm_'))) {
-        activeVoice = 'kokoro://af_sarah';
-      }
-    }
-
-    const isKokoro = activeVoice.startsWith('kokoro://');
-    const voiceName = activeVoice.replace('kokoro://', '');
+    const isKokoro = savedVoice.startsWith('kokoro://');
     const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
 
     if (isKokoro) {
@@ -608,6 +577,49 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps: origin
 
     return matched ? matched.spotlight : currentData.spotlight;
   };
+
+  const getDynamicSubtitleStyle = (): React.CSSProperties => {
+    const spotlight = getActiveSpotlight();
+    if (!spotlight || spotlight.opacity === 0) {
+      return {
+        top: 'auto',
+        bottom: 'auto',
+        left: 'auto',
+        right: 'auto',
+        transform: 'none',
+        ...currentData.subtitlePos
+      };
+    }
+
+    const topVal = parseFloat(spotlight.top) || 0;
+    const leftVal = parseFloat(spotlight.left) || 0;
+    const heightVal = parseFloat(spotlight.height) || 0;
+    const widthVal = parseFloat(spotlight.width) || 0;
+
+    let computedTop = '80%';
+    let computedLeft = '50%';
+    let computedTransform = 'translateX(-50%)';
+
+    if (topVal < 45) {
+      computedTop = `${topVal + heightVal + 4}%`;
+    } else {
+      computedTop = `${topVal - 30}%`;
+    }
+
+    const centerLeft = leftVal + (widthVal / 2);
+    computedLeft = `${Math.max(18, Math.min(82, centerLeft))}%`;
+    computedTransform = 'translateX(-50%)';
+
+    return {
+      position: 'absolute',
+      top: computedTop,
+      left: computedLeft,
+      transform: computedTransform,
+      bottom: 'auto',
+      right: 'auto',
+      transition: 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
+    };
+  };
   
   const containerClass = isFullscreen ? 'tutorial-viewer-container fullscreen' : 'tutorial-viewer-container inline';
 
@@ -755,33 +767,49 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps: origin
           </div>
         )
       ) : (
-        <div
-          className="tutorial-subtitle-box"
-          style={{
-            top: 'auto',
-            bottom: 'auto',
-            left: 'auto',
-            right: 'auto',
-            transform: 'none',
-            ...currentData.subtitlePos
-          }}
-        >
-          {currentStep > 0 && (
-            <button
-              className="tutorial-subtitle-close"
-              onClick={handleClose}
-              title="Close Step (Back to Intro)"
+        (() => {
+          const spotlight = getActiveSpotlight();
+          const isUpperHalf = spotlight && (parseFloat(spotlight.top) || 0) < 45;
+          const arrowClass = spotlight && spotlight.opacity > 0 ? (isUpperHalf ? 'arrow-up' : 'arrow-down') : '';
+          return (
+            <div
+              className={`tutorial-subtitle-box ${arrowClass}`}
+              style={getDynamicSubtitleStyle()}
             >
-              <X size={18} />
-            </button>
-          )}
-          <h2 className="tutorial-title">{currentData.title}</h2>
-          {renderKaraokeText()}
-        </div>
+              {currentStep > 0 && (
+                <button
+                  className="tutorial-subtitle-close"
+                  onClick={handleClose}
+                  title="Close Step (Back to Intro)"
+                >
+                  <X size={18} />
+                </button>
+              )}
+              <h2 className="tutorial-title">{currentData.title}</h2>
+              {renderKaraokeText()}
+              {currentStep === steps.length - 1 && (
+                <div style={{
+                  marginTop: '12px',
+                  paddingTop: '12px',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '0.85rem',
+                  color: '#a855f7',
+                  fontWeight: '600'
+                }}>
+                  <Sparkles size={16} />
+                  <span>Tutorial Completed! Try practicing this shape on the workplane or switch to the next tab.</span>
+                </div>
+              )}
+            </div>
+          );
+        })()
       )}
 
       {/* Persistent Floating Control Panel */}
-      {isPlaying && (
+      {(isPlaying || currentStep > 0) && (
         <div
           className="tutorial-control-card"
           style={{ transform: `translate(${navPos.x}px, ${navPos.y}px)` }}
@@ -848,11 +876,19 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps: origin
             </button>
 
             <button
-              className="tutorial-btn"
+              className={`tutorial-btn ${currentStep === steps.length - 1 ? 'finish' : ''}`}
               onClick={currentStep === steps.length - 1 ? handleClose : handleNext}
               title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}
+              style={currentStep === steps.length - 1 ? { backgroundColor: '#22c55e', color: '#fff', paddingLeft: '12px', paddingRight: '12px' } : undefined}
             >
-              <ChevronRight size={18} />
+              {currentStep === steps.length - 1 ? (
+                <>
+                  <Check size={18} style={{ marginRight: '4px' }} />
+                  Finish
+                </>
+              ) : (
+                <ChevronRight size={18} />
+              )}
             </button>
 
             <button className="tutorial-btn expand" onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>

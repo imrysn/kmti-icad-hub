@@ -1,6 +1,4 @@
-import i18n from 'i18next';
 import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from '../../../hooks/useLessonCore';
 import { KaraokeLessonText } from '../../KaraokeLessonText';
@@ -27,7 +25,6 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'cylinder';
   });
-  const { t } = useTranslation();
   const { scrollProgress, containerRef, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
@@ -37,8 +34,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const beforeYouStartRef = useRef<HTMLDivElement>(null);
 
-  // Retrieve steps array from translation JSON dynamically
-  const lessonSteps = (t('basic_op_1.steps', { returnObjects: true }) as string[]) || [
+  const lessonSteps = React.useMemo(() => [
     "Creating Basic Shapes",
     "In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus.",
     "A Cylinder is a circular solid defined by its Diameter and Height — ideal for shafts, pins, bosses, and round posts.",
@@ -49,7 +45,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.",
     "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.",
     "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD."
-  ];
+  ], []);
 
   useEffect(() => {
     if (!isSpeaking) return;
@@ -109,14 +105,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </div>
 
       <div className="lesson-tabs">
-        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{i18n.t('tabs.' + tab.id, tab.label)}</button>))}
+        {tabs.map(tab => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
         <h3 className={`section-title ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
           <KaraokeLessonText
             as="span"
-            text={lessonSteps[0]}
+            text="Creating Basic Shapes"
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
@@ -124,7 +120,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
         <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
           <KaraokeLessonText
-            text={lessonSteps[1]}
+            text="In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus."
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
@@ -148,12 +144,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       <div className="lesson-grid single-card">
         <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
           <div className="card-header">
-            <h4 style={{ margin: 0 }}>{t('common.before_you_start', 'BEFORE YOU START')}</h4>
+            <h4 style={{ margin: 0 }}>BEFORE YOU START</h4>
           </div>
 
           <div className={`instruction-step ${isSpeaking && currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{ marginTop: '1.5rem' }}>
             <KaraokeLessonText
-              text={lessonSteps[7]}
+              text="Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning."
               isActive={isSpeaking && currentIndex === 7}
               currentCharIndex={currentCharIndex}
             />
@@ -162,7 +158,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
           <div className={`instruction-box mt-8 instruction-step ${isSpeaking && currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
             <KaraokeLessonText
-              text={lessonSteps[8]}
+              text="On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis."
               isActive={isSpeaking && currentIndex === 8}
               currentCharIndex={currentCharIndex}
             />
@@ -173,13 +169,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cylinder' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('common.tutorial_header', { defaultValue: '{{tab}} TUTORIAL', tab: activeTab.toUpperCase() }).replace('{{tab}}', activeTab.toUpperCase())}</h4>
+              <h4 style={{ margin: 0 }}>CYLINDER TUTORIAL</h4>
             </div>
 
             {currentIndex === 9 && isSpeaking && (
               <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
                 <KaraokeLessonText
-                  text={lessonSteps[9]}
+                  text="Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD."
                   isActive={true}
                   currentCharIndex={currentCharIndex}
                 />
@@ -191,8 +187,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')}<ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next<ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -200,7 +196,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'box' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('common.tutorial_header', { defaultValue: '{{tab}} TUTORIAL', tab: activeTab.toUpperCase() }).replace('{{tab}}', activeTab.toUpperCase())}</h4>
+              <h4 style={{ margin: 0 }}>BOX TUTORIAL</h4>
             </div>
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
@@ -208,8 +204,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')}<ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next<ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -217,7 +213,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'polygon' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('common.tutorial_header', { defaultValue: '{{tab}} TUTORIAL', tab: activeTab.toUpperCase() }).replace('{{tab}}', activeTab.toUpperCase())}</h4>
+              <h4 style={{ margin: 0 }}>POLYGON TUTORIAL</h4>
             </div>
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
@@ -225,8 +221,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -234,7 +230,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cone' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('common.tutorial_header', { defaultValue: '{{tab}} TUTORIAL', tab: activeTab.toUpperCase() }).replace('{{tab}}', activeTab.toUpperCase())}</h4>
+              <h4 style={{ margin: 0 }}>CONE TUTORIAL</h4>
             </div>
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
@@ -242,8 +238,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -251,7 +247,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'torus' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('common.tutorial_header', { defaultValue: '{{tab}} TUTORIAL', tab: activeTab.toUpperCase() }).replace('{{tab}}', activeTab.toUpperCase())}</h4>
+              <h4 style={{ margin: 0 }}>TORUS TUTORIAL</h4>
             </div>
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
@@ -259,8 +255,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next_lesson')} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next Lesson <ChevronRight size={18} /></button>
             </div>
           </div>
         )}

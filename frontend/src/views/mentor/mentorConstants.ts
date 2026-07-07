@@ -1,16 +1,26 @@
-/**
- * mentorConstants.ts — Language-Aware Index
- *
- * This file re-exports lesson data based on the active i18n language.
- * - English: data defined below (original content)
- * - Japanese: data from mentorConstants.ja.ts (falls back to English when placeholder)
- *
- * All imports in the codebase continue to use this file unchanged.
- */
+export type QuizQuestion = {
+  id: string;
+  text: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+};
 
-// Re-export shared types
-export type { QuizQuestion, Quiz, Lesson } from './mentorConstants.types';
-import type { Lesson } from './mentorConstants.types';
+export type Quiz = {
+  title: string;
+  description: string;
+  questions: QuizQuestion[];
+};
+
+export type Lesson = {
+  id: string;
+  title: string;
+  isCompleted?: boolean;
+  children?: Lesson[];
+  quiz?: Quiz;
+  content?: string[];
+};
+
 export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'interface',
