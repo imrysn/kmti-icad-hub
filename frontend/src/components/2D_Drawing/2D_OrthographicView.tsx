@@ -28,7 +28,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 }) => {
   const TABS = [
     { id: 'template', label: 'Drawing Template' },
-    { id: 'views', label: 'Orthograohic View / Delete' },
+    { id: 'views', label: 'Orthographic View / Delete' },
     { id: 'scale', label: 'Scale' },
     { id: 'hidden', label: 'Hidden Line' },
     { id: 'tangent', label: 'Tangent Line' },

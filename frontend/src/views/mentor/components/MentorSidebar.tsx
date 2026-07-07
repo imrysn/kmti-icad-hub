@@ -179,22 +179,24 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             </button>
                         </div>
                     </div>
-
-                    {!sidebarOpen ? (
-                        <div className="sidebar-collapsed-dashboard">
-                            <Zap size={14} className="collapsed-zap-icon" />
-                            <div className="collapsed-progress-track">
-                                <div 
-                                    className="collapsed-progress-fill" 
-                                    style={{ width: `${(completedLessonsCount / totalLessons) * 100}%` }} 
-                                />
-                            </div>
-                            <div className="collapsed-stats-pill">
-                                {Math.round((completedLessonsCount / totalLessons) * 100)}%
-                            </div>
-                        </div>
-                    ) : (
+ 
+                    {sidebarOpen ? (
                         !isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>
+                    ) : (
+                        !isEmployeeSide && (
+                            <div className="sidebar-collapsed-dashboard">
+                                <Zap size={14} className="collapsed-zap-icon" />
+                                <div className="collapsed-progress-track">
+                                    <div 
+                                        className="collapsed-progress-fill" 
+                                        style={{ width: `${(completedLessonsCount / totalLessons) * 100}%` }} 
+                                    />
+                                </div>
+                                <div className="collapsed-stats-pill">
+                                    {Math.round((completedLessonsCount / totalLessons) * 100)}%
+                                </div>
+                            </div>
+                        )
                     )}
                     
                     {!isLoadingProgress && !isEmployeeSide && sidebarOpen && (

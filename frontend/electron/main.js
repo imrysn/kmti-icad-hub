@@ -4,6 +4,7 @@ const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
 const globalShortcut = electron.globalShortcut;
+const dialog = electron.dialog;
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
@@ -16,11 +17,10 @@ app.commandLine.appendSwitch('no-sandbox');
 // app.commandLine.appendSwitch('disable-gpu');
 // app.commandLine.appendSwitch('disable-gpu-sandbox');
 
-
-
+let mainWindow = null;
 
 function createWindow() {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1280,
         height: 720,
         frame: false, // Make the window frameless
@@ -330,7 +330,22 @@ function createWindow() {
     });
 }
 
-app.whenReady().then(createWindow);
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+    dialog.showErrorBox('Application Already Running', 'An instance of KMTI Training Hub is already running.');
+    app.quit();
+} else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        // Focus the existing window if a second instance is started
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            mainWindow.focus();
+        }
+    });
+
+    app.whenReady().then(createWindow);
+}
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

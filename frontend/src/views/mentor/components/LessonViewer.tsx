@@ -106,14 +106,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   }, []);
 
   const handleStop = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (isTutorialPlaying || activeLessonId === 'interface' || activeLessonId === 'toolbars') {
       window.dispatchEvent(new CustomEvent('kmti-stop-tutorial'));
     }
     stop();
-  }, [activeLessonId, stop]);
+  }, [activeLessonId, stop, isTutorialPlaying]);
 
   const speakCurrent = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'basic-op-2') {
       window.dispatchEvent(new CustomEvent('kmti-play-tutorial'));
       return;
     }

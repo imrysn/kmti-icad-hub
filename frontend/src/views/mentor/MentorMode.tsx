@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
 import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
@@ -26,6 +27,7 @@ interface MentorModeProps {
 const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const { isConnected, sendMessage } = useWebSocket();
     const lastActivityRef = useRef<string>('');
+    const { t } = useTranslation();
 
     // Router hooks for header mode-switcher integration
     const location = useLocation();
@@ -591,7 +593,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 if (child) return child.title;
             }
         }
-        return 'Select a Lesson';
+        return t('mentor_mode.select_lesson');
     };
 
     // Render Composition
@@ -644,19 +646,18 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                                 <div className="lock-badge-large">
                                     <Lock size={48} />
                                 </div>
-                                <h2>3D Practical Assessment Locked</h2>
+                                <h2>{t('mentor_mode.locked_3d_title')}</h2>
                                 <p className="lock-description">
-                                    The 3D Practical Assessment is a series of 10 sequential drafting tasks in iJCAD.
-                                    To ensure you have the prerequisite skills, you must first complete the <strong>3D Modeling Course</strong>.
+                                    {t('mentor_mode.locked_3d_description')} <strong>{t('mentor_mode.locked_3d_course')}</strong>.
                                 </p>
                                 <div className="unlock-requirements">
                                     <div className="requirement-item">
                                         <div className="status-dot warning" />
-                                        <span>Prerequisite: Complete 3D Modeling</span>
+                                        <span>{t('mentor_mode.locked_3d_prereq')}</span>
                                     </div>
                                 </div>
                                 <button className="primary mt-6" onClick={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }}>
-                                    Return to Courses
+                                    {t('mentor_mode.return_to_courses')}
                                 </button>
                             </div>
                         </div>
@@ -666,19 +667,18 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                                 <div className="lock-badge-large">
                                     <Lock size={48} />
                                 </div>
-                                <h2>2D Detailing Assessment Locked</h2>
+                                <h2>{t('mentor_mode.locked_2d_title')}</h2>
                                 <p className="lock-description">
-                                    The 2D Detailing Assessment is a series of 4 sequential drafting tasks in iJCAD.
-                                    To ensure you have the prerequisite skills, you must first complete the <strong>2D Detailing Course</strong>.
+                                    {t('mentor_mode.locked_2d_description')} <strong>{t('mentor_mode.locked_2d_course')}</strong>.
                                 </p>
                                 <div className="unlock-requirements">
                                     <div className="requirement-item">
                                         <div className="status-dot warning" />
-                                        <span>Prerequisite: Complete 2D Detailing</span>
+                                        <span>{t('mentor_mode.locked_2d_prereq')}</span>
                                     </div>
                                 </div>
                                 <button className="primary mt-6" onClick={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }}>
-                                    Return to Courses
+                                    {t('mentor_mode.return_to_courses')}
                                 </button>
                             </div>
                         </div>

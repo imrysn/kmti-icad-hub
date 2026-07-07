@@ -1,5 +1,6 @@
 import React from 'react';
 import { BookOpen, PlayCircle, Lock, Layers } from 'lucide-react'; import { Course } from '../../../types';
+import { useTranslation } from 'react-i18next';
 import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
 import { ModelViewer3D } from '../../../components/ModelViewer3D';
 import uncoilerUrl from '../../../assets/uncoiler.glb';
@@ -32,12 +33,14 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     is3DAssessmentCompleted,
     isEmployeeSide = false
 }) => {
+    const { t } = useTranslation();
+
     if (loading) {
         return (
             <div className="mentor-mode">
                 <div className="mentor-header">
-                    <h1>Mentor Mode</h1>
-                    <p>Loading your learning experience...</p>
+                    <h1>{t('course_selector.loading_title')}</h1>
+                    <p>{t('course_selector.loading_subtitle')}</p>
                 </div>
                 <div className="course-selection">
                     <div className="course-grid">
@@ -59,48 +62,37 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         return <div className="mentor-error">{error}</div>;
     }
 
-    const course3D = courses.find(c => c.id.toString() === '1') || {
-        id: '1',
-        title: '3D Modeling',
-        description: 'Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints.',
-        course_type: '3D_Modeling',
-        order: 1
+    // Map course IDs to their translated title + description.
+    // This overrides whatever the backend returns so language always matches.
+    const COURSE_TRANSLATIONS: Record<string, { title: string; description: string }> = {
+        '1':                   { title: t('course_selector.course_3d_title'),      description: t('course_selector.course_3d_description') },
+        '2':                   { title: t('course_selector.course_2d_title'),      description: t('course_selector.course_2d_description') },
+        'practical-assessment':{ title: t('course_selector.assessment_3d_title'),  description: t('course_selector.assessment_3d_description') },
+        '2d-assessment':       { title: t('course_selector.assessment_2d_title'),  description: t('course_selector.assessment_2d_description') },
     };
 
-    const course2D = courses.find(c => c.id.toString() === '2') || {
-        id: '2',
-        title: '2D Detailing',
-        description: 'Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.',
-        course_type: '2D_Drawing',
-        order: 2
-    };
+    const course3D = courses.find(c => c.id.toString() === '1') || { id: '1', course_type: '3D_Modeling', order: 1, title: '', description: '' };
+    const course2D = courses.find(c => c.id.toString() === '2') || { id: '2', course_type: '2D_Drawing', order: 2, title: '', description: '' };
 
     const activeCards = [
         course3D,
-        ...(isEmployeeSide ? [] : [{
-            id: 'practical-assessment',
-            title: '3D Practical Assessment',
-            description: 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
-            course_type: 'Practical',
-            order: 1.5
-        }]),
+        ...(isEmployeeSide ? [] : [{ id: 'practical-assessment', course_type: 'Practical',     order: 1.5, title: '', description: '' }]),
         course2D,
-        ...(isEmployeeSide ? [] : [{
-            id: '2d-assessment',
-            title: '2D Detailing Assessment',
-            description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
-            course_type: 'Practical_2D',
-            order: 2.5
-        }])
+        ...(isEmployeeSide ? [] : [{ id: '2d-assessment',        course_type: 'Practical_2D',  order: 2.5, title: '', description: '' }]),
     ];
 
-    const allCourses = [...activeCards];
+    // Apply translations on top — always wins over backend English values
+    const allCourses = activeCards.map(c => ({
+        ...c,
+        ...(COURSE_TRANSLATIONS[c.id.toString()] ?? {}),
+    }));
+
 
     return (
         <div className="mentor-mode course-selector-view animate-fade-in">
             <div className="mentor-header">
-                <h1>Welcome to iCAD Training</h1>
-                <p>Select your learning path to begin the deep dive</p>
+                <h1>{t('course_selector.page_title')}</h1>
+                <p>{t('course_selector.page_subtitle')}</p>
             </div>
 
             <div className="course-selection">
@@ -125,13 +117,13 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                     <div className="locked-overlay">
                                         <div className="locked-overlay-inner">
                                             <Lock size={36} className="overlay-lock-icon" />
-                                            <span>Prerequisite Required</span>
+                                            <span>{t('course_selector.locked_prereq_required')}</span>
                                             <p className="locked-hint">
                                                 {course.id.toString() === 'practical-assessment'
-                                                    ? 'Complete 3D Modeling to unlock'
+                                                    ? t('course_selector.locked_hint_3d')
                                                     : course.id.toString() === '2d-assessment'
-                                                        ? 'Complete 2D Detailing to unlock'
-                                                        : 'Complete 3D Practical Assessment to unlock'}
+                                                        ? t('course_selector.locked_hint_2d_assessment')
+                                                        : t('course_selector.locked_hint_2d')}
                                             </p>
                                         </div>
                                     </div>
@@ -168,7 +160,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                         if (!isLocked) setSelectedCourse(course as any);
                                     }}
                                 >
-                                    {isLocked ? 'Locked' : 'Launch Module'} <PlayCircle size={18} />
+                                    {isLocked ? t('course_selector.btn_locked') : t('course_selector.btn_launch')} <PlayCircle size={18} />
                                 </button>
                             </div>
                         );

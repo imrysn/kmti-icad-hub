@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { LogOut, Settings, User as UserIcon, RefreshCw, Database, WifiOff, Lock, Brain, GraduationCap, ClipboardList, Briefcase, Bell } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { LoginView } from './views/LoginView';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -29,6 +30,7 @@ function AppContent() {
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const { showNotification } = useNotification();
   const { isTelemetryOpen, toggleTelemetry } = useUI();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -243,9 +245,9 @@ function AppContent() {
               </div>
 
               {!dbStatus.nas_reachable && (
-                <div className="status-badge local-mode" title="NAS Connection Lost - Progress stored on Server PC">
+                <div className="status-badge local-mode" title={t('nav.local_mode_title')}>
                   <WifiOff size={14} />
-                  <span>Local Mode</span>
+                  <span>{t('nav.local_mode')}</span>
                 </div>
               )}
             </div>
@@ -256,23 +258,23 @@ function AppContent() {
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
                     <GraduationCap size={18} />
-                    <span>iCAD Manuals and Standard</span>
+                    <span>{t('nav.icad_manuals')}</span>
                   </button>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => navigate('/admin')}>
                     <Settings size={18} />
-                    <span>Admin</span>
+                    <span>{t('nav.admin')}</span>
                   </button>
                 </nav>
               )}
               {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && hasTrainees && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
-                  <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title="iCAD Manuals and Standard">
+                  <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title={t('nav.icad_manuals')}>
                     <GraduationCap size={18} />
-                    <span>iCAD Manuals and Standard</span>
+                    <span>{t('nav.icad_manuals')}</span>
                   </button>
-                  <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
+                  <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title={t('nav.trainee_overview')}>
                     <ClipboardList size={18} />
-                    <span>Trainee Overview</span>
+                    <span>{t('nav.trainee_overview')}</span>
                   </button>
                 </nav>
               )}
@@ -337,7 +339,7 @@ function AppContent() {
                     logout();
                   }}
                   className="theme-toggle-btn logout-btn-icon"
-                  title="Logout"
+                  title={t('header.logout')}
                 >
                   <LogOut size={20} className="theme-toggle-icon" />
                 </button>

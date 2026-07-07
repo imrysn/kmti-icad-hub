@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import i18n from 'i18next';
 import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Play, Pause, Square, GripHorizontal, Maximize, Minimize, X } from 'lucide-react';
 import './VideoTutorialViewer.css';
@@ -34,13 +35,31 @@ export interface TutorialStep {
   videoSrc?: string;
   videoStart?: number;
   videoEnd?: number;
+  imageSrc?: string;
 }
 
 interface VideoTutorialViewerProps {
   steps: TutorialStep[];
+  tutorialId?: string;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps: originalSteps, tutorialId }) => {
+  const translatedSteps = React.useMemo(() => {
+    if (!tutorialId) return originalSteps;
+    return originalSteps.map(step => {
+      const keyTitle = `tutorials.${tutorialId}.step_${step.id}.title`;
+      const keyText = `tutorials.${tutorialId}.step_${step.id}.text`;
+      const hasTitle = i18n.exists(keyTitle);
+      const hasText = i18n.exists(keyText);
+      return {
+        ...step,
+        title: hasTitle ? i18n.t(keyTitle) : step.title,
+        text: hasText ? i18n.t(keyText) : step.text
+      };
+    });
+  }, [originalSteps, tutorialId, i18n.language]);
+
+  const steps = translatedSteps;
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -53,6 +72,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
+  const ttsFinishedRef = useRef(false);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     dragRef.current = {
@@ -204,6 +224,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     }
     setCurrentCharIndex(0);
     setIsPaused(false);
+    ttsFinishedRef.current = false;
 
 
     const title = steps[currentStep].title;
@@ -214,7 +235,20 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     const spokenTitle = sanitizeSpeech(title);
 
     const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
-    const isKokoro = savedVoice.startsWith('kokoro://');
+    let activeVoice = savedVoice;
+    const isJa = i18n.language === 'ja';
+    if (isJa) {
+      if (!activeVoice || (!activeVoice.startsWith('kokoro://jf_') && !activeVoice.startsWith('kokoro://jm_'))) {
+        activeVoice = 'kokoro://jf_alpha';
+      }
+    } else {
+      if (activeVoice && (activeVoice.startsWith('kokoro://jf_') || activeVoice.startsWith('kokoro://jm_'))) {
+        activeVoice = 'kokoro://af_sarah';
+      }
+    }
+
+    const isKokoro = activeVoice.startsWith('kokoro://');
+    const voiceName = activeVoice.replace('kokoro://', '');
     const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
 
     if (isKokoro) {
@@ -278,15 +312,18 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
           clearTimeout(activeIntervalRef.current);
           activeIntervalRef.current = null;
         }
-        setCurrentCharIndex(0);
-        if (currentStep < steps.length - 1) {
-          // Advance to next step; video resumes from its videoStart via the step-change useEffect
-          setTimeout(() => {
-            setCurrentStep(prev => prev + 1);
-          }, 400);
-        } else {
-          // Last step: if there is no video, stop playback automatically
-          if (!steps[currentStep].videoSrc) {
+        ttsFinishedRef.current = true;
+        const video = tutorialVideoRef.current;
+        const videoEnd = steps[currentStep].videoEnd || 9999;
+        const videoFinished = !video || video.currentTime >= videoEnd || video.paused;
+
+        if (!steps[currentStep].videoSrc || videoFinished) {
+          setCurrentCharIndex(0);
+          if (currentStep < steps.length - 1) {
+            setTimeout(() => {
+              setCurrentStep(prev => prev + 1);
+            }, 400);
+          } else {
             handleStop();
           }
         }
@@ -373,15 +410,18 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
 
       textUtterance.onend = () => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
-        setCurrentCharIndex(0);
-        if (currentStep < steps.length - 1) {
-          // Advance to next step; video resumes from its videoStart via the step-change useEffect
-          setTimeout(() => {
-            setCurrentStep(prev => prev + 1);
-          }, 400);
-        } else {
-          // Last step: if there is no video, stop playback automatically
-          if (!steps[currentStep].videoSrc) {
+        ttsFinishedRef.current = true;
+        const video = tutorialVideoRef.current;
+        const videoEnd = steps[currentStep].videoEnd || 9999;
+        const videoFinished = !video || video.currentTime >= videoEnd || video.paused;
+
+        if (!steps[currentStep].videoSrc || videoFinished) {
+          setCurrentCharIndex(0);
+          if (currentStep < steps.length - 1) {
+            setTimeout(() => {
+              setCurrentStep(prev => prev + 1);
+            }, 400);
+          } else {
             handleStop();
           }
         }
@@ -512,6 +552,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const handleStop = () => {
     setIsPlaying(false);
     setIsPaused(false);
+    setCurrentStep(0);
     setCurrentCharIndex(0);
     if (synthRef.current) {
       synthRef.current.cancel();
@@ -615,8 +656,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
                     setCurrentStep(0);
                     setCurrentCharIndex(0);
                   } else {
-                    // Mid step: pause video, let TTS finish, then TTS onended advances the step
+                    // Mid step: pause video, if TTS is finished, then advance step
                     video.pause();
+                    if (ttsFinishedRef.current) {
+                      setCurrentCharIndex(0);
+                      setTimeout(() => {
+                        setCurrentStep(prev => prev + 1);
+                      }, 400);
+                    }
                   }
                 }
               }}
@@ -631,7 +678,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             />
           ) : (
             <img
-              src={icadInterfaceImg}
+              src={currentData.imageSrc || icadInterfaceImg}
               alt="iCAD Interface"
               className="tutorial-image"
               style={{
@@ -649,6 +696,54 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             />
           </div>
         </div>
+
+        {/* Big play button overlay when not playing or when paused */}
+        {(!isPlaying || isPaused) && (
+          <div
+            onClick={togglePlayback}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.45)',
+              backdropFilter: 'blur(4px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              zIndex: 30,
+              transition: 'all 0.3s ease',
+            }}
+          >
+            <div
+              className="play-btn-pulse"
+              style={{
+                width: '90px',
+                height: '90px',
+                borderRadius: '50%',
+                background: 'rgba(168, 85, 247, 0.3)',
+                border: '3px solid #a855f7',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 0 30px rgba(168, 85, 247, 0.8)',
+                transition: 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.15)';
+                e.currentTarget.style.background = 'rgba(168, 85, 247, 0.45)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.background = 'rgba(168, 85, 247, 0.3)';
+              }}
+            >
+              <Play size={40} fill="#ffffff" color="#ffffff" style={{ marginLeft: '6px' }} />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Floating Subtitle Box or Flat bottom subtitle */}
@@ -686,90 +781,92 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       )}
 
       {/* Persistent Floating Control Panel */}
-      <div
-        className="tutorial-control-card"
-        style={{ transform: `translate(${navPos.x}px, ${navPos.y}px)` }}
-      >
+      {isPlaying && (
         <div
-          className="drag-handle"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          title="Drag to move panel"
-          style={{ cursor: 'grab', padding: '8px', marginRight: '4px', borderRadius: '4px', display: 'flex' }}
+          className="tutorial-control-card"
+          style={{ transform: `translate(${navPos.x}px, ${navPos.y}px)` }}
         >
-          <GripHorizontal size={20} color="#888" />
-        </div>
+          <div
+            className="drag-handle"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            title="Drag to move panel"
+            style={{ cursor: 'grab', padding: '8px', marginRight: '4px', borderRadius: '4px', display: 'flex' }}
+          >
+            <GripHorizontal size={20} color="#888" />
+          </div>
 
-        <div className="tutorial-controls">
-          {/* Live timestamp badge */}
-          {currentData.videoSrc && (
-            <span
-              className="tutorial-time-badge"
-              title={`Step ${currentStep + 1}/${steps.length} · videoStart:${currentData.videoStart ?? 0}s, videoEnd:${currentData.videoEnd ?? '?'}s`}
-            >
-              ▶ {videoTime.toFixed(1)}s
-              <span style={{ opacity: 0.55, marginLeft: '2px' }}>
-                / {currentData.videoEnd ?? '?'}s
+          <div className="tutorial-controls">
+            {/* Live timestamp badge */}
+            {currentData.videoSrc && (
+              <span
+                className="tutorial-time-badge"
+                title={`Step ${currentStep + 1}/${steps.length} · videoStart:${currentData.videoStart ?? 0}s, videoEnd:${currentData.videoEnd ?? '?'}s`}
+              >
+                ▶ {videoTime.toFixed(1)}s
+                <span style={{ opacity: 0.55, marginLeft: '2px' }}>
+                  / {currentData.videoEnd ?? '?'}s
+                </span>
               </span>
-            </span>
-          )}
-          {!isPlaying ? (
-            <button
-              className="tutorial-btn"
-              onClick={togglePlayback}
-              title="Play Narration"
-            >
-              <Play size={16} /> Play
-            </button>
-          ) : (
-            <>
+            )}
+            {!isPlaying ? (
               <button
                 className="tutorial-btn"
                 onClick={togglePlayback}
-                title={isPaused ? "Resume Narration" : "Pause Narration"}
+                title="Play Narration"
               >
-                {isPaused ? <Play size={16} /> : <Pause size={16} />}
-                {isPaused ? "Resume" : "Pause"}
+                <Play size={16} /> Play
               </button>
-              <button
-                className="tutorial-btn"
-                onClick={handleStop}
-                title="Stop Narration"
-              >
-                <Square size={16} /> Stop
-              </button>
-            </>
-          )}
+            ) : (
+              <>
+                <button
+                  className="tutorial-btn"
+                  onClick={togglePlayback}
+                  title={isPaused ? "Resume Narration" : "Pause Narration"}
+                >
+                  {isPaused ? <Play size={16} /> : <Pause size={16} />}
+                  {isPaused ? "Resume" : "Pause"}
+                </button>
+                <button
+                  className="tutorial-btn"
+                  onClick={handleStop}
+                  title="Stop Narration"
+                >
+                  <Square size={16} /> Stop
+                </button>
+              </>
+            )}
 
-          <button
-            className="tutorial-btn"
-            onClick={handlePrev}
-            disabled={currentStep === 0}
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          <button
-            className="tutorial-btn"
-            onClick={currentStep === steps.length - 1 ? handleClose : handleNext}
-            title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}
-          >
-            <ChevronRight size={18} />
-          </button>
-
-          <button className="tutorial-btn expand" onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
-            {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
-          </button>
-
-          {currentStep > 0 && (
-            <button className="tutorial-btn exit" onClick={handleClose} title="Close Step (Back to Intro)">
-              <X size={18} /> Close
+            <button
+              className="tutorial-btn"
+              onClick={handlePrev}
+              disabled={currentStep === 0}
+            >
+              <ChevronLeft size={18} />
             </button>
-          )}
+
+            <button
+              className="tutorial-btn"
+              onClick={currentStep === steps.length - 1 ? handleClose : handleNext}
+              title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}
+            >
+              <ChevronRight size={18} />
+            </button>
+
+            <button className="tutorial-btn expand" onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
+              {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+            </button>
+
+            {currentStep > 0 && (
+              <button className="tutorial-btn exit" onClick={handleClose} title="Close Step (Back to Intro)">
+                <X size={18} /> Close
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 

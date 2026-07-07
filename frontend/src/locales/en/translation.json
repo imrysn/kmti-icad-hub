@@ -1,0 +1,314 @@
+{
+  "login": {
+    "username": "USERNAME",
+    "password": "PASSWORD",
+    "signin": "SIGN IN",
+    "signing_in": "Logging...",
+    "remember_me": "REMEMBER ME",
+    "forgot_password": "Forgot Password?",
+    "session_expired": "YOUR SESSION HAS EXPIRED. PLEASE LOG IN AGAIN.",
+    "both_required": "PLEASE ENTER BOTH USER NAME AND PASSWORD",
+    "failed": "LOGIN FAILED. CHECK YOUR CREDENTIALS.",
+    "placeholder_username": "Enter username",
+    "placeholder_password": "Enter password",
+    "brand_subtitle_1": "ICAD MANUAL",
+    "brand_subtitle_2": "TRAINING & STANDARD"
+  },
+  "forgot_password": {
+    "title": "Forgot Password",
+    "email_label": "Email or Username",
+    "email_placeholder": "Email or Username",
+    "cancel": "Cancel",
+    "send": "Send Reset Link",
+    "sending": "Sending...",
+    "failed": "Failed to send reset request. Please try again later."
+  },
+  "api_settings": {
+    "title": "Settings",
+    "language_label": "Interface Language",
+    "description": "Configure the remote server URL (e.g. http://192.168.200.105:3001). Leave empty to use local server.",
+    "server_url_label": "Server URL",
+    "server_url_placeholder": "http://127.0.0.1:3001",
+    "cancel": "Cancel",
+    "save": "Save & Restart"
+  },
+  "nav": {
+    "icad_manuals": "iCAD Manuals and Standard",
+    "admin": "Admin",
+    "trainee_overview": "Trainee Overview",
+    "local_mode": "Local Mode",
+    "local_mode_title": "NAS Connection Lost - Progress stored on Server PC"
+  },
+  "header": {
+    "app_title": "KMTI Training Hub",
+    "notifications": "Notifications",
+    "logout": "Logout",
+    "refresh": "Refresh App",
+    "database": "Database",
+    "lock": "Lock Screen"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading...",
+    "close": "Close",
+    "search": "Search",
+    "before_you_start": "BEFORE YOU START",
+    "tutorial_header": "{{tab}} TUTORIAL",
+    "previous": "Previous",
+    "next": "Next",
+    "next_lesson": "Next Lesson",
+    "process_overview": "PROCESS OVERVIEW"
+  },
+  "status": {
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "language": {
+    "en": "EN",
+    "ja": "JP",
+    "switch_to_en": "Switch to English",
+    "switch_to_ja": "日本語に切り替え"
+  },
+  "mentor_mode": {
+    "select_lesson": "Select a Lesson",
+    "return_to_courses": "Return to Courses",
+    "locked_3d_title": "3D Practical Assessment Locked",
+    "locked_3d_description": "The 3D Practical Assessment is a series of 10 sequential drafting tasks in iJCAD. To ensure you have the prerequisite skills, you must first complete the",
+    "locked_3d_course": "3D Modeling Course",
+    "locked_3d_prereq": "Prerequisite: Complete 3D Modeling",
+    "locked_2d_title": "2D Detailing Assessment Locked",
+    "locked_2d_description": "The 2D Detailing Assessment is a series of 4 sequential drafting tasks in iJCAD. To ensure you have the prerequisite skills, you must first complete the",
+    "locked_2d_course": "2D Detailing Course",
+    "locked_2d_prereq": "Prerequisite: Complete 2D Detailing"
+  },
+  "course_selector": {
+    "loading_title": "Mentor Mode",
+    "loading_subtitle": "Loading your learning experience...",
+    "page_title": "Welcome to iCAD Training",
+    "page_subtitle": "Select your learning path to begin the deep dive",
+    "course_3d_title": "3D Modeling",
+    "course_3d_description": "Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints.",
+    "course_2d_title": "2D Detailing",
+    "course_2d_description": "Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.",
+    "assessment_3d_title": "3D Practical Assessment",
+    "assessment_3d_description": "Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.",
+    "assessment_2d_title": "2D Detailing Assessment",
+    "assessment_2d_description": "Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.",
+    "locked_prereq_required": "Prerequisite Required",
+    "locked_hint_3d": "Complete 3D Modeling to unlock",
+    "locked_hint_2d_assessment": "Complete 2D Detailing to unlock",
+    "locked_hint_2d": "Complete 3D Practical Assessment to unlock",
+    "btn_locked": "Locked",
+    "btn_launch": "Launch Module"
+  },
+  "tabs": {
+    "cylinder": "Cylinder",
+    "box": "Box",
+    "polygon": "Polygon",
+    "cone": "Cone",
+    "torus": "Torus",
+    "move": "Move",
+    "rotate": "Rotate",
+    "mirror": "Mirror",
+    "copy": "Copy",
+    "rotateCopy": "Rotate Copy",
+    "mirrorCopy": "Mirror Copy",
+    "delete": "Delete",
+    "sketch": "Sketch",
+    "extrude": "Extrude",
+    "revolve": "Revolve",
+    "showHide": "Show/Hide",
+    "stretch": "Stretch",
+    "resize": "Resize",
+    "shapeSteels": "Shape Steels",
+    "workPlane": "Work Plane",
+    "commandMenu": "Command Menu",
+    "spiral": "Spiral",
+    "union": "Union",
+    "subtract": "Subtract",
+    "intersect": "Intersect",
+    "separate": "Separate Entity",
+    "repeat": "Repeat Copy",
+    "holeDetails": "Hole Details",
+    "set": "Material Setting",
+    "unlisted": "Unlisted Materials",
+    "import": "Import",
+    "edit": "Lighten B-Rep Solid",
+    "create": "Create 3D Part",
+    "change": "Change 3D Part Name",
+    "color": "Change Color",
+    "layer": "Change Layer",
+    "info": "Information",
+    "pointer": "Scale Pointer",
+    "scale": "Scale",
+    "gas": "Gas Discharge",
+    "oil": "Oil Groove",
+    "sprocket": "Sprocket",
+    "screw": "Screw",
+    "stainless": "Stainless Steel",
+    "hardware": "Hardware",
+    "bolt": "Bolt",
+    "boltLength": "Bolt Length",
+    "boltingSetup": "Bolting Setup",
+    "slottedHole": "Slotted Hole",
+    "connections": "Connections",
+    "sgpPipes": "SGP Pipes"
+  },
+  "basic_op_1": {
+    "steps": [
+      "Creating Basic Shapes",
+      "In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus.",
+      "A Cylinder is a circular solid defined by its Diameter and Height — ideal for shafts, pins, bosses, and round posts.",
+      "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.",
+      "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height — useful for hexagonal bolts and multi-sided columns.",
+      "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.",
+      "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.",
+      "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.",
+      "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.",
+      "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD."
+    ]
+  },
+  "basic_op_2": {
+    "intro_title": "Move, Rotate, Copy, Mirror, Delete",
+    "intro_desc": "Use these tools to reposition, duplicate, or remove entities from your workspace.",
+    "rotate_copy_title": "ROTATE COPY",
+    "rotate_copy_desc": "Same as rotate tool but makes a rotated duplicate of the entity.",
+    "mirror_copy_title": "MIRROR COPY",
+    "mirror_copy_desc": "Same as mirror tool but makes a mirror duplicate of the entity.",
+    "delete_title": "DELETE",
+    "delete_step_1": "Select Delete from the icon menu",
+    "delete_step_2": "Left-click on the entity to delete",
+    "result": "RESULT"
+  },
+  "basic_op_3": {
+    "sketch_intro_title": "Sketch",
+    "sketch_intro_desc": "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.",
+    "extrude_revolve_intro_title": "Extrude and Revolve",
+    "extrude_revolve_intro_desc": "Tools use to create solids from sketch in the 3D space.",
+    "steps": {
+      "sketch": [
+        "SKETCH",
+        "Tool used to create lines."
+      ],
+      "extrude": [
+        "EXTRUDE",
+        "Step 1: Select Extrude from the icon menu.",
+        "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
+        "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
+        "Step 4: Press ENTER to finalize."
+      ],
+      "revolve": [
+        "REVOLVE",
+        "Step 1: Select Revolve from the icon menu.",
+        "Step 2: Select the perimeter of the sketch to be revolve then GO",
+        "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
+      ]
+    }
+  },
+  "basic_op_4": {
+    "show_hide_intro_title": "Show / Hide",
+    "show_hide_intro_desc": "Tools use to switch between displaying and hiding entities.",
+    "stretch_intro_title": "Stretch / Shape / Cut",
+    "stretch_intro_desc": "Tools used to modify the length and form of solid entities.",
+    "resize_intro_title": "Resize",
+    "resize_intro_desc": "Tool used to scale up or scale down a solid entity.",
+    "show_hide_entity_title": "SHOW / HIDE ENTITY",
+    "show_hide_entity_step1": "Select Show/Hide from the icon menu",
+    "show_hide_entity_step2": "Select the entities for showing/hiding then GO",
+    "show_hide_drafting_title": "SHOW/HIDE DRAFTING ENTITY",
+    "show_hide_drafting_step1": "Select Show/Hide Drafting Entity from the icon menu",
+    "show_hide_drafting_step2": "Right-click to show/hide all drafting entities.",
+    "drafting_include": "Drafting Entities include:",
+    "dim": "DIMENSIONS",
+    "notes": "NOTES",
+    "symbols": "SYMBOLS",
+    "dim_val": "Linear/Circular/Angular",
+    "notes_val": "Text",
+    "symbols_val": "Arrow/Arrow View",
+    "dim_val2": "Chamfer/Fillet",
+    "notes_val2": "Part Notes",
+    "symbols_val2": "Cutting Lines",
+    "notes_val3": "Welding",
+    "symbols_val3": "Machining/Finishing",
+    "notes_val4": "Balloon",
+    "symbols_val4": "Hatch",
+    "hide_unselected_title": "HIDE UNSELECTED ENTITY",
+    "hide_unselected_step1": "Select Hide Unselected Entity from the icon menu",
+    "hide_unselected_step2": "Select all entities to be retain then GO",
+    "hide_unselected_desc": "All unselected entities will be hidden.",
+    "stretch_title": "STRETCH / SHAPE / CUT",
+    "stretch_step1": "Select Stretch from the icon menu",
+    "stretch_step2": "Select the face to be stretch then GO",
+    "stretch_step3": "Specify the desired length of the solid entity on the item entry.",
+    "stretch_circular": "Also works for circular surfaces.",
+    "stretch_or": "OR",
+    "stretch_or_step1": "Select face then GO then Left-click on the 3D Space",
+    "stretch_or_step2": "A linear scale will appear on the 3D Space",
+    "stretch_or_step3": "Specify the additional length of stretch then Press Enter or Left-Click on the scale.",
+    "resize_title": "RESIZE",
+    "resize_step1": "Select Resize from the icon menu",
+    "resize_step2": "Select the entity for resizing then GO.",
+    "resize_step3": "Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space."
+  },
+  "tutorials": {
+    "interface": {
+      "step_0": {
+        "title": "iCAD Interface",
+        "text": "Welcome to this iCAD interface tutorial. Today, we'll walk through the workspace, which is divided into several key functional areas designed for maximum modeling efficiency."
+      },
+      "step_1": {
+        "title": "Navigation and Commands",
+        "text": "As we move through this guide, we'll highlight the specific purpose of the command menus, the hierarchical tree view, and the primary 3D viewport where your designs come to life."
+      },
+      "step_2": {
+        "title": "Title Bar",
+        "text": "At the very top, we have the Title Bar. This displays the name of the software and typically the name of the document you are currently working on."
+      },
+      "step_3": {
+        "title": "Menu Bar",
+        "text": "Just below that is the Menu Bar. Here you can find standard drop-down menus for essential functions, such as File, View, Information, Set, Tool, Window, and Help."
+      },
+      "step_4": {
+        "title": "Tool Bar",
+        "text": "Below the menus is the Tool Bar. It contains a set of quick-access icons that can be displayed or hidden based on your workflow needs."
+      },
+      "step_5": {
+        "title": "Command Menu",
+        "text": "On the far left side, you'll find the Command Menu. This contains sets of available commands associated with different functions, frequently used when working in 2D mode."
+      },
+      "step_6": {
+        "title": "Tree View",
+        "text": "Next to it is the Tree View. This pane organizes and displays all the 3D parts and groups for your current drawing in an easy-to-read hierarchical structure."
+      },
+      "step_7": {
+        "title": "Workspace",
+        "text": "In the center is the main Workspace. This large, prominent area is where all of your actual 3D Modeling and Assembly operations take place."
+      },
+      "step_8": {
+        "title": "Icon Menu",
+        "text": "Over on the far right side is the Icon Menu. It contains additional quick-access visual buttons to perform various operations on your 3D Models."
+      },
+      "step_9": {
+        "title": "Item Entry",
+        "text": "Down at the bottom left, we have the Item Entry area. This is used for entering the specific values and characters necessary for command execution."
+      },
+      "step_10": {
+        "title": "Key Entry",
+        "text": "Right next to it is the Key Entry Area, where precise coordinates and other numeric values can be entered manually."
+      },
+      "step_11": {
+        "title": "Message Pane",
+        "text": "Finally, on the bottom right is the Message Pane. It displays messages related to your operations, with errors clearly highlighted in red. This concludes our interface overview."
+      }
+    }
+  },
+  "basic_op_5": {
+    "intro_title": "Creating Shape Steels",
+    "intro_desc": "Learn how to arrange machine parts and steel profiles in 3D space.",
+    "types_title": "Shape Steels Includes:",
+    "step1": "Select Arrange Machine Part from the icon menu",
+    "step2": "The Arrange Machine Part window will appear. Select and provide the necessary specifications > Press OK",
+    "step3": "In the Key Entry Area, enter the coordinates for the position (origin point)"
+  }
+}

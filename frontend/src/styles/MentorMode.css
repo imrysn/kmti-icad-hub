@@ -598,7 +598,7 @@
   left: 0rem;
   top: 0rem;
   bottom: 0rem;
-  width: 70px;
+  width: 80px;
   flex-shrink: 0;
   background: var(--bg-surface);
   border-right: 1px solid var(--border-color);
@@ -1218,6 +1218,7 @@
   padding: 0.5rem 0;
 }
 
+
 .sub-lesson-item.active {
   color: var(--primary);
   background: var(--bg-card);
@@ -1331,12 +1332,12 @@
   flex: 1;
   overflow-y: auto;
   position: relative;
-  padding-left: 80px;
+  padding-left: 96px;
   transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .course-sidebar.open+.main-content-viewer .lesson-scroll-area {
-  padding-left: 336px;
+  padding-left: 96px;
 }
 
 .lesson-chatbot-sidebar {
@@ -1826,4 +1827,94 @@
   .card-graphic-container {
     height: 90px;
   }
+}
+
+/* ── Premium Sidebar Staggered Slide-In Animations ────────────────── */
+
+.course-sidebar:not(.open) .lesson-title-text-group {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.course-sidebar.open .lesson-title-text-group {
+  animation: slideInSidebarText 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  opacity: 0;
+}
+
+.course-sidebar.open .sub-lesson-item {
+  animation: slideInSidebarText 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes slideInSidebarText {
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Staggered animation delays for cascading reveal effect */
+.course-sidebar.open .lesson-item-wrapper:nth-child(1) .lesson-title-text-group {
+  animation-delay: 0.04s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(2) .lesson-title-text-group {
+  animation-delay: 0.08s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(3) .lesson-title-text-group {
+  animation-delay: 0.12s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(4) .lesson-title-text-group {
+  animation-delay: 0.16s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(5) .lesson-title-text-group {
+  animation-delay: 0.20s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(6) .lesson-title-text-group {
+  animation-delay: 0.24s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(7) .lesson-title-text-group {
+  animation-delay: 0.28s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(8) .lesson-title-text-group {
+  animation-delay: 0.32s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(9) .lesson-title-text-group {
+  animation-delay: 0.36s;
+}
+
+.course-sidebar.open .lesson-item-wrapper:nth-child(10) .lesson-title-text-group {
+  animation-delay: 0.40s;
+}
+
+.course-sidebar.open .sub-lesson-item:nth-child(1) {
+  animation-delay: 0.10s;
+}
+
+.course-sidebar.open .sub-lesson-item:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.course-sidebar.open .sub-lesson-item:nth-child(3) {
+  animation-delay: 0.18s;
+}
+
+.course-sidebar.open .sub-lesson-item:nth-child(4) {
+  animation-delay: 0.22s;
+}
+
+.course-sidebar.open .sub-lesson-item:nth-child(5) {
+  animation-delay: 0.26s;
 }
