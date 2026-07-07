@@ -3,6 +3,8 @@ import { Settings, Save, Plus, Trash2, AlertCircle, FileText } from 'lucide-reac
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { useNotification } from '../../../context/NotificationContext';
 import { getUnitCodeBadgeClass, getUnitCodeInlineStyle } from '../../../utils/unitCodeUtils';
+import { ConfirmationModal } from '../../../components/ConfirmationModal';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface TraineeSetConfigurationProps {
     searchTerm?: string;
@@ -19,6 +21,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
     const [mappings, setMappings] = useState<Record<number, { display_set_number: number, actual_set_number: number, assessment_type?: string }[]>>({});
     const [isSaving, setIsSaving] = useState<Record<number, boolean>>({});
     const [showReference, setShowReference] = useState(false);
+    const [confirmSaveId, setConfirmSaveId] = useState<number | null>(null);
 
     const [forceCustom, setForceCustom] = useState<number[]>([]);
     const [expandedMappingTasks, setExpandedMappingTasks] = useState<Record<string, boolean>>({});
@@ -43,12 +46,12 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
         });
     const dbSets = activeTasks.map(t => t.set_number);
     const defaultSets = activeType === '2D' ? [4, 5, 6, 7] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
+
     // Ensure all currently mapped sets are available so they can be removed if needed
-    const mappedSets = Object.values(mappings).flatMap(traineeMappings => 
+    const mappedSets = Object.values(mappings).flatMap(traineeMappings =>
         traineeMappings.filter(m => (m.assessment_type || '3D') === activeType).map(m => Number(m.actual_set_number))
     );
-    
+
     const availableSets = Array.from(new Set([...defaultSets, ...dbSets, ...mappedSets])).sort((a, b) => a - b);
 
     const getSetDisplayName = (setNum: number) => {
@@ -123,10 +126,10 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
             const allMappings = prev[traineeId] || [];
             const activeMappings = allMappings.filter(m => (m.assessment_type || '3D') === activeType);
             const targetToRemove = activeMappings[indexInActiveList];
-            
+
             const originalIndex = allMappings.findIndex(m => m === targetToRemove);
             if (originalIndex === -1) return prev;
-            
+
             const updated = [...allMappings];
             updated.splice(originalIndex, 1);
             return {
@@ -147,10 +150,10 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
             const allMappings = prev[traineeId] || [];
             const activeMappings = allMappings.filter(m => (m.assessment_type || '3D') === activeType);
             const targetToUpdate = activeMappings[indexInActiveList];
-            
+
             const originalIndex = allMappings.findIndex(m => m === targetToUpdate);
             if (originalIndex === -1) return prev;
-            
+
             const updated = [...allMappings];
             updated[originalIndex] = { ...updated[originalIndex], [field]: value };
             return {
@@ -163,7 +166,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
     const handleModeChange = (traineeId: number, newMode: 'none' | 'standard' | 'custom') => {
         const allMappings = mappings[traineeId] || [];
         const otherTypeMappings = allMappings.filter(m => (m.assessment_type || '3D') !== activeType);
-        
+
         if (newMode === 'none') {
             setMappings(prev => ({ ...prev, [traineeId]: otherTypeMappings }));
         } else if (newMode === 'standard') {
@@ -192,8 +195,8 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
             } else {
                 const activeMappings = allMappings.filter(m => (m.assessment_type || '3D') === activeType);
                 const usedDisplays = activeMappings.map(m => m.display_set_number);
-                const nextDisplay = usedDisplays.includes(setNum) 
-                    ? (usedDisplays.length > 0 ? Math.max(...usedDisplays) + 1 : setNum) 
+                const nextDisplay = usedDisplays.includes(setNum)
+                    ? (usedDisplays.length > 0 ? Math.max(...usedDisplays) + 1 : setNum)
                     : setNum;
                 return {
                     ...prev,
@@ -230,7 +233,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
     }
 
     return (
-        <div className="set-configuration-wrapper" style={{ flex: 1, overflowY: 'auto', padding: '20px', minHeight: 0 }}>
+        <div className="set-configuration-wrapper" style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
 
             <div style={{ marginBottom: '20px', background: 'rgba(59, 130, 246, 0.1)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.2)', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <AlertCircle size={20} style={{ color: 'var(--accent-blue)', marginTop: '2px' }} />
@@ -303,7 +306,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                             <div key={trainee.id} className="trainee-group-card" style={{ marginBottom: '20px', background: 'var(--card-bg)' }}>
                                 <div className="trainee-group-header" style={{ cursor: 'default' }}>
                                     <div className="trainee-info">
-                                        <div className="avatar-circle">
+                                        <div className="avatar-circle" style={{ background: getAvatarColor(trainee.full_name) }}>
                                             {trainee.full_name?.[0] || 'U'}
                                         </div>
                                         <div>
@@ -314,7 +317,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                     <div className="trainee-header-right">
                                         <button
                                             className="btn-primary"
-                                            onClick={() => handleSaveMappings(trainee.id)}
+                                            onClick={() => setConfirmSaveId(trainee.id)}
                                             disabled={isSaving[trainee.id]}
                                             style={{ padding: '6px 12px', fontSize: '0.9rem', whiteSpace: 'nowrap' }}
                                         >
@@ -384,7 +387,8 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                         })()}
                                     </div>
 
-                                    {(() => {
+                                    <div style={{ height: '300px', overflowY: 'auto', paddingRight: '5px' }}>
+                                        {(() => {
                                         const mode = (() => {
                                             if (activeMappings.length === 0) return 'none';
                                             if (isStandardLimit(trainee.id) && !forceCustom.includes(trainee.id)) return 'standard';
@@ -428,7 +432,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                                         const mappedIndices = activeMappings
                                                             .map((m, idx) => m.actual_set_number === setNum ? idx : -1)
                                                             .filter(idx => idx !== -1);
-                                                        
+
                                                         const isChecked = mappedIndices.length > 0;
 
                                                         return (
@@ -524,16 +528,16 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                                                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                                                                                     {setDocs.length > 0 ? (
                                                                                         <>
-                                                                                                {visibleDocs.map(t => {
-                                                                                                    const codeStyle = getUnitCodeInlineStyle(t.task_code);
-                                                                                                    return (
-                                                                                                        <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', ...codeStyle, padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', color: 'var(--text-light)' }}>
-                                                                                                            <span style={{ fontWeight: 700, color: codeStyle.color as string, fontFamily: "'JetBrains Mono', monospace" }}>{t.task_code}</span>
-                                                                                                            <span style={{ opacity: 0.3 }}>|</span>
-                                                                                                            <span style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.title}</span>
-                                                                                                        </div>
-                                                                                                    );
-                                                                                                })}
+                                                                                            {visibleDocs.map(t => {
+                                                                                                const codeStyle = getUnitCodeInlineStyle(t.task_code);
+                                                                                                return (
+                                                                                                    <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', ...codeStyle, padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', color: 'var(--text-light)' }}>
+                                                                                                        <span style={{ fontWeight: 700, color: codeStyle.color as string, fontFamily: "'JetBrains Mono', monospace" }}>{t.task_code}</span>
+                                                                                                        <span style={{ opacity: 0.3 }}>|</span>
+                                                                                                        <span style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.title}</span>
+                                                                                                    </div>
+                                                                                                );
+                                                                                            })}
                                                                                             {setDocs.length > 4 && (
                                                                                                 <button
                                                                                                     onClick={() => setExpandedMappingTasks(prev => ({ ...prev, [`${trainee.id}-${setNum}`]: !isExpanded }))}
@@ -564,13 +568,44 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                                 </button>
                                             </div>
                                         );
-                                    })()}
+                                        })()}
+                                    </div>
                                 </div>
                             </div>
                         );
                     })
                 )}
             </div>
+
+            <ConfirmationModal
+                isOpen={confirmSaveId !== null}
+                title="Confirm Save"
+                message={
+                    <div>
+                        <p>Are you sure you want to save the set configurations for this trainee?</p>
+                        <div style={{ textAlign: 'left', marginTop: '10px', color: '#E6EDF3' }}>
+                            <p style={{ marginBottom: '5px', fontWeight: 'bold', color: '#E6EDF3' }}>Sets added:</p>
+                            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                {confirmSaveId && (() => {
+                                    const activeMappings = (mappings[confirmSaveId] || []).filter(m => (m.assessment_type || '3D') === activeType);
+                                    if (activeMappings.length === 0) return <li>No limit set (All sets visible)</li>;
+                                    return activeMappings.map((m, idx) => (
+                                        <li key={idx}>{getSetDisplayName(m.display_set_number)}</li>
+                                    ));
+                                })()}
+                            </ul>
+                        </div>
+                    </div>
+                }
+                confirmText="Save Configuration"
+                onConfirm={() => {
+                    if (confirmSaveId !== null) {
+                        handleSaveMappings(confirmSaveId);
+                        setConfirmSaveId(null);
+                    }
+                }}
+                onCancel={() => setConfirmSaveId(null)}
+            />
         </div>
     );
 };

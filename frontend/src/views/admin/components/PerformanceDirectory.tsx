@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { TraineeProgress } from '../../../services/adminService';
 import { assessmentService } from '../../../services/assessmentService';
+import { authService } from '../../../services/authService';
+import { useAuthContext } from '../../../context/AuthContext';
 import { useWebSocket } from '../../../context/WebSocketContext';
+import { Search } from 'lucide-react';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface PerformanceDirectoryProps {
     progress: TraineeProgress[];
@@ -9,7 +13,11 @@ interface PerformanceDirectoryProps {
 }
 
 export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ progress, setSelectedTrainee }) => {
+    const { user } = useAuthContext();
     const [telemetryMap, setTelemetryMap] = useState<Record<number, any>>({});
+    const [userRoleMap, setUserRoleMap] = useState<Record<number, string>>({});
+    const [searchQuery, setSearchQuery] = useState('');
+    const [roleFilter, setRoleFilter] = useState<'all' | 'trainee' | 'employee'>('all');
     const { subscribe } = useWebSocket();
 
     useEffect(() => {
@@ -26,7 +34,21 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
             }
         };
 
+        const fetchUserRoles = async () => {
+            try {
+                const users = await authService.getUsers();
+                const map: Record<number, string> = {};
+                users.forEach(u => {
+                    map[u.id] = u.role;
+                });
+                setUserRoleMap(map);
+            } catch (err) {
+                console.error("Failed to fetch user roles", err);
+            }
+        };
+
         fetchTelemetry();
+        fetchUserRoles();
         // Fallback REST API refresh every 60 seconds
         const interval = setInterval(fetchTelemetry, 60000);
 
@@ -53,19 +75,64 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
         };
     }, [subscribe]);
 
+    const filteredProgress = progress.filter(p => {
+        const searchLower = searchQuery.toLowerCase();
+        const matchesSearch = !searchQuery ||
+            (p.full_name?.toLowerCase().includes(searchLower) ?? false) ||
+            (p.username?.toLowerCase().includes(searchLower) ?? false);
+        const role = (p.role || userRoleMap[p.id] || 'trainee').toLowerCase();
+        const matchesRole = roleFilter === 'all' || role === roleFilter.toLowerCase();
+        return matchesSearch && matchesRole;
+    });
+
+    useEffect(() => {
+        console.log("Debug: progress data", progress);
+    }, [progress]);
+
     return (
         <section className="trainee-progress">
+            {user?.role !== 'employee' && (
+                <div className="dashboard-sub-header">
+                    <div className="toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div className="search-box" style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-card)', padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', width: '350px' }}>
+                            <Search size={16} color="#94a3b8" style={{ marginRight: '0.5rem' }} />
+                            <input
+                                type="text"
+                                placeholder="Search by name or username..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                style={{ border: 'none', background: 'transparent', color: 'var(--text-main)', outline: 'none', width: '100%' }}
+                            />
+                        </div>
+                        <div className="review-filter-tabs" style={{ display: 'flex', gap: '0.25rem', padding: '0.25rem', borderRadius: '8px' }}>
+                            {(['all', 'trainee', 'employee'] as const).map(role => (
+                                <button
+                                    key={role}
+                                    onClick={() => setRoleFilter(role)}
+                                    className={`filter-tab-btn ${roleFilter === role ? 'active' : ''}`}
+                                    style={{
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    {role === 'all' ? 'All Roles' : role.charAt(0).toUpperCase() + role.slice(1)}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="progress-grid">
-                {progress.map(p => {
+                {filteredProgress.map(p => {
                     const telemetry = telemetryMap[p.id];
                     const isOnline = telemetry?.is_online;
                     const activity = telemetry?.current_activity || 'Offline';
-                    
+
                     return (
                         <div key={p.id} className="trainee-stat-card" onClick={() => setSelectedTrainee(p)}>
                             <div className="card-top">
                                 <div className="profile-brief">
-                                    <div className="mini-avatar" style={{ position: 'relative' }}>
+                                    <div className="mini-avatar" style={{ position: 'relative', background: getAvatarColor(p.full_name) }}>
                                         {p.full_name[0]}
                                         <span style={{
                                             position: 'absolute',
@@ -87,31 +154,31 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
                                         </span>
                                     </div>
                                 </div>
-                            <div className="mastery-score">
-                                <span className="val">{p.average_score}%</span>
-                                <span className="lab">Mastery Index</span>
+                                <div className="mastery-score">
+                                    <span className="val">{p.average_score}%</span>
+                                    <span className="lab">Mastery Index</span>
+                                </div>
+                            </div>
+                            <div className="card-metrics">
+                                <div className="metric-row">
+                                    <span className="label">Curriculum Progress</span>
+                                    <span className="count">{p.completed_lessons}/15</span>
+                                </div>
+                                <div className="progress-track">
+                                    <div className="track-fill" style={{ '--percent': `${(p.completed_lessons / 15) * 100}%` } as React.CSSProperties}></div>
+                                </div>
+                            </div>
+                            <div className="card-action">
+                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                    {telemetry?.last_seen
+                                        ? `Last seen: ${new Date(telemetry.last_seen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                                        : `Last active: ${p.last_login ? new Date(p.last_login).toLocaleDateString() : 'Never'}`}
+                                </span>
+                                <button className="view-link">Details →</button>
                             </div>
                         </div>
-                        <div className="card-metrics">
-                            <div className="metric-row">
-                                <span className="label">Curriculum Progress</span>
-                                <span className="count">{p.completed_lessons}/15</span>
-                            </div>
-                            <div className="progress-track">
-                                <div className="track-fill" style={{ '--percent': `${(p.completed_lessons/15)*100}%` } as React.CSSProperties}></div>
-                            </div>
-                        </div>
-                        <div className="card-action">
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                                {telemetry?.last_seen 
-                                    ? `Last seen: ${new Date(telemetry.last_seen).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` 
-                                    : `Last active: ${p.last_login ? new Date(p.last_login).toLocaleDateString() : 'Never'}`}
-                            </span>
-                            <button className="view-link">Details →</button>
-                        </div>
-                    </div>
-                );
-            })}
+                    );
+                })}
             </div>
         </section>
     );

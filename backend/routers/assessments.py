@@ -1296,6 +1296,7 @@ def get_trainer_trainees_progress(
 
         results.append({
             "id": trainee.id,
+            "role": trainee.role,
             "username": trainee.username,
             "full_name": trainee.full_name,
             "email": trainee.email,

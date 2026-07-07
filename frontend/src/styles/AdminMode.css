@@ -296,7 +296,7 @@
 }
 
 .trainee-stat-card {
-  background: var(--bg-surface);
+  background: #000000;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 1.25rem;
@@ -307,7 +307,7 @@
 
 .trainee-stat-card:hover {
   border-color: var(--primary);
-  background: var(--bg-card);
+  background: #0E0E0E;
 }
 
 .card-top {
@@ -328,13 +328,13 @@
   height: 26px;
   background: var(--color-gray-100);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.65rem;
   font-weight: 700;
-  color: var(--primary);
+  color: #ffffff;
   flex-shrink: 0;
 }
 
@@ -930,7 +930,7 @@
   align-items: center;
   gap: 0.375rem;
   padding: 0.375rem 0.875rem;
-  background: transparent;
+  background: #000000;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   color: var(--text-muted);
@@ -943,9 +943,9 @@
 }
 
 .back-btn:hover {
-  background: var(--bg-surface);
+  background: #0E0E0E;
   color: var(--text-main);
-  border-color: var(--color-gray-300);
+  border-color: var(--border-color);
 }
 
 .detail-container {
@@ -968,23 +968,28 @@
 }
 
 .trainee-profile-large {
-  background: var(--bg-surface);
+  background: #000000;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 2rem 1.5rem;
   text-align: center;
   box-shadow: var(--shadow-card);
+  transition: background 0.2s;
 }
 
+
+
+
+
 .avatar-large {
-  width: 52px;
-  height: 52px;
+  width: 72px;
+  height: 72px;
   background: var(--primary);
-  border-radius: var(--radius-lg);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.375rem;
+  font-size: 2rem;
   font-weight: 700;
   color: white;
   margin: 0 auto 1rem;
@@ -998,6 +1003,10 @@
 
 .large-stat {
   margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .large-stat .val {
@@ -1018,12 +1027,17 @@
 /* ── History sections ─────────────────────────────────────────── */
 
 .history-section {
-  background: var(--bg-surface);
+  background: #000000;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   box-shadow: var(--shadow-card);
+  transition: background 0.2s;
 }
+
+
+
+
 
 .history-section h3 {
   font-size: 0.9375rem;
@@ -1044,9 +1058,12 @@
 .history-item {
   padding: 1rem;
   border-radius: var(--radius-md);
-  background: var(--bg-card);
+  background: #000000;
   border: 1px solid var(--border-color);
+  transition: background 0.2s;
 }
+
+
 
 .history-item .content {
   flex: 1;
@@ -1083,6 +1100,20 @@
 }
 
 /* Road map overrides */
+.history-section.road-map {
+  padding: 24px 24px 0px;
+}
+
+.history-section.road-map h3 {
+  padding: 0px 0px 24px;
+  margin: 0;
+}
+
+.road-map .empty-state {
+  padding: 8px 8px 12px;
+  margin-bottom: 24px;
+}
+
 .road-map .history-list {
   gap: 0;
   padding-left: 1.25rem;
@@ -1164,13 +1195,16 @@
   display: flex !important;
   gap: 1.25rem;
   align-items: center;
-  background: var(--bg-surface);
+  background: #000000;
   border: 1px solid var(--border-color);
   padding: 1.25rem;
   border-radius: var(--radius-md);
-  margin-bottom: 0.75rem;
-  box-shadow: var(--shadow-card);
+  transition: background 0.2s;
 }
+
+
+
+
 
 .evaluation-card .content {
   flex: 1;

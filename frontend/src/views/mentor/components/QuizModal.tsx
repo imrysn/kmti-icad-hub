@@ -5,6 +5,7 @@ import { Quiz } from '../mentorConstants';
 import { authService } from '../../../services/authService';
 import '../../../styles/mentor/QuizModal.css';
 import { Modal } from '../../../components/Modal';
+import { useUI } from '../../../context/UIContext';
 
 
 interface QuizModalProps {
@@ -24,6 +25,8 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   onComplete,
   onSuccessContinue
 }) => {
+  const { requestConfirmation } = useUI();
+
   const playSound = (type: 'success' | 'error') => {
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
@@ -521,7 +524,15 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 </div>
               </div>
 
-              <button className="start-btn" onClick={() => setShowWarning(false)}>
+              <button className="start-btn" onClick={async () => {
+                const confirmed = await requestConfirmation({
+                  title: "Start Assessment",
+                  message: "Are you sure you want to start this assessment?"
+                });
+                if (confirmed) {
+                  setShowWarning(false);
+                }
+              }}>
                 Confirm & Start Assessment <ArrowRight size={18} />
               </button>
             </div>

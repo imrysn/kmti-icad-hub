@@ -10,6 +10,8 @@ import { useUI } from '../../../context/UIContext';
 import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { Modal } from '../../../components/Modal';
+import { SubmissionMetaModal } from './SubmissionMetaModal';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 import { TraineeTelemetrySidebar } from './TraineeTelemetrySidebar';
 import { NotificationCenter } from './NotificationCenter';
 import { PerformanceDirectory } from '../../admin/components/PerformanceDirectory';
@@ -17,6 +19,12 @@ import { TraineeDetail } from '../../admin/components/TraineeDetail';
 import { TraineeProgress } from '../../../services/adminService';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
+
+const getOrdinal = (n: number) => {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+};
 
 export const PracticalTrainerDashboard: React.FC = () => {
     const { showNotification } = useNotification();
@@ -107,7 +115,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const handleDeleteNotification = async (id: number) => {
         const confirmed = await requestConfirmation({
             title: 'Delete Notification',
-            message: 'Are you sure you want to delete this notification? This action cannot be undone.',
+            message: (
+                <span>
+                    Are you sure you want to <strong>delete</strong> this notification? This action cannot be undone.
+                </span>
+            ),
             confirmText: 'Delete',
             type: 'danger'
         });
@@ -135,7 +147,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const handleClearAll = async () => {
         const confirmed = await requestConfirmation({
             title: 'Clear All Notifications',
-            message: 'Are you sure you want to permanently delete all notifications? This action cannot be undone.',
+            message: (
+                <span>
+                    Are you sure you want to <strong>permanently delete all</strong> notifications? This action cannot be undone.
+                </span>
+            ),
             confirmText: 'Clear All',
             type: 'danger'
         });
@@ -406,6 +422,19 @@ export const PracticalTrainerDashboard: React.FC = () => {
     }, [subscribe]);
 
     const handleDownloadTraineeFile = async (submission: AssessmentSubmission) => {
+        const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
+        const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
+
+        const confirmed = await requestConfirmation({
+            title: "Confirm Download",
+            message: (
+                <span>
+                    Are you sure you want to download <strong>{attachedFilename}</strong>?
+                </span>
+            )
+        });
+        if (!confirmed) return;
+
         try {
             const response = await api.get(`/api/v1/assessments/submissions/${submission.id}/download`, {
                 responseType: 'blob'
@@ -414,8 +443,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
-            const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
             a.download = attachedFilename;
             document.body.appendChild(a);
             a.click();
@@ -427,14 +454,25 @@ export const PracticalTrainerDashboard: React.FC = () => {
     };
 
     const handleOpenInIJCAD = async (submission: AssessmentSubmission, appName?: string) => {
+        const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
+        const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
+
+        const confirmed = await requestConfirmation({
+            title: "Confirm Open",
+            message: (
+                <span>
+                    Are you sure you want to open <strong>{attachedFilename}</strong> in <strong>{appName || 'CAD'}</strong>?
+                </span>
+            )
+        });
+        if (!confirmed) return;
+
         if (window.electronAPI && window.electronAPI.downloadAndOpen) {
             try {
                 const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
                 const token = authService.getToken() || '';
-                const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
-                const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
 
-                showNotification(`Opening submission in ${appName ? appName : 'CAD'}...`, 'info');
+                showNotification(`Opening ${attachedFilename} in ${appName ? appName : 'CAD'}...`, 'info');
                 await window.electronAPI.downloadAndOpen({ url, filename: attachedFilename, token, appName });
                 showNotification(`Submission opened.`, 'success');
             } catch (err) {
@@ -448,6 +486,16 @@ export const PracticalTrainerDashboard: React.FC = () => {
     };
 
     const handleDownloadCheckback = async (feedback: any) => {
+        const confirmed = await requestConfirmation({
+            title: "Confirm Download",
+            message: (
+                <span>
+                    Are you sure you want to download <strong>Checkback.xlsx</strong>?
+                </span>
+            )
+        });
+        if (!confirmed) return;
+
         try {
             const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
                 responseType: 'blob'
@@ -474,6 +522,20 @@ export const PracticalTrainerDashboard: React.FC = () => {
             showNotification('Please provide comments for rejection.', 'warning');
             return;
         }
+
+        const ext = latestSubmission.submission_file_path?.split('.').pop() || 'dwg';
+        const attachedFilename = latestSubmission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${latestSubmission.user?.username}_Set${latestSubmission.task?.set_number}_${latestSubmission.task?.task_code}.${ext}`;
+
+        const actionVerb = status === 'approved' ? 'approve' : 'reject';
+        const confirmed = await requestConfirmation({
+            title: "Confirm Decision",
+            message: (
+                <span>
+                    Are you sure you want to <strong>{actionVerb}</strong> <strong>{attachedFilename}</strong>?
+                </span>
+            )
+        });
+        if (!confirmed) return;
 
         setIsSubmittingFeedback(true);
         try {
@@ -503,6 +565,24 @@ export const PracticalTrainerDashboard: React.FC = () => {
             showNotification('Please provide comments for rejection.', 'warning');
             return;
         }
+
+        const firstSub = selectedSetSubmissions[0];
+        const displaySetNum = firstSub.task?.set_number || '';
+        const currentSetOrdinal = displaySetNum ? getOrdinal(Number(displaySetNum)) : '';
+        const traineeName = firstSub.user?.full_name || firstSub.user?.username || 'this trainee';
+        const isAssemblySet = selectedSetSubmissions.some((s: any) => s.task?.is_assembly || s.task?.task_code?.startsWith('A'));
+        const setTypeString = isAssemblySet ? 'Set Assembly' : 'Set Parts';
+
+        const actionVerb = status === 'approved' ? 'approve' : 'reject';
+        const confirmed = await requestConfirmation({
+            title: "Confirm Bulk Decision",
+            message: (
+                <span>
+                    Are you sure you want to <strong>{actionVerb}</strong> the entire <strong>{currentSetOrdinal} {setTypeString}</strong>?
+                </span>
+            )
+        });
+        if (!confirmed) return;
 
         setIsSubmittingFeedback(true);
         let successCount = 0;
@@ -703,7 +783,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                 {/* Assessments Tab */}
                 {activeMainTab === 'assessments' && (
-                    <div className="grouped-submissions-container">
+                    <div className="grouped-submissions-container" style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
                         {(() => {
                             const renderedTrainees = Object.values(grouped).filter((traineeGroup: any) => {
                                 let hasMatchingTask = false;
@@ -747,7 +827,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                     <div key={traineeId} className="trainee-group-card">
                                         <div className="trainee-group-header" onClick={() => toggleTrainee(traineeId)}>
                                             <div className="trainee-info">
-                                                <div className="avatar-circle">
+                                                <div className="avatar-circle" style={{ background: getAvatarColor(traineeGroup.user.full_name) }}>
                                                     {traineeGroup.user.full_name?.[0] || 'U'}
                                                 </div>
                                                 <div>
@@ -762,7 +842,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         </div>
 
                                         {isTraineeExpanded && (
-                                            <div className="trainee-group-body">
+                                            <div className="trainee-group-body" style={{ height: '300px', overflowY: 'auto' }}>
                                                 {Object.keys(traineeGroup.sets)
                                                     .sort((a, b) => Number(a) - Number(b))
                                                     .filter(setNum => {
@@ -813,9 +893,28 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                                                         <button
                                                                             className="task-action-btn secondary"
-                                                                            onClick={(e) => {
+                                                                            onClick={async (e) => {
                                                                                 e.stopPropagation();
-                                                                                handleOpenNextSet(traineeId, Number(setNum));
+                                                                                const currentSetOrdinal = getOrdinal(Number(displaySetNum));
+                                                                                const nextSetOrdinal = getOrdinal(Number(displaySetNum) + 1);
+                                                                                
+                                                                                const isAssemblySet = tasks.some((subs: any) => {
+                                                                                    const task = subs[0]?.task;
+                                                                                    return task?.is_assembly || task?.task_code?.startsWith('A');
+                                                                                });
+                                                                                const setTypeString = isAssemblySet ? 'Set Assembly' : 'Set Parts';
+
+                                                                                const confirmed = await requestConfirmation({
+                                                                                    title: "Open Next Set",
+                                                                                    message: (
+                                                                                        <span>
+                                                                                            Are you sure you want to mark the <strong>{currentSetOrdinal} {setTypeString}</strong> as reviewed later and open the <strong>{nextSetOrdinal} {setTypeString}</strong>?
+                                                                                        </span>
+                                                                                    )
+                                                                                });
+                                                                                if (confirmed) {
+                                                                                    handleOpenNextSet(traineeId, Number(setNum));
+                                                                                }
                                                                             }}
                                                                             title="Review Later & Open Next Set"
                                                                             style={{ padding: '0.35rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}
@@ -824,8 +923,25 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                         </button>
                                                                         <button
                                                                             className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
-                                                                            onClick={(e) => {
+                                                                            onClick={async (e) => {
                                                                                 e.stopPropagation();
+                                                                                const currentSetOrdinal = getOrdinal(Number(displaySetNum));
+                                                                                const isAssemblySet = tasks.some((subs: any) => {
+                                                                                    const task = subs[0]?.task;
+                                                                                    return task?.is_assembly || task?.task_code?.startsWith('A');
+                                                                                });
+                                                                                const setTypeString = isAssemblySet ? 'Set Assembly' : 'Set Parts';
+
+                                                                                const confirmed = await requestConfirmation({
+                                                                                    title: "Confirm Bulk Download",
+                                                                                    message: (
+                                                                                        <span>
+                                                                                            Are you sure you want to download all submissions of <strong>{traineeGroup.user.full_name || traineeGroup.user.username}</strong> in the <strong>{currentSetOrdinal} {setTypeString}</strong>?
+                                                                                        </span>
+                                                                                    )
+                                                                                });
+                                                                                if (!confirmed) return;
+
                                                                                 // Get the latest submission for each file extension per task
                                                                                 const latestSubmissions = tasks.flatMap((subs: any) => {
                                                                                     const latestByKey: Record<string, any> = {};
@@ -928,7 +1044,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
                 {/* Progress Tab */}
                 {activeMainTab === 'progress' && (
-                    <div className="progress-tracker-container">
+                    <div className="progress-tracker-container" style={{ display: 'block', flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
                         {loadingProgress ? (
                             <div className="skeleton-cards">
                                 <div className="skeleton-card"></div>
