@@ -25,6 +25,7 @@ export interface SystemStats {
 
 export interface TraineeProgress {
     id: number;
+    role?: string;
     username: string;
     full_name: string;
     last_login: string | null;

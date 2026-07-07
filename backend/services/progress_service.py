@@ -75,6 +75,7 @@ def calculate_all_trainee_progress(db: Session, trainer_id: int = None):
         
         results.append({
             "id": user.id,
+            "role": user.role,
             "username": user.username,
             "full_name": user.full_name,
             "last_login": user.last_login,
