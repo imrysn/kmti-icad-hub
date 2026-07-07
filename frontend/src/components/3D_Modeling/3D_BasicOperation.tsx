@@ -371,7 +371,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'torus', label: 'Torus' }
   ];
 
-  const handleNext = (isAuto: boolean = false) => {
+  const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -381,7 +382,8 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = (isAuto: boolean = false) => {
+  const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -650,7 +652,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'delete', label: 'Delete' }
   ];
 
-  const handleNext = (isAuto: boolean = false) => {
+  const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -660,7 +663,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = (isAuto: boolean = false) => {
+  const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -1212,7 +1216,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'revolve', label: 'REVOLVE' }
   ];
 
-  const handleNext = (isAuto: boolean = false) => {
+  const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -1222,7 +1227,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = (isAuto: boolean = false) => {
+  const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -1630,7 +1636,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     { id: 'stretch', label: 'Stretch' },
     { id: 'resize', label: 'Resize' }];
 
-  const handleNext = (isAuto: boolean = false) => {
+  const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
@@ -1640,7 +1647,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePrev = (isAuto: boolean = false) => {
+  const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
