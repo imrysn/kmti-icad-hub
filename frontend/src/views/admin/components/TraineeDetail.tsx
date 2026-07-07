@@ -8,6 +8,7 @@ import { ProgressReportPrint } from './ProgressReportPrint';
 import { Modal } from '../../../components/Modal';
 import { ICAD_3D_LESSONS, ICAD_2D_LESSONS, Lesson } from '../../mentor/mentorConstants';
 import '../../../styles/AssessmentManagement.css';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface TraineeDetailProps {
     selectedTrainee: TraineeProgress;
@@ -234,15 +235,17 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
     };
 
     return (
-        <section className="trainee-detail-view">
+        <section className="trainee-detail-view" style={{ height: 'calc(100vh - 108px)' }}>
             <button className="back-btn" onClick={() => setSelectedTrainee(null)}>
                 ← Return to Directory
             </button>
 
-            <div className="detail-container">
+            <div className="detail-container" style={{ flex: 1, minHeight: 0, alignItems: 'stretch' }}>
                 <div className="detail-sidebar">
                     <div className="trainee-profile-large">
-                        <div className="avatar-large">{selectedTrainee.username[0].toUpperCase()}</div>
+                        <div className="avatar-large" style={{ background: getAvatarColor(selectedTrainee.full_name) }}>
+                            {selectedTrainee.username[0].toUpperCase()}
+                        </div>
                         <h3>{selectedTrainee.full_name}</h3>
                         <p>Candidate Roadmap</p>
                         <div className="large-stat mastery-stat">
@@ -300,12 +303,12 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                     </div>
                 </div>
 
-                <div className="detail-main">
+                <div className="detail-main" style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
                     <div className="history-section road-map">
                         <h3><FileText size={18} /> Knowledge Milestones</h3>
-                        <div className="history-list">
-                            {selectedTrainee.lessons_history.length > 0 ? (
-                                selectedTrainee.lessons_history.map((l, i) => (
+                        {selectedTrainee.lessons_history.length > 0 ? (
+                            <div className="history-list">
+                                {selectedTrainee.lessons_history.map((l, i) => (
                                     <div key={i} className="history-item">
                                         <div className="item-v-line"></div>
                                         <div className="icon-circle">
@@ -320,16 +323,16 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                             {l.last_accessed ? new Date(l.last_accessed).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Historical'}
                                         </div>
                                     </div>
-                                ))
-                            ) : (
-                                <div className="empty-state">No curriculum milestones recorded.</div>
-                            )}
-                        </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="empty-state">No curriculum milestones recorded.</div>
+                        )}
                     </div>
 
                     {/* Assessment Matrix - 3D Modeling */}
                     {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
-                    <div className="history-section matrix-section">
+                    <div className="history-section matrix-section" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                             <h3 style={{ margin: 0, padding: 0, borderBottom: 'none' }}><BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING</h3>
                             {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
@@ -339,9 +342,9 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                 </div>
                             )}
                         </div>
-                        <div className="history-list">
-                            {selectedTrainee.quizzes_history.filter(q => q.course_id === '1').length > 0 ? (
-                                [...selectedTrainee.quizzes_history]
+                        {selectedTrainee.quizzes_history.filter(q => q.course_id === '1').length > 0 ? (
+                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px' }}>
+                                {[...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '1')
                                     .sort((a, b) => {
                                         const indexA = globalOrder3D.indexOf(a.lesson_id);
@@ -420,17 +423,17 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                 </button>
                                             </div>
                                         </div>
-                                    ))
-                            ) : (
-                                <div className="empty-state">No 3D modeling assessments recorded.</div>
-                            )}
-                        </div>
+                                    ))}
+                            </div>
+                        ) : (
+                            <div className="empty-state" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>No 3D modeling assessments recorded.</div>
+                        )}
                     </div>
                     )}
 
                     {/* Assessment Matrix - 2D Drawing */}
                     {(activeCourseTab === 'all' || activeCourseTab === '2D') && (
-                    <div className="history-section matrix-section">
+                    <div className="history-section matrix-section" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                             <h3 style={{ margin: 0, padding: 0, borderBottom: 'none' }}><FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING</h3>
                             {activeCourseTab === '2D' && (
@@ -440,9 +443,9 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                 </div>
                             )}
                         </div>
-                        <div className="history-list">
-                            {selectedTrainee.quizzes_history.filter(q => q.course_id === '2').length > 0 ? (
-                                [...selectedTrainee.quizzes_history]
+                        {selectedTrainee.quizzes_history.filter(q => q.course_id === '2').length > 0 ? (
+                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px' }}>
+                                {[...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '2')
                                     .sort((a, b) => {
                                         const indexA = globalOrder2D.indexOf(a.lesson_id);
@@ -521,11 +524,11 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                                                 </button>
                                             </div>
                                         </div>
-                                    ))
-                            ) : (
-                                <div className="empty-state">No 2D drawing assessments recorded.</div>
-                            )}
-                        </div>
+                                    ))}
+                            </div>
+                        ) : (
+                            <div className="empty-state" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>No 2D drawing assessments recorded.</div>
+                        )}
                     </div>
                     )}
                 </div>

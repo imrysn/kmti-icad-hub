@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronUp, ChevronDown, CheckCircle2, Clock, XCircle, Download, Eye } from 'lucide-react';
 import { AssessmentSubmission } from '../../../services/assessmentService';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface TraineeListGroupProps {
     grouped: Record<number, any>;
@@ -42,7 +43,7 @@ export const TraineeListGroup: React.FC<TraineeListGroupProps> = ({
                         <div key={traineeId} className="trainee-group-card">
                             <div className="trainee-group-header" onClick={() => toggleTrainee(traineeId)}>
                                 <div className="trainee-info">
-                                    <div className="avatar-circle">
+                                    <div className="avatar-circle" style={{ background: getAvatarColor(traineeGroup.user.full_name) }}>
                                         {traineeGroup.user.full_name?.[0] || 'U'}
                                     </div>
                                     <div>

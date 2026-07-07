@@ -3,6 +3,7 @@ import { TrendingUp, User } from 'lucide-react';
 import { useUI } from '../../../context/UIContext';
 import { useWebSocket } from '../../../context/WebSocketContext';
 import { assessmentService } from '../../../services/assessmentService';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 const TraineeStatusLabel: React.FC<{ isOnline: boolean; lastUpdated: string | null | undefined }> = ({ isOnline, lastUpdated }) => {
     const [statusText, setStatusText] = useState<string>('');
@@ -147,7 +148,7 @@ export const TraineeTelemetrySidebar: React.FC = () => {
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <div style={{ position: 'relative' }}>
-                                        <div className="avatar-circle" style={{ width: '32px', height: '32px', fontSize: '0.85rem' }}>
+                                        <div className="avatar-circle" style={{ width: '32px', height: '32px', fontSize: '0.85rem', background: getAvatarColor(trainee.full_name) }}>
                                             {trainee.full_name?.[0] || 'U'}
                                         </div>
                                         <span style={{

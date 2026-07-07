@@ -4,6 +4,7 @@ import { assessmentService, AssessmentTask } from '../../../services/assessmentS
 import { useNotification } from '../../../context/NotificationContext';
 import { getUnitCodeBadgeClass, getUnitCodeInlineStyle } from '../../../utils/unitCodeUtils';
 import { ConfirmationModal } from '../../../components/ConfirmationModal';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface TraineeSetConfigurationProps {
     searchTerm?: string;
@@ -232,7 +233,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
     }
 
     return (
-        <div className="set-configuration-wrapper" style={{ flex: 1, overflowY: 'auto', padding: '20px', minHeight: 0 }}>
+        <div className="set-configuration-wrapper" style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
 
             <div style={{ marginBottom: '20px', background: 'rgba(59, 130, 246, 0.1)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.2)', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <AlertCircle size={20} style={{ color: 'var(--accent-blue)', marginTop: '2px' }} />
@@ -305,7 +306,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                             <div key={trainee.id} className="trainee-group-card" style={{ marginBottom: '20px', background: 'var(--card-bg)' }}>
                                 <div className="trainee-group-header" style={{ cursor: 'default' }}>
                                     <div className="trainee-info">
-                                        <div className="avatar-circle">
+                                        <div className="avatar-circle" style={{ background: getAvatarColor(trainee.full_name) }}>
                                             {trainee.full_name?.[0] || 'U'}
                                         </div>
                                         <div>
@@ -386,7 +387,8 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                         })()}
                                     </div>
 
-                                    {(() => {
+                                    <div style={{ height: '300px', overflowY: 'auto', paddingRight: '5px' }}>
+                                        {(() => {
                                         const mode = (() => {
                                             if (activeMappings.length === 0) return 'none';
                                             if (isStandardLimit(trainee.id) && !forceCustom.includes(trainee.id)) return 'standard';
@@ -566,7 +568,8 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                                 </button>
                                             </div>
                                         );
-                                    })()}
+                                        })()}
+                                    </div>
                                 </div>
                             </div>
                         );

@@ -10,6 +10,8 @@ import { useUI } from '../../../context/UIContext';
 import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { Modal } from '../../../components/Modal';
+import { SubmissionMetaModal } from './SubmissionMetaModal';
+import { getAvatarColor } from '../../../utils/avatarUtils';
 import { TraineeTelemetrySidebar } from './TraineeTelemetrySidebar';
 import { NotificationCenter } from './NotificationCenter';
 import { PerformanceDirectory } from '../../admin/components/PerformanceDirectory';
@@ -781,7 +783,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                 {/* Assessments Tab */}
                 {activeMainTab === 'assessments' && (
-                    <div className="grouped-submissions-container">
+                    <div className="grouped-submissions-container" style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
                         {(() => {
                             const renderedTrainees = Object.values(grouped).filter((traineeGroup: any) => {
                                 let hasMatchingTask = false;
@@ -825,7 +827,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                     <div key={traineeId} className="trainee-group-card">
                                         <div className="trainee-group-header" onClick={() => toggleTrainee(traineeId)}>
                                             <div className="trainee-info">
-                                                <div className="avatar-circle">
+                                                <div className="avatar-circle" style={{ background: getAvatarColor(traineeGroup.user.full_name) }}>
                                                     {traineeGroup.user.full_name?.[0] || 'U'}
                                                 </div>
                                                 <div>
@@ -840,7 +842,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         </div>
 
                                         {isTraineeExpanded && (
-                                            <div className="trainee-group-body">
+                                            <div className="trainee-group-body" style={{ height: '300px', overflowY: 'auto' }}>
                                                 {Object.keys(traineeGroup.sets)
                                                     .sort((a, b) => Number(a) - Number(b))
                                                     .filter(setNum => {
@@ -1042,7 +1044,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
                 {/* Progress Tab */}
                 {activeMainTab === 'progress' && (
-                    <div className="progress-tracker-container">
+                    <div className="progress-tracker-container" style={{ display: 'block', flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
                         {loadingProgress ? (
                             <div className="skeleton-cards">
                                 <div className="skeleton-card"></div>
