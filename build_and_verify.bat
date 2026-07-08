@@ -7,8 +7,7 @@ echo.
 :: Step 1: Install backend testing dependencies
 echo [1/4] Installing backend testing dependencies (requirements, pytest, pytest-cov, httpx)...
 cd /d "%~dp0backend"
-call venv\Scripts\activate.bat
-pip install -r requirements.txt pytest pytest-cov httpx
+venv\Scripts\python.exe -m pip install -r requirements.txt pytest pytest-cov httpx
 if %ERRORLEVEL% neq 0 (
     echo.
     echo ERROR: Failed to install testing dependencies.
@@ -20,7 +19,7 @@ if %ERRORLEVEL% neq 0 (
 echo.
 echo [2/4] Running Backend Tests...
 cd /d "%~dp0"
-pytest
+backend\venv\Scripts\python.exe -m pytest
 if %ERRORLEVEL% neq 0 (
     echo.
     echo ERROR: Backend tests failed.

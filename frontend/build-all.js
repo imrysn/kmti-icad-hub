@@ -45,8 +45,17 @@ try {
     } else {
         console.log('⚠️ Source tts_cache directory not found.');
     }
+
+    const envSrc = path.resolve(backendDir, '.env');
+    const envDest = path.resolve(backendDir, 'dist/.env');
+    if (fs.existsSync(envSrc)) {
+        fs.copyFileSync(envSrc, envDest);
+        console.log('✅ .env copied to backend/dist/.env successfully.');
+    } else {
+        console.warn('⚠️ Source .env file not found. Ensure SECRET_KEY is set in production.');
+    }
 } catch (copyError) {
-    console.warn('⚠️ Warning: Failed to copy tts_cache:', copyError.message);
+    console.warn('⚠️ Warning: Failed to copy assets:', copyError.message);
 }
 
 // Step 3: Build and package the frontend installer
