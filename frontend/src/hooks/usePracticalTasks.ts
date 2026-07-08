@@ -78,6 +78,14 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
   }, [fetchData]);
 
   const handleDownloadTask = useCallback(async (task: AssessmentTask) => {
+    const confirmed = await confirm({
+      title: "Confirm Download",
+      message: "Are you sure you want to download this task file?",
+      confirmLabel: "Download",
+      variant: "primary"
+    });
+    if (!confirmed) return;
+
     try {
       showNotification('Preparing task template download...', 'info');
       const blob = await assessmentService.getMasterFileBlob(task.id);
@@ -101,6 +109,14 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
   }, [showNotification]);
 
   const handleOpenInIJCAD = useCallback(async (task: AssessmentTask) => {
+    const confirmed = await confirm({
+      title: "Confirm Open",
+      message: "Are you sure you want to open this task file in IJCAD?",
+      confirmLabel: "Open in IJCAD",
+      variant: "primary"
+    });
+    if (!confirmed) return;
+
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
       try {
         const url = assessmentService.getDownloadUrl(task.id);
@@ -130,6 +146,14 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
   const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission) => {
     if (!submission.feedback || submission.feedback.length === 0) return;
+    const confirmed = await confirm({
+      title: "Confirm Download",
+      message: "Are you sure you want to download this feedback file?",
+      confirmLabel: "Download",
+      variant: "primary"
+    });
+    if (!confirmed) return;
+    
     const feedback = submission.feedback[0];
 
     try {
@@ -156,6 +180,14 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
   const handleOpenFeedbackExcel = useCallback(async (submission: AssessmentSubmission) => {
     if (!submission.feedback || submission.feedback.length === 0) return;
+    const confirmed = await confirm({
+      title: "Confirm Open",
+      message: "Are you sure you want to open this feedback file in Excel?",
+      confirmLabel: "Open in Excel",
+      variant: "primary"
+    });
+    if (!confirmed) return;
+    
     const feedback = submission.feedback[0];
 
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
@@ -177,7 +209,17 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     }
   }, [showNotification, handleDownloadFeedback]);
 
-  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D') => {
+  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', skipConfirm = false) => {
+    if (!skipConfirm) {
+      const confirmed = await confirm({
+        title: "Confirm Submission",
+        message: "Are you sure you want to submit this file for assessment?",
+        confirmLabel: "Submit",
+        variant: "primary"
+      });
+      if (!confirmed) return;
+    }
+
     const validExtensions = ['.dwg', '.icd', '.dxf', '.step', '.stp', '.iges', '.igs', '.sat', '.3dm', '.zip', '.rar'];
     const ext = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
     if (!validExtensions.includes(ext)) {
@@ -237,6 +279,14 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
   }, [showNotification, fetchData, confirm]);
 
   const handleReplyToFeedback = useCallback(async (feedbackId: number, text: string) => {
+    const confirmed = await confirm({
+      title: "Confirm Reply",
+      message: "Are you sure you want to send this reply?",
+      confirmLabel: "Send Reply",
+      variant: "primary"
+    });
+    if (!confirmed) return;
+
     try {
       await assessmentService.replyToFeedback(feedbackId, text);
       showNotification('Reply sent successfully!', 'success');

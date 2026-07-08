@@ -160,6 +160,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     const submitFolderUpload = async () => {
         if (!folderUploadTargetTask || folderFiles.length === 0 || !customFolderName.trim()) return;
+        
+        const confirmed = await requestConfirmation({
+            title: "Confirm Upload",
+            message: "Are you sure you want to compress and upload this folder?",
+            confirmLabel: "Upload",
+            variant: "primary"
+        });
+        if (!confirmed) return;
+
         setIsZipping(true);
         try {
             const zip = new JSZip();
@@ -178,7 +187,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             const zipBlob = await zip.generateAsync({ type: 'blob' });
             const zipFile = new File([zipBlob], `${customFolderName.trim()}.zip`, { type: 'application/zip' });
 
-            await uploadTaskFile(zipFile, folderUploadTargetTask, assessmentType);
+            await uploadTaskFile(zipFile, folderUploadTargetTask, assessmentType, true);
 
             // Cleanup
             setUploadFolderModalOpen(false);
@@ -515,10 +524,18 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                         <button
                                                             type="button"
                                                             className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
-                                                            onClick={(e) => {
+                                                            onClick={async (e) => {
                                                                 e.preventDefault();
                                                                 e.stopPropagation();
-                                                                handleBulkDownload(sortedUnitTasks);
+                                                                const confirmed = await requestConfirmation({
+                                                                    title: "Confirm Bulk Download",
+                                                                    message: "Are you sure you want to download all task files for this unit?",
+                                                                    confirmLabel: "Download All",
+                                                                    variant: "primary"
+                                                                });
+                                                                if (confirmed) {
+                                                                    handleBulkDownload(sortedUnitTasks);
+                                                                }
                                                             }}
                                                             disabled={isBulkDownloading}
                                                             title="Download All Unit Files"
