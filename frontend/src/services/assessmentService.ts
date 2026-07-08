@@ -76,9 +76,9 @@ export const assessmentService = {
         return response.data;
     },
 
-    getTrainerSubmissions: async (status: string = 'pending'): Promise<AssessmentSubmission[]> => {
+    getTrainerSubmissions: async (status: string = 'pending', strictTrainer: boolean = false): Promise<AssessmentSubmission[]> => {
         return cachedGet(`/api/v1/assessments/trainer/submissions`, 15000, {
-            params: { status }
+            params: { status, strict_trainer: strictTrainer }
         });
     },
 
@@ -111,8 +111,10 @@ export const assessmentService = {
         return cachedGet('/api/v1/assessments/trainer/trainees-progress');
     },
 
-    getTrainerProgress: async (): Promise<any[]> => {
-        return cachedGet('/api/v1/assessments/trainer/progress');
+    getTrainerProgress: async (strictTrainer: boolean = false): Promise<any[]> => {
+        return cachedGet('/api/v1/assessments/trainer/progress', 15000, {
+            params: { strict_trainer: strictTrainer }
+        });
     },
 
     getTraineeSetMappings: async (traineeId: number) => {

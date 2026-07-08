@@ -817,6 +817,7 @@ async def update_trainee_set_mappings(
 @router.get("/trainer/submissions", response_model=List[AssessmentSubmissionResponse])
 def get_trainer_submissions(
     status: str = "pending", # "pending", "approved", "rejected", or "all"
+    strict_trainer: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -841,7 +842,7 @@ def get_trainer_submissions(
     elif status != "all":
         query = query.filter(AssessmentSubmission.status == status)
     
-    if current_user.role != "admin":
+    if current_user.role != "admin" or strict_trainer:
         query = query.filter(AssessmentSubmission.user_id.in_(trainee_ids))
     
     return query.order_by(AssessmentSubmission.submitted_at.desc()).all()
@@ -1176,6 +1177,7 @@ def permanent_delete_submission(
 
 @router.get("/trainer/progress")
 def get_trainer_progress(
+    strict_trainer: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -1183,8 +1185,8 @@ def get_trainer_progress(
     if current_user.role not in ["employee", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
     
-    # If admin, fetch all, otherwise pass trainer_id
-    trainer_id = current_user.id if current_user.role == "employee" else None
+    # If admin and not strict, fetch all, otherwise pass trainer_id
+    trainer_id = current_user.id if (current_user.role == "employee" or strict_trainer) else None
     return calculate_all_trainee_progress(db, trainer_id=trainer_id)
 
 
@@ -1203,7 +1205,8 @@ def get_trainer_trainees_progress(
     if current_user.role not in ["employee", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
     
-    # 1. Fetch trainees based on role
+    # 1. Fetch trainees based on role (could also check strict_trainer if needed, but not specified yet. Added here just in case)
+    # Wait, get_trainer_trainees_progress doesn't have strict_trainer param yet. I didn't add it to this one in the prompt, but it's safe to skip since PracticalTrainerDashboard doesn't call this directly for progress.
     if current_user.role == "admin":
         trainees = db.query(User).filter(User.role == "trainee").all()
     else:

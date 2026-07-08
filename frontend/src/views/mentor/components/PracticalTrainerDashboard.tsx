@@ -301,7 +301,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const fetchTraineeProgress = async (silent = false) => {
         if (!silent) setLoadingProgress(true);
         try {
-            const data = await assessmentService.getTrainerProgress();
+            const data = await assessmentService.getTrainerProgress(!isAdmin);
             setPerformanceData(data);
         } catch (err) {
             showNotification('Failed to load trainee progress data.', 'error');
@@ -343,7 +343,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const fetchSubmissions = useCallback(async (silent = false) => {
         if (!silent) setLoading(true);
         try {
-            const data = await assessmentService.getTrainerSubmissions('all');
+            const data = await assessmentService.getTrainerSubmissions('all', !isAdmin);
             setSubmissions(data);
         } catch (err) {
             showNotification('Failed to load submissions.', 'error');
@@ -721,13 +721,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 >
                                     <CheckCircle2 size={16} /> Trainee Progress Tracker
                                 </button>
-                                <button
-                                    className={`sub-tab-btn ${activeMainTab === 'sets' ? 'active' : ''}`}
-                                    onClick={() => navigate(getTabUrl('sets'))}
-                                    style={{ height: '36px' }}
-                                >
-                                    <Settings size={16} /> Set Configuration
-                                </button>
                             </div>
                         </div>
                     )}
@@ -1044,7 +1037,14 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
                 {/* Progress Tab */}
                 {activeMainTab === 'progress' && (
-                    <div className="progress-tracker-container" style={{ display: 'block', flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
+                    <div className="progress-tracker-container" style={{ 
+                        display: selectedTrainee ? 'flex' : 'block', 
+                        flexDirection: selectedTrainee ? 'column' : undefined, 
+                        flex: 1, 
+                        overflowY: selectedTrainee ? 'hidden' : 'auto', 
+                        padding: '1.5rem', 
+                        height: 'calc(100vh - 250px)' 
+                    }}>
                         {loadingProgress ? (
                             <div className="skeleton-cards">
                                 <div className="skeleton-card"></div>
@@ -1085,7 +1085,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
 
                 {/* Set Configuration Tab */}
-                {activeMainTab === 'sets' && (
+                {(activeMainTab === 'sets' && isAdmin) && (
                     <TraineeSetConfiguration searchTerm={searchTerm} activeType={activeType} />
                 )}
 

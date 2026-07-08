@@ -233,9 +233,11 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
             transition: 'all 0.2s ease'
         };
     };
+    const passed3D = selectedTrainee.quizzes_history.filter(q => q.course_id === '1' && q.score >= 80).length;
+    const passed2D = selectedTrainee.quizzes_history.filter(q => q.course_id === '2' && q.score >= 80).length;
 
     return (
-        <section className="trainee-detail-view" style={{ height: 'calc(100vh - 108px)' }}>
+        <section className="trainee-detail-view" style={{ height: '100%' }}>
             <button className="back-btn" onClick={() => setSelectedTrainee(null)}>
                 ← Return to Directory
             </button>
@@ -334,7 +336,12 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                     {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
                     <div className="history-section matrix-section" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none' }}><BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING</h3>
+                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING
+                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500, marginLeft: '0.25rem' }}>
+                                    ({passed3D}/{globalOrder3D.length})
+                                </span>
+                            </h3>
                             {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
                                 <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
                                     <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
@@ -343,7 +350,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             )}
                         </div>
                         {selectedTrainee.quizzes_history.filter(q => q.course_id === '1').length > 0 ? (
-                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px' }}>
+                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px', paddingBottom: '1.5rem' }}>
                                 {[...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '1')
                                     .sort((a, b) => {
@@ -435,7 +442,12 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                     {(activeCourseTab === 'all' || activeCourseTab === '2D') && (
                     <div className="history-section matrix-section" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none' }}><FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING</h3>
+                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING
+                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500, marginLeft: '0.25rem' }}>
+                                    ({passed2D}/{globalOrder2D.length})
+                                </span>
+                            </h3>
                             {activeCourseTab === '2D' && (
                                 <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
                                     <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
@@ -444,7 +456,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             )}
                         </div>
                         {selectedTrainee.quizzes_history.filter(q => q.course_id === '2').length > 0 ? (
-                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px' }}>
+                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px', paddingBottom: '1.5rem' }}>
                                 {[...selectedTrainee.quizzes_history]
                                     .filter(q => q.course_id === '2')
                                     .sort((a, b) => {

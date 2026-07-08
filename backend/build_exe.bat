@@ -11,9 +11,8 @@ if not exist "venv" (
 )
 
 echo Installing dependencies...
-call venv\Scripts\activate
-pip install -r requirements.txt
-pip install pyinstaller
+venv\Scripts\python.exe -m pip install -r requirements.txt
+venv\Scripts\python.exe -m pip install pyinstaller
 
 echo Cleaning old builds...
 if exist "dist" rd /s /q "dist"
@@ -25,7 +24,7 @@ if exist "tts_cache" (
 )
 
 if exist "KMTI_iCAD_Server.spec" del /q "KMTI_iCAD_Server.spec"
-python -m PyInstaller --onefile --console ^
+venv\Scripts\python.exe -m PyInstaller --onefile --console ^
     --name KMTI_iCAD_Server ^
     --icon=kmti_logo.ico ^
     --add-data="kmti_logo.ico;." ^
