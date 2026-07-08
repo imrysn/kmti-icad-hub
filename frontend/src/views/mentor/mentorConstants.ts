@@ -932,3 +932,23 @@ export const ICAD_2D_LESSONS: Lesson[] = [
     }
   }
 ];
+
+export const ICAD_KEMCO_LESSONS: Lesson[] = [
+  { id: '3d', title: '3D', content: ['Placeholder for 3D'] },
+  { id: '2d', title: '2D', content: ['Placeholder for 2D'] },
+  { id: 'piping', title: 'Piping', content: ['Placeholder for Piping'] },
+  { id: 'general-standard-steel', title: 'General Standard Steel', content: ['Placeholder'] },
+  { id: 'steel-pipes', title: 'Steel Pipes', content: ['Placeholder'] },
+  { id: 'angle-bar-dimensions', title: 'Angle Bar Dimensions', content: ['Placeholder'] },
+  { id: 'available-plate-thickness-jis', title: 'Available Plate Thickness JIS', content: ['Placeholder'] },
+  { id: 'bolting-kemco', title: 'Bolting (KEMCO Standard)', content: ['Placeholder'] },
+  { id: 'cross-ref', title: 'Cross ref & Previous dwg', content: ['Placeholder'] },
+  { id: 'expanded-metal', title: 'Expanded Metal', content: ['Placeholder'] },
+  { id: 'jis-scale', title: 'JIS Scale', content: ['Placeholder'] },
+  { id: 'keyplate-groove', title: 'Keyplate & Groove', content: ['Placeholder'] },
+  { id: 'ost-2', title: 'OST-2', content: ['Placeholder'] },
+  { id: 'paragon-smc', title: 'Paragon SMC', content: ['Placeholder'] },
+  { id: 'retainer-ring', title: 'Retainer Ring', content: ['Placeholder'] },
+  { id: 'shaft-keyway', title: 'Shaft Keyway', content: ['Placeholder'] },
+  { id: 'showa-catalog', title: 'Showa Catalog', content: ['Placeholder'] }
+];

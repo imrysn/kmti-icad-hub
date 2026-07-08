@@ -48,6 +48,23 @@ function AppContent() {
   const [icadDropdownOpen, setIcadDropdownOpen] = useState(false);
   const [solidworksDropdownOpen, setSolidworksDropdownOpen] = useState(false);
 
+  // Global click listener to close dropdowns
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.assistant-dropdown-container')) {
+        setIcadDropdownOpen(false);
+        setSolidworksDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', handleGlobalClick);
+    return () => document.removeEventListener('click', handleGlobalClick);
+  }, []);
+
+  const resetCourseView = () => {
+    window.dispatchEvent(new CustomEvent('resetCourseView'));
+  };
+
   const fetchUnreadCount = async () => {
     if (!isAuthenticated) return;
     try {
@@ -257,44 +274,34 @@ function AppContent() {
               {user?.role === 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
                   <div className="assistant-dropdown-container">
-                    <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') && !location.search.includes('solidworks') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
-                      <GraduationCap size={18} />
-                      <span>ICAD</span>
+                    <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') && !location.search.includes('solidworks') ? 'active' : ''}`} style={{ padding: 0 }}>
+                      <div 
+                        onClick={() => { resetCourseView(); navigate('/mentor'); setIcadDropdownOpen(false); }}
+                        style={{ display: 'flex', alignItems: 'center', padding: '0.75rem 0.5rem', cursor: 'pointer', flexGrow: 1 }}
+                      >
+                        <GraduationCap size={18} />
+                        <span style={{ marginLeft: '0.625rem' }}>ICAD</span>
+                      </div>
                       <div 
                         className="dropdown-toggle"
                         onClick={(e) => { e.stopPropagation(); setIcadDropdownOpen(prev => !prev); }}
-                        style={{ display: 'flex', alignItems: 'center', padding: '4px', marginLeft: 'auto' }}
+                        style={{ display: 'flex', alignItems: 'center', padding: '0.75rem', cursor: 'pointer', opacity: 0.7 }}
                       >
                         <ChevronDown size={14} />
                       </div>
                     </button>
                     {icadDropdownOpen && (
                       <div className="assistant-dropdown-menu">
-                        <div className="assistant-dropdown-item" onClick={() => { navigate('/mentor'); setIcadDropdownOpen(false); }}>Manual</div>
-                        <div className="assistant-dropdown-item" onClick={() => { navigate('/mentor?view=icad_standard'); setIcadDropdownOpen(false); }}>Standard</div>
-                        <div className="assistant-dropdown-item" onClick={() => { navigate('/mentor?view=icad_command'); setIcadDropdownOpen(false); }}>Command</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor'); setIcadDropdownOpen(false); }}>Manual</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor?view=icad_standard'); setIcadDropdownOpen(false); }}>Standard</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor?view=icad_command'); setIcadDropdownOpen(false); }}>Command</div>
                       </div>
                     )}
                   </div>
-                  
-                  <div className="assistant-dropdown-container">
-                    <button className={`assistant-tab-btn ${location.search.includes('solidworks') ? 'active' : ''}`} onClick={() => navigate('/mentor?view=solidworks_manual')}>
-                      <Box size={18} />
-                      <span>SOLIDWORKS</span>
-                      <div 
-                        className="dropdown-toggle"
-                        onClick={(e) => { e.stopPropagation(); setSolidworksDropdownOpen(prev => !prev); }}
-                        style={{ display: 'flex', alignItems: 'center', padding: '4px', marginLeft: 'auto' }}
-                      >
-                        <ChevronDown size={14} />
-                      </div>
-                    </button>
-                    {solidworksDropdownOpen && (
-                      <div className="assistant-dropdown-menu">
-                        <div className="assistant-dropdown-item" onClick={() => { navigate('/mentor?view=solidworks_manual'); setSolidworksDropdownOpen(false); }}>Manual</div>
-                      </div>
-                    )}
-                  </div>
+                  <button className={`assistant-tab-btn ${location.search.includes('solidworks') ? 'active' : ''}`} onClick={() => { resetCourseView(); navigate('/mentor?view=solidworks_manual'); }}>
+                    <Box size={18} />
+                    <span>SOLIDWORKS</span>
+                  </button>
 
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => navigate('/admin')}>
                     <Settings size={18} />
@@ -305,44 +312,34 @@ function AppContent() {
               {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && hasTrainees && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
                   <div className="assistant-dropdown-container">
-                    <button className={`assistant-tab-btn ${currentTab.includes('icad') || currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')}>
-                      <GraduationCap size={18} />
-                      <span>ICAD</span>
+                    <button className={`assistant-tab-btn ${currentTab.includes('icad') || currentTab === 'training' ? 'active' : ''}`} style={{ padding: 0 }}>
+                      <div 
+                        onClick={() => { resetCourseView(); handleTabChange('training'); setIcadDropdownOpen(false); }}
+                        style={{ display: 'flex', alignItems: 'center', padding: '0.75rem 0.5rem', cursor: 'pointer', flexGrow: 1 }}
+                      >
+                        <GraduationCap size={18} />
+                        <span style={{ marginLeft: '0.625rem' }}>ICAD</span>
+                      </div>
                       <div 
                         className="dropdown-toggle"
                         onClick={(e) => { e.stopPropagation(); setIcadDropdownOpen(prev => !prev); }}
-                        style={{ display: 'flex', alignItems: 'center', padding: '4px', marginLeft: 'auto' }}
+                        style={{ display: 'flex', alignItems: 'center', padding: '0.75rem', cursor: 'pointer', opacity: 0.7 }}
                       >
                         <ChevronDown size={14} />
                       </div>
                     </button>
                     {icadDropdownOpen && (
                       <div className="assistant-dropdown-menu">
-                        <div className="assistant-dropdown-item" onClick={() => { handleTabChange('training'); setIcadDropdownOpen(false); }}>Manual</div>
-                        <div className="assistant-dropdown-item" onClick={() => { handleTabChange('icad_standard'); setIcadDropdownOpen(false); }}>Standard</div>
-                        <div className="assistant-dropdown-item" onClick={() => { handleTabChange('icad_command'); setIcadDropdownOpen(false); }}>Command</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); handleTabChange('training'); setIcadDropdownOpen(false); }}>Manual</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); handleTabChange('icad_standard'); setIcadDropdownOpen(false); }}>Standard</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); handleTabChange('icad_command'); setIcadDropdownOpen(false); }}>Command</div>
                       </div>
                     )}
                   </div>
-
-                  <div className="assistant-dropdown-container">
-                    <button className={`assistant-tab-btn ${currentTab.includes('solidworks') ? 'active' : ''}`} onClick={() => handleTabChange('solidworks_manual')}>
-                      <Box size={18} />
-                      <span>SOLIDWORKS</span>
-                      <div 
-                        className="dropdown-toggle"
-                        onClick={(e) => { e.stopPropagation(); setSolidworksDropdownOpen(prev => !prev); }}
-                        style={{ display: 'flex', alignItems: 'center', padding: '4px', marginLeft: 'auto' }}
-                      >
-                        <ChevronDown size={14} />
-                      </div>
-                    </button>
-                    {solidworksDropdownOpen && (
-                      <div className="assistant-dropdown-menu">
-                        <div className="assistant-dropdown-item" onClick={() => { handleTabChange('solidworks_manual'); setSolidworksDropdownOpen(false); }}>Manual</div>
-                      </div>
-                    )}
-                  </div>
+                  <button className={`assistant-tab-btn ${currentTab.includes('solidworks') ? 'active' : ''}`} onClick={() => { resetCourseView(); handleTabChange('solidworks_manual'); }}>
+                    <Box size={18} />
+                    <span>SOLIDWORKS</span>
+                  </button>
 
                   <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
                     <ClipboardList size={18} />

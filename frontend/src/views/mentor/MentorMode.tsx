@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
-import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
+import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
 import { assessmentService } from '../../services/assessmentService';
 import { useWebSocket } from '../../context/WebSocketContext';
 
@@ -112,11 +112,23 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         }
     }, [location.search]);
 
+    // Handle course reset from global navigation tabs
+    useEffect(() => {
+        const handleReset = () => {
+            setSelectedCourse(null);
+        };
+        window.addEventListener('resetCourseView', handleReset);
+        return () => window.removeEventListener('resetCourseView', handleReset);
+    }, []);
+
     // Derived stable state
     const { lessons: dbLessons, loading: lessonsLoading, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
 
     const currentLessons = useMemo(() => {
         if (!selectedCourse) return [];
+        if (selectedCourse.id === 'mock-icad-kemco') {
+            return ICAD_KEMCO_LESSONS;
+        }
         if (selectedCourse.id.toString().startsWith('mock-')) {
             return [{
                 id: 'mock-lesson-1',

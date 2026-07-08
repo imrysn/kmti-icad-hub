@@ -1,0 +1,203 @@
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { useLessonCore } from "../../../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+
+import "../../../../styles/2D_Drawing/CourseLesson.css";
+
+/* Importing assets for Geometric Tolerance */
+import geoTolMainImg from "../../../../assets/2D_Image_File/2D_geometric_tolerance(1).png";
+import geoTolAddImg from "../../../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png";
+import datumImg from "../../../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png";
+
+interface GeometricToleranceLessonProps {
+  nextLabel?: string;
+  onNextLesson?: () => void;
+  onPrevLesson?: () => void;
+}
+
+const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
+  onNextLesson,
+  onPrevLesson, 
+  nextLabel
+}) => {
+  const TABS = [
+    { id: '1', label: 'Tolerance Frames' },
+    { id: '2', label: 'Datum References' }
+  ];
+
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('2d-geometric-tol-active-tab') || TABS[0].id;
+  });
+
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-geometric-tol-${activeTab}`);
+
+  useEffect(() => {
+    localStorage.setItem('2d-geometric-tol-active-tab', activeTab);
+    stop();
+  }, [activeTab, stop]);
+
+  const handleNext = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrev = (isAuto = false) => {
+    stop();
+    if (!isAuto) {
+      sessionStorage.setItem('tts-autoplay-active', 'false');
+    }
+
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
+    '2d-geometric-tol-1': {
+      title: 'GEOMETRIC TOLERANCE',
+      subtitle: 'System for defining engineering tolerances and accuracy.',
+      steps: [
+        "A system for defining allowable engineering tolerances. It tells what degree of accuracy and precision that needs to be applied on the part."
+      ]
+    },
+    '2d-geometric-tol-2': {
+      title: 'DATUM',
+      subtitle: 'Establishing reference points, lines, or surfaces.',
+      steps: [
+        "A datum is a reference point, line, or surface used as a target for measurements on a part."
+      ]
+    }
+  };
+
+  const currentLesson = LESSON_DATA[`2d-geometric-tol-${activeTab}`] || LESSON_DATA['2d-geometric-tol-1'];
+
+  const currentTabSteps = [
+    currentLesson.title,
+    currentLesson.subtitle,
+    ...(currentLesson.steps || [])
+  ].filter(Boolean);
+
+  const tabsList = TABS.map(t => ({ id: t.id }));
+
+  useEffect(() => {
+    registerText(currentTabSteps, 0);
+  }, [activeTab, registerText]);
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    tabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    0
+  );
+
+  return (
+    <div className="course-lesson-container" ref={containerRef}>
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
+
+      <div className="lesson-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="lesson-grid single-card">
+        <div className="lesson-card">
+          <div className="fade-in">
+
+            <div className="flex-col tab-content fade-in">
+              {activeTab === '1' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">9</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Geometric Tolerance"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <KaraokeLessonText
+                      className="p-flush mb-4"
+                      text={currentLesson.steps[0]}
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                    <img src={geoTolMainImg} alt="Tolerance Dialog" className="software-screenshot screenshot-wide" />
+                    <img src={geoTolAddImg} alt="Add Stacked Geometric Tolerance" className="software-screenshot screenshot-wide mt-6" />
+                  </div>
+                </div>
+              )}
+
+              {activeTab === '2' && (
+                <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
+                  <div className="step-header">
+                    <span className="step-number">10</span>
+                    <KaraokeLessonText
+                      as="span"
+                      className="step-label"
+                      text="Datum"
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className="step-description">
+                    <div className="red-text mb-4">
+                      <KaraokeLessonText
+                        text={currentLesson.steps[0]}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <img src={datumImg} alt="Datum Triangle" className="software-screenshot screenshot-wide" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="lesson-navigation">
+            <button className="nav-button" onClick={handlePrev}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={handleNext}>
+              {nextLabel || 'Next'} <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default GeometricToleranceLesson;
