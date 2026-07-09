@@ -160,7 +160,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     const submitFolderUpload = async () => {
         if (!folderUploadTargetTask || folderFiles.length === 0 || !customFolderName.trim()) return;
-        
+
         const confirmed = await requestConfirmation({
             title: "Confirm Upload",
             message: "Are you sure you want to compress and upload this folder?",
@@ -508,19 +508,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             return (
                                                 <div key={unitName} className="assessment-unit-group" style={{ marginBottom: '2.5rem' }}>
                                                     <div className="unit-header-bar" style={{
-                                                         background: 'var(--bg-card, rgba(15, 23, 42, 0.45))',
-                                                         border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
-                                                         borderRadius: '12px',
-                                                         padding: '1rem 1.5rem',
-                                                         marginBottom: '1rem',
-                                                         display: 'flex',
-                                                         alignItems: 'center',
-                                                         gap: '0.75rem',
-                                                         boxShadow: 'var(--shadow-card, 0 4px 6px -1px rgba(0, 0, 0, 0.1))'
-                                                     }}>
-                                                         <Folder size={20} style={{ color: 'var(--primary, #38bdf8)' }} />
-                                                         <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-main, #f8fafc)', fontWeight: 600 }}>{unitName}</h3>
-                                                         <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem', background: 'transparent', border: 'none', padding: 0, color: 'var(--text-muted, #94a3b8)' }}>{unitTasks.length} Files</span>
+                                                        background: 'var(--bg-card, rgba(15, 23, 42, 0.45))',
+                                                        border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+                                                        borderRadius: '12px',
+                                                        padding: '1rem 1.5rem',
+                                                        marginBottom: '1rem',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '0.75rem',
+                                                        boxShadow: 'var(--shadow-card, 0 4px 6px -1px rgba(0, 0, 0, 0.1))'
+                                                    }}>
+                                                        <Folder size={20} style={{ color: 'var(--primary, #38bdf8)' }} />
+                                                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-main, #f8fafc)', fontWeight: 600 }}>{unitName}</h3>
+                                                        <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem', background: 'transparent', border: 'none', padding: 0, color: 'var(--text-muted, #94a3b8)' }}>{unitTasks.length} Files</span>
                                                         <button
                                                             type="button"
                                                             className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
