@@ -309,7 +309,7 @@ function AppContent() {
                   </button>
                 </nav>
               )}
-              {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && hasTrainees && (
+              {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
                   <div className="assistant-dropdown-container">
                     <button className={`assistant-tab-btn ${currentTab.includes('icad') || currentTab === 'training' ? 'active' : ''}`} style={{ padding: 0 }}>
@@ -341,10 +341,12 @@ function AppContent() {
                     <span>SOLIDWORKS</span>
                   </button>
 
-                  <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
-                    <ClipboardList size={18} />
-                    <span>Trainee Overview</span>
-                  </button>
+                  {hasTrainees && (
+                    <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
+                      <ClipboardList size={18} />
+                      <span>Trainee Overview</span>
+                    </button>
+                  )}
                 </nav>
               )}
             </div>
@@ -389,7 +391,7 @@ function AppContent() {
                   )}
                 </button>
 
-                {(user?.role === 'admin' || user?.role === 'employee') && (
+                {(user?.role === 'admin' || (user?.role === 'employee' && hasTrainees)) && (
                   <button
                     onClick={toggleTelemetry}
                     className={`theme-toggle-btn ${isTelemetryOpen ? 'active' : ''}`}
