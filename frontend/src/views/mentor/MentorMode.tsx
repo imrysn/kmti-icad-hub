@@ -3,8 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
+<<<<<<< HEAD
 import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
 // New import for mock command view component
+=======
+import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS, SOLIDWORKS_INTRO_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
+>>>>>>> origin/rainiel
 import { assessmentService } from '../../services/assessmentService';
 import { useWebSocket } from '../../context/WebSocketContext';
 
@@ -129,6 +133,9 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (!selectedCourse) return [];
         if (selectedCourse.id === 'mock-icad-kemco') {
             return ICAD_KEMCO_LESSONS;
+        }
+        if (selectedCourse.id === 'sw-intro') {
+            return SOLIDWORKS_INTRO_LESSONS;
         }
         if (selectedCourse.id.toString().startsWith('mock-')) {
             return [{

@@ -18,12 +18,12 @@ export const SolidworksIntroduction: React.FC<Props> = ({ setSelectedCourse }) =
                     Graphic Placeholder
                 </div>
             </div>
-            <button 
-                className="primary" 
+            <button
+                className="primary"
                 onClick={(e) => {
                     e.stopPropagation();
                     setSelectedCourse({
-                        id: 'mock-sw-intro',
+                        id: 'sw-intro',
                         title: 'SolidWorks Introduction',
                         description: 'Learn the basics of SOLIDWORKS interface and workflow.',
                         course_type: 'Manual'

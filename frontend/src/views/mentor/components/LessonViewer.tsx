@@ -52,6 +52,7 @@ const OperalViewLesson = lazy(() => import('../../../components/ICAD/Manual/2D_D
 const NormalMirrorPartsLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_NormalMirrorParts'));
 const RevisionCodeLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_StandardLibrary'));
+const SolidworkInterfaceLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/Introduction/Solidwork_Interface'));
 
 import { useTTSContext } from '../../../context/TTSContext';
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
@@ -447,6 +448,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '3d': () => <KemcoThreeDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d': () => <KemcoTwoDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-interface': () => <SolidworkInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
