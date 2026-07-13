@@ -10,6 +10,15 @@
   width: 100%;
   background: var(--bg-dark);
   overflow: hidden;
+  font-weight: 500;
+}
+
+.page-content.no-scroll {
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
 }
 
 .admin-sidebar {

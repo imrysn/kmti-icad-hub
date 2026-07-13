@@ -26,6 +26,13 @@ const getOrdinal = (n: number) => {
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
 
+const PREDEFINED_COMMENTS = [
+    "Please check the attached Excel file.",
+    "Needs refinement. See attached Excel.",
+    "Missing details. See attached Excel.",
+    "Excellent work!"
+];
+
 export const PracticalTrainerDashboard: React.FC = () => {
     const { showNotification } = useNotification();
     const { requestConfirmation } = useUI();
@@ -50,6 +57,28 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const [feedbackComments, setFeedbackComments] = useState('');
     const [feedbackFile, setFeedbackFile] = useState<File | null>(null);
     const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
+
+    // Custom Comments State
+    const [customComments, setCustomComments] = useState<string[]>([]);
+    const [newCustomComment, setNewCustomComment] = useState('');
+    const [isAddingCustom, setIsAddingCustom] = useState(false);
+    const [editingCommentIndex, setEditingCommentIndex] = useState<number | null>(null);
+    const [editCommentText, setEditCommentText] = useState('');
+
+    useEffect(() => {
+        const fetchCustomComments = async () => {
+            try {
+                const user = await authService.getCurrentUser();
+                if (user && user.custom_comments) {
+                    setCustomComments(user.custom_comments);
+                }
+            } catch (error) {
+                console.error('Failed to fetch custom comments:', error);
+            }
+        };
+        fetchCustomComments();
+    }, []);
+
     const [statusFilter, setStatusFilter] = useState<'pending' | 'reviewed'>('pending');
     const [expandedTrainees, setExpandedTrainees] = useState<number[]>([]);
     const [expandedSets, setExpandedSets] = useState<string[]>([]);
@@ -213,7 +242,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 nextCourseMappings.sort((a: any, b: any) => Math.abs(a.display_set_number) - Math.abs(b.display_set_number));
                                 const firstNextCourseMap = nextCourseMappings[0];
                                 if (firstNextCourseMap.display_set_number > 0) {
-                                    const newNextCourseMappings = nextCourseMappings.map((m: any) => 
+                                    const newNextCourseMappings = nextCourseMappings.map((m: any) =>
                                         m.actual_set_number === firstNextCourseMap.actual_set_number
                                             ? { ...m, display_set_number: -Math.abs(m.display_set_number) }
                                             : m
@@ -420,6 +449,200 @@ export const PracticalTrainerDashboard: React.FC = () => {
         });
         return () => unsub();
     }, [subscribe]);
+
+    const handleAddCustomComment = async () => {
+        if (!newCustomComment.trim()) return;
+        try {
+            const updatedComments = [...customComments, newCustomComment.trim()];
+            await authService.updateCustomComments(updatedComments);
+            setCustomComments(updatedComments);
+            setNewCustomComment('');
+            setIsAddingCustom(false);
+            showNotification('Custom comment saved', 'success');
+        } catch (error) {
+            console.error('Failed to save custom comment:', error);
+            showNotification('Failed to save custom comment', 'error');
+        }
+    };
+    const handleDeleteCustomComment = async (index: number) => {
+        try {
+            const updatedComments = customComments.filter((_, i) => i !== index);
+            await authService.updateCustomComments(updatedComments);
+            setCustomComments(updatedComments);
+            showNotification('Custom comment deleted', 'success');
+        } catch (error) {
+            console.error('Failed to delete custom comment:', error);
+            showNotification('Failed to delete custom comment', 'error');
+        }
+    };
+
+    const handleSaveEditCustomComment = async () => {
+        if (editingCommentIndex === null || !editCommentText.trim()) return;
+        try {
+            const updatedComments = [...customComments];
+            updatedComments[editingCommentIndex] = editCommentText.trim();
+            await authService.updateCustomComments(updatedComments);
+            setCustomComments(updatedComments);
+            setEditingCommentIndex(null);
+            setEditCommentText('');
+            showNotification('Custom comment updated', 'success');
+        } catch (error) {
+            console.error('Failed to update custom comment:', error);
+            showNotification('Failed to update custom comment', 'error');
+        }
+    };
+
+    const handleQuickCommentClick = (comment: string) => {
+        setFeedbackComments(prev => prev ? `${prev} ${comment}` : comment);
+    };
+
+    const renderQuickCommentsUI = () => (
+        <div style={{ marginBottom: '1rem', position: 'relative' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+                Quick Comments
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', width: 'fit-content', marginBottom: '0.5rem' }}>
+                <select
+                    style={{
+                        width: '350px',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '6px',
+                        backgroundColor: 'var(--bg-surface)',
+                        color: 'var(--text-main)',
+                        cursor: 'pointer',
+                        outline: 'none'
+                    }}
+                    value=""
+                    onChange={(e) => {
+                        if (e.target.value) {
+                            handleQuickCommentClick(e.target.value);
+                        }
+                    }}
+                >
+                    <option value="" disabled>Select a quick comment...</option>
+                    <optgroup label="Predefined Comments">
+                        {PREDEFINED_COMMENTS.map((comment, idx) => (
+                            <option key={`predef-${idx}`} value={comment}>
+                                {comment.length > 50 ? comment.substring(0, 50) + '...' : comment}
+                            </option>
+                        ))}
+                    </optgroup>
+                    {customComments.length > 0 && (
+                        <optgroup label="My Custom Comments">
+                            {customComments.map((comment, idx) => (
+                                <option key={`custom-${idx}`} value={comment}>
+                                    {comment.length > 50 ? comment.substring(0, 50) + '...' : comment}
+                                </option>
+                            ))}
+                        </optgroup>
+                    )}
+                </select>
+                <button
+                    className="quick-comment-btn add-custom"
+                    style={{
+                        padding: '0',
+                        fontSize: '0.8rem',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: isAddingCustom ? 'var(--accent-blue)' : 'var(--text-muted)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginTop: '0.4rem',
+                        fontWeight: 600,
+                        transition: 'color 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-main)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = isAddingCustom ? 'var(--accent-blue)' : 'var(--text-muted)'}
+                    onClick={() => setIsAddingCustom(!isAddingCustom)}
+                    type="button"
+                >
+                    {isAddingCustom ? 'Done' : 'Manage Custom'}
+                </button>
+            </div>
+            {isAddingCustom && (
+                <div style={{ position: 'absolute', top: '100%', left: 0, zIndex: 50, width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem', padding: '0.75rem', background: 'var(--bg-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+                    {customComments.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', maxHeight: '140px', overflowY: 'auto' }}>
+                            {customComments.map((comment, idx) => (
+                                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    {editingCommentIndex === idx ? (
+                                        <>
+                                            <input
+                                                type="text"
+                                                value={editCommentText}
+                                                onChange={(e) => setEditCommentText(e.target.value)}
+                                                style={{ flex: 1, padding: '0.3rem', fontSize: '0.8rem', border: '1px solid var(--accent-blue)', borderRadius: 'var(--radius-sm)' }}
+                                                autoFocus
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') handleSaveEditCustomComment();
+                                                    else if (e.key === 'Escape') setEditingCommentIndex(null);
+                                                }}
+                                            />
+                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
+                                                <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                {comment}
+                                            </div>
+                                            <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
+                                            <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+                            <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.25rem 0' }}></div>
+                        </div>
+                    )}
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <input
+                            type="text"
+                            placeholder="Add a new custom comment..."
+                            value={newCustomComment}
+                            onChange={(e) => setNewCustomComment(e.target.value)}
+                            style={{
+                                flex: 1,
+                                padding: '0.4rem',
+                                fontSize: '0.85rem',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: 'var(--radius-md)',
+                                background: 'var(--bg-main)',
+                                color: 'var(--text-main)'
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    handleAddCustomComment();
+                                }
+                            }}
+                        />
+                        <button
+                            onClick={handleAddCustomComment}
+                            type="button"
+                            style={{
+                                padding: '0.4rem 0.75rem',
+                                backgroundColor: 'var(--color-primary)',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: 'var(--radius-md)',
+                                cursor: 'pointer',
+                                fontSize: '0.85rem'
+                            }}
+                            disabled={!newCustomComment.trim()}
+                        >
+                            Add
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 
     const handleDownloadTraineeFile = async (submission: AssessmentSubmission) => {
         const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
@@ -684,99 +907,92 @@ export const PracticalTrainerDashboard: React.FC = () => {
     }
 
     return (
-        <div className="practical-trainer-wrapper" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, height: '100%', width: '100%', overflow: 'hidden' }}>
-            <div className="trainer-dashboard animate-fade-in" style={{ flex: 1, minHeight: 0 }}>
-                <div className="dashboard-sub-header">
-                    {!isAdmin && (
-                        <div className="sub-header-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                            <div className="header-title-area">
-                                <h2>
-                                    {activeMainTab === 'assessments' ? "Assessment Review Portal" :
-                                        activeMainTab === 'progress' ? "Trainee Progress Tracker" :
-                                            activeMainTab === 'notifications' ? "Recent Activity Notifications" :
-                                                "Trainee Set Configuration"}
-                                </h2>
-                                <p className="subtitle">
-                                    {activeMainTab === 'assessments'
-                                        ? "Manage and verify practical drafting submissions from trainees"
-                                        : activeMainTab === 'progress'
-                                            ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
-                                            : activeMainTab === 'notifications'
-                                                ? "Review real-time trainee actions, submissions, and course completions"
-                                                : "Configure which assessment sets each trainee can see and access"}
-                                </p>
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                <button
-                                    className={`sub-tab-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
-                                    onClick={() => navigate(getTabUrl('assessments'))}
-                                    style={{ height: '36px' }}
-                                >
-                                    <FileText size={16} /> Practical Submissions
-                                </button>
-                                <button
-                                    className={`sub-tab-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
-                                    onClick={() => navigate(getTabUrl('progress'))}
-                                    style={{ height: '36px' }}
-                                >
-                                    <CheckCircle2 size={16} /> Trainee Progress Tracker
-                                </button>
-                            </div>
-                        </div>
-                    )}
+        <div className="practical-trainer-wrapper animate-fade-in" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, height: '100%', width: '100%', overflow: 'hidden' }}>
+            {!isAdmin && (
+                <header className="page-header">
+                    <div className="header-left">
+                        <h1>Trainee Overview</h1>
+                        <p className="subtitle">
+                            {activeMainTab === 'assessments'
+                                ? "Manage and verify practical drafting submissions from trainees"
+                                : activeMainTab === 'progress'
+                                    ? "Monitor lesson scores, curriculum completion rates, and practical assessment attempts"
+                                    : activeMainTab === 'notifications'
+                                        ? "Review real-time trainee actions, submissions, and course completions"
+                                        : "Configure which assessment sets each trainee can see and access"}
+                        </p>
+                    </div>
+                    <div className="dashboard-main-tabs">
+                        <button
+                            className={`sub-tab-btn ${activeMainTab === 'assessments' ? 'active' : ''}`}
+                            onClick={() => navigate(getTabUrl('assessments'))}
+                            style={{ height: '36px' }}
+                        >
+                            <FileText size={16} /> Practical Submissions
+                        </button>
+                        <button
+                            className={`sub-tab-btn ${activeMainTab === 'progress' ? 'active' : ''}`}
+                            onClick={() => navigate(getTabUrl('progress'))}
+                            style={{ height: '36px' }}
+                        >
+                            <CheckCircle2 size={16} /> Trainee Progress Tracker
+                        </button>
+                    </div>
+                </header>
+            )}
 
-                    {activeMainTab !== 'notifications' && (
-                        <div className="toolbar">
-                            <div className="search-box">
-                                <Search size={16} color="#94a3b8" />
-                                <input
-                                    type="text"
-                                    placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </div>
-                            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                                {activeMainTab === 'assessments' && (
-                                    <div className="review-filter-tabs">
-                                        <button
-                                            className={`filter-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
-                                            onClick={() => setStatusFilter('pending')}
-                                        >
-                                            <Clock size={16} /> Pending Reviews
-                                        </button>
-                                        <button
-                                            className={`filter-tab-btn ${statusFilter === 'reviewed' ? 'active' : ''}`}
-                                            onClick={() => setStatusFilter('reviewed')}
-                                        >
-                                            <CheckCircle2 size={16} /> Approved History
-                                        </button>
-                                    </div>
-                                )}
-                                {activeMainTab === 'sets' && (
-                                    <div className="review-filter-tabs">
-                                        <button
-                                            className={`filter-tab-btn ${activeType === '3D' ? 'active' : ''}`}
-                                            onClick={() => setActiveType('3D')}
-                                        >
-                                            <Box size={16} /> 3D Modeling Sets
-                                        </button>
-                                        <button
-                                            className={`filter-tab-btn ${activeType === '2D' ? 'active' : ''}`}
-                                            onClick={() => setActiveType('2D')}
-                                        >
-                                            <PenTool size={16} /> 2D Drawing Sets
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+            <div className={isAdmin ? "" : "page-content"} style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+                {activeMainTab !== 'notifications' && (
+                    <div className="toolbar" style={{ marginBottom: '1.5rem' }}>
+                        <div className="search-box">
+                            <Search size={16} color="#94a3b8" />
+                            <input
+                                type="text"
+                                placeholder={activeMainTab === 'assessments' ? "Search trainee or task..." : "Search trainee name..."}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
-                    )}
-                </div>
+                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            {activeMainTab === 'assessments' && (
+                                <div className="review-filter-tabs">
+                                    <button
+                                        className={`filter-tab-btn ${statusFilter === 'pending' ? 'active' : ''}`}
+                                        onClick={() => setStatusFilter('pending')}
+                                    >
+                                        <Clock size={16} /> Pending Reviews
+                                    </button>
+                                    <button
+                                        className={`filter-tab-btn ${statusFilter === 'reviewed' ? 'active' : ''}`}
+                                        onClick={() => setStatusFilter('reviewed')}
+                                    >
+                                        <CheckCircle2 size={16} /> Approved History
+                                    </button>
+                                </div>
+                            )}
+                            {activeMainTab === 'sets' && (
+                                <div className="review-filter-tabs">
+                                    <button
+                                        className={`filter-tab-btn ${activeType === '3D' ? 'active' : ''}`}
+                                        onClick={() => setActiveType('3D')}
+                                    >
+                                        <Box size={16} /> 3D Modeling Sets
+                                    </button>
+                                    <button
+                                        className={`filter-tab-btn ${activeType === '2D' ? 'active' : ''}`}
+                                        onClick={() => setActiveType('2D')}
+                                    >
+                                        <PenTool size={16} /> 2D Drawing Sets
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
 
                 {/* Assessments Tab */}
                 {activeMainTab === 'assessments' && (
-                    <div className="grouped-submissions-container" style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
+                    <div className="grouped-submissions-container">
                         {(() => {
                             const renderedTrainees = Object.values(grouped).filter((traineeGroup: any) => {
                                 let hasMatchingTask = false;
@@ -890,7 +1106,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                                 e.stopPropagation();
                                                                                 const currentSetOrdinal = getOrdinal(Number(displaySetNum));
                                                                                 const nextSetOrdinal = getOrdinal(Number(displaySetNum) + 1);
-                                                                                
+
                                                                                 const isAssemblySet = tasks.some((subs: any) => {
                                                                                     const task = subs[0]?.task;
                                                                                     return task?.is_assembly || task?.task_code?.startsWith('A');
@@ -1037,13 +1253,13 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 )}
                 {/* Progress Tab */}
                 {activeMainTab === 'progress' && (
-                    <div className="progress-tracker-container" style={{ 
-                        display: selectedTrainee ? 'flex' : 'block', 
-                        flexDirection: selectedTrainee ? 'column' : undefined, 
-                        flex: 1, 
-                        overflowY: selectedTrainee ? 'hidden' : 'auto', 
-                        padding: '1.5rem', 
-                        height: 'calc(100vh - 250px)' 
+                    <div className="progress-tracker-container" style={{
+                        display: selectedTrainee ? 'flex' : 'block',
+                        flexDirection: selectedTrainee ? 'column' : undefined,
+                        flex: 1,
+                        overflowY: selectedTrainee ? 'hidden' : 'auto',
+                        padding: '1.5rem',
+                        height: 'calc(100vh - 250px)'
                     }}>
                         {loadingProgress ? (
                             <div className="skeleton-cards">
@@ -1073,12 +1289,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 }}
                             />
                         ) : (
-                            <PerformanceDirectory 
+                            <PerformanceDirectory
                                 progress={performanceData.filter(p =>
                                     p.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                     p.username?.toLowerCase().includes(searchTerm.toLowerCase())
-                                )} 
-                                setSelectedTrainee={setSelectedTrainee} 
+                                )}
+                                setSelectedTrainee={setSelectedTrainee}
                             />
                         )}
                     </div>
@@ -1110,11 +1326,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     title={`Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Unit ${selectedTaskSubmissions?.[0]?.task?.task_code}`}
                     tag="SUBMISSION_REVIEW"
                     size="xl"
+                    containerClassName="split-layout-modal"
                 >
                     {selectedTaskSubmissions && selectedTaskSubmissions.length > 0 && (
                         <div className="modal-body split-layout" style={{ display: 'flex', gap: '2.5rem', height: '100%', minHeight: '550px', padding: '1rem 0.5rem' }}>
                             {/* Left Side: Submission History & Chat */}
-                            <div className="history-chat-panel" style={{ flex: '1.2', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingRight: '1rem', maxHeight: '70vh', overflowY: 'auto' }}>
+                            <div className="history-chat-panel" style={{ flex: '1.2', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingRight: '1rem', overflowY: 'auto' }}>
                                 <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)', margin: 0, paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                                     <MessageSquare size={18} style={{ color: 'var(--accent-blue)' }} /> Submission History & Feedback
                                 </h4>
@@ -1229,14 +1446,29 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                                     <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Comments</label>
-                                        <textarea
-                                            placeholder="Write your feedback here..."
-                                            value={feedbackComments}
-                                            onChange={(e) => setFeedbackComments(e.target.value)}
-                                            style={{ width: '100%', minHeight: '140px', padding: '1rem', borderRadius: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-light)', fontSize: '0.9rem', lineHeight: 1.5, resize: 'vertical', outline: 'none', transition: 'border-color 0.2s, box-shadow 0.2s' }}
-                                            onFocus={(e) => { e.target.style.borderColor = 'var(--accent-blue)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
-                                            onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}
-                                        ></textarea>
+                                        {renderQuickCommentsUI()}
+                                        <div style={{ position: 'relative' }}>
+                                            <textarea
+                                                placeholder="Write your feedback here..."
+                                                value={feedbackComments}
+                                                onChange={(e) => setFeedbackComments(e.target.value)}
+                                                style={{ width: '100%', minHeight: '140px', padding: '1rem', paddingBottom: '2.5rem', borderRadius: '10px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)', fontSize: '0.9rem', lineHeight: 1.5, resize: 'vertical', outline: 'none', transition: 'border-color 0.2s, box-shadow 0.2s' }}
+                                                onFocus={(e) => { e.target.style.borderColor = 'var(--accent-blue)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                                onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
+                                            ></textarea>
+                                            {feedbackComments && (
+                                                <span
+                                                    role="button"
+                                                    tabIndex={0}
+                                                    onClick={() => setFeedbackComments('')}
+                                                    style={{ position: 'absolute', bottom: '0.75rem', right: '0.75rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '0.8rem', cursor: 'pointer', transition: 'color 0.2s', fontWeight: 500, outline: 'none' }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error)'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                                                >
+                                                    Clear
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
 
                                     <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -1279,9 +1511,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                                     <div style={{ flex: 1 }}></div>
 
-                                    <div className="modal-action-buttons" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <div className="modal-action-buttons" style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                                         <button
-                                            className="btn-reject"
                                             onClick={() => handleSubmitFeedback('rejected')}
                                             disabled={isSubmittingFeedback}
                                             style={{ flex: 1, padding: '0.8rem', background: 'linear-gradient(to bottom, #ef4444, #dc2626)', border: 'none', color: '#fff', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.95rem', boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)', transition: 'all 0.2s', opacity: isSubmittingFeedback ? 0.7 : 1 }}
@@ -1291,7 +1522,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                             <XCircle size={18} /> Reject
                                         </button>
                                         <button
-                                            className="btn-approve"
                                             onClick={() => handleSubmitFeedback('approved')}
                                             disabled={isSubmittingFeedback}
                                             style={{ flex: 1, padding: '0.8rem', background: 'linear-gradient(to bottom, #22c55e, #16a34a)', border: 'none', color: '#fff', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.95rem', boxShadow: '0 4px 15px rgba(34, 197, 94, 0.3)', transition: 'all 0.2s', opacity: isSubmittingFeedback ? 0.7 : 1 }}
@@ -1314,6 +1544,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     title={`Review Entire Set ${selectedSetSubmissions?.[0]?.task?.set_number} for ${selectedSetSubmissions?.[0]?.user?.full_name}`}
                     tag="BULK_SET_REVIEW"
                     size="lg"
+                    containerClassName="split-layout-modal"
                 >
                     {selectedSetSubmissions && selectedSetSubmissions.length > 0 && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -1337,12 +1568,27 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 <h4>Provide Bulk Feedback</h4>
                                 <div className="form-group">
                                     <label>Overall Comments</label>
-                                    <textarea
-                                        placeholder="Provide overall feedback for the entire set..."
-                                        value={feedbackComments}
-                                        onChange={(e) => setFeedbackComments(e.target.value)}
-                                        style={{ width: '100%', minHeight: '120px', padding: '0.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
-                                    ></textarea>
+                                    {renderQuickCommentsUI()}
+                                    <div style={{ position: 'relative' }}>
+                                        <textarea
+                                            placeholder="Provide overall feedback for the entire set..."
+                                            value={feedbackComments}
+                                            onChange={(e) => setFeedbackComments(e.target.value)}
+                                            style={{ width: '100%', minHeight: '120px', padding: '0.5rem', paddingBottom: '2.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
+                                        ></textarea>
+                                        {feedbackComments && (
+                                            <span
+                                                role="button"
+                                                tabIndex={0}
+                                                onClick={() => setFeedbackComments('')}
+                                                style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '0.8rem', cursor: 'pointer', transition: 'color 0.2s', fontWeight: 500, outline: 'none' }}
+                                                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error)'}
+                                                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                                            >
+                                                Clear
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="form-group">
@@ -1378,22 +1624,24 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="modal-action-buttons" style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
+                                <div className="modal-action-buttons" style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                                     <button
-                                        className="btn-reject"
                                         onClick={() => handleBulkSubmitFeedback('rejected')}
                                         disabled={isSubmittingFeedback}
-                                        style={{ flex: 1, padding: '0.6rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: 'var(--color-error)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                        style={{ flex: 1, padding: '0.8rem', background: 'linear-gradient(to bottom, #ef4444, #dc2626)', border: 'none', color: '#fff', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.95rem', boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)', transition: 'all 0.2s', opacity: isSubmittingFeedback ? 0.7 : 1 }}
+                                        onMouseEnter={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.4)'; } }}
+                                        onMouseLeave={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(239, 68, 68, 0.3)'; } }}
                                     >
-                                        <XCircle size={16} /> Reject Entire Set
+                                        <XCircle size={18} /> Reject Entire Set
                                     </button>
                                     <button
-                                        className="btn-approve"
                                         onClick={() => handleBulkSubmitFeedback('approved')}
                                         disabled={isSubmittingFeedback}
-                                        style={{ flex: 1, padding: '0.6rem', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', color: 'var(--color-success)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+                                        style={{ flex: 1, padding: '0.8rem', background: 'linear-gradient(to bottom, #22c55e, #16a34a)', border: 'none', color: '#fff', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.95rem', boxShadow: '0 4px 15px rgba(34, 197, 94, 0.3)', transition: 'all 0.2s', opacity: isSubmittingFeedback ? 0.7 : 1 }}
+                                        onMouseEnter={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(34, 197, 94, 0.4)'; } }}
+                                        onMouseLeave={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(34, 197, 94, 0.3)'; } }}
                                     >
-                                        <CheckCircle2 size={16} /> Approve Entire Set
+                                        <CheckCircle2 size={18} /> Approve Entire Set
                                     </button>
                                 </div>
                             </div>

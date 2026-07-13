@@ -29,6 +29,7 @@ export interface User {
     is_active: boolean;
     created_at?: string;
     last_login?: string;
+    custom_comments?: string[];
 }
 
 export interface TokenResponse {
@@ -114,6 +115,15 @@ export const authService = {
      */
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+        return response.data;
+    },
+
+    /**
+     * Update custom comments for the current user
+     */
+    async updateCustomComments(comments: string[]): Promise<User> {
+        const response = await authApi.put<User>('/auth/me/custom-comments', comments);
         sessionStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     },
