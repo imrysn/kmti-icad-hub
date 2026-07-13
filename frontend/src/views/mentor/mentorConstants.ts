@@ -952,3 +952,15 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: 'shaft-keyway', title: 'Shaft Keyway', content: ['Placeholder'] },
   { id: 'showa-catalog', title: 'Showa Catalog', content: ['Placeholder'] }
 ];
+
+export const SOLIDWORKS_INTRO_LESSONS: Lesson[] = [
+  {
+    id: 'sw-interface',
+    title: 'SolidWorks Interface',
+    content: ['Mouse Control', 'Keyboard Shortcuts'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-interface', title: 'SolidWorks Interface', content: ['Mouse Control', 'Keyboard Shortcuts'] }
+    ]
+  }
+];
