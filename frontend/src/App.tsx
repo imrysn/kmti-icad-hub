@@ -22,6 +22,7 @@ import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTeleme
 import { useUI } from './context/UIContext';
 import { assessmentService } from './services/assessmentService';
 
+
 import kmtiLogo from './assets/kmti-training-hub.png';
 import './styles/App.css';
 
@@ -275,14 +276,14 @@ function AppContent() {
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
                   <div className="assistant-dropdown-container">
                     <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') && !location.search.includes('solidworks') ? 'active' : ''}`} style={{ padding: 0 }}>
-                      <div 
+                      <div
                         onClick={() => { resetCourseView(); navigate('/mentor'); setIcadDropdownOpen(false); }}
                         style={{ display: 'flex', alignItems: 'center', padding: '0.75rem 0.5rem', cursor: 'pointer', flexGrow: 1 }}
                       >
                         <GraduationCap size={18} />
                         <span style={{ marginLeft: '0.625rem' }}>ICAD</span>
                       </div>
-                      <div 
+                      <div
                         className="dropdown-toggle"
                         onClick={(e) => { e.stopPropagation(); setIcadDropdownOpen(prev => !prev); }}
                         style={{ display: 'flex', alignItems: 'center', padding: '0.75rem', cursor: 'pointer', opacity: 0.7 }}
@@ -313,14 +314,14 @@ function AppContent() {
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
                   <div className="assistant-dropdown-container">
                     <button className={`assistant-tab-btn ${currentTab.includes('icad') || currentTab === 'training' ? 'active' : ''}`} style={{ padding: 0 }}>
-                      <div 
+                      <div
                         onClick={() => { resetCourseView(); handleTabChange('training'); setIcadDropdownOpen(false); }}
                         style={{ display: 'flex', alignItems: 'center', padding: '0.75rem 0.5rem', cursor: 'pointer', flexGrow: 1 }}
                       >
                         <GraduationCap size={18} />
                         <span style={{ marginLeft: '0.625rem' }}>ICAD</span>
                       </div>
-                      <div 
+                      <div
                         className="dropdown-toggle"
                         onClick={(e) => { e.stopPropagation(); setIcadDropdownOpen(prev => !prev); }}
                         style={{ display: 'flex', alignItems: 'center', padding: '0.75rem', cursor: 'pointer', opacity: 0.7 }}

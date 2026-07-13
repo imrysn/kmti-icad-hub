@@ -1,0 +1,67 @@
+.command-panel {
+    width: 320px;
+    background: #ffffff;
+    border: 1px solid #d4d8df;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    overflow: hidden;
+    font-family: Segoe UI, sans-serif;
+}
+
+.command-header {
+    background: #4f67c7;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 16px;
+    letter-spacing: 1px;
+}
+
+.command-dropdowns {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.dropdown-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-group label {
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.command-select {
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #cfd5df;
+    border-radius: 6px;
+    background: #f8fafc;
+    color: #374151;
+    font-size: 14px;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.command-select:hover {
+    border-color: #4f67c7;
+    background: #eef4ff;
+}
+
+.command-select:focus {
+    outline: none;
+    border-color: #4f67c7;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(79, 103, 199, .15);
+}
+
+.command-select:disabled {
+    background: #eceff3;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
