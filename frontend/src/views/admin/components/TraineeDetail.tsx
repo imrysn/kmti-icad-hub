@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { FileText, CheckCircle2, BarChart3, RotateCw, Check, X, RotateCcw, Loader2 } from 'lucide-react';
+import { FileText, CheckCircle2, BarChart3, RotateCw, Check, X, RotateCcw, Loader2, ArrowLeft } from 'lucide-react';
 import { TraineeProgress, adminService } from '../../../services/adminService';
 import { useLessons } from '../../../hooks/useLessons';
 import { useUI } from '../../../context/UIContext';
@@ -239,7 +239,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
     return (
         <section className="trainee-detail-view" style={{ height: '100%' }}>
             <button className="back-btn" onClick={() => setSelectedTrainee(null)}>
-                ↁEReturn to Directory
+                <ArrowLeft size={16} style={{ marginRight: '6px' }} /> Return to Directory
             </button>
 
             <div className="detail-container" style={{ flex: 1, minHeight: 0, alignItems: 'stretch' }}>
