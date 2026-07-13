@@ -835,7 +835,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         </div>
 
                                         {isTraineeExpanded && (
-                                            <div className="trainee-group-body" style={{ height: '300px', overflowY: 'auto' }}>
+                                            <div className="trainee-group-body">
                                                 {Object.keys(traineeGroup.sets)
                                                     .sort((a, b) => Number(a) - Number(b))
                                                     .filter(setNum => {

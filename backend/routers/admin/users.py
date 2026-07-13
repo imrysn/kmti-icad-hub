@@ -84,11 +84,16 @@ def update_user_as_admin(
     admin: User = Depends(require_role("admin"))
 ):
     """Admin-only endpoint to update user details."""
+    print("DEBUG UserUpdate:", user_update.model_dump())
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
     # Update basic fields
+    if user_update.username is not None and user_update.username != user.username:
+        if db.query(User).filter(User.username == user_update.username).first():
+            raise HTTPException(status_code=400, detail="Username already registered")
+        user.username = user_update.username
     if user_update.email is not None:
         user.email = user_update.email
     if user_update.full_name is not None:

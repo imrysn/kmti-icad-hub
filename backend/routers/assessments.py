@@ -611,8 +611,10 @@ def download_master_file(
     
     full_path = resolve_master_path(task.master_file_path)
         
+    print("DEBUG DOWNLOAD: task_id=", task_id, "master_file_path=", task.master_file_path, "full_path=", full_path, "exists=", os.path.exists(full_path))
+    
     if not os.path.exists(full_path):
-        raise HTTPException(status_code=404, detail="File does not exist on server")
+        raise HTTPException(status_code=404, detail=f"File does not exist on server: {full_path}")
         
     return FileResponse(
         path=full_path, 

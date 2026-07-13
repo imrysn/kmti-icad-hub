@@ -81,7 +81,7 @@
     color: white !important;
     padding: 0 1.25rem;
     height: 38px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     font-weight: 600;
     cursor: pointer;
@@ -97,7 +97,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1.25rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: var(--bg-card) !important;
     color: var(--text-main) !important;
     border: 1px solid var(--border-color) !important;
@@ -195,7 +195,7 @@
 .type-tag, .slug-tag {
     font-size: 0.75rem;
     padding: 0.2rem 0.6rem;
-    border-radius: 100px;
+    border-radius: var(--radius-md);
     font-weight: 500;
 }
 
@@ -243,7 +243,7 @@
     color: var(--text-muted);
     border: 1px solid var(--border-color);
     padding: 0.6rem 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s;
@@ -281,7 +281,7 @@
 .question-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -316,7 +316,7 @@
     align-items: center;
     background: var(--bg-card);
     padding: 0.75rem 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     gap: 0.75rem;
     border: 1px solid var(--border-color);
 }
@@ -372,7 +372,7 @@
     background: var(--bg-surface);
     width: 100%;
     max-width: 600px;
-    border-radius: 20px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     overflow: hidden;
@@ -435,7 +435,7 @@
     border: 1px solid var(--border-color);
     color: var(--text-main);
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.95rem;
     transition: all 0.2s;
 }
@@ -486,7 +486,7 @@
     border: 1px dashed var(--border-color);
     color: var(--text-muted);
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -542,7 +542,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
 }
 
 .spinner {

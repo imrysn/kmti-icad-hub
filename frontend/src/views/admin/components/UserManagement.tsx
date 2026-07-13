@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search, Shield, User as UserIcon, Trash2, Edit2, UserPlus } from 'lucide-react'; import { User } from '../../../services/authService';
+import React, { useState } from 'react';
+import { Search, Shield, User as UserIcon, Trash2, Edit2, UserPlus, Filter } from 'lucide-react'; import { User } from '../../../services/authService';
 
 interface UserManagementProps {
     users: User[];
@@ -22,11 +22,17 @@ export const UserManagement: React.FC<UserManagementProps> = ({
     onAddUser,
     onEditUser
 }) => {
-    const filteredUsers = users.filter((u: User) =>
-        u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        u.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        u.email.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const [roleFilter, setRoleFilter] = useState<string>('All');
+
+    const filteredUsers = users.filter((u: User) => {
+        const matchesSearch = u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            u.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            u.email.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        const matchesRole = roleFilter === 'All' || u.role.toLowerCase() === roleFilter.toLowerCase();
+        
+        return matchesSearch && matchesRole;
+    });
 
     return (
         <section className="user-management">
@@ -35,6 +41,19 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                     <Search size={16} color="#94a3b8" />
                     <input type="text" placeholder="Search by name, email, or role..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
                     />
+                </div>
+                <div className="filter-box" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: 'auto', marginRight: '1rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', padding: '0 1rem', borderRadius: '8px', height: '38px' }}>
+                    <Filter size={14} color="var(--text-muted)" />
+                    <select 
+                        value={roleFilter} 
+                        onChange={(e) => setRoleFilter(e.target.value)}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', outline: 'none', fontSize: '0.875rem', cursor: 'pointer', padding: '0.25rem' }}
+                    >
+                        <option value="All" style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>All Roles</option>
+                        <option value="Employee" style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Employee</option>
+                        <option value="Trainee" style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Trainee</option>
+                        <option value="Admin" style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Admin</option>
+                    </select>
                 </div>
                 <button className="toolbar-btn" onClick={onAddUser}>
                     <UserPlus size={16} /> Add New User

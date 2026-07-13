@@ -107,6 +107,7 @@ class UserCreateAdmin(UserCreate):
 
 class UserUpdate(BaseModel):
     """Schema for updating user information"""
+    username: Optional[str] = None
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
     role: Optional[Literal["trainee", "employee", "admin"]] = None

@@ -116,7 +116,7 @@
 .creation-form-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     position: sticky;
     top: 0;
@@ -156,7 +156,7 @@
     padding: 0.75rem;
     background: transparent;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     color: var(--text-main);
 }
 
@@ -180,7 +180,7 @@
     background: var(--primary) !important;
     color: #fff !important;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -224,7 +224,7 @@
     padding: 1.25rem;
     background: var(--bg-dark);
     border: 2px dashed var(--border-color);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.2s;
     color: var(--text-dim);
@@ -304,7 +304,7 @@
     padding: 0 1rem !important;
     background: transparent !important;
     border: 1px solid var(--border-color) !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-md) !important;
     color: var(--text-main) !important;
     font-size: 0.85rem !important;
     transition: all 0.3s ease !important;
@@ -343,7 +343,7 @@ select.admin-input-styled option {
     padding: 2rem;
     background: rgba(59, 130, 246, 0.05);
     border: 2px dashed rgba(59, 130, 246, 0.2);
-    border-radius: 18px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -401,7 +401,7 @@ select.admin-input-styled option {
 .admin-modal-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 24px;
+    border-radius: var(--radius-md);
     width: 100%;
     max-width: 500px;
     overflow: hidden;
@@ -446,7 +446,7 @@ select.admin-input-styled option {
     border: 1px solid var(--border-color);
     color: var(--text-main);
     padding: 0.75rem 1.5rem;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     font-weight: 600;
 }
@@ -489,7 +489,7 @@ select.admin-input-styled option {
 .mapping-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 1.25rem;
     display: flex;
     justify-content: space-between;
@@ -542,7 +542,7 @@ select.admin-input-styled option {
     color: var(--text-dim);
     background: var(--bg-dark);
     border: 2px dashed var(--border-color);
-    border-radius: 20px;
+    border-radius: var(--radius-md);
     text-align: center;
 }
 
