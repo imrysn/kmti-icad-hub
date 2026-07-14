@@ -8,6 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const http = require('http');
+const { net } = require('electron');
 
 // Enable hardware acceleration for smooth rendering performance.
 // (Only disable if running in headless environments or VMs lacking DirectX runtimes)
@@ -147,7 +148,6 @@ function createWindow() {
 
             const file = fs.createWriteStream(localPath);
             const safeUrl = url.replace('localhost', '127.0.0.1');
-            const protocol = safeUrl.startsWith('https') ? https : http;
 
             return new Promise((resolve, reject) => {
                 file.on('error', (err) => {
@@ -156,18 +156,36 @@ function createWindow() {
                     reject(err);
                 });
 
-                const request = protocol.get(safeUrl, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                }, (response) => {
+                // Use standard setTimeout since net.ClientRequest has no setTimeout/destroy
+                const timeoutId = setTimeout(() => {
+                    try { request.abort(); } catch (e) { /* ignore */ }
+                    file.close();
+                    fs.unlink(localPath, () => { });
+                    reject(new Error('Download timeout'));
+                }, 60000);
+
+                const request = net.request({
+                    method: 'GET',
+                    url: safeUrl,
+                    useSessionCookies: true
+                });
+                request.setHeader('Authorization', `Bearer ${token}`);
+
+                request.on('response', (response) => {
                     if (response.statusCode !== 200) {
+                        clearTimeout(timeoutId);
                         file.close();
                         fs.unlink(localPath, () => { });
                         reject(new Error(`Failed to download: ${response.statusCode}`));
                         return;
                     }
 
-                    response.pipe(file);
-                    file.on('finish', () => {
+                    response.on('data', (chunk) => {
+                        file.write(chunk);
+                    });
+
+                    response.on('end', () => {
+                        clearTimeout(timeoutId);
                         file.close();
                         const { shell } = require('electron');
                         const { exec } = require('child_process');
@@ -208,15 +226,13 @@ function createWindow() {
                 });
 
                 request.on('error', (err) => {
+                    clearTimeout(timeoutId);
                     file.close();
                     fs.unlink(localPath, () => { });
                     reject(err);
                 });
 
-                request.setTimeout(30000, () => {
-                    request.destroy();
-                    reject(new Error('Download timeout'));
-                });
+                request.end();
             });
         } catch (error) {
             console.error('Critical download error:', error);
@@ -264,7 +280,6 @@ function createWindow() {
                 // If file exists, maybe overwrite it
                 const file = fs.createWriteStream(localPath);
                 const safeUrl = task.url.replace('localhost', '127.0.0.1');
-                const protocol = safeUrl.startsWith('https') ? https : http;
 
                 await new Promise((resolve, reject) => {
                     file.on('error', (err) => {
@@ -273,33 +288,49 @@ function createWindow() {
                         reject(err);
                     });
 
-                    const request = protocol.get(safeUrl, {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    }, (response) => {
+                    // Use standard setTimeout since net.ClientRequest has no setTimeout/destroy
+                    const timeoutId = setTimeout(() => {
+                        try { request.abort(); } catch (e) { /* ignore */ }
+                        file.close();
+                        fs.unlink(localPath, () => { });
+                        reject(new Error('Download timeout'));
+                    }, 60000);
+
+                    const request = net.request({
+                        method: 'GET',
+                        url: safeUrl,
+                        useSessionCookies: true
+                    });
+                    request.setHeader('Authorization', `Bearer ${token}`);
+
+                    request.on('response', (response) => {
                         if (response.statusCode !== 200) {
+                            clearTimeout(timeoutId);
                             file.close();
                             fs.unlink(localPath, () => { });
                             reject(new Error(`Failed to download: ${response.statusCode}`));
                             return;
                         }
 
-                        response.pipe(file);
-                        file.on('finish', () => {
+                        response.on('data', (chunk) => {
+                            file.write(chunk);
+                        });
+
+                        response.on('end', () => {
+                            clearTimeout(timeoutId);
                             file.close();
                             resolve(localPath);
                         });
                     });
 
                     request.on('error', (err) => {
+                        clearTimeout(timeoutId);
                         file.close();
                         fs.unlink(localPath, () => { });
                         reject(err);
                     });
 
-                    request.setTimeout(30000, () => {
-                        request.destroy();
-                        reject(new Error('Download timeout'));
-                    });
+                    request.end();
                 });
 
                 downloadedFiles.push(localPath);

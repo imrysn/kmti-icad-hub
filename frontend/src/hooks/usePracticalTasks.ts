@@ -88,19 +88,31 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
     try {
       showNotification('Preparing task template download...', 'info');
-      const blob = await assessmentService.getMasterFileBlob(task.id);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
+      
       const originalFilename = task.master_file_path
         ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
         : `Set${task.set_number}_${task.task_code}_Master.dwg`;
-      a.download = originalFilename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+
+      if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
+        const url = assessmentService.getDownloadUrl(task.id);
+        const token = authService.getToken();
+        await window.electronAPI.downloadBulkFiles({
+          tasks: [{ url, target_relative_path: originalFilename }],
+          token
+        });
+      } else {
+        const blob = await assessmentService.getMasterFileBlob(task.id);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = originalFilename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+      
       showNotification('Task template download started.', 'success');
     } catch (err) {
       console.error('Download error:', err);
@@ -157,19 +169,30 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     
     try {
       showNotification('Preparing download...', 'info');
-      const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
-        responseType: 'blob'
-      });
-      const blob = response.data;
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      const filename = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
+
+      if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
+        const url = `${api.defaults.baseURL || ''}/api/v1/assessments/feedback/${feedback.id}/download`;
+        const token = authService.getToken();
+        await window.electronAPI.downloadBulkFiles({
+          tasks: [{ url, target_relative_path: filename }],
+          token
+        });
+      } else {
+        const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
+          responseType: 'blob'
+        });
+        const blob = response.data;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
       showNotification('Download started.', 'success');
     } catch (err) {
       console.error('Download error:', err);
