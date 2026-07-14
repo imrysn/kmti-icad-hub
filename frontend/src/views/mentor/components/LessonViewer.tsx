@@ -51,6 +51,8 @@ const NormalMirrorPartsLesson = lazy(() => import('../../../components/ICAD/Manu
 const RevisionCodeLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_StandardLibrary'));
 const SolidworkInterfaceLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/Introduction/Solidwork_Interface'));
+const SolidworkPartModelingLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/3D_Operation/3D_Part_Modeling'));
+const Solidwork2DOperationLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/2D_Operation'));
 
 import { useTTSContext } from '../../../context/TTSContext';
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
@@ -445,6 +447,10 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-interface': () => <SolidworkInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-part-modeling': () => <SolidworkPartModelingLesson subLessonId="sw-part-modeling" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-sketching-base': () => <SolidworkPartModelingLesson subLessonId="sw-sketching-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-extruding-base': () => <SolidworkPartModelingLesson subLessonId="sw-extruding-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-operation-page1': () => <Solidwork2DOperationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {

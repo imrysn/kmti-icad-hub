@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
-import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS, SOLIDWORKS_INTRO_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
+import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS, SOLIDWORKS_INTRO_LESSONS, SOLIDWORKS_3D_OPERATION_LESSONS, SOLIDWORKS_2D_OPERATION_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
 import { assessmentService } from '../../services/assessmentService';
 import { useWebSocket } from '../../context/WebSocketContext';
 
@@ -131,6 +131,12 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         }
         if (selectedCourse.id === 'sw-intro') {
             return SOLIDWORKS_INTRO_LESSONS;
+        }
+        if (selectedCourse.id === 'mock-sw-3d') {
+            return SOLIDWORKS_3D_OPERATION_LESSONS;
+        }
+        if (selectedCourse.id === 'mock-sw-2d') {
+            return SOLIDWORKS_2D_OPERATION_LESSONS;
         }
         if (selectedCourse.id.toString().startsWith('mock-')) {
             return [{
