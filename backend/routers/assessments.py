@@ -45,25 +45,74 @@ def resolve_master_path(master_file_path: str) -> str:
     elif rel_path.startswith("uploads\\"):
         rel_path = rel_path.replace("uploads\\", "", 1)
         
-    # Build standard full path
-    full_path = os.path.join(base_upload_dir, rel_path)
-    
-    # Check if standard path exists
+    # --- USER REQUESTED Z: DRIVE MAPPING ---
+    # Intercept 'Units & Tasks' and map it to Z:\Training\Traning Program
+    if "Units & Tasks" in rel_path or "Unts & Tasks" in rel_path:
+        # Strip the 'Units & Tasks' part to get the inner folders (e.g., '1st Set Parts/...')
+        inner_path = rel_path.replace("Units & Tasks", "").replace("Unts & Tasks", "")
+        if inner_path.startswith("/") or inner_path.startswith("\\"):
+            inner_path = inner_path[1:]
+            
+        z_drive_paths = [
+            # Exactly as typed by user (Z: drive)
+            os.path.join(r"Z:\Training\Traning Program", inner_path),
+            os.path.join(r"Z:\Training\Traning Program\Units & Tasks", inner_path),
+            os.path.join(r"Z:\Training\Training Program", inner_path),
+            os.path.join(r"Z:\Training\Training Program\Units & Tasks", inner_path),
+            
+            # Direct UNC paths (Bypasses Windows Administrator mapped drive visibility issues)
+            os.path.join(r"\\kmti-nas\Shared\Public\Training\Traning Program", inner_path),
+            os.path.join(r"\\kmti-nas\Shared\Public\Training\Traning Program\Units & Tasks", inner_path),
+            os.path.join(r"\\kmti-nas\Shared\Public\Training\Training Program", inner_path),
+            os.path.join(r"\\kmti-nas\Shared\Public\Training\Training Program\Units & Tasks", inner_path),
+            
+            # Additional direct UNC path mapping specifically for the actual server share where submissions were found earlier
+            os.path.join(r"\\kmti-nas\Shared\data\trainingApp\uploads\Units & Tasks", inner_path)
+        ]
+        
+        for p in z_drive_paths:
+            print(f"DEBUG Z DRIVE: testing {p} - Exists: {os.path.exists(p)}")
+            if os.path.exists(p):
+                return p
+    # ----------------------------------------
+        
+    # Build standard full path based on UPLOAD_DIR
+    full_path = os.path.abspath(os.path.join(base_upload_dir, rel_path))
     if os.path.exists(full_path):
         return full_path
         
-    # If not found, try correcting Units & Tasks <-> Unts & Tasks spelling mismatch
+    # Fallback 1: Check if 'uploads' is directly in APP_PATH (handles PyInstaller bundle missing .env)
+    fallback_path_1 = os.path.abspath(os.path.join(APP_PATH, "uploads", rel_path))
+    if os.path.exists(fallback_path_1):
+        return fallback_path_1
+        
+    # Fallback 2: Check if 'uploads' is one directory up (handles running from backend/dist)
+    fallback_path_2 = os.path.abspath(os.path.join(os.path.dirname(APP_PATH), "uploads", rel_path))
+    if os.path.exists(fallback_path_2):
+        return fallback_path_2
+
+    # Fallback 3: Check if 'uploads' is two directories up
+    fallback_path_3 = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(APP_PATH)), "uploads", rel_path))
+    if os.path.exists(fallback_path_3):
+        return fallback_path_3
+        
+    # Try correcting Units & Tasks <-> Unts & Tasks spelling mismatch on the primary path
     if "Units & Tasks" in rel_path:
         alt_rel_path = rel_path.replace("Units & Tasks", "Unts & Tasks")
-        alt_path = os.path.join(base_upload_dir, alt_rel_path)
+        alt_path = os.path.abspath(os.path.join(base_upload_dir, alt_rel_path))
         if os.path.exists(alt_path):
             return alt_path
     elif "Unts & Tasks" in rel_path:
         alt_rel_path = rel_path.replace("Unts & Tasks", "Units & Tasks")
-        alt_path = os.path.join(base_upload_dir, alt_rel_path)
+        alt_path = os.path.abspath(os.path.join(base_upload_dir, alt_rel_path))
         if os.path.exists(alt_path):
             return alt_path
             
+    # Try normalizing slashes explicitly
+    normalized_path = os.path.abspath(os.path.join(base_upload_dir, rel_path.replace('/', '\\')))
+    if os.path.exists(normalized_path):
+        return normalized_path
+        
     return full_path
 
 # --- Trainee Endpoints ---
@@ -637,9 +686,14 @@ async def submit_task(
         raise HTTPException(status_code=404, detail="Task not found")
 
     # Define upload directory mirroring the master structure
-    # e.g., master path: "Units & Tasks/4th Set Parts And Assembly/2655RCGR/Parts/part.dwg"
     master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""
     base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+    
+    # Safety Check: If UPLOAD_DIR points to a drive that doesn't exist on this machine (e.g. copied .env file), fallback to local APP_PATH
+    drive_letter = os.path.splitdrive(base_upload_dir)[0]
+    if drive_letter and not os.path.exists(drive_letter + "\\"):
+        base_upload_dir = os.path.join(APP_PATH, "uploads")
+        
     upload_dir = os.path.join(base_upload_dir, "submissions", str(current_user.id), master_dir)
     os.makedirs(upload_dir, exist_ok=True)
     
@@ -872,12 +926,30 @@ def download_trainee_submission(
         if not is_assigned:
             raise HTTPException(status_code=403, detail="You are not assigned to this trainee.")
     
-    if not os.path.exists(submission.submission_file_path):
+    # Try dynamic path resolution if the hardcoded absolute path fails (handles server migrations)
+    full_path = submission.submission_file_path
+    if not os.path.exists(full_path):
+        base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+        if "submissions" in full_path:
+            # Extract everything after 'submissions'
+            parts = full_path.replace("\\", "/").split("/submissions/")
+            if len(parts) > 1:
+                rel_path = "submissions/" + parts[1]
+                dynamic_path = os.path.join(base_upload_dir, rel_path)
+                if os.path.exists(dynamic_path):
+                    full_path = dynamic_path
+                else:
+                    # Check PyInstaller/dev fallbacks
+                    fallback_1 = os.path.join(APP_PATH, "uploads", rel_path)
+                    if os.path.exists(fallback_1):
+                        full_path = fallback_1
+    
+    if not os.path.exists(full_path):
         raise HTTPException(status_code=404, detail="File does not exist on server")
         
     return FileResponse(
-        path=submission.submission_file_path, 
-        filename=os.path.basename(submission.submission_file_path),
+        path=full_path, 
+        filename=os.path.basename(full_path),
         media_type="application/octet-stream"
     )
 

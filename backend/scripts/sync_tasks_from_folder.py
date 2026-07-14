@@ -18,6 +18,9 @@ else:
 UPLOAD_DIR = base_path / "Units & Tasks"
 if not UPLOAD_DIR.exists():
     UPLOAD_DIR = base_path / "Unts & Tasks"
+if not UPLOAD_DIR.exists():
+    # If the user mapped Z: directly to the folder containing "1st Set Parts"
+    UPLOAD_DIR = base_path
 
 def sync_tasks():
     if not UPLOAD_DIR.exists():
