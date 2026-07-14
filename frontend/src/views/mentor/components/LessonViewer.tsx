@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react'; 
+import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
 import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2 } from 'lucide-react'; import { Course } from '../../../types';
 import { useUI } from '../../../context/UIContext'; import { useAuth } from '../../../hooks/useAuth';
 import { Lesson } from '../mentorConstants'; import { QuizModal } from './QuizModal';
@@ -25,6 +25,9 @@ const ParasolidLesson = lazy(() => import('../../../components/ICAD/Manual/3D_Mo
 const OperationSampleLesson = lazy(() => import('../../../components/ICAD/Manual/3D_Modeling/3D_OperationSample'));
 const MirroredPartLesson = lazy(() => import('../../../components/ICAD/Manual/3D_Modeling/3D_MirroredPart'));
 const StandardLesson = lazy(() => import('../../../components/ICAD/Manual/3D_Modeling/3D_Standard'));
+const KemcoThreeDStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/3D_Standard'));
+const KemcoTwoDStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/2D_Standard'));
+const PipingTableLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/PipingTable'));
 
 // 2D Lesson Imports (Lazy Loaded)
 const OrthographicViewLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_OrthographicView'));
@@ -159,11 +162,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   useEffect(() => {
     setShowQuiz(false);
     setDbContent([]);
-    
+
     // Fetch dynamic content if available
     const fetchDbContent = async () => {
       if (!activeLessonId) return;
-      
+
       setIsDbLoading(true);
       try {
         const res = await api.get(`/courses/lesson/${activeLessonId}/content?t=${Date.now()}`);
@@ -174,11 +177,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         setIsDbLoading(false);
       }
     };
-    
+
     if (activeLessonId) {
       fetchDbContent();
     }
-    
+
     // Restore quiz state for this lesson if it was open
     const savedShowQuiz = localStorage.getItem(authService.getStorageKey(`showQuiz_${activeLessonId}`));
     if (savedShowQuiz === 'true') {
@@ -240,7 +243,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
     // Retrieve exact same element selectors used for narration scraping to align indices
     const elements = container.querySelectorAll('.section-title, p, .card-header, .step-header, .p-flush');
-    
+
     // Create a filtered list to match speakCurrent exclusions
     const paragraphs: string[] = [];
     const validElements: HTMLElement[] = [];
@@ -310,7 +313,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     }
   };
 
-    // Use the passed lessons prop
+  // Use the passed lessons prop
   const findParentAndQuiz = (): { parent: Lesson; isLastSub: boolean } | null => {
     for (const lesson of lessons) {
       if (lesson.id === activeLessonId) {
@@ -400,19 +403,19 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       <div className="lesson-split-layout">
         <div className="lesson-scroll-area">
           {/* Sticky TTS button container: sits next to title initially, freezes on scroll */}
-          <div style={{ 
-            position: 'sticky', 
-            top: '-1.5rem', 
-            float: 'right', 
-            marginRight: '2rem', 
-            zIndex: 100, 
+          <div style={{
+            position: 'sticky',
+            top: '-1.5rem',
+            float: 'right',
+            marginRight: '2rem',
+            zIndex: 100,
             height: 0,
             pointerEvents: 'none'
           }}>
-            <div style={{ 
-              position: 'absolute', 
-              right: 0, 
-              top: '3rem', 
+            <div style={{
+              position: 'absolute',
+              right: 0,
+              top: '3rem',
               pointerEvents: 'auto'
             }}>
               <ReadAloudButton isSpeaking={isSpeaking || isTutorialPlaying} onStart={speakCurrent} onStop={handleStop} />
@@ -443,6 +446,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'origin': () => <OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '3d': () => <KemcoThreeDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d': () => <KemcoTwoDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'piping': () => <PipingTableLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
@@ -493,8 +499,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   return prefixRegistry[activeLessonId](activeLessonId);
                 }
 
-                const prefix = activeLessonId?.includes('-') 
-                  ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-')) 
+                const prefix = activeLessonId?.includes('-')
+                  ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-'))
                   : activeLessonId;
 
                 if (prefix && activeLessonId && typeof prefixRegistry[prefix] === 'function') {
@@ -568,8 +574,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
             {/* Premium Quiz Modal */}
             {showQuiz && hasQuiz && (activeQuiz || parentResult?.parent?.quiz) && (
-              <QuizModal 
-                isOpen={showQuiz} 
+              <QuizModal
+                isOpen={showQuiz}
                 onClose={() => {
                   if (parentResult?.parent) {
                     localStorage.removeItem(authService.getStorageKey(`showQuiz_${parentResult.parent.id}`));
