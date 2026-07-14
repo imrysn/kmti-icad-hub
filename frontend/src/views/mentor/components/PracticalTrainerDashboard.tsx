@@ -1180,14 +1180,13 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         })()}
                     </div>
                 )}
-                {/* Progress Tab */}
                 {activeMainTab === 'progress' && (
                     <div className="progress-tracker-container" style={{
                         display: selectedTrainee ? 'flex' : 'block',
                         flexDirection: selectedTrainee ? 'column' : undefined,
                         flex: 1,
                         overflowY: selectedTrainee ? 'hidden' : 'auto',
-                        padding: '1.5rem',
+                        padding: 0,
                         height: 'calc(100vh - 250px)'
                     }}>
                         {loadingProgress ? (
@@ -1320,8 +1319,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                                                 {sub.feedback.map(fb => (
                                                                     <div key={fb.id} className="chat-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                                                        <div className="chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                                                                            <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /> You (Trainer)</span>
+                                                                        <div className="chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 0 12px', width: 'fit-content', maxWidth: '90%', alignSelf: 'flex-end', marginLeft: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                                                            <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>You (Trainer) <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /></span>
                                                                             <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-light)' }}>{fb.comments || "No comments provided."}</p>
                                                                             {fb.checkback_file_path && (
                                                                                 <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#e879f9', marginTop: '0.75rem', padding: '6px 10px', background: 'rgba(221, 77, 250, 0.1)', borderRadius: '6px', transition: 'all 0.2s', fontWeight: 600 }}
@@ -1333,10 +1332,10 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                             )}
                                                                         </div>
                                                                         {fb.trainee_reply && (
-                                                                            <div className="chat-bubble trainee-chat" style={{ background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '12px 12px 0 12px', width: 'fit-content', maxWidth: '90%', alignSelf: 'flex-end', marginLeft: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                                                                                <span className="chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{sub.user?.full_name} (Trainee) <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} /></span>
+                                                                            <div className="chat-bubble trainee-chat" style={{ background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                                                                <span className="chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} /> {sub.user?.full_name} (Trainee)</span>
                                                                                 <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-main)' }}>{fb.trainee_reply}</p>
-                                                                                {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.5rem', textAlign: 'right' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
+                                                                                {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.5rem', textAlign: 'left' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
                                                                             </div>
                                                                         )}
                                                                     </div>
