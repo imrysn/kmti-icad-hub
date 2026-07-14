@@ -60,13 +60,24 @@ api.interceptors.response.use(
             invalidateCache();
         }
 
-        // Token expired or invalid - log a warning but do not force logout
+        // Token expired or invalid - force auto-logout
         const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.hash === '#/' || window.location.hash.startsWith('#/login');
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
-            console.warn('Authentication failure - token might be expired or invalid (auto-logout disabled)');
-            // Removed sessionStorage.removeItem and window.location.hash redirect
+            console.warn('Authentication failure - token expired. Auto-logging out.');
+            
+            // Clear session data
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('kmti_') || key.startsWith('assistant-') || key.startsWith('properties-')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            sessionStorage.removeItem('access_token');
+            sessionStorage.removeItem('user');
+            
+            // Redirect to login
+            window.location.hash = '#/login';
         }
         return Promise.reject(error);
     }
