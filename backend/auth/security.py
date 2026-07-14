@@ -21,7 +21,7 @@ print(f"DEBUG SECURITY: SECRET_KEY={SECRET_KEY}")
 if not SECRET_KEY:
     raise RuntimeError(f"CRITICAL CONFIGURATION ERROR: SECRET_KEY environment variable is not defined in the environment or .env file (env_path={env_path}, exists={os.path.exists(env_path)}).")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "600"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "52560000"))
 
 def hash_password(password: str) -> str:
     """

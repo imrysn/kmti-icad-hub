@@ -60,19 +60,24 @@ api.interceptors.response.use(
             invalidateCache();
         }
 
-        // Token expired or invalid - clear auth and redirect to login
+        // Token expired or invalid - force auto-logout
         const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.hash === '#/' || window.location.hash.startsWith('#/login');
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
-            console.warn('Authentication failure - clearing session and redirecting');
+            console.warn('Authentication failure - token expired. Auto-logging out.');
+            
+            // Clear session data
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('kmti_') || key.startsWith('assistant-') || key.startsWith('properties-')) {
+                    localStorage.removeItem(key);
+                }
+            });
             sessionStorage.removeItem('access_token');
             sessionStorage.removeItem('user');
             
-            if (window.location.hash !== '#/' && !window.location.hash.startsWith('#/login')) {
-                window.location.hash = '#/login?expired=true'; 
-                window.dispatchEvent(new CustomEvent('kmti-auth-expired'));
-            }
+            // Redirect to login
+            window.location.hash = '#/login';
         }
         return Promise.reject(error);
     }

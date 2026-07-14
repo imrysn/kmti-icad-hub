@@ -49,7 +49,7 @@
 .skeleton-line {
   height: 14px;
   width: 100%;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
 .skeleton-line.w-90 { width: 90%; }
@@ -68,7 +68,7 @@
   border-left: 3px solid var(--border-color);
   background: var(--color-white);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: 1.25rem;
   margin-bottom: 0.875rem;
 }
@@ -89,7 +89,7 @@
 .skeleton-source {
   width: 110px;
   height: 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
 .skeleton-content-group {
@@ -109,7 +109,7 @@
 .skeleton-chip {
   width: 90px;
   height: 28px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
 }
 
 /* ── Admin Stat Card Skeleton ────────────────────────────────── */
@@ -133,11 +133,11 @@
 .skeleton-stat-icon {
   width: 20px;
   height: 20px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
 .skeleton-stat-value {
   width: 56px;
   height: 28px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }

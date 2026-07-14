@@ -56,13 +56,23 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
 };
 
 export const NotificationSystem: React.FC = () => {
-    const { notifications } = useNotification();
+    const { notifications, dismissNotification } = useNotification();
+    const infoNotifications = notifications.filter(n => n.type === 'info');
+
+    const handleCloseAll = () => {
+        infoNotifications.forEach(n => dismissNotification(n.id));
+    };
 
     return (
         <div className="notification-system">
             {notifications.map(n => (
                 <NotificationItem key={n.id} notification={n} />
             ))}
+            {infoNotifications.length > 0 && (
+                <button className="notification-close-all" onClick={handleCloseAll}>
+                    Close All
+                </button>
+            )}
         </div>
     );
 };

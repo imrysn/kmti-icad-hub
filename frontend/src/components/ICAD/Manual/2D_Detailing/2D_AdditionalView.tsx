@@ -29,7 +29,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     { id: 'cross-section', label: 'Additional View' },
     { id: 'partial-detail', label: 'Partial Section & Detail' },
     { id: 'isometric', label: 'Isometric & Cross Sectional' },
-    { id: 'trim', label: 'Trim View' }
+    { id: 'trim', label: 'Trim View' } 
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -47,7 +47,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
-    }
+    } 
 
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {

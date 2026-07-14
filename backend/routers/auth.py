@@ -187,6 +187,20 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
     """
     return current_user
 
+@router.put("/me/custom-comments", response_model=UserResponse)
+async def update_custom_comments(
+    comments: List[str],
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update the current user's custom feedback comments.
+    """
+    current_user.custom_comments = comments
+    db.commit()
+    db.refresh(current_user)
+    return current_user
+
 @router.post("/logout")
 async def logout(current_user: User = Depends(get_current_user)):
     """

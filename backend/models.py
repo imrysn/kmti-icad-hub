@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey, Text, JSON
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 try:
@@ -82,6 +82,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
+    custom_comments = Column(JSON, default=list)
 
 
 class SystemLog(Base):
@@ -232,6 +233,7 @@ class AssessmentSubmission(Base):
     assessment_type = Column(String(50), default="3D") # "3D" or "2D"
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=True) # Trainer who reviewed it
     is_deleted = Column(Boolean, default=False) # Soft delete flag
+    time_spent_seconds = Column(Integer, default=0) # Trainee time tracking
     submitted_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 

@@ -67,7 +67,7 @@
 
 .loading-card {
   height: 180px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
 }
 
 .loading-rows {
