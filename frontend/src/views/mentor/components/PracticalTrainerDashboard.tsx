@@ -10,7 +10,6 @@ import { useUI } from '../../../context/UIContext';
 import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { Modal } from '../../../components/Modal';
-import { SubmissionMetaModal } from './SubmissionMetaModal';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 import { TraineeTelemetrySidebar } from './TraineeTelemetrySidebar';
 import { NotificationCenter } from './NotificationCenter';
