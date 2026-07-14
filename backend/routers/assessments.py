@@ -676,6 +676,7 @@ async def submit_task(
     task_id: int,
     file: UploadFile = File(...),
     assessment_type: str = Form("3D"),
+    time_spent_seconds: int = Form(0),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -734,6 +735,7 @@ async def submit_task(
         # Update current pending submission
         target_submission.submission_file_path = file_path
         target_submission.submitted_at = datetime.now()
+        target_submission.time_spent_seconds = time_spent_seconds
         submission = target_submission
     else:
         # Create a new attempt
@@ -742,6 +744,7 @@ async def submit_task(
             task_id=task_id,
             submission_file_path=file_path,
             assessment_type=assessment_type,
+            time_spent_seconds=time_spent_seconds,
             status="pending"
         )
         db.add(submission)

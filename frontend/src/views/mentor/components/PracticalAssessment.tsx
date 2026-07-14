@@ -10,6 +10,9 @@ import '../../../styles/3D_Modeling/CourseLesson.css';
 import { Modal } from '../../../components/Modal';
 import JSZip from 'jszip';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
+import { authService } from '../../../services/authService';
+import { TaskStopwatch, TaskStopwatchHandle } from './TaskStopwatch';
+import { TimeRecordModal } from './TimeRecordModal';
 
 interface PracticalAssessmentProps {
     onBack: () => void;
@@ -82,6 +85,11 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
 
     const [trashModalOpen, setTrashModalOpen] = useState(false);
+    const [timeRecordModalOpen, setTimeRecordModalOpen] = useState(false);
+    
+    const currentUser = authService.getCurrentUser();
+    const userId = currentUser ? currentUser.id : 0;
+    const stopwatchRefs = useRef<{ [key: number]: TaskStopwatchHandle | null }>({});
 
     const getSetDisplayNumber = useCallback((s: number): number => {
         if (mySetMappings && mySetMappings.length > 0) {
@@ -200,14 +208,18 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         }
     };
 
-    const handleDrop = async (e: React.DragEvent, task: AssessmentTask) => {
+    const handleDrop = async (e: React.DragEvent, task: AssessmentTask, actualTaskId: number) => {
         e.preventDefault();
         e.stopPropagation();
         setDragActiveTaskId(null);
 
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            await uploadTaskFile(e.dataTransfer.files[0], task, assessmentType);
-        }
+        const files = Array.from(e.dataTransfer.files);
+        if (files.length === 0) return;
+
+        const file = files[0];
+        const elapsed = stopwatchRefs.current[actualTaskId]?.getElapsedSeconds() || 0;
+        stopwatchRefs.current[actualTaskId]?.stopTimer();
+        await uploadTaskFile(file, task, assessmentType, false, elapsed);
     };
 
     const isSetLocked = useCallback((s: number) => {
@@ -389,6 +401,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         <span className="task-count">{currentSetTasks.length} Tasks</span>
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <button
+                            className="trash-bin-header-btn"
+                            style={{ background: 'var(--surface-color)', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}
+                            onClick={() => setTimeRecordModalOpen(true)}
+                        >
+                            <Clock size={16} /> Time Records
+                        </button>
                         <button
                             className="trash-bin-header-btn"
                             onClick={() => {
@@ -616,10 +635,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                             </div>
                                                                             <div className="task-row-actions">
                                                                                 {!task.is_virtual_extra && (
+                                                                                    <TaskStopwatch 
+                                                                                        ref={(el) => stopwatchRefs.current[actualTaskId] = el} 
+                                                                                        userId={userId} 
+                                                                                        taskId={actualTaskId} 
+                                                                                        initialBaseTime={latestSubmission?.time_spent_seconds || 0}
+                                                                                    />
+                                                                                )}
+                                                                                {!task.is_virtual_extra && (
                                                                                     <>
                                                                                         <button type="button" className="task-action-btn primary" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
+                                                                                            stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleOpenInIJCAD(task);
                                                                                         }}>
                                                                                             <Play size={14} /> Open in iJCAD
@@ -627,6 +655,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         <button type="button" className="task-action-btn secondary" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
+                                                                                            stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleDownloadTask(task);
                                                                                         }}>
                                                                                             <Download size={14} /> Download
@@ -644,7 +673,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 onDragEnter={handleDrag}
                                                                                 onDragOver={(e) => handleDragOver(e, task.id)}
                                                                                 onDragLeave={handleDragLeave}
-                                                                                onDrop={(e) => handleDrop(e, task)}
+                                                                                onDrop={(e) => handleDrop(e, task, actualTaskId)}
                                                                                 style={{ position: 'relative' }}
                                                                             >
                                                                                 {dragActiveTaskId === task.id && (
@@ -712,7 +741,11 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                     <input
                                                                                         type="file" id={uploadId}
                                                                                         accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
-                                                                                        onChange={(e) => handleFileUpload(e, task, assessmentType)}
+                                                                                        onChange={(e) => {
+                                                                                            const elapsed = stopwatchRefs.current[actualTaskId]?.getElapsedSeconds() || 0;
+                                                                                            stopwatchRefs.current[actualTaskId]?.stopTimer();
+                                                                                            handleFileUpload(e, task, assessmentType, elapsed);
+                                                                                        }}
                                                                                         disabled={isUploading}
                                                                                         style={{ display: 'none' }}
                                                                                     />
@@ -1106,6 +1139,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     </div>
                 </div>
             </Modal>
+
+            <TimeRecordModal 
+                isOpen={timeRecordModalOpen} 
+                onClose={() => setTimeRecordModalOpen(false)} 
+                tasks={tasks}
+                submissions={submissions}
+                userId={userId} 
+                getSetDisplayNumber={getSetDisplayNumber} 
+            />
         </>
     );
 };

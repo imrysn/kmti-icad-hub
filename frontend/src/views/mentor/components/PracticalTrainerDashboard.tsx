@@ -1124,6 +1124,14 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                                     </div>
                                                                                     <div className="task-list-right">
                                                                                         {sortedSubs.length > 1 && <span className="task-attempt-tag">{sortedSubs.length} attempts</span>}
+                                                                                        {latestSub.time_spent_seconds !== undefined && (
+                                                                                            <span className="task-attempt-tag" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa' }}>
+                                                                                                <Clock size={11} style={{ marginRight: 2 }} /> 
+                                                                                                {Math.floor(latestSub.time_spent_seconds / 3600) > 0 ? `${Math.floor(latestSub.time_spent_seconds / 3600)}h ` : ''}
+                                                                                                {Math.floor((latestSub.time_spent_seconds % 3600) / 60) > 0 ? `${Math.floor((latestSub.time_spent_seconds % 3600) / 60)}m ` : ''}
+                                                                                                {latestSub.time_spent_seconds % 60}s
+                                                                                            </span>
+                                                                                        )}
                                                                                         <span className="task-date"><Clock size={12} /> {new Date(latestSub.submitted_at).toLocaleDateString()} {new Date(latestSub.submitted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                                                                         <div className="task-row-actions">
                                                                                             <button className="row-btn-primary" onClick={() => {

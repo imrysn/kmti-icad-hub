@@ -230,7 +230,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     }
   }, [showNotification, handleDownloadFeedback]);
 
-  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', skipConfirm = false) => {
+  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', skipConfirm = false, timeSpentSeconds = 0) => {
     if (!skipConfirm) {
       const confirmed = await confirm({
         title: "Confirm Submission",
@@ -248,36 +248,41 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       return;
     }
 
-    // Fix #6: Warn (don't block) on files >= 1 GB
-    const ONE_GB = 1024 * 1024 * 1024;
-    if (file.size >= ONE_GB) {
-      showNotification(
-        `Warning: This file is ${(file.size / ONE_GB).toFixed(2)} GB. Large uploads may take several minutes.`,
-        'info',
-        8000
-      );
-    }
+    // Internal function to actually submit the file
+    const submitFile = async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D', timeSpentSeconds: number = 0) => {
+      // Fix #6: Warn (don't block) on files >= 1 GB
+      const ONE_GB = 1024 * 1024 * 1024;
+      if (file.size >= ONE_GB) {
+        showNotification(
+          `Warning: This file is ${(file.size / ONE_GB).toFixed(2)} GB. Large uploads may take several minutes.`,
+          'info',
+          8000
+        );
+      }
 
-    setUploadingTaskId(task.id);
-    setIsSubmitting(true);
-    try {
-      await assessmentService.submitTask(task.id, file, assessmentType);
-      // Fix #8: Explicitly bust submission and task caches so UI reflects new state immediately
-      invalidateCache('/assessments/my-submissions');
-      invalidateCache('/assessments/tasks');
-      showNotification('Task submitted successfully! Awaiting trainer review.', 'success');
-      fetchData(true);
-    } catch (err) {
-      showNotification('Failed to submit task.', 'error');
-    } finally {
-      setIsSubmitting(false);
-      setUploadingTaskId(null);
-    }
+      setUploadingTaskId(task.id);
+      setIsSubmitting(true);
+      try {
+        await assessmentService.submitTask(task.id, file, assessmentType, timeSpentSeconds);
+        // Fix #8: Explicitly bust submission and task caches so UI reflects new state immediately
+        invalidateCache('/assessments/my-submissions');
+        invalidateCache('/assessments/tasks');
+        showNotification('Task submitted successfully! Awaiting trainer review.', 'success');
+        fetchData(true);
+      } catch (err) {
+        showNotification('Failed to submit task.', 'error');
+      } finally {
+        setIsSubmitting(false);
+        setUploadingTaskId(null);
+      }
+    };
+
+    await submitFile(file, task, assessmentType, timeSpentSeconds);
   }, [showNotification, fetchData]);
 
-  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D') => {
+  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', timeSpentSeconds: number = 0) => {
     if (!e.target.files?.[0]) return;
-    await uploadTaskFile(e.target.files[0], task, assessmentType);
+    await uploadTaskFile(e.target.files[0], task, assessmentType, false, timeSpentSeconds);
   }, [uploadTaskFile]);
 
   // Fix #7: All destructive actions use injected confirmFn instead of window.confirm

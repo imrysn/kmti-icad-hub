@@ -313,6 +313,7 @@ class AssessmentSubmissionResponse(AssessmentSubmissionBase):
     user_id: int
     trainer_id: Optional[int] = None
     is_deleted: bool = False
+    time_spent_seconds: int = 0
     submitted_at: datetime
     updated_at: datetime
     user: Optional[UserResponse] = None

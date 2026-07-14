@@ -1,0 +1,57 @@
+import React, { useEffect, forwardRef, useImperativeHandle } from 'react';
+import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
+import { useTaskTimer } from '../../../hooks/useTaskTimer';
+
+interface TaskStopwatchProps {
+    userId: number;
+    taskId: number;
+    initialBaseTime?: number;
+}
+
+export interface TaskStopwatchHandle {
+    startTimer: () => void;
+    stopTimer: () => void;
+    resetTimer: () => void;
+    getElapsedSeconds: () => number;
+}
+
+export const TaskStopwatch = forwardRef<TaskStopwatchHandle, TaskStopwatchProps>(({ userId, taskId, initialBaseTime = 0 }, ref) => {
+    const { 
+        elapsedSeconds, 
+        formattedTime, 
+        isRunning, 
+        startTimer, 
+        stopTimer, 
+        resetTimer 
+    } = useTaskTimer(userId, taskId, initialBaseTime);
+
+    useImperativeHandle(ref, () => ({
+        startTimer,
+        stopTimer,
+        resetTimer,
+        getElapsedSeconds: () => elapsedSeconds
+    }));
+
+    return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--surface-color, #1e1e1e)', padding: '0.25rem 0.75rem', borderRadius: '4px', border: '1px solid var(--border-color, #333)', marginLeft: '1rem' }}>
+            <Clock size={14} className={isRunning ? 'text-blue-400' : 'text-gray-400'} />
+            <span style={{ fontSize: '0.85rem', fontFamily: 'monospace', fontWeight: 'bold', color: isRunning ? 'var(--primary-color, #3b82f6)' : 'var(--text-secondary, #a0a0a0)' }}>
+                {formattedTime}
+            </span>
+            <div style={{ display: 'flex', gap: '0.25rem', marginLeft: '0.5rem' }}>
+                {!isRunning ? (
+                    <button type="button" onClick={startTimer} title="Start Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--success-color, #22c55e)' }}>
+                        <Play size={14} />
+                    </button>
+                ) : (
+                    <button type="button" onClick={stopTimer} title="Pause Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--warning-color, #f59e0b)' }}>
+                        <Pause size={14} />
+                    </button>
+                )}
+                <button type="button" onClick={resetTimer} title="Reset Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--text-secondary, #a0a0a0)' }}>
+                    <RotateCcw size={14} />
+                </button>
+            </div>
+        </div>
+    );
+});
