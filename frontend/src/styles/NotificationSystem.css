@@ -217,3 +217,22 @@
         transform: scale(0.95);
     }
 }
+
+.notification-close-all {
+    pointer-events: auto;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-end;
+    padding: 4px 8px;
+    margin-bottom: -4px;
+    transition: color 0.2s ease;
+}
+
+.notification-close-all:hover {
+    color: var(--primary);
+}
