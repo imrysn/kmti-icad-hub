@@ -32,24 +32,24 @@ interface TwoDStandardLessonProps {
 }
 
 const galleryImages = [
-  { src: slotLongHolesImg, label: "Slot & Long Holes", number: 4 },
-  { src: bendedPlateImg, label: "Bended Plate", number: 5 },
-  { src: computationBendedImg, label: "Computation of Bended", number: 6 },
-  { src: keyPlateImg, label: "Key Plate", number: 7 },
-  { src: materialImg, label: "Material Specification", number: 8 },
-  { src: stkm16a13aImg, label: "STKM 16A & 13A", number: 9 },
-  { src: borekeyToleranceImg, label: "Bore & Keyway Tolerance", number: 10 },
-  { src: grooveImg, label: "Groove Specification", number: 11 },
-  { src: instruction1Img, label: "Drawing Instruction 1", number: 12 },
-  { src: instruction2Img, label: "Drawing Instruction 2", number: 13 },
-  { src: instruction3Img, label: "Drawing Instruction 3", number: 14 },
-  { src: ss400dImg, label: "SS400-D Properties", number: 15 },
-  { src: indicationQuantityImg, label: "Indication of Quantity", number: 16 }
+  { src: slotLongHolesImg, label: "Slot Holes / Long Holes", number: 1 },
+  { src: bendedPlateImg, label: "Bended Plate", number: 2 },
+  { src: computationBendedImg, label: "Computation of Bended", number: 3 },
+  { src: keyPlateImg, label: "Key Plate", number: 4 },
+  { src: materialImg, label: "Material Specification", number: 5 },
+  { src: stkm16a13aImg, label: "STKM 16A & 13A", number: 6 },
+  { src: borekeyToleranceImg, label: "Bore Key Tolerance", number: 7 },
+  { src: grooveImg, label: "Groove Specification", number: 8 },
+  { src: instruction1Img, label: "Drawing Instruction 1", number: 9 },
+  { src: instruction2Img, label: "Drawing Instruction 2", number: 10 },
+  { src: instruction3Img, label: "Drawing Instruction 3", number: 11 },
+  { src: ss400dImg, label: "SS400-D Properties", number: 12 },
+  { src: indicationQuantityImg, label: "Indication of Quantity", number: 13 }
 ];
 
 const reminderSteps = [
   "2D STANDARD",
-  "Reminder",
+  "REMINDER:",
   "Use the main views. (Front View, Top View, Right Side View)",
   "Follow the standard dimensioning order: start with the top, left, and bottom views. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create detailed/section views.",
   "Ensure all dimensions and critical details are applied to the 2D detailing of parts and assemblies (example: chamfers, radius, machining symbols, welding symbols or notes, special notes, BOM and Isometric)."
@@ -157,7 +157,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
           data-reading-index="1"
-          text="Reminder"
+          text="REMINDER:"
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
@@ -165,7 +165,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content fade-in">
-          
+
           {/* Item 1 */}
           <div
             className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
@@ -259,7 +259,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               <ImageIcon size={20} style={{ color: "var(--color-primary)" }} /> Reference Standard Gallery
             </h4>
 
-            <div 
+            <div
               className="gallery-container"
               style={{
                 background: "rgba(255, 255, 255, 0.02)",
@@ -278,13 +278,13 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               onTouchEnd={handleTouchEnd}
             >
               {/* Image Frame */}
-              <div 
-                style={{ 
-                  width: "100%", 
-                  height: "450px", 
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center", 
+              <div
+                style={{
+                  width: "100%",
+                  height: "450px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   overflow: "hidden",
                   borderRadius: "8px",
                   background: "#000"
@@ -303,16 +303,16 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               </div>
 
               {/* Slider Controls & Indicators */}
-              <div 
-                style={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "space-between", 
-                  width: "100%", 
-                  marginTop: "1.5rem" 
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  marginTop: "1.5rem"
                 }}
               >
-                <button 
+                <button
                   className="nav-button"
                   onClick={handleGalleryPrev}
                   style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
@@ -325,11 +325,11 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                     {galleryImages[galleryIndex].label}
                   </span>
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                    Image {galleryImages[galleryIndex].number} of 16
+                    Image {galleryImages[galleryIndex].number} of 13
                   </span>
                 </div>
 
-                <button 
+                <button
                   className="nav-button"
                   onClick={handleGalleryNext}
                   style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}

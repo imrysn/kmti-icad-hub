@@ -17,7 +17,7 @@ interface ThreeDStandardLessonProps {
 
 const reminderSteps = [
     "3D STANDARD",
-    "Reminder",
+    "REMINDER:",
     "Place the origin in the correct position for both the parts and the assembly.",
     "Ensure all dimensions are applied in 3D.",
     "Apply materials and layers to all 3D parts and assemblies, particularly the purchased parts.",
@@ -88,7 +88,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                 <KaraokeLessonText
                     className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
                     data-reading-index="1"
-                    text="Reminder"
+                    text="REMINDER:"
                     isActive={isSpeaking && currentIndex === 1}
                     currentCharIndex={currentCharIndex}
                 />
