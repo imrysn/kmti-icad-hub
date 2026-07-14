@@ -1,19 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Lock } from 'lucide-react';
-import { useCourses } from '../../hooks/useCourses'; import { Course } from '../../types';
+import { useCourses } from '../../hooks/useCourses';
+import { Course } from '../../types';
 import { useLessons } from '../../hooks/useLessons';
-<<<<<<< HEAD
-import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
-// New import for mock command view component
-=======
-import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS, SOLIDWORKS_INTRO_LESSONS } from './mentorConstants'; import { authService } from '../../services/authService';
->>>>>>> origin/rainiel
+import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS, SOLIDWORKS_INTRO_LESSONS } from './mentorConstants';
+import { authService } from '../../services/authService';
 import { assessmentService } from '../../services/assessmentService';
 import { useWebSocket } from '../../context/WebSocketContext';
 
 // Extracted Components
-import { CourseSelector } from './components/CourseSelector';
+import { CourseSelector } from './components/CourseSelector'; // Force compiler cache refresh
 import { MentorSidebar } from './components/MentorSidebar';
 import { LessonViewer } from './components/LessonViewer';
 import { PracticalAssessment } from './components/PracticalAssessment';
@@ -22,6 +18,7 @@ import { PracticalAssessment } from './components/PracticalAssessment';
 import { ICADStandardView } from './components/ICADStandardView';
 import { ICADCommandView } from './components/ICADCommandView';
 import { SolidworksManualView } from './components/SolidworksManualView';
+import { Lock } from 'lucide-react';
 
 import '../../styles/MentorMode.css';
 

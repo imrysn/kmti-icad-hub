@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlayCircle } from 'lucide-react';
 import Commands from '../../../../components/ICAD/Command/Icad_Commands/Commands';
 
@@ -9,8 +9,12 @@ interface Props {
 export const IcadCommandsGrid: React.FC<Props> = ({ setSelectedCourse }) => {
     const [showCommands, setShowCommands] = useState(false);
 
-    const handleLaunch = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    // Log showCommands changes
+    useEffect(() => {
+        console.log('showCommands state:', showCommands);
+    }, [showCommands]);
+
+    const handleLaunch = () => {
         // Keep existing course selection for potential sidebar logic
         setSelectedCourse({
             id: 'mock-icad-commands',
@@ -18,6 +22,7 @@ export const IcadCommandsGrid: React.FC<Props> = ({ setSelectedCourse }) => {
             description: 'Placeholder for future content.',
             course_type: 'Command'
         });
+        console.log('Launching iCAD Commands');
         setShowCommands(true);
     };
 
@@ -45,7 +50,7 @@ export const IcadCommandsGrid: React.FC<Props> = ({ setSelectedCourse }) => {
             )}
             {/* Render the full Commands workspace once launched */}
             {showCommands && (
-                <div className="commands-view-wrapper" style={{ padding: '2rem', width: '100%', overflowY: 'auto' }}>
+                <div className="commands-view-wrapper" style={{ padding: '2rem', width: '100%', overflowY: 'auto', background: 'magenta' }}>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1.5rem' }}>
                         <button className="exit-course-btn" onClick={() => setShowCommands(false)}>
                             RETURN TO HUB

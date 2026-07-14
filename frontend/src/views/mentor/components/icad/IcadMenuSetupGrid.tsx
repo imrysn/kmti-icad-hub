@@ -18,8 +18,8 @@ export const IcadMenuSetupGrid: React.FC<Props> = ({ setSelectedCourse }) => {
                     Graphic Placeholder
                 </div>
             </div>
-            <button 
-                className="primary" 
+            <button
+                className="primary"
                 onClick={(e) => {
                     e.stopPropagation();
                     setSelectedCourse({
