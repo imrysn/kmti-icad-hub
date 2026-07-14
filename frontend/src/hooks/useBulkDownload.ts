@@ -47,17 +47,21 @@ export const useBulkDownload = () => {
                         url = assessmentService.getSubmissionDownloadUrl(item.id);
 
                         const taskObj = item.task || item;
-                        const fileName = item.submission_file_path
+                        const taskCode = taskObj.task_code || 'unknown';
+                        let fileName = item.submission_file_path
                             ? item.submission_file_path.split(/[/\\]/).pop()
-                            : `${taskObj.task_code || 'unknown'}.icd`;
+                            : `${taskCode}.icd`;
+                        if (fileName && !fileName.startsWith(taskCode)) {
+                            fileName = `${taskCode}_${fileName}`;
+                        }
 
                         let masterPath = taskObj.master_file_path;
                         if (!masterPath || masterPath.includes('undefined')) {
                             const rawSet = taskObj.set_number ?? item.set_number;
                             const setNumber = (rawSet !== undefined && rawSet !== 'undefined' && rawSet !== null) ? rawSet : 'unknown';
                             const rawCode = taskObj.task_code ?? item.task_code;
-                            const taskCode = (rawCode !== undefined && rawCode !== 'undefined' && rawCode !== null) ? rawCode : 'unknown';
-                            masterPath = `Units & Tasks/Set ${setNumber}/${taskCode}_Master.dwg`;
+                            const taskCodeVal = (rawCode !== undefined && rawCode !== 'undefined' && rawCode !== null) ? rawCode : 'unknown';
+                            masterPath = `Units & Tasks/Set ${setNumber}/${taskCodeVal}_Master.dwg`;
                         }
 
                         const lastSlash = Math.max(masterPath.lastIndexOf('/'), masterPath.lastIndexOf('\\'));
@@ -117,8 +121,10 @@ export const useBulkDownload = () => {
 
                 if (type === 'submissions') {
                     apiPath = `/api/v1/assessments/submissions/${item.id}/download`;
-                    filename = item.submission_file_path?.split(/[/\\]/).pop()
-                        || `submission_${item.id}`;
+                    const taskObj = item.task || item;
+                    const taskCode = taskObj.task_code || 'unknown';
+                    const originalFileName = item.submission_file_path?.split(/[/\\]/).pop() || `submission_${item.id}`;
+                    filename = originalFileName.startsWith(taskCode) ? originalFileName : `${taskCode}_${originalFileName}`;
                 } else {
                     apiPath = `/api/v1/assessments/tasks/${item.id}/download`;
                     const masterPath: string = item.master_file_path || '';

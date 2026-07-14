@@ -144,8 +144,9 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     }
   }, [showNotification, handleDownloadTask]);
 
-  const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission) => {
-    if (!submission.feedback || submission.feedback.length === 0) return;
+  const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission, feedbackItem?: any) => {
+    const feedback = feedbackItem || (submission.feedback && submission.feedback[0]);
+    if (!feedback) return;
     const confirmed = await confirm({
       title: "Confirm Download",
       message: "Are you sure you want to download this feedback file?",
@@ -154,8 +155,6 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     });
     if (!confirmed) return;
     
-    const feedback = submission.feedback[0];
-
     try {
       showNotification('Preparing download...', 'info');
       const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
@@ -178,8 +177,9 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     }
   }, [showNotification]);
 
-  const handleOpenFeedbackExcel = useCallback(async (submission: AssessmentSubmission) => {
-    if (!submission.feedback || submission.feedback.length === 0) return;
+  const handleOpenFeedbackExcel = useCallback(async (submission: AssessmentSubmission, feedbackItem?: any) => {
+    const feedback = feedbackItem || (submission.feedback && submission.feedback[0]);
+    if (!feedback) return;
     const confirmed = await confirm({
       title: "Confirm Open",
       message: "Are you sure you want to open this feedback file in Excel?",
@@ -188,8 +188,6 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     });
     if (!confirmed) return;
     
-    const feedback = submission.feedback[0];
-
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
       try {
         const url = assessmentService.getFeedbackDownloadUrl(feedback.id);
@@ -205,7 +203,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         showNotification('Failed to open Excel file.', 'error');
       }
     } else {
-      handleDownloadFeedback(submission);
+      handleDownloadFeedback(submission, feedback);
     }
   }, [showNotification, handleDownloadFeedback]);
 

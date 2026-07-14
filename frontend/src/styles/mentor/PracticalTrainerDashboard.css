@@ -1016,7 +1016,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
-    padding: 24px 32px;
+    padding: 0;
     box-sizing: border-box;
 }
 

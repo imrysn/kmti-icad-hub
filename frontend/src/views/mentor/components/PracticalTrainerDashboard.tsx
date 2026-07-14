@@ -61,8 +61,10 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const [customComments, setCustomComments] = useState<string[]>([]);
     const [newCustomComment, setNewCustomComment] = useState('');
     const [isAddingCustom, setIsAddingCustom] = useState(false);
+    const [isCommentDropdownOpen, setIsCommentDropdownOpen] = useState(false);
     const [editingCommentIndex, setEditingCommentIndex] = useState<number | null>(null);
     const [editCommentText, setEditCommentText] = useState('');
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const fetchCustomComments = async () => {
@@ -76,6 +78,22 @@ export const PracticalTrainerDashboard: React.FC = () => {
             }
         };
         fetchCustomComments();
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Element;
+            if (
+                dropdownRef.current && 
+                !dropdownRef.current.contains(target) && 
+                (!target || (typeof target.closest === 'function' && !target.closest('.custom-comment-options') && !target.closest('.manage-custom-overlay')))
+            ) {
+                setIsCommentDropdownOpen(false);
+                setIsAddingCustom(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     const [statusFilter, setStatusFilter] = useState<'pending' | 'reviewed'>('pending');
@@ -496,14 +514,17 @@ export const PracticalTrainerDashboard: React.FC = () => {
     };
 
     const renderQuickCommentsUI = () => (
-        <div style={{ marginBottom: '1rem', position: 'relative' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
-                Quick Comments
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', width: 'fit-content', marginBottom: '0.5rem' }}>
-                <select
+        <div ref={dropdownRef} style={{ marginBottom: '0.5rem', position: 'relative', width: '350px' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
+                {/* Custom Dropdown Trigger */}
+                <div
+                    className="custom-comment-dropdown"
+                    onClick={() => {
+                        setIsCommentDropdownOpen(!isCommentDropdownOpen);
+                        setIsAddingCustom(false);
+                    }}
                     style={{
-                        width: '350px',
+                        width: '100%',
                         padding: '0.6rem 0.8rem',
                         fontSize: '0.85rem',
                         border: '1px solid var(--border-color)',
@@ -511,33 +532,18 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         backgroundColor: 'var(--bg-surface)',
                         color: 'var(--text-main)',
                         cursor: 'pointer',
-                        outline: 'none'
-                    }}
-                    value=""
-                    onChange={(e) => {
-                        if (e.target.value) {
-                            handleQuickCommentClick(e.target.value);
-                        }
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        userSelect: 'none'
                     }}
                 >
-                    <option value="" disabled>Select a quick comment...</option>
-                    <optgroup label="Predefined Comments">
-                        {PREDEFINED_COMMENTS.map((comment, idx) => (
-                            <option key={`predef-${idx}`} value={comment}>
-                                {comment.length > 50 ? comment.substring(0, 50) + '...' : comment}
-                            </option>
-                        ))}
-                    </optgroup>
-                    {customComments.length > 0 && (
-                        <optgroup label="My Custom Comments">
-                            {customComments.map((comment, idx) => (
-                                <option key={`custom-${idx}`} value={comment}>
-                                    {comment.length > 50 ? comment.substring(0, 50) + '...' : comment}
-                                </option>
-                            ))}
-                        </optgroup>
-                    )}
-                </select>
+                    <span>Select a quick comment...</span>
+                    <ChevronDown size={16} style={{ opacity: 0.7, transform: isCommentDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                 <button
                     className="quick-comment-btn add-custom"
                     style={{
@@ -555,91 +561,15 @@ export const PracticalTrainerDashboard: React.FC = () => {
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-main)'}
                     onMouseLeave={(e) => e.currentTarget.style.color = isAddingCustom ? 'var(--accent-blue)' : 'var(--text-muted)'}
-                    onClick={() => setIsAddingCustom(!isAddingCustom)}
+                    onClick={() => {
+                        setIsAddingCustom(!isAddingCustom);
+                        setIsCommentDropdownOpen(false);
+                    }}
                     type="button"
                 >
                     {isAddingCustom ? 'Done' : 'Manage Custom'}
                 </button>
             </div>
-            {isAddingCustom && (
-                <div style={{ position: 'absolute', top: '100%', left: 0, zIndex: 50, width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem', padding: '0.75rem', background: 'var(--bg-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
-                    {customComments.length > 0 && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', maxHeight: '140px', overflowY: 'auto' }}>
-                            {customComments.map((comment, idx) => (
-                                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    {editingCommentIndex === idx ? (
-                                        <>
-                                            <input
-                                                type="text"
-                                                value={editCommentText}
-                                                onChange={(e) => setEditCommentText(e.target.value)}
-                                                style={{ flex: 1, padding: '0.3rem', fontSize: '0.8rem', border: '1px solid var(--accent-blue)', borderRadius: 'var(--radius-sm)' }}
-                                                autoFocus
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter') handleSaveEditCustomComment();
-                                                    else if (e.key === 'Escape') setEditingCommentIndex(null);
-                                                }}
-                                            />
-                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
-                                                <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                {comment}
-                                            </div>
-                                            <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
-                                            <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
-                                        </>
-                                    )}
-                                </div>
-                            ))}
-                            <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.25rem 0' }}></div>
-                        </div>
-                    )}
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                        <input
-                            type="text"
-                            placeholder="Add a new custom comment..."
-                            value={newCustomComment}
-                            onChange={(e) => setNewCustomComment(e.target.value)}
-                            style={{
-                                flex: 1,
-                                padding: '0.4rem',
-                                fontSize: '0.85rem',
-                                border: '1px solid var(--border-color)',
-                                borderRadius: 'var(--radius-md)',
-                                background: 'var(--bg-main)',
-                                color: 'var(--text-main)'
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    handleAddCustomComment();
-                                }
-                            }}
-                        />
-                        <button
-                            onClick={handleAddCustomComment}
-                            type="button"
-                            style={{
-                                padding: '0.4rem 0.75rem',
-                                backgroundColor: 'var(--color-primary)',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                cursor: 'pointer',
-                                fontSize: '0.85rem'
-                            }}
-                            disabled={!newCustomComment.trim()}
-                        >
-                            Add
-                        </button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 
@@ -1250,14 +1180,13 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         })()}
                     </div>
                 )}
-                {/* Progress Tab */}
                 {activeMainTab === 'progress' && (
                     <div className="progress-tracker-container" style={{
                         display: selectedTrainee ? 'flex' : 'block',
                         flexDirection: selectedTrainee ? 'column' : undefined,
                         flex: 1,
                         overflowY: selectedTrainee ? 'hidden' : 'auto',
-                        padding: '1.5rem',
+                        padding: 0,
                         height: 'calc(100vh - 250px)'
                     }}>
                         {loadingProgress ? (
@@ -1390,8 +1319,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                                                 {sub.feedback.map(fb => (
                                                                     <div key={fb.id} className="chat-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                                                        <div className="chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                                                                            <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /> You (Trainer)</span>
+                                                                        <div className="chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 0 12px', width: 'fit-content', maxWidth: '90%', alignSelf: 'flex-end', marginLeft: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                                                            <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>You (Trainer) <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /></span>
                                                                             <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-light)' }}>{fb.comments || "No comments provided."}</p>
                                                                             {fb.checkback_file_path && (
                                                                                 <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#e879f9', marginTop: '0.75rem', padding: '6px 10px', background: 'rgba(221, 77, 250, 0.1)', borderRadius: '6px', transition: 'all 0.2s', fontWeight: 600 }}
@@ -1403,10 +1332,10 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                             )}
                                                                         </div>
                                                                         {fb.trainee_reply && (
-                                                                            <div className="chat-bubble trainee-chat" style={{ background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '12px 12px 0 12px', width: 'fit-content', maxWidth: '90%', alignSelf: 'flex-end', marginLeft: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                                                                                <span className="chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{sub.user?.full_name} (Trainee) <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} /></span>
+                                                                            <div className="chat-bubble trainee-chat" style={{ background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                                                                <span className="chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} /> {sub.user?.full_name} (Trainee)</span>
                                                                                 <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-main)' }}>{fb.trainee_reply}</p>
-                                                                                {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.5rem', textAlign: 'right' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
+                                                                                {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.5rem', textAlign: 'left' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
                                                                             </div>
                                                                         )}
                                                                     </div>
@@ -1455,12 +1384,168 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 onFocus={(e) => { e.target.style.borderColor = 'var(--accent-blue)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
                                                 onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                                             ></textarea>
+                                            
+                                            {/* Custom Dropdown Options Overlay */}
+                                            {isCommentDropdownOpen && (
+                                                <div
+                                                    className="custom-comment-options"
+                                                    style={{
+                                                        position: 'absolute',
+                                                        top: 0,
+                                                        left: 0,
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        overflowY: 'auto',
+                                                        background: '#161824',
+                                                        border: '1px solid var(--border-color)',
+                                                        borderRadius: '10px',
+                                                        boxShadow: '0 10px 25px rgba(0,0,0,0.35)',
+                                                        zIndex: 100,
+                                                        padding: '0.75rem 0'
+                                                    }}
+                                                >
+                                                    <div className="custom-comment-group-title" style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                                        Predefined Comments
+                                                    </div>
+                                                    {PREDEFINED_COMMENTS.map((comment, idx) => (
+                                                        <div
+                                                            key={`predef-${idx}`}
+                                                            className="custom-comment-option-item"
+                                                            onClick={() => {
+                                                                handleQuickCommentClick(comment);
+                                                                setIsCommentDropdownOpen(false);
+                                                            }}
+                                                            style={{
+                                                                padding: '0.5rem 0.8rem',
+                                                                fontSize: '0.85rem',
+                                                                color: 'var(--text-main)',
+                                                                cursor: 'pointer',
+                                                                transition: 'background 0.2s'
+                                                            }}
+                                                            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                                        >
+                                                            {comment}
+                                                        </div>
+                                                    ))}
+                                                    {customComments.length > 0 && (
+                                                        <>
+                                                            <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.4rem 0' }} />
+                                                            <div className="custom-comment-group-title" style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                                                My Custom Comments
+                                                            </div>
+                                                            {customComments.map((comment, idx) => (
+                                                                <div
+                                                                    key={`custom-${idx}`}
+                                                                    className="custom-comment-option-item"
+                                                                    onClick={() => {
+                                                                        handleQuickCommentClick(comment);
+                                                                        setIsCommentDropdownOpen(false);
+                                                                    }}
+                                                                    style={{
+                                                                        padding: '0.5rem 0.8rem',
+                                                                        fontSize: '0.85rem',
+                                                                        color: 'var(--text-main)',
+                                                                        cursor: 'pointer',
+                                                                        transition: 'background 0.2s'
+                                                                    }}
+                                                                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                                                >
+                                                                    {comment}
+                                                                </div>
+                                                            ))}
+                                                        </>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* Manage Custom Overlay */}
+                                            {isAddingCustom && (
+                                                <div className="manage-custom-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 100, display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem', background: '#161824', borderRadius: '10px', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.35)' }}>
+                                                    {customComments.length > 0 && (
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', flex: 1, overflowY: 'auto' }}>
+                                                            {customComments.map((comment, idx) => (
+                                                                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                    {editingCommentIndex === idx ? (
+                                                                        <>
+                                                                            <input
+                                                                                type="text"
+                                                                                value={editCommentText}
+                                                                                onChange={(e) => setEditCommentText(e.target.value)}
+                                                                                style={{ flex: 1, padding: '0.3rem', fontSize: '0.8rem', border: '1px solid var(--accent-blue)', borderRadius: 'var(--radius-sm)' }}
+                                                                                autoFocus
+                                                                                onKeyDown={(e) => {
+                                                                                    if (e.key === 'Enter') handleSaveEditCustomComment();
+                                                                                    else if (e.key === 'Escape') setEditingCommentIndex(null);
+                                                                                }}
+                                                                            />
+                                                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                                                <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
+                                                                                <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                            </div>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                                                {comment}
+                                                                            </div>
+                                                                            <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
+                                                                            <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
+                                                                        </>
+                                                                    )}
+                                                                </div>
+                                                            ))}
+                                                            <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.25rem 0' }}></div>
+                                                        </div>
+                                                    )}
+                                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Add a new custom comment..."
+                                                            value={newCustomComment}
+                                                            onChange={(e) => setNewCustomComment(e.target.value)}
+                                                            style={{
+                                                                flex: 1,
+                                                                padding: '0.4rem',
+                                                                fontSize: '0.85rem',
+                                                                border: '1px solid var(--border-color)',
+                                                                borderRadius: 'var(--radius-md)',
+                                                                background: 'var(--bg-main)',
+                                                                color: 'var(--text-main)'
+                                                            }}
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === 'Enter') {
+                                                                    e.preventDefault();
+                                                                    handleAddCustomComment();
+                                                                }
+                                                            }}
+                                                        />
+                                                        <button
+                                                            onClick={handleAddCustomComment}
+                                                            type="button"
+                                                            style={{
+                                                                padding: '0.4rem 0.75rem',
+                                                                backgroundColor: 'var(--color-primary)',
+                                                                color: 'white',
+                                                                border: 'none',
+                                                                borderRadius: 'var(--radius-md)',
+                                                                cursor: 'pointer',
+                                                                fontSize: '0.85rem'
+                                                            }}
+                                                            disabled={!newCustomComment.trim()}
+                                                        >
+                                                            Add
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                             {feedbackComments && (
                                                 <span
                                                     role="button"
                                                     tabIndex={0}
                                                     onClick={() => setFeedbackComments('')}
-                                                    style={{ position: 'absolute', bottom: '0.75rem', right: '0.75rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '0.8rem', cursor: 'pointer', transition: 'color 0.2s', fontWeight: 500, outline: 'none' }}
+                                                    style={{ position: 'absolute', bottom: '0.75rem', right: '0.75rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '0.8rem', cursor: 'pointer', transition: 'color 0.2s', fontWeight: 500, outline: 'none', zIndex: 10 }}
                                                     onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error)'}
                                                     onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
                                                 >
@@ -1575,12 +1660,168 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                             onChange={(e) => setFeedbackComments(e.target.value)}
                                             style={{ width: '100%', minHeight: '120px', padding: '0.5rem', paddingBottom: '2.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
                                         ></textarea>
+                                        
+                                        {/* Custom Dropdown Options Overlay */}
+                                        {isCommentDropdownOpen && (
+                                            <div
+                                                className="custom-comment-options"
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    overflowY: 'auto',
+                                                    background: '#161824',
+                                                    border: '1px solid var(--border-color)',
+                                                    borderRadius: '6px',
+                                                    boxShadow: '0 10px 25px rgba(0,0,0,0.35)',
+                                                    zIndex: 100,
+                                                    padding: '0.5rem 0'
+                                                }}
+                                            >
+                                                <div className="custom-comment-group-title" style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                                    Predefined Comments
+                                                </div>
+                                                {PREDEFINED_COMMENTS.map((comment, idx) => (
+                                                    <div
+                                                        key={`predef-${idx}`}
+                                                        className="custom-comment-option-item"
+                                                        onClick={() => {
+                                                            handleQuickCommentClick(comment);
+                                                            setIsCommentDropdownOpen(false);
+                                                        }}
+                                                        style={{
+                                                            padding: '0.5rem 0.8rem',
+                                                            fontSize: '0.85rem',
+                                                            color: 'var(--text-main)',
+                                                            cursor: 'pointer',
+                                                            transition: 'background 0.2s'
+                                                        }}
+                                                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                                    >
+                                                        {comment}
+                                                    </div>
+                                                ))}
+                                                {customComments.length > 0 && (
+                                                    <>
+                                                        <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.4rem 0' }} />
+                                                        <div className="custom-comment-group-title" style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                                            My Custom Comments
+                                                        </div>
+                                                        {customComments.map((comment, idx) => (
+                                                            <div
+                                                                key={`custom-${idx}`}
+                                                                className="custom-comment-option-item"
+                                                                onClick={() => {
+                                                                    handleQuickCommentClick(comment);
+                                                                    setIsCommentDropdownOpen(false);
+                                                                }}
+                                                                style={{
+                                                                    padding: '0.5rem 0.8rem',
+                                                                    fontSize: '0.85rem',
+                                                                    color: 'var(--text-main)',
+                                                                    cursor: 'pointer',
+                                                                    transition: 'background 0.2s'
+                                                                }}
+                                                                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                                            >
+                                                                {comment}
+                                                            </div>
+                                                        ))}
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Manage Custom Overlay */}
+                                        {isAddingCustom && (
+                                            <div className="manage-custom-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 100, display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem', background: '#161824', borderRadius: '6px', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.35)' }}>
+                                                {customComments.length > 0 && (
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', flex: 1, overflowY: 'auto' }}>
+                                                        {customComments.map((comment, idx) => (
+                                                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                {editingCommentIndex === idx ? (
+                                                                    <>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={editCommentText}
+                                                                            onChange={(e) => setEditCommentText(e.target.value)}
+                                                                            style={{ flex: 1, padding: '0.3rem', fontSize: '0.8rem', border: '1px solid var(--accent-blue)', borderRadius: 'var(--radius-sm)' }}
+                                                                            autoFocus
+                                                                            onKeyDown={(e) => {
+                                                                                if (e.key === 'Enter') handleSaveEditCustomComment();
+                                                                                else if (e.key === 'Escape') setEditingCommentIndex(null);
+                                                                            }}
+                                                                        />
+                                                                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                                            <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
+                                                                            <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                        </div>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                                            {comment}
+                                                                        </div>
+                                                                        <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
+                                                                        <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        ))}
+                                                        <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.25rem 0' }}></div>
+                                                    </div>
+                                                )}
+                                                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Add a new custom comment..."
+                                                        value={newCustomComment}
+                                                        onChange={(e) => setNewCustomComment(e.target.value)}
+                                                        style={{
+                                                            flex: 1,
+                                                            padding: '0.4rem',
+                                                            fontSize: '0.85rem',
+                                                            border: '1px solid var(--border-color)',
+                                                            borderRadius: 'var(--radius-md)',
+                                                            background: 'var(--bg-main)',
+                                                            color: 'var(--text-main)'
+                                                        }}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === 'Enter') {
+                                                                    e.preventDefault();
+                                                                    handleAddCustomComment();
+                                                            }
+                                                        }}
+                                                    />
+                                                    <button
+                                                        onClick={handleAddCustomComment}
+                                                        type="button"
+                                                        style={{
+                                                            padding: '0.4rem 0.75rem',
+                                                            backgroundColor: 'var(--color-primary)',
+                                                            color: 'white',
+                                                            border: 'none',
+                                                            borderRadius: 'var(--radius-md)',
+                                                            cursor: 'pointer',
+                                                            fontSize: '0.85rem'
+                                                        }}
+                                                        disabled={!newCustomComment.trim()}
+                                                    >
+                                                        Add
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
                                         {feedbackComments && (
                                             <span
                                                 role="button"
                                                 tabIndex={0}
                                                 onClick={() => setFeedbackComments('')}
-                                                style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '0.8rem', cursor: 'pointer', transition: 'color 0.2s', fontWeight: 500, outline: 'none' }}
+                                                style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '0.8rem', cursor: 'pointer', transition: 'color 0.2s', fontWeight: 500, outline: 'none', zIndex: 10 }}
                                                 onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error)'}
                                                 onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
                                             >
