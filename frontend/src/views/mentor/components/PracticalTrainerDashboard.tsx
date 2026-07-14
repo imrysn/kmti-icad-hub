@@ -871,7 +871,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
             )}
 
             <div className={isAdmin ? "" : "page-content"} style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-                {activeMainTab !== 'notifications' && (
+                {activeMainTab !== 'notifications' && !selectedTrainee && (
                     <div className="toolbar" style={{ marginBottom: '1.5rem' }}>
                         <div className="search-box">
                             <Search size={16} color="#94a3b8" />
