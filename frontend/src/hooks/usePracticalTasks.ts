@@ -88,19 +88,31 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
     try {
       showNotification('Preparing task template download...', 'info');
-      const blob = await assessmentService.getMasterFileBlob(task.id);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
+      
       const originalFilename = task.master_file_path
         ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
         : `Set${task.set_number}_${task.task_code}_Master.dwg`;
-      a.download = originalFilename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+
+      if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
+        const url = assessmentService.getDownloadUrl(task.id);
+        const token = authService.getToken();
+        await window.electronAPI.downloadBulkFiles({
+          tasks: [{ url, target_relative_path: originalFilename }],
+          token
+        });
+      } else {
+        const blob = await assessmentService.getMasterFileBlob(task.id);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = originalFilename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+      
       showNotification('Task template download started.', 'success');
     } catch (err) {
       console.error('Download error:', err);
@@ -144,8 +156,9 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     }
   }, [showNotification, handleDownloadTask]);
 
-  const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission) => {
-    if (!submission.feedback || submission.feedback.length === 0) return;
+  const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission, feedbackItem?: any) => {
+    const feedback = feedbackItem || (submission.feedback && submission.feedback[0]);
+    if (!feedback) return;
     const confirmed = await confirm({
       title: "Confirm Download",
       message: "Are you sure you want to download this feedback file?",
@@ -154,23 +167,32 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     });
     if (!confirmed) return;
     
-    const feedback = submission.feedback[0];
-
     try {
       showNotification('Preparing download...', 'info');
-      const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
-        responseType: 'blob'
-      });
-      const blob = response.data;
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      const filename = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
+
+      if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
+        const url = `${api.defaults.baseURL || ''}/api/v1/assessments/feedback/${feedback.id}/download`;
+        const token = authService.getToken();
+        await window.electronAPI.downloadBulkFiles({
+          tasks: [{ url, target_relative_path: filename }],
+          token
+        });
+      } else {
+        const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
+          responseType: 'blob'
+        });
+        const blob = response.data;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
       showNotification('Download started.', 'success');
     } catch (err) {
       console.error('Download error:', err);
@@ -178,8 +200,9 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     }
   }, [showNotification]);
 
-  const handleOpenFeedbackExcel = useCallback(async (submission: AssessmentSubmission) => {
-    if (!submission.feedback || submission.feedback.length === 0) return;
+  const handleOpenFeedbackExcel = useCallback(async (submission: AssessmentSubmission, feedbackItem?: any) => {
+    const feedback = feedbackItem || (submission.feedback && submission.feedback[0]);
+    if (!feedback) return;
     const confirmed = await confirm({
       title: "Confirm Open",
       message: "Are you sure you want to open this feedback file in Excel?",
@@ -188,8 +211,6 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     });
     if (!confirmed) return;
     
-    const feedback = submission.feedback[0];
-
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
       try {
         const url = assessmentService.getFeedbackDownloadUrl(feedback.id);
@@ -205,11 +226,11 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         showNotification('Failed to open Excel file.', 'error');
       }
     } else {
-      handleDownloadFeedback(submission);
+      handleDownloadFeedback(submission, feedback);
     }
   }, [showNotification, handleDownloadFeedback]);
 
-  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', skipConfirm = false) => {
+  const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', skipConfirm = false, timeSpentSeconds = 0) => {
     if (!skipConfirm) {
       const confirmed = await confirm({
         title: "Confirm Submission",
@@ -227,36 +248,41 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       return;
     }
 
-    // Fix #6: Warn (don't block) on files >= 1 GB
-    const ONE_GB = 1024 * 1024 * 1024;
-    if (file.size >= ONE_GB) {
-      showNotification(
-        `Warning: This file is ${(file.size / ONE_GB).toFixed(2)} GB. Large uploads may take several minutes.`,
-        'info',
-        8000
-      );
-    }
+    // Internal function to actually submit the file
+    const submitFile = async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D', timeSpentSeconds: number = 0) => {
+      // Fix #6: Warn (don't block) on files >= 1 GB
+      const ONE_GB = 1024 * 1024 * 1024;
+      if (file.size >= ONE_GB) {
+        showNotification(
+          `Warning: This file is ${(file.size / ONE_GB).toFixed(2)} GB. Large uploads may take several minutes.`,
+          'info',
+          8000
+        );
+      }
 
-    setUploadingTaskId(task.id);
-    setIsSubmitting(true);
-    try {
-      await assessmentService.submitTask(task.id, file, assessmentType);
-      // Fix #8: Explicitly bust submission and task caches so UI reflects new state immediately
-      invalidateCache('/assessments/my-submissions');
-      invalidateCache('/assessments/tasks');
-      showNotification('Task submitted successfully! Awaiting trainer review.', 'success');
-      fetchData(true);
-    } catch (err) {
-      showNotification('Failed to submit task.', 'error');
-    } finally {
-      setIsSubmitting(false);
-      setUploadingTaskId(null);
-    }
+      setUploadingTaskId(task.id);
+      setIsSubmitting(true);
+      try {
+        await assessmentService.submitTask(task.id, file, assessmentType, timeSpentSeconds);
+        // Fix #8: Explicitly bust submission and task caches so UI reflects new state immediately
+        invalidateCache('/assessments/my-submissions');
+        invalidateCache('/assessments/tasks');
+        showNotification('Task submitted successfully! Awaiting trainer review.', 'success');
+        fetchData(true);
+      } catch (err) {
+        showNotification('Failed to submit task.', 'error');
+      } finally {
+        setIsSubmitting(false);
+        setUploadingTaskId(null);
+      }
+    };
+
+    await submitFile(file, task, assessmentType, timeSpentSeconds);
   }, [showNotification, fetchData]);
 
-  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D') => {
+  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', timeSpentSeconds: number = 0) => {
     if (!e.target.files?.[0]) return;
-    await uploadTaskFile(e.target.files[0], task, assessmentType);
+    await uploadTaskFile(e.target.files[0], task, assessmentType, false, timeSpentSeconds);
   }, [uploadTaskFile]);
 
   // Fix #7: All destructive actions use injected confirmFn instead of window.confirm

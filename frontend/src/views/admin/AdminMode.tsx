@@ -81,7 +81,7 @@ export const AdminMode: React.FC = () => {
             <main className="admin-main">
                 <AdminHeader activeTab={activeTab} stats={stats} selectedTrainee={selectedTrainee} fetchData={fetchData} loading={loading} />
 
-                <div className="page-content" style={{ position: 'relative' }}>
+                <div className={`page-content ${location.search.includes('subtab=assessments') || location.search.includes('subtab=sets') ? 'no-scroll' : ''}`} style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}>
                     {error && (
                         <div className="admin-error-banner">
                             <XCircle size={18} /> {error}

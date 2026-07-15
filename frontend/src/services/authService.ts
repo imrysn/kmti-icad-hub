@@ -1,16 +1,5 @@
 import axios from 'axios';
 
-// Auto-migrate legacy port 8000 to 3001
-if (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.getItem === 'function') {
-    const legacyUrl = window.localStorage.getItem('custom_api_url');
-    if (legacyUrl && legacyUrl.includes(':8000')) {
-        const migratedUrl = legacyUrl.replace(':8000', ':3001');
-        if (typeof window.localStorage.setItem === 'function') {
-            window.localStorage.setItem('custom_api_url', migratedUrl);
-        }
-    }
-}
-
 const isElectron = navigator.userAgent.toLowerCase().includes('electron');
 const defaultHost = isElectron ? '127.0.0.1' : (typeof window !== 'undefined' && window.location && window.location.hostname ? window.location.hostname : '127.0.0.1');
 const storedApiUrl = (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.getItem === 'function') ? window.localStorage.getItem('custom_api_url') : null;
@@ -40,6 +29,7 @@ export interface User {
     is_active: boolean;
     created_at?: string;
     last_login?: string;
+    custom_comments?: string[];
 }
 
 export interface TokenResponse {
@@ -89,20 +79,13 @@ authApi.interceptors.request.use((config) => {
 authApi.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Only redirect if NOT a login attempt AND not already on the login page.
-        // This prevents failed logins from refreshing the page and clearing error messages.
+        // Only log warning if NOT a login attempt AND not already on the login page.
         const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.hash === '#/' || window.location.hash.startsWith('#/login');
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
-            console.warn('Authentication failure - clearing session and redirecting');
-            sessionStorage.removeItem('access_token');
-            sessionStorage.removeItem('user');
-            
-            if (window.location.hash !== '#/' && !window.location.hash.startsWith('#/login')) {
-                window.location.hash = '#/login';
-                window.dispatchEvent(new CustomEvent('kmti-auth-expired'));
-            }
+            console.warn('Authentication failure - token might be expired or invalid (auto-logout disabled)');
+            // Removed sessionStorage.removeItem and window.location.hash redirect
         }
         return Promise.reject(error);
     }
@@ -132,6 +115,15 @@ export const authService = {
      */
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+        return response.data;
+    },
+
+    /**
+     * Update custom comments for the current user
+     */
+    async updateCustomComments(comments: string[]): Promise<User> {
+        const response = await authApi.put<User>('/auth/me/custom-comments', comments);
         sessionStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     },

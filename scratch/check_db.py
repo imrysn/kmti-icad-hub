@@ -1,14 +1,15 @@
-import sys
-sys.path.insert(0, '.')
-from backend.database import engine
-from sqlalchemy import text, inspect
+import os
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
 
-inspector = inspect(engine)
-tables = inspector.get_table_names()
-print("All tables:", tables)
-assessment_tables = [t for t in tables if 'assessment' in t.lower()]
-print("Assessment tables:", assessment_tables)
+load_dotenv('backend/.env')
 
-if 'assessment_submissions' in tables:
-    cols = inspector.get_columns('assessment_submissions')
-    print("assessment_submissions columns:", [c['name'] for c in cols])
+db_url = os.getenv('DATABASE_URL')
+if not db_url:
+    db_url = f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}?charset=utf8"
+
+engine = create_engine(db_url)
+with engine.connect() as conn:
+    res = conn.execute(text('SHOW COLUMNS FROM assessment_submissions')).fetchall()
+    for row in res:
+        print(row)

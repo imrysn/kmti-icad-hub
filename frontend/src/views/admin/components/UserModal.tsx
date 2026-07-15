@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, UserPlus, Save, User as UserIcon, Mail, Shield, Key } from 'lucide-react'; import { User } from '../../../services/authService';
+import { X, UserPlus, Save, User as UserIcon, Mail, Shield, Key, Eye, EyeOff } from 'lucide-react'; import { User } from '../../../services/authService';
 import { parseBackendError } from '../../../utils/errorUtils';
 import { Modal } from '../../../components/Modal';
 
@@ -14,6 +14,7 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
     const [formData, setFormData] = useState({ username: '', full_name: '', role: 'trainee', password: '', is_active: true });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -85,7 +86,6 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
                     <div className="form-group">
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><UserIcon size={14} /> Username</label>
                         <input type="text" value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })}
-                            disabled={!!user} // Username usually immutable
                             placeholder="e.g. jd"
                             minLength={2}
                             required
@@ -94,11 +94,36 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
 
                     <div className="form-group">
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><Key size={14} /> {user ? 'New Password (Optional)' : 'Password'}</label>
-                        <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })}
-                            placeholder={user ? "Leave blank to keep current" : "Min 4 characters"}
-                            minLength={4}
-                            required={!user}
-                        />
+                        <div style={{ position: 'relative' }}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={formData.password}
+                                onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                placeholder={user ? "Leave blank to keep" : "Min 4 characters"}
+                                minLength={4}
+                                required={!user}
+                                style={{ width: '100%', paddingRight: '2rem', fontFamily: 'inherit', fontSize: 'inherit', letterSpacing: 'normal' }}
+                            />
+                            <div
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{
+                                    position: 'absolute',
+                                    right: '0.5rem',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    color: 'var(--text-muted)',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '4px',
+                                    borderRadius: '4px'
+                                }}
+                                title={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
