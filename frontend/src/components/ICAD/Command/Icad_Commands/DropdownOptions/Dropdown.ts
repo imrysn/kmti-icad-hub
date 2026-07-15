@@ -521,7 +521,7 @@ export const draftingMenu = [
             },
             {
                 title: "Edit Chars",
-                childern: [
+                children: [
                     {
                         title: "Change Chars"
                     },
