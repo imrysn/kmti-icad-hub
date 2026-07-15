@@ -979,6 +979,13 @@ async def provide_feedback(
     file_path = None
     if file:
         base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+        
+        # Safety Check: If UPLOAD_DIR points to a drive that doesn't exist on this machine
+        # (e.g. copied .env file or hidden mapped drive), fallback to local APP_PATH
+        drive_letter = os.path.splitdrive(base_upload_dir)[0]
+        if drive_letter and not os.path.exists(drive_letter + "\\"):
+            base_upload_dir = os.path.join(APP_PATH, "uploads")
+            
         feedback_dir = os.path.join(base_upload_dir, "feedback", str(submission.user_id))
         os.makedirs(feedback_dir, exist_ok=True)
         safe_fb_filename = os.path.basename(file.filename) if file.filename else "feedback"
