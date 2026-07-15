@@ -28,6 +28,10 @@ const StandardLesson = lazy(() => import('../../../components/ICAD/Manual/3D_Mod
 const KemcoThreeDStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/3D_Standard'));
 const KemcoTwoDStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/2D_Standard'));
 const PipingTableLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/PipingTable'));
+const GeneralStandardSteelLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/GeneralStandardSteel'));
+const SteelPipesLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/SteelPipes'));
+const AngleBarDimensionsLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/AngleBarDimensions'));
+
 
 // 2D Lesson Imports (Lazy Loaded)
 const OrthographicViewLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_OrthographicView'));
@@ -449,6 +453,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '3d': () => <KemcoThreeDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d': () => <KemcoTwoDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'piping': () => <PipingTableLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'general-standard-steel': () => <GeneralStandardSteelLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'steel-pipes': () => <SteelPipesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'angle-bar-dimensions': () => <AngleBarDimensionsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
