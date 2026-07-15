@@ -964,3 +964,29 @@ export const SOLIDWORKS_INTRO_LESSONS: Lesson[] = [
     ]
   }
 ];
+
+export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
+  {
+    id: 'sw-3d-operation',
+    title: '3D Operation',
+    content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-part-modeling', title: '3D Part Modeling', content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'] },
+      { id: 'sw-sketching-base', title: 'Sketching the Base', content: ['Add sketch geometry', 'Add sketch relations', 'Insert dimension/s'] },
+      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extrude the sketch into a solid'] }
+    ]
+  }
+];
+
+export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
+  {
+    id: 'sw-2d-operation',
+    title: '2D Operation',
+    content: ['Insert Components in the Part', 'Create New File', 'Select New Document', 'Insert Parts/ Assembly'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-2d-operation-page1', title: 'Insert Components in the Part', content: [] }
+    ]
+  }
+];
