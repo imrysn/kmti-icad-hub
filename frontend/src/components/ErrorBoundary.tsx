@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     }
 
     componentDidCatch(error: Error, info: React.ErrorInfo) {
-        if (process.env.NODE_ENV !== 'production') {
+        if (import.meta.env.DEV) {
             console.error('[ErrorBoundary] Caught error:', error, info);
         }
     }
@@ -51,7 +51,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                     <h3 className="error-boundary__title">
                         Something went wrong
                     </h3>
-                    {process.env.NODE_ENV !== 'production' && this.state.error && (
+                    {!import.meta.env.PROD && this.state.error && (
                         <pre className="error-boundary__detail">
                             {this.state.error.message}
                         </pre>

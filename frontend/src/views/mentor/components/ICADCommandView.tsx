@@ -3,8 +3,8 @@ import { CheckCircle2, Menu, X } from 'lucide-react';
 import { IcadCommandsGrid } from './icad/IcadCommandsGrid';
 import { IcadGuideGrid } from './icad/IcadGuideGrid';
 import { IcadMenuSetupGrid } from './icad/IcadMenuSetupGrid';
-import Commands from '../../../components/ICAD/Command/Icad_Commands/DraftingDropdown/DraftingDropdownLayout';
-import DrawDropdownLayout from '../../../components/ICAD/Command/Icad_Commands/DrawDropdownLayout/DrawDropdownLayout';
+import IcadCommands from "../../../components/ICAD/Command/Icad_Commands/Icad_Commands";
+
 
 interface Props {
     setSelectedCourse: (course: any) => void;
@@ -12,8 +12,8 @@ interface Props {
 
 // Sidebar lesson entry
 const SIDEBAR_LESSONS = [
-    { id: 'commands', label: 'iCAD Drafting Commands' },
-    { id: 'drawDropdown', label: 'iCAD Draw Commands' },
+    { id: 'icad_commands', label: 'iCAD Commands' },
+    { id: 'icad_menu_setup', label: 'iCAD Menu Setup' },
 ];
 
 export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
@@ -137,8 +137,8 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
 
                     {/* Content */}
                     <div style={{ flex: 1, overflowY: 'auto', padding: '2rem' }}>
-                        {activeLesson ? (
-                            <Commands />
+                        {activeLesson === 'icad_commands' ? (
+                            <IcadCommands />
                         ) : (
                             /* "Select a Lesson" placeholder */
                             <div style={{
@@ -190,7 +190,10 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                         onLaunchCommands={() => setCommandsPage('icad-commands')}
                     />
                     <IcadGuideGrid setSelectedCourse={setSelectedCourse} />
-                    <IcadMenuSetupGrid setSelectedCourse={setSelectedCourse} />
+                    <IcadMenuSetupGrid
+                        setSelectedCourse={setSelectedCourse}
+                        onLaunchCommands={() => setCommandsPage('icad-menu-setup')}
+                    />
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import { PlayCircle } from 'lucide-react';
 
 interface Props {
     setSelectedCourse: (course: any) => void;
+    onLaunchCommands: () => void;
 }
 
 export const IcadMenuSetupGrid: React.FC<Props> = ({ setSelectedCourse }) => {
