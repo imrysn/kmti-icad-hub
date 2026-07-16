@@ -6,20 +6,20 @@ import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Static Assets */
-import plateThicknessImg from "../../../../assets/Standard/Kemco_JIS_Standard/plate_thickness.png";
+import jisScaleImg from "../../../../assets/Standard/Kemco_JIS_Standard/jis_scale.png";
 
-interface AvailablePlateThicknessJISProps {
+interface JISScaleProps {
     nextLabel?: string;
     onNextLesson?: () => void;
     onPrevLesson?: () => void;
 }
 
 const reminderSteps = [
-    "Plate Thickness",
-    "Please review the available plate thickness reference.",
+    "JIS Scale",
+    "Please review the JIS Scale reference.",
 ];
 
-const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
+const JISScale: React.FC<JISScaleProps> = ({
     onNextLesson,
     onPrevLesson,
     nextLabel,
@@ -33,18 +33,18 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
         currentIndex,
         currentCharIndex,
         registerText,
-    } = useLessonCore("available-plate-thickness-jis");
+    } = useLessonCore("jis-scale");
 
     useEffect(() => {
         registerText(reminderSteps, 0);
     }, [registerText]);
 
-    const tabsList = [{ id: "available-plate-thickness-jis" }];
+    const tabsList = [{ id: "jis-scale" }];
 
     useTTSAutoplay(
         isSpeaking,
         currentIndex,
-        "available-plate-thickness-jis",
+        "jis-scale",
         reminderSteps.length,
         tabsList,
         () => { if (onNextLesson) onNextLesson(); },
@@ -76,7 +76,7 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                     as="h3"
                     className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
                     data-reading-index="0"
-                    text="Plate Thickness"
+                    text="JIS Scale"
                     isActive={isSpeaking && currentIndex === 0}
                     currentCharIndex={currentCharIndex}
                 />
@@ -95,18 +95,18 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the available plate thickness reference."
+                                text="Please review the JIS Scale reference."
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
                     </div>
 
-                    {/* ── Plate Thickness Image ── */}
+                    {/* ── JIS Scale Image ── */}
                     <div className="step-description" style={{ marginTop: "2rem" }}>
                         <img
-                            src={plateThicknessImg}
-                            alt="Available Plate Thickness Reference"
+                            src={jisScaleImg}
+                            alt="JIS Scale"
                             className="software-screenshot mt-4"
                             style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
@@ -131,4 +131,4 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
     );
 };
 
-export default AvailablePlateThicknessJIS;
+export default JISScale;

@@ -6,20 +6,20 @@ import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Static Assets */
-import plateThicknessImg from "../../../../assets/Standard/Kemco_JIS_Standard/plate_thickness.png";
+import shaftKeywayImg from "../../../../assets/Standard/Kemco_JIS_Standard/Shaft_Keyway.png";
 
-interface AvailablePlateThicknessJISProps {
+interface ShaftKeywayProps {
     nextLabel?: string;
     onNextLesson?: () => void;
     onPrevLesson?: () => void;
 }
 
 const reminderSteps = [
-    "Plate Thickness",
-    "Please review the available plate thickness reference.",
+    "Shaft Keyway",
+    "Please review the Shaft Keyway reference.",
 ];
 
-const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
+const ShaftKeyway: React.FC<ShaftKeywayProps> = ({
     onNextLesson,
     onPrevLesson,
     nextLabel,
@@ -33,18 +33,18 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
         currentIndex,
         currentCharIndex,
         registerText,
-    } = useLessonCore("available-plate-thickness-jis");
+    } = useLessonCore("shaft-keyway");
 
     useEffect(() => {
         registerText(reminderSteps, 0);
     }, [registerText]);
 
-    const tabsList = [{ id: "available-plate-thickness-jis" }];
+    const tabsList = [{ id: "shaft-keyway" }];
 
     useTTSAutoplay(
         isSpeaking,
         currentIndex,
-        "available-plate-thickness-jis",
+        "shaft-keyway",
         reminderSteps.length,
         tabsList,
         () => { if (onNextLesson) onNextLesson(); },
@@ -76,7 +76,7 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                     as="h3"
                     className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
                     data-reading-index="0"
-                    text="Plate Thickness"
+                    text="Shaft Keyway"
                     isActive={isSpeaking && currentIndex === 0}
                     currentCharIndex={currentCharIndex}
                 />
@@ -95,18 +95,18 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the available plate thickness reference."
+                                text="Please review the Shaft Keyway reference."
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
                     </div>
 
-                    {/* ── Plate Thickness Image ── */}
+                    {/* ── Shaft Keyway Image ── */}
                     <div className="step-description" style={{ marginTop: "2rem" }}>
                         <img
-                            src={plateThicknessImg}
-                            alt="Available Plate Thickness Reference"
+                            src={shaftKeywayImg}
+                            alt="Shaft Keyway"
                             className="software-screenshot mt-4"
                             style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
@@ -131,4 +131,4 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
     );
 };
 
-export default AvailablePlateThicknessJIS;
+export default ShaftKeyway;

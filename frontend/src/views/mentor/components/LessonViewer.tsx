@@ -31,6 +31,16 @@ const PipingTableLesson = lazy(() => import('../../../components/ICAD/Standard/K
 const GeneralStandardSteelLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/GeneralStandardSteel'));
 const SteelPipesLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/SteelPipes'));
 const AngleBarDimensionsLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/AngleBarDimensions'));
+const AvailablePlateThicknessJISLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/AvailablePlateThicknessJIS'));
+const BoltingKemcoStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/BoltingKemcoStandard'));
+const CrossRefPreviousDwgLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/CrossRef&PreviouDwg'));
+const ExpandedMetalLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ExpandedMetal'));
+const JISScaleLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/JIS_Scale'));
+const KeyplateGrooveLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/Keyplate&Groove'));
+const OST2SpecificationLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/OST-2'));
+const ParagonSMCLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ParagonSMC'));
+const RetainerRingLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/RetainerRing'));
+const ShaftKeywayLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ShaftKeyway'));
 
 
 // 2D Lesson Imports (Lazy Loaded)
@@ -456,6 +466,16 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'general-standard-steel': () => <GeneralStandardSteelLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'steel-pipes': () => <SteelPipesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'angle-bar-dimensions': () => <AngleBarDimensionsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'available-plate-thickness-jis': () => <AvailablePlateThicknessJISLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'bolting-kemco': () => <BoltingKemcoStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'cross-ref': () => <CrossRefPreviousDwgLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'expanded-metal': () => <ExpandedMetalLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'jis-scale': () => <JISScaleLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'keyplate-groove': () => <KeyplateGrooveLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'ost-2': () => <OST2SpecificationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'paragon-smc': () => <ParagonSMCLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'retainer-ring': () => <RetainerRingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'shaft-keyway': () => <ShaftKeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {

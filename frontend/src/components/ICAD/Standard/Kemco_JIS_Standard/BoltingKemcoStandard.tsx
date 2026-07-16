@@ -6,20 +6,21 @@ import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Static Assets */
-import plateThicknessImg from "../../../../assets/Standard/Kemco_JIS_Standard/plate_thickness.png";
+import boltAndBoltImg from "../../../../assets/Standard/Kemco_JIS_Standard/bolt_and_bolt.png";
+import boltLengthImg from "../../../../assets/Standard/Kemco_JIS_Standard/bolt_length.png";
 
-interface AvailablePlateThicknessJISProps {
+interface BoltingKemcoStandardProps {
     nextLabel?: string;
     onNextLesson?: () => void;
     onPrevLesson?: () => void;
 }
 
 const reminderSteps = [
-    "Plate Thickness",
-    "Please review the available plate thickness reference.",
+    "Bolt Hole Diameter Standard",
+    "Bolt Length Standard",
 ];
 
-const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
+const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
     onNextLesson,
     onPrevLesson,
     nextLabel,
@@ -33,18 +34,18 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
         currentIndex,
         currentCharIndex,
         registerText,
-    } = useLessonCore("available-plate-thickness-jis");
+    } = useLessonCore("bolting-kemco");
 
     useEffect(() => {
         registerText(reminderSteps, 0);
     }, [registerText]);
 
-    const tabsList = [{ id: "available-plate-thickness-jis" }];
+    const tabsList = [{ id: "bolting-kemco" }];
 
     useTTSAutoplay(
         isSpeaking,
         currentIndex,
-        "available-plate-thickness-jis",
+        "bolting-kemco",
         reminderSteps.length,
         tabsList,
         () => { if (onNextLesson) onNextLesson(); },
@@ -71,12 +72,13 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
+            {/* ── Section 1: Bolt Hole Diameter Standard ── */}
             <section className="lesson-intro">
                 <KaraokeLessonText
                     as="h3"
                     className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
                     data-reading-index="0"
-                    text="Plate Thickness"
+                    text="Bolt Hole Diameter Standard"
                     isActive={isSpeaking && currentIndex === 0}
                     currentCharIndex={currentCharIndex}
                 />
@@ -85,31 +87,40 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
-                    {/* Step 1 */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                    >
-                        <div className="step-header">
-                            <span className="step-number">1 </span>
-                            <KaraokeLessonText
-                                as="span"
-                                className="step-label"
-                                text="Please review the available plate thickness reference."
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                            />
-                        </div>
-                    </div>
-
-                    {/* ── Plate Thickness Image ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    {/* Bolt Hole Diameter Image */}
+                    <div className="step-description" style={{ marginTop: "1rem" }}>
                         <img
-                            src={plateThicknessImg}
-                            alt="Available Plate Thickness Reference"
+                            src={boltAndBoltImg}
+                            alt="Bolt Hole Diameter Standard"
                             className="software-screenshot mt-4"
                             style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
+                    </div>
+
+                    {/* ── Section 2: Bolt Length Standard ── */}
+                    <div
+                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
+                        data-reading-index="1"
+                        style={{ marginTop: "3rem" }}
+                    >
+                        <div className="step-header">
+                            <KaraokeLessonText
+                                as="h4"
+                                className="step-label"
+                                text="Bolt Length Standard"
+                                isActive={isSpeaking && currentIndex === 1}
+                                currentCharIndex={currentCharIndex}
+                                style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-main)", marginBottom: "1rem" }}
+                            />
+                        </div>
+                        <div className="step-description">
+                            <img
+                                src={boltLengthImg}
+                                alt="Bolt Length Standard"
+                                className="software-screenshot mt-4"
+                                style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            />
+                        </div>
                     </div>
 
                     {/* Page Navigation */}
@@ -131,4 +142,4 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
     );
 };
 
-export default AvailablePlateThicknessJIS;
+export default BoltingKemcoStandard;

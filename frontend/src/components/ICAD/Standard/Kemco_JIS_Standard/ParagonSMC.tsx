@@ -6,20 +6,20 @@ import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Static Assets */
-import plateThicknessImg from "../../../../assets/Standard/Kemco_JIS_Standard/plate_thickness.png";
+import paragonSMCImg from "../../../../assets/Standard/Kemco_JIS_Standard/Paragon_Cylindrical_Coupling.png";
 
-interface AvailablePlateThicknessJISProps {
+interface ParagonSMCProps {
     nextLabel?: string;
     onNextLesson?: () => void;
     onPrevLesson?: () => void;
 }
 
 const reminderSteps = [
-    "Plate Thickness",
-    "Please review the available plate thickness reference.",
+    "Paragon SMC",
+    "Please review the Paragon SMC reference.",
 ];
 
-const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
+const ParagonSMC: React.FC<ParagonSMCProps> = ({
     onNextLesson,
     onPrevLesson,
     nextLabel,
@@ -33,18 +33,18 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
         currentIndex,
         currentCharIndex,
         registerText,
-    } = useLessonCore("available-plate-thickness-jis");
+    } = useLessonCore("paragon-smc");
 
     useEffect(() => {
         registerText(reminderSteps, 0);
     }, [registerText]);
 
-    const tabsList = [{ id: "available-plate-thickness-jis" }];
+    const tabsList = [{ id: "paragon-smc" }];
 
     useTTSAutoplay(
         isSpeaking,
         currentIndex,
-        "available-plate-thickness-jis",
+        "paragon-smc",
         reminderSteps.length,
         tabsList,
         () => { if (onNextLesson) onNextLesson(); },
@@ -76,7 +76,7 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                     as="h3"
                     className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
                     data-reading-index="0"
-                    text="Plate Thickness"
+                    text="Paragon SMC"
                     isActive={isSpeaking && currentIndex === 0}
                     currentCharIndex={currentCharIndex}
                 />
@@ -95,18 +95,18 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the available plate thickness reference."
+                                text="Please review the Paragon SMC reference."
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
                     </div>
 
-                    {/* ── Plate Thickness Image ── */}
+                    {/* ── Paragon SMC Image ── */}
                     <div className="step-description" style={{ marginTop: "2rem" }}>
                         <img
-                            src={plateThicknessImg}
-                            alt="Available Plate Thickness Reference"
+                            src={paragonSMCImg}
+                            alt="Paragon SMC"
                             className="software-screenshot mt-4"
                             style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
@@ -131,4 +131,4 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
     );
 };
 
-export default AvailablePlateThicknessJIS;
+export default ParagonSMC;
