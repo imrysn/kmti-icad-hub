@@ -1,12 +1,9 @@
 .quot-library-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  
-  -webkit-
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,13 +11,6 @@
   animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-[data-theme="dark"] .quot-library-overlay {
-  background: rgba(0, 0, 0, 0.85);
-}
-
-[data-theme="void"] .quot-library-overlay {
-  background: rgba(0, 0, 0, 0.85);
-}
 
 .quot-library-modal {
   width: 90vw;
@@ -31,7 +21,6 @@
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
   
-  -webkit-
   display: flex;
   flex-direction: column;
   overflow: hidden;

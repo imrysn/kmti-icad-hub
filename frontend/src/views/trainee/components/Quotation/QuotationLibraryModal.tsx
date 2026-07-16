@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import ReactDOM from 'react-dom'
 import { quotationApi } from '../../../../services/api'
-import { IQuotation } from '../../../../types/quotation'
 import { useAuth } from '../../../../context/AuthContext'
 import { getDisplayName } from "../../../../utils/nameUtils"
 import { useModal } from '../../../../components/ModalContext'
@@ -295,7 +295,7 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
   }
 
   // ── Render ──────────────────────────────────────────────────────
-  return (
+  return ReactDOM.createPortal(
     <div className="quot-library-overlay" onClick={onClose}>
       <div className="quot-library-modal" onClick={e => e.stopPropagation()}>
         <header className="quot-library-header">
@@ -536,6 +536,7 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
           </div>
         </footer>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

@@ -233,7 +233,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 16px 16px 60px 16px;
+  padding: 16px 32px 0px 16px;
 }
 
 .quot-info-row {
@@ -428,7 +428,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 2px 0;
+  padding: 0px 0px 16px;
 }
 
 .quot-app-root .info-display-name {
@@ -736,6 +736,7 @@
   display: flex;
   align-items: flex-start;
   gap: 0;
+  padding: 0px 0px 16px;
 }
 
 .quot-app-root .sig-display-divider {
@@ -931,6 +932,12 @@
   padding: 10px 14px;
   min-height: 48px;
   border-bottom: 1px solid #f1f5f9;
+}
+
+.quot-app-root .computation-header .section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .quot-app-root .computation-buttons {

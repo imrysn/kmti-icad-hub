@@ -33,25 +33,42 @@ export const TaskStopwatch = forwardRef<TaskStopwatchHandle, TaskStopwatchProps>
     }));
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--surface-color, #1e1e1e)', padding: '0.25rem 0.75rem', borderRadius: '4px', border: '1px solid var(--border-color, #333)', marginLeft: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--bg-surface)', padding: '0.25rem 0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)', marginLeft: '1rem' }}>
             <Clock size={14} className={isRunning ? 'text-blue-400' : 'text-gray-400'} />
-            <span style={{ fontSize: '0.85rem', fontFamily: 'monospace', fontWeight: 'bold', color: isRunning ? 'var(--primary-color, #3b82f6)' : 'var(--text-secondary, #a0a0a0)' }}>
+            <span style={{ fontSize: '0.85rem', fontFamily: 'monospace', fontWeight: 'bold', color: isRunning ? 'var(--primary-color, #3b82f6)' : 'var(--text-main)' }}>
                 {formattedTime}
             </span>
             <div style={{ display: 'flex', gap: '0.25rem', marginLeft: '0.5rem' }}>
                 {!isRunning ? (
-                    <button type="button" onClick={startTimer} title="Start Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--success-color, #22c55e)' }}>
+                    <button type="button" className="stopwatch-control-btn" onClick={startTimer} title="Start Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--success-color, #22c55e)' }}>
                         <Play size={14} />
                     </button>
                 ) : (
-                    <button type="button" onClick={stopTimer} title="Pause Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--warning-color, #f59e0b)' }}>
+                    <button type="button" className="stopwatch-control-btn" onClick={stopTimer} title="Pause Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--warning-color, #f59e0b)' }}>
                         <Pause size={14} />
                     </button>
                 )}
-                <button type="button" onClick={resetTimer} title="Reset Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--text-secondary, #a0a0a0)' }}>
+                <button type="button" className="stopwatch-control-btn" onClick={resetTimer} title="Reset Timer" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--text-secondary, #a0a0a0)' }}>
                     <RotateCcw size={14} />
                 </button>
             </div>
+            <style>{`
+                .stopwatch-control-btn {
+                    transition: opacity 0.2s ease, transform 0.1s ease !important;
+                }
+                .stopwatch-control-btn:hover {
+                    background: transparent !important;
+                    box-shadow: none !important;
+                    transform: scale(1.1) !important;
+                    border-color: transparent !important;
+                    opacity: 0.6;
+                }
+                .stopwatch-control-btn:active {
+                    transform: scale(0.95) !important;
+                }
+            `}</style>
         </div>
     );
 });
+
+TaskStopwatch.displayName = 'TaskStopwatch';

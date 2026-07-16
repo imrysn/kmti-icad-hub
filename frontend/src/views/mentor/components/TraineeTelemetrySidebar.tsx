@@ -148,7 +148,7 @@ export const TraineeTelemetrySidebar: React.FC = () => {
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <div style={{ position: 'relative' }}>
-                                        <div className="avatar-circle" style={{ width: '32px', height: '32px', fontSize: '0.85rem', background: getAvatarColor(trainee.full_name) }}>
+                                        <div className="avatar-circle" style={{ width: '32px', height: '32px', fontSize: '0.85rem', background: getAvatarColor(trainee.full_name), borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 600 }}>
                                             {trainee.full_name?.[0] || 'U'}
                                         </div>
                                         <span style={{
