@@ -441,7 +441,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'standard',
     title: 'Standard',
-    children: [ 
+    children: [
       { id: 'standard-1', title: 'Scale Pointer' },
       { id: 'standard-4', title: 'Screw' },
       { id: 'standard-6', title: 'Bolt Length ' },
@@ -974,7 +974,20 @@ export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
     children: [
       { id: 'sw-part-modeling', title: '3D Part Modeling', content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'] },
       { id: 'sw-sketching-base', title: 'Sketching the Base', content: ['Add sketch geometry', 'Add sketch relations', 'Insert dimension/s'] },
-      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extrude the sketch into a solid'] }
+      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extrude the sketch into a solid'] },
+      { id: 'sw-cutting-base', title: 'Cutting the Base', content: ['Extrude Cut'] },
+      { id: 'sw-adding-holes', title: 'Adding of Holes', content: ['Hole Wizard'] },
+      { id: 'sw-inserting-chamfer', title: 'Inserting Chamfer', content: ['Fillet', 'Chamfer'] },
+      { id: 'sw-editing-properties', title: 'Editing Properties of Part', content: ['File Properties', 'Dialog Box'] },
+      { id: 'sw-part-saving', title: 'Part Saving', content: ['File Name', 'Filename Extension'] },
+      { id: 'sw-sheet-metal', title: 'Sheet Metal (Creating Other Part)', content: ['3D Part Modeling', 'Base Flange / Tab'] },
+      { id: 'sw-bended-plate', title: 'Getting the Total Length of Bended Plate', content: ['Flat-Pattern', 'Measure'] },
+      { id: 'sw-material-weight', title: 'Getting the Mat\'l Wt (Material Weight) of a Part', content: ['Rollback Bar', 'File Properties', 'Mat\'l Wt Value'] },
+      { id: 'sw-creating-assembly', title: 'Creating Assembly', content: ['Insert Component', 'Mate'] },
+      { id: 'sw-assembly-saving', title: 'Assembly Saving', content: ['Save', 'File Name', 'Filename Extension'] },
+      { id: 'sw-linear-pattern', title: 'Linear Pattern', content: ['Linear Component', 'Distance', 'Quantity'] },
+      { id: 'sw-mirror-component', title: 'Mirror Component', content: ['Mirror Components', 'Mirror Plane'] },
+      { id: 'sw-editing-sketch-feature-matings', title: 'Editing Sketch, Feature, and Matings', content: ['Edit Sketch', 'Edit Feature', 'Matings'] }
     ]
   }
 ];
