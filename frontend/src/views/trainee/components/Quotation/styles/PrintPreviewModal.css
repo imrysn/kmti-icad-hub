@@ -1,0 +1,446 @@
+/* PRINT PREVIEW MODAL STYLES - MICROSOFT WORD-STYLE UI */
+
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;600;700&display=swap');
+
+/* Backdrop */
+.ppm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 0;
+}
+
+/* Outer shell */
+.print-preview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arimo', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  background: var(--bg-primary);
+  animation: ppm-fade-in 0.2s ease;
+}
+
+@keyframes ppm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Modal container */
+.ppm-container {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.ppm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  background: #2b579a; /* MS Word Blue */
+  flex-shrink: 0;
+  gap: 12px;
+  z-index: 10;
+}
+
+[data-theme="dark"] .ppm-header {
+  background: var(--bg-secondary);
+}
+
+.ppm-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+}
+
+.ppm-title h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ppm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ppm-export-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Mode toggle pill */
+.ppm-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #f2f2f7;
+  border-radius: 10px;
+  padding: 3px;
+  position: relative;
+  min-width: 360px;
+}
+
+.ppm-mode-slider {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: calc(50% - 3px);
+  background: #3b82f6;
+  border-radius: 8px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.ppm-mode-slider.quotation {
+  left: 3px;
+}
+
+.ppm-mode-slider.billing {
+  left: 50%;
+}
+
+.ppm-mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  background: transparent !important;
+  color: #6a7282;
+  position: relative;
+  z-index: 2;
+}
+
+.ppm-mode-btn.active {
+  color: #ffffff !important;
+}
+
+
+.ppm-mode-btn:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.05);
+  color: #374151;
+}
+
+
+/* Separator */
+.ppm-sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 4px;
+}
+
+/* Action buttons */
+.ppm-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  background: var(--bg-surface);
+  color: #1d1d1f;
+}
+
+.ppm-action-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.ppm-action-btn.primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: var(--text-main);
+}
+
+.ppm-action-btn.primary:hover:not(:disabled) {
+  background: var(--bg-surface);
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.ppm-action-btn.export-pdf {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: var(--text-main);
+}
+
+.ppm-action-btn.export-pdf:hover:not(:disabled) {
+  background: var(--bg-surface);
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.ppm-action-btn.export-excel {
+  background: #10b981;
+  border-color: #10b981;
+  color: var(--text-main);
+}
+
+.ppm-action-btn.export-excel:hover:not(:disabled) {
+  background: var(--bg-surface);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.ppm-action-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ppm-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d1d1d6;
+  border-radius: 9px;
+  background: var(--bg-surface);
+  color: #6a7282;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.ppm-close-btn:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Body */
+.ppm-body {
+  flex: 1;
+  overflow: auto;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px;
+  scrollbar-width: thin;
+}
+
+.ppm-body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.ppm-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, .25);
+  border-radius: 4px;
+}
+
+.ppm-scroll-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* A4 scaler wrapper */
+.ppm-a4-scaler {
+  position: relative;
+}
+
+/* The A4 sheet */
+.ppm-a4-scaler > div {
+  box-shadow: var(--shadow-lg);
+  border-radius: 4px;
+  background: var(--bg-surface);
+}
+
+[data-theme="dark"] .ppm-a4-scaler > div {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 35px rgba(255, 255, 255, 0.2);
+}
+
+/* Page break indicator */
+.ppm-page-break-indicator {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #9ca3af;
+  text-transform: uppercase;
+}
+
+/* Footer status bar */
+.ppm-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 20px;
+  border-top: 1px solid var(--border);
+  background: #f8f9fa;
+  font-size: 13px;
+  color: #6a7282;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .ppm-footer-bar {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.zoom-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-surface);
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.zoom-button:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.ppm-zoom-label {
+  font-weight: 600;
+  color: #374151;
+  padding: 0 8px;
+}
+
+.ppm-body-content {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: min-content;
+}
+
+.ppm-sidebar {
+  width: 280px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1170px) {
+  .ppm-body-content {
+    position: relative;
+    width: 100%;
+  }
+  .ppm-sidebar {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+[data-theme="dark"] .ppm-sidebar {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+}
+
+.ppm-sidebar-header h3 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.ppm-sidebar-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ppm-sidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ppm-sidebar-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.ppm-sidebar-select,
+.ppm-sidebar-input,
+.ppm-sidebar-textarea {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-main);
+  padding: 8px 12px;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.ppm-sidebar-select:focus,
+.ppm-sidebar-input:focus,
+.ppm-sidebar-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.ppm-sidebar-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Print Styles - Only for actual print media */
+@media print {
+  .ppm-header, .ppm-footer-bar, .ppm-backdrop, .ppm-page-break-indicator, .ppm-sidebar {
+    display: none !important;
+  }
+}

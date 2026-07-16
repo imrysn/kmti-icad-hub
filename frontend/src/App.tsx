@@ -21,6 +21,7 @@ import { authService } from './services/authService';
 import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTelemetrySidebar';
 import { useUI } from './context/UIContext';
 import { assessmentService } from './services/assessmentService';
+import Quotation from './views/trainee/components/Quotation/Quotation';
 
 import kmtiLogo from './assets/kmti-training-hub.png';
 import './styles/App.css';
@@ -276,6 +277,18 @@ function AppContent() {
                   </button>
                 </nav>
               )}
+              {(location.pathname.startsWith('/mentor') || location.pathname.startsWith('/quotation')) && user?.role !== 'admin' && user?.role !== 'employee' && (
+                <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
+                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')} title="iCAD Manuals and Standard">
+                    <GraduationCap size={18} />
+                    <span>iCAD Manuals</span>
+                  </button>
+                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/quotation') ? 'active' : ''}`} onClick={() => navigate('/quotation')} title="Quotation">
+                    <Briefcase size={18} />
+                    <span>Quotation</span>
+                  </button>
+                </nav>
+              )}
             </div>
 
             {/* 3. USER & ACTIONS (Right) */}
@@ -357,6 +370,7 @@ function AppContent() {
                   <Route path="/mentor" element={<MentorMode isEmployeeSide={user?.role?.toLowerCase() !== 'trainee'} />} />
                   <Route path="/assistant" element={<AssistantMode />} />
                   <Route path="/admin/*" element={<AdminMode />} />
+                  <Route path="/quotation" element={<Quotation />} />
                   <Route path="/" element={<Navigate to={user?.role === 'admin' ? "/admin" : (user?.role === 'employee' ? "/assistant" : "/mentor")} replace />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>

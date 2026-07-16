@@ -1,0 +1,979 @@
+/* Drag and Drop Styles */
+.main-task-row.dragging {
+  opacity: 0.6;
+  cursor: grabbing !important;
+}
+
+.main-task-row.drag-over {
+  border-top: 2px solid var(--accent);
+}
+
+.main-task-row[draggable="true"] {
+  cursor: grab;
+}
+
+.main-task-row[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+/* Locked rows are never draggable */
+.row-locked,
+.row-locked[draggable="false"] {
+  cursor: not-allowed !important;
+}
+
+/* Ensure sub-tasks are not draggable */
+.sub-task-row {
+  cursor: default !important;
+}
+
+.sub-task-row[draggable="true"] {
+  cursor: default !important;
+}
+
+/* Scrollable table body - max 15 rows visible (Higher density) */
+.tasks-table-body {
+  max-height: 580px;
+  /* Approximately 13-14 rows */
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  scrollbar-gutter: stable;
+  background: var(--bg-secondary);
+  position: relative;
+}
+
+.tasks-table-body table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Ensure header stays fixed and accounts for scrollbar */
+.tasks-table-header {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  padding-right: 8px;
+  /* Match scrollbar gutter width */
+  box-sizing: border-box;
+  position: relative;
+  background: var(--bg-secondary);
+}
+
+/* Add colored scrollbar gutter space in header */
+.tasks-table-header::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  background: var(--bg-surface);
+  /* Match header background color */
+  border-left: 1px solid var(--border-subtle);
+}
+
+.tasks-table-header table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Custom scrollbar styling */
+.tasks-table-body::-webkit-scrollbar {
+  width: 8px;
+  background: var(--bg-surface);
+  /* Match header background */
+}
+
+.tasks-table-body::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+  /* Match header background */
+  border-radius: 0;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.tasks-table-body::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.tasks-table-body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ============================================================ */
+/* Professional Table Styles                                  */
+/* ============================================================ */
+
+/* Reset for isolated tables */
+.tasks-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Inter', 'Arimo', sans-serif;
+  color: var(--text-main);
+}
+
+/* ── Header Styles ── */
+.tasks-table th {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 8px;
+  text-align: center;
+  border-bottom: 2px solid var(--border-color);
+  border-right: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.tasks-table th:first-child {
+  border-left: none;
+}
+
+.tasks-table th:last-child {
+  border-right: none;
+}
+
+/* ── Cell Styles ── */
+.tasks-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--bg-surface);
+  vertical-align: middle;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.tasks-table td:last-child {
+  border-right: none;
+}
+
+.tasks-table .table-input {
+  width: 100%;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-main);
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+[data-theme="dark"] .tasks-table .table-input {
+  color: var(--text-main);
+  background-color: var(--bg-dark);
+  border-color: var(--glass-border, var(--border-color));
+}
+
+.tasks-table .table-input:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--border-hover);
+}
+
+[data-theme="dark"] .tasks-table .table-input:hover {
+  border-color: var(--border-hover);
+}
+
+.tasks-table .table-input:focus {
+  background-color: var(--bg-secondary);
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+[data-theme="dark"] .tasks-table .table-input:focus {
+  border-color: var(--text-main);
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+.tasks-table .table-input.number-input {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+.table-input.number-input::-webkit-outer-spin-button,
+.table-input.number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.table-input.reference-input {
+  text-align: center;
+  font-family: 'Arimo', monospace;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+/* ── Description Alignment ── */
+.description-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 6px;
+  padding-left: 4px;
+  position: relative;
+}
+
+.sub-task-description {
+  padding-left: 20px;
+}
+
+.sub-task-indicator {
+  color: #94a3b8;
+  font-weight: 700;
+  font-size: 14px;
+  position: absolute;
+  left: 6px;
+}
+
+.description-input {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.sub-task-input {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* ── Highlighted Calculated Columns ── */
+.tasks-table .calculated-cell {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 0 10px;
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+.time-charge-bg {
+  background-color: var(--bg-warning-subtle);
+  color: var(--warning);
+}
+
+.overtime-bg {
+  background-color: var(--bg-danger-subtle);
+  color: var(--danger);
+}
+
+.overhead-bg {
+  background-color: var(--bg-success-subtle);
+  color: var(--success);
+}
+
+.total-cell {
+  background-color: var(--accent-subtle);
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 14px;
+  text-align: right;
+  padding-right: 12px !important;
+}
+
+/* ── Software Column ── */
+.software-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.software-units-input {
+  width: 50px !important;
+  text-align: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.software-total {
+  font-weight: 700;
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* ── Type Dropdown ── */
+.type-select {
+  text-align: center;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  padding-right: 22px;
+  font-weight: 600;
+}
+
+.custom-type-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reset-type-button {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.reset-type-button:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-main);
+}
+
+/* ── Action Buttons ── */
+.action-buttons-container {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-buttons-container button {
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.edit-task-button:hover {
+  background-color: transparent !important;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+
+.edit-task-button.editing {
+  background-color: #0284c7;
+  color: white;
+  border-color: #0369a1;
+}
+/* ── Visual Overrides for Rows ── */
+.row-number-cell {
+  font-weight: 700;
+  color: #cbd5e1;
+  font-size: 11px;
+}
+
+.main-task-row .row-number-cell {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.main-task-row td {
+  border-top: 2px solid var(--border-subtle);
+}
+
+/* Manual override inputs in calculated columns (Time, OT, Software, Total) */
+.tasks-table .table-input.edit-calculated-input {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-main) !important;
+  border: 1.5px solid var(--accent) !important;
+  font-weight: 700 !important;
+  text-align: right !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 0 2px var(--accent-subtle) !important;
+}
+
+[data-theme="dark"] .tasks-table .table-input.edit-calculated-input,
+[data-theme="void"] .tasks-table .table-input.edit-calculated-input {
+  background-color: var(--bg-secondary) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+/* ── Fixed Column Widths (Special Layout) ── */
+.tasks-table--special th:nth-child(1),
+.tasks-table--special td:nth-child(1) {
+  width: 4%;
+}
+
+.tasks-table--special th:nth-child(2),
+.tasks-table--special td:nth-child(2) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(3),
+.tasks-table--special td:nth-child(3) {
+  width: 20%;
+}
+
+.tasks-table--special th:nth-child(4),
+.tasks-table--special td:nth-child(4) {
+  width: 6%;
+}
+
+.tasks-table--special th:nth-child(5),
+.tasks-table--special td:nth-child(5) {
+  width: 6%;
+}
+
+.tasks-table--special th:nth-child(6),
+.tasks-table--special td:nth-child(6) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(7),
+.tasks-table--special td:nth-child(7) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(8),
+.tasks-table--special td:nth-child(8) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(9),
+.tasks-table--special td:nth-child(9) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(10),
+.tasks-table--special td:nth-child(10) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(11),
+.tasks-table--special td:nth-child(11) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(12),
+.tasks-table--special td:nth-child(12) {
+  width: 8%;
+}
+
+.tasks-table--special th:nth-child(13),
+.tasks-table--special td:nth-child(13) {
+  width: 6%;
+}
+
+/* ── Expand/Collapse ── */
+.collapse-toggle-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  color: var(--text-muted);
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.collapse-toggle-btn:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-main);
+}
+
+/* ── Footer Editable Inputs ── */
+.footer-input {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  transition: all 0.2s;
+  field-sizing: content;
+  box-sizing: border-box;
+}
+
+.footer-input:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border);
+}
+
+.footer-input:focus {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+[data-theme="dark"] .footer-input:focus {
+  border-color: var(--text-main);
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+.footer-input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+}
+
+.footer-currency-symbol {
+  font-family: 'Arimo', sans-serif;
+  opacity: 0.7;
+}
+
+.amount-input {
+  min-width: 40px;
+  text-align: right;
+  padding-right: 4px;
+}
+
+.total-input {
+  font-size: 1.1em;
+  font-weight: 800;
+  min-width: 120px;
+}
+
+/* Remove arrows from footer number inputs */
+.footer-input::-webkit-outer-spin-button,
+.footer-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.footer-input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ── Footer Value Display (edit-on-click) ──
+ */
+.footer-value-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all 0.18s;
+  opacity: 0.9;
+}
+
+.footer-value-display:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border);
+  opacity: 1;
+}
+
+.footer-edit-icon {
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity 0.18s;
+}
+
+.footer-value-display:hover .footer-edit-icon {
+  opacity: 0.7;
+}
+
+.grand-total-display {
+  font-size: 1.35em;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+/* ── Engineer Badge ── */
+
+.engineer-badge-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.engineer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.6;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.engineer-badge.has-value {
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.engineer-badge.has-value:hover {
+  background: rgba(99, 102, 241, 0.22);
+  border-color: var(--border-color);
+  color: #a5b4fc;
+}
+
+.engineer-badge.empty {
+  background: transparent;
+  color: var(--text-muted, #6b7280);
+  border: 1px dashed rgba(156, 163, 175, 0.35);
+  opacity: 0.5;
+}
+
+.engineer-badge.empty:hover {
+  opacity: 1;
+  background: rgba(156, 163, 175, 0.08);
+  border-color: var(--border-color);
+}
+
+.engineer-badge svg {
+  flex-shrink: 0;
+}
+
+.engineer-badge-input {
+  width: 90px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--text-main);
+  font-size: 10px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+}
+
+.engineer-badge-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+}
+
+/* ── Engineer Bookmark (gutter tab + pointer) ── */
+
+.eng-bookmark {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.eng-bookmark__tab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 7px;
+  border-radius: 0 4px 4px 0;
+  background: rgba(99, 102, 241, 0.18);
+  border: 1px solid var(--border-color);
+  border-left: none;
+  overflow: hidden;
+  /* Collapsed: show only the icon (width ~26px) */
+  max-width: 26px;
+  transition: max-width 0.22s ease, background 0.15s, padding 0.22s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.eng-bookmark--assigned .eng-bookmark__tab {
+  background: #4f46e5;
+  border-color: #4338ca;
+}
+
+/* Expanded: slide out to show name */
+.eng-bookmark--expanded .eng-bookmark__tab,
+.eng-bookmark--editing .eng-bookmark__tab {
+  max-width: 160px;
+  padding: 0 8px 0 7px;
+}
+
+.eng-bookmark__pointer {
+  width: 0;
+  height: 0;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-right: 9px solid rgba(99, 102, 241, 0.18);
+  flex-shrink: 0;
+  transition: border-right-color 0.15s;
+}
+
+.eng-bookmark--assigned .eng-bookmark__pointer {
+  border-right-color: #4f46e5;
+}
+
+.eng-bookmark--empty .eng-bookmark__tab {
+  background: transparent;
+  border: 1px dashed rgba(100, 116, 139, 0.3);
+  border-right: none;
+  opacity: 0.45;
+}
+
+.eng-bookmark--empty .eng-bookmark__pointer {
+  border-right-color: rgba(100, 116, 139, 0.2);
+}
+
+.eng-bookmark--empty:hover .eng-bookmark__tab,
+.eng-bookmark--empty.eng-bookmark--expanded .eng-bookmark__tab {
+  opacity: 1;
+  background: rgba(99, 102, 241, 0.08);
+  border-color: var(--border-color);
+  border-style: solid;
+}
+
+.eng-bookmark--empty:hover .eng-bookmark__pointer,
+.eng-bookmark--empty.eng-bookmark--expanded .eng-bookmark__pointer {
+  opacity: 1;
+  border-right-color: rgba(99, 102, 241, 0.2);
+}
+
+.eng-bookmark__icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #a5b4fc;
+}
+
+.eng-bookmark--assigned .eng-bookmark__icon {
+  color: #e0e7ff;
+}
+
+.eng-bookmark__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #e0e7ff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+  opacity: 0;
+  transition: opacity 0.15s ease 0.05s;
+}
+
+.eng-bookmark--expanded .eng-bookmark__label,
+.eng-bookmark--editing .eng-bookmark__label {
+  opacity: 1;
+}
+
+.eng-bookmark__input {
+  width: 100px;
+  height: 20px;
+  padding: 0 4px;
+  border: none;
+  border-radius: 2px;
+  background: white;
+  color: #1e1b4b;
+  font-size: 11px;
+  font-weight: 500;
+  outline: none;
+  font-family: inherit;
+}
+
+.eng-bookmark__input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.eng-bookmark__avatar-initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+}
+
+/* ── KEMCO Hierarchy Refinements ── */
+
+.assembly-header-row {
+  background-color: var(--bg-surface) !important;
+}
+
+[data-theme="dark"] .assembly-header-row {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.assembly-header-row td {
+  border-bottom: 2px solid var(--border) !important;
+  height: 52px !important;
+}
+
+.assembly-header-row .reference-input {
+  font-size: 14px !important;
+  color: var(--accent) !important;
+  letter-spacing: 0.05em;
+}
+
+.calculated-total {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 1.05em;
+}
+
+/* Subtle indentation for sub-tasks in KEMCO */
+.sub-task-row td:first-child {
+  padding-left: 8px;
+}
+
+.kemco-add-buttons-group {
+  display: flex;
+  gap: 6px;
+  padding-left: 10px;
+  margin-left: 10px;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.kemco-add-buttons-group {
+  display: flex;
+  gap: 6px;
+  padding-left: 10px;
+  margin-left: 10px;
+  border-left: 1px solid var(--border-subtle);
+}
+
+
+
+
+
+/* ── KEMCO Hierarchical Colors (High Contrast) ── */
+.kemco-level-0 {
+  background-color: #dbeafe !important;
+  /* Blue 100 - Very visible foundation */
+  border-left: 5px solid #2563eb !important;
+}
+
+.kemco-level-0 td {
+  font-weight: 700;
+  color: #1e40af;
+  /* Darker blue text for readability */
+}
+
+.kemco-level-1 {
+  background-color: #f1f5f9 !important;
+  /* Slate 100 - Clear grey */
+  border-left: 5px solid #64748b !important;
+}
+
+.kemco-level-2 {
+  background-color: #ffffff !important;
+  /* Stay white for clarity */
+}
+
+/* Fix input backgrounds on colored rows for better contrast */
+.kemco-level-0 .table-input,
+.kemco-level-1 .table-input {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .kemco-level-0 .table-input,
+[data-theme="dark"] .kemco-level-1 .table-input {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Dark mode refinements for high contrast */
+[data-theme="dark"] .kemco-level-0 {
+  background-color: rgba(37, 99, 235, 0.15) !important;
+  border-left-color: #3b82f6 !important;
+}
+
+[data-theme="dark"] .kemco-level-1 {
+  background-color: rgba(148, 163, 184, 0.12) !important;
+  border-left-color: #94a3b8 !important;
+}
+
+.kemco-selected-row {
+  background-color: #fef08a !important;
+  /* Vivid Yellow 200 for selection */
+  border-left: 6px solid #eab308 !important;
+  box-shadow: inset 6px 0 0 -2px #eab308;
+}
+
+[data-theme="dark"] .kemco-selected-row {
+  background-color: rgba(234, 179, 8, 0.2) !important;
+  border-left-color: #facc15 !important;
+}
+
+/* ── Row Locking & Sabotage Protection ── */
+
+.row-locked {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+  position: relative;
+}
+
+[data-theme="dark"] .row-locked {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Dim locked inputs but keep them readable */
+.row-locked .table-input {
+  opacity: 0.65;
+  cursor: not-allowed !important;
+}
+
+.row-locked .action-buttons-container button {
+  opacity: 0.3;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+.collab-field-hard-locked {
+  cursor: not-allowed !important;
+}
+
+.eng-bookmark__tab--locked {
+  cursor: not-allowed !important;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.eng-bookmark__tab--locked .eng-bookmark__label {
+  color: #f8fafc !important;
+  font-style: italic;
+}
+
+.eng-bookmark__tab--locked .eng-bookmark__icon {
+  color: #cbd5e1 !important;
+}
+
+/* ── Row Number Cell — Centered ── */
+.row-number-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  height: 100%;
+  gap: 2px;
+}

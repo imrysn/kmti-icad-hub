@@ -1,0 +1,214 @@
+/**
+ * Quotation.tsx — Workspace Gate
+ * ─────────────────────────────────────────────────────────────────
+ * High-level state manager. Its only job is to decide which screen
+ * the user sees:
+ *
+ *   activeSession === null  →  QuotationEntryModal (lobby, mandatory)
+ *   activeSession !== null  →  QuotationWorkspace  (editor + socket)
+ *
+ * This prevents Socket.IO from connecting until a session is explicitly
+ * chosen, eliminating ghost-room creation on the backend.
+ */
+
+import { useState, useCallback, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useModal } from '../../../../components/ModalContext'
+import { useAuth } from '../../../../context/AuthContext'
+import QuotationEntryModal from './QuotationEntryModal'
+import QuotationWorkspace from './QuotationWorkspace'
+import { quotationApi } from '../../../../services/api'
+import { CUSTOMERS_CONFIG, generateQuotationNumber } from '../../../../utils/quotation'
+import './Quotation.css'
+
+export default function Quotation() {
+  const { notify } = useModal()
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const [activeSession, setActiveSession] = useState<{
+    quotId?: number
+    quotNo: string
+    password?: string
+    displayName?: string
+    mode: 'join' | 'create'
+    variant?: 'special' | 'kemco'
+    autoStartTutorial?: boolean
+    workstation?: string
+    referrer?: string
+    customerId?: string
+  } | null>(() => {
+    const saved = sessionStorage.getItem('kmti_quot_current_session')
+    return saved ? JSON.parse(saved) : null
+  })
+
+  // ── Persistence Effect ───────────────────────────────────────
+  useEffect(() => {
+    if (activeSession) {
+      sessionStorage.setItem('kmti_quot_current_session', JSON.stringify(activeSession))
+    } else {
+      sessionStorage.removeItem('kmti_quot_current_session')
+    }
+  }, [activeSession])
+
+  // ── Back Button Override Effect ──────────────────────────────
+  useEffect(() => {
+    if (activeSession) {
+      (window as any).onWorkstationBack = () => {
+        sessionStorage.removeItem('kmti_quot_current_session')
+        if (activeSession.referrer) {
+          navigate(-1)
+        } else {
+          setActiveSession(null)
+        }
+      }
+    } else {
+      (window as any).onWorkstationBack = undefined
+    }
+    return () => {
+      (window as any).onWorkstationBack = undefined
+    }
+  }, [activeSession, navigate])
+
+  // ── Lobby action handlers ──────────────────────────────────────
+
+  const handleJoinSession = useCallback(async (id: number, password?: string) => {
+    try {
+      if (password) {
+        await quotationApi.verifyPassword(id, password)
+      }
+      // Fetch the quotation to get its real quotNo and displayName before entering
+      const res = await quotationApi.get(id)
+      const quotNo = res.data?.quotationDetails?.quotationNo || `KMTE-${id}`
+      const displayName = res.data?.quotationDetails?.quotationNo || quotNo
+      const workstation = res.data?.workstation || ''
+      setActiveSession({ quotId: id, quotNo, password, displayName, mode: 'join', workstation })
+    } catch (e: any) {
+      if (e.response?.status === 401) {
+        notify?.('Invalid password.', 'error')
+      } else {
+        notify?.('Failed to join session.', 'error')
+      }
+    }
+  }, [notify])
+
+  const handleCreateNew = useCallback(async (name: string, variant: 'special' | 'kemco', customerId: string, password?: string) => {
+    try {
+      // 1. Fetch workstation/hostname (The true Owner ID)
+      let computerName = ''
+      try {
+        const info = await (window as any).electronAPI?.getWorkstationInfo?.()
+        computerName = info?.computerName || ''
+      } catch (e) {
+        console.warn('[lobby] Failed to fetch workstation info')
+      }
+
+      // For newly created quotations, use the user's fullName if logged in, otherwise fallback to computerName.
+      const workstation = user ? user.fullName : computerName
+
+      // Generate a formal quotation number based on selected customer
+      const customerConfig = CUSTOMERS_CONFIG.find(c => c.id === customerId)
+      const prefix = customerConfig ? customerConfig.prefix : 'KMTE-'
+      const today = new Date().toISOString().split('T')[0]
+      const seq = prefix === 'KM-'
+        ? Math.floor(Math.random() * 9000 + 1000).toString() // 4 digits for KEMCO (e.g. 1121)
+        : Math.floor(Math.random() * 900 + 100).toString()   // 3 digits for others
+      
+      const quotNo = generateQuotationNumber(today, prefix, seq)
+      // Display name is the user-provided label (e.g. "Draft for Client X")
+      const displayName = name || quotNo
+
+      // 2. Create a DB record immediately — this gives us a real ID for the socket room
+      const res = await quotationApi.create({ 
+        quot_no: quotNo, 
+        display_name: displayName, 
+        password,
+        workstation,
+        client_name: customerConfig?.clientName || '',
+        customer_incharge: customerConfig?.contact || '',
+        bill_to: customerConfig?.clientName || '',
+      })
+      const { id } = res.data
+
+      setActiveSession({ quotId: id, quotNo, password, displayName, mode: 'create', variant, workstation, customerId })
+    } catch (e: any) {
+      const msg = e?.response?.data?.detail || 'Failed to create workspace.'
+      notify?.(msg, 'error')
+    }
+  }, [notify, user])
+
+  const handleStartTutorial = useCallback(async () => {
+    try {
+      // For tutorial, we create a temporary "Training Room" 
+      const today = new Date().toISOString().split('T')[0].replace(/-/g, '').slice(2)
+      const quotNo = `TRAIN-${today}-${Math.floor(Math.random() * 100)}`
+      const displayName = "Interactive Tutorial Session"
+
+      // 1. Fetch workstation/hostname
+      let computerName = ''
+      try {
+        const info = await (window as any).electronAPI?.getWorkstationInfo?.()
+        computerName = info?.computerName || ''
+      } catch (e) {
+        console.warn('[lobby] Failed to fetch workstation info for tutorial')
+      }
+
+      // For tutorial room, use user's fullName if logged in, otherwise fallback to computerName.
+      const workstation = user ? user.fullName : computerName
+
+      // 2. Create a DB record
+      const res = await quotationApi.create({ 
+        quot_no: quotNo, 
+        display_name: displayName,
+        workstation
+      })
+      const { id } = res.data
+
+      setActiveSession({ 
+        quotId: id, 
+        quotNo, 
+        displayName, 
+        mode: 'create',
+        autoStartTutorial: true,
+        workstation
+      })
+    } catch (e) {
+      notify?.('Failed to initialize tutorial.', 'error')
+    }
+  }, [notify, user])
+
+  const handleLobbyClose = useCallback(() => {
+    navigate('/parts')
+  }, [navigate])
+
+  const handleLeaveWorkspace = useCallback(() => {
+    setActiveSession(null)
+  }, [])
+
+  const handleSwitchSession = useCallback((session: any) => {
+    setActiveSession(session)
+  }, [])
+
+  // ── Render ─────────────────────────────────────────────────────
+
+  if (!activeSession) {
+    return (
+      <QuotationEntryModal
+        onJoin={handleJoinSession}
+        onCreateNew={handleCreateNew}
+        onStartTutorial={handleStartTutorial}
+        onClose={handleLobbyClose}
+        mandatory
+      />
+    )
+  }
+
+  return (
+    <QuotationWorkspace
+      key={activeSession.quotId || activeSession.quotNo}
+      {...activeSession}
+      onLeave={handleLeaveWorkspace}
+      onSwitchSession={handleSwitchSession}
+    />
+  )
+}
