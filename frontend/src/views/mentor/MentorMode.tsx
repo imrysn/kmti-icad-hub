@@ -450,6 +450,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (is2DDrawingCourse) {
             setActiveLessonId('2d-orthographic-1');
             setExpandedIds(new Set(['2d-orthographic']));
+        } else if (selectedCourse.course_type === 'Standard' || selectedCourse.id === 'mock-icad-kemco') {
+            // KEMCO/JIS Standards: default to Lesson 1 (3D Standard)
+            setActiveLessonId('3d');
+            setExpandedIds(new Set());
         } else {
             setActiveLessonId('interface');
             setExpandedIds(new Set());

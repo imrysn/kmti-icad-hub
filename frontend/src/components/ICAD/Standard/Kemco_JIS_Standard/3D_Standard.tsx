@@ -6,7 +6,7 @@ import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
-import originPlacementImg from "../../../../assets/Standard/Kemco_JIS_Standard/3d_standard_origin_placement.png";
+import originPlacementImg from "../../../../assets/3D_Image_File/origin_change_3d_part_layout_2345.png";
 import materialsLayersImg from "../../../../assets/Standard/Kemco_JIS_Standard/3d_standard_materials&layers.png";
 
 interface ThreeDStandardLessonProps {

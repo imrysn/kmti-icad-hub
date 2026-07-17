@@ -935,9 +935,26 @@ export const ICAD_2D_LESSONS: Lesson[] = [
 
 export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: '3d', title: '3D Standard', content: ['3D Standard reminder: origin placement, dimensions, materials & layers, interference check.'] },
-  { id: '2d', title: '2D Standard', content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'] },
+  { 
+    id: '2d', 
+    title: '2D Standard', 
+    content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'],
+    children: [
+      { id: '2d-main', title: '2D Standard Main', content: [] },
+      { id: '2d-gallery', title: 'Reference Standard Gallery', content: [] }
+    ]
+  },
   { id: 'piping', title: 'Piping', content: ['Placeholder for Piping'] },
-  { id: 'general-standard-steel', title: 'General Standard Steel', content: ['Placeholder'] },
+  { 
+    id: 'general-standard-steel', 
+    title: 'General Standard Steel', 
+    content: ['Placeholder'],
+    children: [
+      { id: 'general-standard-steel-main', title: 'General Standard Steel Material Table', content: [] },
+      { id: 'general-standard-steel-flat', title: 'Flat Bar Reference Table', content: [] },
+      { id: 'general-standard-steel-round', title: 'Round Bar', content: [] }
+    ]
+  },
   { id: 'steel-pipes', title: 'Steel Pipes', content: ['Placeholder'] },
   { id: 'angle-bar-dimensions', title: 'Angle Bar Dimensions', content: ['Placeholder'] },
   { id: 'available-plate-thickness-jis', title: 'Available Plate Thickness JIS', content: ['Placeholder'] },
@@ -948,7 +965,15 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: 'keyplate-groove', title: 'Keyplate & Groove', content: ['Placeholder'] },
   { id: 'ost-2', title: 'OST-2', content: ['Placeholder'] },
   { id: 'paragon-smc', title: 'Paragon SMC', content: ['Placeholder'] },
-  { id: 'retainer-ring', title: 'Retainer Ring', content: ['Placeholder'] },
+  { 
+    id: 'retainer-ring', 
+    title: 'Retainer Ring', 
+    content: ['Placeholder'],
+    children: [
+      { id: 'retainer-ring-main', title: 'Retainer Ring (JIS Standard)', content: [] },
+      { id: 'retainer-ring-spec', title: 'Retainer Ring Specifications (OCHIAI)', content: [] }
+    ]
+  },
   { id: 'shaft-keyway', title: 'Shaft Keyway', content: ['Placeholder'] },
   { id: 'showa-catalog', title: 'Showa Catalog', content: ['Placeholder'] }
 ];
