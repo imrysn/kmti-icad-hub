@@ -3,7 +3,6 @@ import type { Task, TaskSubtotals } from '../../../types/quotation'
 import { useCollaborationContext } from '../../../../../context/CollaborationContext'
 import { useAuth } from '../../../../../context/AuthContext'
 import { CollaborativeField } from './CollaborativeField'
-import { SpecialRow } from './SpecialRow'
 import { KemcoRow } from './KemcoRow'
 
 export type { TaskSubtotals } from '../../../types/quotation'
@@ -84,13 +83,9 @@ export const TaskRow = memo(({
   const handleEditToggle = useCallback(() => onEditToggle?.(task.id), [task.id, onEditToggle])
 
   const handleMainTaskClick = useCallback(() => {
-    // In KEMCO, selection works on any row. In Special, only on main tasks.
-    if (layoutVariant === 'kemco') {
-      if (onMainTaskSelect) onMainTaskSelect(task.id)
-    } else {
-      if (task.isMainTask && onMainTaskSelect) onMainTaskSelect(task.id)
-    }
-  }, [layoutVariant, task.isMainTask, task.id, onMainTaskSelect])
+    // Selection works on any row for KEMCO format
+    if (onMainTaskSelect) onMainTaskSelect(task.id)
+  }, [task.id, onMainTaskSelect])
 
 
   return (
@@ -102,7 +97,7 @@ export const TaskRow = memo(({
         isDragging ? 'dragging' : '',
         isDragOver ? 'drag-over' : '',
         isRowLocked ? 'row-locked' : '',
-        `layout-${layoutVariant}`,
+        `layout-kemco`,
         `level-${task.level || 0}`
       ].filter(Boolean).join(' ')}
       onClick={handleMainTaskClick}
@@ -133,7 +128,7 @@ export const TaskRow = memo(({
 
       {/* REFERENCE NO / CONST NO */}
       <td className="reference-cell">
-        {!(layoutVariant === 'kemco' && (task.level || 0) > 0) && (
+        {((task.level || 0) === 0) && (
           <CollaborativeField fieldKey={`task.${task.id}.referenceNumber`} remoteUsers={remoteUsers} hardLocked={isRowLocked} lockOwnerName={task.engineer}>
             <input
               type="text"
@@ -145,21 +140,10 @@ export const TaskRow = memo(({
         )}
       </td>
 
-
-
-      {layoutVariant === 'kemco'
-        ? <KemcoRow
-            task={task} isRowLocked={isRowLocked}
-            onUpdate={handleUpdate} onRemove={handleRemove}
-          />
-        : <SpecialRow
-            task={task} subtotals={subtotals} isRowLocked={isRowLocked}
-            onUpdate={handleUpdate} formatCurrency={formatCurrency}
-            isEditing={isEditing} localTotal={localTotal} setLocalTotal={setLocalTotal}
-            onEditValueUpdate={onEditValueUpdate} onEditToggle={handleEditToggle}
-            onCancelEdit={onCancelEdit} onRemove={handleRemove}
-          />
-      }
+      <KemcoRow
+        task={task} isRowLocked={isRowLocked}
+        onUpdate={handleUpdate} onRemove={handleRemove}
+      />
     </tr>
   )
 })

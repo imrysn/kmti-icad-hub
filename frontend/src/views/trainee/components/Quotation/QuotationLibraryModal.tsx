@@ -119,23 +119,17 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
       return
     }
 
-    confirm(
-      `Are you sure you want to move quotation ${q.quotationNo} to the Trash Bin?`,
-      async () => {
-        try {
-          // Pass userWorkstationName as workstation query param, and myWorkstation as computer_name query param
-          await quotationApi.delete(q.id, userWorkstationName || undefined, false, myWorkstation || undefined) // soft delete
-          notify?.('Quotation moved to Trash.', 'success')
-          fetchLibrary()
-        } catch (err) {
-          notify?.('Server error: Deletion failed.', 'error')
-        }
-      },
-      undefined,
-      'danger',
-      'Move to Trash Bin',
-      'Move to Trash'
-    )
+    const isConfirmed = await confirm(`Are you sure you want to move quotation ${q.quotationNo} to the Trash Bin?`)
+    if (isConfirmed) {
+      try {
+        // Pass userWorkstationName as workstation query param, and myWorkstation as computer_name query param
+        await quotationApi.delete(q.id, userWorkstationName || undefined, false, myWorkstation || undefined) // soft delete
+        notify?.('Quotation moved to Trash.', 'success')
+        fetchLibrary()
+      } catch (err) {
+        notify?.('Server error: Deletion failed.', 'error')
+      }
+    }
   }
 
   const handleRestore = async (e: React.MouseEvent, q: IQuotation) => {
@@ -146,22 +140,16 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
       return
     }
 
-    confirm(
-      `Are you sure you want to restore quotation ${q.quotationNo}?`,
-      async () => {
-        try {
-          await quotationApi.restore(q.id)
-          notify?.('Quotation record restored.', 'success')
-          fetchLibrary()
-        } catch (err) {
-          notify?.('Server error: Restore failed.', 'error')
-        }
-      },
-      undefined,
-      'primary',
-      'Confirm Restore',
-      'Restore Record'
-    )
+    const isConfirmed = await confirm(`Are you sure you want to restore quotation ${q.quotationNo}?`)
+    if (isConfirmed) {
+      try {
+        await quotationApi.restore(q.id)
+        notify?.('Quotation record restored.', 'success')
+        fetchLibrary()
+      } catch (err) {
+        notify?.('Server error: Restore failed.', 'error')
+      }
+    }
   }
 
   const handlePermanentDelete = async (e: React.MouseEvent, q: IQuotation) => {
@@ -172,39 +160,27 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
       return
     }
 
-    confirm(
-      `Are you sure you want to PERMANENTLY purge quotation ${q.quotationNo}? This cannot be undone.`,
-      async () => {
-        try {
-          await quotationApi.delete(q.id, undefined, true) // permanent = true
-          notify?.('Quotation permanently purged.', 'success')
-          fetchLibrary()
-        } catch (err) {
-          notify?.('Server error: Deletion failed.', 'error')
-        }
-      },
-      undefined,
-      'danger',
-      'Confirm Permanent Deletion',
-      'Purge Record'
-    )
+    const isConfirmed = await confirm(`Are you sure you want to PERMANENTLY purge quotation ${q.quotationNo}? This cannot be undone.`)
+    if (isConfirmed) {
+      try {
+        await quotationApi.delete(q.id, undefined, true) // permanent = true
+        notify?.('Quotation permanently purged.', 'success')
+        fetchLibrary()
+      } catch (err) {
+        notify?.('Server error: Deletion failed.', 'error')
+      }
+    }
   }
 
-  const handleReveal = (q: IQuotation) => {
+  const handleReveal = async (q: IQuotation) => {
     const pwd = q.password || 'Unknown'
     const isIT = hasRole('it')
 
-    confirm(
-      `Password for ${q.quotationNo} is: [ ${pwd} ]`,
-      () => {
-        navigator.clipboard.writeText(pwd)
-        notify?.('Password copied to clipboard.', 'success')
-      },
-      undefined,
-      'info',
-      isIT ? 'IT OVERRIDE' : 'Password Recovery',
-      'Copy to Clipboard'
-    )
+    const isConfirmed = await confirm(`Password for ${q.quotationNo} is: [ ${pwd} ]\n\nClick OK to copy to clipboard.`)
+    if (isConfirmed) {
+      navigator.clipboard.writeText(pwd)
+      notify?.('Password copied to clipboard.', 'success')
+    }
   }
 
   const handleRenameStart = (e: React.MouseEvent, q: IQuotation) => {

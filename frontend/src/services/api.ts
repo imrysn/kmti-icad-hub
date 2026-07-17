@@ -151,8 +151,8 @@ export const quotationApi = {
     list: (params?: any) => api.get('/api/v1/quotations/', { params }),
     create: (data: any) => api.post('/api/v1/quotations/', data),
     update: (id: number | string, data: any) => api.patch(`/api/v1/quotations/${id}`, data),
-    delete: (id: number | string, workstation?: string, permanent?: boolean, adminWorkstation?: string) => 
-        api.delete(`/api/v1/quotations/${id}`, { params: { workstation, permanent, adminWorkstation } }),
+    delete: (id: number | string, workstation?: string, permanent?: boolean, computer_name?: string) => 
+        api.delete(`/api/v1/quotations/${id}`, { params: { workstation, permanent, computer_name } }),
     getSessions: () => api.get('/api/v1/quotations/sessions'),
     restore: (id: number | string, password?: string) => api.post(`/api/v1/quotations/${id}/restore`, { password }),
     verifyPassword: (id: number | string, password?: string) => api.post(`/api/v1/quotations/${id}/verify`, { password }),

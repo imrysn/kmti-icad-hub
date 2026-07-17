@@ -16,7 +16,7 @@ export function calculateTaskTotal(
   allTasks: Task[],
   baseRates: BaseRates,
   manualOverrides: ManualOverrides,
-  layoutVariant: 'special' | 'kemco' = 'special'
+  layoutVariant: 'kemco' | 'special' = 'kemco'
 ): CalculatedSubtotals {
   // Check if this is KEMCO (level-based)
   const isKemco = layoutVariant === 'kemco'

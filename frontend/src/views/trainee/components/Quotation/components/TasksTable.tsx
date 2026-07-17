@@ -41,7 +41,6 @@ interface TasksTableProps {
   onFooterUpdate?: (key: string, value: any) => void
   collapsedTasks?: Set<number>
   onCollapsedTasksChange?: (collapsed: Set<number>) => void
-  layoutVariant?: 'special' | 'kemco'
 }
 
 // ── Component ──────────────────────────────────────────────────────────────
@@ -52,9 +51,9 @@ const TasksTable = memo(({
   onMainTaskSelect, onBaseRateUpdate: _onBaseRateUpdate, onOpenRateSettings, notify,
   manualOverrides, setManualOverrides, onFooterUpdate,
   collapsedTasks = new Set(), onCollapsedTasksChange,
-  layoutVariant = 'special',
   onChildTaskAdd,
 }: TasksTableProps) => {
+  const layoutVariant = 'kemco'
   const { user } = useAuth()
   const hasRole = (...roles: string[]) => user ? roles.includes(user.role) : false
   const { remoteUsers, emitFocus, emitBlur, myName } = useCollaborationContext()

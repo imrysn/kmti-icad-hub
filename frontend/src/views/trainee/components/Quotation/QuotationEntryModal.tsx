@@ -38,7 +38,7 @@ export default function QuotationEntryModal({ onJoin, onCreateNew, onStartTutori
   const [isCreating, setIsCreating] = useState(false)
   const [isLibraryOpen, setIsLibraryOpen] = useState(false)
   const [isLobbyTutorialOpen, setIsLobbyTutorialOpen] = useState(false)
-  const [newRoom, setNewRoom] = useState<NewRoomForm>({ name: '', variant: 'special', customerId: 'TEX_WAKAYAMA' })
+  const [newRoom, setNewRoom] = useState<NewRoomForm>({ name: '', variant: 'kemco', customerId: 'KUSAKABE' })
   const [joiningSession, setJoiningSession] = useState<ActiveSession | null>(null)
   const [joinPassword, setJoinPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)

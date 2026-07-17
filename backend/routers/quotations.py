@@ -697,8 +697,14 @@ def delete_quotation(
     # Match workstation hostname or fullName for ownership
     is_owner = (
         (workstation and quot.workstation == workstation) or
-        (computer_name and quot.workstation == computer_name)
+        (computer_name and quot.workstation == computer_name) or
+        (current_user.username and quot.workstation == current_user.username) or
+        (current_user.full_name and quot.workstation == current_user.full_name) or
+        (getattr(current_user, 'display_name', None) and quot.workstation == current_user.display_name)
     )
+    print(f"DEBUG: Delete requested for q_id={q_id}, quot.workstation='{quot.workstation}', req_workstation='{workstation}', req_computer_name='{computer_name}'")
+    print(f"DEBUG: current_user.username='{current_user.username}', full_name='{current_user.full_name}', display_name='{getattr(current_user, 'display_name', None)}'")
+    print(f"DEBUG: is_admin={is_admin}, is_owner={is_owner}")
 
     if not is_admin and not is_owner:
         owner_label = quot.workstation if quot.workstation else "Legacy/Unknown"

@@ -6,7 +6,6 @@ import { CollaborativeField } from './CollaborativeField'
 interface Props {
   signatures: Signatures
   onUpdate?: (type: keyof Signatures, field: string, value: any) => void
-  layoutVariant?: 'special' | 'kemco'
 }
 
 // Shared props to force input interactivity inside Electron
@@ -62,18 +61,16 @@ function SigPersonDisplay({ role, name, title }: { role: string; name: string; t
   )
 }
 
-// ── Quotation Signatures card ─────────────────────────────────────────────────
 const QuotationSignaturesCard = memo(({
   signatures,
   onUpdate,
-  layoutVariant: _layoutVariant,
   isCollapsed = false,
 }: {
   signatures: Signatures
   onUpdate?: (type: keyof Signatures, field: string, value: any) => void
-  layoutVariant?: 'special' | 'kemco'
   isCollapsed?: boolean
 }) => {
+  const layoutVariant = 'kemco'
   const { remoteUsers, emitFocus, emitBlur } = useCollaborationContext()
   const [isEditing, setIsEditing] = useState(false)
   const sig = signatures.quotation
@@ -204,18 +201,16 @@ const QuotationSignaturesCard = memo(({
 
 QuotationSignaturesCard.displayName = 'QuotationSignaturesCard'
 
-// ── Billing Statement Signatures card ────────────────────────────────────────
 const BillingSignaturesCard = memo(({
   signatures,
   onUpdate,
-  layoutVariant,
   isCollapsed = false,
 }: {
   signatures: Signatures
   onUpdate?: (type: keyof Signatures, field: string, value: any) => void
-  layoutVariant?: 'special' | 'kemco'
   isCollapsed?: boolean
 }) => {
+  const layoutVariant = 'kemco'
   const { remoteUsers, emitFocus, emitBlur } = useCollaborationContext()
   const [isEditing, setIsEditing] = useState(false)
   const sig = signatures.billing
