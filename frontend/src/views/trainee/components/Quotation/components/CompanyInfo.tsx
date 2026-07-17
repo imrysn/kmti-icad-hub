@@ -1,7 +1,5 @@
 import { memo, useState } from 'react'
 import type { CompanyInfo } from '../../../../../hooks/quotation'
-import { useCollaborationContext } from '../../../../../context/CollaborationContext'
-import { CollaborativeField } from './CollaborativeField'
 
 interface Props {
   companyInfo: CompanyInfo
@@ -10,7 +8,6 @@ interface Props {
 }
 
 const CompanyInfoForm = memo(({ companyInfo, onUpdate, isCollapsed = false }: Props) => {
-  const { remoteUsers, emitFocus, emitBlur } = useCollaborationContext()
   const [isEditing, setIsEditing] = useState(false)
 
   const handleChange = (field: keyof CompanyInfo, value: string) => {
@@ -64,89 +61,54 @@ const CompanyInfoForm = memo(({ companyInfo, onUpdate, isCollapsed = false }: Pr
           <>
             <div className="input-group">
               <label>Company Name</label>
-              <CollaborativeField
-                fieldKey="companyInfo.name"
-                remoteUsers={remoteUsers}
-                onFocus={() => emitFocus('companyInfo.name')}
-                onBlur={() => emitBlur('companyInfo.name')}
-              >
-                <input
-                  type="text"
-                  value={companyInfo.name}
-                  onChange={e => handleChange('name', e.target.value)}
-                  className="form-input"
-                  placeholder="Company name"
-                  autoFocus
-                />
-              </CollaborativeField>
+              <input
+                type="text"
+                value={companyInfo.name}
+                onChange={e => handleChange('name', e.target.value)}
+                className="form-input"
+                placeholder="Company name"
+                autoFocus
+              />
             </div>
             <div className="input-group">
               <label>Street / Building</label>
-              <CollaborativeField
-                fieldKey="companyInfo.address"
-                remoteUsers={remoteUsers}
-                onFocus={() => emitFocus('companyInfo.address')}
-                onBlur={() => emitBlur('companyInfo.address')}
-              >
-                <input
-                  type="text"
-                  value={companyInfo.address}
-                  onChange={e => handleChange('address', e.target.value)}
-                  className="form-input"
-                  placeholder="Street / Building"
-                />
-              </CollaborativeField>
+              <input
+                type="text"
+                value={companyInfo.address}
+                onChange={e => handleChange('address', e.target.value)}
+                className="form-input"
+                placeholder="Street / Building"
+              />
             </div>
             <div className="input-group">
               <label>City / Zone</label>
-              <CollaborativeField
-                fieldKey="companyInfo.city"
-                remoteUsers={remoteUsers}
-                onFocus={() => emitFocus('companyInfo.city')}
-                onBlur={() => emitBlur('companyInfo.city')}
-              >
-                <input
-                  type="text"
-                  value={companyInfo.city}
-                  onChange={e => handleChange('city', e.target.value)}
-                  className="form-input"
-                  placeholder="City / Zone"
-                />
-              </CollaborativeField>
+              <input
+                type="text"
+                value={companyInfo.city}
+                onChange={e => handleChange('city', e.target.value)}
+                className="form-input"
+                placeholder="City / Zone"
+              />
             </div>
             <div className="input-group">
               <label>Province / Country</label>
-              <CollaborativeField
-                fieldKey="companyInfo.location"
-                remoteUsers={remoteUsers}
-                onFocus={() => emitFocus('companyInfo.location')}
-                onBlur={() => emitBlur('companyInfo.location')}
-              >
-                <input
-                  type="text"
-                  value={companyInfo.location}
-                  onChange={e => handleChange('location', e.target.value)}
-                  className="form-input"
-                  placeholder="Province / Country"
-                />
-              </CollaborativeField>
+              <input
+                type="text"
+                value={companyInfo.location}
+                onChange={e => handleChange('location', e.target.value)}
+                className="form-input"
+                placeholder="Province / Country"
+              />
             </div>
             <div className="input-group">
               <label>Phone</label>
-              <CollaborativeField
-                fieldKey="companyInfo.phone"
-                remoteUsers={remoteUsers}
-                onFocus={() => emitFocus('companyInfo.phone')}
-                onBlur={() => emitBlur('companyInfo.phone')}
-              >
-                <input
-                  type="text"
-                  value={companyInfo.phone}
-                  onChange={e => handleChange('phone', e.target.value)}
-                  className="form-input"
-                  placeholder="TEL: ..."
-                />
-              </CollaborativeField>
+              <input
+                type="text"
+                value={companyInfo.phone}
+                onChange={e => handleChange('phone', e.target.value)}
+                className="form-input"
+                placeholder="TEL: ..."
+              />
             </div>
           </>
         ) : (

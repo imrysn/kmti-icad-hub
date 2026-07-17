@@ -21,15 +21,8 @@ import {
   useFileOperations,
   makeBlankTask
 } from '../../../../hooks/quotation'
-import { useCollaboration } from '../../../../hooks/quotation/useCollaboration'
 import type { Task } from '../../../../types/quotation'
-import {
-  companyInfoPath, clientInfoPath, quotationDetailsPath, billingDetailsPath,
-  taskPath, baseRatesPath, footerPath,
-  TASK_PATHS, CHAT_PATHS,
-} from '../../../../hooks/quotation/syncPaths'
 import { useAuth } from '../../../../context/AuthContext'
-import { CollaborationProvider } from '../../../../context/CollaborationContext'
 import { quotationApi } from '../../../../services/api'
 import {
   CompanyInfo,
@@ -41,9 +34,7 @@ import {
   PrintPreviewModal,
   BaseRatesPanel
 } from './index'
-import { CollaborationBar } from './CollaborationBar'
 import { HistorySidebar } from './HistorySidebar'
-import { ActivitySidebar } from './ActivitySidebar'
 import { QuotationTutorial } from './QuotationTutorial'
 import QuotationLibraryModal from './QuotationLibraryModal'
 import { importFromExcel } from './utils/excelImport'
@@ -74,7 +65,7 @@ interface Props extends WorkspaceSession {
 
 export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: initialQuotNo, password, displayName, mode, onLeave, onSwitchSession, autoStartTutorial, workstation, customerId }: Props) {
   const { notify, confirm: showConfirm } = useModal()
-  const { user, token } = useAuth()
+  const { user } = useAuth()
 
   // ── Database State ─────────────────────────────────────────────
   const [quotId, setQuotId] = useState<number | undefined>(initialQuotId)
@@ -85,7 +76,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   const [isBaseRatesPanelOpen, setIsBaseRatesPanelOpen] = useState(false)
   const [isLibraryOpen, setIsLibraryOpen] = useState(false)
   const [isTutorialOpen, setIsTutorialOpen] = useState(!!autoStartTutorial)
-  const [recentEdits, setRecentEdits] = useState<Record<string, { color: string; timestamp: number }>>({})
   const [previewData, setPreviewData] = useState<any | null>(null)
   const [activePreviewTs, setActivePreviewTs] = useState<string | null>(null)
   const [isInfoCollapsed, setIsInfoCollapsed] = useState(true)
@@ -201,162 +191,8 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
     hydrate()
   }, []) // runs once on mount only
 
-  // ── Real-Time Collaboration ──────────────────────────────────────
-  // Clear old activity highlights every 3 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = Date.now()
-      setRecentEdits(prev => {
-        const next = { ...prev }
-        let changed = false
-        Object.entries(next).forEach(([path, info]) => {
-          if (now - info.timestamp > 3000) {
-            delete next[path]
-            changed = true
-          }
-        })
-        return changed ? next : prev
-      })
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const {
-    isConnected,
-    remoteUsers,
-    myEffectiveName,
-    myColor,
-    emitFocus,
-    emitBlur,
-    emitSelection,
-    emitPatch,
-    emitBatchPatch,
-    emitSnapshot,
-    emitChat,
-    emitChatEdit,
-    emitChatRead,
-    leaveRoom,
-    mySessionId
-  } = useCollaboration({
-    quotId: quotId ?? null,
-    quotNo,
-    password,
-    displayName,
-    userName: user ? (user.displayName || user.fullName || user.username) : 'User',
-    authToken: token ?? undefined,
-    onUserJoined: (u) => {
-      // Don't toast for yourself unless it's a truly new connection
-      if (u.name !== myEffectiveName) {
-        notify(`${u.name} joined the session`, 'success')
-      }
-    },
-    onUserLeft: (u) => {
-      if (u.name !== myEffectiveName) {
-        notify(`${u.name} left the session`, 'info')
-      }
-    },
-    onChatReceived: (msg) => {
-      // 1. Immediate UI update via event
-      window.dispatchEvent(new CustomEvent('kmti:remote-chat', { detail: msg }))
-
-      // 2. Visual & Taskbar Alert if not me
-      if (msg.sid !== mySessionId) {
-        // Use the existing Modal-based Dynamic Island (NotificationToast)
-        notify(`${msg.name}: ${msg.message}`, 'info')
-
-        // Flash Taskbar for Electron users
-        if (window.electronAPI?.flashWindow) {
-          window.electronAPI.flashWindow(true)
-        }
-      }
-
-      // 3. Persist to document state (for DB saving)
-      updateChatLog((prev: any[]) => {
-        const enrichedMsg = { ...msg, id: msg.id || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` }
-        if (prev.find((m: any) => m.id === enrichedMsg.id)) return prev
-        return [...prev, enrichedMsg].slice(-100)
-      })
-    },
-    onRemotePatch: (patch: { path: string; value: any }, sid: string) => {
-      // Notify components about activity
-      window.dispatchEvent(new CustomEvent('kmti:remote-patch', { detail: { patch, sid } }))
-
-      const userColor = remoteUsers[sid]?.color || '#4A90D9'
-      if (patch.path !== '__full_restore__') {
-        setRecentEdits(prev => ({
-          ...prev,
-          [patch.path]: { color: userColor, timestamp: Date.now() }
-        }))
-      }
-
-      if (patch.path === '__full_restore__') {
-        isSyncedFromRemote.current = true
-        loadData(patch.value, 'remote_restore')
-      } else if (patch.path.startsWith('companyInfo.')) {
-        const key = patch.path.split('.')[1]
-        updateCompanyInfo(prev => ({ ...prev, [key]: patch.value }))
-      } else if (patch.path.startsWith('clientInfo.')) {
-        const key = patch.path.split('.')[1]
-        updateClientInfo(prev => ({ ...prev, [key]: patch.value }))
-      } else if (patch.path.startsWith('quotationDetails.')) {
-        const key = patch.path.split('.')[1]
-        updateQuotationDetails({ [key as any]: patch.value })
-      } else if (patch.path.startsWith('billingDetails.')) {
-        const key = patch.path.split('.')[1]
-        updateBillingDetails({ [key as any]: patch.value })
-      } else if (patch.path.startsWith('signatures.')) {
-        const parts = patch.path.split('.')
-        updateSignatures(parts[1] as any, parts[2], patch.value)
-      } else if (patch.path.startsWith('task.')) {
-        const parts = patch.path.split('.')
-        const taskId = parseInt(parts[1])
-        const field = parts[2] as any
-        if (parts.length > 2) {
-          updateTask(taskId, field, patch.value)
-        } else {
-          // It's a batch patch object for a task (though emitPatch doesn't usually do this,
-          // it's good to handle if we ever use it that way)
-          updateTask(taskId, patch.value)
-        }
-      } else if (patch.path.startsWith('footer.')) {
-        const footerKey = patch.path.split('.')[1]
-        updateManualOverrides((prev: any) => ({
-          ...prev,
-          footer: { ...prev.footer, [footerKey]: patch.value }
-        }))
-      } else if (patch.path.startsWith('baseRates.')) {
-        const key = patch.path.split('.')[1] as keyof typeof baseRates
-        updateBaseRate(key, patch.value)
-      } else if (patch.path === 'tasks.add') {
-        addTask(patch.value)
-      } else if (patch.path === 'tasks.add_sub') {
-        addSubTask(patch.value.parentId, undefined, patch.value)
-      } else if (patch.path === 'tasks.add_child') {
-        addChildTask(patch.value.parentId, patch.value.level, patch.value)
-      } else if (patch.path === 'tasks.remove') {
-        removeTask(patch.value)
-      } else if (patch.path === 'tasks.reorder') {
-        reorderTasks(patch.value.draggedId, patch.value.targetId)
-      } else if (patch.path === 'chat.delete' || patch.path === 'chatLog.delete') {
-        updateChatLog((prev: any[]) => prev.map((m: any) => m.id === patch.value ? { ...m, isDeleted: true, message: '' } : m))
-      } else if (patch.path === 'chat.full_sync' || patch.path === 'chatLog.full_sync') {
-        updateChatLog(() => patch.value)
-      } else if (patch.path === 'chat.edit' || patch.path === 'chatLog.edit') {
-        updateChatLog((prev: any[]) => prev.map((m: any) => m.id === patch.value.id ? { ...m, message: patch.value.message, isEdited: patch.value.isEdited } : m))
-      } else if (patch.path === 'chat.read' || patch.path === 'chatLog.read') {
-        updateChatLog((prev: any[]) => prev.map((m: any) => m.id === patch.value.id ? { ...m, readBy: Array.from(new Set([...(m.readBy || []), patch.value.name])) } : m))
-      } else if (patch.path === 'layoutVariant') {
-        setLayoutVariant(patch.value)
-      }
-    },
-    onRequestState: getSaveData,
-    onError: (msg: string) => {
-      notify?.(msg, 'error')
-      // Session error  Ekick user back to lobby
-      onLeave()
-    }
-  })
-
+  const myEffectiveName = user ? (user.full_name || user.username) : 'User'
+  const myColor = '#4A90D9'
 
   // ── Debounced DB Synchronization ──────────────────────────────
   const [isSyncing, setIsSyncing] = useState(false)
@@ -369,71 +205,61 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
     if (dbSyncTimerRef.current) clearTimeout(dbSyncTimerRef.current)
 
     dbSyncTimerRef.current = setTimeout(async () => {
-      if (!isConnected) return
+      if (!quotId) return
       setIsSyncing(true)
       try {
         const state = latestGetSaveData.current()
-        emitPatch({ path: '__sync__', value: Date.now() }, state)
+        await quotationApi.update(quotId, state)
+        setHasUnsavedChanges(false)
+      } catch (err) {
+        console.error("Autosave failed:", err)
       } finally {
         setTimeout(() => setIsSyncing(false), 500)
       }
     }, 500)
-  }, [isConnected, emitPatch])
+  }, [quotId])
 
   // ── Wrapped Update Handlers for Sync ───────────────────────────
   const syncCompanyInfo = useCallback((updates: typeof companyInfo) => {
     updateCompanyInfo(updates)
-    const patches = Object.entries(updates).map(([k, v]) => ({ path: companyInfoPath(k as any), value: v }))
-    emitBatchPatch(patches)
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateCompanyInfo, emitBatchPatch, debouncedSyncDb])
+  }, [updateCompanyInfo, debouncedSyncDb])
 
   const syncClientInfo = useCallback((updates: Partial<typeof clientInfo>) => {
     updateClientInfo(prev => ({ ...prev, ...updates }))
-    const patches = Object.entries(updates).map(([k, v]) => ({ path: clientInfoPath(k as any), value: v }))
     if (updates.company !== undefined) {
       updateBillingDetails({ billTo: updates.company })
-      patches.push({ path: billingDetailsPath('billTo'), value: updates.company })
     }
-    emitBatchPatch(patches)
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateClientInfo, updateBillingDetails, emitBatchPatch, debouncedSyncDb])
+  }, [updateClientInfo, updateBillingDetails, debouncedSyncDb])
 
   const syncQuotationDetails = useCallback((updates: Partial<typeof quotationDetails>) => {
     updateQuotationDetails(updates)
-    const patches = Object.entries(updates).map(([k, v]) => ({ path: quotationDetailsPath(k as any), value: v }))
-    emitBatchPatch(patches)
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateQuotationDetails, emitBatchPatch, debouncedSyncDb])
+  }, [updateQuotationDetails, debouncedSyncDb])
 
   const syncBillingDetails = useCallback((updates: Partial<typeof billingDetails>) => {
     updateBillingDetails(updates)
-    const patches = Object.entries(updates).map(([k, v]) => ({ path: billingDetailsPath(k as any), value: v }))
-    emitBatchPatch(patches)
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateBillingDetails, emitBatchPatch, debouncedSyncDb])
+  }, [updateBillingDetails, debouncedSyncDb])
 
   const syncSignatures = useCallback((type: keyof typeof signatures, field: string, value: any) => {
     updateSignatures(type, field, value)
-    emitPatch({ path: `signatures.${type}.${field}`, value })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateSignatures, emitPatch, debouncedSyncDb])
+  }, [updateSignatures, debouncedSyncDb])
 
   const syncUpdateTask = useCallback((id: number, fieldOrUpdates: any, value?: any) => {
     let updates: any = { lastEditorName: myEffectiveName, lastEditorColor: myColor }
-    let patches: Array<{ path: string; value: any }> = [
-      { path: taskPath(id, 'lastEditorName'), value: myEffectiveName },
-      { path: taskPath(id, 'lastEditorColor'), value: myColor }
-    ]
 
     if (typeof fieldOrUpdates === 'object' && fieldOrUpdates !== null) {
       updates = { ...updates, ...fieldOrUpdates }
-      Object.entries(fieldOrUpdates).forEach(([k, v]) => {
-        patches.push({ path: taskPath(id, k as any), value: v })
-      })
     } else {
       updates[fieldOrUpdates] = value
-      patches.push({ path: taskPath(id, fieldOrUpdates), value })
     }
 
     let newType: string | undefined = undefined
@@ -459,12 +285,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
         })
         currentParentIds = nextParentIds
       }
-
-      descendantIds.forEach(descId => {
-        patches.push({ path: taskPath(descId, 'type'), value: newType })
-        patches.push({ path: taskPath(descId, 'lastEditorName'), value: myEffectiveName })
-        patches.push({ path: taskPath(descId, 'lastEditorColor'), value: myColor })
-      })
     }
 
     // Clear manual override for the updated fields in manualOverrides so the main workspace has absolute priority!
@@ -515,16 +335,16 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
     })
 
     updateTask(id, updates)
-    emitBatchPatch(patches)
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateTask, emitBatchPatch, myEffectiveName, myColor, debouncedSyncDb, updateManualOverrides, effTasks])
+  }, [updateTask, myEffectiveName, myColor, debouncedSyncDb, updateManualOverrides, effTasks])
 
   const syncAddTask = useCallback(() => {
     const newTask = { ...makeBlankTask(), lastEditorName: myEffectiveName, lastEditorColor: myColor }
     addTask(newTask)
-    emitPatch({ path: TASK_PATHS.ADD, value: newTask })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [addTask, emitPatch, myEffectiveName, myColor, debouncedSyncDb])
+  }, [addTask, myEffectiveName, myColor, debouncedSyncDb])
 
   const syncAddSubTask = useCallback((mainTaskId: number | null) => {
     if (!mainTaskId) {
@@ -541,9 +361,9 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
       lastEditorColor: myColor
     }
     addSubTask(mainTaskId, notify, newSubTask)
-    emitPatch({ path: TASK_PATHS.ADD_SUB, value: newSubTask })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [addSubTask, emitPatch, myEffectiveName, myColor, debouncedSyncDb, notify, effTasks])
+  }, [addSubTask, myEffectiveName, myColor, debouncedSyncDb, notify, effTasks])
 
   const syncAddChildTask = useCallback((parentId: number, level: number) => {
     const parentTask = effTasks.find(t => t.id === parentId)
@@ -556,54 +376,54 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
       lastEditorColor: myColor
     }
     addChildTask(parentId, level, newTask)
-    emitPatch({ path: TASK_PATHS.ADD_CHILD, value: newTask })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [addChildTask, emitPatch, myEffectiveName, myColor, debouncedSyncDb, effTasks])
+  }, [addChildTask, myEffectiveName, myColor, debouncedSyncDb, effTasks])
 
   const syncRemoveTask = useCallback((id: number) => {
     removeTask(id)
-    emitPatch({ path: TASK_PATHS.REMOVE, value: id })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [removeTask, emitPatch, debouncedSyncDb])
+  }, [removeTask, debouncedSyncDb])
 
   const syncReorderTasks = useCallback((draggedId: number, targetId: number) => {
     reorderTasks(draggedId, targetId)
-    emitPatch({ path: TASK_PATHS.REORDER, value: { draggedId, targetId } })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [reorderTasks, emitPatch, debouncedSyncDb])
+  }, [reorderTasks, debouncedSyncDb])
 
   const syncUpdateFooter = useCallback((key: string, value: any) => {
     updateManualOverrides((prev: any) => ({
       ...prev,
       footer: { ...prev.footer, [key]: value }
     }))
-    emitPatch({ path: footerPath(key), value })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateManualOverrides, emitPatch, debouncedSyncDb])
+  }, [updateManualOverrides, debouncedSyncDb])
 
   const syncBaseRate = useCallback((field: keyof typeof baseRates, value: number) => {
     updateBaseRate(field, value)
-    emitPatch({ path: baseRatesPath(field), value })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateBaseRate, emitPatch, debouncedSyncDb])
+  }, [updateBaseRate, debouncedSyncDb])
 
   const syncDeleteChat = useCallback((msgId: string) => {
     updateChatLog((prev: any[]) => prev.map((m: any) => m.id === msgId ? { ...m, isDeleted: true, message: '' } : m))
-    emitPatch({ path: CHAT_PATHS.DELETE, value: msgId })
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateChatLog, emitPatch, debouncedSyncDb])
+  }, [updateChatLog, debouncedSyncDb])
 
   const syncEditChat = useCallback((msgId: string, newMessage: string) => {
     updateChatLog((prev: any[]) => prev.map((m: any) => m.id === msgId ? { ...m, message: newMessage, isEdited: true } : m))
-    emitChatEdit(msgId, newMessage)
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateChatLog, emitChatEdit, debouncedSyncDb])
+  }, [updateChatLog, debouncedSyncDb])
 
   const syncReadChat = useCallback((msgId: string) => {
     updateChatLog((prev: any[]) => prev.map((m: any) => m.id === msgId ? { ...m, readBy: Array.from(new Set([...(m.readBy || []), myEffectiveName])) } : m))
-    emitChatRead(msgId, myEffectiveName)
+    setHasUnsavedChanges(true)
     debouncedSyncDb()
-  }, [updateChatLog, emitChatRead, myEffectiveName, debouncedSyncDb])
+  }, [updateChatLog, myEffectiveName, debouncedSyncDb])
 
   // Sync window title with document identity + unsaved state
   useEffect(() => {
@@ -699,8 +519,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
 
       // Secondary backup: still allow file-system save if configured
       await saveInvoice(true)
-
-      emitSnapshot(getSaveData(), 'Manual Save')
     } catch (e) {
       console.error('Save failed:', e)
       notify?.('Failed to save to database', 'error')
@@ -722,14 +540,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
 
         // Append to local state
         appendTasks(importedTasks)
-
-        // Construct and emit updated snapshot immediately to sync connected peers
-        const currentData = getSaveData()
-        const updatedData = {
-          ...currentData,
-          tasks: [...currentData.tasks, ...importedTasks]
-        }
-        emitSnapshot(updatedData, 'Import Excel')
 
         notify?.(`Successfully imported ${importedTasks.length} tasks!`, 'success')
         debouncedSyncDb()
@@ -792,21 +602,14 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
 
   // ── Auto-save (Every 5 minutes) ───────────────────────────────
   useEffect(() => {
-    // Only auto-save if we are the primary "connected" workstation
-    // and there are actual changes to save.
-    if (!isConnected) return
-
     const interval = setInterval(async () => {
       if (hasUnsavedChanges) {
-        const savedPath = await saveInvoice(true) // silent auto-save
-        if (savedPath) {
-          emitSnapshot(getSaveData(), 'Auto-save')
-        }
+        await saveInvoice(true) // silent auto-save
       }
     }, 5 * 60 * 1000)
 
     return () => clearInterval(interval)
-  }, [hasUnsavedChanges, isConnected, saveInvoice, emitSnapshot, getSaveData])
+  }, [hasUnsavedChanges, saveInvoice])
 
   const handlePreview = (data: any, ts: string) => {
     setPreviewData(data)
@@ -822,7 +625,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   const handleFinalRestore = () => {
     if (!previewData) return
     loadData(previewData, 'version_restore')
-    emitSnapshot(previewData, 'Version Restore')
     setPreviewData(null)
     setActivePreviewTs(null)
     notify('Version restored successfully!', 'success')
@@ -834,7 +636,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
 
     const switchSession = () => {
       notify?.(`Switching workspace to ${quot.quotationNo}...`, 'info')
-      leaveRoom() // Explicitly depart current room to avoid ghosting
       onSwitchSession({
         quotId: quot.id,
         quotNo: quot.quotationNo,
@@ -870,87 +671,46 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   }, [autoStartTutorial, quotId, workstation, onLeave, notify])
 
 
-  const collValue = useMemo(() => ({
-    isConnected,
-    remoteUsers,
-    myColor,
-    myName: myEffectiveName,
-    recentEdits,
-    emitFocus,
-    emitBlur,
-    emitSelection,
-    emitPatch,
-    emitBatchPatch,
-    emitSnapshot,
-    emitChat,
-    emitChatEdit,
-    emitChatRead,
-    leaveRoom
-  }), [
-    isConnected,
-    remoteUsers,
-    myColor,
-    myEffectiveName,
-    recentEdits,
-    emitFocus,
-    emitBlur,
-    emitSelection,
-    emitPatch,
-    emitBatchPatch,
-    emitSnapshot,
-    emitChat,
-    emitChatEdit,
-    emitChatRead,
-    leaveRoom
-  ])
-
-
   return (
-    <CollaborationProvider value={collValue}>
-      <div className="quot-app-root">
-        {/* ── Header Toolbar ────────────────────────────────────── */}
-        <header className="quot-toolbar">
-          <div className="quot-toolbar-identity">
-            <div className="quot-doc-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-              </svg>
+    <div className="quot-app-root">
+      {/* ── Header Toolbar ────────────────────────────────────── */}
+      <header className="quot-toolbar">
+        <div className="quot-toolbar-identity">
+          <div className="quot-doc-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </div>
+          <div className="quot-doc-meta">
+            <div className="quot-doc-primary">
+              <span className="quot-doc-number">{quotationDetails.quotationNo || quotNo}</span>
+              {hasUnsavedChanges && <span className="quot-unsaved-dot" />}
             </div>
-            <div className="quot-doc-meta">
-              <div className="quot-doc-primary">
-                <span className="quot-doc-number">{quotationDetails.quotationNo || quotNo}</span>
-                {hasUnsavedChanges && <span className="quot-unsaved-dot" />}
-              </div>
-              <div className="quot-doc-secondary">
-                {quotationDetails.date ? formatToolbarDate(quotationDetails.date) : 'New Quotation'}
-                {currentFilePath && (
-                  <span className="quot-file-path">
-                    {' · '}
-                    {(() => {
-                      const file = currentFilePath.split(/[\\\/]/).pop() || ''
-                      if (file === 'db_init') return 'Master Record'
-                      if (file === 'remote_restore') return 'Collaborative Sync'
-                      if (file === 'version_restore') return 'Historical Snapshot'
-                      return file
-                    })()}
-                  </span>
-                )}
-              </div>
+            <div className="quot-doc-secondary">
+              {quotationDetails.date ? formatToolbarDate(quotationDetails.date) : 'New Quotation'}
+              {currentFilePath && (
+                <span className="quot-file-path">
+                  {' · '}
+                  {(() => {
+                    const file = currentFilePath.split(/[\\\/]/).pop() || ''
+                    if (file === 'db_init') return 'Master Record'
+                    if (file === 'remote_restore') return 'Collaborative Sync'
+                    if (file === 'version_restore') return 'Historical Snapshot'
+                    return file
+                  })()}
+                </span>
+              )}
             </div>
           </div>
+        </div>
 
-          <div className="quot-toolbar-actions">
-            {/* 1. Avatar Icons & Sync Status */}
-            <CollaborationBar
-              remoteUsers={remoteUsers}
-              myColor={myColor}
-              userName={myEffectiveName}
-              quotNo={quotNo}
-              isSyncing={isSyncing}
-            />
-
-            <div className="toolbar-divider" />
+        <div className="quot-toolbar-actions">
+          {isSyncing && (
+            <div style={{ fontSize: '0.85rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px', marginRight: '12px' }}>
+              Saving...
+            </div>
+          )}
 
             {/* 2. Workspace */}
             <button
@@ -962,10 +722,9 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
 
                 const message = hasUnsavedChanges
                   ? 'You have unsaved changes. Leave the workspace anyway?'
-                  : 'Return to the workspace lobby? Your session will remain active for others.'
+                  : 'Return to the workspace lobby?'
 
                 const doLeave = async () => {
-                  leaveRoom();
                   if (autoStartTutorial && quotId) {
                     try {
                       await quotationApi.delete(quotId, workstation);
@@ -1042,7 +801,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
             quotId={quotId}
             onRestore={(data) => {
               loadData(data, 'version_restore')
-              emitSnapshot(data, 'Version Restore')
               notify?.('Version restored successfully!', 'success')
             }}
             onPreview={handlePreview}
@@ -1070,8 +828,8 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
                 {/* Visual Indicators */}
                 {!isPreview && (
                   <div className="canvas-header-info" style={{ marginBottom: '-8px', opacity: 0.7 }}>
-                    <span className={`connection-status ${isConnected ? 'online' : 'offline'}`} style={{ fontSize: '11px' }}>
-                      {isConnected ? '● Collaborative Session' : '○ Offline Mode'}
+                    <span className="connection-status online" style={{ fontSize: '11px' }}>
+                      ● Local Workspace Session
                     </span>
                   </div>
                 )}
@@ -1111,7 +869,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
                 <TasksTable
                   tasks={effTasks}
                   baseRates={effBaseRates}
-                  layoutVariant={layoutVariant}
                   selectedMainTaskId={selectedMainTaskId}
                   onMainTaskSelect={setSelectedMainTaskId}
                   onTaskAdd={isPreview ? undefined : syncAddTask}
@@ -1131,15 +888,13 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
 
                 <SignatureForm
                   signatures={effSignatures}
-                  onUpdate={isPreview ? undefined : syncSignatures}
-                  layoutVariant={layoutVariant}
+                  onUpdate={isPreview ? undefined : (syncSignatures as any)}
                 />
 
                 {user?.role !== 'user' && (
                   <BillingDetailsCard
                     billingDetails={effBilling}
                     onUpdateBilling={isPreview ? undefined : syncBillingDetails}
-                    layoutVariant={layoutVariant}
                   />
                 )}
 
@@ -1148,15 +903,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
             </div>
           </div>
 
-          <ActivitySidebar
-            userName={myEffectiveName}
-            myColor={myColor}
-            chatLog={chatLog}
-            workspaceName={quotNo}
-            onDeleteChat={isPreview ? undefined : syncDeleteChat}
-            onEditChat={isPreview ? undefined : syncEditChat}
-            onReadChat={isPreview ? undefined : syncReadChat}
-          />
         </div>
 
         {/* ── Modals & Overlays ────────────────────────────────── */}
@@ -1203,7 +949,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
           onOpenPrintCenter={() => setIsPrintPreviewOpen(true)}
         />
       </div>
-    </CollaborationProvider>
   )
 }
 

@@ -36,76 +36,7 @@ def cache_set(*args, **kwargs): pass
 def cache_delete(*args, **kwargs): pass
 def log_activity(*args, **kwargs): pass
 
-from ..socket_manager import sio
-
 router = APIRouter(prefix="/quotations", tags=["quotations"])
-
-# Tracks connected users per document room: { quotation_id -> { sid -> { name, color } } }
-_active_users: dict[int, dict[str, dict]] = {}
-
-@sio.event
-async def join_doc(sid: str, data: dict):
-    q_id = int(data.get("quot_id", 0))
-    user_name = data.get("user_name", "Anonymous")
-    
-    if q_id not in _active_users:
-        _active_users[q_id] = {}
-        
-    color = _random_color()
-    _active_users[q_id][sid] = {
-        "name": user_name,
-        "color": color,
-        "sid": sid
-    }
-    
-    room_name = f"quotation_{q_id}"
-    sio.enter_room(sid, room_name)
-    
-    # Broadcast current room state
-    await sio.emit("room_state", {"users": list(_active_users[q_id].values())}, room=room_name)
-
-@sio.event
-async def leave_doc(sid: str, data: dict):
-    q_id = int(data.get("quot_id", 0))
-    if q_id in _active_users and sid in _active_users[q_id]:
-        del _active_users[q_id][sid]
-        room_name = f"quotation_{q_id}"
-        sio.leave_room(sid, room_name)
-        await sio.emit("room_state", {"users": list(_active_users[q_id].values())}, room=room_name)
-        if not _active_users[q_id]:
-            del _active_users[q_id]
-
-@sio.event
-async def disconnect(sid: str):
-    for q_id in list(_active_users.keys()):
-        if sid in _active_users[q_id]:
-            del _active_users[q_id][sid]
-            room_name = f"quotation_{q_id}"
-            await sio.emit("room_state", {"users": list(_active_users[q_id].values())}, room=room_name)
-            if not _active_users[q_id]:
-                del _active_users[q_id]
-
-@sio.event
-async def doc_update(sid: str, data: dict):
-    # data = { quot_id: ..., changes: ... }
-    q_id = int(data.get("quot_id", 0))
-    room_name = f"quotation_{q_id}"
-    await sio.emit("doc_updated", data, room=room_name, skip_sid=sid)
-
-@sio.event
-async def doc_save(sid: str, data: dict):
-    q_id = int(data.get("quot_id", 0))
-    room_name = f"quotation_{q_id}"
-    await sio.emit("doc_saved", data, room=room_name, skip_sid=sid)
-
-def _random_color() -> str:
-    import random
-    colors = [
-        "#4A90D9", "#E05C6B", "#27AE60", "#F39C12",
-        "#8E44AD", "#16A085", "#E67E22", "#2980B9",
-        "#C0392B", "#2ECC71",
-    ]
-    return random.choice(colors)
 
 def _get_audit_label(path: str, full_state: dict = None) -> str:
     """Map a technical JSON path to a human-readable field name."""

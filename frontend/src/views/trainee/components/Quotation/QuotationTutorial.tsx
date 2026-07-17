@@ -29,12 +29,6 @@ const STEPS: TutorialStep[] = [
     placement: 'bottom'
   },
   {
-    title: 'Collaboration Bar',
-    content: 'Working with others? This bar shows who is currently in the room. Colors represent different users, and their edits sync instantly across all workstations.',
-    targetSelector: '.collaboration-bar-root',
-    placement: 'bottom'
-  },
-  {
     title: 'Main Actions',
     content: 'Use these buttons to create new documents, load from the library, or save your changes automatically to the centralized database.',
     targetSelector: '.quot-toolbar-actions',
@@ -42,7 +36,7 @@ const STEPS: TutorialStep[] = [
   },
   {
     title: 'Information Cards',
-    content: 'Fill in the company and client details here. These sections are collaborative—you can see their highlights in real-time if someone else is editing these fields.',
+    content: 'Fill in the company and client details here.',
     targetSelector: '.quot-info-row',
     placement: 'bottom'
   },
@@ -51,12 +45,6 @@ const STEPS: TutorialStep[] = [
     content: 'This is the heart of your quotation. Add assemblies and parts, together with working hours and minutes, and select the type. The system calculates subtotals and overhead automatically.',
     targetSelector: '.tasks-table-container',
     placement: 'top'
-  },
-  {
-    title: 'Engineer Tag Ownership',
-    content: 'This is the Tag Ownership. It is used to assign specific engineers to tasks using these color-coded bookmarks. They dynamically update based on who last edited the row, providing a clear visual record of progress and ownership.',
-    targetSelector: '.eng-bookmark',
-    placement: 'left'
   },
   {
     title: 'Rate Settings',

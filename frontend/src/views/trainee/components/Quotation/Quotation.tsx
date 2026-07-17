@@ -104,7 +104,7 @@ export default function Quotation() {
       }
 
       // For newly created quotations, use the user's fullName if logged in, otherwise fallback to computerName.
-      const workstation = user ? user.fullName : computerName
+      const workstation = user ? user.full_name : computerName
 
       // Generate a formal quotation number based on selected customer
       const customerConfig = CUSTOMERS_CONFIG.find(c => c.id === customerId)
@@ -154,7 +154,7 @@ export default function Quotation() {
       }
 
       // For tutorial room, use user's fullName if logged in, otherwise fallback to computerName.
-      const workstation = user ? user.fullName : computerName
+      const workstation = user ? user.full_name : computerName
 
       // 2. Create a DB record
       const res = await quotationApi.create({ 

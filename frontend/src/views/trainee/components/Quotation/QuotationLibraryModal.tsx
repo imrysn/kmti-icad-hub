@@ -4,6 +4,7 @@ import { quotationApi } from '../../../../services/api'
 import { useAuth } from '../../../../context/AuthContext'
 import { getDisplayName } from "../../../../utils/nameUtils"
 import { useModal } from '../../../../components/ModalContext'
+import type { IQuotation } from '../../../../types/quotation'
 import './QuotationLibraryModal.css'
 
 interface Props {
@@ -104,7 +105,7 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
     }
 
     // Resolve current user display name / full name
-    const userWorkstationName = user ? (user.displayName || user.full_name) : ''
+    const userWorkstationName = user ? user.full_name : ''
     const userFullName = user ? user.full_name : ''
 
     // Ownership Enforcement: 

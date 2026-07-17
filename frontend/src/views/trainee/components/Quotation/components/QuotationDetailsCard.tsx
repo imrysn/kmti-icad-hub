@@ -1,8 +1,6 @@
 import { memo, useState } from 'react'
 import { GENERATED_QUOT_PATTERN } from '../../../../../hooks/quotation'
 import type { QuotationDetails } from '../../../../../hooks/quotation'
-import { useCollaborationContext } from '../../../../../context/CollaborationContext'
-import { CollaborativeField } from './CollaborativeField'
 
 interface Props {
   quotationDetails: QuotationDetails
@@ -11,7 +9,6 @@ interface Props {
 }
 
 const QuotationDetailsCard = memo(({ quotationDetails, onUpdate, isCollapsed = false }: Props) => {
-  const { remoteUsers, emitFocus, emitBlur } = useCollaborationContext()
   const [isEditing, setIsEditing] = useState(false)
   const [quotNoManual, setQuotNoManual] = useState(
     !GENERATED_QUOT_PATTERN.test(quotationDetails.quotationNo)
@@ -100,40 +97,26 @@ const QuotationDetailsCard = memo(({ quotationDetails, onUpdate, isCollapsed = f
           <div className="qdcard-grid">
             <div className="input-group">
               <label>Date</label>
-              <CollaborativeField
-                fieldKey="quotationDetails.date"
-                remoteUsers={remoteUsers}
-                onFocus={() => emitFocus('quotationDetails.date')}
-                onBlur={() => emitBlur('quotationDetails.date')}
-              >
-                <input
-                  type="date"
-                  value={quotationDetails.date}
-                  onChange={e => onUpdate?.({ date: e.target.value })}
-                  className="form-input"
-                  autoFocus
-                />
-              </CollaborativeField>
+              <input
+                type="date"
+                value={quotationDetails.date}
+                onChange={e => onUpdate?.({ date: e.target.value })}
+                className="form-input"
+                autoFocus
+              />
             </div>
 
             <div className="input-group">
               <label>Quotation No.</label>
               <div className="client-quot-no-row">
-                <CollaborativeField
-                  fieldKey="quotationDetails.quotationNo"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('quotationDetails.quotationNo')}
-                  onBlur={() => emitBlur('quotationDetails.quotationNo')}
+                <input
+                  type="text"
+                  value={quotationDetails.quotationNo}
+                  onChange={e => handleQuotNoChange(e.target.value)}
+                  className="form-input"
+                  placeholder="e.g. KMTE-260413-001"
                   style={{ flex: 1 }}
-                >
-                  <input
-                    type="text"
-                    value={quotationDetails.quotationNo}
-                    onChange={e => handleQuotNoChange(e.target.value)}
-                    className="form-input"
-                    placeholder="e.g. KMTE-260413-001"
-                  />
-                </CollaborativeField>
+                />
                 {quotNoManual && (
                   <button
                     type="button"
@@ -157,20 +140,13 @@ const QuotationDetailsCard = memo(({ quotationDetails, onUpdate, isCollapsed = f
 
             <div className="input-group">
               <label>Reference Number</label>
-              <CollaborativeField
-                fieldKey="quotationDetails.referenceNo"
-                remoteUsers={remoteUsers}
-                onFocus={() => emitFocus('quotationDetails.referenceNo')}
-                onBlur={() => emitBlur('quotationDetails.referenceNo')}
-              >
-                <input
-                  type="text"
-                  value={quotationDetails.referenceNo}
-                  onChange={e => onUpdate?.({ referenceNo: e.target.value })}
-                  className="form-input"
-                  placeholder="e.g. NE-2026-04"
-                />
-              </CollaborativeField>
+              <input
+                type="text"
+                value={quotationDetails.referenceNo}
+                onChange={e => onUpdate?.({ referenceNo: e.target.value })}
+                className="form-input"
+                placeholder="e.g. NE-2026-04"
+              />
             </div>
           </div>
         ) : (

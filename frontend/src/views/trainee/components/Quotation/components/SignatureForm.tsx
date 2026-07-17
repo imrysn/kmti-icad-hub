@@ -1,7 +1,5 @@
 import { memo, useState, useEffect, useRef } from 'react'
-import type { Signatures } from '../../../types/quotation'
-import { useCollaborationContext } from '../../../../../context/CollaborationContext'
-import { CollaborativeField } from './CollaborativeField'
+import type { Signatures } from '../../../../../types/quotation'
 
 interface Props {
   signatures: Signatures
@@ -70,8 +68,6 @@ const QuotationSignaturesCard = memo(({
   onUpdate?: (type: keyof Signatures, field: string, value: any) => void
   isCollapsed?: boolean
 }) => {
-  const layoutVariant = 'kemco'
-  const { remoteUsers, emitFocus, emitBlur } = useCollaborationContext()
   const [isEditing, setIsEditing] = useState(false)
   const sig = signatures.quotation
 
@@ -101,87 +97,45 @@ const QuotationSignaturesCard = memo(({
             <div className="signature-column">
               <div className="input-group">
                 <label>Prepared by — Name</label>
-                <CollaborativeField
-                  fieldKey="signatures.quotation.preparedBy.name"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.quotation.preparedBy.name')}
-                  onBlur={() => emitBlur('signatures.quotation.preparedBy.name')}
-                >
-                  <input type="text" value={sig.preparedBy.name}
-                    onChange={e => onUpdate?.('quotation', 'preparedBy', { ...sig.preparedBy, name: e.target.value })}
-                    className="form-input" placeholder="Enter name" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.preparedBy.name}
+                  onChange={e => onUpdate?.('quotation', 'preparedBy', { ...sig.preparedBy, name: e.target.value })}
+                  className="form-input" placeholder="Enter name" {...forceInputProps} />
               </div>
               <div className="input-group">
                 <label>Title</label>
-                <CollaborativeField
-                  fieldKey="signatures.quotation.preparedBy.title"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.quotation.preparedBy.title')}
-                  onBlur={() => emitBlur('signatures.quotation.preparedBy.title')}
-                >
-                  <input type="text" value={sig.preparedBy.title}
-                    onChange={e => onUpdate?.('quotation', 'preparedBy', { ...sig.preparedBy, title: e.target.value })}
-                    className="form-input" placeholder="Enter title" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.preparedBy.title}
+                  onChange={e => onUpdate?.('quotation', 'preparedBy', { ...sig.preparedBy, title: e.target.value })}
+                  className="form-input" placeholder="Enter title" {...forceInputProps} />
               </div>
             </div>
             {/* Approved by */}
             <div className="signature-column">
               <div className="input-group">
                 <label>Approved by — Name</label>
-                <CollaborativeField
-                  fieldKey="signatures.quotation.approvedBy.name"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.quotation.approvedBy.name')}
-                  onBlur={() => emitBlur('signatures.quotation.approvedBy.name')}
-                >
-                  <input type="text" value={sig.approvedBy.name}
-                    onChange={e => onUpdate?.('quotation', 'approvedBy', { ...sig.approvedBy, name: e.target.value })}
-                    className="form-input" placeholder="Enter name" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.approvedBy.name}
+                  onChange={e => onUpdate?.('quotation', 'approvedBy', { ...sig.approvedBy, name: e.target.value })}
+                  className="form-input" placeholder="Enter name" {...forceInputProps} />
               </div>
               <div className="input-group">
                 <label>Title</label>
-                <CollaborativeField
-                  fieldKey="signatures.quotation.approvedBy.title"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.quotation.approvedBy.title')}
-                  onBlur={() => emitBlur('signatures.quotation.approvedBy.title')}
-                >
-                  <input type="text" value={sig.approvedBy.title}
-                    onChange={e => onUpdate?.('quotation', 'approvedBy', { ...sig.approvedBy, title: e.target.value })}
-                    className="form-input" placeholder="Enter title" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.approvedBy.title}
+                  onChange={e => onUpdate?.('quotation', 'approvedBy', { ...sig.approvedBy, title: e.target.value })}
+                  className="form-input" placeholder="Enter title" {...forceInputProps} />
               </div>
             </div>
             {/* Received by */}
             <div className="signature-column">
               <div className="input-group">
                 <label>Received by — Label</label>
-                <CollaborativeField
-                  fieldKey="signatures.quotation.receivedBy.label"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.quotation.receivedBy.label')}
-                  onBlur={() => emitBlur('signatures.quotation.receivedBy.label')}
-                >
-                  <input type="text" value={sig.receivedBy.label}
-                    onChange={e => onUpdate?.('quotation', 'receivedBy', { ...sig.receivedBy, label: e.target.value })}
-                    className="form-input" placeholder="Enter label" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.receivedBy.label}
+                  onChange={e => onUpdate?.('quotation', 'receivedBy', { ...sig.receivedBy, label: e.target.value })}
+                  className="form-input" placeholder="Enter label" {...forceInputProps} />
               </div>
               <div className="input-group">
                 <label>Title</label>
-                <CollaborativeField
-                  fieldKey="signatures.quotation.receivedBy.title"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.quotation.receivedBy.title')}
-                  onBlur={() => emitBlur('signatures.quotation.receivedBy.title')}
-                >
-                  <input type="text" value={sig.receivedBy.title || ''}
-                    onChange={e => onUpdate?.('quotation', 'receivedBy', { ...sig.receivedBy, title: e.target.value })}
-                    className="form-input" placeholder="Enter title" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.receivedBy.title || ''}
+                  onChange={e => onUpdate?.('quotation', 'receivedBy', { ...sig.receivedBy, title: e.target.value })}
+                  className="form-input" placeholder="Enter title" {...forceInputProps} />
               </div>
             </div>
           </div>
@@ -211,7 +165,6 @@ const BillingSignaturesCard = memo(({
   isCollapsed?: boolean
 }) => {
   const layoutVariant = 'kemco'
-  const { remoteUsers, emitFocus, emitBlur } = useCollaborationContext()
   const [isEditing, setIsEditing] = useState(false)
   const sig = signatures.billing
 
@@ -241,30 +194,16 @@ const BillingSignaturesCard = memo(({
             <div className="signature-column">
               <div className="input-group">
                 <label>Prepared by — Name</label>
-                <CollaborativeField
-                  fieldKey="signatures.billing.preparedBy.name"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.billing.preparedBy.name')}
-                  onBlur={() => emitBlur('signatures.billing.preparedBy.name')}
-                >
-                  <input type="text" value={sig.preparedBy.name}
-                    onChange={e => onUpdate?.('billing', 'preparedBy', { ...sig.preparedBy, name: e.target.value })}
-                    className="form-input" placeholder="Enter name" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.preparedBy.name}
+                  onChange={e => onUpdate?.('billing', 'preparedBy', { ...sig.preparedBy, name: e.target.value })}
+                  className="form-input" placeholder="Enter name" {...forceInputProps} />
               </div>
               {layoutVariant !== 'kemco' && (
                 <div className="input-group">
                   <label>Title</label>
-                  <CollaborativeField
-                    fieldKey="signatures.billing.preparedBy.title"
-                    remoteUsers={remoteUsers}
-                    onFocus={() => emitFocus('signatures.billing.preparedBy.title')}
-                    onBlur={() => emitBlur('signatures.billing.preparedBy.title')}
-                  >
-                    <input type="text" value={sig.preparedBy.title}
-                      onChange={e => onUpdate?.('billing', 'preparedBy', { ...sig.preparedBy, title: e.target.value })}
-                      className="form-input" placeholder="Enter title" {...forceInputProps} />
-                  </CollaborativeField>
+                  <input type="text" value={sig.preparedBy.title}
+                    onChange={e => onUpdate?.('billing', 'preparedBy', { ...sig.preparedBy, title: e.target.value })}
+                    className="form-input" placeholder="Enter title" {...forceInputProps} />
                 </div>
               )}
             </div>
@@ -272,30 +211,16 @@ const BillingSignaturesCard = memo(({
             <div className="signature-column">
               <div className="input-group">
                 <label>Approved by — Name</label>
-                <CollaborativeField
-                  fieldKey="signatures.billing.approvedBy.name"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.billing.approvedBy.name')}
-                  onBlur={() => emitBlur('signatures.billing.approvedBy.name')}
-                >
-                  <input type="text" value={sig.approvedBy.name}
-                    onChange={e => onUpdate?.('billing', 'approvedBy', { ...sig.approvedBy, name: e.target.value })}
-                    className="form-input" placeholder="Enter name" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.approvedBy.name}
+                  onChange={e => onUpdate?.('billing', 'approvedBy', { ...sig.approvedBy, name: e.target.value })}
+                  className="form-input" placeholder="Enter name" {...forceInputProps} />
               </div>
               {layoutVariant !== 'kemco' && (
                 <div className="input-group">
                   <label>Title</label>
-                  <CollaborativeField
-                    fieldKey="signatures.billing.approvedBy.title"
-                    remoteUsers={remoteUsers}
-                    onFocus={() => emitFocus('signatures.billing.approvedBy.title')}
-                    onBlur={() => emitBlur('signatures.billing.approvedBy.title')}
-                  >
-                    <input type="text" value={sig.approvedBy.title}
-                      onChange={e => onUpdate?.('billing', 'approvedBy', { ...sig.approvedBy, title: e.target.value })}
-                      className="form-input" placeholder="Enter title" {...forceInputProps} />
-                  </CollaborativeField>
+                  <input type="text" value={sig.approvedBy.title}
+                    onChange={e => onUpdate?.('billing', 'approvedBy', { ...sig.approvedBy, title: e.target.value })}
+                    className="form-input" placeholder="Enter title" {...forceInputProps} />
                 </div>
               )}
             </div>
@@ -303,30 +228,16 @@ const BillingSignaturesCard = memo(({
             <div className="signature-column">
               <div className="input-group">
                 <label>Final Approver — Name</label>
-                <CollaborativeField
-                  fieldKey="signatures.billing.finalApprover.name"
-                  remoteUsers={remoteUsers}
-                  onFocus={() => emitFocus('signatures.billing.finalApprover.name')}
-                  onBlur={() => emitBlur('signatures.billing.finalApprover.name')}
-                >
-                  <input type="text" value={sig.finalApprover.name}
-                    onChange={e => onUpdate?.('billing', 'finalApprover', { ...sig.finalApprover, name: e.target.value })}
-                    className="form-input" placeholder="Enter name" {...forceInputProps} />
-                </CollaborativeField>
+                <input type="text" value={sig.finalApprover.name}
+                  onChange={e => onUpdate?.('billing', 'finalApprover', { ...sig.finalApprover, name: e.target.value })}
+                  className="form-input" placeholder="Enter name" {...forceInputProps} />
               </div>
               {layoutVariant !== 'kemco' && (
                 <div className="input-group">
                   <label>Title</label>
-                  <CollaborativeField
-                    fieldKey="signatures.billing.finalApprover.title"
-                    remoteUsers={remoteUsers}
-                    onFocus={() => emitFocus('signatures.billing.finalApprover.title')}
-                    onBlur={() => emitBlur('signatures.billing.finalApprover.title')}
-                  >
-                    <input type="text" value={sig.finalApprover.title}
-                      onChange={e => onUpdate?.('billing', 'finalApprover', { ...sig.finalApprover, title: e.target.value })}
-                      className="form-input" placeholder="Enter title" {...forceInputProps} />
-                  </CollaborativeField>
+                  <input type="text" value={sig.finalApprover.title}
+                    onChange={e => onUpdate?.('billing', 'finalApprover', { ...sig.finalApprover, title: e.target.value })}
+                    className="form-input" placeholder="Enter title" {...forceInputProps} />
                 </div>
               )}
             </div>
@@ -386,7 +297,7 @@ function safeSignatures(signatures: Signatures): Signatures {
 }
 
 // ── Main export — renders both cards ─────────────────────────────────────────
-const SignatureForm = memo(({ signatures, onUpdate, layoutVariant }: Props) => {
+const SignatureForm = memo(({ signatures, onUpdate }: Props) => {
   const safe = safeSignatures(signatures)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -440,8 +351,8 @@ const SignatureForm = memo(({ signatures, onUpdate, layoutVariant }: Props) => {
         </button>
       </div>
       <div className="sig-cards-layout">
-        <QuotationSignaturesCard signatures={safe} onUpdate={onUpdate} layoutVariant={layoutVariant} isCollapsed={isCollapsed} />
-        <BillingSignaturesCard signatures={safe} onUpdate={onUpdate} layoutVariant={layoutVariant} isCollapsed={isCollapsed} />
+        <QuotationSignaturesCard signatures={safe} onUpdate={onUpdate} isCollapsed={isCollapsed} />
+        <BillingSignaturesCard signatures={safe} onUpdate={onUpdate} isCollapsed={isCollapsed} />
       </div>
     </div>
   )

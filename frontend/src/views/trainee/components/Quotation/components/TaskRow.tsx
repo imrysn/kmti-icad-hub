@@ -1,11 +1,9 @@
-import { memo, useCallback, useState, useEffect, useMemo } from 'react'
-import type { Task, TaskSubtotals } from '../../../types/quotation'
-import { useCollaborationContext } from '../../../../../context/CollaborationContext'
+import { memo, useCallback, useState, useEffect } from 'react'
+import type { Task, TaskSubtotals } from '../../../../../types/quotation'
 import { useAuth } from '../../../../../context/AuthContext'
-import { CollaborativeField } from './CollaborativeField'
 import { KemcoRow } from './KemcoRow'
 
-export type { TaskSubtotals } from '../../../types/quotation'
+export type { TaskSubtotals } from '../../../../../types/quotation'
 
 export interface TaskRowProps {
   task: Task
@@ -32,7 +30,6 @@ export interface TaskRowProps {
   onCancelEdit?: () => void
   layoutVariant?: 'special' | 'kemco'
   trRef?: React.Ref<HTMLTableRowElement>
-  /** Provided by TasksTable with full ancestor-chain lock awareness */
   isRowLocked?: boolean
 }
 
@@ -44,30 +41,10 @@ export const TaskRow = memo(({
   onDragStart, onDragOver, onDragLeave, onDrop, onDragEnd,
   hasSubTasks, isCollapsed, onToggleCollapse,
   onCancelEdit, layoutVariant, trRef,
-  isRowLocked: isRowLockedProp,
 }: TaskRowProps) => {
-  const { hasRole } = useAuth()
-  const { remoteUsers, myName } = useCollaborationContext()
   const [localTotal, setLocalTotal] = useState<string>('')
 
-  const isRowLockedComputed = useMemo(() => {
-    const ownerWorkstation = task.engineerWorkstation?.trim().toLowerCase() || ''
-    if (!ownerWorkstation && !task.engineer?.trim()) return false
-    if (hasRole('admin', 'it')) return false
-
-    const myWorkstation = myName.trim().toLowerCase()
-    if (ownerWorkstation) {
-      // Workstation-based ownership (same system as bookmark colors)
-      return ownerWorkstation !== myWorkstation
-    }
-    // Legacy fallback: use lastEditorName if available
-    const editorWorkstation = task.lastEditorName?.trim().toLowerCase() || ''
-    if (editorWorkstation) return editorWorkstation !== myWorkstation
-    return false
-  }, [task.engineer, task.engineerWorkstation, task.lastEditorName, myName, hasRole])
-
-  // Prop takes priority (TasksTable resolves the full ancestor chain)
-  const isRowLocked = isRowLockedProp ?? isRowLockedComputed
+  const isRowLocked = false
 
   useEffect(() => {
     if (isEditing) {
@@ -96,12 +73,11 @@ export const TaskRow = memo(({
         isSelected ? 'selected-main-task' : '',
         isDragging ? 'dragging' : '',
         isDragOver ? 'drag-over' : '',
-        isRowLocked ? 'row-locked' : '',
         `layout-kemco`,
         `level-${task.level || 0}`
       ].filter(Boolean).join(' ')}
       onClick={handleMainTaskClick}
-      draggable={!isRowLocked}
+      draggable={true}
       onDragStart={e => onDragStart?.(e, task.id)}
       onDragOver={e => onDragOver?.(e, task.id)}
       onDragLeave={onDragLeave}
@@ -129,14 +105,12 @@ export const TaskRow = memo(({
       {/* REFERENCE NO / CONST NO */}
       <td className="reference-cell">
         {((task.level || 0) === 0) && (
-          <CollaborativeField fieldKey={`task.${task.id}.referenceNumber`} remoteUsers={remoteUsers} hardLocked={isRowLocked} lockOwnerName={task.engineer}>
-            <input
-              type="text"
-              value={task.referenceNumber || ''}
-              onChange={e => handleUpdate('referenceNumber', e.target.value)}
-              className="table-input reference-input"
-            />
-          </CollaborativeField>
+          <input
+            type="text"
+            value={task.referenceNumber || ''}
+            onChange={e => handleUpdate('referenceNumber', e.target.value)}
+            className="table-input reference-input"
+          />
         )}
       </td>
 

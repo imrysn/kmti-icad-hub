@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { quotationApi } from '../../../../services/api'
-import { IQuotationHistory } from '../../../../../types/quotation'
+import { IQuotationHistory } from '../../../../types/quotation'
 import './HistorySidebar.css'
 
 // Internal Premium Icons

@@ -172,3 +172,36 @@ export interface ChatMsg {
 // ── Layout ──────────────────────────────────────────────────────────────────
 
 export type LayoutVariant = 'special' | 'kemco'
+
+export interface IQuotation {
+  id: number
+  quotationNo: string
+  displayName?: string
+  clientName?: string
+  workstation?: string
+  modifiedAt?: string
+  isActive?: boolean
+  hasPassword?: boolean
+  date?: string
+  password?: string
+  billingStatus?: string
+  projectStatus?: string
+  quotationStatus?: string
+  designerName?: string
+  customerIncharge?: string
+  grandTotal?: number
+  submittedToAdminAt?: string | null
+  billTo?: string
+  datePaid?: string
+  updatedBy?: string
+  lastUpdatedAt?: string
+  updateDetail?: string | null
+}
+
+export interface IQuotationHistory {
+  id: number
+  timestamp: string
+  label: string
+  author: string
+}
+
