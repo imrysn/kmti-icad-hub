@@ -1,0 +1,74 @@
+.menu-setup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px;
+    background: transparent;
+    box-sizing: border-box;
+}
+
+.menu-setup-card {
+    width: 95%;
+    max-width: 1500px;
+    background: #1b1f2b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .35);
+    padding: 24px;
+}
+
+.menu-title {
+    margin: 0 0 20px;
+    text-align: center;
+    color: white;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.table-wrapper {
+    overflow: auto;
+    max-height: 75vh;
+    border-radius: 10px;
+}
+
+.menu-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+}
+
+.menu-table th {
+    position: sticky;
+    top: 0;
+    background: #2b3245;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border: 1px solid #444;
+    z-index: 2;
+}
+
+.menu-table td {
+    padding: 10px;
+    border: 1px solid #3d455a;
+    vertical-align: middle;
+}
+
+.menu-table tr:nth-child(even) {
+    background: rgba(255, 255, 255, .03);
+}
+
+.menu-table tr:hover {
+    background: rgba(99, 102, 241, .15);
+}
+
+.menu-table td:first-child,
+.menu-table th:first-child {
+    font-weight: bold;
+    background: #252b3b;
+    width: 80px;
+}
