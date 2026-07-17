@@ -20,7 +20,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   position: relative;
   display: flex;
@@ -99,7 +99,7 @@
   width: 4px;
   height: 4px;
   background: var(--primary);
-  border-radius: 1px;
+  border-radius: var(--radius-md);
 }
 
 .global-modal-close-btn {
@@ -107,7 +107,7 @@
   border: none !important;
   color: var(--text-dim) !important;
   padding: 0.35rem !important;
-  border-radius: var(--radius-sm) !important;
+  border-radius: var(--radius-md) !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +144,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   position: relative;
   display: flex;
@@ -223,7 +223,7 @@
   width: 4px;
   height: 4px;
   background: var(--primary);
-  border-radius: 1px;
+  border-radius: var(--radius-md);
 }
 
 .global-modal-close-btn {
@@ -231,7 +231,7 @@
   border: none !important;
   color: #ef4444 !important;
   padding: 0.35rem !important;
-  border-radius: var(--radius-sm) !important;
+  border-radius: var(--radius-md) !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,13 +281,13 @@
 }
 
 /* Standard Modal Buttons */
-.global-btn-secondary { padding: 0 1rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; }
+.global-btn-secondary { padding: 0 1rem; border-radius: var(--radius-md) !important; height: 38px; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; }
 .global-btn-secondary:hover { background: var(--bg-hover) !important; }
-.global-btn-primary { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--primary) !important; color: white !important; border: none !important; }
+.global-btn-primary { padding: 0 1.25rem; border-radius: var(--radius-md) !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--primary) !important; color: white !important; border: none !important; }
 .global-btn-primary:hover:not(:disabled) { opacity: 0.9 !important; transform: translateY(-1px) !important; }
-.global-btn-danger { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-error) !important; color: white !important; border: none !important; }
+.global-btn-danger { padding: 0 1.25rem; border-radius: var(--radius-md) !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-error) !important; color: white !important; border: none !important; }
 .global-btn-danger:hover:not(:disabled) { opacity: 0.9 !important; transform: translateY(-1px) !important; }
 
-.global-btn-success { padding: 0 1.25rem; border-radius: 8px !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-success) !important; color: white !important; border: none !important; }
+.global-btn-success { padding: 0 1.25rem; border-radius: var(--radius-md) !important; height: 38px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: var(--color-success) !important; color: white !important; border: none !important; }
 .global-btn-success:hover:not(:disabled) { opacity: 0.9 !important; transform: translateY(-1px) !important; }
 

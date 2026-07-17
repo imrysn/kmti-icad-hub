@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Save, Plus, Trash2, AlertCircle, FileText } from 'lucide-react';
+import { Settings, Save, Plus, Trash2, AlertCircle, FileText, ChevronUp, ChevronDown } from 'lucide-react';
 import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
 import { useNotification } from '../../../context/NotificationContext';
 import { getUnitCodeBadgeClass, getUnitCodeInlineStyle } from '../../../utils/unitCodeUtils';
@@ -25,6 +25,11 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
 
     const [forceCustom, setForceCustom] = useState<number[]>([]);
     const [expandedMappingTasks, setExpandedMappingTasks] = useState<Record<string, boolean>>({});
+    const [expandedTrainees, setExpandedTrainees] = useState<number[]>([]);
+
+    const toggleTrainee = (id: number) => {
+        setExpandedTrainees(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id]);
+    };
 
     const filteredTrainees = trainees.filter(trainee => {
         if (!searchTerm) return true;
@@ -233,7 +238,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
     }
 
     return (
-        <div className="set-configuration-wrapper" style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', height: 'calc(100vh - 250px)' }}>
+        <div className="set-configuration-wrapper" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflowY: 'auto' }}>
 
             <div style={{ marginBottom: '20px', background: 'rgba(59, 130, 246, 0.1)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.2)', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <AlertCircle size={20} style={{ color: 'var(--accent-blue)', marginTop: '2px' }} />
@@ -286,7 +291,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                 </div>
             )}
 
-            <div className="progress-tracker-container" style={{ padding: 0 }}>
+            <div className="grouped-submissions-container">
                 {trainees.length === 0 ? (
                     <div className="no-submissions" style={{ gridColumn: '1 / -1' }}>
                         <Settings size={48} />
@@ -302,9 +307,10 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                 ) : (
                     filteredTrainees.map(trainee => {
                         const activeMappings = getTraineeMappingsForActiveType(trainee.id);
+                        const isExpanded = expandedTrainees.includes(trainee.id);
                         return (
-                            <div key={trainee.id} className="trainee-group-card" style={{ marginBottom: '20px', background: 'var(--card-bg)' }}>
-                                <div className="trainee-group-header" style={{ cursor: 'default' }}>
+                            <div key={trainee.id} className="trainee-group-card">
+                                <div className="trainee-group-header" onClick={() => toggleTrainee(trainee.id)}>
                                     <div className="trainee-info">
                                         <div className="avatar-circle" style={{ background: getAvatarColor(trainee.full_name) }}>
                                             {trainee.full_name?.[0] || 'U'}
@@ -315,19 +321,23 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                         </div>
                                     </div>
                                     <div className="trainee-header-right">
-                                        <button
-                                            className="btn-primary"
-                                            onClick={() => setConfirmSaveId(trainee.id)}
-                                            disabled={isSaving[trainee.id]}
-                                            style={{ padding: '6px 12px', fontSize: '0.9rem', whiteSpace: 'nowrap' }}
-                                        >
-                                            <Save size={14} style={{ marginRight: '5px', flexShrink: 0 }} />
-                                            {isSaving[trainee.id] ? 'Saving...' : 'Save Configuration'}
-                                        </button>
+                                        {isExpanded && (
+                                            <button
+                                                className="btn-primary"
+                                                onClick={(e) => { e.stopPropagation(); setConfirmSaveId(trainee.id); }}
+                                                disabled={isSaving[trainee.id]}
+                                                style={{ padding: '6px 12px', fontSize: '0.9rem', whiteSpace: 'nowrap' }}
+                                            >
+                                                <Save size={14} style={{ marginRight: '5px', flexShrink: 0 }} />
+                                                {isSaving[trainee.id] ? 'Saving...' : 'Save Configuration'}
+                                            </button>
+                                        )}
+                                        {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                     </div>
                                 </div>
 
-                                <div className="trainee-group-body" style={{ padding: '20px' }}>
+                                {isExpanded && (
+                                <div className="trainee-group-body">
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px', paddingBottom: '15px', borderBottom: '1px solid var(--border-color)', flexWrap: 'wrap' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                             <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-muted)' }}>Configuration Mode:</span>
@@ -387,7 +397,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                         })()}
                                     </div>
 
-                                    <div style={{ height: '300px', overflowY: 'auto', paddingRight: '5px' }}>
+                                    <div style={{ paddingRight: '5px' }}>
                                         {(() => {
                                         const mode = (() => {
                                             if (activeMappings.length === 0) return 'none';
@@ -571,6 +581,7 @@ export const TraineeSetConfiguration: React.FC<TraineeSetConfigurationProps> = (
                                         })()}
                                     </div>
                                 </div>
+                                )}
                             </div>
                         );
                     })

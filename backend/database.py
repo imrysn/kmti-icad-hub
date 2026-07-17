@@ -57,7 +57,7 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 if USE_MYSQL:
 
     
-    mysql_url = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    mysql_url = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8"
     try:
         mysql_engine = create_engine(
             mysql_url,
@@ -85,6 +85,8 @@ if USE_MYSQL:
         except Exception as startup_err:
             logger.warning(f"[!] MySQL table creation failed on startup: {startup_err}")
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         logger.warning(f"[!] MySQL connection failed on startup: {e}. Falling back to SQLite.")
         DB_MODE = "sqlite"
 

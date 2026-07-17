@@ -952,3 +952,54 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: 'shaft-keyway', title: 'Shaft Keyway', content: ['Placeholder'] },
   { id: 'showa-catalog', title: 'Showa Catalog', content: ['Placeholder'] }
 ];
+
+export const SOLIDWORKS_INTRO_LESSONS: Lesson[] = [
+  {
+    id: 'sw-interface',
+    title: 'SolidWorks Interface',
+    content: ['Mouse Control', 'Keyboard Shortcuts'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-interface', title: 'SolidWorks Interface', content: ['Mouse Control', 'Keyboard Shortcuts'] }
+    ]
+  }
+];
+
+export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
+  {
+    id: 'sw-3d-operation',
+    title: '3D Operation',
+    content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-part-modeling', title: '3D Part Modeling', content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'] },
+      { id: 'sw-sketching-base', title: 'Sketching the Base', content: ['Add sketch geometry', 'Add sketch relations', 'Insert dimension/s'] },
+      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extrude the sketch into a solid'] },
+      { id: 'sw-cutting-base', title: 'Cutting the Base', content: ['Extrude Cut'] },
+      { id: 'sw-adding-holes', title: 'Adding of Holes', content: ['Hole Wizard'] },
+      { id: 'sw-inserting-chamfer', title: 'Inserting Chamfer', content: ['Fillet', 'Chamfer'] },
+      { id: 'sw-editing-properties', title: 'Editing Properties of Part', content: ['File Properties', 'Dialog Box'] },
+      { id: 'sw-part-saving', title: 'Part Saving', content: ['File Name', 'Filename Extension'] },
+      { id: 'sw-sheet-metal', title: 'Sheet Metal (Creating Other Part)', content: ['3D Part Modeling', 'Base Flange / Tab'] },
+      { id: 'sw-bended-plate', title: 'Getting the Total Length of Bended Plate', content: ['Flat-Pattern', 'Measure'] },
+      { id: 'sw-material-weight', title: 'Getting the Mat\'l Wt (Material Weight) of a Part', content: ['Rollback Bar', 'File Properties', 'Mat\'l Wt Value'] },
+      { id: 'sw-creating-assembly', title: 'Creating Assembly', content: ['Insert Component', 'Mate'] },
+      { id: 'sw-assembly-saving', title: 'Assembly Saving', content: ['Save', 'File Name', 'Filename Extension'] },
+      { id: 'sw-linear-pattern', title: 'Linear Pattern', content: ['Linear Component', 'Distance', 'Quantity'] },
+      { id: 'sw-mirror-component', title: 'Mirror Component', content: ['Mirror Components', 'Mirror Plane'] },
+      { id: 'sw-editing-sketch-feature-matings', title: 'Editing Sketch, Feature, and Matings', content: ['Edit Sketch', 'Edit Feature', 'Matings'] }
+    ]
+  }
+];
+
+export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
+  {
+    id: 'sw-2d-operation',
+    title: '2D Operation',
+    content: ['Insert Components in the Part', 'Create New File', 'Select New Document', 'Insert Parts/ Assembly'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-2d-operation-page1', title: 'Insert Components in the Part', content: [] }
+    ]
+  }
+];

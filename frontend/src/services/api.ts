@@ -5,7 +5,7 @@ const isElectron = navigator.userAgent.toLowerCase().includes('electron');
 const defaultHost = isElectron ? '127.0.0.1' : (typeof window !== 'undefined' && window.location && window.location.hostname ? window.location.hostname : '127.0.0.1');
 
 const storedApiUrl = (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.getItem === 'function') ? window.localStorage.getItem('custom_api_url') : null;
-const API_BASE_URL = storedApiUrl || (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:3001`;
+const API_BASE_URL = storedApiUrl || (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || `http://${defaultHost}:8000`;
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -60,19 +60,24 @@ api.interceptors.response.use(
             invalidateCache();
         }
 
-        // Token expired or invalid - clear auth and redirect to login
+        // Token expired or invalid - force auto-logout
         const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.hash === '#/' || window.location.hash.startsWith('#/login');
 
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
-            console.warn('Authentication failure - clearing session and redirecting');
+            console.warn('Authentication failure - token expired. Auto-logging out.');
+            
+            // Clear session data
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('kmti_') || key.startsWith('assistant-') || key.startsWith('properties-')) {
+                    localStorage.removeItem(key);
+                }
+            });
             sessionStorage.removeItem('access_token');
             sessionStorage.removeItem('user');
             
-            if (window.location.hash !== '#/' && !window.location.hash.startsWith('#/login')) {
-                window.location.hash = '#/login?expired=true'; 
-                window.dispatchEvent(new CustomEvent('kmti-auth-expired'));
-            }
+            // Redirect to login
+            window.location.hash = '#/login';
         }
         return Promise.reject(error);
     }

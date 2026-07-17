@@ -10,6 +10,9 @@ import '../../../styles/3D_Modeling/CourseLesson.css';
 import { Modal } from '../../../components/Modal';
 import JSZip from 'jszip';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
+import { authService } from '../../../services/authService';
+import { TaskStopwatch, TaskStopwatchHandle } from './TaskStopwatch';
+import { TimeRecordModal } from './TimeRecordModal';
 
 interface PracticalAssessmentProps {
     onBack: () => void;
@@ -82,6 +85,11 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
 
     const [trashModalOpen, setTrashModalOpen] = useState(false);
+    const [timeRecordModalOpen, setTimeRecordModalOpen] = useState(false);
+    
+    const currentUser = authService.getCurrentUser();
+    const userId = currentUser ? currentUser.id : 0;
+    const stopwatchRefs = useRef<{ [key: number]: TaskStopwatchHandle | null }>({});
 
     const getSetDisplayNumber = useCallback((s: number): number => {
         if (mySetMappings && mySetMappings.length > 0) {
@@ -160,7 +168,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     const submitFolderUpload = async () => {
         if (!folderUploadTargetTask || folderFiles.length === 0 || !customFolderName.trim()) return;
-        
+
         const confirmed = await requestConfirmation({
             title: "Confirm Upload",
             message: "Are you sure you want to compress and upload this folder?",
@@ -200,14 +208,18 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         }
     };
 
-    const handleDrop = async (e: React.DragEvent, task: AssessmentTask) => {
+    const handleDrop = async (e: React.DragEvent, task: AssessmentTask, actualTaskId: number) => {
         e.preventDefault();
         e.stopPropagation();
         setDragActiveTaskId(null);
 
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            await uploadTaskFile(e.dataTransfer.files[0], task, assessmentType);
-        }
+        const files = Array.from(e.dataTransfer.files);
+        if (files.length === 0) return;
+
+        const file = files[0];
+        const elapsed = stopwatchRefs.current[actualTaskId]?.getElapsedSeconds() || 0;
+        stopwatchRefs.current[actualTaskId]?.stopTimer();
+        await uploadTaskFile(file, task, assessmentType, false, elapsed);
     };
 
     const isSetLocked = useCallback((s: number) => {
@@ -391,6 +403,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <button
                             className="trash-bin-header-btn"
+                            style={{ background: 'var(--surface-color)', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}
+                            onClick={() => setTimeRecordModalOpen(true)}
+                        >
+                            <Clock size={16} /> Time Records
+                        </button>
+                        <button
+                            className="trash-bin-header-btn"
                             onClick={() => {
                                 fetchTrash();
                                 setTrashModalOpen(true);
@@ -508,19 +527,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             return (
                                                 <div key={unitName} className="assessment-unit-group" style={{ marginBottom: '2.5rem' }}>
                                                     <div className="unit-header-bar" style={{
-                                                         background: 'var(--bg-card, rgba(15, 23, 42, 0.45))',
-                                                         border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
-                                                         borderRadius: '12px',
-                                                         padding: '1rem 1.5rem',
-                                                         marginBottom: '1rem',
-                                                         display: 'flex',
-                                                         alignItems: 'center',
-                                                         gap: '0.75rem',
-                                                         boxShadow: 'var(--shadow-card, 0 4px 6px -1px rgba(0, 0, 0, 0.1))'
-                                                     }}>
-                                                         <Folder size={20} style={{ color: 'var(--primary, #38bdf8)' }} />
-                                                         <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-main, #f8fafc)', fontWeight: 600 }}>{unitName}</h3>
-                                                         <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem', background: 'transparent', border: 'none', padding: 0, color: 'var(--text-muted, #94a3b8)' }}>{unitTasks.length} Files</span>
+                                                        background: 'var(--bg-card, rgba(15, 23, 42, 0.45))',
+                                                        border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+                                                        borderRadius: '12px',
+                                                        padding: '1rem 1.5rem',
+                                                        marginBottom: '1rem',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '0.75rem',
+                                                        boxShadow: 'var(--shadow-card, 0 4px 6px -1px rgba(0, 0, 0, 0.1))'
+                                                    }}>
+                                                        <Folder size={20} style={{ color: 'var(--primary, #38bdf8)' }} />
+                                                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-main, #f8fafc)', fontWeight: 600 }}>{unitName}</h3>
+                                                        <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem', background: 'transparent', border: 'none', padding: 0, color: 'var(--text-muted, #94a3b8)' }}>{unitTasks.length} Files</span>
                                                         <button
                                                             type="button"
                                                             className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
@@ -616,10 +635,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                             </div>
                                                                             <div className="task-row-actions">
                                                                                 {!task.is_virtual_extra && (
+                                                                                    <TaskStopwatch 
+                                                                                        ref={(el) => stopwatchRefs.current[actualTaskId] = el} 
+                                                                                        userId={userId} 
+                                                                                        taskId={actualTaskId} 
+                                                                                        initialBaseTime={latestSubmission?.time_spent_seconds || 0}
+                                                                                    />
+                                                                                )}
+                                                                                {!task.is_virtual_extra && (
                                                                                     <>
                                                                                         <button type="button" className="task-action-btn primary" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
+                                                                                            stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleOpenInIJCAD(task);
                                                                                         }}>
                                                                                             <Play size={14} /> Open in iJCAD
@@ -627,6 +655,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         <button type="button" className="task-action-btn secondary" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
+                                                                                            stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleDownloadTask(task);
                                                                                         }}>
                                                                                             <Download size={14} /> Download
@@ -644,7 +673,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 onDragEnter={handleDrag}
                                                                                 onDragOver={(e) => handleDragOver(e, task.id)}
                                                                                 onDragLeave={handleDragLeave}
-                                                                                onDrop={(e) => handleDrop(e, task)}
+                                                                                onDrop={(e) => handleDrop(e, task, actualTaskId)}
                                                                                 style={{ position: 'relative' }}
                                                                             >
                                                                                 {dragActiveTaskId === task.id && (
@@ -712,7 +741,11 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                     <input
                                                                                         type="file" id={uploadId}
                                                                                         accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
-                                                                                        onChange={(e) => handleFileUpload(e, task, assessmentType)}
+                                                                                        onChange={(e) => {
+                                                                                            const elapsed = stopwatchRefs.current[actualTaskId]?.getElapsedSeconds() || 0;
+                                                                                            stopwatchRefs.current[actualTaskId]?.stopTimer();
+                                                                                            handleFileUpload(e, task, assessmentType, elapsed);
+                                                                                        }}
                                                                                         disabled={isUploading}
                                                                                         style={{ display: 'none' }}
                                                                                     />
@@ -819,76 +852,79 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                 </div>
 
                                                                                                 {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
-                                                                                                    <div className="feedback-details">
-                                                                                                        {feedbackSubmission.feedback[0].comments && (
-                                                                                                            <div className="feedback-comment">
-                                                                                                                <p>{feedbackSubmission.feedback[0].comments}</p>
+                                                                                                    <div className="feedback-details" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
+                                                                                                        {feedbackSubmission.feedback.map((fb, fIdx) => (
+                                                                                                            <div key={fb.id} className="chat-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' }}>
+                                                                                                                {/* Trainer Comment Bubble */}
+                                                                                                                {fb.comments && (
+                                                                                                                    <div className="feedback-comment chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', borderLeft: 'none' }}>
+                                                                                                                        <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /> Trainer</span>
+                                                                                                                        <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-light)' }}>{fb.comments}</p>
+                                                                                                                        
+                                                                                                                        {fb.checkback_file_path && (
+                                                                                                                            <div className="feedback-file-actions" style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', alignItems: 'center' }}>
+                                                                                                                                <button
+                                                                                                                                    className="checkback-open-btn"
+                                                                                                                                    onClick={() => handleOpenFeedbackExcel(feedbackSubmission, fb)}
+                                                                                                                                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#e879f9', padding: '6px 10px', background: 'rgba(221, 77, 250, 0.1)', border: 'none', borderRadius: '6px', transition: 'all 0.2s', fontWeight: 600, cursor: 'pointer' }}
+                                                                                                                                >
+                                                                                                                                    <FileSpreadsheet size={14} /> Open in Excel
+                                                                                                                                </button>
+                                                                                                                                <a
+                                                                                                                                    href="#"
+                                                                                                                                    className="checkback-download-icon-btn"
+                                                                                                                                    title="Download copy"
+                                                                                                                                    onClick={(e) => {
+                                                                                                                                        e.preventDefault();
+                                                                                                                                        e.stopPropagation();
+                                                                                                                                        handleDownloadFeedback(feedbackSubmission, fb);
+                                                                                                                                    }}
+                                                                                                                                    style={{ padding: '6px', background: 'rgba(221, 77, 250, 0.1)', borderRadius: '6px', color: '#e879f9', display: 'inline-flex', alignItems: 'center', transition: 'all 0.2s' }}
+                                                                                                                                >
+                                                                                                                                    <Download size={14} />
+                                                                                                                                </a>
+                                                                                                                            </div>
+                                                                                                                        )}
+                                                                                                                    </div>
+                                                                                                                )}
+
+                                                                                                                {/* Trainee Reply Display */}
+                                                                                                                {fb.trainee_reply && (
+                                                                                                                    <div className="feedback-trainee-reply chat-bubble trainee-chat" style={{ background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '12px 12px 0 12px', width: 'fit-content', maxWidth: '90%', alignSelf: 'flex-end', marginLeft: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                                                                                                                        <div className="reply-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem' }}>
+                                                                                                                            <span className="reply-badge chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Your Reply</span>
+                                                                                                                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} />
+                                                                                                                        </div>
+                                                                                                                        <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-main)' }}>{fb.trainee_reply}</p>
+                                                                                                                        {fb.replied_at && (
+                                                                                                                            <small className="chat-time" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.5rem', textAlign: 'right' }}>{new Date(fb.replied_at).toLocaleDateString()}</small>
+                                                                                                                        )}
+                                                                                                                    </div>
+                                                                                                                )}
+
+                                                                                                                {/* Reply Input Box (rendered for the last feedback item if it doesn't have a trainee reply yet) */}
+                                                                                                                {fIdx === feedbackSubmission.feedback.length - 1 && !fb.trainee_reply && (
+                                                                                                                    <div className="feedback-reply-input-group" style={{ width: '100%', marginTop: '0.5rem' }}>
+                                                                                                                        <textarea
+                                                                                                                            placeholder="Reply to trainer comment..."
+                                                                                                                            className="reply-textarea"
+                                                                                                                            id={`reply-to-${fb.id}`}
+                                                                                                                        />
+                                                                                                                        <button
+                                                                                                                            className="reply-submit-btn"
+                                                                                                                            onClick={async () => {
+                                                                                                                                const textarea = document.getElementById(`reply-to-${fb.id}`) as HTMLTextAreaElement;
+                                                                                                                                const text = textarea?.value?.trim();
+                                                                                                                                if (!text) return;
+                                                                                                                                await handleReplyToFeedback(fb.id, text);
+                                                                                                                            }}
+                                                                                                                        >
+                                                                                                                            Send Reply
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                )}
                                                                                                             </div>
-                                                                                                        )}
-
-                                                                                                        {/* Trainee Reply Display */}
-                                                                                                        {feedbackSubmission.feedback[0].trainee_reply && (
-                                                                                                            <div className="feedback-trainee-reply">
-                                                                                                                <div className="reply-header">
-                                                                                                                    <span className="reply-badge">Your Reply</span>
-                                                                                                                    {feedbackSubmission.feedback[0].replied_at && (
-                                                                                                                        <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
-                                                                                                                    )}
-                                                                                                                </div>
-                                                                                                                <p>{feedbackSubmission.feedback[0].trainee_reply}</p>
-                                                                                                            </div>
-                                                                                                        )}
-
-                                                                                                        {/* Reply Input (only if no reply yet) */}
-                                                                                                        {!feedbackSubmission.feedback[0].trainee_reply && (
-                                                                                                            <div className="feedback-reply-input-group">
-                                                                                                                <textarea
-                                                                                                                    placeholder="Reply to trainer comment..."
-                                                                                                                    className="reply-textarea"
-                                                                                                                    id={`reply-to-${feedbackSubmission.feedback[0].id}`}
-                                                                                                                />
-                                                                                                                <button
-                                                                                                                    className="reply-submit-btn"
-                                                                                                                    onClick={async () => {
-                                                                                                                        const feedbackItems = feedbackSubmission.feedback;
-                                                                                                                        if (!feedbackItems || feedbackItems.length === 0) return;
-
-                                                                                                                        const feedbackId = feedbackItems[0].id;
-                                                                                                                        const textarea = document.getElementById(`reply-to-${feedbackId}`) as HTMLTextAreaElement;
-                                                                                                                        const text = textarea?.value?.trim();
-                                                                                                                        if (!text) return;
-
-                                                                                                                        await handleReplyToFeedback(feedbackId, text);
-                                                                                                                    }}
-                                                                                                                >
-                                                                                                                    Send Reply
-                                                                                                                </button>
-                                                                                                            </div>
-                                                                                                        )}
-
-                                                                                                        {feedbackSubmission.feedback[0].checkback_file_path && (
-                                                                                                            <div className="feedback-file-actions">
-                                                                                                                <button
-                                                                                                                    className="checkback-open-btn"
-                                                                                                                    onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
-                                                                                                                >
-                                                                                                                    <FileSpreadsheet size={16} />
-                                                                                                                    Open in Excel
-                                                                                                                </button>
-                                                                                                                <a
-                                                                                                                    href="#"
-                                                                                                                    className="checkback-download-icon-btn"
-                                                                                                                    title="Download copy"
-                                                                                                                    onClick={(e) => {
-                                                                                                                        e.preventDefault();
-                                                                                                                        e.stopPropagation();
-                                                                                                                        handleDownloadFeedback(feedbackSubmission);
-                                                                                                                    }}
-                                                                                                                >
-                                                                                                                    <Download size={14} />
-                                                                                                                </a>
-                                                                                                            </div>
-                                                                                                        )}
+                                                                                                        ))}
                                                                                                         {feedbackSubmission.status === 'rejected' && latestSubmission?.status === 'rejected' && (
                                                                                                             <div className="feedback-resubmit-action">
                                                                                                                 <button
@@ -1103,6 +1139,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     </div>
                 </div>
             </Modal>
+
+            <TimeRecordModal 
+                isOpen={timeRecordModalOpen} 
+                onClose={() => setTimeRecordModalOpen(false)} 
+                tasks={tasks}
+                submissions={submissions}
+                userId={userId} 
+                getSetDisplayNumber={getSetDisplayNumber} 
+            />
         </>
     );
 };

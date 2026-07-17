@@ -44,7 +44,7 @@ export const useTTS = () => {
   const preloadedAudioRef = useRef<{ index: number; audio: HTMLAudioElement } | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const sentenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isDebug = process.env.NODE_ENV === 'development';
+  const isDebug = import.meta.env.DEV;
 
   useEffect(() => {
     let active = true;

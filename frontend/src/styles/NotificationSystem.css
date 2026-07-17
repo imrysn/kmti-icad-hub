@@ -22,7 +22,7 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-md);
     padding: 16px 20px;
     display: flex;
     align-items: center;
@@ -164,7 +164,7 @@
     color: var(--text-dim);
     cursor: pointer;
     padding: 6px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
@@ -216,4 +216,23 @@
         opacity: 0;
         transform: scale(0.95);
     }
+}
+
+.notification-close-all {
+    pointer-events: auto;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-end;
+    padding: 4px 8px;
+    margin-bottom: -4px;
+    transition: color 0.2s ease;
+}
+
+.notification-close-all:hover {
+    color: var(--primary);
 }

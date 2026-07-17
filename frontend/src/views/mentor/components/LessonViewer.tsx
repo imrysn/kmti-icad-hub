@@ -68,6 +68,9 @@ const OperalViewLesson = lazy(() => import('../../../components/ICAD/Manual/2D_D
 const NormalMirrorPartsLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_NormalMirrorParts'));
 const RevisionCodeLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_StandardLibrary'));
+const SolidworkInterfaceLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/Introduction/Solidwork_Interface'));
+const SolidworkPartModelingLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/3D_Operation/3D_Part_Modeling'));
+const Solidwork2DOperationLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/2D_Operation'));
 
 import { useTTSContext } from '../../../context/TTSContext';
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
@@ -464,6 +467,24 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '3d': () => <KemcoThreeDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d': () => <KemcoTwoDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'piping': () => <PipingTableLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-interface': () => <SolidworkInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-part-modeling': () => <SolidworkPartModelingLesson subLessonId="sw-part-modeling" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-sketching-base': () => <SolidworkPartModelingLesson subLessonId="sw-sketching-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-extruding-base': () => <SolidworkPartModelingLesson subLessonId="sw-extruding-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-cutting-base': () => <SolidworkPartModelingLesson subLessonId="sw-cutting-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-adding-holes': () => <SolidworkPartModelingLesson subLessonId="sw-adding-holes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-inserting-chamfer': () => <SolidworkPartModelingLesson subLessonId="sw-inserting-chamfer" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-editing-properties': () => <SolidworkPartModelingLesson subLessonId="sw-editing-properties" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-part-saving': () => <SolidworkPartModelingLesson subLessonId="sw-part-saving" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-sheet-metal': () => <SolidworkPartModelingLesson subLessonId="sw-sheet-metal" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-bended-plate': () => <SolidworkPartModelingLesson subLessonId="sw-bended-plate" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-material-weight': () => <SolidworkPartModelingLesson subLessonId="sw-material-weight" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-creating-assembly': () => <SolidworkPartModelingLesson subLessonId="sw-creating-assembly" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-assembly-saving': () => <SolidworkPartModelingLesson subLessonId="sw-assembly-saving" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-linear-pattern': () => <SolidworkPartModelingLesson subLessonId="sw-linear-pattern" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-mirror-component': () => <SolidworkPartModelingLesson subLessonId="sw-mirror-component" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-editing-sketch-feature-matings': () => <SolidworkPartModelingLesson subLessonId="sw-editing-sketch-feature-matings" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-operation-page1': () => <Solidwork2DOperationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'general-standard-steel': () => <GeneralStandardSteelLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'steel-pipes': () => <SteelPipesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'angle-bar-dimensions': () => <AngleBarDimensionsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,

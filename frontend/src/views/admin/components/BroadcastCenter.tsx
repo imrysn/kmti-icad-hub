@@ -129,6 +129,18 @@ export const BroadcastCenter: React.FC = () => {
         }
     };
 
+    const quickTemplates = [
+        { label: 'Update/Reinstall', message: 'A new version of the app is available! Please reinstall the application to continue.', level: 'critical' },
+        { label: 'Maintenance', message: 'System maintenance in 15 minutes. Please save your work.', level: 'warning' },
+        { label: 'Review Pending', message: 'Action Required: Please review pending submissions.', level: 'info' },
+        { label: 'Server Restart', message: 'Server restarting shortly. Please save your work immediately.', level: 'critical' }
+    ];
+
+    const applyTemplate = (t: {message: string, level: string}) => {
+        setMessage(t.message);
+        setLevel(t.level as 'info' | 'warning' | 'critical');
+    };
+
     if (!isExpanded) {
         return (
             <div className={`broadcast-center-floating ${isDragging ? 'dragging' : ''}`} ref={containerRef} style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
@@ -163,6 +175,16 @@ export const BroadcastCenter: React.FC = () => {
                 </div>
 
                 <div className="chatbox-form" style={{ flex: 1, overflowY: 'auto' }}>
+                    <div className="quick-templates">
+                        <span className="templates-label">Quick Templates:</span>
+                        <div className="templates-scroll">
+                            {quickTemplates.map((t, idx) => (
+                                <button key={idx} className={`template-chip ${t.level}`} onClick={() => applyTemplate(t)}>
+                                    {t.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <textarea placeholder="Broadcast message to all users..." value={message} onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {

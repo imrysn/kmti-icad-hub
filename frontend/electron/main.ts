@@ -1,6 +1,11 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 
+// Disable security warnings in development
+if (process.env.NODE_ENV === 'development') {
+    process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+}
+
 let mainWindow: BrowserWindow | null;
 
 function createWindow() {

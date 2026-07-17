@@ -4,6 +4,7 @@ import { PlayCircle } from 'lucide-react';
 
 interface Props {
     setSelectedCourse: (course: any) => void;
+    onLaunchCommands: () => void;
 }
 
 export const IcadMenuSetupGrid: React.FC<Props> = ({ setSelectedCourse }) => {
@@ -18,8 +19,8 @@ export const IcadMenuSetupGrid: React.FC<Props> = ({ setSelectedCourse }) => {
                     Graphic Placeholder
                 </div>
             </div>
-            <button 
-                className="primary" 
+            <button
+                className="primary"
                 onClick={(e) => {
                     e.stopPropagation();
                     setSelectedCourse({
