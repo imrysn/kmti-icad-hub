@@ -1024,7 +1024,9 @@ export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
     content: ['Insert Components in the Part', 'Create New File', 'Select New Document', 'Insert Parts/ Assembly'],
     isCompleted: false,
     children: [
-      { id: 'sw-2d-operation-page1', title: 'Insert Components in the Part', content: [] }
+      { id: 'sw-2d-operation-page1', title: 'Insert Components in the Part', content: [] },
+      { id: 'sw-2d-insert-main-views', title: 'Insert Main Views', content: ['Projected View', 'Hide/Show Lines', 'Centerline', 'Center Mark'] },
+      { id: 'sw-2d-add-dimension-notes', title: 'Add Dimensions and Notes', content: ['Dimensioning', 'Dimensioning Hole', 'Dimensioning Chamfer', 'Adding Notes'] }
     ]
   }
 ];
