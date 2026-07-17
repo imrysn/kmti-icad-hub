@@ -41,6 +41,7 @@ const OST2SpecificationLesson = lazy(() => import('../../../components/ICAD/Stan
 const ParagonSMCLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ParagonSMC'));
 const RetainerRingLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/RetainerRing'));
 const ShaftKeywayLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ShaftKeyway'));
+const ShowaCatalogLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ShowaCatalog'));
 
 
 // 2D Lesson Imports (Lazy Loaded)
@@ -476,6 +477,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'paragon-smc': () => <ParagonSMCLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'retainer-ring': () => <RetainerRingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'shaft-keyway': () => <ShaftKeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'showa-catalog': () => <ShowaCatalogLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
