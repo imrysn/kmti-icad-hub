@@ -35,7 +35,7 @@
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  border-radius: 24px;
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   position: relative;
   overflow: visible;
@@ -140,7 +140,7 @@
   background: #ffffff;
   /* Page-style background for maximum document readability */
   border: 1px solid var(--glass-border);
-  border-radius: 24px;
+  border-radius: var(--radius-md);
   padding: 3rem;
   display: flex;
   flex-direction: column;
@@ -230,7 +230,7 @@
   color: white;
   font-weight: 800;
   font-size: 0.9rem;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   flex-shrink: 0;
   box-shadow: 0 4px 10px var(--color-primary-glow);
 }
@@ -262,7 +262,7 @@
   background: #ffffff;
   /* White canvas background for document-style screenshots */
   padding: 1.25rem;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   display: inline-block;
   overflow: hidden;
@@ -283,7 +283,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 4px;
@@ -313,7 +313,7 @@
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   transition: transform 0.5s ease;
 }
 
@@ -424,7 +424,7 @@
 .alert-box {
   background: rgba(99, 102, 241, 0.04);
   border-left: 4px solid var(--primary);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1.5rem 2rem;
   color: var(--text-main);
   transition: all 0.3s ease;
@@ -500,7 +500,7 @@
 .instruction-step.reading-active {
   background: var(--color-white);
   border: 2px solid var(--primary);
-  border-radius: 24px;
+  border-radius: var(--radius-md);
   padding: 3.5rem 4rem;
   box-shadow: 
     0 30px 70px rgba(0, 0, 0, 0.4),
@@ -527,7 +527,7 @@
   position: absolute;
   inset: -4px;
   border: 2px solid var(--primary);
-  border-radius: 28px;
+  border-radius: var(--radius-md);
   animation: focusPulse 2s infinite;
   z-index: -1;
 }
@@ -556,7 +556,7 @@
   padding: 0.6rem;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: 100px;
+  border-radius: var(--radius-md);
   width: fit-content;
   margin: 0 auto 2.5rem;
   /* Center horizontally and add bottom spacing */
@@ -589,7 +589,7 @@
 
 .tab-button {
   padding: 0.5rem 1rem;
-  border-radius: 100px;
+  border-radius: var(--radius-md);
   border: 1px solid transparent;
   background: transparent;
   color: var(--text-muted);
@@ -662,7 +662,7 @@
   width: 100%;
   overflow-x: auto;
   margin: 0rem 0;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   background: rgba(15, 23, 42, 0.8);
   border: 2px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(16px);
@@ -861,7 +861,7 @@
   height: 40px;
   background: rgba(99, 102, 241, 0.1);
   color: var(--primary);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
@@ -896,7 +896,7 @@
 
 .interactive-stage-container {
   background: transparent;
-  border-radius: 20px;
+  border-radius: var(--radius-md);
   padding: 0;
   border: none;
 }
@@ -939,7 +939,7 @@
   padding: 0.75rem 1rem;
   background: rgba(0, 0, 0, 0.03);
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }

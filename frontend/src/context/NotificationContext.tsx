@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, ReactNode } from 'react';
 
 export type NotificationType = 'success' | 'error' | 'info' | 'warning';
 
@@ -20,21 +20,43 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 
 export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const lastInfoTimeRef = useRef<number>(0);
 
     const dismissNotification = useCallback((id: string) => {
         setNotifications(prev => prev.filter(n => n.id !== id));
     }, []);
 
-    const showNotification = useCallback((message: string, type: NotificationType = 'success', duration: number = 5000, redirectTo?: string) => {
+    const showNotification = useCallback((message: string, type: NotificationType = 'success', duration: number = 3000, redirectTo?: string) => {
         const id = Math.random().toString(36).substring(2, 9);
-        const newNotification: Notification = { id, message, type, duration, redirectTo };
+        const now = Date.now();
+        
+        let delay = 0;
+        if (type === 'success' || type === 'error') {
+            const timeSinceLastInfo = now - lastInfoTimeRef.current;
+            if (timeSinceLastInfo < 3000) {
+                delay = 3000 - timeSinceLastInfo;
+            }
+        }
 
-        setNotifications(prev => [...prev, newNotification]);
+        if (type === 'info') {
+            lastInfoTimeRef.current = now;
+        }
 
-        if (duration > 0) {
-            setTimeout(() => {
-                dismissNotification(id);
-            }, duration);
+        const trigger = () => {
+            const newNotification: Notification = { id, message, type, duration, redirectTo };
+            setNotifications(prev => [...prev, newNotification]);
+
+            if (duration > 0) {
+                setTimeout(() => {
+                    dismissNotification(id);
+                }, duration);
+            }
+        };
+
+        if (delay > 0) {
+            setTimeout(trigger, delay);
+        } else {
+            trigger();
         }
     }, [dismissNotification]);
 

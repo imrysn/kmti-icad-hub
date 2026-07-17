@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { FileText, CheckCircle2, BarChart3, RotateCw, Check, X, RotateCcw, Loader2 } from 'lucide-react';
+import { FileText, CheckCircle2, BarChart3, RotateCw, Check, X, RotateCcw, Loader2, ArrowLeft } from 'lucide-react';
 import { TraineeProgress, adminService } from '../../../services/adminService';
 import { useLessons } from '../../../hooks/useLessons';
 import { useUI } from '../../../context/UIContext';
@@ -239,7 +239,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
     return (
         <section className="trainee-detail-view" style={{ height: '100%' }}>
             <button className="back-btn" onClick={() => setSelectedTrainee(null)}>
-                ← Return to Directory
+                <ArrowLeft size={16} style={{ marginRight: '6px' }} /> Return to Directory
             </button>
 
             <div className="detail-container" style={{ flex: 1, minHeight: 0, alignItems: 'stretch' }}>
@@ -334,7 +334,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
 
                     {/* Assessment Matrix - 3D Modeling */}
                     {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
-                    <div className="history-section matrix-section" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
+                    <div className="history-section matrix-section" style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                             <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING
@@ -345,7 +345,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
                                 <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
                                     <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
-                                    <button className={`sub-tab-btn ${activeCourseTab === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
+                                    <button className={`sub-tab-btn ${(activeCourseTab as string) === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
                                 </div>
                             )}
                         </div>
@@ -440,7 +440,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
 
                     {/* Assessment Matrix - 2D Drawing */}
                     {(activeCourseTab === 'all' || activeCourseTab === '2D') && (
-                    <div className="history-section matrix-section" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
+                    <div className="history-section matrix-section" style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                             <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING
@@ -450,7 +450,7 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
                             </h3>
                             {activeCourseTab === '2D' && (
                                 <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
-                                    <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
+                                    <button className={`sub-tab-btn ${(activeCourseTab as string) === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
                                     <button className={`sub-tab-btn ${activeCourseTab === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
                                 </div>
                             )}

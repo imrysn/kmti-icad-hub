@@ -4,7 +4,7 @@ import { assessmentService } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import { useAuthContext } from '../../../context/AuthContext';
 import { useWebSocket } from '../../../context/WebSocketContext';
-import { Search } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface PerformanceDirectoryProps {
@@ -104,20 +104,17 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
                                 style={{ border: 'none', background: 'transparent', color: 'var(--text-main)', outline: 'none', width: '100%' }}
                             />
                         </div>
-                        <div className="review-filter-tabs" style={{ display: 'flex', gap: '0.25rem', padding: '0.25rem', borderRadius: '8px' }}>
-                            {(['all', 'trainee', 'employee'] as const).map(role => (
-                                <button
-                                    key={role}
-                                    onClick={() => setRoleFilter(role)}
-                                    className={`filter-tab-btn ${roleFilter === role ? 'active' : ''}`}
-                                    style={{
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    {role === 'all' ? 'All Roles' : role.charAt(0).toUpperCase() + role.slice(1)}
-                                </button>
-                            ))}
+                        <div className="filter-box" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', padding: '0 1rem', borderRadius: '8px', height: '38px' }}>
+                            <Filter size={14} color="var(--text-muted)" />
+                            <select 
+                                value={roleFilter} 
+                                onChange={(e) => setRoleFilter(e.target.value as 'all' | 'trainee' | 'employee')}
+                                style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', outline: 'none', fontSize: '0.875rem', cursor: 'pointer', padding: '0.25rem' }}
+                            >
+                                <option value="all" style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>All Roles</option>
+                                <option value="employee" style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Employee</option>
+                                <option value="trainee" style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Trainee</option>
+                            </select>
                         </div>
                     </div>
                 </div>

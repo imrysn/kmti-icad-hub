@@ -197,12 +197,8 @@ const PartModelingContent: React.FC = () => (
                                 Select plane
                             </blockquote>
 
-                            <div className="image-wrapper" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                                <img
-                                    src={planeImg}
-                                    alt="Select plane"
-                                    className="software-screenshot screenshot-wide"
-                                />
+                            <div style={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                                <img src={planeImg} alt="Select Plane" style={{ height: 'auto', maxWidth: '100%', borderRadius: '8px' }} />
                             </div>
 
                             <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>

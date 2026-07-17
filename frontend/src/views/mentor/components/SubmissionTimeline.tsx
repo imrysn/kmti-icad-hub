@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, FileText, Play, Download } from 'lucide-react';
+import { MessageSquare, FileText, Play, Download, Clock } from 'lucide-react';
 import { AssessmentSubmission } from '../../../services/assessmentService';
 
 interface SubmissionTimelineProps {
@@ -28,7 +28,17 @@ export const SubmissionTimeline: React.FC<SubmissionTimelineProps> = ({
                         <div className="node-content">
                             <div className="node-header">
                                 <span className="node-title">Attempt {selectedTaskSubmissions.length - index}</span>
-                                <span className="node-date">{new Date(sub.submitted_at).toLocaleString()}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    {sub.time_spent_seconds !== undefined ? (
+                                        <span className="node-date" style={{ color: '#60a5fa', backgroundColor: 'rgba(59, 130, 246, 0.15)', padding: '2px 6px', borderRadius: '4px' }}>
+                                            <Clock size={11} style={{ display: 'inline', marginRight: 2, marginBottom: -2 }} />
+                                            {Math.floor(sub.time_spent_seconds / 3600) > 0 ? `${Math.floor(sub.time_spent_seconds / 3600)}h ` : ''}
+                                            {Math.floor((sub.time_spent_seconds % 3600) / 60) > 0 ? `${Math.floor((sub.time_spent_seconds % 3600) / 60)}m ` : ''}
+                                            {sub.time_spent_seconds % 60}s
+                                        </span>
+                                    ) : null}
+                                    <span className="node-date">{new Date(sub.submitted_at).toLocaleString()}</span>
+                                </div>
                             </div>
                             <div className="node-file">
                                 <FileText size={14} /> 

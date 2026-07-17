@@ -107,11 +107,13 @@ class UserCreateAdmin(UserCreate):
 
 class UserUpdate(BaseModel):
     """Schema for updating user information"""
+    username: Optional[str] = None
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
     role: Optional[Literal["trainee", "employee", "admin"]] = None
     password: Optional[str] = None
     is_active: Optional[bool] = None
+    custom_comments: Optional[List[str]] = None
 
     @field_validator("password")
     @classmethod
@@ -141,6 +143,7 @@ class UserResponse(BaseModel):
     is_active: bool
     created_at: Optional[datetime] = None
     last_login: Optional[datetime] = None
+    custom_comments: Optional[List[str]] = []
     
     class Config:
         from_attributes = True
@@ -310,6 +313,7 @@ class AssessmentSubmissionResponse(AssessmentSubmissionBase):
     user_id: int
     trainer_id: Optional[int] = None
     is_deleted: bool = False
+    time_spent_seconds: int = 0
     submitted_at: datetime
     updated_at: datetime
     user: Optional[UserResponse] = None

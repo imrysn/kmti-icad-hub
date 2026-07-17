@@ -13,20 +13,7 @@
         "test:run": "vitest run",
         "test:coverage": "vitest run --coverage"
     },
-    "dependencies": {
-        "@types/three": "^0.182.0",
-        "axios": "^1.4.0",
-        "canvas-confetti": "^1.9.4",
-        "framer-motion": "^12.38.0",
-        "jszip": "^3.10.1",
-        "lucide-react": "^0.263.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-markdown": "^10.1.0",
-        "react-router-dom": "^7.13.1",
-        "remark-gfm": "^4.0.1",
-        "three": "^0.182.0"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
@@ -35,13 +22,25 @@
         "@types/jszip": "^3.4.0",
         "@types/react": "^18.2.15",
         "@types/react-dom": "^18.2.7",
+        "@types/three": "^0.182.0",
         "@vitejs/plugin-react": "^4.0.3",
         "@vitest/coverage-v8": "^4.1.8",
+        "axios": "^1.4.0",
+        "canvas-confetti": "^1.9.4",
         "concurrently": "^8.2.0",
         "electron": "^25.3.0",
         "electron-builder": "^24.6.3",
+        "framer-motion": "^12.38.0",
         "jsdom": "^29.1.1",
+        "jszip": "^3.10.1",
+        "lucide-react": "^0.263.1",
         "msw": "^2.14.6",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-markdown": "^10.1.0",
+        "react-router-dom": "^7.13.1",
+        "remark-gfm": "^4.0.1",
+        "three": "^0.182.0",
         "typescript": "^5.0.2",
         "vite": "^4.4.5",
         "vitest": "^4.1.8",
@@ -59,9 +58,21 @@
             "electron/**/*",
             "package.json"
         ],
+        "asarUnpack": [
+            "electron/**/*"
+        ],
         "win": {
             "icon": "src/assets/kmti-training-hub.png",
-            "target": "nsis"
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": ["x64"]
+                },
+                {
+                    "target": "portable",
+                    "arch": ["x64"]
+                }
+            ]
         },
         "nsis": {
             "oneClick": false,
