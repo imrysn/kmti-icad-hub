@@ -934,8 +934,8 @@ export const ICAD_2D_LESSONS: Lesson[] = [
 ];
 
 export const ICAD_KEMCO_LESSONS: Lesson[] = [
-  { id: '3d', title: '3D', content: ['Placeholder for 3D'] },
-  { id: '2d', title: '2D', content: ['Placeholder for 2D'] },
+  { id: '3d', title: '3D Standard', content: ['3D Standard reminder: origin placement, dimensions, materials & layers, interference check.'] },
+  { id: '2d', title: '2D Standard', content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'] },
   { id: 'piping', title: 'Piping', content: ['Placeholder for Piping'] },
   { id: 'general-standard-steel', title: 'General Standard Steel', content: ['Placeholder'] },
   { id: 'steel-pipes', title: 'Steel Pipes', content: ['Placeholder'] },
