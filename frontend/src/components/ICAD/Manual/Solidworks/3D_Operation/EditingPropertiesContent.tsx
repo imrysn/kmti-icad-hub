@@ -1,6 +1,7 @@
 import React from "react";
 import fileImg from "../../../../../assets/Solidworks/3D_Operation/3D_File.png";
 import okImg from "../../../../../assets/Solidworks/3D_Operation/3D_O.png";
+import custom1Img from "../../../../../assets/Solidworks/3D_Operation/3D_Custom1.png";
 
 const EditingPropertiesContent: React.FC = () => (
     <>
@@ -24,7 +25,7 @@ const EditingPropertiesContent: React.FC = () => (
                             <span className="step-label">The Dialog box will appear. Edit File / Part Properties (It is linked to 2D Balloon & BOM).</span>
                         </div>
                         <div className="step-description">
-                            <div className="instruction-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '1rem 0' }}>
+                            <div className="instruction-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                                 <p className="p-flush red-text">※ Link the dimension to the properties, so it will update whenever the 3D part is modified.</p>
                             </div>
 
@@ -33,9 +34,18 @@ const EditingPropertiesContent: React.FC = () => (
                                 <li>Click on the red line area, type PL4.5, type "x", click 32, type "x", click 75.</li>
                                 <li>On the Mat'l Wt Value, Type 0.08 (See page 17 to know how to get the Mat'l Wt Value).</li>
                             </ol>
+                        </div>
+                    </div>
 
-                            <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                                <img src={okImg} alt="Dialog box ok" className="software-screenshot screenshot-wide" />
+                    {/* Step 3 */}
+                    <div className="instruction-step">
+                        <div className="step-header">
+                            <span className="step-number">3 </span>
+                            <span className="step-label">Click <strong>OK</strong>.</span>
+                        </div>
+                        <div className="step-description">
+                            <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                                <img src={custom1Img} alt="Dialog box ok" className="software-screenshot screenshot-wide" />
                             </div>
 
                             <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'var(--bg-surface)' }}>
