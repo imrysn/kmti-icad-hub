@@ -105,7 +105,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                                 There are <strong>3 ways</strong> on inserting parts/assy in dwg.
                             </p>
-                            
+
                             <div className="instruction-step" style={{ paddingTop: '1rem', paddingBottom: '0' }}>
                                 <div className="step-header">
                                     <span className="step-number">1 </span>
@@ -154,8 +154,8 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                         <div style={{ flex: '0 1 auto', minWidth: '200px' }}>
                                             <div className="instruction-box" style={{ border: 'none', background: 'transparent', padding: 0 }}>
                                                 <p className="p-flush red-text">
-                                                    ※ It uses <strong>View Palette</strong> where<br/>
-                                                    the user can choose then<br/>
+                                                    ※ It uses <strong>View Palette</strong> where<br />
+                                                    the user can choose then<br />
                                                     drag and drop the view.
                                                 </p>
                                             </div>
