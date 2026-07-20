@@ -128,7 +128,7 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                             style={{ 
                                 padding: '0.4rem 0.8rem', 
                                 borderRadius: '4px', 
-                                backgroundColor: 'var(--surface-color)', 
+                                backgroundColor: 'var(--bg-surface)', 
                                 color: 'var(--text-main)', 
                                 border: '1px solid var(--border-color)',
                                 outline: 'none',
@@ -136,9 +136,9 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                 fontSize: '0.9rem'
                             }}
                         >
-                            <option value="ALL" style={{ backgroundColor: '#1e293b', color: '#fff' }}>All Sets</option>
+                            <option value="ALL" style={{ backgroundColor: 'var(--bg-surface)', color: 'var(--text-main)' }}>All Sets</option>
                             {availableSets.map(setNum => (
-                                <option key={setNum} value={setNum} style={{ backgroundColor: '#1e293b', color: '#fff' }}>Set {getSetDisplayNumber(setNum)}</option>
+                                <option key={setNum} value={setNum} style={{ backgroundColor: 'var(--bg-surface)', color: 'var(--text-main)' }}>Set {getSetDisplayNumber(setNum)}</option>
                             ))}
                         </select>
                     </div>
@@ -155,11 +155,11 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                         const setNum = parseInt(setStr, 10);
 
                         return (
-                            <div key={setNum} style={{ marginBottom: '2.5rem', backgroundColor: 'var(--surface-color)', borderRadius: '8px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
-                                <div style={{ backgroundColor: 'rgba(0,0,0,0.2)', borderBottom: '1px solid var(--border-color)', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div key={setNum} style={{ marginBottom: '2.5rem', backgroundColor: 'var(--bg-surface)', borderRadius: '8px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
+                                <div style={{ backgroundColor: 'var(--bg-surface)', borderBottom: '1px solid var(--border-color)', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <h4 style={{ margin: 0, color: 'var(--primary-color)', fontSize: '1.1rem' }}>Set {getSetDisplayNumber(setNum)}</h4>
-                                        <span style={{ marginLeft: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)', backgroundColor: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '12px' }}>
+                                        <span style={{ marginLeft: '1rem', fontSize: '0.8rem', color: 'var(--text-main)', backgroundColor: 'var(--color-primary-glow)', padding: '2px 8px', borderRadius: '12px' }}>
                                             {subs.length} records
                                         </span>
                                     </div>
@@ -171,76 +171,61 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                         <Copy size={14} /> Copy for Excel
                                     </button>
                                 </div>
-                                <div style={{ overflowX: 'auto' }}>
-                                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', textAlign: 'left', tableLayout: 'fixed' }}>
-                                        <thead>
-                                            <tr>
-                                                <th style={{ width: '40%', padding: '1rem', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600, position: 'sticky', left: 0, backgroundColor: 'var(--surface-color)', zIndex: 1, borderRight: '1px solid var(--border-color)' }}>Title</th>
-                                                
-                                                {/* Hidden spacer columns to match Excel F to L gap (Qty, Mat'l Weight, Total Mat'l Weight, Finished Weight, Total Finished Weight) */}
-                                                <th style={{ width: 0, padding: 0, border: 'none' }}></th>
-                                                <th style={{ width: 0, padding: 0, border: 'none' }}></th>
-                                                <th style={{ width: 0, padding: 0, border: 'none' }}></th>
-                                                <th style={{ width: 0, padding: 0, border: 'none' }}></th>
-                                                <th style={{ width: 0, padding: 0, border: 'none' }}></th>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+                                    {subs.map((sub, i) => {
+                                        let fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'Unknown File';
+                                        const lastDot = fileName.lastIndexOf('.');
+                                        if (lastDot > 0) fileName = fileName.substring(0, lastDot);
 
-                                                <th style={{ width: '20%', padding: '1rem', borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>Date Started</th>
-                                                <th style={{ width: '20%', padding: '1rem', borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>Date Finished</th>
-                                                <th style={{ width: '20%', padding: '1rem', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600, textAlign: 'right', whiteSpace: 'nowrap' }}>Time (mins)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {subs.map((sub, i) => {
-                                                let fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'Unknown File';
-                                                const lastDot = fileName.lastIndexOf('.');
-                                                if (lastDot > 0) fileName = fileName.substring(0, lastDot);
+                                        const timeSeconds = sub.time_spent_seconds || 0;
+                                        
+                                        // Calculate Date Started: Finished - Time Elapsed
+                                        const finishedDate = new Date(sub.submitted_at);
+                                        const startedDate = new Date(finishedDate.getTime() - timeSeconds * 1000);
+                                        
+                                        const formatMin = (Math.round((timeSeconds / 60) * 100) / 100).toFixed(2);
+                                        
+                                        // Only show Date, not time
+                                        const formatDate = (date: Date) => {
+                                            return date.toLocaleDateString();
+                                        };
 
-                                                const timeSeconds = sub.time_spent_seconds || 0;
-                                                
-                                                // Calculate Date Started: Finished - Time Elapsed
-                                                const finishedDate = new Date(sub.submitted_at);
-                                                const startedDate = new Date(finishedDate.getTime() - timeSeconds * 1000);
-                                                
-                                                const formatMin = (Math.round((timeSeconds / 60) * 100) / 100).toFixed(2);
-                                                
-                                                // Only show Date, not time
-                                                const formatDate = (date: Date) => {
-                                                    return date.toLocaleDateString();
-                                                };
-
-                                                return (
-                                                    <tr key={sub.id} style={{ backgroundColor: 'transparent' }}>
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'var(--text-main)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', position: 'sticky', left: 0, backgroundColor: 'var(--surface-color)', zIndex: 1, borderRight: '1px solid var(--border-color)' }} title={fileName}>{fileName}</td>
-                                                        
-                                                        {/* Empty tds for Excel gap */}
-                                                        <td style={{ width: 0, padding: 0, border: 'none', opacity: 0 }}></td>
-                                                        <td style={{ width: 0, padding: 0, border: 'none', opacity: 0 }}></td>
-                                                        <td style={{ width: 0, padding: 0, border: 'none', opacity: 0 }}></td>
-                                                        <td style={{ width: 0, padding: 0, border: 'none', opacity: 0 }}></td>
-                                                        <td style={{ width: 0, padding: 0, border: 'none', opacity: 0 }}></td>
-
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', borderRight: '1px solid var(--border-color)', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
-                                                            {formatDate(startedDate)}
-                                                        </td>
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', borderRight: '1px solid var(--border-color)', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
-                                                            {formatDate(finishedDate)}
-                                                        </td>
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', textAlign: 'right', fontFamily: 'monospace', color: 'var(--success-color, #22c55e)', whiteSpace: 'nowrap', fontSize: '0.95rem' }}>
-                                                            {formatMin}
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                        </tbody>
-                                    </table>
+                                        return (
+                                            <div key={sub.id} style={{
+                                                background: 'var(--bg-card-hover, rgba(0,0,0,0.02))',
+                                                border: '1px solid var(--border-color)',
+                                                borderRadius: '8px',
+                                                padding: '1rem',
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                gap: '1rem',
+                                                flexWrap: 'wrap'
+                                            }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: '1 1 200px', minWidth: 0 }}>
+                                                    <span style={{ fontWeight: 600, color: 'var(--text-main, #0f172a)', wordBreak: 'break-all' }} title={fileName}>
+                                                        {fileName}
+                                                    </span>
+                                                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted, #64748b)' }}>
+                                                        Started: {formatDate(startedDate)} • Finished: {formatDate(finishedDate)}
+                                                    </span>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+                                                    <span style={{ fontSize: '1.2rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--success-color, #22c55e)' }}>
+                                                        {formatMin} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: 'var(--text-muted)' }}>mins</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         );
                     })
                 )}
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)', backgroundColor: 'rgba(0,0,0,0.1)' }}>
-                <button className="btn-secondary" onClick={onClose} style={{ padding: '0.5rem 1.5rem', borderRadius: '4px', border: '1px solid #555', background: 'var(--surface-color)', color: '#fff', cursor: 'pointer', fontWeight: 500 }}>Close</button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)' }}>
+                <button className="btn-secondary" onClick={onClose} style={{ padding: '0.5rem 1.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 500 }}>Close</button>
             </div>
         </Modal>
     );

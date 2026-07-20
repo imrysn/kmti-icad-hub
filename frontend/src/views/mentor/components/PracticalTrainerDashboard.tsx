@@ -84,8 +84,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Element;
             if (
-                dropdownRef.current && 
-                !dropdownRef.current.contains(target) && 
+                dropdownRef.current &&
+                !dropdownRef.current.contains(target) &&
                 (!target || (typeof target.closest === 'function' && !target.closest('.custom-comment-options') && !target.closest('.manage-custom-overlay')))
             ) {
                 setIsCommentDropdownOpen(false);
@@ -552,15 +552,21 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         backgroundColor: 'transparent',
                         border: 'none',
                         cursor: 'pointer',
-                        color: isAddingCustom ? 'var(--accent-blue)' : 'var(--text-muted)',
+                        color: isAddingCustom ? 'var(--color-primary)' : 'var(--text-muted)',
                         display: 'flex',
                         alignItems: 'center',
                         marginTop: '0.4rem',
                         fontWeight: 600,
                         transition: 'color 0.2s'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-main)'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = isAddingCustom ? 'var(--accent-blue)' : 'var(--text-muted)'}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.color = isAddingCustom ? 'var(--color-primary)' : 'var(--text-main)';
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.color = isAddingCustom ? 'var(--color-primary)' : 'var(--text-muted)';
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
                     onClick={() => {
                         setIsAddingCustom(!isAddingCustom);
                         setIsCommentDropdownOpen(false);
@@ -1082,13 +1088,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                                                                                 // Get the latest submission for each file extension per task
                                                                                 const latestSubmissions = tasks.flatMap((subs: any) => {
+                                                                                    const sortedSubs = [...subs].sort((a: any, b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime());
                                                                                     const latestByKey: Record<string, any> = {};
-                                                                                    for (const sub of subs) {
+                                                                                    for (const sub of sortedSubs) {
                                                                                         const fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'unknown';
-                                                                                        const ext = fileName.split('.').pop()?.toLowerCase() || 'unknown';
-                                                                                        const key = (ext === 'zip' || ext === 'rar') ? fileName : ext;
-                                                                                        if (!latestByKey[key]) {
-                                                                                            latestByKey[key] = sub;
+                                                                                        if (!latestByKey[fileName]) {
+                                                                                            latestByKey[fileName] = sub;
                                                                                         }
                                                                                     }
                                                                                     return Object.values(latestByKey);
@@ -1126,7 +1131,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                                         {sortedSubs.length > 1 && <span className="task-attempt-tag">{sortedSubs.length} attempts</span>}
                                                                                         {latestSub.time_spent_seconds !== undefined && (
                                                                                             <span className="task-attempt-tag" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa' }}>
-                                                                                                <Clock size={11} style={{ marginRight: 2 }} /> 
+                                                                                                <Clock size={11} style={{ marginRight: 2 }} />
                                                                                                 {Math.floor(latestSub.time_spent_seconds / 3600) > 0 ? `${Math.floor(latestSub.time_spent_seconds / 3600)}h ` : ''}
                                                                                                 {Math.floor((latestSub.time_spent_seconds % 3600) / 60) > 0 ? `${Math.floor((latestSub.time_spent_seconds % 3600) / 60)}m ` : ''}
                                                                                                 {latestSub.time_spent_seconds % 60}s
@@ -1288,9 +1293,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 >
                                                     <div className="node-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                                         <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Attempt {selectedTaskSubmissions.length - index}</span>
-                                                        <span className="node-date" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'rgba(0,0,0,0.2)', padding: '4px 10px', borderRadius: '20px' }}>{new Date(sub.submitted_at).toLocaleString()}</span>
+                                                        <span className="node-date" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-hover)', padding: '4px 10px', borderRadius: '20px' }}>{new Date(sub.submitted_at).toLocaleString()}</span>
                                                     </div>
-                                                    <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '1.25rem' }}>
+                                                    <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', background: 'var(--bg-hover)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '1.25rem' }}>
                                                         <div style={{ padding: '8px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '6px', color: 'var(--accent-blue)' }}>
                                                             <FileText size={18} />
                                                         </div>
@@ -1302,8 +1307,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                 className="action-icon-btn primary"
                                                                 onClick={() => handleOpenInIJCAD(sub)}
                                                                 title="Open in CAD"
-                                                                style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', background: 'var(--accent-blue)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
-                                                                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.4)'; }}
+                                                                style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = 'var(--shadow-glow)'; }}
                                                                 onMouseLeave={(e) => { e.currentTarget.style.filter = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
                                                             >
                                                                 <Play size={14} /> Open
@@ -1312,9 +1317,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                 className="action-icon-btn"
                                                                 onClick={() => handleDownloadTraineeFile(sub)}
                                                                 title="Download File"
-                                                                style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'var(--text-light)', cursor: 'pointer', transition: 'all 0.2s' }}
-                                                                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
-                                                                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
+                                                                style={{ padding: '0.4rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-main)', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-hover)'; }}
+                                                                onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--bg-surface)'; }}
                                                             >
                                                                 <Download size={16} />
                                                             </button>
@@ -1369,8 +1374,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                             </div>
 
                             {/* Right Side: Action Form */}
-                            <div className="action-panel" style={{ flex: '0.8', minWidth: '340px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem', background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
-                                <div className="review-task-info" style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.03)' }}>
+                            <div className="action-panel" style={{ flex: '0.8', minWidth: '340px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem', background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 32px var(--bg-hover)' }}>
+                                <div className="review-task-info" style={{ background: 'var(--bg-hover)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.03)' }}>
                                     <span className="label" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '1px' }}>Current Status</span>
                                     <div className={`status-badge large ${selectedTaskSubmissions[0].status}`} style={{ fontSize: '1.1rem', fontWeight: 800, padding: '0.75rem 1rem', borderRadius: '8px', textAlign: 'center', marginTop: '0.5rem', width: '100%', textTransform: 'uppercase', letterSpacing: '2px', background: selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.15)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)', color: selectedTaskSubmissions[0].status === 'approved' ? 'var(--color-success)' : selectedTaskSubmissions[0].status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)', border: `1px solid ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.3)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`, boxShadow: `0 0 15px ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.1)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)'}` }}>
                                         {selectedTaskSubmissions[0].status}
@@ -1392,7 +1397,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 onFocus={(e) => { e.target.style.borderColor = 'var(--accent-blue)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
                                                 onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                                             ></textarea>
-                                            
+
                                             {/* Custom Dropdown Options Overlay */}
                                             {isCommentDropdownOpen && (
                                                 <div
@@ -1404,7 +1409,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         width: '100%',
                                                         height: '100%',
                                                         overflowY: 'auto',
-                                                        background: '#161824',
+                                                        background: 'var(--bg-surface)',
                                                         border: '1px solid var(--border-color)',
                                                         borderRadius: '10px',
                                                         boxShadow: '0 10px 25px rgba(0,0,0,0.35)',
@@ -1470,7 +1475,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                                             {/* Manage Custom Overlay */}
                                             {isAddingCustom && (
-                                                <div className="manage-custom-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 100, display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem', background: '#161824', borderRadius: '10px', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.35)' }}>
+                                                <div className="manage-custom-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 100, display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem', background: 'var(--bg-surface)', borderRadius: '10px', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.35)' }}>
                                                     {customComments.length > 0 && (
                                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', flex: 1, overflowY: 'auto' }}>
                                                             {customComments.map((comment, idx) => (
@@ -1573,9 +1578,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
                                                 style={{ display: 'none' }}
                                             />
-                                            <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.8rem', background: feedbackFile ? 'rgba(59, 130, 246, 0.1)' : 'rgba(0,0,0,0.2)', border: feedbackFile ? '1px solid var(--accent-blue)' : '1px dashed rgba(255,255,255,0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.85rem', color: feedbackFile ? 'var(--accent-blue)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: 500 }}
+                                            <label htmlFor="checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.8rem', background: feedbackFile ? 'rgba(59, 130, 246, 0.1)' : 'var(--bg-hover)', border: feedbackFile ? '1px solid var(--accent-blue)' : '1px dashed rgba(255,255,255,0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.85rem', color: feedbackFile ? 'var(--accent-blue)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: 500 }}
                                                 onMouseEnter={(e) => { if (!feedbackFile) { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; } }}
-                                                onMouseLeave={(e) => { if (!feedbackFile) { e.currentTarget.style.background = 'rgba(0,0,0,0.2)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; } }}
+                                                onMouseLeave={(e) => { if (!feedbackFile) { e.currentTarget.style.background = 'var(--bg-hover)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; } }}
                                             >
                                                 <Upload size={18} />
                                                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>{feedbackFile ? feedbackFile.name : 'Upload File'}</span>
@@ -1668,7 +1673,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                             onChange={(e) => setFeedbackComments(e.target.value)}
                                             style={{ width: '100%', minHeight: '120px', padding: '0.5rem', paddingBottom: '2.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
                                         ></textarea>
-                                        
+
                                         {/* Custom Dropdown Options Overlay */}
                                         {isCommentDropdownOpen && (
                                             <div
@@ -1677,10 +1682,10 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     position: 'absolute',
                                                     top: 0,
                                                     left: 0,
-                                                    width: '100%',
+                                                    width: '350px',
                                                     height: '100%',
                                                     overflowY: 'auto',
-                                                    background: '#161824',
+                                                    background: 'var(--bg-surface)',
                                                     border: '1px solid var(--border-color)',
                                                     borderRadius: '6px',
                                                     boxShadow: '0 10px 25px rgba(0,0,0,0.35)',
@@ -1746,7 +1751,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                                         {/* Manage Custom Overlay */}
                                         {isAddingCustom && (
-                                            <div className="manage-custom-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 100, display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem', background: '#161824', borderRadius: '6px', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.35)' }}>
+                                            <div className="manage-custom-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '350px', height: '100%', zIndex: 100, display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem', background: 'var(--bg-surface)', borderRadius: '6px', border: '1px solid var(--border-color)', boxShadow: '0 10px 25px rgba(0,0,0,0.35)' }}>
                                                 {customComments.length > 0 && (
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', flex: 1, overflowY: 'auto' }}>
                                                         {customComments.map((comment, idx) => (
@@ -1800,8 +1805,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         }}
                                                         onKeyDown={(e) => {
                                                             if (e.key === 'Enter') {
-                                                                    e.preventDefault();
-                                                                    handleAddCustomComment();
+                                                                e.preventDefault();
+                                                                handleAddCustomComment();
                                                             }
                                                         }}
                                                     />
