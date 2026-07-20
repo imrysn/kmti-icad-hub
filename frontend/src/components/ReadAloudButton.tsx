@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Volume2, VolumeX, Sliders, Play, Square, ChevronDown } from 'lucide-react';
 import { useTTSContext } from '../context/TTSContext';
@@ -41,8 +42,9 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
   };
 
   // Filter voices to English and Japanese since this is an international iCAD environment
-  const filteredVoices = voices.filter(v => 
-    v.lang.toLowerCase().startsWith('en') || 
+  const filteredVoices = voices.filter(v =>
+    v.lang.toLowerCase().startsWith('en') ||
+
     v.lang.toLowerCase().startsWith('ja')
   );
 
@@ -50,7 +52,7 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
 
   return (
     <div className="tts-widget-container" ref={dropdownRef} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-      <div 
+      <div
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -131,7 +133,7 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
 
       {/* Settings Dropdown Popover (Glassmorphic Card) */}
       {isOpen && (
-        <div 
+        <div
           className="tts-popover animate-scale-in"
           style={{
             position: 'absolute',

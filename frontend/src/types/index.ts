@@ -31,3 +31,5 @@ export interface CourseListResponse {
 }
 
 export type AppMode = 'mentor' | 'assistant' | 'admin';
+
+export type { IQuotation } from './quotation';

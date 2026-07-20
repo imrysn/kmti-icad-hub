@@ -17,7 +17,7 @@ export const SubmissionTimeline: React.FC<SubmissionTimelineProps> = ({
 }) => {
     return (
         <div className="history-chat-panel">
-            <h4><MessageSquare size={16}/> Submission History & Feedback</h4>
+            <h4><MessageSquare size={16} /> Submission History & Feedback</h4>
             <div className="history-timeline">
                 {selectedTaskSubmissions.map((sub, index) => (
                     <div key={sub.id} className="history-node">
@@ -41,20 +41,20 @@ export const SubmissionTimeline: React.FC<SubmissionTimelineProps> = ({
                                 </div>
                             </div>
                             <div className="node-file">
-                                <FileText size={14} /> 
+                                <FileText size={14} />
                                 <span className="file-name" title={sub.submission_file_path?.split(/[\\/]/).pop()}>
                                     {sub.submission_file_path?.split(/[\\/]/).pop()}
                                 </span>
                                 <div className="node-file-actions">
-                                    <button 
-                                        className="action-icon-btn primary" 
+                                    <button
+                                        className="action-icon-btn primary"
                                         onClick={() => handleOpenInIJCAD(sub)}
                                         title="Open in CAD"
                                     >
                                         <Play size={14} /> Open
                                     </button>
-                                    <button 
-                                        className="action-icon-btn" 
+                                    <button
+                                        className="action-icon-btn"
                                         onClick={() => handleDownloadTraineeFile(sub)}
                                         title="Download File"
                                     >
@@ -62,7 +62,7 @@ export const SubmissionTimeline: React.FC<SubmissionTimelineProps> = ({
                                     </button>
                                 </div>
                             </div>
-                            
+
                             {/* Chat / Feedback Section */}
                             {sub.feedback && sub.feedback.length > 0 ? (
                                 sub.feedback.map(fb => (
@@ -72,7 +72,7 @@ export const SubmissionTimeline: React.FC<SubmissionTimelineProps> = ({
                                             <p>{fb.comments || "No comments provided."}</p>
                                             {fb.checkback_file_path && (
                                                 <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)}>
-                                                    <FileText size={12}/> Checkback File
+                                                    <FileText size={12} /> Checkback File
                                                 </div>
                                             )}
                                         </div>

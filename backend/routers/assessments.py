@@ -913,48 +913,52 @@ def download_trainee_submission(
     current_user: User = Depends(get_current_user)
 ):
     """Download a trainee's .dwg submission for review."""
-    if current_user.role not in ["employee", "admin"]:
-        raise HTTPException(status_code=403, detail="Not authorized")
+    try:
+        if current_user.role not in ["employee", "admin"]:
+            raise HTTPException(status_code=403, detail="Not authorized")
 
-    submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.id == submission_id).first()
-    if not submission or not submission.submission_file_path:
-        raise HTTPException(status_code=404, detail="Submission file not found")
+        submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.id == submission_id).first()
+        if not submission or not submission.submission_file_path:
+            raise HTTPException(status_code=404, detail="Submission file not found")
 
-    # Fix #4: Employees may only download submissions from trainees assigned to them
-    if current_user.role == "employee":
-        is_assigned = db.query(TrainerTraineeMapping).filter(
-            TrainerTraineeMapping.trainer_id == current_user.id,
-            TrainerTraineeMapping.trainee_id == submission.user_id
-        ).first()
-        if not is_assigned:
-            raise HTTPException(status_code=403, detail="You are not assigned to this trainee.")
-    
-    # Try dynamic path resolution if the hardcoded absolute path fails (handles server migrations)
-    full_path = submission.submission_file_path
-    if not os.path.exists(full_path):
-        base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
-        if "submissions" in full_path:
-            # Extract everything after 'submissions'
-            parts = full_path.replace("\\", "/").split("/submissions/")
-            if len(parts) > 1:
-                rel_path = "submissions/" + parts[1]
-                dynamic_path = os.path.join(base_upload_dir, rel_path)
-                if os.path.exists(dynamic_path):
-                    full_path = dynamic_path
-                else:
-                    # Check PyInstaller/dev fallbacks
-                    fallback_1 = os.path.join(APP_PATH, "uploads", rel_path)
-                    if os.path.exists(fallback_1):
-                        full_path = fallback_1
-    
-    if not os.path.exists(full_path):
-        raise HTTPException(status_code=404, detail="File does not exist on server")
+        # Fix #4: Employees may only download submissions from trainees assigned to them
+        if current_user.role == "employee":
+            is_assigned = db.query(TrainerTraineeMapping).filter(
+                TrainerTraineeMapping.trainer_id == current_user.id,
+                TrainerTraineeMapping.trainee_id == submission.user_id
+            ).first()
+            if not is_assigned:
+                raise HTTPException(status_code=403, detail="You are not assigned to this trainee.")
         
-    return FileResponse(
-        path=full_path, 
-        filename=os.path.basename(full_path),
-        media_type="application/octet-stream"
-    )
+        # Try dynamic path resolution if the hardcoded absolute path fails (handles server migrations)
+        full_path = submission.submission_file_path
+        if not os.path.exists(full_path):
+            base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+            if "submissions" in full_path:
+                # Extract everything after 'submissions'
+                parts = full_path.replace("\\", "/").split("/submissions/")
+                if len(parts) > 1:
+                    rel_path = "submissions/" + parts[1]
+                    dynamic_path = os.path.join(base_upload_dir, rel_path)
+                    if os.path.exists(dynamic_path):
+                        full_path = dynamic_path
+                    else:
+                        # Check PyInstaller/dev fallbacks
+                        fallback_1 = os.path.join(APP_PATH, "uploads", rel_path)
+                        if os.path.exists(fallback_1):
+                            full_path = fallback_1
+        
+        if not os.path.exists(full_path):
+            raise HTTPException(status_code=404, detail="File does not exist on server")
+            
+        print(f"Returning FileResponse for {full_path}")
+        return FileResponse(
+            path=full_path, 
+            media_type="application/octet-stream"
+        )
+    except Exception as e:
+        print(f"Error in download endpoint: {e}")
+        raise
 
 @router.post("/feedback/{submission_id}")
 async def provide_feedback(

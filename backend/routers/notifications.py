@@ -28,6 +28,8 @@ def get_user_from_token(token: str, db: Session) -> User:
         pass
     return None
 
+from starlette.concurrency import run_in_threadpool
+
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket, token: str = None):
     try:
@@ -39,33 +41,40 @@ async def websocket_endpoint(websocket: WebSocket, token: str = None):
         else:
             token = websocket.query_params.get("token")
 
-        # Use context manager to handle db session, freeing connection pool immediately
-        with SessionLocal() as db:
-            user = get_user_from_token(token, db)
-            if not user:
-                await websocket.close(code=1008)
-                return
-            user_id = user.id
+        def _get_user():
+            with SessionLocal() as db:
+                user = get_user_from_token(token, db)
+                return user.id if user else None
+                
+        user_id = await run_in_threadpool(_get_user)
+        if not user_id:
+            await websocket.close(code=1008)
+            return
 
         await notification_manager.connect(websocket, user_id, subprotocol=used_subprotocol)
         
-        # Notify trainer that trainee is online
-        with SessionLocal() as db:
-            mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
-            if mapping:
-                import asyncio
-                act_record = db.query(UserActivity).filter(UserActivity.user_id == user_id).first()
-                current_act = act_record.current_activity if act_record else "Online"
-                online_since = notification_manager.get_online_since(user_id)
-                online_since_str = online_since.isoformat() if online_since else None
-                asyncio.create_task(notification_manager.send_personal_message({
-                    "event": "TRAINEE_TELEMETRY",
-                    "trainee_id": user_id,
-                    "is_online": True,
-                    "current_activity": current_act,
-                    "online_since": online_since_str,
-                    "last_updated": datetime.now(timezone.utc).isoformat()
-                }, mapping.trainer_id))
+        def _get_trainer_id():
+            with SessionLocal() as db:
+                mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
+                if mapping:
+                    act_record = db.query(UserActivity).filter(UserActivity.user_id == user_id).first()
+                    current_act = act_record.current_activity if act_record else "Online"
+                    return mapping.trainer_id, current_act
+            return None, None
+            
+        trainer_id, current_act = await run_in_threadpool(_get_trainer_id)
+        if trainer_id:
+            import asyncio
+            online_since = notification_manager.get_online_since(user_id)
+            online_since_str = online_since.isoformat() if online_since else None
+            asyncio.create_task(notification_manager.send_personal_message({
+                "event": "TRAINEE_TELEMETRY",
+                "trainee_id": user_id,
+                "is_online": True,
+                "current_activity": current_act,
+                "online_since": online_since_str,
+                "last_updated": datetime.now(timezone.utc).isoformat()
+            }, trainer_id))
 
         try:
             while True:
@@ -74,52 +83,60 @@ async def websocket_endpoint(websocket: WebSocket, token: str = None):
                     data_json = json.loads(data)
                     if data_json.get("event") == "HEARTBEAT":
                         activity = data_json.get("activity", "Active")
-                        with SessionLocal() as db:
-                            activity_record = db.query(UserActivity).filter(UserActivity.user_id == user_id).first()
-                            if not activity_record:
-                                activity_record = UserActivity(user_id=user_id, current_activity=activity)
-                                db.add(activity_record)
-                            else:
-                                activity_record.current_activity = activity
-                                activity_record.last_updated = datetime.now(timezone.utc)
-                            db.commit()
+                        
+                        def _process_heartbeat():
+                            with SessionLocal() as db:
+                                activity_record = db.query(UserActivity).filter(UserActivity.user_id == user_id).first()
+                                if not activity_record:
+                                    activity_record = UserActivity(user_id=user_id, current_activity=activity)
+                                    db.add(activity_record)
+                                else:
+                                    activity_record.current_activity = activity
+                                    activity_record.last_updated = datetime.now(timezone.utc)
+                                db.commit()
 
-                            # Notify trainer of active telemetry
-                            mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
-                            if mapping:
-                                import asyncio
-                                online_since = notification_manager.get_online_since(user_id)
-                                online_since_str = online_since.isoformat() if online_since else None
-                                asyncio.create_task(notification_manager.send_personal_message({
-                                    "event": "TRAINEE_TELEMETRY",
-                                    "trainee_id": user_id,
-                                    "is_online": True,
-                                    "current_activity": activity,
-                                    "online_since": online_since_str,
-                                    "last_updated": datetime.now(timezone.utc).isoformat()
-                                }, mapping.trainer_id))
+                                mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
+                                return mapping.trainer_id if mapping else None
+                                
+                        trainer_id = await run_in_threadpool(_process_heartbeat)
+                        if trainer_id:
+                            import asyncio
+                            online_since = notification_manager.get_online_since(user_id)
+                            online_since_str = online_since.isoformat() if online_since else None
+                            asyncio.create_task(notification_manager.send_personal_message({
+                                "event": "TRAINEE_TELEMETRY",
+                                "trainee_id": user_id,
+                                "is_online": True,
+                                "current_activity": activity,
+                                "online_since": online_since_str,
+                                "last_updated": datetime.now(timezone.utc).isoformat()
+                            }, trainer_id))
                 except json.JSONDecodeError:
                     pass
                 except Exception as e:
                     logger.error(f"Error processing websocket message: {e}")
         except WebSocketDisconnect:
             notification_manager.disconnect(websocket, user_id)
-            # Notify trainer that trainee is offline
-            with SessionLocal() as db:
-                mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
-                if mapping:
-                    is_still_online = notification_manager.is_user_online(user_id)
-                    if not is_still_online:
-                        import asyncio
-                        asyncio.create_task(notification_manager.send_personal_message({
-                            "event": "TRAINEE_TELEMETRY",
-                            "trainee_id": user_id,
-                            "is_online": False,
-                            "current_activity": "Offline",
-                            "last_updated": datetime.now(timezone.utc).isoformat()
-                        }, mapping.trainer_id))
+            
+            def _get_trainer_for_offline():
+                with SessionLocal() as db:
+                    mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
+                    return mapping.trainer_id if mapping else None
+                    
+            trainer_id = await run_in_threadpool(_get_trainer_for_offline)
+            if trainer_id:
+                is_still_online = notification_manager.is_user_online(user_id)
+                if not is_still_online:
+                    import asyncio
+                    asyncio.create_task(notification_manager.send_personal_message({
+                        "event": "TRAINEE_TELEMETRY",
+                        "trainee_id": user_id,
+                        "is_online": False,
+                        "current_activity": "Offline",
+                        "last_updated": datetime.now(timezone.utc).isoformat()
+                    }, trainer_id))
     except Exception as e:
-        logger.error(f"WebSocket connection error: {e}")
+        logger.error(f"Unexpected websocket error: {e}")
         try:
             await websocket.close(code=1011)
         except:

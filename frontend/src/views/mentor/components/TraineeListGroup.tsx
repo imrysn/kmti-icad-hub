@@ -19,7 +19,7 @@ export const TraineeListGroup: React.FC<TraineeListGroupProps> = ({
     expandedTrainees,
     toggleTrainee,
     expandedSets,
-    toggleSet,
+    toggleSet,  
     handleDownloadTraineeFile,
     setSelectedTaskSubmissions,
     setIsReviewing

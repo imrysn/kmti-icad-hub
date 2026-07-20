@@ -269,12 +269,25 @@ function createWindow() {
                 const localPath = path.join(targetDir, safeRelativePath);
 
                 const fileDir = path.dirname(localPath);
-                if (!fs.existsSync(fileDir)) {
-                    fs.mkdirSync(fileDir, { recursive: true });
+                try {
+                    if (!fs.existsSync(fileDir)) {
+                        fs.mkdirSync(fileDir, { recursive: true });
+                    }
+                } catch (dirErr) {
+                    console.warn(`Could not create directory ${fileDir}:`, dirErr);
                 }
 
-                if (fs.existsSync(localPath) && fs.statSync(localPath).isDirectory()) {
-                    fs.rmSync(localPath, { recursive: true, force: true });
+                try {
+                    if (fs.existsSync(localPath)) {
+                        const stat = fs.statSync(localPath);
+                        if (stat.isDirectory()) {
+                            fs.rmSync(localPath, { recursive: true, force: true });
+                        } else {
+                            fs.unlinkSync(localPath); // Delete the existing file before overwriting to avoid EBUSY/EPERM/ENOENT issues
+                        }
+                    }
+                } catch (statErr) {
+                    console.warn(`Could not stat or remove existing file ${localPath}:`, statErr);
                 }
 
                 // If file exists, maybe overwrite it

@@ -51,9 +51,6 @@ export const useBulkDownload = () => {
                         let fileName = item.submission_file_path
                             ? item.submission_file_path.split(/[/\\]/).pop()
                             : `${taskCode}.icd`;
-                        if (fileName && !fileName.startsWith(taskCode)) {
-                            fileName = `${taskCode}_${fileName}`;
-                        }
 
                         let masterPath = taskObj.master_file_path;
                         if (!masterPath || masterPath.includes('undefined')) {
@@ -92,9 +89,13 @@ export const useBulkDownload = () => {
                 } else if (result.successCount > 0) {
                     showNotification(`Successfully downloaded ${result.successCount} files!`, 'success');
                     if (result.errors && result.errors.length > 0) {
-                        showNotification(`Failed to download ${result.errors.length} files.`, 'warning');
+                        console.error('Bulk download errors:', JSON.stringify(result.errors, null, 2));
+                        showNotification(`Failed to download ${result.errors.length} files. Check console for details.`, 'warning');
                     }
                 } else {
+                    if (result.errors && result.errors.length > 0) {
+                        console.error('Bulk download errors:', JSON.stringify(result.errors, null, 2));
+                    }
                     showNotification('No files were downloaded.', 'warning');
                 }
             } catch (err) {

@@ -113,7 +113,7 @@ if os.path.exists(assets_path):
 else:
     print(f"[!] Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, quotations
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -124,8 +124,20 @@ app.include_router(assessments.router, prefix="/api/v1")
 app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(settings.router, prefix="/api/v1")
 app.include_router(tts.router, prefix="/api/v1")
+app.include_router(quotations.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to KMTI iCAD Hub API", "db_mode": get_db_mode()}
+
+import socketio as _sio_module
+from .socket_manager import sio as global_sio
+
+# Override app with ASGIApp so that server.py imports the combined app correctly
+app = _sio_module.ASGIApp(
+    global_sio, 
+    app, 
+    static_files={},
+    socketio_path='socket.io'
+)
 
