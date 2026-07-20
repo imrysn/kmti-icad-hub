@@ -86,7 +86,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     const [trashModalOpen, setTrashModalOpen] = useState(false);
     const [timeRecordModalOpen, setTimeRecordModalOpen] = useState(false);
-    
+
     const currentUser = authService.getCurrentUser();
     const userId = currentUser ? currentUser.id : 0;
     const stopwatchRefs = useRef<{ [key: number]: TaskStopwatchHandle | null }>({});
@@ -635,10 +635,10 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                             </div>
                                                                             <div className="task-row-actions">
                                                                                 {!task.is_virtual_extra && (
-                                                                                    <TaskStopwatch 
-                                                                                        ref={(el) => stopwatchRefs.current[actualTaskId] = el} 
-                                                                                        userId={userId} 
-                                                                                        taskId={actualTaskId} 
+                                                                                    <TaskStopwatch
+                                                                                        ref={(el) => stopwatchRefs.current[actualTaskId] = el}
+                                                                                        userId={userId}
+                                                                                        taskId={actualTaskId}
                                                                                         initialBaseTime={latestSubmission?.time_spent_seconds || 0}
                                                                                     />
                                                                                 )}
@@ -860,7 +860,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                                     <div className="feedback-comment chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', borderLeft: 'none' }}>
                                                                                                                         <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /> Trainer</span>
                                                                                                                         <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-light)' }}>{fb.comments}</p>
-                                                                                                                        
+
                                                                                                                         {fb.checkback_file_path && (
                                                                                                                             <div className="feedback-file-actions" style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', alignItems: 'center' }}>
                                                                                                                                 <button
@@ -1140,13 +1140,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                 </div>
             </Modal>
 
-            <TimeRecordModal 
-                isOpen={timeRecordModalOpen} 
-                onClose={() => setTimeRecordModalOpen(false)} 
+            <TimeRecordModal
+                isOpen={timeRecordModalOpen}
+                onClose={() => setTimeRecordModalOpen(false)}
                 tasks={tasks}
                 submissions={submissions}
-                userId={userId} 
-                getSetDisplayNumber={getSetDisplayNumber} 
+                userId={userId}
+                getSetDisplayNumber={getSetDisplayNumber}
             />
         </>
     );

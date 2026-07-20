@@ -201,14 +201,12 @@ def list_active_sessions(db: Session = Depends(get_db)):
 
     sessions = []
     for i in items:
-        # 2. Add live user info from memory
-        users = _active_users.get(i.id, {})
         sessions.append({
             "id": i.id,
             "quotNo": i.quotation_no,
             "displayName": i.display_name or i.quotation_no,
-            "userCount": len(users),
-            "users": list(users.values()),
+            "userCount": 0,
+            "users": [],
             "hasPassword": bool(i.password),
             "workstation": i.workstation
         })

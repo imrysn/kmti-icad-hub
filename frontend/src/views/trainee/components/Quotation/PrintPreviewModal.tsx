@@ -1,4 +1,5 @@
 import { memo, useState, useMemo, useCallback, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import type {
   Task, BaseRates, Signatures, CompanyInfo, ClientInfo, QuotationDetails, BillingDetails, ManualOverrides, TaskOverrides
 } from '../../../../types/quotation'
@@ -683,51 +684,23 @@ const PrintPreviewModal = memo(({
     onQuotationDetailsChange, onBillingDetailsChange,
   }
 
-  return (
+  return createPortal(
     <div className="print-preview-modal">
       <div className="ppm-backdrop" onClick={onClose} />
 
       <div className="ppm-container">
         {/* ── Header ──────────────────────────────────────────────── */}
         <div className="ppm-header">
-          <div className="ppm-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 6 2 18 2 18 9" />
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-              <rect x="6" y="14" width="12" height="8" />
-            </svg>
-            <h2>Print Preview — {printMode === 'billing' ? 'Billing Statement' : 'Quotation'}</h2>
+          <div className="ppm-header-left">
+            <button className="ppm-back-btn" onClick={onClose}>
+              &larr; Back
+            </button>
+            <div className="ppm-title">
+              <h2>{printMode === 'quotation' ? 'Print Preview — Quotation' : 'Print Preview — Billing Statement'}</h2>
+            </div>
           </div>
 
-          <div className="ppm-header-actions">
-            {canViewBilling && (
-              <div className="ppm-mode-toggle">
-                <div className={`ppm-mode-slider ${printMode}`} />
-                <button
-                  id="ppm-btn-quotation"
-                  className={`ppm-mode-btn${printMode === 'quotation' ? ' active' : ''}`}
-                  onClick={() => setPrintMode('quotation')}
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
-                  </svg>
-                  Quotation Preview
-                </button>
-                <button
-                  id="ppm-btn-billing"
-                  className={`ppm-mode-btn${printMode === 'billing' ? ' active' : ''}`}
-                  onClick={() => setPrintMode('billing')}
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
-                  </svg>
-                  Billing Preview
-                </button>
-              </div>
-            )}
-
-            {canViewBilling && <div className="ppm-sep" />}
-
+          <div className="ppm-header-right">
             <div className="ppm-export-group">
               <button id="ppm-btn-print" className="ppm-action-btn primary" onClick={handlePrint} disabled={isProcessing}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -756,17 +729,16 @@ const PrintPreviewModal = memo(({
                 Excel
               </button>
             </div>
-
-            <button id="ppm-btn-close" className="ppm-close-btn" onClick={onClose}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
           </div>
         </div>
 
-        {/* ── Body ────────────────────────────────────────────────── */}
+        {/* ── Main Content Area ───────────────────────────────────── */}
         <div className="ppm-body" ref={containerRef}>
+          {/* Time & Date Pill */}
+          <div className="ppm-time-pill">
+            {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })} | {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase()}
+          </div>
+          
           <div className="ppm-body-content">
             <div className="ppm-scroll-area">
               <div
@@ -932,56 +904,9 @@ const PrintPreviewModal = memo(({
                   )}
                 </div>
 
-                {(canViewBilling || (billingDetails?.submittedToAdminAt && billingDetails?.quotationStatus !== 'DRAFT')) && (
-                  <>
-                    <div className="ppm-sidebar-group">
-                      <label htmlFor="ppm-sidebar-qstatus">Quotation Status</label>
-                      <select
-                        id="ppm-sidebar-qstatus"
-                        className="ppm-sidebar-select"
-                        value={billingDetails?.quotationStatus || 'DRAFT'}
-                        disabled={!canViewBilling}
-                        onChange={e => handleQuotationStatusChange(e.target.value)}
-                      >
-                        <option value="DRAFT">DRAFT</option>
-                        <option value="For Approval">For Approval</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Partial Billing">Partial Billing</option>
-                        <option value="Billing Completion">Billing Completion</option>
-                        <option value="CANCELLED">CANCELLED</option>
-                      </select>
-                    </div>
 
-                    <div className="ppm-sidebar-group">
-                      <label htmlFor="ppm-sidebar-pstatus">Project Status</label>
-                      <select
-                        id="ppm-sidebar-pstatus"
-                        className="ppm-sidebar-select"
-                        value={billingDetails?.projectStatus || 'On Going'}
-                        disabled={!canViewBilling || billingDetails?.quotationStatus === 'CANCELLED'}
-                        onChange={e => onBillingDetailsChange?.({ projectStatus: e.target.value })}
-                      >
-                        <option value="On Going">On Going</option>
-                        <option value="Finished">Finished</option>
-                        <option value="CANCELLED">CANCELLED</option>
-                      </select>
-                    </div>
 
-                    <div className="ppm-sidebar-group">
-                      <label htmlFor="ppm-sidebar-submitted">Submitted to Admin</label>
-                      <input
-                        type="date"
-                        id="ppm-sidebar-submitted"
-                        className="ppm-sidebar-input"
-                        value={billingDetails?.submittedToAdminAt || ''}
-                        disabled={!canViewBilling}
-                        onChange={e => onBillingDetailsChange?.({ submittedToAdminAt: e.target.value || null })}
-                      />
-                    </div>
-                  </>
-                )}
-
-                {!canViewBilling && (!billingDetails?.submittedToAdminAt || billingDetails?.quotationStatus === 'DRAFT') && (() => {
+                {(() => {
                   const isMissingIncharge = !billingDetails?.projectInCharge;
                   const isMissingCustomer = !billingDetails?.clientName;
                   const isSubmitDisabled = isMissingIncharge || isMissingCustomer;
@@ -990,22 +915,6 @@ const PrintPreviewModal = memo(({
                     <button
                       className="ppm-action-btn submit-to-admin-btn"
                       disabled={isSubmitDisabled}
-                      style={{
-                        width: '100%',
-                        marginTop: '20px',
-                        backgroundColor: isSubmitDisabled ? '#a3a3a3' : '#10b981',
-                        color: 'white',
-                        border: 'none',
-                        padding: '10px',
-                        borderRadius: '4px',
-                        cursor: isSubmitDisabled ? 'not-allowed' : 'pointer',
-                        fontWeight: 'bold',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        opacity: isSubmitDisabled ? 0.75 : 1
-                      }}
                       onClick={() => {
                         const todayStr = new Date().toISOString().split('T')[0]
                         onBillingDetailsChange?.({
@@ -1060,7 +969,8 @@ const PrintPreviewModal = memo(({
         onClose={() => setIsTutorialOpen(false)}
         onComplete={onCompleteTutorial}
       />
-    </div>
+    </div>,
+    document.body
   )
 })
 

@@ -674,18 +674,53 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   return (
     <div className="quot-app-root">
       {/* ── Header Toolbar ────────────────────────────────────── */}
-      <header className="quot-toolbar">
+      <header className="quot-toolbar" style={{ position: 'relative', zIndex: 10 }}>
         <div className="quot-toolbar-identity">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            style={{ padding: '0 8px' }}
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+
+              const message = hasUnsavedChanges
+                ? 'You have unsaved changes. Leave the workspace anyway?'
+                : 'Return to the workspace lobby?';
+
+              const doLeave = async () => {
+                if (autoStartTutorial && quotId) {
+                  try {
+                    await quotationApi.delete(quotId, workstation);
+                  } catch (e) {
+                    console.error('[tutorial] Failed to delete session on exit:', e);
+                  }
+                }
+                onLeave();
+              };
+
+              if (await showConfirm(message)) {
+                doLeave();
+              }
+            }}
+            title="Return to lobby"
+          >
+            &larr; Back
+          </button>
+          
           <div className="quot-doc-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
             </svg>
           </div>
+          
           <div className="quot-doc-meta">
             <div className="quot-doc-primary">
-              <span className="quot-doc-number">{quotationDetails.quotationNo || quotNo}</span>
-              {hasUnsavedChanges && <span className="quot-unsaved-dot" />}
+              <span className="quot-doc-number">
+                {quotationDetails.quotationNo || quotNo}
+              </span>
+              {hasUnsavedChanges && <span className="quot-unsaved-dot" title="Unsaved changes" />}
             </div>
             <div className="quot-doc-secondary">
               {quotationDetails.date ? formatToolbarDate(quotationDetails.date) : 'New Quotation'}
@@ -706,94 +741,55 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
         </div>
 
         <div className="quot-toolbar-actions">
-          {isSyncing && (
-            <div style={{ fontSize: '0.85rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px', marginRight: '12px' }}>
+                 {isSyncing && (
+            <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--quot-text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginRight: '4px' }}>
               Saving...
             </div>
           )}
 
-            {/* 2. Workspace */}
-            <button
-              type="button"
-              className="btn"
-              onClick={async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+          <button className="btn btn-ghost" onClick={() => setIsLibraryOpen(true)} title="Load from library">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+            </svg>
+            Load
+          </button>
+          
+          <button className="btn btn-ghost" onClick={() => importInputRef.current?.click()} title="Import tasks from Excel breakdown sheet">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Import
+          </button>
+          <input
+            type="file"
+            ref={importInputRef}
+            accept=".xlsx"
+            onChange={handleImportExcel}
+            style={{ display: 'none' }}
+          />
+          
+          <button className="btn btn-save-themed" onClick={handleSave} title="Save changes to database">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
+            </svg>
+            Save
+          </button>
 
-                const message = hasUnsavedChanges
-                  ? 'You have unsaved changes. Leave the workspace anyway?'
-                  : 'Return to the workspace lobby?'
-
-                const doLeave = async () => {
-                  if (autoStartTutorial && quotId) {
-                    try {
-                      await quotationApi.delete(quotId, workstation);
-                    } catch (e) {
-                      console.error('[tutorial] Failed to delete session on exit:', e);
-                    }
-                  }
-                  onLeave();
-                };
-
-                if (await showConfirm(message)) {
-                  doLeave();
-                }
-              }}
-              title="Return to lobby"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-              Workspace
-            </button>
-
-            <div className="toolbar-divider" />
-
-            {/* 3. Load ; Import ; Save */}
-            <button className="btn" onClick={() => setIsLibraryOpen(true)} title="Load from library">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-              </svg>
-              Load
-            </button>
-            <button className="btn" onClick={() => importInputRef.current?.click()} title="Import tasks from Excel breakdown sheet">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              Import
-            </button>
-            <input
-              type="file"
-              ref={importInputRef}
-              accept=".xlsx"
-              onChange={handleImportExcel}
-              style={{ display: 'none' }}
-            />
-            <button className="btn btn-primary btn-save-themed" onClick={handleSave} title="Save changes to database">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
-              </svg>
-              Save
-            </button>
-
-            <div className="toolbar-divider" />
-
-            {/* 4. Print / Export */}
-            <button
-              className="btn btn-primary"
-              onClick={() => setIsPrintPreviewOpen(true)}
-              disabled={isPreview}
-              title="Open Print Center"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" />
-              </svg>
-              Print / Export
-            </button>
-          </div>
-        </header>
+          <button
+            className="btn btn-primary"
+            onClick={() => setIsPrintPreviewOpen(true)}
+            disabled={isPreview}
+            title="Open Print Center"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" />
+            </svg>
+            Print / Export
+          </button>
+        </div>
+      </header>
 
         {/* ── Main Layout (Sidebar + Body) ───────────────────────── */}
         <div className="quot-layout">
