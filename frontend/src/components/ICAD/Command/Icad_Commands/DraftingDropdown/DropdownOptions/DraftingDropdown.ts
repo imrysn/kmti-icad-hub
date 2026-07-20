@@ -1,5 +1,6 @@
 export interface DraftingMenuItem {
     title: string;
+    label?: string;
     children?: DraftingMenuItem[];
     image?: string; // Path or imported asset for the image
 }
@@ -9,6 +10,7 @@ export const draftingMenu: DraftingMenuItem[] = [
         title: "Linear",
         children: [
             {
+                label: "Linear Dimensions",
                 title: "Standard",
                 children: [
                     {
@@ -347,11 +349,220 @@ export const draftingMenu: DraftingMenuItem[] = [
             }
         ],
     },
-
+    {
+        title: "Circular",
+        children: [
+            {
+                label: "Circular Dimensions",
+                title: "Diameter",
+                children: [
+                    {
+                        title: "Both Sides",
+                        children: [
+                            {
+                                title: "phi"
+                            },
+                            {
+                                title: "Old S phi"
+                            },
+                            {
+                                title: "S phi"
+                            },
+                            {
+                                title: "None"
+                            },
+                            {
+                                title: "M"
+                            },
+                            {
+                                title: "User Set"
+                            },
+                            {
+                                title: "User Set Char Postion"
+                            },
+                            {
+                                title: "Set Angle"
+                            },
+                            {
+                                title: "Maintain Terminal Marks"
+                            }
+                        ]
+                    },
+                    {
+                        title: "Leader",
+                        children: [
+                            {
+                                title: "phi"
+                            },
+                            {
+                                title: "Old S phi"
+                            },
+                            {
+                                title: "S phi"
+                            },
+                            {
+                                title: "None"
+                            },
+                            {
+                                title: "M"
+                            },
+                            {
+                                title: "User Set"
+                            },
+                            {
+                                title: "Set Angle"
+                            }
+                        ]
+                    },
+                    {
+                        title: "2 Point",
+                        children: [
+                            {
+                                title: "User Set Location"
+                            },
+                            {
+                                title: "Position"
+                            },
+                            {
+                                title: "Set Interval"
+                            },
+                            {
+                                title: "Entity Direction"
+                            },
+                            {
+                                title: "Horizontal"
+                            },
+                            {
+                                title: "Vertical"
+                            },
+                            {
+                                title: "phi"
+                            },
+                            {
+                                title: "Old S phi"
+                            },
+                            {
+                                title: "S phi"
+                            },
+                            {
+                                title: "None"
+                            },
+                            {
+                                title: "M"
+                            },
+                            {
+                                title: "User Set"
+                            },
+                            {
+                                title: "User Set Char Position"
+                            },
+                            {
+                                title: "Maintain Terminal Marks"
+                            }
+                        ]
+                    },
+                    {
+                        title: "One Side",
+                        children: [
+                            {
+                                title: "phi"
+                            },
+                            {
+                                title: "Old S phi"
+                            },
+                            {
+                                title: "S phi"
+                            },
+                            {
+                                title: "None"
+                            },
+                            {
+                                title: "M"
+                            },
+                            {
+                                title: "User Set"
+                            },
+                            {
+                                title: "User Set Char Position"
+                            },
+                            {
+                                title: "Set Angle"
+                            }
+                        ]
+                    },
+                    {
+                        title: "No Dim Line",
+                        children: [
+                            {
+                                title: "phi"
+                            },
+                            {
+                                title: "Old S phi"
+                            },
+                            {
+                                title: "S phi"
+                            },
+                            {
+                                title: "None"
+                            },
+                            {
+                                title: "M"
+                            },
+                            {
+                                title: "User SEt"
+                            }
+                        ]
+                    },
+                    {
+                        title: "Center Line",
+                        children: [
+                            {
+                                title: "User Set Location"
+                            },
+                            {
+                                title: "Position"
+                            },
+                            {
+                                title: "Set Interval"
+                            },
+                            {
+                                title: "phi"
+                            },
+                            {
+                                title: "Old S phi"
+                            },
+                            {
+                                title: "S phi"
+                            },
+                            {
+                                title: "None"
+                            },
+                            {
+                                title: "M"
+                            },
+                            {
+                                title: "User Set"
+                            },
+                            {
+                                title: "User Set Char Position"
+                            },
+                            {
+                                title: "Maintain Terminal Marks"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Radius"
+            }
+        ]
+    },
     {
         title: "Angular",
         children: [
             {
+                label: "Angular Dimensions",
                 title: "Standard",
             },
             {
@@ -384,9 +595,25 @@ export const draftingMenu: DraftingMenuItem[] = [
         ],
     },
     {
+        title: "Chamfer",
+        children: [
+            {
+                label: "Chamfer Dimensions",
+                title: "Display Dimension Value"
+            },
+            {
+                title: "Hide Dimension Values"
+            },
+            {
+                title: "User Set Char Position"
+            }
+        ]
+    },
+    {
         title: "Dimention",
         children: [
             {
+                label: "Other Dimensions",
                 title: "OneSide",
                 children: [
                     {
@@ -489,9 +716,25 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
+        title: "Not Scale",
+        children: [
+            {
+                label: "Not Scale",
+                title: "Display Error"
+            },
+            {
+                title: "Clear"
+            },
+            {
+                title: "Extract"
+            }
+        ]
+    },
+    {
         title: "Edit",
         children: [
             {
+                label: "Edit Drafting Entities",
                 title: "Change Position",
                 children: [
                     {
@@ -775,9 +1018,50 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
+        title: "Align",
+        children: [
+            {
+                label: "Align Dimensions Entities",
+                title: "Position",
+                children: [
+                    {
+                        title: "Vert. Array"
+                    },
+                    {
+                        title: "Hpri. Array"
+                    }
+                ]
+            },
+            {
+                title: "Set Interval"
+            },
+            {
+                title: "Actual Scale"
+            },
+            {
+                title: "Actual Attribute",
+                children: [
+                    {
+                        title: "Dimn Char"
+                    },
+                    {
+                        title: "Character 1"
+                    },
+                    {
+                        title: "Character 2"
+                    },
+                    {
+                        title: "Character 3"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         title: "Text",
         children: [
             {
+                label: "Text",
                 title: "Inside Frame",
                 children: [
                     {
@@ -963,9 +1247,112 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
+        title: "Note",
+        children: [
+            {
+                label: "Note",
+                title: "Create",
+                children: [
+                    {
+                        title: "Set Postion"
+                    },
+                    {
+                        title: "Set Angle"
+                    },
+                    {
+                        title: "Dimn Char"
+                    },
+                    {
+                        title: "Character 1"
+                    },
+                    {
+                        title: "Character 2"
+                    },
+                    {
+                        title: "Character 3"
+                    },
+                    {
+                        title: "<"
+                    },
+                    {
+                        title: "O"
+                    },
+                    {
+                        title: "/"
+                    },
+                    {
+                        title: "None"
+                    },
+                    {
+                        title: "Part Note"
+                    }
+                ]
+            },
+            {
+                title: "Edit Notes",
+                children: [
+                    {
+                        title: "Position"
+                    },
+                    {
+                        title: "Change Position"
+                    },
+                    {
+                        title: "Change Tlt"
+                    },
+                    {
+                        title: "Chg String"
+                    },
+                    {
+                        title: "Change Size"
+                    },
+                    {
+                        title: "Term Mark"
+                    },
+                    {
+                        title: "Vert. Array"
+                    },
+                    {
+                        title: "Hori. Array"
+                    }
+                ]
+            },
+            {
+                title: "Leader Line",
+                children: [
+                    {
+                        title: "Add"
+                    },
+                    {
+                        title: "Delete"
+                    },
+                    {
+                        title: "Chg Arrow"
+                    },
+                    {
+                        title: "Change Bend"
+                    },
+                    {
+                        title: "<"
+                    },
+                    {
+                        title: "O"
+                    },
+                    {
+                        title: "/"
+                    },
+                    {
+                        title: "None"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         title: "Balloon",
         children: [
             {
+                label: "Balloon",
                 title: "Create",
                 children: [
                     {
@@ -1104,10 +1491,83 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
+        title: "Weld",
+        children: [
+            {
+                label: "Weld Symbol",
+                title: "Give Details"
+            },
+            {
+                title: "Edit Weld",
+                children: [
+                    {
+                        title: "Change Position",
+                        children: [
+                            {
+                                title: "User Set"
+                            },
+                            {
+                                title: "Hori. Invert"
+                            },
+                        ]
+                    },
+                    {
+                        title: "Change Size",
+                        children: [
+                            {
+                                title: "Give Details"
+                            },
+                            {
+                                title: "No Details"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Weld Points"
+            },
+            {
+                title: "Weld Note"
+            },
+            {
+                title: "Route Intrvl"
+            },
+            {
+                title: "Surf Prof"
+            },
+            {
+                title: "Edit Appli"
+            },
+            {
+                title: "No Details"
+            },
+            {
+                title: "Perim Mark"
+            },
+            {
+                title: "Groove Dep"
+            },
+            {
+                title: "Len/Width"
+            },
+            {
+                title: "Groove Angle"
+            },
+            {
+                title: "Finishing"
+            },
+            {
+                title: "Leader Line"
+            }
+        ]
+    },
+    {
         title: "Tolerance",
         children: [
             {
-                title: "Tolerance",
+                label: "Geometric Tolerance"
+                , title: "Tolerance",
                 children: [
                     {
                         title: "Standard"
@@ -1198,9 +1658,13 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
+        title: "Texture"
+    },
+    {
         title: "Symbols",
         children: [
             {
+                label: "Other Symbol",
                 title: "Arrow View"
             },
             {
@@ -1280,468 +1744,10 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
-        title: "Correct"
-    },
-    {
-        title: "Move"
-    },
-    {
-        title: "Properties"
-    },
-    {
-        title: "Circular",
-        children: [
-            {
-                title: "Diameter",
-                children: [
-                    {
-                        title: "Both Sides",
-                        children: [
-                            {
-                                title: "phi"
-                            },
-                            {
-                                title: "Old S phi"
-                            },
-                            {
-                                title: "S phi"
-                            },
-                            {
-                                title: "None"
-                            },
-                            {
-                                title: "M"
-                            },
-                            {
-                                title: "User Set"
-                            },
-                            {
-                                title: "User Set Char Postion"
-                            },
-                            {
-                                title: "Set Angle"
-                            },
-                            {
-                                title: "Maintain Terminal Marks"
-                            }
-                        ]
-                    },
-                    {
-                        title: "Leader",
-                        children: [
-                            {
-                                title: "phi"
-                            },
-                            {
-                                title: "Old S phi"
-                            },
-                            {
-                                title: "S phi"
-                            },
-                            {
-                                title: "None"
-                            },
-                            {
-                                title: "M"
-                            },
-                            {
-                                title: "User Set"
-                            },
-                            {
-                                title: "Set Angle"
-                            }
-                        ]
-                    },
-                    {
-                        title: "2 Point",
-                        children: [
-                            {
-                                title: "User Set Location"
-                            },
-                            {
-                                title: "Position"
-                            },
-                            {
-                                title: "Set Interval"
-                            },
-                            {
-                                title: "Entity Direction"
-                            },
-                            {
-                                title: "Horizontal"
-                            },
-                            {
-                                title: "Vertical"
-                            },
-                            {
-                                title: "phi"
-                            },
-                            {
-                                title: "Old S phi"
-                            },
-                            {
-                                title: "S phi"
-                            },
-                            {
-                                title: "None"
-                            },
-                            {
-                                title: "M"
-                            },
-                            {
-                                title: "User Set"
-                            },
-                            {
-                                title: "User Set Char Position"
-                            },
-                            {
-                                title: "Maintain Terminal Marks"
-                            }
-                        ]
-                    },
-                    {
-                        title: "One Side",
-                        children: [
-                            {
-                                title: "phi"
-                            },
-                            {
-                                title: "Old S phi"
-                            },
-                            {
-                                title: "S phi"
-                            },
-                            {
-                                title: "None"
-                            },
-                            {
-                                title: "M"
-                            },
-                            {
-                                title: "User Set"
-                            },
-                            {
-                                title: "User Set Char Position"
-                            },
-                            {
-                                title: "Set Angle"
-                            }
-                        ]
-                    },
-                    {
-                        title: "No Dim Line",
-                        children: [
-                            {
-                                title: "phi"
-                            },
-                            {
-                                title: "Old S phi"
-                            },
-                            {
-                                title: "S phi"
-                            },
-                            {
-                                title: "None"
-                            },
-                            {
-                                title: "M"
-                            },
-                            {
-                                title: "User SEt"
-                            }
-                        ]
-                    },
-                    {
-                        title: "Center Line",
-                        children: [
-                            {
-                                title: "User Set Location"
-                            },
-                            {
-                                title: "Position"
-                            },
-                            {
-                                title: "Set Interval"
-                            },
-                            {
-                                title: "phi"
-                            },
-                            {
-                                title: "Old S phi"
-                            },
-                            {
-                                title: "S phi"
-                            },
-                            {
-                                title: "None"
-                            },
-                            {
-                                title: "M"
-                            },
-                            {
-                                title: "User Set"
-                            },
-                            {
-                                title: "User Set Char Position"
-                            },
-                            {
-                                title: "Maintain Terminal Marks"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                title: "Radius"
-            }
-        ]
-    },
-    {
-        title: "Chamfer",
-        children: [
-            {
-                title: "Display Dimension Value"
-            },
-            {
-                title: "Hide Dimension Values"
-            },
-            {
-                title: "User Set Char Position"
-            }
-        ]
-    },
-    {
-        title: "Not Scale",
-        children: [
-            {
-                title: "Display Error"
-            },
-            {
-                title: "Clear"
-            },
-            {
-                title: "Extract"
-            }
-        ]
-    },
-    {
-        title: "Align",
-        children: [
-            {
-                title: "Position",
-                children: [
-                    {
-                        title: "Vert. Array"
-                    },
-                    {
-                        title: "Hpri. Array"
-                    }
-                ]
-            },
-            {
-                title: "Set Interval"
-            },
-            {
-                title: "Actual Scale"
-            },
-            {
-                title: "Actual Attribute",
-                children: [
-                    {
-                        title: "Dimn Char"
-                    },
-                    {
-                        title: "Character 1"
-                    },
-                    {
-                        title: "Character 2"
-                    },
-                    {
-                        title: "Character 3"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        title: "Note",
-        children: [
-            {
-                title: "Create",
-                children: [
-                    {
-                        title: "Set Postion"
-                    },
-                    {
-                        title: "Set Angle"
-                    },
-                    {
-                        title: "Dimn Char"
-                    },
-                    {
-                        title: "Character 1"
-                    },
-                    {
-                        title: "Character 2"
-                    },
-                    {
-                        title: "Character 3"
-                    },
-                    {
-                        title: "<"
-                    },
-                    {
-                        title: "O"
-                    },
-                    {
-                        title: "/"
-                    },
-                    {
-                        title: "None"
-                    },
-                    {
-                        title: "Part Note"
-                    }
-                ]
-            },
-            {
-                title: "Edit Notes",
-                children: [
-                    {
-                        title: "Position"
-                    },
-                    {
-                        title: "Change Position"
-                    },
-                    {
-                        title: "Change Tlt"
-                    },
-                    {
-                        title: "Chg String"
-                    },
-                    {
-                        title: "Change Size"
-                    },
-                    {
-                        title: "Term Mark"
-                    },
-                    {
-                        title: "Vert. Array"
-                    },
-                    {
-                        title: "Hori. Array"
-                    }
-                ]
-            },
-            {
-                title: "Leader Line",
-                children: [
-                    {
-                        title: "Add"
-                    },
-                    {
-                        title: "Delete"
-                    },
-                    {
-                        title: "Chg Arrow"
-                    },
-                    {
-                        title: "Change Bend"
-                    },
-                    {
-                        title: "<"
-                    },
-                    {
-                        title: "O"
-                    },
-                    {
-                        title: "/"
-                    },
-                    {
-                        title: "None"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        title: "Weld",
-        children: [
-            {
-                title: "Give Details"
-            },
-            {
-                title: "Edit Weld",
-                children: [
-                    {
-                        title: "Change Position",
-                        children: [
-                            {
-                                title: "User Set"
-                            },
-                            {
-                                title: "Hori. Invert"
-                            },
-                        ]
-                    },
-                    {
-                        title: "Change Size",
-                        children: [
-                            {
-                                title: "Give Details"
-                            },
-                            {
-                                title: "No Details"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                title: "Weld Points"
-            },
-            {
-                title: "Weld Note"
-            },
-            {
-                title: "Route Intrvl"
-            },
-            {
-                title: "Surf Prof"
-            },
-            {
-                title: "Edit Appli"
-            },
-            {
-                title: "No Details"
-            },
-            {
-                title: "Perim Mark"
-            },
-            {
-                title: "Groove Dep"
-            },
-            {
-                title: "Len/Width"
-            },
-            {
-                title: "Groove Angle"
-            },
-            {
-                title: "Finishing"
-            },
-            {
-                title: "Leader Line"
-            }
-        ]
-    },
-    {
-        title: "Texture"
-    },
-    {
         title: "Hatch",
         children: [
             {
+                label: "Hatch",
                 title: "Create",
                 children: [
                     {
@@ -1806,9 +1812,13 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
+        title: "Correct"
+    },
+    {
         title: "Auto Balloon",
         children: [
             {
+                label: "Auto Create Balloon",
                 title: "Auto-arrange Balloons"
             },
             {
@@ -1832,7 +1842,13 @@ export const draftingMenu: DraftingMenuItem[] = [
         ]
     },
     {
+        title: "Move"
+    },
+    {
         title: "Copy"
+    },
+    {
+        title: "Properties"
     },
     {
         title: "Delete"

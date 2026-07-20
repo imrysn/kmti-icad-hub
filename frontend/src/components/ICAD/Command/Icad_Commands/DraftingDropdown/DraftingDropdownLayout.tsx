@@ -24,62 +24,92 @@ function DraftingDropdownLayout() {
         flexDirection: "row",
         gap: "10px",
         alignItems: "flex-start",
+        background: "#f0f0f3",
+        borderRadius: "4px",
+        padding: "6px",
         color: "#333333",
         fontFamily: "inherit",
         width: "fit-content",
         boxSizing: "border-box",
       }}
     >
+
       {columns.map((colItems, level) => (
-        <div key={level} style={{
-          background: "#ffffff",
-          border: "1px solid #d1d1d6",
-          borderRadius: "4px",
-          padding: "4px",
-          minWidth: "160px",
-          display: level === 0 ? "grid" : "flex",
-          gridTemplateColumns: level === 0 ? "repeat(2, 1fr)" : "none",
-          flexDirection: level === 0 ? "row" : "column",
-          gap: "3px",
-        }}>
+        <div
+          key={level}
+          style={{
+            minWidth: "160px",
+            display: level === 0 ? "grid" : "flex",
+            gridTemplateColumns: level === 0 ? "repeat(2, 1fr)" : undefined,
+            flexDirection: level === 0 ? undefined : "column",
+            gap: "3px",
+          }}
+        >
           {colItems.map((item, index) => {
             const isSelected = selectedPath[level] === index;
             const hasChildren = item.children && item.children.length > 0;
+
             return (
-              <button
+              <div
                 key={index}
-                onClick={() => {
-                  const newPath = selectedPath.slice(0, level);
-                  if (!isSelected) {
-                    newPath.push(index);
-                  }
-                  setSelectedPath(newPath);
-                }}
                 style={{
-                  textAlign: "left",
-                  padding: "6px 10px",
-                  background: isSelected ? "#007aff" : "#ffffff",
-                  color: isSelected ? "#ffffff" : "#333333",
-                  border: "none",
-                  borderRadius: "14px",
-                  cursor: "pointer",
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  fontSize: "0.75rem",
-                  fontWeight: 500,
-                  transition: "background 0.15s, color 0.15s",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isSelected) e.currentTarget.style.background = "#e5e5ea";
-                }}
-                onMouseLeave={(e) => {
-                  if (!isSelected) e.currentTarget.style.background = "#ffffff";
+                  flexDirection: "column",
                 }}
               >
-                <span>{item.title}</span>
-                {hasChildren && <ChevronRight size={12} />}
-              </button>
+                {/* Label */}
+                {item.label && (
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      color: "#666",
+                      margin: "6px 0 2px 8px",
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                )}
+
+                {/* Button */}
+                <button
+                  onClick={() => {
+                    const newPath = selectedPath.slice(0, level);
+
+                    if (!isSelected) {
+                      newPath.push(index);
+                    }
+
+                    setSelectedPath(newPath);
+                  }}
+                  style={{
+                    textAlign: "left",
+                    padding: "6px 10px",
+                    background: isSelected ? "#007aff" : "#ffffff",
+                    color: isSelected ? "#ffffff" : "#333333",
+                    border: "none",
+                    borderRadius: "14px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    fontSize: "0.75rem",
+                    fontWeight: 500,
+                    transition: "background 0.15s, color 0.15s",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected)
+                      e.currentTarget.style.background = "#e5e5ea";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected)
+                      e.currentTarget.style.background = "#ffffff";
+                  }}
+                >
+                  <span>{item.title}</span>
+                  {hasChildren && <ChevronRight size={12} />}
+                </button>
+              </div>
             );
           })}
         </div>

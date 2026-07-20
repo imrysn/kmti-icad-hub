@@ -104,14 +104,12 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     </button>
                 </div>
 
-                {/* Content — centered */}
+                {/* Content — full bleed so Icad_Guide IDE layout fills the space */}
                 <div style={{
                     flex: 1,
-                    overflowY: 'auto',
+                    overflow: 'hidden',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '2rem',
+                    flexDirection: 'column',
                 }}>
                     <Icad_Guide />
                 </div>

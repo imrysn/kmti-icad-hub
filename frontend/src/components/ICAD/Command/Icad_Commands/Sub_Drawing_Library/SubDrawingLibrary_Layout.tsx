@@ -1,12 +1,12 @@
-import { treeViewOptions, TreeViewOption } from "./Tree_View_Options/Tree_View_Options";
-import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import { subDrawingLibraryOptions, SubDrawingLibrary } from "./Sub_Drawing_Library_Options/SubDrawingLibrary=Options";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
-
-function Tree_View() {
+function SubDrawingLibraryLayout() {
     const [selectedPath, setSelectedPath] = useState<number[]>([]);
-    const columns: TreeViewOption[][] = [treeViewOptions];
-    let currentItems = treeViewOptions;
+
+    const columns: SubDrawingLibrary[][] = [subDrawingLibraryOptions];
+    let currentItems = subDrawingLibraryOptions;
     for (let i = 0; i < selectedPath.length; i++) {
         const selectedItem = currentItems[selectedPath[i]];
         if (selectedItem && selectedItem.children && selectedItem.children.length > 0) {
@@ -16,16 +16,16 @@ function Tree_View() {
             break;
         }
     }
-    return (
 
+    return (
         <div
             style={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 gap: "10px",
                 alignItems: "flex-start",
-                background: "#dbdbdbf5",
-                border: "1px solid #c8cbd1c7",
+                background: "#f0f0f3",
+                borderRadius: "4px",
                 padding: "6px",
                 color: "#333333",
                 fontFamily: "inherit",
@@ -36,10 +36,10 @@ function Tree_View() {
             {columns.map((colItems, level) => (
                 <div key={level} style={{
                     minWidth: "160px",
-                    display: "flex",
+                    display: level === 0 ? "grid" : "flex",
+                    gridTemplateColumns: level === 0 ? "repeat(2, 1fr)" : "none",
                     flexDirection: level === 0 ? "row" : "column",
                     gap: "3px",
-                    flexWrap: "nowrap",
                 }}>
                     {colItems.map((item, index) => {
                         const isSelected = selectedPath[level] === index;
@@ -60,6 +60,7 @@ function Tree_View() {
                                     background: isSelected ? "#007aff" : "#ffffff",
                                     color: isSelected ? "#ffffff" : "#333333",
                                     border: "none",
+                                    borderRadius: "14px", // oval shape
                                     cursor: "pointer",
                                     display: "flex",
                                     alignItems: "center",
@@ -86,4 +87,4 @@ function Tree_View() {
     );
 }
 
-export default Tree_View;
+export default SubDrawingLibraryLayout;

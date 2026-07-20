@@ -1,0 +1,12 @@
+.left-panel {
+
+    width: 300px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    border-right: 1px solid #c8c8c8;
+
+    background: #d8d8d8ec;
+}
