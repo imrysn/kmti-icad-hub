@@ -72,6 +72,8 @@ const SolidworkIntroLesson = lazy(() => import('../../../components/ICAD/Manual/
 const SolidworkPartModelingLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/3D_Operation/3D_Part_Modeling'));
 const Solidwork2DOperationLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertComponentsInThePart'));
 const Solidwork2DInsertMainViewsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertMainViews'));
+const Solidwork2DAddOtherViewsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddOtherViewsAsNeeded'));
+const Solidwork2DDetailViewLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/DetailViewContent'));
 const Solidwork2DAddDimensionNotesLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddDimentionAndNotes'));
 
 import { useTTSContext } from '../../../context/TTSContext';
@@ -503,6 +505,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'sw-2d-hide-show-lines': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-hide-show-lines" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-centerline': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-centerline" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-center-mark': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-center-mark" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-other-views': () => <Solidwork2DAddOtherViewsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-detail-view': () => <Solidwork2DDetailViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-add-dimension-notes': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-add-dimension-notes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-add-dimension-notes-base': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-add-dimension-notes-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-dimensioning-hole': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-dimensioning-hole" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,

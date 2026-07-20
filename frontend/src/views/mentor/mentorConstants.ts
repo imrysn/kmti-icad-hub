@@ -1158,6 +1158,16 @@ export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
     ]
   },
   { 
+    id: 'sw-2d-add-other-views', 
+    title: 'Add other views as needed', 
+    content: ['Section View', 'Remove Hatch'] 
+  },
+  { 
+    id: 'sw-2d-detail-view', 
+    title: 'Detail View', 
+    content: ['Detail View', 'Detail View Property Manager'] 
+  },
+  { 
     id: 'sw-2d-add-dimension-notes', 
     title: 'Add Dimensions and Notes', 
     content: ['Dimensioning', 'Dimensioning Hole', 'Dimensioning Chamfer', 'Adding Notes'],
