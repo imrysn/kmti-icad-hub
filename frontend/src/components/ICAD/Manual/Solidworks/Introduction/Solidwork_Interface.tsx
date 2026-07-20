@@ -4,7 +4,7 @@ import { useLessonCore } from "../../../../../hooks/useLessonCore";
 import "../../../../../styles/3D_Modeling/CourseLesson.css";
 
 // --- Assets ---
-import mainInterface from "../../../../../assets/Solidworks/Introduction/Solidwork_Interface.png";
+import mainInterface from "../../../../../assets/Solidworks/Introduction/SW_UI_Main.png";
 import mouseLeft from "../../../../../assets/Solidworks/Introduction/Solidwork_Left.png";
 import mouseRight from "../../../../../assets/Solidworks/Introduction/Solidwork_Right.png";
 import mouseScroll from "../../../../../assets/Solidworks/Introduction/Solidwork_Scroll.png";

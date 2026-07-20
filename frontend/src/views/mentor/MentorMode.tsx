@@ -448,6 +448,18 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             // KEMCO/JIS Standards: default to Lesson 1 (3D Standard)
             setActiveLessonId('3d');
             setExpandedIds(new Set());
+        } else if (selectedCourse.id === 'mock-sw-intro') {
+            // SolidWorks Introduction: default to the first sub-lesson
+            setActiveLessonId('sw-interface');
+            setExpandedIds(new Set(['sw-interface-main']));
+        } else if (selectedCourse.id === 'mock-sw-3d') {
+            // SolidWorks 3D Operation: default to the first sub-lesson
+            setActiveLessonId('sw-part-modeling');
+            setExpandedIds(new Set(['sw-part-modeling-main']));
+        } else if (selectedCourse.id === 'mock-sw-2d') {
+            // SolidWorks 2D Operation: default to the first lesson
+            setActiveLessonId('sw-2d-operation-page1');
+            setExpandedIds(new Set());
         } else {
             setActiveLessonId('interface');
             setExpandedIds(new Set());

@@ -18,16 +18,8 @@ import newMatingImg from "../../../../../assets/Solidworks/3D_Operation/3D_New_M
 // Fallback if 3D_New_Mating.png doesn't exist, we'll try to let Vite complain, 
 // but normally it's safe to assume the user uploaded it since they said "image19 -> 3D_New_Mating.png".
 
-const HowtoEditContent: React.FC = () => (
+export const HowToEditSketchContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>
-
-        {/* =========================================
-            SECTION 1: How to edit Sketch
-        ========================================= */}
-        <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1rem', color: 'var(--text-color)' }}>
-            How to edit Sketch
-        </h4>
-
         <div style={{ marginBottom: '1.5rem' }}>
             <img src={editSketchImg} alt="How to edit Sketch" style={{ maxWidth: '400px' }} className="software-screenshot" />
         </div>
@@ -97,15 +89,11 @@ const HowtoEditContent: React.FC = () => (
                 </div>
             </div>
         </div>
+    </div>
+);
 
-
-        {/* =========================================
-            SECTION 2: How to edit Feature
-        ========================================= */}
-        <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1.5rem', color: 'var(--text-color)' }}>
-            How to edit Feature
-        </h4>
-
+export const HowToEditFeatureContent: React.FC = () => (
+    <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>
         {/* Method 1 */}
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
             <div style={{ flexShrink: 0 }}>
@@ -163,15 +151,11 @@ const HowtoEditContent: React.FC = () => (
                 </div>
             </div>
         </div>
+    </div>
+);
 
-
-        {/* =========================================
-            SECTION 3: How to edit Matings
-        ========================================= */}
-        <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1.5rem', color: 'var(--text-color)' }}>
-            How to edit Matings
-        </h4>
-
+export const HowToEditMatingsContent: React.FC = () => (
+    <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>
         <div style={{ color: 'var(--text-muted)', lineHeight: '2.2' }}>
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
                 <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0.25rem' }}>1.</div>
@@ -215,8 +199,5 @@ const HowtoEditContent: React.FC = () => (
                 </div>
             </div>
         </div>
-
     </div>
 );
-
-export default HowtoEditContent;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
-import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2 } from 'lucide-react'; import { Course } from '../../../types';
+import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2, Layers } from 'lucide-react'; import { Course } from '../../../types';
 import { useUI } from '../../../context/UIContext'; import { useAuth } from '../../../hooks/useAuth';
 import { Lesson } from '../mentorConstants'; import { QuizModal } from './QuizModal';
 import { authService } from '../../../services/authService';
@@ -68,7 +68,7 @@ const OperalViewLesson = lazy(() => import('../../../components/ICAD/Manual/2D_D
 const NormalMirrorPartsLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_NormalMirrorParts'));
 const RevisionCodeLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_StandardLibrary'));
-const SolidworkInterfaceLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/Introduction/Solidwork_Interface'));
+const SolidworkIntroLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/Introduction/SolidworkIntroLesson'));
 const SolidworkPartModelingLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/3D_Operation/3D_Part_Modeling'));
 const Solidwork2DOperationLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/2D_Operation'));
 const Solidwork2DInsertMainViewsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertMainViews'));
@@ -469,7 +469,15 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '3d': () => <KemcoThreeDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d': () => <KemcoTwoDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'piping': () => <PipingTableLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-interface': () => <SolidworkInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-interface': () => <SolidworkIntroLesson subLessonId="sw-interface" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-mouse-control': () => <SolidworkIntroLesson subLessonId="sw-mouse-control" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-keyboard-shortcuts': () => <SolidworkIntroLesson subLessonId="sw-keyboard-shortcuts" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-menu-bar': () => <SolidworkIntroLesson subLessonId="sw-menu-bar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-command-manager': () => <SolidworkIntroLesson subLessonId="sw-command-manager" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-heads-up-view-toolbar': () => <SolidworkIntroLesson subLessonId="sw-heads-up-view-toolbar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-feature-manager-tree-view': () => <SolidworkIntroLesson subLessonId="sw-feature-manager-tree-view" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-coordinate-system': () => <SolidworkIntroLesson subLessonId="sw-coordinate-system" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-status-bar': () => <SolidworkIntroLesson subLessonId="sw-status-bar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-part-modeling': () => <SolidworkPartModelingLesson subLessonId="sw-part-modeling" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-sketching-base': () => <SolidworkPartModelingLesson subLessonId="sw-sketching-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-extruding-base': () => <SolidworkPartModelingLesson subLessonId="sw-extruding-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
@@ -485,7 +493,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'sw-assembly-saving': () => <SolidworkPartModelingLesson subLessonId="sw-assembly-saving" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-linear-pattern': () => <SolidworkPartModelingLesson subLessonId="sw-linear-pattern" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-mirror-component': () => <SolidworkPartModelingLesson subLessonId="sw-mirror-component" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-editing-sketch-feature-matings': () => <SolidworkPartModelingLesson subLessonId="sw-editing-sketch-feature-matings" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-how-to-edit-sketch': () => <SolidworkPartModelingLesson subLessonId="sw-how-to-edit-sketch" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-how-to-edit-feature': () => <SolidworkPartModelingLesson subLessonId="sw-how-to-edit-feature" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-how-to-edit-matings': () => <SolidworkPartModelingLesson subLessonId="sw-how-to-edit-matings" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-operation-page1': () => <Solidwork2DOperationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
 
                   'general-standard-steel': () => <GeneralStandardSteelLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
@@ -605,12 +615,25 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   );
                 }
 
+                const activeLesson = lessons.find(l => l.id === activeLessonId) || lessons.flatMap(l => l.children || []).find(c => c.id === activeLessonId);
+                const isParentNode = activeLesson && activeLesson.children && activeLesson.children.length > 0;
+
+                if (isParentNode) {
+                    return (
+                        <div className="content-placeholder" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+                            <Layers size={48} className="content-placeholder__icon" style={{ opacity: 0.5, marginBottom: '1rem' }} />
+                            <h3 style={{ fontSize: '1.25rem', color: 'var(--text-color)', letterSpacing: '1px' }}>{activeLesson.title.toUpperCase()}</h3>
+                            <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>Please select a sub-lesson from the sidebar to begin.</p>
+                        </div>
+                    );
+                }
+
                 return (
                   <div className="content-placeholder">
-                    <Video size={48} className="content-placeholder__icon" />
+                    <BookOpen size={48} className="content-placeholder__icon" />
                     <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
                     <p className="content-placeholder__note">
-                      This area will host the instructional text, video demonstrations, and active testing prompts.
+                      This area will host the instructional text, images, and active testing prompts.
                     </p>
 
                     <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>

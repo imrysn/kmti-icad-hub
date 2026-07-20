@@ -150,7 +150,11 @@ const PartModelingContent: React.FC = () => (
                             <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
                                 in Heads-up View, click Hide/Show Items{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={thenImg} alt="Hide/Show Items then Origin" style={{ height: '24px', verticalAlign: 'middle' }} />
+                                    <img src={thenImg} alt="Hide/Show Items" style={{ height: '24px', width: '58px', objectFit: 'cover', objectPosition: 'left', verticalAlign: 'middle' }} />
+                                </span>
+                                {' '}then{' '}
+                                <span className="image-wrapper-flush">
+                                    <img src={originImg} alt="Origin" style={{ height: '24px', verticalAlign: 'middle' }} />
                                 </span>
                             </p>
 
