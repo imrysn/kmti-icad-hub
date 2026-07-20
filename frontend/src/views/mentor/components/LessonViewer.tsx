@@ -503,7 +503,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'sw-2d-hide-show-lines': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-hide-show-lines" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-centerline': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-centerline" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-center-mark': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-center-mark" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-2d-add-dimension-notes': () => <Solidwork2DAddDimensionNotesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-dimension-notes': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-add-dimension-notes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-dimension-notes-base': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-add-dimension-notes-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-dimensioning-hole': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-dimensioning-hole" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-dimensioning-chamfer': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-dimensioning-chamfer" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-adding-notes': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-adding-notes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
 
                   'general-standard-steel': () => <GeneralStandardSteelLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'steel-pipes': () => <SteelPipesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
