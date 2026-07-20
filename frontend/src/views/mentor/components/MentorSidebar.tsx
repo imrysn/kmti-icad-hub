@@ -186,11 +186,11 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             <div className="collapsed-progress-track">
                                 <div 
                                     className="collapsed-progress-fill" 
-                                    style={{ width: `${(completedLessonsCount / totalLessons) * 100}%` }} 
+                                    style={{ width: `${totalLessons > 0 ? (completedLessonsCount / totalLessons) * 100 : 0}%` }} 
                                 />
                             </div>
                             <div className="collapsed-stats-pill">
-                                {Math.round((completedLessonsCount / totalLessons) * 100)}%
+                                {Math.round(totalLessons > 0 ? (completedLessonsCount / totalLessons) * 100 : 0)}%
                             </div>
                         </div>
                     ) : (
@@ -200,7 +200,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                     {!isLoadingProgress && !isEmployeeSide && sidebarOpen && (
                         <div className="sidebar-analytics-wrapper">
                             <AnalyticsCard
-                                completionPercentage={Math.min(100, (completedLessonsCount / totalLessons) * 100)}
+                                completionPercentage={totalLessons > 0 ? Math.min(100, (completedLessonsCount / totalLessons) * 100) : 0}
                                 averageScore={averageScore}
                                 lessonsCompleted={completedLessonsCount}
                                 totalLessons={totalLessons}

@@ -191,9 +191,9 @@
 .instruction-step {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.75rem;
   background: transparent;
-  padding: 1.5rem 0;
+  padding: 0.5rem 0;
   border: none;
   transition: all 0.3s ease;
 }
@@ -259,16 +259,14 @@
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  background: #ffffff;
-  /* White canvas background for document-style screenshots */
-  padding: 1.25rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
   display: inline-block;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   width: fit-content;
   max-width: 100%;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .screenshot-wrapper {
@@ -279,34 +277,15 @@
 
 /* Flush version for smaller icon-based snippets like toolbars */
 .image-wrapper-flush {
-  background: #ffffff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 4px;
-  /* Minimal padding for spacing */
   margin: 4px 0;
-}
-
-[data-theme='light'] .image-wrapper,
-[data-theme='light'] .image-wrapper-flush {
-  background: #ffffff;
-  border-color: rgba(99, 102, 241, 0.15);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05);
-}
-
-/* Luminescent Indigo theme specifically for Dark Mode to match Midnight Aurora aesthetics */
-[data-theme='dark'] .image-wrapper,
-[data-theme='dark'] .image-wrapper-flush {
-  background: rgba(238, 242, 255, 0.92);
-  /* Luminescent Indigo 50 tint */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.35);
-  /* Match var(--primary) indigo */
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1);
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .software-screenshot {

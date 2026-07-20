@@ -4,7 +4,7 @@ import { useLessonCore } from "../../../../../hooks/useLessonCore";
 import "../../../../../styles/3D_Modeling/CourseLesson.css";
 
 // --- Assets ---
-import mainInterface from "../../../../../assets/Solidworks/Introduction/Solidwork_Interface.png";
+import mainInterface from "../../../../../assets/Solidworks/Introduction/SW_UI_Main.png";
 import mouseLeft from "../../../../../assets/Solidworks/Introduction/Solidwork_Left.png";
 import mouseRight from "../../../../../assets/Solidworks/Introduction/Solidwork_Right.png";
 import mouseScroll from "../../../../../assets/Solidworks/Introduction/Solidwork_Scroll.png";
@@ -346,33 +346,49 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', marginTop: "1rem" }}>
 
                                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
-                                        <table style={{ border: '2px solid black', borderCollapse: 'collapse', width: '300px', backgroundColor: 'white', color: 'black' }}>
-                                            <tbody>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl + N</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>New</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl + O</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Open</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl + S</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Save</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl + C</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Copy</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl + V</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Paste</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl + Z</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Undo</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl + Y</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Redo</td></tr>
-                                            </tbody>
-                                        </table>
+                                        <div className="lesson-table-container" style={{ width: '350px' }}>
+                                            <table className="lesson-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>Ctrl + N</td><td>New</td></tr>
+                                                    <tr><td>Ctrl + O</td><td>Open</td></tr>
+                                                    <tr><td>Ctrl + S</td><td>Save</td></tr>
+                                                    <tr><td>Ctrl + C</td><td>Copy</td></tr>
+                                                    <tr><td>Ctrl + V</td><td>Paste</td></tr>
+                                                    <tr><td>Ctrl + Z</td><td>Undo</td></tr>
+                                                    <tr><td>Ctrl + Y</td><td>Redo</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                         <div style={{ maxWidth: '350px', paddingTop: '0.5rem' }}>
                                             <p className="p-flush red-text">※ These are the commonly used keyboard shortcuts, it can be used not only in Solidworks but to other softwares as well.</p>
                                         </div>
                                     </div>
 
                                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
-                                        <table style={{ border: '2px solid black', borderCollapse: 'collapse', width: '300px', backgroundColor: 'white', color: 'black' }}>
-                                            <tbody>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Spacebar</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>View Orientation</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>Ctrl+b</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Rebuild</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>f</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Fit to view</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>g</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Magnify</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>l</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Line</td></tr>
-                                                <tr><td style={{ border: '1px solid black', padding: '4px 8px', fontWeight: 'bold' }}>m</td><td style={{ border: '1px solid black', padding: '4px 8px' }}>Measure</td></tr>
-                                            </tbody>
-                                        </table>
+                                        <div className="lesson-table-container" style={{ width: '350px' }}>
+                                            <table className="lesson-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>Spacebar</td><td>View Orientation</td></tr>
+                                                    <tr><td>Ctrl + b</td><td>Rebuild</td></tr>
+                                                    <tr><td>f</td><td>Fit to view</td></tr>
+                                                    <tr><td>g</td><td>Magnify</td></tr>
+                                                    <tr><td>l</td><td>Line</td></tr>
+                                                    <tr><td>m</td><td>Measure</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                         <div style={{ maxWidth: '350px', paddingTop: '0.5rem' }}>
                                             <p className="p-flush red-text">※ It is the commonly used shortcuts in SolidWorks.</p>
                                         </div>

@@ -8,6 +8,10 @@ import createImg from "../../../../../assets/Solidworks/2D_Operation/2D_Create.p
 import jfeImg from "../../../../../assets/Solidworks/2D_Operation/2D_JFE.png";
 import okImg from "../../../../../assets/Solidworks/2D_Operation/2D_Ok.png";
 import layoutImg from "../../../../../assets/Solidworks/2D_Operation/2D_Layout.png";
+import dragImg from "../../../../../assets/Solidworks/2D_Operation/2D_Drag.png";
+import clickImg from "../../../../../assets/Solidworks/2D_Operation/2D_Click.png";
+import makeImg from "../../../../../assets/Solidworks/2D_Operation/2D_Make.png";
+import viewImg from "../../../../../assets/Solidworks/2D_Operation/2D_View.png";
 
 interface Page1Props {
     onNextLesson?: () => void;
@@ -101,24 +105,68 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                                 There are <strong>3 ways</strong> on inserting parts/assy in dwg.
                             </p>
-                            
-                            <p className="p-flush" style={{ color: 'var(--text-normal)', marginTop: '1.5rem', fontWeight: 'bold' }}>
-                                1. View Layout &gt; Model View &gt; Browse file from the folder &gt; Click Assem1 then Open.
-                            </p>
 
-                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
-                                <img
-                                    src={layoutImg}
-                                    alt="Insert Parts/Assembly via View Layout"
-                                    className="software-screenshot screenshot-wide"
-                                />
+                            <div className="instruction-step" style={{ paddingTop: '1rem', paddingBottom: '0' }}>
+                                <div className="step-header">
+                                    <span className="step-number">1 </span>
+                                    <span className="step-label">View Layout &gt; Model View &gt; Browse file from the folder &gt; Click Assem1 then Open.</span>
+                                </div>
+                                <div className="step-description">
+                                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                        <img src={layoutImg} alt="Insert Parts/Assembly via View Layout" className="software-screenshot screenshot-wide" />
+                                    </div>
+                                    <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
+                                        <p className="p-flush red-text">※ It only inserts a part/assy view individually.</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
-                                <p className="p-flush red-text">
-                                    ※ It only inserts a part/assy view individually.
-                                </p>
+                            <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
+                                <div className="step-header">
+                                    <span className="step-number">2 </span>
+                                    <span className="step-label">Drag and Drop</span>
+                                </div>
+                                <div className="step-description">
+                                    <div className="instruction-box" style={{ marginTop: '1rem', border: 'none', background: 'transparent', padding: 0 }}>
+                                        <p className="p-flush red-text">※ Hold the part/assy file from the folder then drag to the dwg sheet.</p>
+                                    </div>
+                                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                        <img src={dragImg} alt="Drag and Drop" className="software-screenshot screenshot-wide" />
+                                    </div>
+                                </div>
                             </div>
+
+                            <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
+                                <div className="step-header">
+                                    <span className="step-number">3 </span>
+                                    <span className="step-label">Make drawing from Part/Assy</span>
+                                </div>
+                                <div className="step-description">
+                                    <p className="p-flush" style={{ color: 'var(--text-normal)' }}>
+                                        Open the 3D part/assy &gt; Click <img src={clickImg} alt="Click" style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', margin: '0 4px' }} /> &gt; Make Drawing from Part/Assembly
+                                    </p>
+                                    <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', marginTop: '1rem', flexWrap: 'wrap' }}>
+                                        <div style={{ flex: '1 1 50%', minWidth: '300px' }}>
+                                            <div className="image-wrapper">
+                                                <img src={makeImg} alt="Make Drawing from Part/Assembly" className="software-screenshot screenshot-wide" />
+                                            </div>
+                                        </div>
+                                        <div style={{ flex: '0 1 auto', minWidth: '200px' }}>
+                                            <div className="instruction-box" style={{ border: 'none', background: 'transparent', padding: 0 }}>
+                                                <p className="p-flush red-text">
+                                                    ※ It uses <strong>View Palette</strong> where<br />
+                                                    the user can choose then<br />
+                                                    drag and drop the view.
+                                                </p>
+                                            </div>
+                                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                                <img src={viewImg} alt="View Palette" className="software-screenshot" style={{ maxHeight: '400px', width: 'auto' }} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
