@@ -75,6 +75,12 @@ const Solidwork2DInsertMainViewsLesson = lazy(() => import('../../../components/
 const Solidwork2DAddOtherViewsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddOtherViewsAsNeeded'));
 const Solidwork2DDetailViewLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/DetailViewContent'));
 const Solidwork2DAddDimensionNotesLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddDimentionAndNotes'));
+const Solidwork2DWeldingSymbolsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddWeldingSymbols'));
+const Solidwork2DInsertNewBranchLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertNewBranchAndJogPoint'));
+const Solidwork2DInsertBOMLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertBillOfMaterial'));
+const Solidwork2DInsertingBalloonsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertingBalloons'));
+const Solidwork2DEditPropertiesLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/EditProperties'));
+const Solidwork2DSavingDetailLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/SavingDetails'));
 
 import { useTTSContext } from '../../../context/TTSContext';
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
@@ -512,6 +518,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'sw-2d-dimensioning-hole': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-dimensioning-hole" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-dimensioning-chamfer': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-dimensioning-chamfer" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-adding-notes': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-adding-notes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-welding-symbols': () => <Solidwork2DWeldingSymbolsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-new-branch': () => <Solidwork2DInsertNewBranchLesson subLessonId="sw-2d-insert-new-branch-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-new-branch-base': () => <Solidwork2DInsertNewBranchLesson subLessonId="sw-2d-insert-new-branch-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-jog-point': () => <Solidwork2DInsertNewBranchLesson subLessonId="sw-2d-add-jog-point" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-bom': () => <Solidwork2DInsertBOMLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-inserting-balloons': () => <Solidwork2DInsertingBalloonsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-edit-properties': () => <Solidwork2DEditPropertiesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-saving-detail': () => <Solidwork2DSavingDetailLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
 
                   'general-standard-steel': () => <GeneralStandardSteelLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'steel-pipes': () => <SteelPipesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
