@@ -454,6 +454,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             // KEMCO/JIS Standards: default to Lesson 1 (3D Standard)
             setActiveLessonId('3d');
             setExpandedIds(new Set());
+        } else if (selectedCourse.id === 'mock-sw-intro') {
+            setActiveLessonId('sw-interface');
+            setExpandedIds(new Set());
+        } else if (selectedCourse.id === 'mock-sw-3d') {
+            setActiveLessonId('sw-3d-operation');
+            setExpandedIds(new Set(['sw-3d-operation']));
+        } else if (selectedCourse.id === 'mock-sw-2d') {
+            setActiveLessonId('sw-2d-operation-page1');
+            setExpandedIds(new Set());
         } else {
             setActiveLessonId('interface');
             setExpandedIds(new Set());

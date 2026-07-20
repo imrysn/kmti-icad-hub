@@ -1018,15 +1018,26 @@ export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
 ];
 
 export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
-  {
-    id: 'sw-2d-operation',
-    title: '2D Operation',
-    content: ['Insert Components in the Part', 'Create New File', 'Select New Document', 'Insert Parts/ Assembly'],
-    isCompleted: false,
+  { 
+    id: 'sw-2d-operation-page1', 
+    title: 'Insert Components in the Part', 
+    content: ['Create New File', 'Select New Document', 'Insert Parts/ Assembly'] 
+  },
+  { 
+    id: 'sw-2d-insert-main-views', 
+    title: 'Insert Main Views', 
+    content: ['Projected View', 'Hide/Show Lines', 'Centerline', 'Center Mark'],
     children: [
-      { id: 'sw-2d-operation-page1', title: 'Insert Components in the Part', content: [] },
-      { id: 'sw-2d-insert-main-views', title: 'Insert Main Views', content: ['Projected View', 'Hide/Show Lines', 'Centerline', 'Center Mark'] },
-      { id: 'sw-2d-add-dimension-notes', title: 'Add Dimensions and Notes', content: ['Dimensioning', 'Dimensioning Hole', 'Dimensioning Chamfer', 'Adding Notes'] }
+      { id: 'sw-2d-insert-main-views-base', title: 'Insert Main Views', content: ['Insert Main Views'] },
+      { id: 'sw-2d-projected-view', title: 'Projected View', content: ['Projected View'] },
+      { id: 'sw-2d-hide-show-lines', title: 'Hide/Show Lines', content: ['Hide/Show Lines'] },
+      { id: 'sw-2d-centerline', title: 'Centerline', content: ['Centerline'] },
+      { id: 'sw-2d-center-mark', title: 'Center Mark', content: ['Center Mark'] }
     ]
+  },
+  { 
+    id: 'sw-2d-add-dimension-notes', 
+    title: 'Add Dimensions and Notes', 
+    content: ['Dimensioning', 'Dimensioning Hole', 'Dimensioning Chamfer', 'Adding Notes'] 
   }
 ];
