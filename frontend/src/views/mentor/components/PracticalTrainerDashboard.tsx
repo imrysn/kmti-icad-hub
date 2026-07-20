@@ -84,8 +84,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Element;
             if (
-                dropdownRef.current && 
-                !dropdownRef.current.contains(target) && 
+                dropdownRef.current &&
+                !dropdownRef.current.contains(target) &&
                 (!target || (typeof target.closest === 'function' && !target.closest('.custom-comment-options') && !target.closest('.manage-custom-overlay')))
             ) {
                 setIsCommentDropdownOpen(false);
@@ -603,7 +603,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
             a.href = url;
             a.download = attachedFilename;
             document.body.appendChild(a);
-            a.click(); 
+            a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
         } catch (err) {
@@ -1131,7 +1131,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                                         {sortedSubs.length > 1 && <span className="task-attempt-tag">{sortedSubs.length} attempts</span>}
                                                                                         {latestSub.time_spent_seconds !== undefined && (
                                                                                             <span className="task-attempt-tag" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa' }}>
-                                                                                                <Clock size={11} style={{ marginRight: 2 }} /> 
+                                                                                                <Clock size={11} style={{ marginRight: 2 }} />
                                                                                                 {Math.floor(latestSub.time_spent_seconds / 3600) > 0 ? `${Math.floor(latestSub.time_spent_seconds / 3600)}h ` : ''}
                                                                                                 {Math.floor((latestSub.time_spent_seconds % 3600) / 60) > 0 ? `${Math.floor((latestSub.time_spent_seconds % 3600) / 60)}m ` : ''}
                                                                                                 {latestSub.time_spent_seconds % 60}s
@@ -1397,7 +1397,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 onFocus={(e) => { e.target.style.borderColor = 'var(--accent-blue)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
                                                 onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                                             ></textarea>
-                                            
+
                                             {/* Custom Dropdown Options Overlay */}
                                             {isCommentDropdownOpen && (
                                                 <div
@@ -1673,7 +1673,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                             onChange={(e) => setFeedbackComments(e.target.value)}
                                             style={{ width: '100%', minHeight: '120px', padding: '0.5rem', paddingBottom: '2.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
                                         ></textarea>
-                                        
+
                                         {/* Custom Dropdown Options Overlay */}
                                         {isCommentDropdownOpen && (
                                             <div
@@ -1805,8 +1805,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         }}
                                                         onKeyDown={(e) => {
                                                             if (e.key === 'Enter') {
-                                                                    e.preventDefault();
-                                                                    handleAddCustomComment();
+                                                                e.preventDefault();
+                                                                handleAddCustomComment();
                                                             }
                                                         }}
                                                     />
