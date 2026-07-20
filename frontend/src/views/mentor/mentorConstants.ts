@@ -1039,5 +1039,39 @@ export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
     id: 'sw-2d-add-dimension-notes', 
     title: 'Add Dimensions and Notes', 
     content: ['Dimensioning', 'Dimensioning Hole', 'Dimensioning Chamfer', 'Adding Notes'] 
+  },
+  { 
+    id: 'sw-2d-welding-symbols', 
+    title: 'Welding Symbols', 
+    content: ['Weld Symbol', 'Welding Properties'] 
+  },
+  {
+    id: 'sw-2d-insert-new-branch',
+    title: 'Insert New Branch and Jog Point',
+    content: ['Insert New Branch', 'Add Jog Point'],
+    children: [
+      { id: 'sw-2d-insert-new-branch-base', title: 'Insert New Branch', content: ['Insert New Branch'] },
+      { id: 'sw-2d-add-jog-point', title: 'Add Jog Point', content: ['Add Jog Point'] }
+    ]
+  },
+  {
+    id: 'sw-2d-insert-bom',
+    title: 'Insert Bill of Material (BOM)',
+    content: ['Insert Menu', 'Table Template', 'BOM Type']
+  },
+  {
+    id: 'sw-2d-inserting-balloons',
+    title: 'Inserting Balloons',
+    content: ['Annotation', 'Edit Balloon Leader']
+  },
+  {
+    id: 'sw-2d-edit-properties',
+    title: 'Edit Properties',
+    content: ['File Properties', 'Summary Information', 'Edit Properties']
+  },
+  {
+    id: 'sw-2d-saving-detail',
+    title: 'Saving 2D Detail',
+    content: ['Save', 'File Name', 'Filename Extension']
   }
 ];
