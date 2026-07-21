@@ -334,214 +334,214 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
 
                     {/* Assessment Matrix - 3D Modeling */}
                     {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
-                    <div className="history-section matrix-section" style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING
-                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500, marginLeft: '0.25rem' }}>
-                                    ({passed3D}/{globalOrder3D.length})
-                                </span>
-                            </h3>
-                            {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
-                                <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
-                                    <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
-                                    <button className={`sub-tab-btn ${(activeCourseTab as string) === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
-                                </div>
-                            )}
-                        </div>
-                        {selectedTrainee.quizzes_history.filter(q => q.course_id === '1').length > 0 ? (
-                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px', paddingBottom: '1.5rem' }}>
-                                {[...selectedTrainee.quizzes_history]
-                                    .filter(q => q.course_id === '1')
-                                    .sort((a, b) => {
-                                        const indexA = globalOrder3D.indexOf(a.lesson_id);
-                                        const indexB = globalOrder3D.indexOf(b.lesson_id);
-                                        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-                                        if (indexA !== -1) return -1;
-                                        if (indexB !== -1) return 1;
-                                        return new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime();
-                                    })
-                                    .map((q, i) => (
-                                        <div key={i} className="history-item evaluation-card">
-                                            <div className="score-pillar-container">
-                                                <div className="score-pillar-track">
-                                                    <div className="score-pillar-fill" style={{ '--percent': `${q.score}%` } as React.CSSProperties}></div>
-                                                </div>
-                                            </div>
-                                            <div className="content">
-                                                <div className="title">{getLessonTitle(q.lesson_id, q.course_id)}</div>
-                                                <div className="assessment-meta">
-                                                    <span className="score-val">Score: {q.score}%</span>
-                                                    <span className="attempt-val">
-                                                        <RotateCw size={12} /> {q.attempts_count || 1} {q.attempts_count === 1 ? 'Attempt' : 'Attempts'}
-                                                    </span>
-                                                </div>
-                                                <div className={`status-pill ${q.score >= 80 ? 'pass' : 'fail'}`}>
-                                                    {q.score >= 80 ? <Check size={12} /> : <X size={12} />}
-                                                    {q.score >= 80 ? 'Passed' : 'Failed'}
-                                                </div>
-
-                                                <div className="efficiency-breakdown" style={{ marginTop: '0.5rem', display: 'flex', gap: '0.8rem', fontSize: '0.7rem' }}>
-                                                    <div className="eff-item" style={{ color: 'var(--text-muted)' }}>
-                                                        1st Try: <span style={{ color: q.first_attempt_score && q.first_attempt_score >= 80 ? '#34d399' : '#f87171' }}>{q.first_attempt_score ?? 'N/A'}%</span>
+                        <div className="history-section matrix-section" style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                                <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <BarChart3 size={18} /> ICAD OPERATION MANUAL 3D MODELING
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500, marginLeft: '0.25rem' }}>
+                                        ({passed3D}/{globalOrder3D.length})
+                                    </span>
+                                </h3>
+                                {(activeCourseTab === 'all' || activeCourseTab === '3D') && (
+                                    <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
+                                        <button className={`sub-tab-btn ${activeCourseTab === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
+                                        <button className={`sub-tab-btn ${(activeCourseTab as string) === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
+                                    </div>
+                                )}
+                            </div>
+                            {selectedTrainee.quizzes_history.filter(q => q.course_id === '1').length > 0 ? (
+                                <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px', paddingBottom: '1.5rem' }}>
+                                    {[...selectedTrainee.quizzes_history]
+                                        .filter(q => q.course_id === '1')
+                                        .sort((a, b) => {
+                                            const indexA = globalOrder3D.indexOf(a.lesson_id);
+                                            const indexB = globalOrder3D.indexOf(b.lesson_id);
+                                            if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                                            if (indexA !== -1) return -1;
+                                            if (indexB !== -1) return 1;
+                                            return new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime();
+                                        })
+                                        .map((q, i) => (
+                                            <div key={i} className="history-item evaluation-card">
+                                                <div className="score-pillar-container">
+                                                    <div className="score-pillar-track">
+                                                        <div className="score-pillar-fill" style={{ '--percent': `${q.score}%` } as React.CSSProperties}></div>
                                                     </div>
-                                                    <div className="eff-item" style={{
-                                                        color: q.attempts_count > 5 ? '#fbbf24' : 'var(--text-muted)',
-                                                        fontWeight: q.attempts_count > 5 ? 600 : 400
-                                                    }}>
-                                                        Struggle Factor: {q.attempts_count > 5 ? 'High' : (q.attempts_count > 2 ? 'Moderate' : 'Low')}
+                                                </div>
+                                                <div className="content">
+                                                    <div className="title">{getLessonTitle(q.lesson_id, q.course_id)}</div>
+                                                    <div className="assessment-meta">
+                                                        <span className="score-val">Score: {q.score}%</span>
+                                                        <span className="attempt-val">
+                                                            <RotateCw size={12} /> {q.attempts_count || 1} {q.attempts_count === 1 ? 'Attempt' : 'Attempts'}
+                                                        </span>
+                                                    </div>
+                                                    <div className={`status-pill ${q.score >= 80 ? 'pass' : 'fail'}`}>
+                                                        {q.score >= 80 ? <Check size={12} /> : <X size={12} />}
+                                                        {q.score >= 80 ? 'Passed' : 'Failed'}
+                                                    </div>
+
+                                                    <div className="efficiency-breakdown" style={{ marginTop: '0.5rem', display: 'flex', gap: '0.8rem', fontSize: '0.7rem' }}>
+                                                        <div className="eff-item" style={{ color: 'var(--text-muted)' }}>
+                                                            1st Try: <span style={{ color: q.first_attempt_score && q.first_attempt_score >= 80 ? '#34d399' : '#f87171' }}>{q.first_attempt_score ?? 'N/A'}%</span>
+                                                        </div>
+                                                        <div className="eff-item" style={{
+                                                            color: q.attempts_count > 5 ? '#fbbf24' : 'var(--text-muted)',
+                                                            fontWeight: q.attempts_count > 5 ? 600 : 400
+                                                        }}>
+                                                            Struggle Factor: {q.attempts_count > 5 ? 'High' : (q.attempts_count > 2 ? 'Moderate' : 'Low')}
+                                                        </div>
+                                                        <button
+                                                            className="view-breakdown-link"
+                                                            onClick={() => handleViewBreakdown(q.lesson_id)}
+                                                            disabled={loadingBreakdownId === q.lesson_id}
+                                                            style={{
+                                                                marginLeft: 'auto',
+                                                                background: 'none',
+                                                                border: 'none',
+                                                                color: 'var(--accent-blue, #60a5fa)',
+                                                                fontSize: '0.7rem',
+                                                                textDecoration: 'underline',
+                                                                cursor: 'pointer',
+                                                                padding: 0
+                                                            }}
+                                                        >
+                                                            {loadingBreakdownId === q.lesson_id ? 'Loading...' : 'View Breakdown'}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="assessment-actions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                                    {getOrderDisplay('1', q.lesson_id) && (
+                                                        <span className={`order-badge 3D_Modeling`} style={{ marginBottom: '8px' }}>
+                                                            {getOrderDisplay('1', q.lesson_id)}
+                                                        </span>
+                                                    )}
+                                                    <div className="assessment-date">
+                                                        {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
                                                     </div>
                                                     <button
-                                                        className="view-breakdown-link"
-                                                        onClick={() => handleViewBreakdown(q.lesson_id)}
-                                                        disabled={loadingBreakdownId === q.lesson_id}
-                                                        style={{
-                                                            marginLeft: 'auto',
-                                                            background: 'none',
-                                                            border: 'none',
-                                                            color: 'var(--accent-blue, #60a5fa)',
-                                                            fontSize: '0.7rem',
-                                                            textDecoration: 'underline',
-                                                            cursor: 'pointer',
-                                                            padding: 0
-                                                        }}
+                                                        className="reopen-btn"
+                                                        title="Reopen Assessment (Clear Score)"
+                                                        onClick={() => handleReopenAssessment(q.lesson_id)}
+                                                        disabled={reopeningId === q.lesson_id}
                                                     >
-                                                        {loadingBreakdownId === q.lesson_id ? 'Loading...' : 'View Breakdown'}
+                                                        {reopeningId === q.lesson_id ? <Loader2 size={14} className="spin" /> : <RotateCcw size={14} />}
+                                                        Reopen
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div className="assessment-actions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                                {getOrderDisplay('1', q.lesson_id) && (
-                                                    <span className={`order-badge 3D_Modeling`} style={{ marginBottom: '8px' }}>
-                                                        {getOrderDisplay('1', q.lesson_id)}
-                                                    </span>
-                                                )}
-                                                <div className="assessment-date">
-                                                    {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
-                                                </div>
-                                                <button
-                                                    className="reopen-btn"
-                                                    title="Reopen Assessment (Clear Score)"
-                                                    onClick={() => handleReopenAssessment(q.lesson_id)}
-                                                    disabled={reopeningId === q.lesson_id}
-                                                >
-                                                    {reopeningId === q.lesson_id ? <Loader2 size={14} className="spin" /> : <RotateCcw size={14} />}
-                                                    Reopen
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        ) : (
-                            <div className="empty-state" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>No 3D modeling assessments recorded.</div>
-                        )}
-                    </div>
+                                        ))}
+                                </div>
+                            ) : (
+                                <div className="empty-state" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>No 3D modeling assessments recorded.</div>
+                            )}
+                        </div>
                     )}
 
                     {/* Assessment Matrix - 2D Drawing */}
                     {(activeCourseTab === 'all' || activeCourseTab === '2D') && (
-                    <div className="history-section matrix-section" style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING
-                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500, marginLeft: '0.25rem' }}>
-                                    ({passed2D}/{globalOrder2D.length})
-                                </span>
-                            </h3>
-                            {activeCourseTab === '2D' && (
-                                <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
-                                    <button className={`sub-tab-btn ${(activeCourseTab as string) === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
-                                    <button className={`sub-tab-btn ${activeCourseTab === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
-                                </div>
-                            )}
-                        </div>
-                        {selectedTrainee.quizzes_history.filter(q => q.course_id === '2').length > 0 ? (
-                            <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px', paddingBottom: '1.5rem' }}>
-                                {[...selectedTrainee.quizzes_history]
-                                    .filter(q => q.course_id === '2')
-                                    .sort((a, b) => {
-                                        const indexA = globalOrder2D.indexOf(a.lesson_id);
-                                        const indexB = globalOrder2D.indexOf(b.lesson_id);
-                                        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-                                        if (indexA !== -1) return -1;
-                                        if (indexB !== -1) return 1;
-                                        return new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime();
-                                    })
-                                    .map((q, i) => (
-                                        <div key={i} className="history-item evaluation-card">
-                                            <div className="score-pillar-container">
-                                                <div className="score-pillar-track">
-                                                    <div className="score-pillar-fill" style={{ '--percent': `${q.score}%` } as React.CSSProperties}></div>
-                                                </div>
-                                            </div>
-                                            <div className="content">
-                                                <div className="title">{getLessonTitle(q.lesson_id, q.course_id)}</div>
-                                                <div className="assessment-meta">
-                                                    <span className="score-val">Score: {q.score}%</span>
-                                                    <span className="attempt-val">
-                                                        <RotateCw size={12} /> {q.attempts_count || 1} {q.attempts_count === 1 ? 'Attempt' : 'Attempts'}
-                                                    </span>
-                                                </div>
-                                                <div className={`status-pill ${q.score >= 80 ? 'pass' : 'fail'}`}>
-                                                    {q.score >= 80 ? <Check size={12} /> : <X size={12} />}
-                                                    {q.score >= 80 ? 'Passed' : 'Failed'}
-                                                </div>
-
-                                                <div className="efficiency-breakdown" style={{ marginTop: '0.5rem', display: 'flex', gap: '0.8rem', fontSize: '0.7rem' }}>
-                                                    <div className="eff-item" style={{ color: 'var(--text-muted)' }}>
-                                                        1st Try: <span style={{ color: q.first_attempt_score && q.first_attempt_score >= 80 ? '#34d399' : '#f87171' }}>{q.first_attempt_score ?? 'N/A'}%</span>
+                        <div className="history-section matrix-section" style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', minHeight: 0, paddingBottom: 0 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                                <h3 style={{ margin: 0, padding: 0, borderBottom: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <FileText size={18} /> ICAD OPERATION MANUAL 2D DRAWING
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500, marginLeft: '0.25rem' }}>
+                                        ({passed2D}/{globalOrder2D.length})
+                                    </span>
+                                </h3>
+                                {activeCourseTab === '2D' && (
+                                    <div className="course-tabs" style={{ display: 'flex', gap: '10px' }}>
+                                        <button className={`sub-tab-btn ${(activeCourseTab as string) === '3D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('3D')}>3D Modeling</button>
+                                        <button className={`sub-tab-btn ${activeCourseTab === '2D' ? 'active' : ''}`} onClick={() => setActiveCourseTab('2D')}>2D Drawing</button>
+                                    </div>
+                                )}
+                            </div>
+                            {selectedTrainee.quizzes_history.filter(q => q.course_id === '2').length > 0 ? (
+                                <div className="history-list" style={{ flex: 1, overflowY: 'auto', paddingRight: '5px', paddingBottom: '1.5rem' }}>
+                                    {[...selectedTrainee.quizzes_history]
+                                        .filter(q => q.course_id === '2')
+                                        .sort((a, b) => {
+                                            const indexA = globalOrder2D.indexOf(a.lesson_id);
+                                            const indexB = globalOrder2D.indexOf(b.lesson_id);
+                                            if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                                            if (indexA !== -1) return -1;
+                                            if (indexB !== -1) return 1;
+                                            return new Date(b.completed_at || 0).getTime() - new Date(a.completed_at || 0).getTime();
+                                        })
+                                        .map((q, i) => (
+                                            <div key={i} className="history-item evaluation-card">
+                                                <div className="score-pillar-container">
+                                                    <div className="score-pillar-track">
+                                                        <div className="score-pillar-fill" style={{ '--percent': `${q.score}%` } as React.CSSProperties}></div>
                                                     </div>
-                                                    <div className="eff-item" style={{
-                                                        color: q.attempts_count > 5 ? '#fbbf24' : 'var(--text-muted)',
-                                                        fontWeight: q.attempts_count > 5 ? 600 : 400
-                                                    }}>
-                                                        Struggle Factor: {q.attempts_count > 5 ? 'High' : (q.attempts_count > 2 ? 'Moderate' : 'Low')}
+                                                </div>
+                                                <div className="content">
+                                                    <div className="title">{getLessonTitle(q.lesson_id, q.course_id)}</div>
+                                                    <div className="assessment-meta">
+                                                        <span className="score-val">Score: {q.score}%</span>
+                                                        <span className="attempt-val">
+                                                            <RotateCw size={12} /> {q.attempts_count || 1} {q.attempts_count === 1 ? 'Attempt' : 'Attempts'}
+                                                        </span>
+                                                    </div>
+                                                    <div className={`status-pill ${q.score >= 80 ? 'pass' : 'fail'}`}>
+                                                        {q.score >= 80 ? <Check size={12} /> : <X size={12} />}
+                                                        {q.score >= 80 ? 'Passed' : 'Failed'}
+                                                    </div>
+
+                                                    <div className="efficiency-breakdown" style={{ marginTop: '0.5rem', display: 'flex', gap: '0.8rem', fontSize: '0.7rem' }}>
+                                                        <div className="eff-item" style={{ color: 'var(--text-muted)' }}>
+                                                            1st Try: <span style={{ color: q.first_attempt_score && q.first_attempt_score >= 80 ? '#34d399' : '#f87171' }}>{q.first_attempt_score ?? 'N/A'}%</span>
+                                                        </div>
+                                                        <div className="eff-item" style={{
+                                                            color: q.attempts_count > 5 ? '#fbbf24' : 'var(--text-muted)',
+                                                            fontWeight: q.attempts_count > 5 ? 600 : 400
+                                                        }}>
+                                                            Struggle Factor: {q.attempts_count > 5 ? 'High' : (q.attempts_count > 2 ? 'Moderate' : 'Low')}
+                                                        </div>
+                                                        <button
+                                                            className="view-breakdown-link"
+                                                            onClick={() => handleViewBreakdown(q.lesson_id)}
+                                                            disabled={loadingBreakdownId === q.lesson_id}
+                                                            style={{
+                                                                marginLeft: 'auto',
+                                                                background: 'none',
+                                                                border: 'none',
+                                                                color: 'var(--accent-blue, #60a5fa)',
+                                                                fontSize: '0.7rem',
+                                                                textDecoration: 'underline',
+                                                                cursor: 'pointer',
+                                                                padding: 0
+                                                            }}
+                                                        >
+                                                            {loadingBreakdownId === q.lesson_id ? 'Loading...' : 'View Breakdown'}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="assessment-actions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                                    {getOrderDisplay('2', q.lesson_id) && (
+                                                        <span className={`order-badge 2D_Drawing`} style={{ marginBottom: '8px' }}>
+                                                            {getOrderDisplay('2', q.lesson_id)}
+                                                        </span>
+                                                    )}
+                                                    <div className="assessment-date">
+                                                        {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
                                                     </div>
                                                     <button
-                                                        className="view-breakdown-link"
-                                                        onClick={() => handleViewBreakdown(q.lesson_id)}
-                                                        disabled={loadingBreakdownId === q.lesson_id}
-                                                        style={{
-                                                            marginLeft: 'auto',
-                                                            background: 'none',
-                                                            border: 'none',
-                                                            color: 'var(--accent-blue, #60a5fa)',
-                                                            fontSize: '0.7rem',
-                                                            textDecoration: 'underline',
-                                                            cursor: 'pointer',
-                                                            padding: 0
-                                                        }}
+                                                        className="reopen-btn"
+                                                        title="Reopen Assessment (Clear Score)"
+                                                        onClick={() => handleReopenAssessment(q.lesson_id)}
+                                                        disabled={reopeningId === q.lesson_id}
                                                     >
-                                                        {loadingBreakdownId === q.lesson_id ? 'Loading...' : 'View Breakdown'}
+                                                        {reopeningId === q.lesson_id ? <Loader2 size={14} className="spin" /> : <RotateCcw size={14} />}
+                                                        Reopen
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div className="assessment-actions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                                {getOrderDisplay('2', q.lesson_id) && (
-                                                    <span className={`order-badge 2D_Drawing`} style={{ marginBottom: '8px' }}>
-                                                        {getOrderDisplay('2', q.lesson_id)}
-                                                    </span>
-                                                )}
-                                                <div className="assessment-date">
-                                                    {q.completed_at ? new Date(q.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pending'}
-                                                </div>
-                                                <button
-                                                    className="reopen-btn"
-                                                    title="Reopen Assessment (Clear Score)"
-                                                    onClick={() => handleReopenAssessment(q.lesson_id)}
-                                                    disabled={reopeningId === q.lesson_id}
-                                                >
-                                                    {reopeningId === q.lesson_id ? <Loader2 size={14} className="spin" /> : <RotateCcw size={14} />}
-                                                    Reopen
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        ) : (
-                            <div className="empty-state" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>No 2D drawing assessments recorded.</div>
-                        )}
-                    </div>
+                                        ))}
+                                </div>
+                            ) : (
+                                <div className="empty-state" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>No 2D drawing assessments recorded.</div>
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
