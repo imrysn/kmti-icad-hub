@@ -47,50 +47,47 @@ const PartModelingContent: React.FC = () => (
                 <span className="step-label">Select New Part Document.</span>
             </div>
             <div className="step-description">
-                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                    The New SolidWorks Document Dialog box will appear:
-                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'flex-start' }}>
+                    <div style={{ flex: '1 1 350px', minWidth: '300px' }}>
+                        <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
+                            The New SolidWorks Document Dialog box will appear:
+                        </p>
 
-                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>Click K M Tech.</li>
-                    <li>
-                        Select K&amp;M PART{'                '}
-                        <span className="image-wrapper-flush">
-                            <img src={partImg} alt="K&M PART icon" style={{ height: '40px', verticalAlign: 'middle' }} />
-                        </span>
-                    </li>
-                    <li>Click OK or Double click K&amp;M PART.</li>
-                </ol>
+                        <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                            <li>Click K M Tech.</li>
+                            <li>
+                                Select K&amp;M PART{' '}
+                                <span className="image-wrapper-flush">
+                                    <img src={partImg} alt="K&M PART icon" style={{ height: '35px', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
+                                </span>
+                            </li>
+                            <li style={{ marginTop: '0.5rem' }}>Click OK or Double click K&amp;M PART.</li>
+                        </ol>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', marginTop: '1rem' }}>
-                    <div style={{ flex: '1 1 300px', minWidth: '250px' }}>
+                        <div className="instruction-box" style={{ marginTop: '2.5rem', display: 'inline-block', padding: '1rem' }}>
+                            <div className="red-text" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500 }}>
+                                <span>※ This</span>
+                                <span className="image-wrapper-flush" style={{ background: 'white', padding: '2px', border: '1px solid #ddd', borderRadius: '2px', display: 'flex', alignItems: 'center' }}>
+                                    <img src={kmTechImg} alt="K M Tech" style={{ height: '22px' }} />
+                                </span>
+                                <span>is where all the KMTI</span>
+                            </div>
+                            <div className="red-text" style={{ marginLeft: '1.5rem', fontWeight: 500, marginTop: '4px' }}>
+                                Standard Templates were saved.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style={{ flex: '1 1 400px', minWidth: '350px' }}>
                         <div className="image-wrapper">
                             <img
                                 src={techImg}
                                 alt="K M Tech tab in New SolidWorks Document dialog"
                                 className="software-screenshot"
-                                style={{ maxWidth: '100%', height: 'auto' }}
+                                style={{ maxWidth: '100%', height: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                             />
                         </div>
                     </div>
-                    <div style={{ flex: '1 1 300px', minWidth: '250px' }}>
-                        <div className="image-wrapper">
-                            <img
-                                src={kmTechImg}
-                                alt="K&M PART template selection"
-                                className="software-screenshot"
-                                style={{ maxWidth: '100%', height: 'auto' }}
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
-                    <p className="p-flush red-text">
-                        ※ This is where all the KMTI
-                        <br />
-                        Standard Templates were saved.
-                    </p>
                 </div>
             </div>
         </div>
