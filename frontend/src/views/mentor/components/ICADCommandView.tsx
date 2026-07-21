@@ -3,7 +3,7 @@ import { CheckCircle2, Menu, X } from 'lucide-react';
 import { IcadCommandsGrid } from './icad/IcadCommandsGrid';
 import { IcadGuideGrid } from './icad/IcadGuideGrid';
 import { IcadMenuSetupGrid } from './icad/IcadMenuSetupGrid';
-import IcadCommands from "../../../components/ICAD/Command/Icad_Commands/Icad_Commands";
+import Icad_Commands from '../../../components/ICAD/Command/Icad_Commands/Icad_Commands';
 import Icad_Guide from '../../../components/ICAD/Command/Icad_Guide/Icad_Guide';
 import Icad_Menu_Setup from '../../../components/ICAD/Command/Icad_Menu_Setup/menuSetup';
 
@@ -66,7 +66,7 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     justifyContent: 'center',
                     padding: '2rem',
                 }}>
-                    <IcadCommands />
+                    <Icad_Commands />
                 </div>
             </div>
         );
@@ -107,7 +107,7 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                 {/* Content — full bleed so Icad_Guide IDE layout fills the space */}
                 <div style={{
                     flex: 1,
-                    overflow: 'hidden',
+                    overflow: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
                 }}>

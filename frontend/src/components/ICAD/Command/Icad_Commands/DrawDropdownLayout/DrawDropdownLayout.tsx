@@ -31,6 +31,8 @@ function DrawDropdownLayout() {
                 fontFamily: "inherit",
                 width: "fit-content",
                 boxSizing: "border-box",
+                position: "relative",
+                zIndex: 1000,
             }}
         >
 
@@ -43,6 +45,16 @@ function DrawDropdownLayout() {
                         gridTemplateColumns: level === 0 ? "repeat(2, 1fr)" : undefined,
                         flexDirection: level === 0 ? undefined : "column",
                         gap: "3px",
+                        ...(level > 0 && {
+                            position: "absolute",
+                            top: "0",
+                            left: `calc(100% + ${(level - 1) * 165}px)`,
+                            background: "#f0f0f3",
+                            padding: "6px",
+                            borderRadius: "4px",
+                            boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+                            zIndex: 1000 + level,
+                        }),
                     }}
                 >
                     {colItems.map((item, index) => {
