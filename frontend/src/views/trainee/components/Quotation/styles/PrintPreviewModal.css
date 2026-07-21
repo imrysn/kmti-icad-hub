@@ -66,22 +66,32 @@
   flex: 1;
 }
 
+/* Floating Back Button */
 .ppm-back-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 6px 12px;
-  border-radius: 6px;
-  transition: background 0.2s;
+  gap: 8px;
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+  height: auto !important;
+  z-index: 10;
 }
 
 .ppm-back-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #f3f4f6 !important;
+  color: #1f2937 !important;
+  border-color: #9ca3af !important;
 }
 
 .ppm-title {

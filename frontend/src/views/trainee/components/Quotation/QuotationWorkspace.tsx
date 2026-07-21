@@ -38,6 +38,7 @@ import { HistorySidebar } from './HistorySidebar'
 import { QuotationTutorial } from './QuotationTutorial'
 import QuotationLibraryModal from './QuotationLibraryModal'
 import { importFromExcel } from './utils/excelImport'
+import { Modal } from '../../../../components/Modal'
 import './QuotationApp.css'
 import './Quotation.css'
 import './styles/QuotationTable.css'
@@ -79,6 +80,7 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   const [previewData, setPreviewData] = useState<any | null>(null)
   const [activePreviewTs, setActivePreviewTs] = useState<string | null>(null)
   const [isInfoCollapsed, setIsInfoCollapsed] = useState(true)
+  const [isWorkspaceModalOpen, setIsWorkspaceModalOpen] = useState(false)
 
   // ── Document State ─────────────────────────────────────────────
   const isSyncedFromRemote = useRef(false)
@@ -741,7 +743,23 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
         </div>
 
         <div className="quot-toolbar-actions">
-                 {isSyncing && (
+
+          {/* ── Group 1: Workspace ─────────────────────────────── */}
+          <button
+            className="btn btn-workspace"
+            onClick={() => setIsWorkspaceModalOpen(true)}
+            title="View workspace info & return to lobby"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+            </svg>
+            Workspace
+          </button>
+
+          <div className="toolbar-divider" />
+
+          {/* ── Group 2: File Ops ──────────────────────────────── */}
+          {isSyncing && (
             <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--quot-text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginRight: '4px' }}>
               Saving...
             </div>
@@ -753,7 +771,7 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
             </svg>
             Load
           </button>
-          
+
           <button className="btn btn-ghost" onClick={() => importInputRef.current?.click()} title="Import tasks from Excel breakdown sheet">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -769,7 +787,7 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
             onChange={handleImportExcel}
             style={{ display: 'none' }}
           />
-          
+
           <button className="btn btn-save-themed" onClick={handleSave} title="Save changes to database">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
@@ -777,6 +795,9 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
             Save
           </button>
 
+          <div className="toolbar-divider" />
+
+          {/* ── Group 3: Print / Export ────────────────────────── */}
           <button
             className="btn btn-primary"
             onClick={() => setIsPrintPreviewOpen(true)}
@@ -790,6 +811,47 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
           </button>
         </div>
       </header>
+
+      {/* ── Workspace Modal ───────────────────────────────────── */}
+      <Modal
+        isOpen={isWorkspaceModalOpen}
+        onClose={() => setIsWorkspaceModalOpen(false)}
+        title="Return to Lobby?"
+        size="sm"
+        showCloseButton={false}
+      >
+        <div className="workspace-modal-content">
+          <p className="workspace-modal-message">
+            Return to the workspace lobby? Your session will remain active for others.
+            {hasUnsavedChanges && (
+              <span className="workspace-modal-unsaved">
+                {' '}You have unsaved changes that will not be lost.
+              </span>
+            )}
+          </p>
+
+          <div className="workspace-modal-actions">
+            <button
+              className="btn btn-ghost workspace-modal-cancel"
+              onClick={() => setIsWorkspaceModalOpen(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary workspace-modal-confirm"
+              onClick={async () => {
+                setIsWorkspaceModalOpen(false)
+                if (autoStartTutorial && quotId) {
+                  try { await quotationApi.delete(quotId, workstation) } catch (e) {}
+                }
+                onLeave()
+              }}
+            >
+              Return to Lobby
+            </button>
+          </div>
+        </div>
+      </Modal>
 
         {/* ── Main Layout (Sidebar + Body) ───────────────────────── */}
         <div className="quot-layout">

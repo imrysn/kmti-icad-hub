@@ -692,9 +692,6 @@ const PrintPreviewModal = memo(({
         {/* ── Header ──────────────────────────────────────────────── */}
         <div className="ppm-header">
           <div className="ppm-header-left">
-            <button className="ppm-back-btn" onClick={onClose}>
-              &larr; Back
-            </button>
             <div className="ppm-title">
               <h2>{printMode === 'quotation' ? 'Print Preview — Quotation' : 'Print Preview — Billing Statement'}</h2>
             </div>
@@ -734,6 +731,15 @@ const PrintPreviewModal = memo(({
 
         {/* ── Main Content Area ───────────────────────────────────── */}
         <div className="ppm-body" ref={containerRef}>
+          {/* Back Button (Floating) */}
+          <button className="ppm-back-btn" onClick={onClose}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Back
+          </button>
+
           {/* Time & Date Pill */}
           <div className="ppm-time-pill">
             {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })} | {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase()}

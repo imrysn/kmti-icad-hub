@@ -358,3 +358,24 @@ class QuotationHistory(Base):
 
     # Relationships
     quotation = relationship("Quotation", back_populates="history")
+
+class ClientPreset(Base):
+    """Stores saved client names for quick selection in quotation forms"""
+    __tablename__ = "client_presets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    english_name = Column(String(255), unique=True, nullable=False, index=True)
+    japanese_name = Column(String(255), nullable=True)
+    email = Column(String(255), nullable=True)
+    created_at = Column(DateTime, default=func.now())
+
+class ProjectInchargePreset(Base):
+    """Stores saved project in-charge names for quick selection in quotation forms"""
+    __tablename__ = "project_incharge_presets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    english_name = Column(String(255), unique=True, nullable=False, index=True)
+    japanese_name = Column(String(255), nullable=True)
+    email = Column(String(255), nullable=True)
+    category = Column(String(100), nullable=True)
+    created_at = Column(DateTime, default=func.now())
