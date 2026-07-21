@@ -38,9 +38,10 @@ export interface TutorialStep {
 
 interface VideoTutorialViewerProps {
   steps: TutorialStep[];
+  imageSrc?: string;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageSrc }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -631,14 +632,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             />
           ) : (
             <img
-              src={icadInterfaceImg}
+              src={imageSrc || icadInterfaceImg}
               alt="iCAD Interface"
               className="tutorial-image"
               style={{
                 display: 'block',
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain'
+                objectFit: 'fill'
               }}
             />
           )}

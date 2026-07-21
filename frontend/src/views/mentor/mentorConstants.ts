@@ -1024,24 +1024,7 @@ export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
       { id: 'sw-part-modeling', title: '3D Part Modeling', content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'] }
     ]
   },
-  {
-    id: 'sw-sketching-base-main',
-    title: 'Sketching the Base',
-    content: ['Add sketch geometry', 'Add sketch relations', 'Insert dimension/s'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-sketching-base', title: 'Sketching the Base', content: ['Add sketch geometry', 'Add sketch relations', 'Insert dimension/s'] }
-    ]
-  },
-  {
-    id: 'sw-extruding-base-main',
-    title: 'Extruding the Base',
-    content: ['Extrude the sketch into a solid'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extrude the sketch into a solid'] }
-    ]
-  },
+
   {
     id: 'sw-cutting-base-main',
     title: 'Cutting the Base',
