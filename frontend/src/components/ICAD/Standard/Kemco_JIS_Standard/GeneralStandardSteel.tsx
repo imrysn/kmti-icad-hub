@@ -20,6 +20,7 @@ interface GeneralStandardSteelLessonProps {
   nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
+  subLessonId?: string;
 }
 
 const reminderSteps = [
@@ -33,6 +34,7 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
   onNextLesson,
   onPrevLesson,
   nextLabel,
+  subLessonId = 'general-standard-steel-main'
 }) => {
   const {
     scrollProgress,
@@ -86,143 +88,121 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
           as="h3"
           className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
           data-reading-index="0"
-          text="General Standard Steel Material Table"
+          text={
+            subLessonId === 'general-standard-steel-flat' ? "Flat Bar Reference Table" :
+            subLessonId === 'general-standard-steel-round' ? "Round Bar" :
+            "General Standard Steel Material Table"
+          }
           isActive={isSpeaking && currentIndex === 0}
           currentCharIndex={currentCharIndex}
         />
-        <KaraokeLessonText
-          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-          data-reading-index="1"
-          text="REMINDER:"
-          isActive={isSpeaking && currentIndex === 1}
-          currentCharIndex={currentCharIndex}
-        />
+        {(!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') && (
+          <KaraokeLessonText
+            className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+            data-reading-index="1"
+            text="REMINDER:"
+            isActive={isSpeaking && currentIndex === 1}
+            currentCharIndex={currentCharIndex}
+          />
+        )}
       </section>
 
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content fade-in">
 
-          {/* Step 1 */}
-          <div
-            className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
-            data-reading-index="2"
-          >
-            <div className="step-header">
-              <span className="step-number">1 </span>
-              <KaraokeLessonText
-                as="span"
-                className="step-label"
-                text="Please review the General Standard Steel Material Table."
-                isActive={isSpeaking && currentIndex === 2}
-                currentCharIndex={currentCharIndex}
-              />
+          {(!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') && (
+            <>
+              {/* Step 1 */}
+              <div
+                className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
+                data-reading-index="2"
+              >
+                <div className="step-header">
+                  <span className="step-number">1 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Please review the General Standard Steel Material Table."
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div
+                className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}
+                data-reading-index="3"
+              >
+                <div className="step-header">
+                  <span className="step-number">2 </span>
+                  <KaraokeLessonText
+                    as="span"
+                    className="step-label"
+                    text="Ensure standard steel materials are selected according to this table."
+                    isActive={isSpeaking && currentIndex === 3}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+              {/* ── Image 1 ── */}
+              <div className="step-description" style={{ marginTop: "1rem" }}>
+                <img
+                  src={steelTable1Img}
+                  alt="Steel Material Table 1"
+                  className="software-screenshot mt-4"
+                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                />
+              </div>
+
+              {/* ── Image 2 ── */}
+              <div className="step-description" style={{ marginTop: "1rem" }}>
+                <img
+                  src={steelTable2Img}
+                  alt="Steel Material Table 2"
+                  className="software-screenshot mt-4"
+                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                />
+              </div>
+
+              {/* ── Image 3 ── */}
+              <div className="step-description" style={{ marginTop: "1rem" }}>
+                <img
+                  src={steelTable3Img}
+                  alt="Steel Material Table 3"
+                  className="software-screenshot mt-4"
+                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                />
+              </div>
+            </>
+          )}
+
+          {subLessonId === 'general-standard-steel-flat' && (
+            <div className="gallery-section mt-4" style={{ width: "100%" }}>
+              <div className="step-description">
+                <img
+                  src={steelTable4Img}
+                  alt="Flat Bar Reference Table"
+                  className="software-screenshot mt-4"
+                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Step 2 */}
-          <div
-            className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}
-            data-reading-index="3"
-          >
-            <div className="step-header">
-              <span className="step-number">2 </span>
-              <KaraokeLessonText
-                as="span"
-                className="step-label"
-                text="Ensure standard steel materials are selected according to this table."
-                isActive={isSpeaking && currentIndex === 3}
-                currentCharIndex={currentCharIndex}
-              />
+          {subLessonId === 'general-standard-steel-round' && (
+            <div className="gallery-section mt-4" style={{ width: "100%" }}>
+              <div className="step-description">
+                <img
+                  src={steelTable5Img}
+                  alt="Round Bar Reference Table"
+                  className="software-screenshot mt-4"
+                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                />
+              </div>
             </div>
-          </div>
-
-          {/* ── Image 1 ── */}
-          <div className="step-description" style={{ marginTop: "2rem" }}>
-            <img
-              src={steelTable1Img}
-              alt="Steel Material Table 1"
-              className="software-screenshot mt-4"
-              style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-            />
-          </div>
-
-          {/* ── Image 2 ── */}
-          <div className="step-description" style={{ marginTop: "2rem" }}>
-            <img
-              src={steelTable2Img}
-              alt="Steel Material Table 2"
-              className="software-screenshot mt-4"
-              style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-            />
-          </div>
-
-          {/* ── Image 3 ── */}
-          <div className="step-description" style={{ marginTop: "2rem" }}>
-            <img
-              src={steelTable3Img}
-              alt="Steel Material Table 3"
-              className="software-screenshot mt-4"
-              style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-            />
-          </div>
-
-          {/* ── Flat Bar Gallery (Image 4 split into 4) ── */}
-          <div
-            className="gallery-section mt-12"
-            style={{ borderTop: "1px solid var(--glass-border)", paddingTop: "3rem", width: "100%" }}
-          >
-            <h4
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                fontSize: "1.25rem",
-                fontWeight: 700,
-                marginBottom: "1.5rem",
-                color: "var(--text-main)",
-              }}
-            >
-              <ImageIcon size={20} style={{ color: "var(--color-primary)" }} /> Flat Bar Reference Table
-            </h4>
-
-      <div className="step-description" style={{ marginTop: "2rem" }}>
-        <img
-          src={steelTable4Img}
-          alt="Flat Bar Reference Table"
-          className="software-screenshot mt-4"
-          style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-        />
-      </div>
-  </div>
-
-          {/* ── Round Bar Section Title ── */}
-          <div
-            className="gallery-section mt-12"
-            style={{ borderTop: "1px solid var(--glass-border)", paddingTop: "3rem", width: "100%" }}
-          >
-            <h4
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                fontSize: "1.25rem",
-                fontWeight: 700,
-                marginBottom: "1.5rem",
-                color: "var(--text-main)",
-              }}
-            >
-              <ImageIcon size={20} style={{ color: "var(--color-primary)" }} /> Round Bar
-            </h4>
-
-      <div className="step-description" style={{ marginTop: "2rem" }}>
-        <img
-          src={steelTable5Img}
-          alt="Round Bar Reference Table"
-          className="software-screenshot mt-4"
-          style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-        />
-      </div>
-  </div>
+          )}
 
           {/* Page Navigation */}
           <div className="lesson-navigation mt-12">

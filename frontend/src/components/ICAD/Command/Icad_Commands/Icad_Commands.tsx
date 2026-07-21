@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DrawDropdownLayout from "./DrawDropdownLayout/DrawDropdownLayout";
 import DraftingDropdownLayout from "./DraftingDropdown/DraftingDropdownLayout";
+import SubDrawingLibraryLayout from "./Sub_Drawing_Library/SubDrawingLibrary_Layout";
 
 
 import DrawImg from "../../../../assets/Commands/Drawing.png";
@@ -35,11 +36,11 @@ const getIconSrc = (fileName: string) => iconMap[fileName] ?? "";
 const commands: string[] = ["Move", "Copy", "Properties", "Delete"];
 
 
-export default function DrawPanel() {
-    const [activePanel, setActivePanel] = useState<'default' | 'draw' | 'drafting'>('draw');
+export default function Icad_Commands() {
+    const [activePanel, setActivePanel] = useState<'default' | 'draw' | 'drafting' | 'subDrawing'>('draw');
     const [selectedBtn, setSelectedBtn] = useState<string>("Drawing.png");
 
-    const handleBtnClick = (btnName: string, panel: 'default' | 'draw' | 'drafting') => {
+    const handleBtnClick = (btnName: string, panel: 'default' | 'draw' | 'drafting' | 'subDrawing') => {
         if (selectedBtn === btnName) {
             setSelectedBtn("");
             setActivePanel("default");
@@ -55,8 +56,8 @@ export default function DrawPanel() {
             flexDirection: "column",
             alignItems: "center",
             gap: "8px",
-            background: "#dadadaff",
-            border: "2px solid #b9b9b9ff",
+            background: "#dbdbdbf5",
+            border: "1px solid #c8cbd1c7",
             padding: "4px",
             width: "fit-content",
             fontFamily: "Tahoma, Verdana, sans-serif",
@@ -66,7 +67,7 @@ export default function DrawPanel() {
             <style>{`
                 .icad-header {
                     width: 100%;
-                    background: linear-gradient(to right, #0066cc, #003399);
+                    background: linear-gradient(to right, #000000ff, #000000ff);
                     color: #ffffff;
                     font-size: 11px;
                     font-weight: bold;
@@ -171,6 +172,10 @@ export default function DrawPanel() {
                     background: #b0c4de;
                     border-color: #4a90e2;
                 }
+                .draw-header {
+                    font-size: 16px;
+                    color: #131313ff;
+                }
             `}</style>
 
             <div className="draw-panel">
@@ -189,7 +194,7 @@ export default function DrawPanel() {
                         <img src={getIconSrc("Folder.png")} alt="Folder" width={22} height={22} />
                     </button>
 
-                    <button className="icon-btn">
+                    <button className="icon-btn" onClick={() => setActivePanel('subDrawing')}>
                         <img src={getIconSrc("Bolt.png")} alt="Bolt" width={22} height={22} />
                     </button>
 
@@ -229,10 +234,12 @@ export default function DrawPanel() {
 
                 <div className="draw-header">
                     {activePanel === "draw"
-                        ? "Draw Commands"
+                        ? "Draw"
                         : activePanel === "drafting"
-                            ? "Drafting Commands"
-                            : "DRAW"}
+                            ? "Drafting"
+                            : activePanel === "subDrawing"
+                                ? "Sub Drawing /Library"
+                                : "DRAW"}
                 </div>
 
                 <div className="command-grid">
@@ -240,7 +247,9 @@ export default function DrawPanel() {
                         <DrawDropdownLayout />
                     ) : activePanel === "drafting" ? (
                         <DraftingDropdownLayout />
-                    ) : (
+                    ) : activePanel === "subDrawing" ? (
+                        <SubDrawingLibraryLayout />
+                    ) : activePanel === "default" ? (
                         commands.map((command) => (
                             <button
                                 key={command}
@@ -252,11 +261,13 @@ export default function DrawPanel() {
                                 {command}
                             </button>
                         ))
-                    )}
+                    ) : null}
                 </div>
 
             </div>
 
         </div>
     );
+
+
 }

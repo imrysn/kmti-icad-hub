@@ -217,12 +217,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     if (savedCourseId === 'mock-icad-commands') {
                         title = 'iCAD Commands';
                         course_type = 'Command';
-                    } else if (savedCourseId === 'mock-icad-guide') {
-                        title = 'iCAD Guide';
-                        course_type = 'Guide';
-                    } else if (savedCourseId === 'mock-icad-menu') {
-                        title = 'iCAD Menu Setup';
-                        course_type = 'Menu';
                     } else if (savedCourseId === 'mock-icad-kemco') {
                         title = 'KEMCO JIS Standards';
                         course_type = 'Standard';
@@ -450,6 +444,22 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (is2DDrawingCourse) {
             setActiveLessonId('2d-orthographic-1');
             setExpandedIds(new Set(['2d-orthographic']));
+        } else if (selectedCourse.course_type === 'Standard' || selectedCourse.id === 'mock-icad-kemco') {
+            // KEMCO/JIS Standards: default to Lesson 1 (3D Standard)
+            setActiveLessonId('3d');
+            setExpandedIds(new Set());
+        } else if (selectedCourse.id === 'mock-sw-intro') {
+            // SolidWorks Introduction: default to the first sub-lesson
+            setActiveLessonId('sw-interface');
+            setExpandedIds(new Set(['sw-interface-main']));
+        } else if (selectedCourse.id === 'mock-sw-3d') {
+            // SolidWorks 3D Operation: default to the first sub-lesson
+            setActiveLessonId('sw-part-modeling');
+            setExpandedIds(new Set(['sw-part-modeling-main']));
+        } else if (selectedCourse.id === 'mock-sw-2d') {
+            // SolidWorks 2D Operation: default to the first lesson
+            setActiveLessonId('sw-2d-operation-page1');
+            setExpandedIds(new Set());
         } else {
             setActiveLessonId('interface');
             setExpandedIds(new Set());
@@ -689,7 +699,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }
 
     // Render CourseSelector (or loading/error) when no course is selected and not in a special subview
-    if ((loading && courses.length === 0) || error || (!selectedCourse && !['icad_standard','icad_command','solidworks_manual'].includes(currentView))) {
+    if ((loading && courses.length === 0) || error || (!selectedCourse && !['icad_standard', 'icad_command', 'icad_guide', 'icad_menu_setup', 'solidworks_manual'].includes(currentView))) {
         return (
             <CourseSelector
                 courses={courses}

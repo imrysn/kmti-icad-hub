@@ -19,8 +19,7 @@ import LinearPatternContent from "./LinearPatternContent";
 import MirrorComponentContent from "./MirrorComponentContent";
 import GettingMaterialWeightContent from "./Getting the Mat'l WtContent";
 import AssemblySavingContent from "./AssemblySavingContent";
-import HowtoEditContent from "./HowtoEditContent";
-
+import { HowToEditSketchContent, HowToEditFeatureContent, HowToEditMatingsContent } from "./HowtoEditContent";
 
 interface PartModelingProps {
     onNextLesson?: () => void;
@@ -65,8 +64,12 @@ const PartModelingLesson: React.FC<PartModelingProps> = ({
                                                         ? 'LINEAR PATTERN'
                                                         : subLessonId === 'sw-mirror-component'
                                                             ? 'MIRROR COMPONENT'
-                                                        : subLessonId === 'sw-editing-sketch-feature-matings'
-                                                            ? 'EDITING SKETCH, FEATURE, AND MATINGS'
+                                                        : subLessonId === 'sw-how-to-edit-sketch'
+                                                            ? 'HOW TO EDIT SKETCH'
+                                                        : subLessonId === 'sw-how-to-edit-feature'
+                                                            ? 'HOW TO EDIT FEATURE'
+                                                        : subLessonId === 'sw-how-to-edit-matings'
+                                                            ? 'HOW TO EDIT MATINGS'
                                                             : '3D PART MODELING';
 
     return (
@@ -98,7 +101,9 @@ const PartModelingLesson: React.FC<PartModelingProps> = ({
                     {subLessonId === 'sw-assembly-saving' && <AssemblySavingContent />}
                     {subLessonId === 'sw-linear-pattern' && <LinearPatternContent />}
                     {subLessonId === 'sw-mirror-component' && <MirrorComponentContent />}
-                    {subLessonId === 'sw-editing-sketch-feature-matings' && <HowtoEditContent />}
+                    {subLessonId === 'sw-how-to-edit-sketch' && <HowToEditSketchContent />}
+                    {subLessonId === 'sw-how-to-edit-feature' && <HowToEditFeatureContent />}
+                    {subLessonId === 'sw-how-to-edit-matings' && <HowToEditMatingsContent />}
 
                     {/* Lesson Navigation */}
                     <div className="lesson-navigation" style={{ marginTop: "2rem" }}>

@@ -157,18 +157,8 @@ const SketchingBaseContent: React.FC = () => (
                                         It also happens on improper adding of relation on the sketch.<br />
                                         Some of its dimensions, sketch or relation are <strong>Yellow or Red Sketch</strong>.
                                     </p>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
-                                        <div style={{ padding: '0.5rem', border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-surface)' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <div style={{ width: '16px', height: '16px', backgroundColor: 'red' }}></div>
-                                                <span style={{ fontSize: '0.85rem' }}>Item is Unsolvable</span>
-                                            </div>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
-                                                <div style={{ width: '16px', height: '16px', backgroundColor: 'yellow' }}></div>
-                                                <span style={{ fontSize: '0.85rem' }}>Item Conflicts</span>
-                                            </div>
-                                        </div>
-                                        <p className="p-flush" style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                                    <div style={{ marginTop: '1rem' }}>
+                                        <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                                             It will appear on <strong>over defined sketch</strong>.
                                         </p>
                                     </div>
