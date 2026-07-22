@@ -1,8 +1,13 @@
+body:has(.quot-entry-overlay) .app-header,
+body:has(.quot-entry-overlay) .page-header {
+  display: none !important;
+}
+
 .quot-entry-overlay {
   position: fixed;
   inset: 0;
   background: transparent;
-  
+
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -23,6 +28,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -33,8 +39,7 @@
   max-width: 680px;
   background: var(--bg-surface);
   color: var(--text-main);
-  
-  -webkit-
+
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
@@ -64,6 +69,7 @@
     opacity: 0;
     transform: scale(0.97) translateY(60px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -88,11 +94,10 @@
 
 .quot-entry-eyebrow {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--accent);
-  opacity: 0.9;
+  color: #B5179E;
 }
 
 .quot-entry-header h2 {
@@ -134,6 +139,14 @@
 .quot-entry-body {
   padding: 32px 40px;
   min-height: 280px;
+}
+
+.quot-entry-sessions h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
 }
 
 /* ── Session list ───────────────────────────────────────────────── */
@@ -277,7 +290,7 @@
   width: 30px;
   height: 30px;
   background: var(--accent-subtle);
-  color: var(--accent);
+  color: #B5179E;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -302,12 +315,13 @@
   font-weight: 800;
   color: var(--text-main);
   margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .quot-entry-empty span {
   font-size: 15px;
   color: var(--text-muted);
-  max-width: 280px;
+  max-width: 300px;
   line-height: 1.6;
 }
 
@@ -349,7 +363,7 @@
 }
 
 .quot-footer-btn:hover {
-  color: var(--accent) !important;
+  color: #B5179E !important;
   transform: translateY(-1px) !important;
   background: transparent !important;
 }
@@ -552,15 +566,23 @@
   transition: color 0.3s ease;
 }
 
-.variant-btn.active {
-  color: var(--accent);
+.variant-toggle-group .variant-btn.active,
+.variant-toggle-group .variant-btn.active:disabled,
+.variant-toggle-group button.variant-btn.active,
+.variant-toggle-group button.variant-btn.active:disabled,
+.variant-btn.active,
+.variant-btn.active:disabled,
+.variant-btn.active[disabled] {
+  color: #B5179E !important;
+  filter: none;
 }
 
 .variant-btn:not(.active):hover {
-  color: var(--text-main);
+  color: #B5179E !important;
 }
 
-.quot-entry-form .btn-block {
+.quot-entry-form .btn-block,
+.quot-entry-form button[type="submit"] {
   display: flex !important;
   width: auto !important;
   min-width: 160px !important;
@@ -573,19 +595,45 @@
   align-items: center !important;
   justify-content: center !important;
   background: transparent !important;
+  background-color: transparent !important;
   color: #475569 !important;
   /* Professional slate color from design */
   border: none !important;
+  border-color: transparent !important;
+  outline: none !important;
   transition: all 0.25s ease !important;
   cursor: pointer !important;
   box-shadow: none !important;
 }
 
-.quot-entry-form .btn-block:hover {
+.quot-entry-form .btn-block:hover,
+.quot-entry-form .btn-block:focus,
+.quot-entry-form .btn-block:active,
+.quot-entry-form button[type="submit"]:hover,
+.quot-entry-form button[type="submit"]:focus,
+.quot-entry-form button[type="submit"]:active {
   background: transparent !important;
-  color: var(--accent) !important;
-  transform: translateY(-1px) !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-color: transparent !important;
+  outline: none !important;
   box-shadow: none !important;
+  color: #B5179E !important;
+  transform: translateY(-1px) !important;
+}
+
+[data-theme="dark"] .quot-entry-form .btn-block,
+[data-theme="dark"] .quot-entry-form button[type="submit"] {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .quot-entry-form .btn-block:hover,
+[data-theme="dark"] .quot-entry-form button[type="submit"]:hover {
+  color: #B5179E !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-color: transparent !important;
 }
 
 /* ── Utilities ───────────────────────────────────────────────────── */
@@ -618,6 +666,10 @@
 
 /* ���� Help Link ������������������������������������������������������������������������������������������������������ */
 .quot-entry-help-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
   margin-top: 32px;
   color: var(--text-main);
   font-size: 14px;
@@ -647,16 +699,21 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   opacity: 0.8;
-  transition: opacity 0.3s ease;
+  transition: all 0.2s ease;
 }
 
-.quot-entry-help-link:hover {
-  color: rgba(255, 255, 255, 0.7);
-}
-
+.quot-entry-help-link span:hover,
 .quot-entry-help-link:hover span {
   opacity: 1;
-  color: var(--accent);
+  color: #B5179E;
+}
+
+.quot-entry-help-link:hover:not(:disabled),
+.quot-entry-help-link:active:not(:disabled) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
 .quot-entry-wrapper {
@@ -666,4 +723,10 @@
   justify-content: center;
   width: 100%;
   max-width: 680px;
+}
+
+.quot-entry-help-link:focus-visible {
+  outline: 3px solid #B5179E;
+  outline-offset: 5px;
+  border-radius: 4px;
 }

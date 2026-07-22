@@ -28,7 +28,6 @@ import {
   CompanyInfo,
   ClientInfo,
   QuotationDetailsCard,
-  BillingDetailsCard,
   TasksTable,
   SignatureForm,
   PrintPreviewModal,
@@ -99,7 +98,7 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
     markSaved, setHasUnsavedChanges,
     addChildTask,
     appendTasks,
-  } = useInvoiceState()
+  } = useInvoiceState(user ? (user.full_name || user.username) : undefined)
 
   // Calculate effective data for rendering (preview vs live)
   const isPreview = !!previewData
@@ -948,13 +947,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
                   signatures={effSignatures}
                   onUpdate={isPreview ? undefined : (syncSignatures as any)}
                 />
-
-                {user?.role !== 'user' && (
-                  <BillingDetailsCard
-                    billingDetails={effBilling}
-                    onUpdateBilling={isPreview ? undefined : syncBillingDetails}
-                  />
-                )}
 
                 <div className="quot-bottom-spacer" style={{ height: '40px' }} />
               </div>

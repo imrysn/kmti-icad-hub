@@ -1,6 +1,5 @@
 export { default as PrintPreviewModal } from './PrintPreviewModal'
 export { default as QuotationDetailsCard } from './components/QuotationDetailsCard'
-export { default as BillingDetailsCard } from './components/BillingDetailsCard'
 export { default as CompanyInfo } from './components/CompanyInfo'
 export { default as ClientInfo } from './components/ClientInfo'
 export { default as TasksTable } from './components/TasksTable'

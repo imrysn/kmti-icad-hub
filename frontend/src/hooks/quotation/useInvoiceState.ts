@@ -206,7 +206,7 @@ function migrateLegacyOverrides(raw: any): ManualOverrides {
 
 // ─── Hook ────────────────────────────────────────────────────────────────────
 
-export function useInvoiceState() {
+export function useInvoiceState(defaultProjectInCharge?: string) {
   const today = new Date().toISOString().split('T')[0]
 
   // ns is React state so that setNs() triggers a re-render, causing every
@@ -228,7 +228,28 @@ export function useInvoiceState() {
     referenceNo: '',
     date: today,
   }), 'details', ns)
-  const [billingDetails, setBillingDetails] = useStickyState<BillingDetails>(DEFAULT_BILLING_DETAILS, 'billingDetails', ns)
+  const [billingDetails, setBillingDetails] = useStickyState<BillingDetails>(() => ({
+    ...DEFAULT_BILLING_DETAILS,
+    projectInCharge: defaultProjectInCharge || '',
+    clientName: 'Kusakabe Electric Machinery Co., Ltd.',
+  }), 'billingDetails', ns)
+
+  useEffect(() => {
+    let changed = false
+    const newDetails = { ...billingDetails }
+    if (!newDetails.projectInCharge && defaultProjectInCharge) {
+      newDetails.projectInCharge = defaultProjectInCharge
+      changed = true
+    }
+    if (!newDetails.clientName) {
+      newDetails.clientName = 'Kusakabe Electric Machinery Co., Ltd.'
+      changed = true
+    }
+    if (changed) {
+      setBillingDetails(newDetails)
+    }
+  }, [billingDetails.projectInCharge, billingDetails.clientName, defaultProjectInCharge, setBillingDetails])
+
   const [tasks, setTasks] = useStickyState<Task[]>([], 'tasks', ns)
   const [baseRates, setBaseRates] = useStickyState<BaseRates>(DEFAULT_BASE_RATES, 'baseRates', ns)
   const [currentFilePath, setCurrentFilePath] = useStickyState<string | null>(null, 'filePath', ns)
@@ -644,9 +665,9 @@ export function useInvoiceState() {
       projectStatus: data.billingDetails?.projectStatus ?? 'On Going',
       submittedToAdminAt: data.billingDetails?.submittedToAdminAt ?? '',
       updateDetail: data.billingDetails?.updateDetail ?? '',
-      projectInCharge: data.billingDetails?.projectInCharge ?? '',
+      projectInCharge: data.billingDetails?.projectInCharge || defaultProjectInCharge || '',
       billTo: data.billingDetails?.billTo ?? '',
-      clientName: data.billingDetails?.clientName ?? data.clientName ?? '',
+      clientName: data.billingDetails?.clientName || data.clientName || 'Kusakabe Electric Machinery Co., Ltd.',
     }
     const resolvedVariant = data.layoutVariant || 'special'
     let resolvedTasks = data.tasks || [makeBlankTask()]

@@ -38,6 +38,12 @@ def log_activity(*args, **kwargs): pass
 
 router = APIRouter(prefix="/quotations", tags=["quotations"])
 
+_TEMPLATE_MAP = {
+    "quotation": "Quotation Template.xlsx",
+    "billing": "Billing Template.xlsx",
+    "kemco_quotation": "KEMCO Quotation Template.xlsx",
+}
+
 def _get_audit_label(path: str, full_state: dict = None) -> str:
     """Map a technical JSON path to a human-readable field name."""
     if not path: return "Document"
@@ -84,6 +90,117 @@ def safe_json_loads(val: Optional[str]) -> dict:
         print(f"Error decoding JSON: {e}")
         return {}
 
+def _as_number(value: Any, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+def calculate_grand_total(data: dict) -> float:
+    """Mirror the frontend quotation totals closely enough for list metadata."""
+    tasks = data.get("tasks") or []
+    rates = data.get("baseRates") or {}
+    overrides = data.get("manualOverrides") or {}
+    task_overrides = overrides.get("tasks") or {}
+    footer = overrides.get("footer") or {}
+    layout_variant = data.get("layoutVariant") or "special"
+
+    def override_for(task_id: Any) -> dict:
+        return task_overrides.get(str(task_id), task_overrides.get(task_id, {})) or {}
+
+    def task_total(task: dict) -> float:
+        override = override_for(task.get("id"))
+        if "total" in override and override["total"] is not None:
+            return _as_number(override["total"])
+
+        if layout_variant == "kemco":
+            children = [item for item in tasks if item.get("parentId") == task.get("id")]
+            if children:
+                return sum(task_total(child) for child in children)
+            return _as_number(task.get("amount"))
+
+        children = [item for item in tasks if item.get("parentId") == task.get("id")]
+        related = [task, *children]
+        hours = sum(_as_number(item.get("hours")) + _as_number(item.get("minutes")) / 60 for item in related)
+        overtime_hours = sum(_as_number(item.get("overtimeHours")) for item in related)
+        software_units = sum(_as_number(item.get("softwareUnits")) for item in related)
+        task_type = task.get("type") or "3D"
+        if task_type == "2D":
+            time_rate = _as_number(rates.get("timeChargeRate2D"))
+        elif task_type in ("3D", "3D/2D"):
+            time_rate = _as_number(rates.get("timeChargeRate3D"))
+        else:
+            time_rate = _as_number(rates.get("timeChargeRateOthers"))
+        return (
+            hours * time_rate
+            + overtime_hours * _as_number(rates.get("overtimeRate"))
+            + software_units * _as_number(rates.get("softwareRate"))
+        )
+
+    main_tasks = [task for task in tasks if task.get("isMainTask")]
+    subtotal = sum(task_total(task) for task in main_tasks)
+    overhead = (
+        _as_number(footer.get("overhead"))
+        if footer.get("overhead") is not None
+        else subtotal * _as_number(rates.get("overheadPercentage")) / 100
+    )
+    return round(subtotal + overhead + _as_number(footer.get("adjustment")), 2)
+
+def _sync_metadata(q_id: int, data: dict, db: Session, username: str) -> Quotation:
+    """Persist an autosaved document and keep searchable quotation fields in sync."""
+    if not isinstance(data, dict):
+        raise HTTPException(status_code=400, detail="Quotation data must be an object")
+
+    quot = db.execute(select(Quotation).where(Quotation.id == q_id)).scalar_one_or_none()
+    if not quot:
+        raise HTTPException(status_code=404, detail="Quotation not found")
+
+    quotation_details = data.get("quotationDetails") or {}
+    client_info = data.get("clientInfo") or {}
+    billing_details = data.get("billingDetails") or {}
+    quotation_signatures = (data.get("signatures") or {}).get("quotation") or {}
+    prepared_by = quotation_signatures.get("preparedBy") or {}
+
+    new_number = (quotation_details.get("quotationNo") or quot.quotation_no or "").strip()
+    if not new_number:
+        raise HTTPException(status_code=400, detail="Quotation number is required")
+    if new_number != quot.quotation_no:
+        duplicate = db.execute(
+            select(Quotation).where(Quotation.quotation_no == new_number, Quotation.id != q_id)
+        ).scalar_one_or_none()
+        if duplicate:
+            raise HTTPException(status_code=400, detail=f"Quotation number '{new_number}' already exists")
+        old_number = quot.quotation_no
+        quot.quotation_no = new_number
+        if not quot.display_name or quot.display_name == old_number:
+            quot.display_name = new_number
+
+    date_value = quotation_details.get("date")
+    if date_value:
+        try:
+            quot.date = datetime.strptime(str(date_value)[:10], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Quotation date must use YYYY-MM-DD format")
+
+    quot.client_name = client_info.get("company") or ""
+    quot.bill_to = client_info.get("company") or billing_details.get("billTo") or ""
+    quot.customer_incharge = client_info.get("contact") or ""
+    quot.designer_name = billing_details.get("projectInCharge") or prepared_by.get("name") or ""
+    quot.grand_total = calculate_grand_total(data)
+    quot.quotation_status = billing_details.get("quotationStatus") or quot.quotation_status or "DRAFT"
+    quot.project_status = billing_details.get("projectStatus") or quot.project_status or "On Going"
+    quot.update_detail = billing_details.get("updateDetail") or ""
+    quot.updated_by = username
+    quot.last_updated_at = datetime.now(timezone.utc)
+    quot.updated_at = datetime.now(timezone.utc)
+    quot.data = json.dumps(data, ensure_ascii=False)
+
+    db.commit()
+    db.refresh(quot)
+    cache_delete("quot_list")
+    cache_delete("quot_sessions")
+    return quot
+
 @router.get("/templates/{template_name}")
 def get_template(template_name: str):
     """Serve an Excel template file from backend/data/.
@@ -126,8 +243,6 @@ def list_quotations(
     stmt = select(Quotation).order_by(desc(Quotation.updated_at))
     
     if trash_only:
-        if not is_admin:
-            raise HTTPException(status_code=403, detail="Access Denied: Only administrators can access the trash bin.")
         stmt = stmt.where(Quotation.is_deleted == True)
     else:
         stmt = stmt.where(Quotation.is_deleted == False)
@@ -623,39 +738,15 @@ def delete_quotation(
         
     # 2. Authorization Check
     is_admin = current_user.role in ['admin', 'it']
-    # Match workstation hostname or fullName for ownership
-    is_owner = (
-        (workstation and quot.workstation == workstation) or
-        (computer_name and quot.workstation == computer_name) or
-        (current_user.username and quot.workstation == current_user.username) or
-        (current_user.full_name and quot.workstation == current_user.full_name) or
-        (getattr(current_user, 'display_name', None) and quot.workstation == current_user.display_name)
-    )
-    print(f"DEBUG: Delete requested for q_id={q_id}, quot.workstation='{quot.workstation}', req_workstation='{workstation}', req_computer_name='{computer_name}'")
-    print(f"DEBUG: current_user.username='{current_user.username}', full_name='{current_user.full_name}', display_name='{getattr(current_user, 'display_name', None)}'")
-    print(f"DEBUG: is_admin={is_admin}, is_owner={is_owner}")
-
-    if not is_admin and not is_owner:
-        owner_label = quot.workstation if quot.workstation else "Legacy/Unknown"
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Deletion Denied: This record belongs to workstation '{owner_label}'. Only the owner or an administrator can delete it."
-        )
-
-    # 3. Perform Deletion
     q_no = quot.quotation_no
     is_soft = not (quot.is_deleted or permanent)
+
     if quot.is_deleted or permanent:
-        # Permanent delete is restricted to admins only
-        if not is_admin:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access Denied: Only administrators can permanently delete records from the trash bin."
-            )
+        # Permanent delete (allowed for all users managing their records)
         db.execute(delete(QuotationHistory).where(QuotationHistory.quotation_id == q_id))
         db.execute(delete(Quotation).where(Quotation.id == q_id))
     else:
-        # Soft delete
+        # Soft delete (allowed for all authenticated users)
         quot.is_deleted = True
         quot.is_active = False
 
@@ -679,13 +770,6 @@ def restore_quotation(
     current_user: User = Depends(get_current_user)
 ):
     """Restore a soft-deleted quotation from the trash bin."""
-    is_admin = current_user.role in ['admin', 'it']
-    if not is_admin:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Access Denied: Only administrators can restore records from the trash bin."
-        )
-
     stmt = select(Quotation).where(Quotation.id == q_id)
     res = db.execute(stmt)
     quot = res.scalar_one_or_none()

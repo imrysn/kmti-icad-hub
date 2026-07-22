@@ -105,6 +105,7 @@ export default function QuotationEntryModal({ onJoin, onCreateNew, onStartTutori
 
   return (
     <div className="quot-entry-overlay">
+      <style>{`.app-header, .page-header { display: none !important; }`}</style>
       <div className="quot-entry-wrapper">
         <div className="quot-entry-card">
 
@@ -175,7 +176,7 @@ export default function QuotationEntryModal({ onJoin, onCreateNew, onStartTutori
                         className={`variant-btn ${newRoom.variant === 'special' ? 'active' : ''}`}
                         onClick={() => setNewRoom(prev => ({ ...prev, variant: 'special' }))}
                         disabled // Disabled because customer selection dictates variant
-                        style={{ opacity: newRoom.variant === 'special' ? 1 : 0.5, cursor: 'not-allowed' }}
+                        style={{ opacity: newRoom.variant === 'special' ? 1 : 0.5, cursor: 'not-allowed', color: newRoom.variant === 'special' ? '#B5179E' : '#64748b' }}
                       >
                         Special
                       </button>
@@ -184,7 +185,7 @@ export default function QuotationEntryModal({ onJoin, onCreateNew, onStartTutori
                         className={`variant-btn ${newRoom.variant === 'kemco' ? 'active' : ''}`}
                         onClick={() => setNewRoom(prev => ({ ...prev, variant: 'kemco' }))}
                         disabled // Disabled because customer selection dictates variant
-                        style={{ opacity: newRoom.variant === 'kemco' ? 1 : 0.5, cursor: 'not-allowed' }}
+                        style={{ opacity: newRoom.variant === 'kemco' ? 1 : 0.5, cursor: 'not-allowed', color: newRoom.variant === 'kemco' ? '#B5179E' : '#64748b' }}
                       >
                         KEMCO
                       </button>
@@ -380,9 +381,9 @@ export default function QuotationEntryModal({ onJoin, onCreateNew, onStartTutori
         </div>
 
         {!isCreating && !joiningSession && (
-          <div className="quot-entry-help-link" onClick={() => setIsLobbyTutorialOpen(true)}>
+          <button type="button" className="quot-entry-help-link" onClick={() => setIsLobbyTutorialOpen(true)}>
             Don't know how to start? <span>Click here for a Quick Tutorial</span>
-          </div>
+          </button>
         )}
       </div>
 

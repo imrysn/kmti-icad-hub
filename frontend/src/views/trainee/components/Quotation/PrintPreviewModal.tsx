@@ -1,5 +1,6 @@
 import { memo, useState, useMemo, useCallback, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { Printer, Plus, Minus } from 'lucide-react'
 import type {
   Task, BaseRates, Signatures, CompanyInfo, ClientInfo, QuotationDetails, BillingDetails, ManualOverrides, TaskOverrides
 } from '../../../../types/quotation'
@@ -534,7 +535,9 @@ const PrintPreviewModal = memo(({
           silent: false, printBackground: true, color: true,
           pageSize: 'A4', margins: { marginType: 'none' }, landscape: false,
         })
-        if (result?.error) console.error('Print error:', result.error)
+        if (!result?.success && !result?.canceled) {
+          throw new Error(result?.error || 'Printing failed.')
+        }
       } else {
         window.print()
       }
@@ -551,7 +554,7 @@ const PrintPreviewModal = memo(({
     let styleEl: HTMLStyleElement | null = null
     try {
       const el = (window as any).electronAPI
-      if (!el?.printToPDF || !el.showSaveDialog || !el.writeFile) {
+      if (!el?.savePDF) {
         window.print(); return
       }
 
@@ -562,17 +565,6 @@ const PrintPreviewModal = memo(({
       const defaultName = `${docType}_${docNo.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`
 
       // Show save dialog first — before injecting print styles
-      const dialogResult = await el.showSaveDialog({
-        title: 'Save PDF',
-        defaultPath: defaultName,
-        filters: [{ name: 'PDF Files', extensions: ['pdf'] }]
-      })
-
-      // User cancelled
-      if (dialogResult.canceled || !dialogResult.filePath) return
-
-      const savePath = dialogResult.filePath
-
       // Inject print styles
       styleEl = document.createElement('style')
       styleEl.id = '__kmti-pdf-print-override'
@@ -581,20 +573,10 @@ const PrintPreviewModal = memo(({
       await new Promise(r => setTimeout(r, 300))
 
       // Generate PDF
-      const pdfResult = await el.printToPDF({
-        printBackground: true,
-        pageSize: 'A4',
-        landscape: false,
-        marginsType: 1
-      })
-
-      if (!pdfResult.success || !pdfResult.data) {
-        console.error('PDF generation failed:', pdfResult.error)
-        return
+      const pdfResult = await el.savePDF({ defaultName })
+      if (!pdfResult.success && !pdfResult.canceled) {
+        throw new Error(pdfResult.error || 'PDF generation failed.')
       }
-
-      // Write to disk
-      await el.writeFile(savePath, pdfResult.data)
     } catch (err) {
       console.error('PDF export failed:', err)
     } finally {
@@ -620,11 +602,11 @@ const PrintPreviewModal = memo(({
       })
     } catch (err) {
       console.error('Excel export failed:', err)
-      alert('Failed to export Excel. Please check if the backend is running.')
+      alert(`Failed to export Excel: ${err instanceof Error ? err.message : 'Unknown error'}`)
     } finally {
       setIsProcessing(false)
     }
-  }, [printMode, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures])
+  }, [printMode, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures, layoutVariant])
 
   // ── Status tracking change handler ─────────────────────────────
   const handleQuotationStatusChange = useCallback((val: string) => {
@@ -693,13 +675,16 @@ const PrintPreviewModal = memo(({
         <div className="ppm-header">
           <div className="ppm-header-left">
             <div className="ppm-title">
-              <h2>{printMode === 'quotation' ? 'Print Preview — Quotation' : 'Print Preview — Billing Statement'}</h2>
+              <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Printer size={20} />
+                {printMode === 'quotation' ? 'Print Preview — Quotation' : 'Print Preview — Billing Statement'}
+              </h2>
             </div>
           </div>
 
           <div className="ppm-header-right">
             <div className="ppm-export-group">
-              <button id="ppm-btn-print" className="ppm-action-btn primary" onClick={handlePrint} disabled={isProcessing}>
+              <button id="ppm-btn-print" className="ppm-action-btn export-print" onClick={handlePrint} disabled={isProcessing}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 6 2 18 2 18 9" />
                   <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
@@ -740,11 +725,8 @@ const PrintPreviewModal = memo(({
             Back
           </button>
 
-          {/* Time & Date Pill */}
-          <div className="ppm-time-pill">
-            {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })} | {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase()}
-          </div>
-          
+
+
           <div className="ppm-body-content">
             <div className="ppm-scroll-area">
               <div
@@ -953,7 +935,7 @@ const PrintPreviewModal = memo(({
           </span>
           <div className="zoom-controls">
             <button className="zoom-button" onClick={handleZoomOut} disabled={actualScale <= ZOOM_LEVELS[0]} title="Zoom Out">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /></svg>
+              <span style={{ fontSize: '18px', fontWeight: '500', lineHeight: 1, marginTop: '-2px' }}>−</span>
             </button>
             <span
               className="ppm-zoom-label"
@@ -964,7 +946,7 @@ const PrintPreviewModal = memo(({
               {zoomMode === 'fit' ? `Fit (${Math.round(actualScale * 100)}%)` : `${Math.round(actualScale * 100)}%`}
             </span>
             <button className="zoom-button" onClick={handleZoomIn} disabled={actualScale >= ZOOM_LEVELS[ZOOM_LEVELS.length - 1]} title="Zoom In">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+              <span style={{ fontSize: '18px', fontWeight: '500', lineHeight: 1, marginTop: '-1px' }}>+</span>
             </button>
           </div>
         </div>
@@ -974,6 +956,7 @@ const PrintPreviewModal = memo(({
         isOpen={isTutorialOpen}
         onClose={() => setIsTutorialOpen(false)}
         onComplete={onCompleteTutorial}
+        layoutVariant={layoutVariant}
       />
     </div>,
     document.body
