@@ -1,6 +1,7 @@
 import React from "react";
 import holeImg from "../../../../../assets/Solidworks/3D_Operation/3D_Hole.png";
 import typeImg from "../../../../../assets/Solidworks/3D_Operation/3D_Type.png";
+import type1Img from "../../../../../assets/Solidworks/3D_Operation/3D_Type1.png";
 import posImg from "../../../../../assets/Solidworks/3D_Operation/3D_Pos.png";
 import pos1Img from "../../../../../assets/Solidworks/3D_Operation/3D_Pos1.png";
 import checkImg from "../../../../../assets/Solidworks/3D_Operation/3D_Check.png";
@@ -32,6 +33,11 @@ const AddingHolesContent: React.FC = () => (
                     </span>
                     {' '}select <strong>Hole Type</strong>, <strong>Hole Specifications</strong>, and <strong>End Condition</strong> of feature.
                 </span>
+            </div>
+            <div className="step-description">
+                <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                    <img src={type1Img} alt="Hole Type Settings" className="software-screenshot screenshot-wide" style={{ maxWidth: '100%', height: 'auto' }} />
+                </div>
             </div>
         </div>
 

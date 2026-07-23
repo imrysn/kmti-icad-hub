@@ -41,7 +41,7 @@ const DetailView: React.FC<DetailViewProps> = ({
                             <span className="step-label">In View Layout, click Detail View.</span>
                         </div>
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                 <img src={viewLayoutImg} alt="View Layout" className="software-screenshot screenshot-wide" />
                             </div>
                         </div>
@@ -53,7 +53,7 @@ const DetailView: React.FC<DetailViewProps> = ({
                             <span className="step-label">Sketch a circle.</span>
                         </div>
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                 <img src={sketchCircleImg} alt="Sketch a circle" className="software-screenshot screenshot-wide" />
                             </div>
                         </div>
@@ -87,7 +87,7 @@ const DetailView: React.FC<DetailViewProps> = ({
 
                     <div className="instruction-step">
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '0.2rem', marginBottom: '2rem' }}>
                                 <img src={propertyManagerImg} alt="Detail View Property Manager" className="software-screenshot screenshot-wide" style={{ maxWidth: '1000px', width: '100%' }} />
                             </div>
                         </div>

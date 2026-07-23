@@ -8,108 +8,70 @@ import checkImg from "../../../../../assets/Solidworks/3D_Operation/3D_Check.png
 
 const CuttingBaseContent: React.FC = () => (
     <>
-                    {/* Step 1 */}
-                    <div className="instruction-step">
-                        <div className="step-header">
-                            <span className="step-number">1 </span>
-                            <span className="step-label">Click <strong>Spacebar</strong> then select <strong>Front</strong>.</span>
-                        </div>
+        <div className="instruction-step">
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <div style={{ flex: '1 1 400px' }}>
+                    <ol style={{ paddingLeft: '1.25rem', margin: '0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                        <li>
+                            Click <strong>Spacebar</strong> then select <strong>Front</strong>.
+                        </li>
+                        <li>
+                            In <strong>Sketch</strong> tab, select <strong>Sketch</strong>{' '}
+                            <span className="image-wrapper-flush">
+                                <img src={sImg} alt="Sketch Tab" style={{ height: '24px', verticalAlign: 'middle' }} />
+                            </span>
+                        </li>
+                        <li>
+                            Click the <strong>front face</strong>.
+                        </li>
+                        <li>
+                            Draw the sketch to be cut. <span style={{ fontWeight: 'normal' }}>(Please see Page 4 No. 9 for adding sketch relation and dimension.)</span>
+                        </li>
+                    </ol>
+
+                    <div className="instruction-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                        <p className="p-flush red-text" style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Important Note:</p>
+                        <p className="p-flush red-text">※ Enclose the sketch first, ensure that the lines intersect / coincide with each other.</p>
                     </div>
+                </div>
 
-                    {/* Step 2 */}
-                    <div className="instruction-step">
-                        <div className="step-header">
-                            <span className="step-number">2 </span>
-                            <span className="step-label">In <strong>Sketch</strong> tab, select <strong>Sketch</strong>.</span>
-                        </div>
-                        <div className="step-description">
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', marginTop: '1rem' }}>
-                                <div style={{ flex: '1 1 300px', minWidth: '250px' }}>
-                                    <div className="image-wrapper">
-                                        <img src={sImg} alt="Sketch Tab" className="software-screenshot" style={{ maxWidth: '100%', height: 'auto' }} />
-                                    </div>
-                                </div>
-                                <div style={{ flex: '1 1 300px', minWidth: '250px' }}>
-                                    <div className="image-wrapper">
-                                        <img src={frontFaceImg} alt="Front Face" className="software-screenshot" style={{ maxWidth: '100%', height: 'auto' }} />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div style={{ flex: '0 0 auto', display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+                    <div className="image-wrapper">
+                        <img src={frontFaceImg} alt="Front Face" className="software-screenshot" style={{ maxHeight: '350px', width: 'auto' }} />
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    {/* Step 3 */}
-                    <div className="instruction-step">
-                        <div className="step-header">
-                            <span className="step-number">3 </span>
-                            <span className="step-label">Click the <strong>Front Face</strong>.</span>
-                        </div>
+        <div className="instruction-step">
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <div style={{ flex: '1 1 400px' }}>
+                    <ol start={5} style={{ paddingLeft: '1.25rem', margin: '0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                        <li>
+                            In <strong>Features</strong> tab, click <strong>Extruded Cut</strong>{' '}
+                            <span className="image-wrapper-flush">
+                                <img src={cutImg} alt="Extruded Cut" style={{ height: '24px', verticalAlign: 'middle' }} />
+                            </span>
+                        </li>
+                        <li>
+                            <strong>Cut-Extrude</strong> property manager will come up. In <strong>End Condition</strong>, select <strong>Through All</strong>.
+                        </li>
+                        <li>
+                            Click{' '}
+                            <span className="image-wrapper-flush">
+                                <img src={checkImg} alt="Check button" style={{ height: '24px', verticalAlign: 'middle' }} />
+                            </span>
+                        </li>
+                    </ol>
+                </div>
+
+                <div style={{ flex: '0 0 auto', display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+                    <div className="image-wrapper">
+                        <img src={exCutImg} alt="Cut-Extrude PropertyManager" className="software-screenshot" style={{ maxHeight: '400px', width: 'auto' }} />
                     </div>
-
-                    {/* Step 4 */}
-                    <div className="instruction-step">
-                        <div className="step-header">
-                            <span className="step-number">4 </span>
-                            <span className="step-label">Draw the sketch to be cut.</span>
-                        </div>
-                        <div className="step-description">
-                            <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                                (Please see Page 4 No. 9 for adding sketch relation and dimension.)
-                            </p>
-
-                            <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
-                                <img src={skImg} alt="Sketch" className="software-screenshot screenshot-wide" />
-                            </div>
-
-                            <div className="instruction-box" style={{ marginTop: '1.5rem', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '1rem 0' }}>
-                                <p className="p-flush red-text" style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Important Note:</p>
-                                <p className="p-flush red-text">※ Enclose the sketch first, ensuring that the sketch is completely closed.</p>
-                                <p className="p-flush red-text" style={{ marginTop: '0.25rem' }}>※ Make sure all sketch lines intersect or have Coincident relations with each other.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Step 5 */}
-                    <div className="instruction-step">
-                        <div className="step-header">
-                            <span className="step-number">5 </span>
-                            <span className="step-label">In the <strong>Features</strong> tab, click <strong>Extruded Cut</strong>.</span>
-                        </div>
-                        <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
-                                <img src={cutImg} alt="Extruded Cut" className="software-screenshot screenshot-wide" />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Step 6 */}
-                    <div className="instruction-step">
-                        <div className="step-header">
-                            <span className="step-number">6 </span>
-                            <span className="step-label">The <strong>Cut-Extrude PropertyManager</strong> will appear.</span>
-                        </div>
-                        <div className="step-description">
-                            <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                                In <strong>End Condition</strong>, select <strong>Through All</strong>.
-                            </p>
-                            <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
-                                <img src={exCutImg} alt="Cut-Extrude PropertyManager" className="software-screenshot screenshot-wide" />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Step 7 */}
-                    <div className="instruction-step">
-                        <div className="step-header">
-                            <span className="step-number">7 </span>
-                            <span className="step-label">Click the <strong>Check</strong> button.</span>
-                        </div>
-                        <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                                <img src={checkImg} alt="Check button" className="software-screenshot" style={{ height: 'auto', maxWidth: '100%' }} />
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </div>
     </>
 );
 

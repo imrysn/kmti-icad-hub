@@ -12,7 +12,7 @@ const CenterMarkContent: React.FC = () => {
                     <span className="step-label">In Annotation, click Center Mark.</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={centerMarkImg} alt="Center Mark Properties" className="software-screenshot" />
                     </div>
                 </div>
@@ -24,7 +24,7 @@ const CenterMarkContent: React.FC = () => {
                     <span className="step-label">Select hole/slot hole.</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={centerMark1Img} alt="Select hole" className="software-screenshot screenshot-wide" />
                     </div>
                 </div>
@@ -36,7 +36,7 @@ const CenterMarkContent: React.FC = () => {
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>
                 <div className="step-description">
-                    <div className="instruction-box" style={{ marginTop: '1.5rem', border: 'none', background: 'transparent', padding: 0 }}>
+                    <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                         <p className="p-flush red-text">
                             ※ Click the holes to manually insert center mark.
                         </p>

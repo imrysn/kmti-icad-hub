@@ -12,7 +12,7 @@ const CenterlineContent: React.FC = () => {
                     <span className="step-label">In Annotation, click Center line.</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={centerLineImg} alt="Center line" className="software-screenshot" />
                     </div>
                 </div>
@@ -24,7 +24,7 @@ const CenterlineContent: React.FC = () => {
                     <span className="step-label">Select two edges to manually insert centerlines.</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={twoEdgesImg} alt="Two edges" className="software-screenshot screenshot-wide" />
                     </div>
                 </div>

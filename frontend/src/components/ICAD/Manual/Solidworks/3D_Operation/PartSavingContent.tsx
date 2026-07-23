@@ -33,7 +33,7 @@ const PartSavingContent: React.FC = () => (
                                 Filename Extension: Part - <strong style={{ color: 'red' }}>.SLDPRT</strong>
                             </p>
 
-                            <div className="instruction-box" style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+                            <div className="instruction-box">
                                 <p className="p-flush red-text">※ Make a new folder for the parts.</p>
                             </div>
                         </div>
