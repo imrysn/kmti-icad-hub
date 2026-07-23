@@ -6,13 +6,13 @@ import clickShowImg from "../../../../../assets/Solidworks/2D_Operation/2D_Click
 
 const HideShowLinesContent: React.FC = () => {
     return (
-        <div className="instruction-step" style={{ padding: '0', marginTop: '1.5rem', marginBottom: '2rem' }}>
+        <div className="instruction-step" style={{ padding: '0', marginTop: '0.5rem', marginBottom: '2rem' }}>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-normal)' }}>
                     There are 2 ways to hide/show lines.
                 </p>
 
-                <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                     {/* Column 1: Tangent Edge */}
                     <div style={{ flex: '1 1 45%', minWidth: '300px' }}>
                         <div className="instruction-step" style={{ padding: '0' }}>
@@ -26,7 +26,7 @@ const HideShowLinesContent: React.FC = () => {
                                     <li>Right click on the view then point on Tangent Edge.</li>
                                     <li>Click Tangent Edges Removed.</li>
                                 </ol>
-                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                     <img
                                         src={tangentEdgesRemovedImg}
                                         alt="Tangent Edges Removed"
@@ -48,7 +48,7 @@ const HideShowLinesContent: React.FC = () => {
                                 <ol style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-normal)', lineHeight: '2.2' }}>
                                     <li>Click a line.</li>
                                 </ol>
-                                <div className="image-wrapper" style={{ marginTop: '0.5rem', marginBottom: '1.5rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem', marginBottom: '1.5rem' }}>
                                     <img
                                         src={clickLineImg}
                                         alt="Click Line"
@@ -58,14 +58,14 @@ const HideShowLinesContent: React.FC = () => {
                                 <ol start={2} style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-normal)', lineHeight: '2.2' }}>
                                     <li>Click Hide/Show Edges.</li>
                                 </ol>
-                                <div className="image-wrapper" style={{ marginTop: '0.5rem', marginBottom: '1.5rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem', marginBottom: '1.5rem' }}>
                                     <img
                                         src={clickHideImg}
                                         alt="Click Hide"
                                         className="software-screenshot"
                                     />
                                 </div>
-                                <div className="image-wrapper" style={{ marginTop: '0.5rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                     <img
                                         src={clickShowImg}
                                         alt="Click Show"
@@ -75,7 +75,7 @@ const HideShowLinesContent: React.FC = () => {
                             </div>
                         </div>
                         
-                        <div className="instruction-box" style={{ marginTop: '2rem', border: 'none', background: 'transparent', padding: 0 }}>
+                        <div className="instruction-box" style={{ marginTop: '2rem' }}>
                             <p className="p-flush red-text">
                                 ※ Press CTRL then pick line will able the user to select another line then hide lines simultaneously.
                             </p>

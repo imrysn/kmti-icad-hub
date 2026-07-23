@@ -5,9 +5,9 @@ import checkImg from "../../../../../assets/Solidworks/2D_Operation/2D_Check.png
 
 const InsertMainViewsContent: React.FC = () => {
     return (
-        <div className="instruction-step" style={{ padding: '0', marginTop: '1.5rem', marginBottom: '2rem' }}>
+        <div className="instruction-step" style={{ padding: '0', marginTop: '0.5rem', marginBottom: '2rem' }}>
             <div className="step-description">
-                <div className="instruction-box" style={{ border: 'none', background: 'transparent', padding: 0 }}>
+                <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
                     <p className="p-flush red-text">
                         ※ In page 21, No.3 Insert Parts, Use No.1 for inserting the part.
                     </p>
@@ -28,7 +28,7 @@ const InsertMainViewsContent: React.FC = () => {
                     </li>
                 </ol>
 
-                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                     <img
                         src={modelViewImg}
                         alt="Insert Main Views"

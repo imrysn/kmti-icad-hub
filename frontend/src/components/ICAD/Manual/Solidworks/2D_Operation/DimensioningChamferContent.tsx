@@ -19,10 +19,10 @@ const DimensioningChamferContent: React.FC = () => {
                     <span className="step-label">Click Chamfer Dimension.</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={chamferDimensionImg} alt="Chamfer Dimension" className="software-screenshot screenshot-wide" />
                     </div>
-                    <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={chamferEdgeImg} alt="Chamfer Edge" className="software-screenshot" />
                     </div>
                     <ol style={{ paddingLeft: '1.25rem', margin: '1.5rem 0 0 0', color: 'var(--text-normal)', lineHeight: '2.2' }}>
