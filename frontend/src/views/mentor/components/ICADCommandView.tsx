@@ -3,7 +3,7 @@ import { CheckCircle2, Menu, X } from 'lucide-react';
 import { IcadCommandsGrid } from './icad/IcadCommandsGrid';
 import { IcadGuideGrid } from './icad/IcadGuideGrid';
 import { IcadMenuSetupGrid } from './icad/IcadMenuSetupGrid';
-import IcadCommands from "../../../components/ICAD/Command/Icad_Commands/Icad_Commands";
+import Icad_Commands from '../../../components/ICAD/Command/Icad_Commands/Icad_Commands';
 import Icad_Guide from '../../../components/ICAD/Command/Icad_Guide/Icad_Guide';
 import Icad_Menu_Setup from '../../../components/ICAD/Command/Icad_Menu_Setup/menuSetup';
 
@@ -66,7 +66,7 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     justifyContent: 'center',
                     padding: '2rem',
                 }}>
-                    <IcadCommands />
+                    <Icad_Commands />
                 </div>
             </div>
         );
@@ -104,14 +104,12 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     </button>
                 </div>
 
-                {/* Content — centered */}
+                {/* Content — full bleed so Icad_Guide IDE layout fills the space */}
                 <div style={{
                     flex: 1,
-                    overflowY: 'auto',
+                    overflow: 'auto',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '2rem',
+                    flexDirection: 'column',
                 }}>
                     <Icad_Guide />
                 </div>
@@ -121,7 +119,7 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
 
     if (menuSetupPage === 'icad_menu_setup') {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-deep, #0d0d1a)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-dark)', overflow: 'hidden' }}>
 
                 {/* Top bar */}
                 <div style={{
@@ -129,15 +127,15 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     padding: '0.75rem 1.5rem',
-                    borderBottom: '1px solid rgba(255,255,255,0.07)',
-                    background: 'var(--bg-surface, #1a1a2e)',
+                    borderBottom: '1px solid var(--border-color)',
+                    background: 'var(--bg-surface)',
                     flexShrink: 0,
                 }}>
                     <div style={{ textAlign: 'center' }}>
                         <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary, #6366f1)', fontWeight: 600, letterSpacing: '0.05em' }}>
                             iCAD Menu Setup
                         </p>
-                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary, #fff)' }}>
+                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-white)' }}>
                             iCAD Menu Setup
                         </h2>
                     </div>
