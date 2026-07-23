@@ -1024,7 +1024,24 @@ export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
       { id: 'sw-part-modeling', title: '3D Part Modeling', content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'] }
     ]
   },
-
+  {
+    id: 'sw-sketching-base-main',
+    title: 'Sketching the Base',
+    content: ['Sketch', 'Front Plane', 'Center Rectangle', 'Sketch relation', 'Smart dimension'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-sketching-base', title: 'Sketching the Base', content: ['Sketch', 'Front Plane', 'Center Rectangle', 'Sketch relation', 'Smart dimension'] }
+    ]
+  },
+  {
+    id: 'sw-extruding-base-main',
+    title: 'Extruding the Base',
+    content: ['Extruded Boss/Base'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extruded Boss/Base'] }
+    ]
+  },
   {
     id: 'sw-cutting-base-main',
     title: 'Cutting the Base',
@@ -1076,7 +1093,15 @@ export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
     content: ['3D Part Modeling', 'Base Flange / Tab'],
     isCompleted: false,
     children: [
-      { id: 'sw-sheet-metal', title: 'Sheet Metal (Creating Other Part)', content: ['3D Part Modeling', 'Base Flange / Tab'] },
+      { id: 'sw-sheet-metal', title: 'Sheet Metal (Creating Other Part)', content: ['3D Part Modeling', 'Base Flange / Tab'] }
+    ]
+  },
+  {
+    id: 'sw-bended-plate-main',
+    title: 'Getting the Total Length of Bended Plate',
+    content: ['Flat-Pattern', 'Measure'],
+    isCompleted: false,
+    children: [
       { id: 'sw-bended-plate', title: 'Getting the Total Length of Bended Plate', content: ['Flat-Pattern', 'Measure'] }
     ]
   },
@@ -1113,10 +1138,42 @@ export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
     content: ['Save', 'File Name', 'Filename Extension'],
     isCompleted: false,
     children: [
-      { id: 'sw-assembly-saving', title: 'Assembly Saving', content: ['Save', 'File Name', 'Filename Extension'] },
-      { id: 'sw-material-weight', title: 'Getting the Mat\'l Wt (Material weight) of a part', content: ['Rollback Bar', 'File Properties', 'Mat\'l Wt Value'] },
-      { id: 'sw-how-to-edit-sketch', title: 'How to edit Sketch', content: ['Edit Sketch'] },
-      { id: 'sw-how-to-edit-feature', title: 'How to edit Feature', content: ['Edit Feature'] },
+      { id: 'sw-assembly-saving', title: 'Assembly Saving', content: ['Save', 'File Name', 'Filename Extension'] }
+    ]
+  },
+  {
+    id: 'sw-material-weight-main',
+    title: 'Getting the Mat\'l Wt (Material weight) of a part',
+    content: ['Rollback Bar', 'File Properties', 'Mat\'l Wt Value'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-material-weight', title: 'Getting the Mat\'l Wt (Material weight) of a part', content: ['Rollback Bar', 'File Properties', 'Mat\'l Wt Value'] }
+    ]
+  },
+  {
+    id: 'sw-how-to-edit-sketch-main',
+    title: 'How to edit Sketch',
+    content: ['Edit Sketch'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-how-to-edit-sketch', title: 'How to edit Sketch', content: ['Edit Sketch'] }
+    ]
+  },
+  {
+    id: 'sw-how-to-edit-feature-main',
+    title: 'How to edit Feature',
+    content: ['Edit Feature'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-how-to-edit-feature', title: 'How to edit Feature', content: ['Edit Feature'] }
+    ]
+  },
+  {
+    id: 'sw-how-to-edit-matings-main',
+    title: 'How to edit matings',
+    content: ['Matings'],
+    isCompleted: false,
+    children: [
       { id: 'sw-how-to-edit-matings', title: 'How to edit matings', content: ['Matings'] }
     ]
   }

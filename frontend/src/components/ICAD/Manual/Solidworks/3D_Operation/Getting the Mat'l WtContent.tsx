@@ -87,7 +87,7 @@ const GettingMaterialWeightContent: React.FC = () => (
                                 <img src={lastFeatureImg} alt="Last Feature Rollback" className="software-screenshot screenshot-wide" />
                             </div>
 
-                            <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '0.75rem 0' }}>
+                            <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                                 <p className="p-flush red-text">
                                     ※ If the part is not processed, just input the <strong>Wt/Pc Evaluated Value</strong> to <strong>Mat'l Wt Value</strong>.
                                 </p>

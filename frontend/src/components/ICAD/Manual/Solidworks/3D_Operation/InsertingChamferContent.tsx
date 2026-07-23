@@ -56,12 +56,14 @@ const InsertingChamferContent: React.FC = () => (
                             <span className="step-label">Select edges to be Chamfered.</span>
                         </div>
                         <div className="step-description">
-                            <div className="instruction-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '1rem 0' }}>
+                            <div className="instruction-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                                 <p className="p-flush red-text" style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Important Note:</p>
-                                <p className="p-flush red-text">※ Selected edges and faces will be added to <strong>Selected Entities</strong>.</p>
-                            </div>
-                            <div className="image-wrapper">
-                                <img src={edgeImg} alt="Selected edges" className="software-screenshot screenshot-wide" />
+                                <p className="p-flush red-text">
+                                    ※ Selected edges and faces will be added to <strong>Selected Entities</strong>.
+                                    <span className="image-wrapper-flush" style={{ marginLeft: '0.5rem' }}>
+                                        <img src={edgeImg} alt="Selected edges" style={{ height: '24px', verticalAlign: 'middle' }} />
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
