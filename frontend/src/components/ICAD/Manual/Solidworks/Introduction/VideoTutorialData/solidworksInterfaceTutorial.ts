@@ -16,8 +16,8 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     text: "It shows information about the performance of the user. It also displays the function of the tool/command when the mouse pointed it. (Located at the bottom of SolidWorks Interface)",
     zoom: "scale(1)",
     origin: "50% 50%",
-    spotlight: { top: "3.2%", left: "0%", width: "23%", height: "8.5%", opacity: 1 },
-    subtitlePos: { top: "13%", left: "25%", transform: "translateX(-50%)" }
+    spotlight: { top: "97.5%", left: "0%", width: "100%", height: "2.5%", opacity: 1 },
+    subtitlePos: { bottom: "5%", left: "50%", transform: "translateX(-50%)" }
   },
   {
     id: 2,

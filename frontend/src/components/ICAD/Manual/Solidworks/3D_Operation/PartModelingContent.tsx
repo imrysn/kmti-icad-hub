@@ -31,11 +31,11 @@ const PartModelingContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                    In Menu Bar, click New{' '}
+                    In <strong>Menu Bar</strong>, click <strong>New</strong>{' '}
                     <span className="image-wrapper-flush">
                         <img src={controlImg} alt="New icon" style={{ height: '24px', verticalAlign: 'middle' }} />
                     </span>
-                    {' '}or CTRL + N key.
+                    {' '}or <strong>CTRL + N</strong> key.
                 </p>
             </div>
         </div>
@@ -54,30 +54,27 @@ const PartModelingContent: React.FC = () => (
                         </p>
 
                         <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                            <li>Click K M Tech.</li>
+                            <li>Click <strong>K M Tech.</strong> </li>
                             <li>
-                                Select K&amp;M PART{' '}
+                                Select <strong>K&amp;M PART</strong>{' '}
                                 <span className="image-wrapper-flush">
                                     <img src={partImg} alt="K&M PART icon" style={{ height: '35px', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
                                 </span>
                             </li>
-                            <li style={{ marginTop: '0.5rem' }}>Click OK or Double click K&amp;M PART.</li>
+                            <li style={{ marginTop: '0.5rem' }}>Click <strong>OK</strong> or Double click <strong>K&amp;M PART</strong>.</li>
                         </ol>
 
-                        <div className="instruction-box" style={{ marginTop: '2.5rem', display: 'inline-block', padding: '1rem' }}>
-                            <div className="red-text" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500 }}>
-                                <span>※ This</span>
-                                <span className="image-wrapper-flush" style={{ background: 'white', padding: '2px', border: '1px solid #ddd', borderRadius: '2px', display: 'flex', alignItems: 'center' }}>
-                                    <img src={kmTechImg} alt="K M Tech" style={{ height: '22px' }} />
+                        <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
+                            <p className="p-flush red-text" style={{ lineHeight: '1.8' }}>
+                                ※ This{' '}
+                                <span className="image-wrapper-flush" style={{ background: 'white', padding: '2px', border: '1px solid #ddd', borderRadius: '2px', display: 'inline-block', verticalAlign: 'middle', margin: '0 4px' }}>
+                                    <img src={kmTechImg} alt="K M Tech" style={{ height: '22px', display: 'block' }} />
                                 </span>
-                                <span>is where all the KMTI</span>
-                            </div>
-                            <div className="red-text" style={{ marginLeft: '1.5rem', fontWeight: 500, marginTop: '4px' }}>
-                                Standard Templates were saved.
-                            </div>
+                                {' '}is where all the KMTI Standard Templates were saved.
+                            </p>
                         </div>
                     </div>
-                    
+
                     <div style={{ flex: '1 1 400px', minWidth: '350px' }}>
                         <div className="image-wrapper">
                             <img
@@ -99,16 +96,18 @@ const PartModelingContent: React.FC = () => (
                 <span className="step-label">Set the Material.</span>
             </div>
             <div className="step-description">
-                <p className="p-flush red-text">
-                    ※ SS400 is the default Material.
-                </p>
-                <p className="p-flush red-text" style={{ marginTop: '0.25rem' }}>
-                    ※ Edit the Material if the required Material is not SS400.
-                </p>
+                <div className="instruction-box" style={{ marginBottom: '1rem' }}>
+                    <p className="p-flush red-text">
+                        ※ <strong>SS400</strong> is the <strong>default</strong> Material.
+                    </p>
+                    <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>
+                        ※ Edit the Material if the required Material is not SS400.
+                    </p>
+                </div>
 
                 <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>Right click on the SS400, then click Edit Material.</li>
-                    <li>Select the required Material, then click Apply.</li>
+                    <li>Right click on the <strong>SS400</strong>, then click <strong>Edit Material</strong>.</li>
+                    <li>Select the required Material, then click <strong>Apply</strong>.</li>
                     <li>
                         Click{' '}
                         <span className="image-wrapper-flush">
@@ -136,18 +135,14 @@ const PartModelingContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                    In View tab, select{' '}
+                    In <strong>View</strong> tab, select{' '}
                     <span className="image-wrapper-flush">
                         <img src={originImg} alt="Origins" style={{ height: '24px', verticalAlign: 'middle' }} />
                     </span>
-                </p>
-                <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                    or
-                </p>
-                <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                    in Heads-up View, click Hide/Show Items{' '}
-                    <span className="image-wrapper-flush">
-                        <img src={thenImg} alt="Hide/Show Items then Origin" style={{ height: '24px', verticalAlign: 'middle' }} />
+                    {' '}or in <strong>Heads-up View</strong>, click <strong>Hide/Show Items</strong>{' '}
+                    <span className="image-wrapper-flush" style={{ position: 'relative', display: 'inline-block' }}>
+                        <img src={thenImg} alt="Hide/Show Items and Origin" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <span style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.9em', pointerEvents: 'none' }}>then</span>
                     </span>
                 </p>
 
@@ -169,42 +164,37 @@ const PartModelingContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                    In <strong>FeatureManager Design Tree</strong>, click <strong>Front Plane</strong> then this will appear
-                </p>
-
-                <div className="image-wrapper" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                    <img src={f1Img} alt="FeatureManager Front Plane" style={{ height: 'auto', maxWidth: '100%' }} className="software-screenshot" />
-                </div>
-
-                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                    click{' '}
+                    In <strong>FeatureManager Design tree</strong>, click <strong>Front Plane</strong> then this will appear{' '}
+                    <span className="image-wrapper-flush">
+                        <img src={f1Img} alt="FeatureManager Front Plane" style={{ height: '24px', verticalAlign: 'middle' }} />
+                    </span>
+                    , click{' '}
                     <span className="image-wrapper-flush">
                         <img src={f2Img} alt="Click" style={{ height: '24px', verticalAlign: 'middle' }} />
                     </span>
                 </p>
 
                 <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                    or in <strong>Sketch</strong> tab, click{' '}
+                    or in <strong>Sketch tab</strong>, click{' '}
                     <span className="image-wrapper-flush">
                         <img src={sImg} alt="Sketch tab click" style={{ height: '24px', verticalAlign: 'middle' }} />
                     </span>
+                    {' '}&gt; Select plane
                 </p>
-
-                <blockquote style={{ borderLeft: '4px solid var(--border-color)', paddingLeft: '1rem', margin: '1rem 0', color: 'var(--text-muted)' }}>
-                    Select plane
-                </blockquote>
 
                 <div style={{ marginTop: '1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
                     <img src={planeImg} alt="Select Plane" style={{ height: 'auto', maxWidth: '100%', borderRadius: '8px' }} />
                 </div>
 
-                <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>
-                    ※ The display changes so the Front Plane faces the user.
-                </p>
-                <p className="p-flush red-text" style={{ marginTop: '0.25rem' }}>
-                    ※ Consider the orientation / position of the part on how it will be assembled.<br />
-                    &emsp;&emsp;(Refer to assy drawing)
-                </p>
+                <div className="instruction-box" style={{ marginTop: '1rem' }}>
+                    <p className="p-flush red-text">
+                        ※ The display changes so the Front Plane faces the user.
+                    </p>
+                    <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>
+                        ※ Consider the orientation / position of the part on how it will be assembled.<br />
+                        &emsp;&emsp;(Refer to assy drawing)
+                    </p>
+                </div>
             </div>
         </div>
     </>

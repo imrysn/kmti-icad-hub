@@ -82,7 +82,7 @@ const BendedPlateContent: React.FC = () => (
                     {/* Important Note */}
                     <div className="instruction-step">
                         <div className="step-description">
-                            <div className="instruction-box" style={{ marginTop: '1rem', marginBottom: '1.5rem', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '1rem 0' }}>
+                            <div className="instruction-box" style={{ marginTop: '1rem', marginBottom: '1.5rem' }}>
                                 <p className="p-flush red-text">
                                     ※ To bring the part back to its bended form, right-click <strong>Flat-Pattern1</strong>, click <strong>Suppress</strong>{' '}
                                     <span className="image-wrapper-flush">

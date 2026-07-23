@@ -29,7 +29,7 @@ const LinearPatternContent: React.FC = () => (
                             <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                                 <img src={linearPatternImg} alt="Linear Pattern PropertyManager" className="software-screenshot screenshot-wide" />
                             </div>
-                            <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '0.75rem 0' }}>
+                            <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                                 <p className="p-flush red-text">
                                     ※ For <strong>Pattern Direction</strong>, select an edge of a part, the arrow will determine where the new part will be patterned.
                                 </p>

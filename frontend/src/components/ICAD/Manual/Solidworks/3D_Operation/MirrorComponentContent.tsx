@@ -26,7 +26,7 @@ const MirrorComponentContent: React.FC = () => (
                             <span className="step-label">Select Mirror plane and components to mirror.</span>
                         </div>
                         <div className="step-description">
-                            <div className="instruction-box" style={{ marginTop: '1rem', padding: '0.75rem 0' }}>
+                            <div className="instruction-box" style={{ marginTop: '1rem' }}>
                                 <p className="p-flush red-text">
                                     ※ Select <strong>Right Plane</strong> for Mirror plane.
                                 </p>
@@ -52,7 +52,7 @@ const MirrorComponentContent: React.FC = () => (
                             <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                                 <img src={mirrorComponent1Img} alt="Mirror Component Result" className="software-screenshot screenshot-wide" />
                             </div>
-                            <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '0.75rem 0' }}>
+                            <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                                 <p className="p-flush red-text">
                                     ※ Mirror can only be used in symmetric part.
                                 </p>
