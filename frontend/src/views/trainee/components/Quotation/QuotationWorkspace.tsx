@@ -931,6 +931,7 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
             onCompleteTutorial={handleTutorialClose}
             layoutVariant={layoutVariant}
             canViewBilling={user?.role !== 'user'}
+            quotationId={quotId}
           />
         )}
 
@@ -949,4 +950,3 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
       </div>
   )
 }
-

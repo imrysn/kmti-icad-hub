@@ -16,13 +16,14 @@ export interface ExcelExportData {
   manualOverrides: ManualOverrides
   signatures: Signatures
   layoutVariant?: 'special' | 'kemco'
+  download?: boolean
 }
 // exportToExcel
 export async function exportToExcel(data: ExcelExportData) {
   const {
     mode, quotNo, clientInfo, quotationDetails, billingDetails,
     tasks, baseRates, manualOverrides, signatures,
-    layoutVariant = 'special',
+    layoutVariant = 'special', download = true,
   } = data
 
   // ── 1. Compute totals ─────────────────────────────────────────────────────
@@ -81,7 +82,10 @@ export async function exportToExcel(data: ExcelExportData) {
   const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
   const docType = mode === 'billing' ? 'Billing' : 'Quotation'
   const safeDate = metaDate.replace(/\//g, '-')
-  saveAs(blob, `${docType}_${quotNo}_${safeDate}.xlsx`)
+  const fileName = `${docType}_${quotNo}_${safeDate}.xlsx`
+  const file = new File([blob], fileName, { type: blob.type })
+  if (download) saveAs(file, fileName)
+  return file
 }
 
 async function _initializeKemcoQuotationTemplate(workbook: ExcelJS.Workbook, sheet: ExcelJS.Worksheet) {

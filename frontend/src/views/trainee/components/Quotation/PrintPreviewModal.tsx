@@ -2,6 +2,7 @@ import { Printer } from 'lucide-react'
 import { memo,useCallback,useEffect,useMemo,useRef,useState } from 'react'
 import { createPortal } from 'react-dom'
 import { clientsApi,projectInchargesApi } from '../../../../services/api'
+import { assessmentService } from '../../../../services/assessmentService'
 import type {
 BaseRates,
 BillingDetails,
@@ -46,6 +47,14 @@ interface Props {
   layoutVariant?: 'special' | 'kemco'
   /** If false (role === 'user'), the Billing Preview tab is hidden entirely */
   canViewBilling?: boolean
+  quotationId?: number
+}
+
+interface SubmissionTarget {
+  actualSetNumber: number
+  displaySetNumber: number
+  assessmentType: '2D' | '3D'
+  label: string
 }
 
 /** A single page slice produced by computePages(). */
@@ -118,6 +127,7 @@ const PrintPreviewModal = memo(({
   autoStartTutorial, onCompleteTutorial,
   layoutVariant = 'special',
   canViewBilling = false,
+  quotationId,
 }: Props) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [printMode, setPrintMode] = useState<'quotation' | 'billing'>('quotation')
@@ -126,6 +136,10 @@ const PrintPreviewModal = memo(({
 
   const [inchargesList, setInchargesList] = useState<string[]>([])
   const [clientsList, setClientsList] = useState<string[]>([])
+  const [submissionTargets, setSubmissionTargets] = useState<SubmissionTarget[]>([])
+  const [submissionTarget, setSubmissionTarget] = useState('')
+  const [isSubmittingToTrainer, setIsSubmittingToTrainer] = useState(false)
+  const [submissionError, setSubmissionError] = useState('')
 
   // Load project incharges and clients from API on mount/open
   useEffect(() => {
@@ -144,6 +158,43 @@ const PrintPreviewModal = memo(({
         }
       }).catch(err => console.error("Error fetching clients:", err))
     }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (!isOpen) return
+    let cancelled = false
+    Promise.all([assessmentService.getMySetMappings(), assessmentService.getTasks()])
+      .then(([mappings, assessmentTasks]) => {
+        if (cancelled) return
+        const targets = mappings.map(mapping => {
+          const assessmentType = (mapping.assessment_type || '3D') as '2D' | '3D'
+          const setTasks = assessmentTasks.filter(task =>
+            Number(task.set_number) === Number(mapping.actual_set_number)
+            && (task.assessment_type || '3D') === assessmentType
+          )
+          const isAssembly = setTasks.some(task => task.is_assembly || task.task_code?.startsWith('A'))
+          const displaySetNumber = Math.abs(Number(mapping.display_set_number))
+          const ordinal = displaySetNumber % 100 >= 11 && displaySetNumber % 100 <= 13
+            ? 'th'
+            : ({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[displaySetNumber % 10] || 'th'
+          return {
+            actualSetNumber: Number(mapping.actual_set_number),
+            displaySetNumber,
+            assessmentType,
+            label: `${displaySetNumber}${ordinal} Set ${isAssembly ? 'Assembly' : 'Parts'} (${assessmentType})`,
+          }
+        }).filter((target, index, all) => all.findIndex(item =>
+          item.actualSetNumber === target.actualSetNumber && item.assessmentType === target.assessmentType
+        ) === index)
+        setSubmissionTargets(targets)
+        setSubmissionTarget(current => current || (targets[0]
+          ? `${targets[0].assessmentType}:${targets[0].actualSetNumber}`
+          : ''))
+      })
+      .catch(() => {
+        if (!cancelled) setSubmissionError('Unable to load your assigned assessment sets.')
+      })
+    return () => { cancelled = true }
   }, [isOpen])
 
   const handleAddIncharge = useCallback((val: string) => {
@@ -617,6 +668,52 @@ const PrintPreviewModal = memo(({
     }
   }, [printMode, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures, layoutVariant])
 
+  const handleSubmitToTrainer = useCallback(async () => {
+    const target = submissionTargets.find(item =>
+      `${item.assessmentType}:${item.actualSetNumber}` === submissionTarget
+    )
+    if (!target) {
+      setSubmissionError('Select the assessment set for this quotation.')
+      return
+    }
+
+    setIsSubmittingToTrainer(true)
+    setSubmissionError('')
+    try {
+      const file = await exportToExcel({
+        mode: 'quotation',
+        quotNo: quotationDetails.quotationNo || 'Draft',
+        clientInfo,
+        quotationDetails,
+        billingDetails,
+        tasks,
+        baseRates,
+        manualOverrides,
+        signatures,
+        layoutVariant,
+        download: false,
+      })
+      await assessmentService.submitQuotation(
+        file,
+        target.actualSetNumber,
+        target.assessmentType,
+        quotationId,
+      )
+      const todayStr = getLocalDateISO()
+      onBillingDetailsChange?.({
+        quotationStatus: 'For Approval',
+        submittedToAdminAt: todayStr,
+      })
+      window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'))
+      alert(`Quotation submitted to your trainer for ${target.label}.`)
+    } catch (error: any) {
+      const message = error?.response?.data?.detail || error?.message || 'Failed to submit quotation.'
+      setSubmissionError(message)
+    } finally {
+      setIsSubmittingToTrainer(false)
+    }
+  }, [submissionTargets, submissionTarget, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures, layoutVariant, quotationId, onBillingDetailsChange])
+
   // ── Status tracking change handler ─────────────────────────────
 
   // ── Zoom controls ──────────────────────────────────────────────
@@ -894,30 +991,48 @@ const PrintPreviewModal = memo(({
 
 
 
-                {(() => {
+                {printMode === 'quotation' && (() => {
                   const isMissingIncharge = !billingDetails?.projectInCharge;
                   const isMissingCustomer = !billingDetails?.clientName;
-                  const isSubmitDisabled = isMissingIncharge || isMissingCustomer;
+                  const isSubmitDisabled = isMissingIncharge || isMissingCustomer || !submissionTarget || isSubmittingToTrainer;
 
                   return (
-                    <button
-                      className="ppm-action-btn submit-to-admin-btn"
-                      disabled={isSubmitDisabled}
-                      onClick={() => {
-                        const todayStr = getLocalDateISO()
-                        onBillingDetailsChange?.({
-                          quotationStatus: 'For Approval',
-                          submittedToAdminAt: todayStr
-                        })
-                        // Close preview or update UI
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="22 2 11 13 22 2"></polyline>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                      </svg>
-                      Submit to Admin
-                    </button>
+                    <>
+                      <div className="ppm-sidebar-group">
+                        <label htmlFor="ppm-submission-target">Submit under</label>
+                        <select
+                          id="ppm-submission-target"
+                          className="ppm-sidebar-select"
+                          value={submissionTarget}
+                          onChange={event => {
+                            setSubmissionTarget(event.target.value)
+                            setSubmissionError('')
+                          }}
+                        >
+                          <option value="">Select assigned set...</option>
+                          {submissionTargets.map(target => (
+                            <option
+                              key={`${target.assessmentType}:${target.actualSetNumber}`}
+                              value={`${target.assessmentType}:${target.actualSetNumber}`}
+                            >
+                              {target.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      {submissionError && <p className="ppm-submit-error" role="alert">{submissionError}</p>}
+                      <button
+                        className="ppm-action-btn submit-to-admin-btn"
+                        disabled={isSubmitDisabled}
+                        onClick={handleSubmitToTrainer}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="22 2 11 13 22 2"></polyline>
+                          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                        {isSubmittingToTrainer ? 'Submitting Excel...' : 'Submit to Trainer'}
+                      </button>
+                    </>
                   );
                 })()}
               </div>

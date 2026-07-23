@@ -4,10 +4,12 @@ import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
 import { useUI } from '../../../context/UIContext';
+import { useNotification } from '../../../context/NotificationContext';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
-import { AssessmentTask } from '../../../services/assessmentService';
+import { assessmentService,AssessmentTask } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
+import { invalidateCache } from '../../../services/api';
 import '../../../styles/3D_Modeling/CourseLesson.css';
 import '../../../styles/mentor/PracticalAssessment.css';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
@@ -47,6 +49,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     // Fix #7: Inject the app's styled ConfirmationModal into the hook
     const { requestConfirmation } = useUI();
+    const { showNotification } = useNotification();
+    const [quotationUploadingSet, setQuotationUploadingSet] = useState<number | null>(null);
 
     const {
         tasks,
@@ -77,6 +81,32 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     } = usePracticalTasks(assessmentType, requestConfirmation);
 
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
+
+    const handleQuotationUpload = async (file: File, setNumber: number) => {
+        if (!file.name.toLowerCase().endsWith('.xlsx')) {
+            showNotification('Please select an Excel quotation file (.xlsx).', 'error');
+            return;
+        }
+        const confirmed = await requestConfirmation({
+            title: 'Submit Quotation',
+            message: `Submit ${file.name} to your trainer for review?`,
+            confirmText: 'Submit',
+            type: 'confirm'
+        });
+        if (!confirmed) return;
+
+        setQuotationUploadingSet(setNumber);
+        try {
+            await assessmentService.submitQuotation(file, setNumber, assessmentType);
+            invalidateCache('/assessments/my-submissions');
+            window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
+            showNotification('Quotation submitted successfully! Awaiting trainer review.', 'success');
+        } catch (error: any) {
+            showNotification(error?.response?.data?.detail || 'Failed to submit quotation.', 'error');
+        } finally {
+            setQuotationUploadingSet(null);
+        }
+    };
 
     const [trashModalOpen, setTrashModalOpen] = useState(false);
     const [timeRecordModalOpen, setTimeRecordModalOpen] = useState(false);
@@ -506,7 +536,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             unitsMap.get(unitName)!.push(task);
                                         });
 
-                                        return Array.from(unitsMap.entries()).map(([unitName, unitTasks]) => {
+                                        return Array.from(unitsMap.entries()).map(([unitName, unitTasks], unitIndex, unitEntries) => {
                                             const sortedUnitTasks = [...unitTasks].sort((a, b) => {
                                                 const isPartA = !a.is_assembly;
                                                 const isPartB = !b.is_assembly;
@@ -584,10 +614,33 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                     description: 'Upload your purchased parts and extra folders here.',
                                                                     is_virtual_extra: true
                                                                 } as any);
+                                                                if (unitIndex === unitEntries.length - 1) {
+                                                                    const sourceSetNumber = sortedUnitTasks[0].source_set_number ?? sortedUnitTasks[0].set_number;
+                                                                    const quotationSubmission = submissions.find(submission =>
+                                                                        submission.submission_kind === 'quotation'
+                                                                        && Number(submission.task?.set_number) === Number(sourceSetNumber)
+                                                                        && (submission.assessment_type || '3D') === assessmentType
+                                                                    );
+                                                                    augmentedUnitTasks.push({
+                                                                        ...sortedUnitTasks[0],
+                                                                        id: `quotation_${sourceSetNumber}_${assessmentType}`,
+                                                                        real_id: quotationSubmission?.task?.id || quotationSubmission?.task_id,
+                                                                        source_set_number: sourceSetNumber,
+                                                                        task_code: 'QUOT',
+                                                                        title: 'Quotation',
+                                                                        description: 'Upload an Excel quotation or submit it automatically from Print Preview.',
+                                                                        is_virtual_quotation: true
+                                                                    } as any);
+                                                                }
                                                             }
                                                             return augmentedUnitTasks.map((task: any) => {
-                                                                const actualTaskId = task.is_virtual_extra ? task.real_id : task.id;
+                                                                const actualTaskId = (task.is_virtual_extra || task.is_virtual_quotation) ? task.real_id : task.id;
                                                                 let taskSubmissions = submissions.filter(s => {
+                                                                    if (task.is_virtual_quotation) {
+                                                                        return s.submission_kind === 'quotation'
+                                                                            && Number(s.task?.set_number) === Number(task.source_set_number)
+                                                                            && (s.assessment_type || '3D') === assessmentType;
+                                                                    }
                                                                     const subTaskId = s.task?.id || s.task_id;
                                                                     return Number(subTaskId) === Number(actualTaskId) && (s.assessment_type || '3D') === assessmentType;
                                                                 }).sort((a, b) => {
@@ -598,8 +651,11 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
                                                                 if (task.is_virtual_extra) {
                                                                     taskSubmissions = taskSubmissions.filter(s => s.submission_file_path?.match(/\.(zip|rar)$/i));
-                                                                } else if (actualTaskId === sortedUnitTasks[0].id) {
-                                                                    taskSubmissions = taskSubmissions.filter(s => !s.submission_file_path?.match(/\.(zip|rar)$/i));
+                                                                } else if (!task.is_virtual_quotation) {
+                                                                    taskSubmissions = taskSubmissions.filter(s => s.submission_kind !== 'quotation');
+                                                                    if (actualTaskId === sortedUnitTasks[0].id) {
+                                                                        taskSubmissions = taskSubmissions.filter(s => !s.submission_file_path?.match(/\.(zip|rar)$/i));
+                                                                    }
                                                                 }
 
                                                                 const latestSubmission = taskSubmissions[0];
@@ -611,6 +667,9 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                 const targetUnit = params.get('unit');
                                                                 const isHighlighted = targetUnit === task.task_code;
                                                                 const uploadId = `cad-upload-${task.id}`;
+                                                                const quotationUploadId = `quotation-upload-${task.source_set_number}-${assessmentType}`;
+                                                                const isQuotationUploading = task.is_virtual_quotation
+                                                                    && quotationUploadingSet === Number(task.source_set_number);
 
                                                                 return (
                                                                     <div key={task.id} className={`task-row-card ${isHighlighted ? 'highlighted-task-row-card' : ''}`}>
@@ -628,7 +687,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 </div>
                                                                             </div>
                                                                             <div className="task-row-actions">
-                                                                                {!task.is_virtual_extra && (
+                                                                                {!task.is_virtual_extra && !task.is_virtual_quotation && (
                                                                                     <TaskStopwatch
                                                                                         ref={(el) => stopwatchRefs.current[actualTaskId] = el}
                                                                                         userId={userId}
@@ -636,7 +695,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         initialBaseTime={latestSubmission?.time_spent_seconds || 0}
                                                                                     />
                                                                                 )}
-                                                                                {!task.is_virtual_extra && (
+                                                                                {!task.is_virtual_extra && !task.is_virtual_quotation && (
                                                                                     <>
                                                                                         <button type="button" className="task-action-btn primary" onClick={(e) => {
                                                                                             e.preventDefault();
@@ -667,18 +726,30 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 onDragEnter={handleDrag}
                                                                                 onDragOver={(e) => handleDragOver(e, task.id)}
                                                                                 onDragLeave={handleDragLeave}
-                                                                                onDrop={(e) => handleDrop(e, task, actualTaskId)}
+                                                                                onDrop={task.is_virtual_quotation
+                                                                                    ? (event) => {
+                                                                                        event.preventDefault();
+                                                                                        event.stopPropagation();
+                                                                                        setDragActiveTaskId(null);
+                                                                                        const file = event.dataTransfer.files?.[0];
+                                                                                        if (file) handleQuotationUpload(file, Number(task.source_set_number));
+                                                                                    }
+                                                                                    : (e) => handleDrop(e, task, actualTaskId)}
                                                                                 style={{ position: 'relative' }}
                                                                             >
                                                                                 {dragActiveTaskId === task.id && (
                                                                                     <div className="drag-drop-overlay">
                                                                                         <UploadCloud size={36} className="drag-drop-icon" />
-                                                                                        <span>Drop CAD file to upload</span>
+                                                                                        <span>{task.is_virtual_quotation ? 'Drop Excel quotation to upload' : 'Drop CAD file to upload'}</span>
                                                                                     </div>
                                                                                 )}
                                                                                 <div className="upload-header-row">
                                                                                     <span className="task-row-section-label">Your Submissions {taskSubmissions.length > 0 ? `(${taskSubmissions.length})` : ''}</span>
-                                                                                    {task.is_virtual_extra ? (
+                                                                                    {task.is_virtual_quotation ? (
+                                                                                        <label htmlFor={quotationUploadId} className={`resubmit-trigger-btn ${isQuotationUploading ? 'disabled' : ''}`}>
+                                                                                            <Upload size={14} /> {isQuotationUploading ? 'Uploading...' : (latestSubmission ? 'Resubmit Excel' : 'Upload Excel')}
+                                                                                        </label>
+                                                                                    ) : task.is_virtual_extra ? (
                                                                                         <button className={`resubmit-trigger-btn`} onClick={() => { setFolderUploadTargetTask(sortedUnitTasks[0]); setUploadFolderModalOpen(true); }}>
                                                                                             <Upload size={14} /> {taskSubmissions.length > 0 ? 'Add Another Folder' : 'Upload Folder'}
                                                                                         </button>
@@ -694,7 +765,9 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         taskSubmissions.map((sub, sIdx) => (
                                                                                             <div key={sub.id} className={`uploaded-file-card history-item ${sIdx === 0 ? 'latest' : ''}`}>
                                                                                                 <div className="uploaded-file-info">
-                                                                                                    <FileText size={18} />
+                                                                                                    {task.is_virtual_quotation
+                                                                                                        ? <FileSpreadsheet size={18} />
+                                                                                                        : <FileText size={18} />}
                                                                                                     <div className="file-meta-stack">
                                                                                                         <span className="uploaded-file-name">
                                                                                                             {sub.submission_file_path?.split(/[\\/]/).pop()}
@@ -726,12 +799,27 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         <div className="no-submissions-yet">
                                                                                             <div className="empty-upload-placeholder">
                                                                                                 <UploadCloud size={24} />
-                                                                                                <p>No files uploaded yet. Drag & drop CAD or .zip file here or click Upload</p>
+                                                                                                <p>{task.is_virtual_quotation
+                                                                                                    ? 'No quotation submitted yet. Drag and drop an .xlsx file or click Upload Excel.'
+                                                                                                    : 'No files uploaded yet. Drag & drop CAD or .zip file here or click Upload'}</p>
                                                                                             </div>
                                                                                         </div>
                                                                                     )}
                                                                                 </div>
-                                                                                {!task.is_virtual_extra && (
+                                                                                {task.is_virtual_quotation ? (
+                                                                                    <input
+                                                                                        type="file"
+                                                                                        id={quotationUploadId}
+                                                                                        accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                                                        onChange={(event) => {
+                                                                                            const file = event.target.files?.[0];
+                                                                                            if (file) handleQuotationUpload(file, Number(task.source_set_number));
+                                                                                            event.target.value = '';
+                                                                                        }}
+                                                                                        disabled={isQuotationUploading}
+                                                                                        style={{ display: 'none' }}
+                                                                                    />
+                                                                                ) : !task.is_virtual_extra && (
                                                                                     <input
                                                                                         type="file" id={uploadId}
                                                                                         accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"

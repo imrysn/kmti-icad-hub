@@ -231,6 +231,9 @@ class AssessmentSubmission(Base):
     submission_file_path = Column(String(500)) # Path to uploaded .dwg
     status = Column(String(50), default="pending") # "pending", "approved", "rejected"
     assessment_type = Column(String(50), default="3D") # "3D" or "2D"
+    submission_kind = Column(String(50), default="task", nullable=False) # "task" or "quotation"
+    source_quotation_id = Column(Integer, nullable=True, index=True)
+    display_label = Column(String(200), nullable=True)
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=True) # Trainer who reviewed it
     is_deleted = Column(Boolean, default=False) # Soft delete flag
     time_spent_seconds = Column(Integer, default=0) # Trainee time tracking

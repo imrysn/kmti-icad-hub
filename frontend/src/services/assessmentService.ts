@@ -14,6 +14,7 @@ export interface AssessmentTask {
     master_file_path: string;
     order: number;
     assessment_type?: string;
+    source_set_number?: number;
 }
 
 export interface AssessmentSubmission {
@@ -23,6 +24,9 @@ export interface AssessmentSubmission {
     submission_file_path: string;
     status: 'pending' | 'approved' | 'rejected';
     assessment_type: '3D' | '2D';
+    submission_kind?: 'task' | 'quotation';
+    source_quotation_id?: number;
+    display_label?: string;
     trainer_id?: number;
     time_spent_seconds?: number;
     submitted_at: string;
@@ -41,7 +45,7 @@ export const assessmentService = {
         return cachedGet('/api/v1/assessments/my-submissions');
     },
 
-    getMySetMappings: async (): Promise<{actual_set_number: number, display_set_number: number}[]> => {
+    getMySetMappings: async (): Promise<{actual_set_number: number, display_set_number: number, assessment_type?: '3D' | '2D'}[]> => {
         return cachedGet('/api/v1/assessments/my-set-mappings');
     },
 
@@ -74,6 +78,18 @@ export const assessmentService = {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
+        });
+        return response.data;
+    },
+
+    submitQuotation: async (file: File, setNumber: number, assessmentType: '3D' | '2D', quotationId?: number): Promise<AssessmentSubmission> => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('set_number', setNumber.toString());
+        formData.append('assessment_type', assessmentType);
+        if (quotationId) formData.append('quotation_id', quotationId.toString());
+        const response = await api.post<AssessmentSubmission>('/api/v1/assessments/submit-quotation', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
         });
         return response.data;
     },

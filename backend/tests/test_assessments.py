@@ -11,7 +11,7 @@ Covers:
 import pytest
 from datetime import datetime
 
-from backend.models import AssessmentTask, AssessmentSubmission, TrainerTraineeMapping
+from backend.models import AssessmentTask, AssessmentSubmission, TrainerTraineeMapping, TraineeSetMapping
 from .conftest import auth_headers
 
 
@@ -103,6 +103,94 @@ class TestMySubmissions:
         response = client.get(self.ENDPOINT, headers=auth_headers(employee_token))
         ids = [s["id"] for s in response.json()]
         assert seed_submission.id not in ids
+
+
+class TestSubmitQuotation:
+    ENDPOINT = "/api/v1/assessments/submit-quotation"
+
+    @staticmethod
+    def assign_set(db, trainee_user, employee_user, set_number=1):
+        db.add(TraineeSetMapping(
+            trainee_id=trainee_user.id,
+            trainer_id=employee_user.id,
+            display_set_number=set_number,
+            actual_set_number=set_number,
+            assessment_type="3D",
+        ))
+        db.commit()
+
+    def test_trainee_submits_excel_to_assigned_trainer(
+        self, client, db, tmp_path, monkeypatch, trainee_token, trainee_user,
+        employee_user, trainer_mapping, seed_task
+    ):
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
+        self.assign_set(db, trainee_user, employee_user)
+
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(trainee_token),
+            data={"set_number": "1", "assessment_type": "3D", "quotation_id": "54"},
+            files={"file": (
+                "Quotation_KMTE-54.xlsx",
+                b"PK\x03\x04test-workbook",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )},
+        )
+
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["submission_kind"] == "quotation"
+        assert payload["source_quotation_id"] == 54
+        assert payload["display_label"] == "Quotation"
+        assert payload["task_id"] != seed_task.id
+        assert payload["task"]["task_code"] == "QUOT"
+        assert payload["status"] == "pending"
+
+    def test_creates_quotation_task_when_set_has_no_cad_tasks(
+        self, client, db, tmp_path, monkeypatch, trainee_token, trainee_user,
+        employee_user, trainer_mapping
+    ):
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
+        self.assign_set(db, trainee_user, employee_user, set_number=9)
+
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(trainee_token),
+            data={"set_number": "9", "assessment_type": "3D"},
+            files={"file": (
+                "Quotation_Set9.xlsx",
+                b"PK\x03\x04test-workbook",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )},
+        )
+
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["task"]["set_number"] == 9
+        assert payload["task"]["task_code"] == "QUOT"
+
+    def test_rejects_non_excel_file(
+        self, client, trainee_token, trainer_mapping, seed_task
+    ):
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(trainee_token),
+            data={"set_number": "1", "assessment_type": "3D"},
+            files={"file": ("quotation.pdf", b"not-excel", "application/pdf")},
+        )
+        assert response.status_code == 400
+        assert ".xlsx" in response.json()["detail"]
+
+    def test_employee_cannot_submit_quotation(
+        self, client, employee_token, seed_task
+    ):
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(employee_token),
+            data={"set_number": "1", "assessment_type": "3D"},
+            files={"file": ("quotation.xlsx", b"PK\x03\x04", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")},
+        )
+        assert response.status_code == 403
 # GET /api/v1/assessments/trainer/submissions
 class TestTrainerSubmissions:
     ENDPOINT = "/api/v1/assessments/trainer/submissions"

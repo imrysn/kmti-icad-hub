@@ -117,7 +117,9 @@ def get_assessment_tasks(
     current_user: User = Depends(get_current_user)
 ):
     """Get all assessment tasks with sequential locking logic."""
-    tasks = db.query(AssessmentTask).order_by(AssessmentTask.set_number, AssessmentTask.task_code).all()
+    tasks = db.query(AssessmentTask).filter(
+        (AssessmentTask.task_code != "QUOT") | (AssessmentTask.task_code.is_(None))
+    ).order_by(AssessmentTask.set_number, AssessmentTask.task_code).all()
 
     # If user is admin/employee, return all tasks without restriction
     if current_user.role in ["admin", "employee"]:
@@ -128,7 +130,8 @@ def get_assessment_tasks(
         AssessmentSubmission, AssessmentTask.id == AssessmentSubmission.task_id
     ).filter(
         AssessmentSubmission.user_id == current_user.id,
-        AssessmentSubmission.status == "approved"
+        AssessmentSubmission.status == "approved",
+        (AssessmentSubmission.submission_kind == "task") | (AssessmentSubmission.submission_kind.is_(None))
     ).distinct().all()
 
     # Mapping Logic
@@ -665,6 +668,153 @@ def download_master_file(
         media_type="application/octet-stream"
     )
 
+@router.post("/submit-quotation", response_model=AssessmentSubmissionResponse)
+async def submit_quotation(
+    file: UploadFile = File(...),
+    set_number: int = Form(...),
+    assessment_type: str = Form("3D"),
+    quotation_id: Optional[int] = Form(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Submit a generated quotation workbook to the trainee's assigned trainer."""
+    if current_user.role in ["employee", "admin"]:
+        raise HTTPException(status_code=403, detail="Only trainees can submit quotations.")
+    if assessment_type not in ["2D", "3D"]:
+        raise HTTPException(status_code=400, detail="Invalid assessment type.")
+
+    safe_filename = os.path.basename(file.filename or "")
+    if not safe_filename.lower().endswith(".xlsx"):
+        raise HTTPException(status_code=400, detail="Only Excel .xlsx quotation files are allowed.")
+    signature = await file.read(4)
+    await file.seek(0)
+    if not signature.startswith(b"PK"):
+        raise HTTPException(status_code=400, detail="The uploaded file is not a valid Excel workbook.")
+
+    mappings = db.query(TraineeSetMapping).filter(
+        TraineeSetMapping.trainee_id == current_user.id
+    ).all()
+    if mappings and not any(
+        m.actual_set_number == set_number
+        and (m.assessment_type or "3D") == assessment_type
+        for m in mappings
+    ):
+        raise HTTPException(status_code=403, detail="You are not assigned to the selected set.")
+
+    assessment_type_filter = AssessmentTask.assessment_type == "2D" if assessment_type == "2D" else (
+        (AssessmentTask.assessment_type == "3D") | (AssessmentTask.assessment_type.is_(None))
+    )
+    anchor_task = db.query(AssessmentTask).filter(
+        AssessmentTask.set_number == set_number,
+        assessment_type_filter,
+        AssessmentTask.task_code == "QUOT"
+    ).first()
+    if not anchor_task:
+        anchor_task = AssessmentTask(
+            set_number=set_number,
+            set_name=f"Set {set_number}",
+            unit_name="Quotation",
+            task_code="QUOT",
+            title="Quotation",
+            description="Excel quotation submitted for trainer review.",
+            master_file_path=None,
+            file_name=None,
+            is_assembly=False,
+            assessment_type=assessment_type,
+            order=9999,
+        )
+        db.add(anchor_task)
+        db.flush()
+
+    base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+    drive_letter = os.path.splitdrive(base_upload_dir)[0]
+    if drive_letter and not os.path.exists(drive_letter + "\\"):
+        base_upload_dir = os.path.join(APP_PATH, "uploads")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    upload_dir = os.path.join(
+        base_upload_dir, "submissions", str(current_user.id),
+        "quotations", assessment_type, f"set_{set_number}", timestamp
+    )
+    os.makedirs(upload_dir, exist_ok=True)
+    file_path = os.path.join(upload_dir, safe_filename)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    pending_query = db.query(AssessmentSubmission).filter(
+        AssessmentSubmission.user_id == current_user.id,
+        AssessmentSubmission.task_id == anchor_task.id,
+        AssessmentSubmission.assessment_type == assessment_type,
+        AssessmentSubmission.submission_kind == "quotation",
+        AssessmentSubmission.status == "pending",
+        AssessmentSubmission.is_deleted == False
+    )
+    if quotation_id is not None:
+        pending_query = pending_query.filter(
+            AssessmentSubmission.source_quotation_id == quotation_id
+        )
+    submission = pending_query.first()
+    if submission:
+        old_path = submission.submission_file_path
+        submission.submission_file_path = file_path
+        submission.submitted_at = datetime.now()
+        submission.display_label = "Quotation"
+        if old_path and old_path != file_path and os.path.exists(old_path):
+            try:
+                os.remove(old_path)
+            except OSError:
+                pass
+    else:
+        submission = AssessmentSubmission(
+            user_id=current_user.id,
+            task_id=anchor_task.id,
+            submission_file_path=file_path,
+            assessment_type=assessment_type,
+            submission_kind="quotation",
+            source_quotation_id=quotation_id,
+            display_label="Quotation",
+            status="pending",
+            time_spent_seconds=0
+        )
+        db.add(submission)
+
+    mapping = db.query(TrainerTraineeMapping).filter(
+        TrainerTraineeMapping.trainee_id == current_user.id
+    ).first()
+    if not mapping:
+        db.rollback()
+        try:
+            os.remove(file_path)
+        except OSError:
+            pass
+        raise HTTPException(status_code=409, detail="No trainer is currently assigned to you.")
+
+    notification_msg = (
+        f"{current_user.full_name or current_user.username} submitted a quotation for "
+        f"Set {set_number} for review."
+    )
+    db.add(Notification(
+        recipient_id=mapping.trainer_id,
+        sender_id=current_user.id,
+        message=notification_msg,
+        type="new_submission"
+    ))
+    db.commit()
+    db.refresh(submission)
+
+    try:
+        await notification_manager.send_personal_message({
+            "event": "NEW_SUBMISSION",
+            "trainee_name": current_user.full_name or current_user.username,
+            "task_code": "QUOTATION",
+            "set_number": set_number,
+            "message": notification_msg
+        }, mapping.trainer_id)
+    except Exception as exc:
+        print(f"Error sending quotation submission notification: {exc}")
+
+    return submission
+
+
 @router.post("/submit/{task_id}", response_model=AssessmentSubmissionResponse)
 async def submit_task(
     task_id: int,
@@ -761,6 +911,7 @@ async def submit_task(
                 AssessmentSubmission.user_id == current_user.id,
                 AssessmentSubmission.task_id.in_(set_task_ids),
                 AssessmentSubmission.assessment_type == assessment_type,
+                (AssessmentSubmission.submission_kind == "task") | (AssessmentSubmission.submission_kind.is_(None)),
                 AssessmentSubmission.is_deleted == False
             ).distinct().count()
 
@@ -1326,6 +1477,7 @@ def get_trainer_trainees_progress(
                 is_completed = db.query(AssessmentSubmission).join(AssessmentTask).filter(
                     AssessmentSubmission.user_id == trainee.id,
                     AssessmentSubmission.status == 'approved',
+                    (AssessmentSubmission.submission_kind == 'task') | (AssessmentSubmission.submission_kind.is_(None)),
                     AssessmentTask.set_number == set_num,
                     (AssessmentSubmission.assessment_type == '3D') | (AssessmentSubmission.assessment_type == None)
                 ).first()
@@ -1340,6 +1492,7 @@ def get_trainer_trainees_progress(
         completed_2d_practical = db.query(AssessmentSubmission).join(AssessmentTask).filter(
             AssessmentSubmission.user_id == trainee.id,
             AssessmentSubmission.status == 'approved',
+            (AssessmentSubmission.submission_kind == 'task') | (AssessmentSubmission.submission_kind.is_(None)),
             AssessmentSubmission.assessment_type == '2D',
             AssessmentTask.is_assembly == True,
             AssessmentTask.assessment_type == "2D"

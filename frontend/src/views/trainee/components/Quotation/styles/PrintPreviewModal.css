@@ -585,3 +585,14 @@
   border-color: var(--border);
   color: var(--text-main);
 }
+
+.ppm-submit-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+[data-theme='dark'] .ppm-submit-error {
+  color: #fca5a5;
+}

@@ -9,7 +9,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-from .database import engine, Base, get_db, get_db_mode
+from .database import engine, sqlite_engine, mysql_engine, Base, get_db, get_db_mode
 from .routers import auth, admin, lessons, quizzes, assessments
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -18,19 +18,31 @@ import json
 
 # Create database tables on startup (only if SQLite, or MySQL is ready)
 try:
-    Base.metadata.create_all(bind=engine)
-
-    # Auto-migration for trainee_set_mappings assessment_type column
+    # Keep both the primary database and the SQLite failover schema compatible.
     from sqlalchemy import text, inspect
-    with engine.connect() as conn:
-        inspector = inspect(engine)
-        if "trainee_set_mappings" in inspector.get_table_names():
-            columns = [c["name"] for c in inspector.get_columns("trainee_set_mappings")]
-            if "assessment_type" not in columns:
-                print("Adding assessment_type column to trainee_set_mappings table...")
-                conn.execute(text("ALTER TABLE trainee_set_mappings ADD COLUMN assessment_type VARCHAR(50) DEFAULT '3D'"))
-                conn.commit()
-                print("Successfully added assessment_type column.")
+    migration_engines = list({id(db_engine): db_engine for db_engine in [engine, sqlite_engine, mysql_engine] if db_engine is not None}.values())
+    for db_engine in migration_engines:
+        Base.metadata.create_all(bind=db_engine)
+        with db_engine.connect() as conn:
+            inspector = inspect(db_engine)
+            table_names = inspector.get_table_names()
+            if "trainee_set_mappings" in table_names:
+                columns = [c["name"] for c in inspector.get_columns("trainee_set_mappings")]
+                if "assessment_type" not in columns:
+                    conn.execute(text("ALTER TABLE trainee_set_mappings ADD COLUMN assessment_type VARCHAR(50) DEFAULT '3D'"))
+            if "assessment_submissions" in table_names:
+                submission_columns = {c["name"] for c in inspector.get_columns("assessment_submissions")}
+                submission_migrations = {
+                    "submission_kind": "VARCHAR(50) NOT NULL DEFAULT 'task'",
+                    "source_quotation_id": "INTEGER NULL",
+                    "display_label": "VARCHAR(200) NULL",
+                }
+                for column_name, column_definition in submission_migrations.items():
+                    if column_name not in submission_columns:
+                        conn.execute(text(
+                            f"ALTER TABLE assessment_submissions ADD COLUMN {column_name} {column_definition}"
+                        ))
+            conn.commit()
 except Exception as e:
     print(f"[!] Warning: Could not create tables or run startup migrations: {e}")
 
@@ -150,4 +162,3 @@ socketio_app = _sio_module.ASGIApp(
     socketio_path='socket.io'
 )
 app = CORSMiddleware(app=socketio_app, **cors_options)
-

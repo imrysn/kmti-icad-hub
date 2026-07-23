@@ -36,7 +36,8 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
       let processedTasks = tasksData.map(t => ({
         ...t,
-        set_number: Number(t.set_number)
+        set_number: Number(t.set_number),
+        source_set_number: Number(t.set_number)
       }));
       if (assessmentType === '2D') {
         processedTasks = processedTasks

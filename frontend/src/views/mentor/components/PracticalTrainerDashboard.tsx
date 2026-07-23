@@ -613,12 +613,13 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const handleOpenInIJCAD = async (submission: AssessmentSubmission, appName?: string) => {
         const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
         const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
+        const targetApplication = submission.submission_kind === 'quotation' ? 'Excel' : (appName || 'CAD');
 
         const confirmed = await requestConfirmation({
             title: "Confirm Open",
             message: (
                 <span>
-                    Are you sure you want to open <strong>{attachedFilename}</strong> in <strong>{appName || 'CAD'}</strong>?
+                    Are you sure you want to open <strong>{attachedFilename}</strong> in <strong>{targetApplication}</strong>?
                 </span>
             )
         });
@@ -629,12 +630,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
                 const token = authService.getToken() || '';
 
-                showNotification(`Opening ${attachedFilename} in ${appName ? appName : 'CAD'}...`, 'info');
+                showNotification(`Opening ${attachedFilename} in ${targetApplication}...`, 'info');
                 await window.electronAPI.downloadAndOpen({ url, filename: attachedFilename, token, appName });
                 showNotification(`Submission opened.`, 'success');
             } catch (err) {
                 console.error('Failed to open in CAD:', err);
-                showNotification('Failed to launch CAD application. Please check if it is installed.', 'error');
+                showNotification(`Failed to launch ${targetApplication}. Please check if it is installed.`, 'error');
             }
         } else {
             // Fallback to regular download if not in Electron or IPC missing
@@ -787,7 +788,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
         if (!sub.user || !sub.task) return acc;
         const traineeId = sub.user.id;
         const setNum = sub.task.set_number;
-        const taskId = sub.task.id;
+        const taskId = sub.submission_kind === 'quotation'
+            ? `quotation-${sub.source_quotation_id || sub.task.id}`
+            : sub.task.id;
 
         if (!acc[traineeId]) acc[traineeId] = { user: sub.user, sets: {} };
         if (!acc[traineeId].sets[setNum]) acc[traineeId].sets[setNum] = { tasks: {} };
@@ -1010,6 +1013,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                         });
 
                                                         const tasks = filteredTasks.sort((a: any, b: any) => {
+                                                            const isQuotationA = a[0]?.submission_kind === 'quotation';
+                                                            const isQuotationB = b[0]?.submission_kind === 'quotation';
+                                                            if (isQuotationA !== isQuotationB) return isQuotationA ? 1 : -1;
                                                             const taskA = a[0]?.task;
                                                             const taskB = b[0]?.task;
                                                             if (!taskA || !taskB) return 0;
@@ -1115,15 +1121,19 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                             const latestSub = sortedSubs[0];
 
                                                                             return (
-                                                                                <div key={latestSub.task.id} className="task-list-row">
+                                                                                <div key={latestSub.submission_kind === 'quotation' ? `quotation-${latestSub.id}` : latestSub.task.id} className="task-list-row">
                                                                                     <div className="task-list-left">
                                                                                         <div className={`task-status-dot ${latestSub.status}`} title={latestSub.status.toUpperCase()}>
                                                                                             {latestSub.status === 'approved' && <CheckCircle2 size={14} />}
                                                                                             {latestSub.status === 'pending' && <Clock size={14} />}
                                                                                             {latestSub.status === 'rejected' && <XCircle size={14} />}
                                                                                         </div>
-                                                                                        <span className={`task-code-badge ${getUnitCodeBadgeClass(latestSub.task.task_code)}`}>Unit {latestSub.task.task_code}</span>
-                                                                                        <span className="task-list-title" title={latestSub.task.title}>{latestSub.task.title}</span>
+                                                                                        <span className={`task-code-badge ${getUnitCodeBadgeClass(latestSub.submission_kind === 'quotation' ? 'QUOT' : latestSub.task.task_code)}`}>
+                                                                                            {latestSub.submission_kind === 'quotation' ? 'QUOT' : `Unit ${latestSub.task.task_code}`}
+                                                                                        </span>
+                                                                                        <span className="task-list-title" title={latestSub.submission_kind === 'quotation' ? 'Quotation' : latestSub.task.title}>
+                                                                                            {latestSub.submission_kind === 'quotation' ? 'Quotation' : latestSub.task.title}
+                                                                                        </span>
                                                                                     </div>
                                                                                     <div className="task-list-right">
                                                                                         {sortedSubs.length > 1 && <span className="task-attempt-tag">{sortedSubs.length} attempts</span>}
@@ -1262,7 +1272,9 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 <Modal
                     isOpen={!!(isReviewing && selectedTaskSubmissions && selectedTaskSubmissions.length > 0)}
                     onClose={() => setIsReviewing(false)}
-                    title={`Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Unit ${selectedTaskSubmissions?.[0]?.task?.task_code}`}
+                    title={selectedTaskSubmissions?.[0]?.submission_kind === 'quotation'
+                        ? `Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Quotation`
+                        : `Review: ${selectedTaskSubmissions?.[0]?.user?.full_name} - Set ${selectedTaskSubmissions?.[0]?.task?.set_number} Unit ${selectedTaskSubmissions?.[0]?.task?.task_code}`}
                     tag="SUBMISSION_REVIEW"
                     size="xl"
                     containerClassName="split-layout-modal"
@@ -1304,7 +1316,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                             <button
                                                                 className="action-icon-btn primary"
                                                                 onClick={() => handleOpenInIJCAD(sub)}
-                                                                title="Open in CAD"
+                                                                title={sub.submission_kind === 'quotation' ? 'Open in Excel' : 'Open in CAD'}
                                                                 style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
                                                                 onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = 'var(--shadow-glow)'; }}
                                                                 onMouseLeave={(e) => { e.currentTarget.style.filter = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
