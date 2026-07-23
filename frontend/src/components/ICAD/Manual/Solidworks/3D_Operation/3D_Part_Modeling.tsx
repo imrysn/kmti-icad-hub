@@ -35,6 +35,7 @@ const PartModelingLesson: React.FC<PartModelingProps> = ({
     subLessonId,
 }) => {
     const { scrollProgress, containerRef } = useLessonCore(subLessonId || "sw-part-modeling");
+    const [activeTab, setActiveTab] = React.useState('3d-part-modeling');
 
     const sectionTitle = subLessonId === 'sw-sketching-base'
         ? 'SKETCHING THE BASE'
@@ -72,21 +73,60 @@ const PartModelingLesson: React.FC<PartModelingProps> = ({
                                                             ? 'HOW TO EDIT MATINGS'
                                                             : '3D PART MODELING';
 
+    const TABS = [
+        { id: '3d-part-modeling', label: '3D Part Modeling' },
+        { id: 'sketching-base', label: 'Sketching the Base' },
+        { id: 'extruding-base', label: 'Extruding the Base' }
+    ];
+
     return (
         <div className="course-lesson-container" ref={containerRef}>
             <div className="lesson-progress-container">
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
+            {subLessonId === 'sw-part-modeling' && (
+                <div className="lesson-tabs" style={{ marginBottom: '1rem', padding: '0 1rem' }}>
+                    {TABS.map(tab => (
+                        <button
+                            key={tab.id}
+                            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => setActiveTab(tab.id)}
+                            style={{ 
+                                padding: '8px 16px', 
+                                background: activeTab === tab.id ? 'rgba(221, 77, 250, 0.1)' : 'transparent',
+                                border: `1px solid ${activeTab === tab.id ? 'var(--color-primary)' : 'transparent'}`,
+                                color: activeTab === tab.id ? 'var(--color-primary)' : 'var(--text-muted)',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                fontWeight: activeTab === tab.id ? 600 : 400
+                            }}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+            )}
+
             <div className="lesson-grid single-card">
                 <div className="lesson-card fade-in">
 
                     {/* Header */}
                     <div className="card-header">
-                        <h4 className="section-title">{sectionTitle}</h4>
+                        <h4 className="section-title">
+                            {subLessonId === 'sw-part-modeling' 
+                                ? (activeTab === '3d-part-modeling' ? '3D PART MODELING' : activeTab === 'sketching-base' ? 'SKETCHING THE BASE' : 'EXTRUDING THE BASE')
+                                : sectionTitle}
+                        </h4>
                     </div>
 
-                    {subLessonId === 'sw-part-modeling' && <PartModelingContent />}
+                    {subLessonId === 'sw-part-modeling' && (
+                        <div className="tab-content fade-in">
+                            {activeTab === '3d-part-modeling' && <PartModelingContent />}
+                            {activeTab === 'sketching-base' && <SketchingBaseContent />}
+                            {activeTab === 'extruding-base' && <ExtrudingBaseContent />}
+                        </div>
+                    )}
                     {subLessonId === 'sw-sketching-base' && <SketchingBaseContent />}
                     {subLessonId === 'sw-extruding-base' && <ExtrudingBaseContent />}
                     {subLessonId === 'sw-cutting-base' && <CuttingBaseContent />}

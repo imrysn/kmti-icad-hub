@@ -187,6 +187,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Initial Session Restoration (once courses are available)
     useEffect(() => {
         if (!loading && courses.length > 0 && !isRestored) {
+            if (['icad_standard', 'icad_command', 'solidworks_manual'].includes(currentView)) {
+                setIsRestored(true);
+                return;
+            }
             const savedCourseId = localStorage.getItem(authService.getStorageKey('selectedCourseId'));
             const savedLessonId = localStorage.getItem(authService.getStorageKey('activeLessonId'));
             const savedExpanded = localStorage.getItem(authService.getStorageKey('expandedIds'));
@@ -685,17 +689,19 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         return 'Select a Lesson';
     };
 
-    // Render subview components based on URL view parameter when no course is selected
+    // Render subview components based on URL view parameter
+    if (currentView === 'icad_standard') {
+        return <ICADStandardView setSelectedCourse={setSelectedCourse} />;
+    }
+    if (currentView === 'icad_command') {
+        return <ICADCommandView setSelectedCourse={setSelectedCourse} />;
+    }
+    if (currentView === 'solidworks_manual') {
+        return <SolidworksManualView setSelectedCourse={setSelectedCourse} />;
+    }
+
     if (!selectedCourse) {
-        if (currentView === 'icad_standard') {
-            return <ICADStandardView setSelectedCourse={setSelectedCourse} />;
-        }
-        if (currentView === 'icad_command') {
-            return <ICADCommandView setSelectedCourse={setSelectedCourse} />;
-        }
-        if (currentView === 'solidworks_manual') {
-            return <SolidworksManualView setSelectedCourse={setSelectedCourse} />;
-        }
+        // Fall through to CourseSelector when no course is selected
     }
 
     // Render CourseSelector (or loading/error) when no course is selected and not in a special subview

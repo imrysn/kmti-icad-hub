@@ -1,4 +1,4 @@
-import { TutorialStep } from "../../../VideoTutorialModal";
+import { TutorialStep } from "../VideoTutorialViewer";
 
 export const TOOLBAR_TUTORIAL_STEPS: TutorialStep[] = [
   {

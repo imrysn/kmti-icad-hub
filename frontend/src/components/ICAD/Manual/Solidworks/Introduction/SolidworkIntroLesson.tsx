@@ -4,7 +4,7 @@ import { useLessonCore } from "../../../../../hooks/useLessonCore";
 import "../../../../../styles/3D_Modeling/CourseLesson.css";
 
 // --- Content Components ---
-import SolidworksInterfaceContent from "./SolidworksInterfaceContent";
+import Video_SolidWorks_Interface from "./Video_SolidWorks_Interface";
 import MouseControlContent from "./MouseControlContent";
 import KeyboardShortcutsContent from "./KeyboardShortcutsContent";
 import MenuBarContent from "./MenuBarContent";
@@ -27,7 +27,11 @@ const SolidworkIntroLesson: React.FC<SolidworkIntroProps> = ({
     nextLabel,
     subLessonId,
 }) => {
-    const { scrollProgress, containerRef } = useLessonCore(subLessonId || "sw-interface");
+    if (!subLessonId || subLessonId === 'sw-interface') {
+        return <Video_SolidWorks_Interface onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+    }
+
+    const { scrollProgress, containerRef } = useLessonCore(subLessonId);
 
     const sectionTitle = subLessonId === 'sw-mouse-control'
         ? 'MOUSE CONTROL'
@@ -60,8 +64,6 @@ const SolidworkIntroLesson: React.FC<SolidworkIntroProps> = ({
                     <div className="card-header">
                         <h4 className="section-title">{sectionTitle}</h4>
                     </div>
-
-                    {subLessonId === 'sw-interface' && <SolidworksInterfaceContent />}
                     {subLessonId === 'sw-mouse-control' && <MouseControlContent />}
                     {subLessonId === 'sw-keyboard-shortcuts' && <KeyboardShortcutsContent />}
                     {subLessonId === 'sw-menu-bar' && <MenuBarContent />}

@@ -2,6 +2,8 @@ import React, { useState, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../../hooks/useLessonCore";
 import "../../../../../styles/3D_Modeling/CourseLesson.css";
+import VideoTutorialViewer from '../../3D_Modeling/VideoTutorialViewer';
+import { SOLIDWORKS_TUTORIAL_STEPS } from './VideoTutorialData/solidworksInterfaceTutorial';
 
 // --- Assets ---
 import mainInterface from "../../../../../assets/Solidworks/Introduction/SW_UI_Main.png";
@@ -287,23 +289,20 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
             </div>
 
             <div className="lesson-grid single-card">
-                <div className="lesson-card fade-in">
+                {activeTab === 'page1' && (
+                    <div className="lesson-card fade-in" style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0, marginBottom: '2rem' }}>
+                        <div className="interactive-stage-container" style={{ width: '100%' }}>
+                            <VideoTutorialViewer 
+                                steps={SOLIDWORKS_TUTORIAL_STEPS} 
+                                imageSrc={mainInterface}
+                            />
+                        </div>
+                    </div>
+                )}
 
+                <div className="lesson-card fade-in">
                     {activeTab === 'page1' && (
                         <>
-                            {/* Header */}
-                            <div className="card-header">
-                                <h4 className="section-title">SolidWorks Interface</h4>
-                            </div>
-                            <div className="instruction-step" style={{ marginTop: "1rem" }}>
-                                <img
-                                    src={mainInterface}
-                                    alt="SolidWorks Interface"
-                                    className="software-screenshot screenshot-wide"
-                                    style={{ marginBottom: "1.5rem" }}
-                                />
-                            </div>
-
                             {/* SECTION 1: Mouse Control */}
                             <div className="card-header" style={{ marginTop: "2rem" }}>
                                 <h4 className="section-title">Mouse Control</h4>
