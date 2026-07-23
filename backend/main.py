@@ -39,7 +39,7 @@ app = FastAPI(title="KMTI iCAD Hub API")
 
 # Enable CORS for Electron app and dev servers
 cors_origins_env = os.getenv("CORS_ORIGINS", "")
-origins = cors_origins_env.split(",") if cors_origins_env else []
+origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()] if cors_origins_env else []
 
 if not origins:
     # Fallback only for local dev if not specified
@@ -51,13 +51,17 @@ if not origins:
         "app://." # For Electron production
     ]
 
+cors_options = {
+    "allow_origins": origins,
+    "allow_origin_regex": r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
+    "allow_credentials": True,
+    "allow_methods": ["*"],
+    "allow_headers": ["*"],
+}
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    **cors_options,
 )
 
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -134,11 +138,17 @@ def read_root():
 import socketio as _sio_module
 from .socket_manager import sio as global_sio
 
-# Override app with ASGIApp so that server.py imports the combined app correctly
-app = _sio_module.ASGIApp(
+# Keep the FastAPI instance available for dependency overrides and focused tests.
+api_app = app
+
+# CORS must be the outermost layer. FileResponse and Socket.IO can raise after
+# FastAPI's middleware stack has returned, and those error responses must still
+# include Access-Control-Allow-Origin for the renderer to read the real status.
+socketio_app = _sio_module.ASGIApp(
     global_sio, 
-    app, 
+    api_app,
     static_files={},
     socketio_path='socket.io'
 )
+app = CORSMiddleware(app=socketio_app, **cors_options)
 

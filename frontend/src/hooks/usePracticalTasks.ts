@@ -96,8 +96,12 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
         const url = assessmentService.getDownloadUrl(task.id);
         const token = authService.getToken();
+        if (!token) {
+          showNotification('Session expired. Please login again.', 'error');
+          return;
+        }
         await window.electronAPI.downloadBulkFiles({
-          tasks: [{ url, target_relative_path: originalFilename }],
+          tasks: [{ id: task.id, url, target_relative_path: originalFilename }],
           token
         });
       } else {
@@ -174,8 +178,12 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
         const url = `${api.defaults.baseURL || ''}/api/v1/assessments/feedback/${feedback.id}/download`;
         const token = authService.getToken();
+        if (!token) {
+          showNotification('Session expired. Please login again.', 'error');
+          return;
+        }
         await window.electronAPI.downloadBulkFiles({
-          tasks: [{ url, target_relative_path: filename }],
+          tasks: [{ id: feedback.id, url, target_relative_path: filename }],
           token
         });
       } else {

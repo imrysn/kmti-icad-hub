@@ -90,19 +90,23 @@ async function _initializeKemcoQuotationTemplate(workbook: ExcelJS.Workbook, she
   const thin: Partial<ExcelJS.Borders> = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
   const medium: Partial<ExcelJS.Borders> = { top: { style: 'medium' }, left: { style: 'medium' }, bottom: { style: 'medium' }, right: { style: 'medium' } }
 
-  ;[4.2, 10.5, 11.5, 9.5, 28, 8.5, 7.5, 20].forEach((width, index) => { sheet.getColumn(index + 1).width = width })
+  ;[5.29, 12.43, 11.71, 9.71, 33, 7.71, 7, 27.86].forEach((width, index) => { sheet.getColumn(index + 1).width = width })
   sheet.properties.defaultRowHeight = 15
   sheet.views = [{ showGridLines: false, zoomScale: 90 }]
   sheet.pageSetup = { paperSize: 9, orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 1, printArea: 'A1:H51', margins: { left: 0.2, right: 0.2, top: 0.2, bottom: 0.2, header: 0, footer: 0 } }
-  sheet.getRow(1).height = 18
-  sheet.getRow(17).height = 30
+  sheet.getRow(1).height = 21.75
+  sheet.getRow(2).height = 15.75
+  sheet.getRow(3).height = 19.5
+  sheet.getRow(4).height = 13.5
+  sheet.getRow(5).height = 18
+  sheet.getRow(17).height = 36.75
   for (let row = 18; row <= 27; row++) sheet.getRow(row).height = 19
   sheet.getRow(28).height = 21
 
-  _safeMerge(sheet, 'C1:H2')
-  Object.assign(sheet.getCell('C1'), { value: 'KUSAKABE & MAENO TECH., INC.', font: { name: 'Arial', size: 16, bold: true }, alignment: { horizontal: 'center', vertical: 'middle' } })
-  _safeMerge(sheet, 'C3:H4')
-  Object.assign(sheet.getCell('C3'), { value: 'Quotation', font: { name: 'Arial', size: 15, bold: true }, alignment: { horizontal: 'center', vertical: 'middle' } })
+  _safeMerge(sheet, 'D1:H1')
+  Object.assign(sheet.getCell('D1'), { value: 'KUSAKABE & MAENO TECH., INC.', font: { name: 'Arial', size: 22, bold: true }, alignment: { horizontal: 'left', vertical: 'middle' } })
+  _safeMerge(sheet, 'D3:F3')
+  Object.assign(sheet.getCell('D3'), { value: 'Quotation', font: { name: 'Arial', size: 18, bold: true }, alignment: { horizontal: 'center', vertical: 'middle' } })
 
   ;[
     'KUSAKABE & MAENO TECH., INC.',
@@ -111,18 +115,17 @@ async function _initializeKemcoQuotationTemplate(workbook: ExcelJS.Workbook, she
     'Dasmarinas City, Cavite Philippines',
     'TEL: +63-46-414-4009',
   ].forEach((text, index) => {
-    _safeMerge(sheet, `E${5 + index}:H${5 + index}`)
-    const cell = sheet.getCell(`E${5 + index}`)
+    const cell = sheet.getCell(`H${5 + index}`)
     cell.value = text
-    cell.font = { name: 'Arial', size: 8, bold: index === 0 }
-    cell.alignment = { horizontal: 'center', vertical: 'middle' }
+    cell.font = { name: 'Arial', size: 10, bold: index === 0 }
+    cell.alignment = { horizontal: 'right', vertical: 'middle' }
   })
 
   try {
     const response = await fetch(KmtiLogo)
     if (response.ok) {
       const logoId = workbook.addImage({ buffer: await response.arrayBuffer(), extension: 'png' })
-      sheet.addImage(logoId, { tl: { col: 0.15, row: 0.1 }, ext: { width: 105, height: 105 } })
+      sheet.addImage(logoId, 'A1:B7')
     }
   } catch (error) {
     console.warn('KMTI logo could not be embedded in the Excel export.', error)
@@ -131,13 +134,14 @@ async function _initializeKemcoQuotationTemplate(workbook: ExcelJS.Workbook, she
   _safeMerge(sheet, 'A11:D11')
   sheet.getCell('A11').value = 'Quotation to:'
   sheet.getCell('A11').font = { name: 'Arial', size: 9, bold: true }
+  ;['A12:E12', 'A13:E13', 'A14:E14', 'A15:E15'].forEach(range => _safeMerge(sheet, range))
   ;[
-    ['E12:F12', 'G12:H12', 'Quotation NO.'],
-    ['E13:F13', 'G13:H13', 'REFERENCE NO.'],
-    ['E14:F14', 'G14:H14', 'DATE:'],
+    ['F12:G12', 'H12', 'Quotation NO.:'],
+    ['F13:G13', 'H13', 'REFERENCE NO.:'],
+    ['F14:G14', 'H14', 'DATE:'],
   ].forEach(([labelRange, valueRange, label]) => {
     _safeMerge(sheet, labelRange)
-    _safeMerge(sheet, valueRange)
+    if (valueRange.includes(':')) _safeMerge(sheet, valueRange)
     const labelCell = sheet.getCell(labelRange.split(':')[0])
     labelCell.value = label
     labelCell.font = { name: 'Arial', size: 9, bold: true }
@@ -150,7 +154,7 @@ async function _initializeKemcoQuotationTemplate(workbook: ExcelJS.Workbook, she
   ;['NO.', 'Construction\nNo.', 'Machine\nCode', 'Unit\nCode', 'Description', 'Percent\n%', 'TYPE', 'PRICE'].forEach((header, index) => {
     const cell = sheet.getRow(17).getCell(index + 1)
     cell.value = header
-    cell.font = { name: 'Arial', size: 9, bold: true }
+    cell.font = { name: 'Arial', size: 10, bold: true }
     cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true }
     cell.border = thin
   })
@@ -182,12 +186,13 @@ async function _initializeKemcoQuotationTemplate(workbook: ExcelJS.Workbook, she
   sheet.getCell('A31').value = 'The price will be changed without prior notice due to frequent changes of conversion rate.'
   ;['A30', 'A31'].forEach(address => { sheet.getCell(address).font = { name: 'Arial', size: 8 } })
 
-  sheet.getCell('A35').value = 'Prepared by:'; sheet.getCell('A42').value = 'Approved by:'; sheet.getCell('E42').value = 'Received by:'
-  ;['A35', 'A42', 'E42'].forEach(address => { sheet.getCell(address).font = { name: 'Arial', size: 9 } })
-  _safeMerge(sheet, 'A38:C38'); _safeMerge(sheet, 'A45:C45'); _safeMerge(sheet, 'E45:H45')
-  ;['A38', 'A45', 'E45'].forEach(address => { sheet.getCell(address).border = { bottom: { style: 'medium' } } })
-  ;['A39:C39', 'A40:C40', 'A46:C46', 'A47:C47', 'E46:H46', 'E47:H47'].forEach(range => _safeMerge(sheet, range))
-  ;['A39', 'A40', 'A46', 'A47', 'E46', 'E47'].forEach(address => { sheet.getCell(address).alignment = { horizontal: 'center', vertical: 'middle' } })
+  sheet.getCell('A35').value = 'Prepared by:'; sheet.getCell('A42').value = 'Approved by:'; sheet.getCell('F42').value = 'Received by:'
+  ;['A35', 'A42', 'F42'].forEach(address => { sheet.getCell(address).font = { name: 'Arial', size: 9 } })
+  _safeMerge(sheet, 'F42:G42')
+  _safeMerge(sheet, 'A38:C38'); _safeMerge(sheet, 'A45:C45'); _safeMerge(sheet, 'F45:H45')
+  ;['A38', 'A45', 'F45'].forEach(address => { sheet.getCell(address).border = { bottom: { style: 'medium' } } })
+  ;['A39:C39', 'A40:C40', 'A46:C46', 'A47:C47', 'F46:H46', 'F47:H47'].forEach(range => _safeMerge(sheet, range))
+  ;['A39', 'A40', 'A46', 'A47', 'F46', 'F47'].forEach(address => { sheet.getCell(address).alignment = { horizontal: 'center', vertical: 'middle' } })
 
   _safeMerge(sheet, 'A50:C50'); _safeMerge(sheet, 'E50:H50')
   sheet.getCell('A50').value = 'ce-administrator@kmti.engineering'
@@ -1188,8 +1193,8 @@ function _fillQuotation(sheet: ExcelJS.Worksheet, d: {
     _cleanAndReMerge(40 + s, 'A', 'C')
     _cleanAndReMerge(46 + s, 'A', 'C')
     _cleanAndReMerge(47 + s, 'A', 'C')
-    _cleanAndReMerge(46 + s, 'E', 'H')
-    _cleanAndReMerge(47 + s, 'E', 'H')
+    _cleanAndReMerge(46 + s, 'F', 'H')
+    _cleanAndReMerge(47 + s, 'F', 'H')
   }
 
   sheet.getCell(`A${39 + s}`).value = signatures.quotation.preparedBy.name
@@ -1206,7 +1211,7 @@ function _fillQuotation(sheet: ExcelJS.Worksheet, d: {
   sheet.getCell(`A${47 + s}`).alignment = { horizontal: 'center', vertical: 'middle' }
   sheet.getCell(`A${47 + s}`).font = { name: 'Arial', size: 10, italic: true }
 
-  const receivedCol = 'E'
+  const receivedCol = isKemco ? 'F' : 'E'
   sheet.getCell(`${receivedCol}${46 + s}`).value = signatures.quotation.receivedBy.label || '(Signature Over Printed Name)'
   sheet.getCell(`${receivedCol}${46 + s}`).alignment = { horizontal: 'center', vertical: 'middle' }
   sheet.getCell(`${receivedCol}${46 + s}`).font = { name: 'Arial', size: 10, bold: true }

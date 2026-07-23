@@ -83,16 +83,40 @@ describe('Excel quotation export fallback', () => {
     await workbook.xlsx.load(await blob.arrayBuffer())
     const sheet = workbook.getWorksheet('Quotation')!
 
-    expect(sheet.getCell('C1').value).toBe('KUSAKABE & MAENO TECH., INC.')
-    expect(sheet.getCell('C3').value).toBe('Quotation')
+    expect(sheet.getCell('D1').value).toBe('KUSAKABE & MAENO TECH., INC.')
+    expect(sheet.getCell('D1').font?.size).toBe(22)
+    expect(sheet.getCell('D1').alignment?.horizontal).toBe('left')
+    expect(sheet.getCell('D3').value).toBe('Quotation')
+    expect(sheet.getCell('D3').alignment?.horizontal).toBe('center')
+    expect(sheet.getCell('H5').value).toBe('KUSAKABE & MAENO TECH., INC.')
+    expect(sheet.getCell('H9').value).toBe('TEL: +63-46-414-4009')
+    expect(sheet.getCell('H5').alignment?.horizontal).toBe('right')
+    expect(sheet.getCell('H9').alignment?.horizontal).toBe('right')
+    expect(sheet.getCell('F12').value).toBe('Quotation NO.:')
+    expect(sheet.getCell('H12').value).toBe('KMTE-53')
+    ;[5.29, 12.43, 11.71, 9.71, 33, 7.71, 7, 27.86].forEach((width, index) => {
+      expect(sheet.getColumn(index + 1).width).toBeCloseTo(width, 2)
+    })
+    ;[[1, 21.75], [2, 15.75], [3, 19.5], [4, 13.5], [5, 18], [17, 36.75]].forEach(([row, height]) => {
+      expect(sheet.getRow(row).height).toBeCloseTo(height, 2)
+    })
     expect(sheet.getCell('B17').value).toContain('Construction')
     expect(sheet.getCell('H17').value).toBe('PRICE')
+    for (let column = 1; column <= 8; column++) {
+      expect(sheet.getRow(17).getCell(column).font?.bold).toBe(true)
+      expect(sheet.getRow(17).getCell(column).font?.size).toBe(10)
+    }
     expect(sheet.getColumn(8).width).toBeGreaterThanOrEqual(18)
     expect(sheet.getCell('H18').numFmt).toContain('#,##0')
     expect(sheet.getCell('A28').value).toBe('Total Amount')
     expect(sheet.getCell('A30').value).toContain('Upon receipt')
     expect(sheet.getCell('A35').value).toBe('Prepared by:')
-    expect(sheet.getCell('E42').value).toBe('Received by:')
+    expect(sheet.getCell('F42').value).toBe('Received by:')
+    expect(sheet.getCell('G42').isMerged).toBe(true)
+    expect(sheet.getCell('F45').border?.bottom?.style).toBe('medium')
+    expect(sheet.getCell('H45').isMerged).toBe(true)
+    expect(sheet.getCell('F46').value).toBe('(Signature Over Printed Name)')
+    expect(sheet.getCell('H46').isMerged).toBe(true)
     expect(sheet.pageSetup.printArea).toBe('A1:H51')
   })
 

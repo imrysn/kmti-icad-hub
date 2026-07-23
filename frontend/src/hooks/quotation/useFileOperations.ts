@@ -34,15 +34,12 @@ export function useFileOperations({
   }, [notify, modal])
 
   // New Invoice
-  const newInvoice = useCallback(() => {
+  const newInvoice = useCallback(async () => {
     if (hasUnsavedChanges) {
-      modal.confirm(
-        'You have unsaved changes. Are you sure you want to create a new invoice?',
-        resetToNew,
-        undefined,
-        'danger',
-        'Discard Changes?'
+      const confirmed = await modal.confirm(
+        'You have unsaved changes. Are you sure you want to create a new invoice?'
       )
+      if (confirmed) resetToNew()
     } else {
       resetToNew()
     }
@@ -195,15 +192,12 @@ export function useFileOperations({
     }
   }, [loadData, showMessage])
 
-  const loadInvoice = useCallback(() => {
+  const loadInvoice = useCallback(async () => {
     if (hasUnsavedChanges) {
-      modal.confirm(
-        'You have unsaved changes. Are you sure you want to load another invoice?',
-        performLoad,
-        undefined,
-        'danger',
-        'Discard Changes?'
+      const confirmed = await modal.confirm(
+        'You have unsaved changes. Are you sure you want to load another invoice?'
       )
+      if (confirmed) await performLoad()
     } else {
       performLoad()
     }

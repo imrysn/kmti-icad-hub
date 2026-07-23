@@ -504,19 +504,27 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   const handleSave = async () => {
     try {
       const data = getSaveData()
+      let savedQuotId = quotId
       if (quotId) {
         await quotationApi.update(quotId, data)
-        notify?.('Quotation updated in database', 'success')
       } else {
         const res = await quotationApi.create(data)
-        if (res.data.success) {
-          setQuotId(res.data.id)
-          notify?.('New quotation saved to database', 'success')
-        }
+        if (!res.data.success || !res.data.id) throw new Error('Quotation was not created')
+        savedQuotId = res.data.id
+        setQuotId(savedQuotId)
       }
 
       // Successfully saved to DB -> clear unsaved flag
       setHasUnsavedChanges(false)
+
+      try {
+        await quotationApi.createHistorySnapshot(savedQuotId as number, 'Manual Save')
+        window.dispatchEvent(new CustomEvent('quot:history-refresh', { detail: { quotId: savedQuotId } }))
+        notify?.('Quotation saved and added to Version History', 'success')
+      } catch (historyError) {
+        console.error('Version history snapshot failed:', historyError)
+        notify?.('Quotation saved, but Version History could not be updated', 'error')
+      }
 
       // Secondary backup: still allow file-system save if configured
       await saveInvoice(true)
@@ -626,9 +634,10 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   const handleFinalRestore = () => {
     if (!previewData) return
     loadData(previewData, 'version_restore')
+    setHasUnsavedChanges(true)
     setPreviewData(null)
     setActivePreviewTs(null)
-    notify('Version restored successfully!', 'success')
+    notify('Version restored. Save to keep this version.', 'success')
   }
 
   const handleSelectLibraryItem = async (quot: any) => {
@@ -858,7 +867,8 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
             quotId={quotId}
             onRestore={(data) => {
               loadData(data, 'version_restore')
-              notify?.('Version restored successfully!', 'success')
+              setHasUnsavedChanges(true)
+              notify?.('Version restored. Save to keep this version.', 'success')
             }}
             onPreview={handlePreview}
             previewingTs={activePreviewTs}

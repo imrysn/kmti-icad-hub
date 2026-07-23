@@ -297,8 +297,17 @@ export const useTTS = () => {
       };
 
       audio.play().catch(err => {
+        // Expected when navigation, cleanup, or React Strict Mode stops an
+        // audio element while its asynchronous play request is still pending.
+        if (err?.name === 'AbortError' || String(err?.message || '').includes('interrupted by a call to pause')) {
+          return;
+        }
         console.error("Audio play failed:", err);
-        audio.onended?.(null as any);
+        if (audioRef.current === audio) {
+          setIsSpeaking(false);
+          setCurrentIndex(-1);
+          setActiveParagraphText('');
+        }
       });
     } else {
       // Fallback: Browser Web Speech API

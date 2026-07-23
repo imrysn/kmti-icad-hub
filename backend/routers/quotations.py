@@ -38,6 +38,10 @@ def log_activity(*args, **kwargs): pass
 
 router = APIRouter(prefix="/quotations", tags=["quotations"])
 
+
+class HistorySnapshotRequest(BaseModel):
+    label: str = "Manual Save"
+
 _TEMPLATE_MAP = {
     "quotation": "Quotation Template.xlsx",
     "billing": "Billing Template.xlsx",
@@ -700,6 +704,46 @@ def get_history(q_id: int, db: Session = Depends(get_db)):
                 "timestamp": h.created_at.isoformat() + "Z"
             } for h in items
         ]
+    }
+
+
+@router.post("/{q_id}/history", status_code=status.HTTP_201_CREATED)
+def create_history_snapshot(
+    q_id: int,
+    payload: HistorySnapshotRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Capture the persisted quotation after an explicit user save."""
+    quot = db.execute(select(Quotation).where(Quotation.id == q_id)).scalar_one_or_none()
+    if not quot:
+        raise HTTPException(status_code=404, detail="Quotation not found")
+
+    snapshot = QuotationHistory(
+        quotation_id=q_id,
+        label=(payload.label.strip() or "Manual Save")[:255],
+        author=current_user.full_name or current_user.username,
+        data=quot.data or "{}",
+    )
+    db.add(snapshot)
+    db.commit()
+    db.refresh(snapshot)
+
+    log_activity(
+        username=current_user.username,
+        action="CREATE_QUOTATION_HISTORY",
+        details=f"Saved version of quotation '{quot.quotation_no}' (ID: {q_id})",
+        ip_address=request.client.host,
+    )
+    return {
+        "success": True,
+        "history": {
+            "id": snapshot.id,
+            "label": snapshot.label,
+            "author": snapshot.author,
+            "timestamp": snapshot.created_at.isoformat() + "Z",
+        },
     }
 
 @router.get("/{q_id}/history/{h_id}")

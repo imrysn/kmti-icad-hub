@@ -230,7 +230,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
           </div>

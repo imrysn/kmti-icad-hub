@@ -87,7 +87,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     const [trashModalOpen, setTrashModalOpen] = useState(false);
     const [timeRecordModalOpen, setTimeRecordModalOpen] = useState(false);
 
-    const currentUser = authService.getCurrentUser();
+    const currentUser = authService.getStoredUser();
     const userId = currentUser ? currentUser.id : 0;
     const stopwatchRefs = useRef<{ [key: number]: TaskStopwatchHandle | null }>({});
 
@@ -172,8 +172,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         const confirmed = await requestConfirmation({
             title: "Confirm Upload",
             message: "Are you sure you want to compress and upload this folder?",
-            confirmLabel: "Upload",
-            variant: "primary"
+            confirmText: "Upload",
+            type: "confirm"
         });
         if (!confirmed) return;
 
@@ -549,8 +549,8 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                 const confirmed = await requestConfirmation({
                                                                     title: "Confirm Bulk Download",
                                                                     message: "Are you sure you want to download all task files for this unit?",
-                                                                    confirmLabel: "Download All",
-                                                                    variant: "primary"
+                                                                    confirmText: "Download All",
+                                                                    type: "confirm"
                                                                 });
                                                                 if (confirmed) {
                                                                     handleBulkDownload(sortedUnitTasks);
@@ -903,7 +903,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                                 )}
 
                                                                                                                 {/* Reply Input Box (rendered for the last feedback item if it doesn't have a trainee reply yet) */}
-                                                                                                                {fIdx === feedbackSubmission.feedback.length - 1 && !fb.trainee_reply && (
+                                                                                                                {fIdx === (feedbackSubmission.feedback?.length ?? 0) - 1 && !fb.trainee_reply && (
                                                                                                                     <div className="feedback-reply-input-group" style={{ width: '100%', marginTop: '0.5rem' }}>
                                                                                                                         <textarea
                                                                                                                             placeholder="Reply to trainer comment..."

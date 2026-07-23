@@ -156,7 +156,7 @@ export const LobbyTutorial: React.FC<Props> = ({ isOpen, onClose, onComplete }) 
             </button>
           </div>
           <h3 id="lobby-tutorial-title" className="quot-tutorial-title">{step.title}</h3>
-          <div className="quot-tutorial-body"><KMTISensei key={currentStep} text={step.content} autoSpeak disableKaraoke /></div>
+          <div className="quot-tutorial-body"><KMTISensei key={currentStep} text={step.content} autoSpeak disableKaraoke onNarrationEnd={next} /></div>
           <div className="quot-tutorial-actions">
             <button type="button" className="tutorial-btn-skip" onClick={close}>Exit</button>
             <div className="quot-tutorial-nav">

@@ -84,13 +84,47 @@ export const QuotationTutorial: React.FC<Props> = ({ isOpen, onClose, onOpenPrin
   const [cardStyle, setCardStyle] = useState<React.CSSProperties>({})
   const [pointerPos, setPointerPos] = useState({ x: 0, y: 0 })
   const cardRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   const step = STEPS[currentStep]
 
   // Reset step when opening
   useEffect(() => {
-    if (isOpen) setCurrentStep(0)
+    if (!isOpen) return
+    setCurrentStep(0)
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    const frame = requestAnimationFrame(() => closeButtonRef.current?.focus())
+    return () => {
+      cancelAnimationFrame(frame)
+      previouslyFocused?.focus()
+    }
   }, [isOpen])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        const controls = Array.from(cardRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), [href], [tabindex]:not([tabindex="-1"])') || [])
+        if (controls.length > 0) {
+          const first = controls[0]
+          const last = controls[controls.length - 1]
+          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+        }
+      } else if (event.key === 'Escape') {
+        window.speechSynthesis?.cancel()
+        onClose()
+      } else if (event.key === 'ArrowRight') {
+        window.speechSynthesis?.cancel()
+        setCurrentStep(value => Math.min(value + 1, STEPS.length - 1))
+      } else if (event.key === 'ArrowLeft') {
+        window.speechSynthesis?.cancel()
+        setCurrentStep(value => Math.max(value - 1, 0))
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
 
   // ── Update spotlight and card position when step changes ────────────────
   useEffect(() => {
@@ -185,7 +219,7 @@ export const QuotationTutorial: React.FC<Props> = ({ isOpen, onClose, onOpenPrin
   if (!isOpen) return null
 
   const handleNext = () => {
-    window.speechSynthesis.cancel()
+    window.speechSynthesis?.cancel()
     if (currentStep < STEPS.length - 1) {
       setCurrentStep(s => s + 1)
     } else {
@@ -194,20 +228,20 @@ export const QuotationTutorial: React.FC<Props> = ({ isOpen, onClose, onOpenPrin
   }
 
   const handleBack = () => {
-    window.speechSynthesis.cancel()
+    window.speechSynthesis?.cancel()
     if (currentStep > 0) {
       setCurrentStep(s => s - 1)
     }
   }
 
   const handleClose = () => {
-    window.speechSynthesis.cancel()
+    window.speechSynthesis?.cancel()
     onClose()
   }
 
   return (
     <div className="quot-tutorial-overlay">
-      <div className="quot-tutorial-spotlight" style={spotlightStyle} onClick={handleClose} />
+      <div className="quot-tutorial-spotlight" style={spotlightStyle} onClick={handleClose} aria-hidden="true" />
 
       {pointerPos.x > 0 && (
         <div
@@ -217,27 +251,36 @@ export const QuotationTutorial: React.FC<Props> = ({ isOpen, onClose, onOpenPrin
       )}
 
       <div className="quot-tutorial-card-container" style={cardStyle} ref={cardRef}>
-        <div className="quot-tutorial-card">
+        <div className="quot-tutorial-card" role="dialog" aria-modal="true" aria-labelledby="workspace-tutorial-title">
           <div className="quot-tutorial-header">
-            <span className="quot-tutorial-step-count">Step {currentStep + 1} of {STEPS.length}</span>
-            <button className="quot-tutorial-close" onClick={handleClose}>
+            <span className="quot-tutorial-step-count">Workspace Tour • Step {currentStep + 1} of {STEPS.length}</span>
+            <button ref={closeButtonRef} type="button" className="quot-tutorial-close" onClick={handleClose} aria-label="Close workspace tutorial">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
           </div>
 
-          <h3 className="quot-tutorial-title">{step.title}</h3>
+          <h3 id="workspace-tutorial-title" className="quot-tutorial-title">{step.title}</h3>
 
           <div className="quot-tutorial-body">
-            <KMTISensei key={currentStep} text={step.content} autoSpeak={true} disableKaraoke={true} />
+            <KMTISensei
+              key={currentStep}
+              text={step.content}
+              autoSpeak={true}
+              disableKaraoke={true}
+              onNarrationEnd={() => {
+                if (currentStep < STEPS.length - 1) handleNext()
+                else onOpenPrintCenter?.()
+              }}
+            />
           </div>
 
           <div className="quot-tutorial-actions">
-            <button className="tutorial-btn-skip" onClick={handleClose}>Skip Tour</button>
+            <button type="button" className="tutorial-btn-skip" onClick={handleClose}>Skip Tour</button>
 
             <div className="quot-tutorial-nav">
-              <button
+              <button type="button"
                 className="tutorial-btn tutorial-btn-outline"
                 onClick={handleBack}
                 disabled={currentStep === 0}
@@ -245,14 +288,14 @@ export const QuotationTutorial: React.FC<Props> = ({ isOpen, onClose, onOpenPrin
                 Back
               </button>
               {currentStep < STEPS.length - 1 ? (
-                <button className="tutorial-btn tutorial-btn-primary" onClick={handleNext}>
+                <button type="button" className="tutorial-btn tutorial-btn-primary" onClick={handleNext}>
                   Next
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
                 </button>
               ) : (
-                <button className="tutorial-btn tutorial-btn-primary" onClick={() => { window.speechSynthesis.cancel(); onOpenPrintCenter?.(); }}>
+                <button type="button" className="tutorial-btn tutorial-btn-primary" onClick={() => { window.speechSynthesis?.cancel(); onOpenPrintCenter?.(); }}>
                   Go to Print Preview
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="9 18 15 12 9 6" />

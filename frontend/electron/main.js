@@ -3,12 +3,40 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
-const globalShortcut = electron.globalShortcut;
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
-const http = require('http');
 const { net } = require('electron');
+const { spawn } = require('child_process');
+
+const CAD_EXECUTABLES = Object.freeze({
+    ijcad: 'gcad.exe',
+    nanocad: 'ncad.exe',
+    icad: 'icad.exe',
+    solidworks: 'SLDWORKS.exe',
+});
+
+function isPathInside(parentDir, candidatePath) {
+    const relative = path.relative(path.resolve(parentDir), path.resolve(candidatePath));
+    return relative !== '' && !relative.startsWith('..') && !path.isAbsolute(relative);
+}
+
+function normalizeDownloadUrl(rawUrl) {
+    if (typeof rawUrl !== 'string') throw new Error('Invalid download URL');
+    const parsed = new URL(rawUrl.replace('localhost', '127.0.0.1'));
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+        throw new Error('Unsupported download protocol');
+    }
+
+    const host = parsed.hostname.toLowerCase();
+    const isApprovedHost = host === '127.0.0.1'
+        || host === 'localhost'
+        || host === 'kmti-nas'
+        || /^10\./.test(host)
+        || /^192\.168\./.test(host)
+        || /^172\.(1[6-9]|2\d|3[01])\./.test(host);
+    if (!isApprovedHost) throw new Error('Download host is not approved');
+    return parsed.toString();
+}
 
 ipcMain.handle('print-document', async (event, options = {}) => {
     const win = BrowserWindow.fromWebContents(event.sender);
@@ -60,7 +88,6 @@ ipcMain.handle('save-pdf', async (event, options = {}) => {
 // Enable hardware acceleration for smooth rendering performance.
 // (Only disable if running in headless environments or VMs lacking DirectX runtimes)
 // app.disableHardwareAcceleration();
-app.commandLine.appendSwitch('no-sandbox');
 // app.commandLine.appendSwitch('disable-gpu');
 // app.commandLine.appendSwitch('disable-gpu-sandbox');
 
@@ -85,21 +112,23 @@ function createWindow() {
         },
     });
 
-    // Register local shortcuts for DevTools (Ctrl+Shift+I / F12) and Reload (Ctrl+R)
-    mainWindow.webContents.on('before-input-event', (event, input) => {
-        if (input.type === 'keyDown') {
-            if ((input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i') {
-                mainWindow.webContents.toggleDevTools();
-                event.preventDefault();
-            } else if (input.key === 'F12') {
-                mainWindow.webContents.toggleDevTools();
-                event.preventDefault();
-            } else if ((input.control || input.meta) && input.key.toLowerCase() === 'r') {
-                mainWindow.webContents.reload();
-                event.preventDefault();
+    // Development-only shortcuts; packaged builds do not expose DevTools/reload.
+    if (!app.isPackaged) {
+        mainWindow.webContents.on('before-input-event', (event, input) => {
+            if (input.type === 'keyDown') {
+                if ((input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i') {
+                    mainWindow.webContents.toggleDevTools();
+                    event.preventDefault();
+                } else if (input.key === 'F12') {
+                    mainWindow.webContents.toggleDevTools();
+                    event.preventDefault();
+                } else if ((input.control || input.meta) && input.key.toLowerCase() === 'r') {
+                    mainWindow.webContents.reload();
+                    event.preventDefault();
+                }
             }
-        }
-    });
+        });
+    }
 
     // Handle development shortcuts and DevTools
     if (!app.isPackaged) {
@@ -146,7 +175,7 @@ function createWindow() {
 
         // Enforce boundary safety: path must reside strictly inside user drafts or downloads folder
         const downloadsDir = app.getPath('downloads');
-        if (!resolvedPath.startsWith(draftsDir) && !resolvedPath.startsWith(downloadsDir)) {
+        if (!isPathInside(draftsDir, resolvedPath) && !isPathInside(downloadsDir, resolvedPath)) {
             console.error('Blocked opening unauthorized location in open-file:', resolvedPath);
             return;
         }
@@ -166,15 +195,18 @@ function createWindow() {
             }
 
             // Strictly strip any folder routing character
-            const safeFilename = path.basename(filename).replace(/[/\\]/g, '');
+            const safeFilename = path.basename(filename).replace(/[<>:"/\\|?*\x00-\x1F]/g, '_');
+            if (!safeFilename || safeFilename === '.' || safeFilename === '..') {
+                throw new Error('Invalid filename');
+            }
             const draftsDir = path.join(app.getPath('userData'), 'drafts');
             if (!fs.existsSync(draftsDir)) {
                 fs.mkdirSync(draftsDir, { recursive: true });
             }
 
-            let localPath = path.join(draftsDir, safeFilename);
+            let localPath = path.resolve(draftsDir, safeFilename);
 
-            if (!localPath.startsWith(draftsDir)) {
+            if (!isPathInside(draftsDir, localPath)) {
                 throw new Error('Path traversal detected');
             }
 
@@ -194,7 +226,8 @@ function createWindow() {
             }
 
             const file = fs.createWriteStream(localPath);
-            const safeUrl = url.replace('localhost', '127.0.0.1');
+            const safeUrl = normalizeDownloadUrl(url);
+            if (typeof token !== 'string' || !token) throw new Error('Missing authentication token');
 
             return new Promise((resolve, reject) => {
                 file.on('error', (err) => {
@@ -235,39 +268,31 @@ function createWindow() {
                         clearTimeout(timeoutId);
                         file.close();
                         const { shell } = require('electron');
-                        const { exec } = require('child_process');
-
-                        if (appName && appName !== 'default') {
-                            let cmd = '';
-                            if (appName.toLowerCase() === 'ijcad') {
-                                cmd = `start gcad.exe "${localPath}"`;
-                            } else if (appName.toLowerCase() === 'nanocad') {
-                                cmd = `start ncad.exe "${localPath}"`;
-                            } else if (appName.toLowerCase() === 'icad') {
-                                cmd = `start icad.exe "${localPath}"`;
-                            } else if (appName.toLowerCase() === 'solidworks') {
-                                cmd = `start SLDWORKS.exe "${localPath}"`;
-                            }
-
-                            if (cmd) {
-                                exec(cmd, (error) => {
-                                    if (error) {
-                                        console.warn(`Failed to open with ${appName}, falling back to default:`, error);
-                                        shell.openPath(localPath).then((err) => {
-                                            if (err) reject(new Error(err));
-                                            else resolve(localPath);
-                                        });
-                                    } else {
-                                        resolve(localPath);
-                                    }
-                                });
-                                return;
-                            }
-                        }
-
-                        shell.openPath(localPath).then((error) => {
+                        const openWithDefault = () => shell.openPath(localPath).then((error) => {
                             if (error) reject(new Error(error));
                             else resolve(localPath);
+                        });
+
+                        const executable = appName && appName !== 'default'
+                            ? CAD_EXECUTABLES[String(appName).toLowerCase()]
+                            : null;
+                        if (!executable) {
+                            openWithDefault();
+                            return;
+                        }
+
+                        const child = spawn(executable, [localPath], {
+                            detached: true,
+                            stdio: 'ignore',
+                            windowsHide: true,
+                        });
+                        child.once('spawn', () => {
+                            child.unref();
+                            resolve(localPath);
+                        });
+                        child.once('error', (error) => {
+                            console.warn(`Failed to open with ${appName}, falling back to default:`, error);
+                            openWithDefault();
                         });
                     });
                 });
@@ -290,6 +315,8 @@ function createWindow() {
 
     ipcMain.handle('download-bulk-files', async (event, { tasks, token }) => {
         const { shell } = require('electron');
+        if (!Array.isArray(tasks)) throw new Error('Invalid download task list');
+        if (typeof token !== 'string' || !token) throw new Error('Missing authentication token');
 
         // Auto-save directly to Downloads instead of prompting
         const targetDir = app.getPath('downloads');
@@ -313,7 +340,10 @@ function createWindow() {
                     safeRelativePath = match[1];
                 }
 
-                const localPath = path.join(targetDir, safeRelativePath);
+                const localPath = path.resolve(targetDir, safeRelativePath);
+                if (!isPathInside(targetDir, localPath)) {
+                    throw new Error('Download path escapes the Downloads directory');
+                }
 
                 const fileDir = path.dirname(localPath);
                 try {
@@ -339,7 +369,7 @@ function createWindow() {
 
                 // If file exists, maybe overwrite it
                 const file = fs.createWriteStream(localPath);
-                const safeUrl = task.url.replace('localhost', '127.0.0.1');
+                const safeUrl = normalizeDownloadUrl(task.url);
 
                 await new Promise((resolve, reject) => {
                     file.on('error', (err) => {

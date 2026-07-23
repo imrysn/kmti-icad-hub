@@ -18,17 +18,11 @@ echo Cleaning old builds...
 if exist "dist" rd /s /q "dist"
 if exist "build" rd /s /q "build"
 
-set CACHE_ARG=
-if exist "tts_cache" (
-    set CACHE_ARG=--add-data="tts_cache;backend/tts_cache"
-)
-
 if exist "KMTI_iCAD_Server.spec" del /q "KMTI_iCAD_Server.spec"
 venv\Scripts\python.exe -m PyInstaller --onefile --console ^
     --name KMTI_iCAD_Server ^
     --icon=kmti_logo.ico ^
     --add-data="kmti_logo.ico;." ^
-    %CACHE_ARG% ^
     --distpath=dist ^
     --workpath=build ^
     --hidden-import=uvicorn.logging ^
