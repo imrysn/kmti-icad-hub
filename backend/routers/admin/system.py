@@ -1,16 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func, cast, Date as SqlDate
+from sqlalchemy import func
 from typing import List, Dict
-import os
 import psutil
-import json
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from ...database import get_db
 from ...models import User, UserProgress, SystemLog, Broadcast
 from ...auth.dependencies import require_role
 from ...rag_engine import rag_engine
+from ...time_utils import utc_now
 
 router = APIRouter()
 
@@ -23,10 +22,10 @@ def get_system_stats(
     total_users = db.query(User).count()
     active_users = db.query(User).filter(User.is_active == True).count()
     admin_users = db.query(User).filter(User.role == "admin").count()
-    
+
     # ChromaDB stats
     kb_stats = rag_engine.get_collection_stats()
-    
+
     # Simple "health" check
     try:
         cpu_usage = psutil.cpu_percent()
@@ -101,7 +100,7 @@ def get_active_broadcasts(
         .join(User, Broadcast.created_by == User.id)\
         .filter(Broadcast.is_active == True)\
         .order_by(Broadcast.created_at.desc()).all()
-    
+
     return [
         {
             "id": b[0].id,
@@ -119,14 +118,14 @@ def get_training_heatmap(
     admin: User = Depends(require_role("admin"))
 ):
     """Get activity counts per course for heatmap (Recent 60 mins)"""
-    one_hour_ago = datetime.utcnow() - timedelta(minutes=60)
-    
+    one_hour_ago = utc_now() - timedelta(minutes=60)
+
     stats = db.query(
         UserProgress.course_id,
         func.count(UserProgress.id).label("active_count")
     ).filter(UserProgress.last_accessed >= one_hour_ago)\
      .group_by(UserProgress.course_id).all()
-    
+
     return [{"course_id": s[0], "count": s[1]} for s in stats]
 
 
@@ -140,7 +139,7 @@ def delete_broadcast(
     broadcast = db.query(Broadcast).filter(Broadcast.id == broadcast_id).first()
     if not broadcast:
         raise HTTPException(status_code=404, detail="Broadcast not found")
-    
+
     db.delete(broadcast)
     db.commit()
     return {"message": "Broadcast deleted successfully"}

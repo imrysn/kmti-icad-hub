@@ -1,5 +1,5 @@
+import { CheckCircle2,ChevronDown,ChevronUp,Clock,Download,Eye,XCircle } from 'lucide-react';
 import React from 'react';
-import { ChevronUp, ChevronDown, CheckCircle2, Clock, XCircle, Download, Eye } from 'lucide-react';
 import { AssessmentSubmission } from '../../../services/assessmentService';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 
@@ -19,7 +19,7 @@ export const TraineeListGroup: React.FC<TraineeListGroupProps> = ({
     expandedTrainees,
     toggleTrainee,
     expandedSets,
-    toggleSet,  
+    toggleSet,
     handleDownloadTraineeFile,
     setSelectedTaskSubmissions,
     setIsReviewing
@@ -30,7 +30,7 @@ export const TraineeListGroup: React.FC<TraineeListGroupProps> = ({
                 Object.values(grouped).map((traineeGroup: any) => {
                     const traineeId = traineeGroup.user.id;
                     const isTraineeExpanded = expandedTrainees.includes(traineeId);
-                    
+
                     let pendingCount = 0;
                     Object.values(traineeGroup.sets).forEach((setGroup: any) => {
                          Object.values(setGroup.tasks).forEach((subs: any) => {
@@ -63,20 +63,20 @@ export const TraineeListGroup: React.FC<TraineeListGroupProps> = ({
                                         const setKey = `${traineeId}-${setNum}`;
                                         const isSetExpanded = expandedSets.includes(setKey);
                                         const tasks = Object.values(traineeGroup.sets[setNum].tasks);
-                                        
+
                                         return (
                                             <div key={setKey} className="set-group">
                                                 <div className="set-group-header" onClick={() => toggleSet(setKey)}>
                                                     <h4>Set {setNum} <span className="task-count-dim">({tasks.length} tasks)</span></h4>
                                                     {isSetExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                                                 </div>
-                                                
+
                                                 {isSetExpanded && (
                                                     <div className="set-tasks-grid">
                                                         {tasks.map((taskSubmissions: any) => {
                                                             const sortedSubs = [...taskSubmissions].sort((a: any, b: any) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime());
                                                             const latestSub = sortedSubs[0];
-                                                            
+
                                                             return (
                                                                 <div key={latestSub.task.id} className="submission-card small">
                                                                     <div className="card-header compact">

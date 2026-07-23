@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -19,7 +19,7 @@ interface GeometricToleranceLessonProps {
 
 const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
   onNextLesson,
-  onPrevLesson, 
+  onPrevLesson,
   nextLabel
 }) => {
   const TABS = [

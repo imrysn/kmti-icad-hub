@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Layout, PlayCircle } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
-import { KaraokeLessonText } from "../KaraokeLessonText";
-import VideoTutorialViewer from "./VideoTutorialViewer";
-import icadWindowStructure from "../../assets/3D_Image_File/icad_window_structure.png";
 import "../../styles/3D_Modeling/CourseLesson.css";
+import VideoTutorialViewer from "./VideoTutorialViewer";
 
 interface IcadInterfaceLessonProps {
   onNextLesson?: () => void;
@@ -33,10 +31,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
   const {
     scrollProgress,
     containerRef,
-    isSpeaking,
-    currentIndex,
-    currentCharIndex
-  } = useLessonCore('interface', INTERFACE_STEPS);
+    currentIndex  } = useLessonCore('interface', INTERFACE_STEPS);
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>

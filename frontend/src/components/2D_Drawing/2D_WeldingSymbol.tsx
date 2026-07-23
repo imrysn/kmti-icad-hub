@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -24,9 +24,6 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
 }) => {
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-welding-symbol');
 
-  const weldingSteps = [
-
-  ];
   const currentTitle = "WELDING SYMBOL / NOTES";
   const currentSubtitle = "Procedures for applying welding symbols, hatches, and standard notes.";
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect,useRef } from 'react';
 
 /**
  * Hook to manage TTS autoplay and tab transitions.

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -75,14 +75,14 @@ const PartNoteLesson: React.FC<PartNoteLessonProps> = ({
         <div className="lesson-card">
           <div className="fade-in">
 
-  
+
 
             <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "-2rem" }}>
               <div className="step-description">
                 <img src={partNoteImg1} alt="Part Note Process" className="software-screenshot screenshot-wide mb-6" />
-                
+
                 <img src={partNoteImg2} alt="Assembly Reference" className="software-screenshot screenshot-wide" />
-                
+
                 <div className="instruction-box mt-6">
                   <KaraokeLessonText
                     className="p-flush"

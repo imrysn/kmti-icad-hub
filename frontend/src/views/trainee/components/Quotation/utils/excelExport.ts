@@ -1,8 +1,9 @@
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
-import type { Task, BaseRates, ManualOverrides, Signatures, ClientInfo, QuotationDetails, BillingDetails } from '../../../../../hooks/quotation'
-import { calculateTaskTotal, calculateOverhead, getUnitPageCount, getKemcoRankAndPrice } from '../../../../../utils/quotation'
 import KmtiLogo from '../../../../../assets/kmti_logo.png'
+import type { BaseRates,BillingDetails,ClientInfo,ManualOverrides,QuotationDetails,Signatures,Task } from '../../../../../hooks/quotation'
+import { getLocalDateISO } from '../../../../../utils/dateTime'
+import { calculateOverhead,calculateTaskTotal,getKemcoRankAndPrice,getUnitPageCount } from '../../../../../utils/quotation'
 
 export interface ExcelExportData {
   mode: 'quotation' | 'billing'
@@ -16,10 +17,7 @@ export interface ExcelExportData {
   signatures: Signatures
   layoutVariant?: 'special' | 'kemco'
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // exportToExcel
-// ─────────────────────────────────────────────────────────────────────────────
 export async function exportToExcel(data: ExcelExportData) {
   const {
     mode, quotNo, clientInfo, quotationDetails, billingDetails,
@@ -39,7 +37,7 @@ export async function exportToExcel(data: ExcelExportData) {
     : calculateOverhead(subtotal, baseRates.overheadPercentage)
   const showAdmin = baseRates.overheadPercentage > 0
   const grandTotal = subtotal + overheadTotal + (footer.adjustment || 0)
-  const metaDate = (quotationDetails.date || new Date().toISOString().slice(0, 10)).replace(/-/g, '/')
+  const metaDate = (quotationDetails.date || getLocalDateISO()).replace(/-/g, '/')
 
   // ── 2. Fetch template from backend ────────────────────────────────────────
   // Build the workbook locally so export never depends on missing backend files.
@@ -672,10 +670,7 @@ function _fillBreakdownSheet(sheet: ExcelJS.Worksheet, d: {
     sheet.getColumn(totalCols).hidden = true
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // safeMerge: merges cells only if not already merged (prevents ExcelJS throw)
-// ─────────────────────────────────────────────────────────────────────────────
 function _safeMerge(sheet: ExcelJS.Worksheet, range: string) {
   try {
     sheet.mergeCells(range)
@@ -683,10 +678,7 @@ function _safeMerge(sheet: ExcelJS.Worksheet, range: string) {
     // Already merged — no-op
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Row insertion helper
-// ─────────────────────────────────────────────────────────────────────────────
 // Inserts `count` blank rows at `afterRow` (1-based), shifting everything below
 // down. Copies cell styles from `styleSourceRow` so new rows match the template.
 // Only row values are cleared on the source style row — borders/fills remain.
@@ -707,10 +699,7 @@ function _insertRows(sheet: ExcelJS.Worksheet, afterRow: number, count: number, 
     destRow.commit()
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // QUOTATION FILLER
-// ─────────────────────────────────────────────────────────────────────────────
 //
 // Template layout (10 pre-styled task rows: 18–27):
 //   A12–A15   client info
@@ -1223,10 +1212,7 @@ function _fillQuotation(sheet: ExcelJS.Worksheet, d: {
     })
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // BILLING FILLER
-// ─────────────────────────────────────────────────────────────────────────────
 //
 // Template layout (10 pre-styled task rows: 16–25):
 //   A10–A13   client info

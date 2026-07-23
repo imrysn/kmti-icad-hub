@@ -1,10 +1,9 @@
 /** * 3D_OperationSample.tsx  EOperation Sample lessons */
 
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Play, Box as BoxIcon, Info } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../ReadAloudButton";
 import '../../styles/3D_Modeling/CourseLesson.css';
 
 /* Shared Assets */
@@ -14,23 +13,23 @@ import booleanSubtractIcon from '../../assets/3D_Image_File/boolean1_subtract.pn
 import centerTool from '../../assets/3D_Image_File/center_tool.png';
 
 /* Operation Sample (1) Assets */
-import mainDrawing from '../../assets/3D_Image_File/sample_3d_modeling_parts.png';
+import createPartTool from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
+import propertiesWindow from '../../assets/3D_Image_File/3d_properties.png';
 import arrangeBoxTool from '../../assets/3D_Image_File/arrange_box_operation_sample1.png';
-import machinePartTool from '../../assets/3D_Image_File/select_and_arrange_machine_part.png';
-import moveTool from '../../assets/3D_Image_File/component1_move.png';
-import opSample1 from '../../assets/3D_Image_File/operation_sample1.png';
-import opSample1Move from '../../assets/3D_Image_File/operation_sample11.png';
-import subtractResult from '../../assets/3D_Image_File/subtract_operation_sample2.png';
-import filletTool from '../../assets/3D_Image_File/fillet_edge.png';
-import filletResult from '../../assets/3D_Image_File/filleted.png';
-import copyTool from '../../assets/3D_Image_File/component1_copy.png';
-import copyResult from '../../assets/3D_Image_File/copy_component.png';
 import chamferTool from '../../assets/3D_Image_File/chamfer_edge.png';
 import chamferResult from '../../assets/3D_Image_File/chamfered.png';
-import createPartTool from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
+import copyTool from '../../assets/3D_Image_File/component1_copy.png';
+import moveTool from '../../assets/3D_Image_File/component1_move.png';
+import copyResult from '../../assets/3D_Image_File/copy_component.png';
 import enterPartName from '../../assets/3D_Image_File/enter_3d_part_name.png';
-import propertiesWindow from '../../assets/3D_Image_File/3d_properties.png';
+import filletTool from '../../assets/3D_Image_File/fillet_edge.png';
+import filletResult from '../../assets/3D_Image_File/filleted.png';
 import layerInfo from '../../assets/3D_Image_File/materials_layer.png';
+import opSample1 from '../../assets/3D_Image_File/operation_sample1.png';
+import opSample1Move from '../../assets/3D_Image_File/operation_sample11.png';
+import mainDrawing from '../../assets/3D_Image_File/sample_3d_modeling_parts.png';
+import machinePartTool from '../../assets/3D_Image_File/select_and_arrange_machine_part.png';
+import subtractResult from '../../assets/3D_Image_File/subtract_operation_sample2.png';
 
 /* Operation Sample (2-5) Assets */
 // operation_sample_2.jpg removed  Easset deleted in current HEAD
@@ -38,12 +37,12 @@ import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.png';
 import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.png';
 import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segment_a.png';
 import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segment_b.png';
-import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.png';
-import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.png';
 import keyGrooveBox from '../../assets/3D_Image_File/operation_sample4_4.png';
+import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.png';
+import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.png';
 import keyGrooveSubtractResult from '../../assets/3D_Image_File/operation_sample5_4_subtract_tool.png';
-import keyGrooveFilletResult from '../../assets/3D_Image_File/operation_sample_2.jpg';
 import finalPartFairing from '../../assets/3D_Image_File/operation_sample5_6.png';
+import keyGrooveFilletResult from '../../assets/3D_Image_File/operation_sample_2.jpg';
 
 interface OperationSampleLessonProps {
   nextLabel?: string;
@@ -61,10 +60,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     scrollProgress,
     containerRef,
     speak,
-    stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex,
     registerText
   } = useLessonCore(subLessonId);
 
@@ -115,7 +112,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
 
 
   useEffect(() => {
@@ -153,7 +150,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           {activeTab === 'sample1' ? 'SAMPLE OF 3D MODELING OF PARTS' :
            '3D MODELING USING 2D SKETCH, KEY GROOVE, RETAINER RING GROOVE'}
-          
+
         </h3>
         <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
           Here is the step-by-step procedure of creating 3D model.
@@ -406,7 +403,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               {/* Segments A and B */}
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
-                <div style={{ flex: "1", marginBottom: "3rem"}}>  
+                <div style={{ flex: "1", marginBottom: "3rem"}}>
                   <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT A</u></p>
                   <p className="p-flush red-text" style={{ marginTop: "1rem" }}>Use Arrange Cylinder</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Create 3 cylinders to make the retainer ring groove &gt; [UNION]</p>
@@ -430,7 +427,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT C</u></p>
                 <p className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required<br />dimensions precisely. Dimensions enclosed in parentheses are close but not exact with the original dimension.</p>
                 <img src={mainDrawing3} alt="Segment C Technical Drawing" className="software-screenshot mt-4" style={{ width: "900px", height: "400px", marginTop: "1rem", marginBottom: "2rem" }}  />
-                
+
                 <img src={workPlaneImg} alt="Work Plane" className="software-screenshot mt-4" style={{ width: "900px", marginBottom: "2rem" }} />
 
                   <img src={revolveImg} alt="Revolve Result" className="software-screenshot mt-4" style={{ width: "900px", marginTop: "2rem" }} />

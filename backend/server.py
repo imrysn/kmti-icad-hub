@@ -20,7 +20,7 @@ if getattr(sys, 'frozen', False):
         pass
 
 import socket
-from colorama import init, Fore, Style
+from colorama import init, Fore
 
 # Initialize colorama
 init(autoreset=True)
@@ -49,11 +49,11 @@ def print_banner():
     # Professional KMTI Banner
     banner = f"""
 {Fore.GREEN}=======================================================================
-{Fore.CYAN}    _  ____  __ _____ ___   _  _____  ___    _   _ _   _ ___ 
+{Fore.CYAN}    _  ____  __ _____ ___   _  _____  ___    _   _ _   _ ___
 {Fore.CYAN}   | |/ /  \/  |_   _|_ _| | |/ /  \/  |   | | | | | | | _ )
 {Fore.CYAN}   | ' /| |\/| | | |  | |  | ' /| |\/| |   | |_| | |_| | _ \\
 {Fore.CYAN}   | . \\| |  | | | |  | |  | . \\| |  | |   |  _  |  _  |___/
-{Fore.CYAN}   |_|\_\\_|  |_| |_| |___| |_|\_\\_|  |_|   |_| |_|_| |_|     
+{Fore.CYAN}   |_|\_\\_|  |_| |_| |___| |_|\_\\_|  |_|   |_| |_|_| |_|
 {Fore.GREEN}
 {Fore.WHITE}                KMTI Training Hub - Management System v1.0
 {Fore.GREEN}=======================================================================
@@ -63,19 +63,19 @@ def print_banner():
 def print_status(db_mode):
     ip = get_local_ip()
     port = int(os.getenv("SERVER_PORT", 3001))
-    
+
     db_color = Fore.CYAN if db_mode == "mysql" else Fore.YELLOW
     db_text = "Network Mode (MySQL)" if db_mode == "mysql" else "Local Fallback Mode (SQLite)"
-    
+
     print(f"{Fore.GREEN}[+] {Fore.WHITE}Server Status: {Fore.GREEN}ONLINE")
     print(f"{Fore.GREEN}[+] {Fore.WHITE}API Endpoint : {Fore.CYAN}http://{ip}:{port}")
     print(f"{Fore.GREEN}[+] {Fore.WHITE}Database Mode: {db_color}{db_text}")
-    
+
     if db_mode == "mysql":
         print(f"{Fore.GREEN}[+] {Fore.WHITE}Database Host: {Fore.CYAN}{os.getenv('DB_HOST', 'KMTI-NAS')}")
     else:
         print(f"{Fore.YELLOW}[!] {Fore.WHITE}Warning: NAS connection failed. Using local storage.")
-    
+
     print(f"{Fore.GREEN}[+] {Fore.WHITE}Network Path : {Fore.CYAN}\\\\KMTI-NAS\\Shared\\data")
     print(f"{Fore.GREEN}=======================================================================")
     print(f"{Fore.WHITE}Press {Fore.RED}Ctrl+C{Fore.WHITE} to shut down the server safely.")
@@ -86,11 +86,11 @@ if __name__ == "__main__":
     root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     if root_path not in sys.path:
         sys.path.append(root_path)
-    
+
     # 1. Show Banner in Console (if console exists)
     print_banner()
     print("Initializing KMTI iCAD Hub Server components...")
-    
+
     # 2. Configure environment before heavy imports
     if getattr(sys, 'frozen', False):
         os.environ["ENV_FILE_PATH"] = os.path.join(BASE_PATH, ".env")
@@ -107,7 +107,7 @@ if __name__ == "__main__":
         from backend.database import get_db_mode, engine, SessionLocal
         from backend.models import Base, User
         from backend.create_test_users import create_test_users
-        
+
         # 4. Verify/initialize database schema and seed default users if empty
         try:
             print("Verifying database schema...")
@@ -127,19 +127,19 @@ if __name__ == "__main__":
             print("[+] SQLite-to-MySQL sync worker started successfully.")
         except Exception as se:
             print(f"[!] Sync worker could not be started: {se}")
-        
+
         port = int(os.getenv("SERVER_PORT", 3001))
         host = "0.0.0.0"
         db_mode = get_db_mode()
         print_status(db_mode)
-        
+
         # Run Tkinter GUI on main thread, and Uvicorn on background thread
         import threading
         import webbrowser
         import queue
         import tkinter as tk
         from tkinter import scrolledtext
-        
+
         # Redirection helper to capture print outputs to GUI console safely via thread-safe queuec
         log_queue = queue.Queue()
 
@@ -180,7 +180,7 @@ if __name__ == "__main__":
             ico_path = os.path.join(BASE_PATH, "kmti_logo.ico")
         if not os.path.exists(ico_path) and getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
             ico_path = os.path.join(sys._MEIPASS, "kmti_logo.ico")
-            
+
         if os.path.exists(ico_path):
             try:
                 root.iconbitmap(ico_path)
@@ -190,21 +190,21 @@ if __name__ == "__main__":
         # Title / Header
         header_frame = tk.Frame(root, bg="#1e293b", height=70) # Slate 800
         header_frame.pack(fill="x", padx=0, pady=0)
-        
+
         title_label = tk.Label(
-            header_frame, 
-            text="KMTI TRAINING HUB SERVER", 
-            font=("Segoe UI", 14, "bold"), 
-            bg="#1e293b", 
+            header_frame,
+            text="KMTI TRAINING HUB SERVER",
+            font=("Segoe UI", 14, "bold"),
+            bg="#1e293b",
             fg="#38bdf8" # Sky 400
         )
         title_label.pack(side="left", padx=20, pady=20)
-        
+
         version_label = tk.Label(
-            header_frame, 
-            text="v1.0.0", 
-            font=("Segoe UI", 10, "normal"), 
-            bg="#1e293b", 
+            header_frame,
+            text="v1.0.0",
+            font=("Segoe UI", 10, "normal"),
+            bg="#1e293b",
             fg="#94a3b8" # Slate 400
         )
         version_label.pack(side="right", padx=20, pady=24)
@@ -219,7 +219,7 @@ if __name__ == "__main__":
 
         local_ip = get_local_ip()
         api_url = f"http://{local_ip}:{port}"
-        
+
         url_title = tk.Label(left_info, text="API Endpoint:", font=("Segoe UI", 10, "bold"), bg="#0f172a", fg="#94a3b8")
         url_title.pack(anchor="w")
         url_val = tk.Label(left_info, text=api_url, font=("Consolas", 11), bg="#0f172a", fg="#f8fafc", cursor="hand2")
@@ -228,10 +228,10 @@ if __name__ == "__main__":
 
         db_title = tk.Label(left_info, text="Database Mode:", font=("Segoe UI", 10, "bold"), bg="#0f172a", fg="#94a3b8")
         db_title.pack(anchor="w")
-        
+
         db_text = "Network Mode (MySQL)" if db_mode == "mysql" else "Local Fallback Mode (SQLite)"
         db_color = "#22c55e" if db_mode == "mysql" else "#f59e0b"
-        
+
         db_val = tk.Label(left_info, text=db_text, font=("Segoe UI", 11, "bold"), bg="#0f172a", fg=db_color)
         db_val.pack(anchor="w", pady=(2, 2))
 
@@ -253,7 +253,7 @@ if __name__ == "__main__":
             "pady": 8,
             "cursor": "hand2"
         }
-        
+
         open_btn = tk.Button(right_actions, text="Open Web Admin", command=open_browser, **btn_style)
         open_btn.pack(side="top", fill="x", pady=5)
 
@@ -274,10 +274,10 @@ if __name__ == "__main__":
         console_title.pack(anchor="w", padx=20, pady=(10, 2))
 
         log_widget = scrolledtext.ScrolledText(
-            root, 
-            bg="#1e293b", 
-            fg="#f1f5f9", 
-            font=("Consolas", 9), 
+            root,
+            bg="#1e293b",
+            fg="#f1f5f9",
+            font=("Consolas", 9),
             state="disabled",
             insertbackground="white",
             relief="flat"

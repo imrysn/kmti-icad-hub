@@ -1,12 +1,13 @@
+import { Activity,BarChart3,ClipboardList,Shield,Users,Zap } from 'lucide-react';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'; import { Shield, Activity, Users, BarChart3, Brain, MessageSquare, ClipboardList, Zap, GraduationCap } from 'lucide-react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { User } from '../../../services/authService';
 
 interface AdminSidebarProps {
     currentUser: User | null;
 }
 
-export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentUser }) => {
+export const AdminSidebar: React.FC<AdminSidebarProps> = ({ }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const activeTab = location.pathname.split('/').pop();

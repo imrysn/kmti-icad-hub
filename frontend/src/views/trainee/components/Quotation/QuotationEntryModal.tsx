@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
-import { quotationApi } from '../../../../services/api'
+import { useEffect,useState } from 'react'
 import { useAuth } from '../../../../context/AuthContext'
-import QuotationLibraryModal from './QuotationLibraryModal'
-import { LobbyTutorial } from './LobbyTutorial'
+import { quotationApi } from '../../../../services/api'
 import { CUSTOMERS_CONFIG } from '../../../../utils/quotation'
+import { LobbyTutorial } from './LobbyTutorial'
 import './QuotationEntryModal.css'
+import QuotationLibraryModal from './QuotationLibraryModal'
 
 interface ActiveSession {
   id: number

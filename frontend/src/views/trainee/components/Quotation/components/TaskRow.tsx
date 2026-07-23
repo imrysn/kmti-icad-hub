@@ -1,6 +1,5 @@
-import { memo, useCallback, useState, useEffect } from 'react'
-import type { Task, TaskSubtotals } from '../../../../../types/quotation'
-import { useAuth } from '../../../../../context/AuthContext'
+import { memo,useCallback,useEffect,useState } from 'react'
+import type { Task,TaskSubtotals } from '../../../../../types/quotation'
 import { KemcoRow } from './KemcoRow'
 
 export type { TaskSubtotals } from '../../../../../types/quotation'
@@ -34,15 +33,15 @@ export interface TaskRowProps {
 }
 
 export const TaskRow = memo(({
-  task, subtotals, onUpdate, onRemove, formatCurrency,
+  task, subtotals, onUpdate, onRemove,
   isSelected, onMainTaskSelect, rowNumber,
-  isEditing, onEditToggle, onEditValueUpdate,
+  isEditing,
   isDragging, isDragOver,
   onDragStart, onDragOver, onDragLeave, onDrop, onDragEnd,
   hasSubTasks, isCollapsed, onToggleCollapse,
-  onCancelEdit, layoutVariant, trRef,
+  trRef,
 }: TaskRowProps) => {
-  const [localTotal, setLocalTotal] = useState<string>('')
+  const [, setLocalTotal] = useState<string>('')
 
   const isRowLocked = false
 
@@ -57,7 +56,6 @@ export const TaskRow = memo(({
     [task.id, onUpdate],
   )
   const handleRemove = useCallback(() => onRemove?.(task.id), [task.id, onRemove])
-  const handleEditToggle = useCallback(() => onEditToggle?.(task.id), [task.id, onEditToggle])
 
   const handleMainTaskClick = useCallback(() => {
     // Selection works on any row for KEMCO format

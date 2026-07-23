@@ -6,8 +6,8 @@
  * and URL helper methods.
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
-import { http, HttpResponse } from 'msw';
+import { http,HttpResponse } from 'msw';
+import { beforeEach,describe,expect,it } from 'vitest';
 import { server } from '../../test/mocks/server';
 import { assessmentService } from '../assessmentService';
 
@@ -17,11 +17,7 @@ const API = API_BASE.replace(/\/$/, '');
 beforeEach(() => {
   sessionStorage.setItem('access_token', 'mock.jwt.token');
 });
-
-// ══════════════════════════════════════════════════════════════════
 // getTasks()
-// ══════════════════════════════════════════════════════════════════
-
 describe('assessmentService.getTasks()', () => {
   it('returns an array of tasks', async () => {
     const tasks = await assessmentService.getTasks();
@@ -38,11 +34,7 @@ describe('assessmentService.getTasks()', () => {
     expect(task).toHaveProperty('title');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // getMySubmissions()
-// ══════════════════════════════════════════════════════════════════
-
 describe('assessmentService.getMySubmissions()', () => {
   it('returns an array of submissions', async () => {
     const subs = await assessmentService.getMySubmissions();
@@ -57,11 +49,7 @@ describe('assessmentService.getMySubmissions()', () => {
     }
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // getDownloadUrl() — pure URL helper (no network call)
-// ══════════════════════════════════════════════════════════════════
-
 describe('assessmentService.getDownloadUrl()', () => {
   it('returns the expected URL format', () => {
     const url = assessmentService.getDownloadUrl(42);
@@ -75,11 +63,7 @@ describe('assessmentService.getFeedbackDownloadUrl()', () => {
     expect(url).toContain('/api/v1/assessments/feedback/7/download');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // deleteSubmission() — with inline handler override
-// ══════════════════════════════════════════════════════════════════
-
 describe('assessmentService.deleteSubmission()', () => {
   it('returns success message on delete', async () => {
     server.use(
@@ -100,11 +84,7 @@ describe('assessmentService.deleteSubmission()', () => {
     await expect(assessmentService.deleteSubmission(9999)).rejects.toThrow();
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // assignTrainer() — with inline handler override
-// ══════════════════════════════════════════════════════════════════
-
 describe('assessmentService.assignTrainer()', () => {
   it('returns success message', async () => {
     server.use(
@@ -116,11 +96,7 @@ describe('assessmentService.assignTrainer()', () => {
     expect(result.message).toContain('assigned');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // deleteTask()
-// ══════════════════════════════════════════════════════════════════
-
 describe('assessmentService.deleteTask()', () => {
   it('calls the correct endpoint and returns success', async () => {
     server.use(

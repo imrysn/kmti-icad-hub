@@ -1,15 +1,14 @@
+import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Asset Imports */
 import arrangeMachinePart from "../../assets/3D_Image_File/hole_details_arrange_machine_part.png";
-import partsPlacement from "../../assets/3D_Image_File/hole_details_parts_placement.png";
-import listTools from "../../assets/3D_Image_File/hole_details_list_tools.png";
 import holeResult from "../../assets/3D_Image_File/hole_details_hole.png";
+import listTools from "../../assets/3D_Image_File/hole_details_list_tools.png";
+import partsPlacement from "../../assets/3D_Image_File/hole_details_parts_placement.png";
 import tappedHoles from "../../assets/3D_Image_File/hole_details_tapped_holes.png";
 import leftClick from "../../assets/3D_Image_File/left_click.png";
 
@@ -23,23 +22,13 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
   const {
     scrollProgress,
     containerRef,
-    speak,
-    stop,
     isSpeaking,
     currentIndex,
     currentCharIndex
   } = useLessonCore('hole-details');
 
-  const holeSteps = [
-    "HOLE DETAILS",
-    "Step 1: Select Arrange Machine Part from the icon menu.",
-    "Step 2: A window will appear showing the list of available tools, such as drill holes and counterbores.",
-    "Step 3: After setting the specifications, click OK",
-    "Step 4: Click the location of the hole on the solid entity > GO",
-    "Note: Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes."
-  ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
   const tabs = [{ id: "holeDetails", label: "Hole Details" }];
 
   const introTitle = "Creating Hole Details on Parts";
@@ -67,7 +56,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

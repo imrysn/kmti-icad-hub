@@ -1,6 +1,6 @@
 import React from 'react';
-import '../styles/Skeleton.css';
 import '../styles/LoadingScreen.css';
+import '../styles/Skeleton.css';
 
 export const LoadingScreen: React.FC = () => {
     return (

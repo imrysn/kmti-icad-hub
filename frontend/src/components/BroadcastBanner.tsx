@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { adminService } from '../services/adminService'; import { X, AlertCircle, Info, Megaphone } from 'lucide-react';
+import { AlertCircle,Info,Megaphone } from 'lucide-react';
+import React,{ useEffect,useRef,useState } from 'react';
+import { adminService } from '../services/adminService';
 import '../styles/BroadcastBanner.css';
 
 interface Broadcast {
@@ -52,13 +53,13 @@ const BannerCard: React.FC<{
     const zIndex = 100 - index;
 
     return (
-        <div 
-            className={`broadcast-banner ${broadcast.level} ${isExpanded ? 'expanded' : ''}`} 
-            style={{ 
-                transform: `translateY(${offset}px) scale(${scale})`, 
-                opacity: opacity, 
-                zIndex: zIndex, 
-                pointerEvents: index === 0 ? 'auto' : 'none' 
+        <div
+            className={`broadcast-banner ${broadcast.level} ${isExpanded ? 'expanded' : ''}`}
+            style={{
+                transform: `translateY(${offset}px) scale(${scale})`,
+                opacity: opacity,
+                zIndex: zIndex,
+                pointerEvents: index === 0 ? 'auto' : 'none'
             }}
         >
             <div className="banner-island">
@@ -150,7 +151,7 @@ export const BroadcastBanner: React.FC = () => {
     useEffect(() => {
         fetchBroadcasts();
         const interval = setInterval(fetchBroadcasts, 60000);
-        
+
         const handleLocalBroadcast = (e: CustomEvent) => {
             if (e.detail) {
                 const newBroadcast: Broadcast = {
@@ -163,9 +164,9 @@ export const BroadcastBanner: React.FC = () => {
                 setBroadcasts(prev => [newBroadcast, ...prev]);
             }
         };
-        
+
         window.addEventListener('kmti-test-broadcast', handleLocalBroadcast as EventListener);
-        
+
         return () => {
             clearInterval(interval);
             window.removeEventListener('kmti-test-broadcast', handleLocalBroadcast as EventListener);

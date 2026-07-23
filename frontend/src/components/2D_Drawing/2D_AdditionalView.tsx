@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -29,7 +29,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     { id: 'cross-section', label: 'Additional View' },
     { id: 'partial-detail', label: 'Partial Section & Detail' },
     { id: 'isometric', label: 'Isometric & Cross Sectional' },
-    { id: 'trim', label: 'Trim View' } 
+    { id: 'trim', label: 'Trim View' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -47,7 +47,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
-    } 
+    }
 
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {

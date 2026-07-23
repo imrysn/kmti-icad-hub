@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
+import React,{ useEffect } from "react";
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 /* Importing assets for Machining Symbol */
 
 import machiningSymbolMainImg from "../../assets/2D_Image_File/2D_machining_symbol.png";
 
-import machiningSymbolNoteImg from "../../assets/2D_Image_File/2D_machining_symbol_note.jpg";
 
 import machiningSurfaceCondImg from "../../assets/2D_Image_File/2D_machining_symbol_machining_surface_condiiton.jpg";
 

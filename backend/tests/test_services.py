@@ -9,12 +9,7 @@ import pytest
 from datetime import datetime, timezone
 
 from backend.auth.security import hash_password, verify_password
-
-
-# ══════════════════════════════════════════════════════════════════
 # Pydantic schema validation (pure unit tests, no DB)
-# ══════════════════════════════════════════════════════════════════
-
 class TestUserCreateSchema:
     """Validate that UserCreate enforces business rules at the schema level."""
 
@@ -142,12 +137,7 @@ class TestChatRequestSchema:
                     for i in range(4)
                 ],
             )
-
-
-# ══════════════════════════════════════════════════════════════════
 # Quiz scoring logic (DB-backed, verifying business rules)
-# ══════════════════════════════════════════════════════════════════
-
 class TestQuizScoringLogic:
     """Verify the best-score-wins rule is enforced by the DB layer."""
 
@@ -170,12 +160,7 @@ class TestQuizScoringLogic:
         new_score = 60.0
         best = max(existing_score, new_score)
         assert best == 90.0
-
-
-# ══════════════════════════════════════════════════════════════════
 # Progress service: is_completed threshold
-# ══════════════════════════════════════════════════════════════════
-
 class TestProgressCompletionThreshold:
     """Validate the is_completed logic from /auth/progress/{course_id}."""
 
@@ -190,12 +175,7 @@ class TestProgressCompletionThreshold:
         """Mirrors the logic: is_completed = score >= 80.0"""
         is_completed = score >= 80.0
         assert is_completed is expected_completed
-
-
-# ══════════════════════════════════════════════════════════════════
 # Password security: hash round-trips
-# ══════════════════════════════════════════════════════════════════
-
 class TestPasswordRoundtrip:
     """Integration between hash_password and verify_password."""
 

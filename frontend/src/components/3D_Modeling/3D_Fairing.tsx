@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import '../../styles/3D_Modeling/CourseLesson.css';
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Fairing Assets */
 import chamferIcon from '../../assets/3D_Image_File/fairing_chamfer.jpg';
+import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.png';
 import chamferEntry from '../../assets/3D_Image_File/fairing_chamfer_1.png';
 import chamferResult from '../../assets/3D_Image_File/fairing_chamfer_2.png';
-import chamferResult2 from '../../assets/3D_Image_File/fairing_chamfer11.png';
 import filletIcon from '../../assets/3D_Image_File/fairing_fillet_1.png';
 import filletEntry from '../../assets/3D_Image_File/fairing_fillet_2.png';
 import filletResult from '../../assets/3D_Image_File/fairing_fillet_3.png';
 import shellIcon from '../../assets/3D_Image_File/fairing_shell_1.png';
 import shellFaces from '../../assets/3D_Image_File/fairing_shell_2.png';
-import shellEntry from '../../assets/3D_Image_File/fairing_shell_3.png';
 import shellResult from '../../assets/3D_Image_File/fairing_shell_3.1.png';
+import shellEntry from '../../assets/3D_Image_File/fairing_shell_3.png';
 import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 interface FairingLessonProps {
@@ -154,7 +153,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

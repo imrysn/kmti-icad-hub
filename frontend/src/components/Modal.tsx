@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+import React,{ useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import '../styles/Modal.css';
 
 export interface ModalProps {
@@ -47,8 +47,8 @@ export const Modal: React.FC<ModalProps> = ({
 
     return createPortal(
         <div className={`global-modal-overlay ${overlayClassName}`} onClick={closeOnOutsideClick ? onClose : undefined}>
-            <div 
-                className={`global-modal-container ${size} ${containerClassName}`} 
+            <div
+                className={`global-modal-container ${size} ${containerClassName}`}
                 onClick={e => e.stopPropagation()}
             >
                 {/* Technical Markers for tech aesthetic */}

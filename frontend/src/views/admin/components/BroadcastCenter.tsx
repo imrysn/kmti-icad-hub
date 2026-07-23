@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Send, AlertTriangle, Info, Megaphone, MessageSquare, ChevronDown, Trash2, Clock } from 'lucide-react';
+import { AlertTriangle,ChevronDown,Clock,Info,Megaphone,MessageSquare,Send,Trash2 } from 'lucide-react';
+import React,{ useEffect,useRef,useState } from 'react';
 import { adminService } from '../../../services/adminService';
 import '../../../styles/BroadcastCenter.css';
 
@@ -12,7 +12,7 @@ export const BroadcastCenter: React.FC = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [broadcasts, setBroadcasts] = useState<any[]>([]);
-    
+
     const containerRef = useRef<HTMLDivElement>(null);
     const dragStartRef = useRef({ x: 0, y: 0 });
     const hasMovedRef = useRef(false);
@@ -44,19 +44,19 @@ export const BroadcastCenter: React.FC = () => {
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             if (!isDragging) return;
-            
+
             const dx = e.clientX - dragStartRef.current.x;
             const dy = e.clientY - dragStartRef.current.y;
-            
+
             if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
                 hasMovedRef.current = true;
             }
-            
+
             setPosition(prev => ({
                 x: prev.x + dx,
                 y: prev.y + dy
             }));
-            
+
             dragStartRef.current = { x: e.clientX, y: e.clientY };
         };
 
@@ -241,7 +241,7 @@ export const BroadcastCenter: React.FC = () => {
                                             <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-light)', lineHeight: '1.4', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
                                                 {b.message}
                                             </p>
-                                            <button 
+                                            <button
                                                 onClick={() => handleDelete(b.id)}
                                                 style={{ background: 'none', border: 'none', color: 'var(--error-color)', cursor: 'pointer', padding: '2px', display: 'flex', alignItems: 'center', opacity: 0.7 }}
                                                 title="Delete Broadcast"
@@ -249,7 +249,7 @@ export const BroadcastCenter: React.FC = () => {
                                                 <Trash2 size={14} />
                                             </button>
                                         </div>
-                                        
+
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '2px' }}>
                                             <span style={{ textTransform: 'capitalize', fontWeight: 600, color: b.level === 'critical' ? 'var(--error-color)' : b.level === 'warning' ? 'var(--warning-color)' : 'var(--accent-blue)' }}>
                                                 {b.level === 'critical' ? 'URGENT' : b.level}

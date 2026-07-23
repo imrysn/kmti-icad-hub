@@ -1,5 +1,5 @@
+import { Bell,Trash2,Unlock } from 'lucide-react';
 import React from 'react';
-import { Bell, Trash2, Unlock } from 'lucide-react';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface NotificationCenterProps {

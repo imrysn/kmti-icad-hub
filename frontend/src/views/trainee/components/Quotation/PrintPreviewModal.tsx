@@ -1,14 +1,23 @@
-import { memo, useState, useMemo, useCallback, useRef, useEffect } from 'react'
+import { Printer } from 'lucide-react'
+import { memo,useCallback,useEffect,useMemo,useRef,useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Printer, Plus, Minus } from 'lucide-react'
+import { clientsApi,projectInchargesApi } from '../../../../services/api'
 import type {
-  Task, BaseRates, Signatures, CompanyInfo, ClientInfo, QuotationDetails, BillingDetails, ManualOverrides, TaskOverrides
+BaseRates,
+BillingDetails,
+ClientInfo,
+CompanyInfo,
+ManualOverrides,
+QuotationDetails,
+Signatures,
+Task,
+TaskOverrides
 } from '../../../../types/quotation'
-import { calculateTaskTotal as calculateTaskSubtotal, calculateOverhead, getUnitPageCount } from '../../../../utils/quotation'
-import { LAYOUT } from './constants'
+import { getLocalDateISO } from '../../../../utils/dateTime'
+import { calculateOverhead,calculateTaskTotal as calculateTaskSubtotal,getUnitPageCount } from '../../../../utils/quotation'
 import PrintPage from './components/PrintPage'
+import { LAYOUT } from './constants'
 import { exportToExcel } from './utils/excelExport'
-import { projectInchargesApi, clientsApi } from '../../../../services/api'
 
 import { PrintTutorial } from './PrintTutorial'
 
@@ -609,15 +618,6 @@ const PrintPreviewModal = memo(({
   }, [printMode, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures, layoutVariant])
 
   // ── Status tracking change handler ─────────────────────────────
-  const handleQuotationStatusChange = useCallback((val: string) => {
-    if (!onBillingDetailsChange) return
-    const updates: Partial<BillingDetails> = { quotationStatus: val }
-    if (val === 'CANCELLED') {
-      updates.projectStatus = 'CANCELLED'
-      updates.updateDetail = 'CANCELLED'
-    }
-    onBillingDetailsChange(updates)
-  }, [onBillingDetailsChange])
 
   // ── Zoom controls ──────────────────────────────────────────────
   const ZOOM_LEVELS = useMemo(() => [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3], [])
@@ -904,7 +904,7 @@ const PrintPreviewModal = memo(({
                       className="ppm-action-btn submit-to-admin-btn"
                       disabled={isSubmitDisabled}
                       onClick={() => {
-                        const todayStr = new Date().toISOString().split('T')[0]
+                        const todayStr = getLocalDateISO()
                         onBillingDetailsChange?.({
                           quotationStatus: 'For Approval',
                           submittedToAdminAt: todayStr

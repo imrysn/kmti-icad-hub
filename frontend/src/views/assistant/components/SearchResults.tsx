@@ -1,5 +1,6 @@
+import { FileText,Image,Video,Zap } from 'lucide-react';
 import React from 'react';
-import { Zap, Video, Image, FileText } from 'lucide-react'; import { SearchResult, MediaAsset } from '../../../types';
+import { MediaAsset,SearchResult } from '../../../types';
 
 interface SearchResultsProps {
     results: SearchResult[];

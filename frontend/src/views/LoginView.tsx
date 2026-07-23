@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; import { Eye, EyeOff, User as UserIcon, Lock, X, Settings } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth'; import { authService } from '../services/authService';
-import '../styles/LoginView.css';
-import kmtiLogo from '../assets/kmti-training-hub.png';
+import { Eye,EyeOff,Lock,Settings,User as UserIcon,X } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LightPillar from '../components/LightPillar';
-import { parseBackendError } from '../utils/errorUtils';
 import { Modal } from '../components/Modal';
+import { useAuth } from '../hooks/useAuth';
+import { authService } from '../services/authService';
+import '../styles/LoginView.css';
+import { parseBackendError } from '../utils/errorUtils';
 
 export const LoginView: React.FC = () => {
-    const { login, isLoggingIn, error } = useAuth();
+    const { login, isLoggingIn } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', password: '' }); const [localError, setLocalError] = useState('');
     const [showPassword, setShowPassword] = useState(false); const [rememberMe, setRememberMe] = useState(false);

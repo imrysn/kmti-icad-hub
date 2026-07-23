@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React,{ useEffect,useRef,useState } from 'react';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import fallbackImg from '../assets/froming4.webp';
 
 interface ModelViewer3DProps {
@@ -222,16 +222,16 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({ glbUrl }) => {
     if (webglError) {
         return (
             <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-                <img 
-                    src={fallbackImg} 
-                    alt="3D Preview Fallback" 
-                    style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'cover', 
+                <img
+                    src={fallbackImg}
+                    alt="3D Preview Fallback"
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
                         borderRadius: '8px',
                         opacity: 0.8
-                    }} 
+                    }}
                 />
             </div>
         );

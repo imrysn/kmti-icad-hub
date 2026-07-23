@@ -1,6 +1,6 @@
+import { Award,BarChart3 } from 'lucide-react';
 import React from 'react';
 import { TraineeProgress } from '../../../services/adminService';
-import { CheckCircle2, Award, Calendar, User, BarChart3 } from 'lucide-react';
 
 interface ProgressReportPrintProps {
     trainee: TraineeProgress;

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Folder, File as FileIcon, Upload, FolderPlus, Trash2 } from 'lucide-react';
-import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
-import { useNotification } from '../../../context/NotificationContext';
+import { File as FileIcon,Folder,FolderPlus,Trash2,Upload } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { Modal } from '../../../components/Modal';
+import { useNotification } from '../../../context/NotificationContext';
+import { assessmentService,AssessmentTask } from '../../../services/assessmentService';
 
 interface FileManagerModalProps {
     task: AssessmentTask;
@@ -35,7 +35,7 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
     const handleCreateFolder = async () => {
         const folderName = prompt('Enter folder name:');
         if (!folderName) return;
-        
+
         const path = currentPath ? `${currentPath}/${folderName}` : folderName;
         try {
             await assessmentService.createTaskSubfolder(task.id, path);
@@ -49,7 +49,7 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || e.target.files.length === 0) return;
         const file = e.target.files[0];
-        
+
         setUploading(true);
         try {
             await assessmentService.uploadTaskFile(task.id, currentPath, file);
@@ -65,7 +65,7 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
 
     const handleDelete = async (path: string) => {
         if (!window.confirm(`Are you sure you want to delete ${path}?`)) return;
-        
+
         try {
             await assessmentService.deleteTaskFile(task.id, path);
             showNotification('Deleted successfully', 'success');
@@ -78,10 +78,10 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
     // Helper to find current directory nodes
     const getCurrentNodes = () => {
         if (!currentPath) return tree;
-        
+
         const parts = currentPath.split('/');
         let currentLevel = tree;
-        
+
         for (const part of parts) {
             const node = currentLevel.find(n => n.name === part && n.is_dir);
             if (node) {
@@ -106,8 +106,8 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
             <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', alignItems: 'center' }}>
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', fontSize: '0.9rem' }}>
-                        <button 
-                            className="btn-ghost" 
+                        <button
+                            className="btn-ghost"
                             style={{ padding: '0.2rem 0.5rem' }}
                             onClick={() => setCurrentPath('')}
                         >
@@ -116,8 +116,8 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
                         {currentPath && currentPath.split('/').map((part, idx, arr) => (
                             <React.Fragment key={idx}>
                                 <span>/</span>
-                                <button 
-                                    className="btn-ghost" 
+                                <button
+                                    className="btn-ghost"
                                     style={{ padding: '0.2rem 0.5rem' }}
                                     onClick={() => setCurrentPath(arr.slice(0, idx + 1).join('/'))}
                                 >
@@ -155,8 +155,8 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
                                                 <FileIcon size={18} color="#9ca3af" />
                                             )}
                                             {node.is_dir ? (
-                                                <a 
-                                                    href="#" 
+                                                <a
+                                                    href="#"
                                                     onClick={(e) => { e.preventDefault(); setCurrentPath(node.path); }}
                                                     style={{ color: '#e5e7eb', textDecoration: 'none', fontWeight: 500 }}
                                                 >
@@ -167,8 +167,8 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
                                             )}
                                         </td>
                                         <td style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>
-                                            <button 
-                                                className="btn-ghost" 
+                                            <button
+                                                className="btn-ghost"
                                                 style={{ color: '#ef4444', padding: '0.25rem' }}
                                                 onClick={() => handleDelete(node.path)}
                                                 title="Delete"

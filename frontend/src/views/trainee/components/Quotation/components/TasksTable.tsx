@@ -8,12 +8,12 @@
  * TaskRow has been extracted to ./TaskRow.tsx for maintainability.
  */
 
-import { memo, useMemo, useCallback, useState, useEffect, useRef } from 'react'
-import type { Task, BaseRates, ManualOverrides } from '../../../../../types/quotation'
-import { calculateTaskTotal, calculateOverhead } from '../../../../../utils/quotation'
+import { memo,useCallback,useEffect,useMemo,useRef,useState } from 'react'
 import { useAuth } from '../../../../../context/AuthContext'
-import { TaskRow } from './TaskRow'
+import type { BaseRates,ManualOverrides,Task } from '../../../../../types/quotation'
+import { calculateOverhead,calculateTaskTotal } from '../../../../../utils/quotation'
 import type { TaskSubtotals } from './TaskRow'
+import { TaskRow } from './TaskRow'
 
 type NotificationType = 'success' | 'error' | 'info' | 'warning'
 
@@ -51,8 +51,7 @@ const TasksTable = memo(({
   onChildTaskAdd,
 }: TasksTableProps) => {
   const layoutVariant = 'kemco'
-  const { user } = useAuth()
-  const hasRole = (...roles: string[]) => user ? roles.includes(user.role) : false
+  useAuth()
 
   // ── Local UI state ─────────────────────────────────────────────
   const [editingTaskId, setEditingTaskId] = useState<number | null>(null)
@@ -70,7 +69,7 @@ const TasksTable = memo(({
   const sectionRef = useRef<HTMLDivElement>(null)
 
   // ── Engineer bookmark row refs & positions ─────────────────────
-  const [bookmarkPositions, setBookmarkPositions] = useState<Record<number, { top: number; height: number }>>({})
+  const [, setBookmarkPositions] = useState<Record<number, { top: number; height: number }>>({})
   const rowRefs = useRef<Map<number, HTMLTableRowElement>>(new Map())
 
   const recomputeBookmarks = useCallback(() => {

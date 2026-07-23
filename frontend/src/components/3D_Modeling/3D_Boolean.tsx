@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Boolean (1) Assets */
 import booleanOpMenu from "../../assets/3D_Image_File/boolean1_boolean_operation.png";
-import unionIcon from "../../assets/3D_Image_File/boolean1_union.png";
+import booleanSubtract from "../../assets/3D_Image_File/boolean1_boolean_subtract.png";
 import select3D from "../../assets/3D_Image_File/boolean1_select3d.png";
 import subtractIcon from "../../assets/3D_Image_File/boolean1_subtract.png";
-import subtractEntity from "../../assets/3D_Image_File/boolean1_subtract_entity.png";
 import subtractAfter from "../../assets/3D_Image_File/boolean1_subtract_after_subtraction.png";
+import subtractEntity from "../../assets/3D_Image_File/boolean1_subtract_entity.png";
 import subtractRetain from "../../assets/3D_Image_File/boolean1_subtract_retain_entities.png";
-import booleanSubtract from "../../assets/3D_Image_File/boolean1_boolean_subtract.png";
+import unionIcon from "../../assets/3D_Image_File/boolean1_union.png";
 import leftClick from "../../assets/3D_Image_File/left_click.png";
 
 /* Boolean (2) Assets */
+import componentIcon from "../../assets/3D_Image_File/boolean2_component.png";
+import componentOk from "../../assets/3D_Image_File/boolean2_component_select_ok.png";
+import componentSeparate from "../../assets/3D_Image_File/boolean2_component_separate_all_components.png";
+import componentSeparated from "../../assets/3D_Image_File/boolean2_component_separated.png";
 import intersectIcon from "../../assets/3D_Image_File/boolean2_intersect.png";
 import intersectingEntities from "../../assets/3D_Image_File/boolean2_intersecting_entities.png";
 import selectEntity from "../../assets/3D_Image_File/boolean2_select_entity.png";
 import selectOk from "../../assets/3D_Image_File/boolean2_select_ok.png";
-import componentIcon from "../../assets/3D_Image_File/boolean2_component.png";
-import componentSeparate from "../../assets/3D_Image_File/boolean2_component_separate_all_components.png";
-import componentOk from "../../assets/3D_Image_File/boolean2_component_select_ok.png";
-import componentSeparated from "../../assets/3D_Image_File/boolean2_component_separated.png";
 
 interface BooleanLessonProps {
   nextLabel?: string;
@@ -174,7 +173,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

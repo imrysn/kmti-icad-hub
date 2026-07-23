@@ -1,17 +1,17 @@
-import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
-import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle, Folder, RotateCcw } from 'lucide-react';
-import { AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
-import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
-import { useBulkDownload } from '../../../hooks/useBulkDownload';
-import { useUI } from '../../../context/UIContext';
-import '../../../styles/mentor/PracticalAssessment.css';
-import '../../../styles/3D_Modeling/CourseLesson.css';
-import { Modal } from '../../../components/Modal';
 import JSZip from 'jszip';
-import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
+import { AlertCircle,CheckCircle2,ChevronRight,Clock,Download,FileSpreadsheet,FileText,Folder,HelpCircle,Lock,Play,RotateCcw,Trash2,Upload,UploadCloud,Zap } from 'lucide-react';
+import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Modal } from '../../../components/Modal';
+import { useUI } from '../../../context/UIContext';
+import { useBulkDownload } from '../../../hooks/useBulkDownload';
+import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
+import { AssessmentTask } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
-import { TaskStopwatch, TaskStopwatchHandle } from './TaskStopwatch';
+import '../../../styles/3D_Modeling/CourseLesson.css';
+import '../../../styles/mentor/PracticalAssessment.css';
+import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
+import { TaskStopwatch,TaskStopwatchHandle } from './TaskStopwatch';
 import { TimeRecordModal } from './TimeRecordModal';
 
 interface PracticalAssessmentProps {
@@ -20,12 +20,6 @@ interface PracticalAssessmentProps {
     assessmentType?: '3D' | '2D';
 }
 
-/** Ordinal label helper */
-const getSetLabel = (n: number): string => {
-    const ordinals = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
-    const suffix = n <= 3 ? 'Set Parts' : 'Set Parts and Assembly';
-    return `${ordinals[n - 1]} ${suffix}`;
-};
 
 export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack, is3DCompleted = false, assessmentType = '3D' }) => {
     const location = useLocation();
@@ -591,7 +585,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                     is_virtual_extra: true
                                                                 } as any);
                                                             }
-                                                            return augmentedUnitTasks.map((task: any, index) => {
+                                                            return augmentedUnitTasks.map((task: any) => {
                                                                 const actualTaskId = task.is_virtual_extra ? task.real_id : task.id;
                                                                 let taskSubmissions = submissions.filter(s => {
                                                                     const subTaskId = s.task?.id || s.task_id;

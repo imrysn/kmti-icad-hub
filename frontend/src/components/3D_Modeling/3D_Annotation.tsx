@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Assets */
-import linearIcon from "../../assets/3D_Image_File/annotation1_linear.png";
-import linearImage from "../../assets/3D_Image_File/annotation1_linear1.png";
-import diameterIcon from "../../assets/3D_Image_File/annotation1_circular.png";
-import diameterImage from "../../assets/3D_Image_File/dimaeter_dimension.jpg";
+import attrIcon from "../../assets/3D_Image_File/annotation11.png";
 import angularIcon from "../../assets/3D_Image_File/annotation1_angular.png";
 import angularImage from "../../assets/3D_Image_File/annotation1_angular1.png";
+import diameterIcon from "../../assets/3D_Image_File/annotation1_circular.png";
+import linearIcon from "../../assets/3D_Image_File/annotation1_linear.png";
+import linearImage from "../../assets/3D_Image_File/annotation1_linear1.png";
 import noteIcon from "../../assets/3D_Image_File/annotation1_note_string_entry.png";
-import noteWindow from "../../assets/3D_Image_File/note_string_entry_window.png";
+import annotation1NoteStringEntry1 from "../../assets/3D_Image_File/annotation1_note_string_entry1.png";
 import textIcon from "../../assets/3D_Image_File/annotation1_text_entry.png";
-import textWindow from "../../assets/3D_Image_File/text_entry_window.png";
 import textResult from "../../assets/3D_Image_File/annotation1_text_entry1.png";
+import annotationTop from "../../assets/3D_Image_File/annotation1_top.png";
 import editsIcon from "../../assets/3D_Image_File/annotation2_edits_drafting.png";
-import editsWindow from "../../assets/3D_Image_File/edit_dimension_characters_window.png";
-import attrIcon from "../../assets/3D_Image_File/annotation11.png";
 import attrWindow from "../../assets/3D_Image_File/change_properties_window.png";
 import positionIcon from "../../assets/3D_Image_File/changes_position_drafting_entities.png";
-import annotationTop from "../../assets/3D_Image_File/annotation1_top.png";
-import annotation1NoteStringEntry1 from "../../assets/3D_Image_File/annotation1_note_string_entry1.png";
+import diameterImage from "../../assets/3D_Image_File/dimaeter_dimension.jpg";
+import editsWindow from "../../assets/3D_Image_File/edit_dimension_characters_window.png";
 import leftClick from "../../assets/3D_Image_File/left_click.png";
+import noteWindow from "../../assets/3D_Image_File/note_string_entry_window.png";
+import textWindow from "../../assets/3D_Image_File/text_entry_window.png";
 
 type AnnotationTab = "linear" | "diameter" | "angular" | "notes" | "character" | "edits" | "attributes" | "position";
 

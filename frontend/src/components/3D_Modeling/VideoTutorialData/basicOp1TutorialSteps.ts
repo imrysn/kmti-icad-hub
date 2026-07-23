@@ -1,9 +1,9 @@
-import { TutorialStep } from '../VideoTutorialViewer';
-import vidCylinder from '../../../assets/3D_Video_Tutorial/basicOp_cylinder.mp4';
 import vidBox from '../../../assets/3D_Video_Tutorial/basicOp_box.mp4';
-import vidPolygon from '../../../assets/3D_Video_Tutorial/basicOp_polygon.mp4';
 import vidCone from '../../../assets/3D_Video_Tutorial/basicOp_cone.mp4';
+import vidCylinder from '../../../assets/3D_Video_Tutorial/basicOp_cylinder.mp4';
+import vidPolygon from '../../../assets/3D_Video_Tutorial/basicOp_polygon.mp4';
 import vidTorus from '../../../assets/3D_Video_Tutorial/basicOp_torus.mp4';
+import { TutorialStep } from '../VideoTutorialViewer';
 
 export const cylinderTutorialSteps: TutorialStep[] = [
   {

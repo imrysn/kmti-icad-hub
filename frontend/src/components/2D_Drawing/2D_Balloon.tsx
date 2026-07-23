@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
-import balloonPartMenuImg from "../../assets/2D_Image_File/2D_balloon_part_drawing.png";
 import balloonAssemblyMenuImg from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png";
 import balloonAssemblyMenu2Img from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_2.png";
+import balloonPartMenuImg from "../../assets/2D_Image_File/2D_balloon_part_drawing.png";
 
 interface BalloonLessonProps {
   nextLabel?: string;
@@ -173,7 +173,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                     </div>
                     <div className="step-description">
                       <img src={balloonAssemblyMenuImg} alt="Assembly Add Balloon Settings" className="software-screenshot screenshot-wide" />
-                      
+
                       <div className={`instruction-box mt-6 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                         <KaraokeLessonText
                           className="p-flush"

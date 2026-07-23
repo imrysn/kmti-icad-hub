@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React,{ useEffect,useRef,useState } from 'react'
 import { KMTISensei } from '../KMTISensei'
 import './styles/QuotationTutorial.css'
 
@@ -162,7 +162,7 @@ export const QuotationTutorial: React.FC<Props> = ({ isOpen, onClose, onOpenPrin
 
         setSpotlightStyle({
           clipPath: `polygon(
-            0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 
+            0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%,
             ${x1}px ${y1}px, ${x1}px ${y2}px, ${x2}px ${y2}px, ${x2}px ${y1}px, ${x1}px ${y1}px
           )`
         })

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
 /* Import images */
 import imgToolbar from "../../assets/2D_Image_File/2D_standard_part_library.png";
-import imgSafetyColor from "../../assets/2D_Image_File/2D_standard_part_library_safety_color.png";
 import imgRevHistory1 from "../../assets/2D_Image_File/2D_standard_part_library_revision_history_1.jpg";
 import imgRevHistory2 from "../../assets/2D_Image_File/2D_standard_part_library_revision_history_2.png";
+import imgSafetyColor from "../../assets/2D_Image_File/2D_standard_part_library_safety_color.png";
 
 interface StandardLibraryLessonProps {
   nextLabel?: string;
@@ -20,9 +20,7 @@ interface StandardLibraryLessonProps {
 
 const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
   onNextLesson,
-  onPrevLesson,
-  nextLabel
-}) => {
+  onPrevLesson}) => {
   const TABS = [
     { id: 'standard-library', label: 'Standard Part Library' }
   ];

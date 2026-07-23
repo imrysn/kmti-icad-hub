@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Info, Play } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import '../../styles/3D_Modeling/CourseLesson.css';
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 // --- Assets ---
 import scale2D from '../../assets/3D_Image_File/standard1_scale_2d.png';
@@ -14,8 +13,8 @@ import scalePointerVGroove from '../../assets/3D_Image_File/standard1_scale_poin
 import gasDischarge from '../../assets/3D_Image_File/standard2_gas_discharge.png';
 import oilGroove from '../../assets/3D_Image_File/standard2_oil_groove.png';
 import sprocketNote from '../../assets/3D_Image_File/standard2_sprocket.png';
-import sprocketColoring from '../../assets/3D_Image_File/standard3_sprocket_3d.png';
 import sprocketKeywayLoc from '../../assets/3D_Image_File/standard3_location_of_sprocket_keyway.png';
+import sprocketColoring from '../../assets/3D_Image_File/standard3_sprocket_3d.png';
 import boltLengthCalc from '../../assets/3D_Image_File/standard6_bolt_length.png';
 import pillowBlock1 from '../../assets/3D_Image_File/standard6_pillow_block_1.png';
 import pillowBlock3 from '../../assets/3D_Image_File/standard6_pillow_block_3.png';
@@ -39,8 +38,7 @@ interface StandardLessonProps {
 const StandardLesson: React.FC<StandardLessonProps> = ({
   subLessonId = 'standard-1',
   onNextLesson,
-  onPrevLesson
-  , nextLabel }) => {
+  onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTIONS" | "sgp pipes">(() => {
     if (subLessonId === 'standard-4') {
       return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'screw';
@@ -104,7 +102,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     registerText
   } = useLessonCore(subLessonId);
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
 
   const pointerSteps = [
     "SCALE POINTER",
@@ -494,7 +492,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <KaraokeLessonText
                       as="div"
                       className='p-flush'
-                      text="Deformation may happen due to the presence of heat and gas at time of welding. 
+                      text="Deformation may happen due to the presence of heat and gas at time of welding.
                         <br /> Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}

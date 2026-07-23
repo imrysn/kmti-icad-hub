@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
 /* Importing assets for Dimensioning (1) */
-import diimensioningImg from "../../assets/2D_Image_File/2D_dimensioning(1)_diimensioning.png";
 import standardDimMenuImg from "../../assets/2D_Image_File/2D_dimensioning(1)_a.1_standard_dimension.png";
 import seriesDimMenuImg from "../../assets/2D_Image_File/2D_dimensioning(1)_a.2_series_dimension.png";
+import diimensioningImg from "../../assets/2D_Image_File/2D_dimensioning(1)_diimensioning.png";
 
 /* Importing assets for Dimensioning (2) */
 import editDimDrawingImg from "../../assets/2D_Image_File/2D_dimensioning_b.1_edit_dimension_charac.png";
-import toleranceImg from "../../assets/2D_Image_File/2D_dimensioning_tolerance.png";
 import chamferRadiusImg from "../../assets/2D_Image_File/2D_dimensioning_chamfer_radius.png";
+import toleranceImg from "../../assets/2D_Image_File/2D_dimensioning_tolerance.png";
 
 /* Importing assets for Dimensioning (3) */
-import polishedMaterialImg from "../../assets/2D_Image_File/2D_dimensioning_b.2_polished_material.png";
 import partNoteMenuImg from "../../assets/2D_Image_File/2D_dimensioning(3)_part_note.png";
+import polishedMaterialImg from "../../assets/2D_Image_File/2D_dimensioning_b.2_polished_material.png";
 
 /* Importing assets for Dimensioning (4) */
 import changePosition1Img from "../../assets/2D_Image_File/2D_dimensioning(4)_b.4_change_position_1 (1).png";

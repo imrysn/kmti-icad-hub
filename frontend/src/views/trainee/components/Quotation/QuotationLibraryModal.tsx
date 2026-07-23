@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React,{ useCallback,useEffect,useMemo,useState } from 'react'
 import ReactDOM from 'react-dom'
-import { quotationApi } from '../../../../services/api'
-import { useAuth } from '../../../../context/AuthContext'
-import { getDisplayName } from "../../../../utils/nameUtils"
 import { useModal } from '../../../../components/ModalContext'
+import { useAuth } from '../../../../context/AuthContext'
+import { quotationApi } from '../../../../services/api'
 import type { IQuotation } from '../../../../types/quotation'
+import { getDisplayName } from "../../../../utils/nameUtils"
 import './QuotationLibraryModal.css'
 
 interface Props {
@@ -15,9 +15,9 @@ interface Props {
 /**
  * QuotationLibraryModal.tsx
  * ───────────────────────────────────────────────────────────────────────────
- * A centralized library for browsing, searching, and managing collaborative 
- * quotation workspaces. 
- * 
+ * A centralized library for browsing, searching, and managing collaborative
+ * quotation workspaces.
+ *
  * Features:
  * - Real-time "Live" session indicators.
  * - Hostname-based deletion (True Ownership).
@@ -145,7 +145,6 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
 
   const handleReveal = async (q: IQuotation) => {
     const pwd = q.password || 'Unknown'
-    const isIT = hasRole('it')
 
     const isConfirmed = await confirm(`Password for ${q.quotationNo} is: [ ${pwd} ]\n\nClick OK to copy to clipboard.`)
     if (isConfirmed) {

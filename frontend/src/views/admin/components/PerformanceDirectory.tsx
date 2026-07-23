@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { Filter,Search } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
+import { useAuthContext } from '../../../context/AuthContext';
+import { useWebSocket } from '../../../context/WebSocketContext';
 import { TraineeProgress } from '../../../services/adminService';
 import { assessmentService } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
-import { useAuthContext } from '../../../context/AuthContext';
-import { useWebSocket } from '../../../context/WebSocketContext';
-import { Search, Filter } from 'lucide-react';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 
 interface PerformanceDirectoryProps {
@@ -106,8 +106,8 @@ export const PerformanceDirectory: React.FC<PerformanceDirectoryProps> = ({ prog
                         </div>
                         <div className="filter-box" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', padding: '0 1rem', borderRadius: '8px', height: '38px' }}>
                             <Filter size={14} color="var(--text-muted)" />
-                            <select 
-                                value={roleFilter} 
+                            <select
+                                value={roleFilter}
                                 onChange={(e) => setRoleFilter(e.target.value as 'all' | 'trainee' | 'employee')}
                                 style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', outline: 'none', fontSize: '0.875rem', cursor: 'pointer', padding: '0.25rem' }}
                             >

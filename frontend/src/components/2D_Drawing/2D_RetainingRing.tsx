@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -73,14 +72,14 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
       title: 'RETAINING RING SIZE AND TOLERANCE',
       subtitle: 'Dimensional specifications and assembly standards for External C-Type Retaining Rings.',
       steps: [
-       
+
       ]
     },
     '2d-retaining-ring-internal': {
       title: 'RETAINING RING SIZE AND TOLERANCE',
       subtitle: 'Dimensional specifications and assembly standards for Internal C-Type Retaining Rings.',
       steps: [
-        
+
       ]
     }
   };
@@ -151,10 +150,10 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img 
-                    src={retaining1Img} 
-                    alt="External Retaining Ring Standards" 
-                    className="software-screenshot screenshot-wide" 
+                  <img
+                    src={retaining1Img}
+                    alt="External Retaining Ring Standards"
+                    className="software-screenshot screenshot-wide"
                   />
                 </>
               )}
@@ -177,10 +176,10 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img 
-                    src={retaining2Img} 
-                    alt="Internal Retaining Ring Standards" 
-                    className="software-screenshot screenshot-wide" 
+                  <img
+                    src={retaining2Img}
+                    alt="Internal Retaining Ring Standards"
+                    className="software-screenshot screenshot-wide"
                   />
                 </>
               )}

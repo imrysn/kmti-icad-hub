@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Properties (1) Assets */
+import acrylicPointerImg from "../../assets/3D_Image_File/acrylic_pointer.png";
 import changeColorIcon from "../../assets/3D_Image_File/change_color.png";
 import changeColorEntity from "../../assets/3D_Image_File/change_color_entity.png";
 import changeColorFace from "../../assets/3D_Image_File/change_color_face.png";
 import changeLayerIcon from "../../assets/3D_Image_File/change_layer.png";
+import isoniteManganeseImg from "../../assets/3D_Image_File/isonite_manganese.png";
 import itemEntryChangeLayer from "../../assets/3D_Image_File/item_entry_changelayer.png";
-import propertiesColorImg from "../../assets/3D_Image_File/properties_color.png";
 import layer1Img from "../../assets/3D_Image_File/layer1.png";
 import layer2Img from "../../assets/3D_Image_File/layer2.png";
 import layer3Img from "../../assets/3D_Image_File/layer3.png";
-import acrylicPointerImg from "../../assets/3D_Image_File/acrylic_pointer.png";
-import propertiesMaterialImg from "../../assets/3D_Image_File/properties_material.png";
-import isoniteManganeseImg from "../../assets/3D_Image_File/isonite_manganese.png";
 import leftClick from "../../assets/3D_Image_File/left_click.png";
+import propertiesColorImg from "../../assets/3D_Image_File/properties_color.png";
+import propertiesMaterialImg from "../../assets/3D_Image_File/properties_material.png";
 
 /* Properties (2) Assets */
 import information1 from "../../assets/3D_Image_File/information1.png";
@@ -26,12 +26,12 @@ import information2 from "../../assets/3D_Image_File/information2.png";
 import information3 from "../../assets/3D_Image_File/information3.png";
 import information4 from "../../assets/3D_Image_File/information4.png";
 import information5 from "../../assets/3D_Image_File/information5.png";
+import layerImg from "../../assets/3D_Image_File/layer.jpg";
+import infoAngleImg from "../../assets/3D_Image_File/properties2_information_angle.png";
+import infoEntityImg from "../../assets/3D_Image_File/properties2_information_entity.png";
 import infoPointImg from "../../assets/3D_Image_File/properties2_information_point.png";
 import infoEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
 import infoPointEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edgeq.jpg";
-import infoAngleImg from "../../assets/3D_Image_File/properties2_information_angle.png";
-import infoEntityImg from "../../assets/3D_Image_File/properties2_information_entity.png";
-import layerImg from "../../assets/3D_Image_File/layer.jpg";
 
 interface PropertiesLessonProps {
   nextLabel?: string;
@@ -110,7 +110,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
 
   const tabs = [
     { id: "color", label: "Change Color" },

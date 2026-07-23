@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
 /* Importing assets for Bill of Material */
+import bomAfterInsertImg from "../../assets/2D_Image_File/2D_bill_of_material_(4)_after_inserting_on_icad.png";
+import bomEditAttrImg from "../../assets/2D_Image_File/2D_bill_of_material_(4)_edit_attribute.png";
+import bomAdditionalInfoImg from "../../assets/2D_Image_File/2D_bill_of_material_additional_information.png";
+import bomAssemblyDrawingImg from "../../assets/2D_Image_File/2D_bill_of_material_assembly_drawing.jpg";
+import bomAssemblyDrawing2Img from "../../assets/2D_Image_File/2D_bill_of_material_assembly_drawing_2.png";
 import bomPartDrawingImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing.png";
 import bomPartDrawingBImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing_b.png";
 import bomPartDrawingCImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing_c.png";
 import bomPartDrawingDImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing_d.png";
-import bomAssemblyDrawingImg from "../../assets/2D_Image_File/2D_bill_of_material_assembly_drawing.jpg";
-import bomAssemblyDrawing2Img from "../../assets/2D_Image_File/2D_bill_of_material_assembly_drawing_2.png";
-import bomAdditionalInfoImg from "../../assets/2D_Image_File/2D_bill_of_material_additional_information.png";
-import bomAfterInsertImg from "../../assets/2D_Image_File/2D_bill_of_material_(4)_after_inserting_on_icad.png";
-import bomEditAttrImg from "../../assets/2D_Image_File/2D_bill_of_material_(4)_edit_attribute.png";
 
 interface BillOfMaterialLessonProps {
   nextLabel?: string;
@@ -181,7 +181,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                     <div className="step-description">
                       <img src={bomPartDrawingImg} alt="BOM Part Drawing Entry" className="software-screenshot screenshot-wide" />
                       <img src={bomPartDrawingBImg} alt="BOM Template Selection" className="software-screenshot screenshot-wide mt-4" />
-                      
+
                       <div style={{ marginTop: "2rem" }}>
                         <img src={bomPartDrawingCImg} alt="Excel BOM Generation" className="software-screenshot screenshot-wide" />
                         <div className="instruction-box mt-6">

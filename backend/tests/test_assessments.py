@@ -62,12 +62,7 @@ def trainer_mapping(db, employee_user, trainee_user) -> TrainerTraineeMapping:
     db.commit()
     db.refresh(mapping)
     return mapping
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/assessments/tasks
-# ══════════════════════════════════════════════════════════════════
-
 class TestGetTasks:
     ENDPOINT = "/api/v1/assessments/tasks"
 
@@ -88,12 +83,7 @@ class TestGetTasks:
     def test_unauthenticated_cannot_get_tasks(self, client):
         response = client.get(self.ENDPOINT)
         assert response.status_code == 401
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/assessments/my-submissions
-# ══════════════════════════════════════════════════════════════════
-
 class TestMySubmissions:
     ENDPOINT = "/api/v1/assessments/my-submissions"
 
@@ -113,12 +103,7 @@ class TestMySubmissions:
         response = client.get(self.ENDPOINT, headers=auth_headers(employee_token))
         ids = [s["id"] for s in response.json()]
         assert seed_submission.id not in ids
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/assessments/trainer/submissions
-# ══════════════════════════════════════════════════════════════════
-
 class TestTrainerSubmissions:
     ENDPOINT = "/api/v1/assessments/trainer/submissions"
 
@@ -145,12 +130,7 @@ class TestTrainerSubmissions:
         response = client.get(self.ENDPOINT, headers=auth_headers(employee_token))
         assert response.status_code == 200
         assert response.json() == []
-
-
-# ══════════════════════════════════════════════════════════════════
 # Admin-only: POST /api/v1/assessments/admin/assign
-# ══════════════════════════════════════════════════════════════════
-
 class TestAssignTrainer:
     ENDPOINT = "/api/v1/assessments/admin/assign"
 
@@ -175,12 +155,7 @@ class TestAssignTrainer:
             "trainee_id": trainee_user.id,
         })
         assert response.status_code == 403
-
-
-# ══════════════════════════════════════════════════════════════════
 # DELETE /api/v1/assessments/submissions/{id}
-# ══════════════════════════════════════════════════════════════════
-
 class TestDeleteSubmission:
     def test_trainee_can_delete_own_submission(self, client, trainee_token, seed_submission):
         response = client.delete(

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Target, Volume2, VolumeX } from 'lucide-react';
+import { Target,Volume2 } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useTTS } from '../../hooks/useTTS';
-import { KaraokeLessonText } from '../KaraokeLessonText';
 import "../../styles/3D_Modeling/InteractiveImageMap.css";
+import { KaraokeLessonText } from '../KaraokeLessonText';
 
 interface Hotspot {
   id: number;
@@ -34,7 +34,6 @@ const HOTSPOTS: Hotspot[] = [
 
 const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
   imageSrc,
-  nextLabel,
   externalIndex = -1,
   externalCharIndex = 0
 }) => {
@@ -107,7 +106,7 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
       <div className="image-stage">
         <div className="image-container-inner">
           <img src={imageSrc} alt="iCAD Window Structure" className="base-image" />
-          {HOTSPOTS.map((hotspot, index) => (
+          {HOTSPOTS.map((hotspot) => (
             <div
               key={hotspot.id}
               className={`hotspot-node ${activeId === hotspot.id ? "active" : ""} ${selectedHotspot?.id === hotspot.id ? "selected" : ""}`}

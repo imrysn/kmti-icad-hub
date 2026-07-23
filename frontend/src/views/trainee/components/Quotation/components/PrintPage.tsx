@@ -1,7 +1,7 @@
 import { memo } from 'react'
-import type { CompanyInfo, QuotationDetails, BillingDetails, Task, Signatures, ManualOverrides, TaskOverrides } from '../../../../../hooks/quotation'
-import PrintHeader from './PrintHeader'
+import type { BillingDetails,CompanyInfo,ManualOverrides,QuotationDetails,Signatures,Task,TaskOverrides } from '../../../../../hooks/quotation'
 import { getUnitPageCount } from '../../../../../utils/quotation'
+import PrintHeader from './PrintHeader'
 
 interface PrintPageProps {
   pageTasks: Task[]

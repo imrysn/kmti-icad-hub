@@ -1,19 +1,18 @@
 /** * 3D_Interference.tsx * Interference Check lesson */
 
+import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
-import { ReadAloudButton } from "../ReadAloudButton";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
-import leftClick from "../../assets/3D_Image_File/left_click.png";
 import interfCheckIcon from "../../assets/3D_Image_File/interf_check.png";
 import interfCommandMenu from "../../assets/3D_Image_File/interf_command_menu.png";
 import interferenceResult from "../../assets/3D_Image_File/interference.png";
+import interferenceCheckImg from "../../assets/3D_Image_File/interference_check.png";
+import leftClick from "../../assets/3D_Image_File/left_click.png";
 import listInterfIcon from "../../assets/3D_Image_File/list_all_detected_interf.png";
 import listDisplayWindow from "../../assets/3D_Image_File/list_display_window.png";
-import interferenceCheckImg from "../../assets/3D_Image_File/interference_check.png";
 
 interface InterferenceLessonProps {
   nextLabel?: string;
@@ -25,24 +24,11 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
   const {
     scrollProgress,
     containerRef,
-    speak,
-    stop,
-    isSpeaking,
     currentIndex
   } = useLessonCore('interference');
 
-  const interferenceSteps = [
-    "INTERFERENCE CHECK",
-    "Step 1: Select Interference Check from the icon menu.",
-    "Step 2: On the command menu, unselect High-speed detection.",
-    "Step 3: Select specific entities to check if there are interferences then GO",
-    "Step 4: Analyze possible countermeasures to remove the interference on the parts.",
-    "Tool use to display the list of all detected interferences.",
-    "Step 1: Select the tool on the icon menu then GO",
-    "Step 2: The List Display window will appear showing all the 3D part names that interfere with each other."
-  ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -53,7 +39,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
       <section className="lesson-intro">
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           Interference Check
-          
+
         </h3>
         <p className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
          Interferences are overlapping areas of 3D entities. These are problems that must be fix on the 3D Modeling..
@@ -91,7 +77,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
           <div className={`${getStepClass("i3")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom:"-2rem"}}>
             <div className="step-header">
               <span className="step-number">3 </span>
-              <span className="step-label" style={{marginTop: "-1.5rem"}}>Select specific entities to check if there are interferences &gt; GO 
+              <span className="step-label" style={{marginTop: "-1.5rem"}}>Select specific entities to check if there are interferences &gt; GO
                 <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
               </span>
             </div>
@@ -100,7 +86,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
                     <img src={interferenceCheckImg} alt="Interference Check Dialog" className="software-screenshot mt-4" style={{width: "900px", marginTop: "1rem", marginBottom: "0rem"}} />
               <div>
               <span className="p-flush"><strong className="text-highlight">OR</strong></span>
-              </div> 
+              </div>
               <span className="p-flush">Right-click on the 3D Space to check the entire drawing for interferences.</span>
             </div>
           </div>
@@ -114,7 +100,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
           </div>
 
           <div className={`${getStepClass("li-intro")} ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
-            
+
             <div className="step-description mt-4">
               <span className="p-flush mb-4" style={{ marginTop: "1rem", fontWeight: "700px",}}>Tool use to display the list of all detected interferences.</span>
                     <img src={listInterfIcon} alt="Display List Tool Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: '200px', marginBottom: "-1rem", marginTop: "1rem" }} />

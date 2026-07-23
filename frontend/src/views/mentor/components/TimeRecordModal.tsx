@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import { Clock,Copy,Filter } from 'lucide-react';
+import React,{ useMemo,useState } from 'react';
 import { Modal } from '../../../components/Modal';
-import { AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
-import { Clock, Filter, Copy } from 'lucide-react';
 import { useNotification } from '../../../context/NotificationContext';
+import { AssessmentSubmission,AssessmentTask } from '../../../services/assessmentService';
 
 interface TimeRecordModalProps {
     isOpen: boolean;
@@ -13,17 +13,17 @@ interface TimeRecordModalProps {
     getSetDisplayNumber: (s: number) => number;
 }
 
-export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClose, tasks, submissions, userId, getSetDisplayNumber }) => {
+export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClose, tasks, submissions, getSetDisplayNumber }) => {
     const [selectedSet, setSelectedSet] = useState<number | 'ALL'>('ALL');
     const { showNotification } = useNotification();
 
     // Group submissions by Set
     const groupedSubmissions = useMemo(() => {
         const grouped: { [set: number]: AssessmentSubmission[] } = {};
-        
+
         // Show submissions (we can include those with 0 seconds for testing)
         let validSubmissions = submissions.filter(sub => sub.time_spent_seconds !== undefined && sub.time_spent_seconds !== null);
-        
+
         // Filter to only keep the latest attempt for each unique task (cumulative time)
         const latestSubmissionsMap = new Map<number, AssessmentSubmission>();
         validSubmissions.forEach(sub => {
@@ -34,13 +34,13 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                 latestSubmissionsMap.set(taskId, sub);
             }
         });
-        
+
         validSubmissions = Array.from(latestSubmissionsMap.values());
-        
+
         validSubmissions.forEach(sub => {
             const task = tasks.find(t => t.id === (sub.task_id || sub.task?.id));
             if (!task) return;
-            
+
             if (!grouped[task.set_number]) {
                 grouped[task.set_number] = [];
             }
@@ -48,7 +48,7 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
             sub.task = task;
             grouped[task.set_number].push(sub);
         });
-        
+
         // Sort submissions within each set by task order/id
         Object.keys(grouped).forEach(key => {
             grouped[Number(key)].sort((a, b) => {
@@ -59,14 +59,14 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                 return new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime();
             });
         });
-        
+
         return grouped;
     }, [submissions, tasks, isOpen]);
 
     const availableSets = Object.keys(groupedSubmissions).map(Number).sort((a, b) => a - b);
-    
+
     // Filter the sets based on selection
-    const setsToRender = selectedSet === 'ALL' 
+    const setsToRender = selectedSet === 'ALL'
         ? Object.entries(groupedSubmissions)
         : Object.entries(groupedSubmissions).filter(([setStr]) => Number(setStr) === selectedSet);
 
@@ -83,7 +83,7 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
             const formatMin = (Math.round((timeSeconds / 60) * 100) / 100).toFixed(2);
             const dateStr1 = startedDate.toLocaleDateString();
             const dateStr2 = finishedDate.toLocaleDateString();
-            
+
             // F(Title) \t G \t H \t I \t J \t K \t L(Date Started) \t M(Date Finished) \t N(Time)
             tsv += `${fileName}\t\t\t\t\t\t${dateStr1}\t${dateStr2}\t${formatMin}\n`;
         });
@@ -115,21 +115,21 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Time Records" size="lg">
             <div style={{ padding: '1.5rem', maxHeight: '75vh', overflowY: 'auto' }}>
-                
+
                 {availableSets.length > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', backgroundColor: 'rgba(255,255,255,0.03)', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)' }}>
                             <Filter size={16} />
                             <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Filter by Set:</span>
                         </div>
-                        <select 
-                            value={selectedSet} 
+                        <select
+                            value={selectedSet}
                             onChange={(e) => setSelectedSet(e.target.value === 'ALL' ? 'ALL' : Number(e.target.value))}
-                            style={{ 
-                                padding: '0.4rem 0.8rem', 
-                                borderRadius: '4px', 
-                                backgroundColor: 'var(--bg-surface)', 
-                                color: 'var(--text-main)', 
+                            style={{
+                                padding: '0.4rem 0.8rem',
+                                borderRadius: '4px',
+                                backgroundColor: 'var(--bg-surface)',
+                                color: 'var(--text-main)',
                                 border: '1px solid var(--border-color)',
                                 outline: 'none',
                                 cursor: 'pointer',
@@ -163,8 +163,8 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                             {subs.length} records
                                         </span>
                                     </div>
-                                    <button 
-                                        className="btn-primary" 
+                                    <button
+                                        className="btn-primary"
                                         onClick={() => handleCopyToExcel(subs)}
                                         style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.8rem', fontSize: '0.8rem', borderRadius: '4px', cursor: 'pointer' }}
                                     >
@@ -172,19 +172,19 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                     </button>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
-                                    {subs.map((sub, i) => {
+                                    {subs.map((sub) => {
                                         let fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'Unknown File';
                                         const lastDot = fileName.lastIndexOf('.');
                                         if (lastDot > 0) fileName = fileName.substring(0, lastDot);
 
                                         const timeSeconds = sub.time_spent_seconds || 0;
-                                        
+
                                         // Calculate Date Started: Finished - Time Elapsed
                                         const finishedDate = new Date(sub.submitted_at);
                                         const startedDate = new Date(finishedDate.getTime() - timeSeconds * 1000);
-                                        
+
                                         const formatMin = (Math.round((timeSeconds / 60) * 100) / 100).toFixed(2);
-                                        
+
                                         // Only show Date, not time
                                         const formatDate = (date: Date) => {
                                             return date.toLocaleDateString();

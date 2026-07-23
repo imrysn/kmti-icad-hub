@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import '../../styles/3D_Modeling/CourseLesson.css';
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 // --- Assets ---
-import partMenu1 from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
 import createPartIcon from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
 import modalInfo1 from '../../assets/3D_Image_File/3d_part1_creating_3d_part_3.png';
 import treeViewInfo1 from '../../assets/3D_Image_File/3d_part1_creating_3d_part_4.png';
@@ -151,7 +149,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

@@ -1,6 +1,5 @@
 import os
-from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
 # Load environment variables from the backend directory
 env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -20,7 +19,7 @@ import json
 # Create database tables on startup (only if SQLite, or MySQL is ready)
 try:
     Base.metadata.create_all(bind=engine)
-    
+
     # Auto-migration for trainee_set_mappings assessment_type column
     from sqlalchemy import text, inspect
     with engine.connect() as conn:
@@ -44,9 +43,9 @@ origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.st
 if not origins:
     # Fallback only for local dev if not specified
     origins = [
-        "http://localhost:5173", 
-        "http://localhost:5174", 
-        "http://localhost:5175", 
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
         "http://localhost:3000",
         "app://." # For Electron production
     ]
@@ -145,7 +144,7 @@ api_app = app
 # FastAPI's middleware stack has returned, and those error responses must still
 # include Access-Control-Allow-Origin for the renderer to read the real status.
 socketio_app = _sio_module.ASGIApp(
-    global_sio, 
+    global_sio,
     api_app,
     static_files={},
     socketio_path='socket.io'

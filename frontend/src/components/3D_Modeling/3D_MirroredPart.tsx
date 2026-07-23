@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ReadAloudButton } from "../ReadAloudButton";
 
 /* Shared Assets */
+import mirrorNotes from "../../assets/3D_Image_File/mirrored_notes.png";
 import mirrorCopyTool from "../../assets/3D_Image_File/mirrored_part1_mirror_copy_tool.jpg";
 import mirrorPartA from "../../assets/3D_Image_File/mirrored_part1_mirror_part.png";
 import normalPartA from "../../assets/3D_Image_File/mirrored_part1_normal_part.png";
-import mirrorNotes from "../../assets/3D_Image_File/mirrored_notes.png";
 import originLocation from "../../assets/3D_Image_File/mirrored_part2_location_of_origin.png";
 import mirrorTool from "../../assets/3D_Image_File/mirrored_part2_mirror.png";
 import pick3Points from "../../assets/3D_Image_File/mirrored_part2_pick3_points.png";
@@ -190,8 +190,8 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 <div className="step-description">
                   <KaraokeLessonText
                     as="div"
-                    text="Parts that are exactly the same as the original part if you create a mirror copy of it. No changes will be recognized. 
-                    <br /> 
+                    text="Parts that are exactly the same as the original part if you create a mirror copy of it. No changes will be recognized.
+                    <br />
                     Normal parts have drawing number with N."
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
@@ -199,7 +199,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <div className="mt-4">
                     <p className="p-flush">MTXXXXX<strong className="red-text">N</strong>01</p>
                   </div>
-                  
+
                   <div className="flex-row-wrap mt-4" style={{ gap: '2rem', alignItems: 'center' }}>
                     <p style={{ marginTop: "2rem", marginBottom: "-3rem"}} className="p-flush">Here is an example of a normal part.</p>
                     <img src={normalPartA} alt="Normal Part Example" className="software-screenshot mt-4" style={{ height: "300px" }} />
@@ -260,9 +260,9 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <KaraokeLessonText
                       as="div"
                       style={{marginBottom: "2rem"}}
-                      text="Place mirror copy over the original part. 
+                      text="Place mirror copy over the original part.
                       <br /><br />
-                      If there are no changes or the part details are all exactly the same, it is a Normal Part. 
+                      If there are no changes or the part details are all exactly the same, it is a Normal Part.
                       <br /><br />
                       If there are changes that can be recognize like hole location, cutouts or fairings and if its function as a part can no longer be the same as the function of Mirror Part A, it is a Mirror Part."
                       isActive={isSpeaking && currentIndex === 7}

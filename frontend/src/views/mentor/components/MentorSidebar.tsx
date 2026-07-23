@@ -1,13 +1,14 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, ChevronDown, ChevronRight, ChevronLeft, CheckCircle2, X, Lock, Zap, BookOpen, Menu } from 'lucide-react'; import { Course } from '../../../types';
-import { Lesson, ICAD_2D_LESSONS, ICAD_3D_LESSONS } from '../mentorConstants';
+import { BookOpen,CheckCircle2,ChevronDown,ChevronRight,Lock,Menu,Search,X,Zap } from 'lucide-react';
+import React,{ useEffect,useMemo,useRef,useState } from 'react';
+import { Course } from '../../../types';
+import { Lesson } from '../mentorConstants';
 import { AnalyticsCard } from './AnalyticsCard';
 
-const ProgressCircle: React.FC<{ percentage: number; size?: number; strokeWidth?: number; className?: string }> = ({ 
-    percentage, 
-    size = 24, 
+const ProgressCircle: React.FC<{ percentage: number; size?: number; strokeWidth?: number; className?: string }> = ({
+    percentage,
+    size = 24,
     strokeWidth = 2,
-    className = "" 
+    className = ""
 }) => {
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
@@ -64,14 +65,12 @@ interface MentorSidebarProps {
 
 export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     selectedCourse,
-    is2DDrawingCourse,
     sidebarOpen,
     setSidebarOpen,
     activeLessonId,
     setActiveLessonId,
     expandedIds,
     toggleExpand,
-    setSelectedCourse,
     completedLessons,
     isLoadingProgress,
     isEmployeeSide = false,
@@ -88,8 +87,8 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     // Lessons are now passed as props
 
     // Recursive Deep Filtering Logic with Multi-word support & Inheritance
-    const searchTerms = useMemo(() => 
-        searchTerm.toLowerCase().split(/\s+/).filter(t => t), 
+    const searchTerms = useMemo(() =>
+        searchTerm.toLowerCase().split(/\s+/).filter(t => t),
     [searchTerm]);
 
     const filteredLessons = useMemo(() => {
@@ -98,22 +97,22 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
         const deepFilter = (list: Lesson[], inheritedMatch: boolean = false): Lesson[] => {
             return list
                 .map(lesson => {
-                    const lessonMatch = searchTerms.every(t => 
-                        lesson.title.toLowerCase().includes(t) || 
+                    const lessonMatch = searchTerms.every(t =>
+                        lesson.title.toLowerCase().includes(t) ||
                         lesson.content?.some(c => c.toLowerCase().includes(t)) ||
                         lesson.quiz?.title.toLowerCase().includes(t) ||
                         lesson.quiz?.description.toLowerCase().includes(t) ||
-                        lesson.quiz?.questions.some(q => 
-                            q.text.toLowerCase().includes(t) || 
+                        lesson.quiz?.questions.some(q =>
+                            q.text.toLowerCase().includes(t) ||
                             q.explanation.toLowerCase().includes(t) ||
                             q.options.some(o => o.toLowerCase().includes(t))
                         )
                     );
-                    
-                    const filteredChildren = lesson.children 
-                        ? deepFilter(lesson.children, inheritedMatch || lessonMatch) 
+
+                    const filteredChildren = lesson.children
+                        ? deepFilter(lesson.children, inheritedMatch || lessonMatch)
                         : undefined;
-                    
+
                     const hasMatchingChildren = filteredChildren && filteredChildren.length > 0;
 
                     // Node is included if it matches OR has matching children OR parent matched
@@ -156,14 +155,14 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
             <div className="sidebar-inner-container">
                 <div className="sidebar-course-header">
                     <div className="sidebar-course-meta">
-                        <button 
+                        <button
                             className="sidebar-toggle-btn"
                             onClick={() => setSidebarOpen(!sidebarOpen)}
                             title={sidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
                         >
                             <Menu size={20} />
                         </button>
-                        
+
                         <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} ${sidebarOpen ? 'visible' : 'hidden'}`}>
                             {isSearchOpen && (
                                 <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
@@ -184,9 +183,9 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                         <div className="sidebar-collapsed-dashboard">
                             <Zap size={14} className="collapsed-zap-icon" />
                             <div className="collapsed-progress-track">
-                                <div 
-                                    className="collapsed-progress-fill" 
-                                    style={{ width: `${(completedLessonsCount / totalLessons) * 100}%` }} 
+                                <div
+                                    className="collapsed-progress-fill"
+                                    style={{ width: `${(completedLessonsCount / totalLessons) * 100}%` }}
                                 />
                             </div>
                             <div className="collapsed-stats-pill">
@@ -196,7 +195,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                     ) : (
                         !isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>
                     )}
-                    
+
                     {!isLoadingProgress && !isEmployeeSide && sidebarOpen && (
                         <div className="sidebar-analytics-wrapper">
                             <AnalyticsCard
@@ -233,7 +232,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
 
                             const moduleStatus = getLessonGateStatus(lesson);
                             const isActive = activeLessonId === lesson.id || (lesson.children?.some(c => c.id === activeLessonId));
-                            
+
                             // PROGRESS INHERITANCE: If the parent module is completed, children are visually completed
                             const isParentCompleted = moduleStatus.isSelfCompleted;
 
@@ -244,7 +243,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
 
                             return (
                                 <div key={lesson.id} className="lesson-item-wrapper">
-                                    <div className={`lesson-item ${isActive ? 'active' : ''} 
+                                    <div className={`lesson-item ${isActive ? 'active' : ''}
                                      ${isParentCompleted ? 'completed' : ''}
                                      ${moduleStatus.isLocked ? 'locked' : ''}
                                 `}
@@ -253,8 +252,8 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 toggleExpand(lesson.id);
                                             } else {
                                                 if (!moduleStatus.isLocked) {
-                                                    const targetId = (lesson.children && lesson.children.length === 1) 
-                                                        ? lesson.children[0].id 
+                                                    const targetId = (lesson.children && lesson.children.length === 1)
+                                                        ? lesson.children[0].id
                                                         : lesson.id;
                                                     setActiveLessonId(targetId);
                                                 }
@@ -264,9 +263,9 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                     >
                                         <div className="lesson-item-title">
                                             <div className="lesson-icon-wrapper">
-                                                <ProgressCircle 
-                                                    percentage={subLessonProgress} 
-                                                    size={28} 
+                                                <ProgressCircle
+                                                    percentage={subLessonProgress}
+                                                    size={28}
                                                     strokeWidth={2.5}
                                                     className="lesson-progress-static"
                                                 />
@@ -284,8 +283,8 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                             </div>
                                             <div className="lesson-title-text-group">
                                                 <span>{lesson.title}</span>
-                                                {searchTerms.length > 0 && 
-                                                 !searchTerms.every(t => lesson.title.toLowerCase().includes(t)) && 
+                                                {searchTerms.length > 0 &&
+                                                 !searchTerms.every(t => lesson.title.toLowerCase().includes(t)) &&
                                                  searchTerms.some(t => lesson.content?.some(c => c.toLowerCase().includes(t)) || lesson.quiz?.title.toLowerCase().includes(t) || lesson.quiz?.description.toLowerCase().includes(t) || lesson.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
                                                     <span className="search-match-badge">Found in Content</span>
                                                 )}
@@ -299,15 +298,15 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                     {lesson.children && lesson.children.length > 1 && expandedIds.has(lesson.id) && (
                                         <div className={`sub-lesson-list ${!sidebarOpen ? 'collapsed-dots' : ''}`}>
                                             {lesson.children.map((child: Lesson, index: number) => (
-                                                <div 
+                                                <div
                                                     key={child.id}
-                                                    className={`sub-lesson-item 
-                                                        ${activeLessonId === child.id ? 'active' : ''} 
-                                                        ${completedLessons.includes(child.id) ? 'completed' : ''} 
+                                                    className={`sub-lesson-item
+                                                        ${activeLessonId === child.id ? 'active' : ''}
+                                                        ${completedLessons.includes(child.id) ? 'completed' : ''}
                                                         ${moduleStatus.isLocked ? 'locked' : ''}
                                                         ${index === 0 ? 'is-first' : ''}
                                                         ${index === lesson.children!.length - 1 ? 'is-last' : ''}
-                                                    `} 
+                                                    `}
                                                     onClick={() => {
                                                        if (!moduleStatus.isLocked) {
                                                            setActiveLessonId(child.id);
@@ -327,8 +326,8 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                             )}
                                                             <div className="lesson-title-text-group">
                                                                 <span>{child.title}</span>
-                                                                {searchTerms.length > 0 && 
-                                                                 !searchTerms.every(t => child.title.toLowerCase().includes(t)) && 
+                                                                {searchTerms.length > 0 &&
+                                                                 !searchTerms.every(t => child.title.toLowerCase().includes(t)) &&
                                                                  searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t)) || child.quiz?.title.toLowerCase().includes(t) || child.quiz?.description.toLowerCase().includes(t) || child.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
                                                                     <span className="search-match-badge sub">Found in Content</span>
                                                                  )}

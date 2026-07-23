@@ -1,53 +1,36 @@
 
 
-import React,
-{
-
-  useState,
-
-  useEffect, useRef
+import React,{
+useEffect,useRef,
+useState
 } from 'react';
 
 import {
-  MousePointer2,
-  Keyboard,
-  Box as BoxIcon,
-  Circle,
-  ChevronLeft,
-  ChevronRight,
-  ArrowDown,
-  ArrowRight,
-  Info,
-  Zap,
-  Play
+ChevronLeft,
+ChevronRight,
+Play
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 
-import { ReadAloudButton } from '../ReadAloudButton';
-import { KaraokeLessonText } from '../KaraokeLessonText';
-import VideoTutorialViewer, { TutorialStep } from './VideoTutorialViewer';
-import {
-  cylinderTutorialSteps,
-  boxTutorialSteps,
-  polygonTutorialSteps,
-  coneTutorialSteps,
-  torusTutorialSteps
-} from './VideoTutorialData/basicOp1TutorialSteps';
 import '../../styles/3D_Modeling/CourseLesson.css';
+import { KaraokeLessonText } from '../KaraokeLessonText';
+import {
+boxTutorialSteps,
+coneTutorialSteps,
+cylinderTutorialSteps,
+polygonTutorialSteps,
+torusTutorialSteps
+} from './VideoTutorialData/basicOp1TutorialSteps';
+import VideoTutorialViewer from './VideoTutorialViewer';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
 import leftClick from '../../assets/3D_Image_File/left_click.png';
 
 // Video imports for replacing preview images
-import vidCylinder from '../../assets/3D_Video_Tutorial/basicOp_cylinder.mp4';
-import vidBox from '../../assets/3D_Video_Tutorial/basicOp_box.mp4';
-import vidPolygon from '../../assets/3D_Video_Tutorial/basicOp_polygon.mp4';
-import vidCone from '../../assets/3D_Video_Tutorial/basicOp_cone.mp4';
-import vidTorus from '../../assets/3D_Video_Tutorial/basicOp_torus.mp4';
-import vidMove from '../../assets/3D_Video_Tutorial/basicOp_move.mp4';
-import vidRotate from '../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
 import vidCopy from '../../assets/3D_Video_Tutorial/basicOp_copy.mp4';
 import vidMirror from '../../assets/3D_Video_Tutorial/basicOp_mirror.mp4';
+import vidMove from '../../assets/3D_Video_Tutorial/basicOp_move.mp4';
+import vidRotate from '../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (1)  ECREATING BASIC SHAPES */
 /* Lesson-item child ID: 'basic-op-1' */
@@ -58,38 +41,22 @@ import cmdMenu from '../../assets/3D_Image_File/basic_operation1_command_menu.pn
 
 import threeDView from '../../assets/3D_Image_File/basic_operation1_3d_view.png';
 
-import arrangeCylinder from '../../assets/3D_Image_File/basic_operation1_arrange_cylinder.png';
-
-import cylinderResult from '../../assets/3D_Image_File/basic_operation1_cylinder.png';
-
-import itemEntry from '../../assets/3D_Image_File/basic_operation1_item_entry.png';
-
-import keyEntry from '../../assets/3D_Image_File/basic_operation1_key_entry_area.png';
-
-import arrangeBox from '../../assets/3D_Image_File/basic_operation1_arrange_box.png';
-
-import itemEntryBox from '../../assets/3D_Image_File/basic_operation1_item_entry_box.png';
-
-import boxResult from '../../assets/3D_Image_File/box.png';
 
 
-import arrangePolygon from '../../assets/3D_Image_File/basic_operation1_arrange_polygon_prism.png';
 
-import polygonResult from '../../assets/3D_Image_File/polygon.png';
 
-import itemEntryPolygon from '../../assets/3D_Image_File/item_entry_polygon.png';
 
-import arrangeCone from '../../assets/3D_Image_File/basic_operation2_arrange_cone.png';
 
-import itemEntryCone from '../../assets/3D_Image_File/basic_operation2_item_entry_cone.png';
 
-import coneResult from '../../assets/3D_Image_File/cone.png';
 
-import arrangeTorus from '../../assets/3D_Image_File/basic_operation2_arrange_torus.png';
 
-import torusResult from '../../assets/3D_Image_File/torus.png';
 
-import itemEntryTorus from '../../assets/3D_Image_File/basic_operation2_item_entry_torus.png';
+
+
+
+
+
+
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (2)  EMOVE, ROTATE, COPY, MIRROR, DELETE */
 /* Lesson-item child ID: 'basic-op-2' */
@@ -102,23 +69,19 @@ import moveMenu from '../../assets/3D_Image_File/basic_operation2_move.png';
 
 import itemEntryMove from '../../assets/3D_Image_File/basic_operation2_item_entry_box.png';
 
-import moveResult from '../../assets/3D_Image_File/basic_operation2_move_3.png';
 
 import rotateIcon from '../../assets/3D_Image_File/basic_operation3_rotate.png';
 
-import rotateAxis from '../../assets/3D_Image_File/basic_operation3_rotate_axis_rotation.png';
 
 import rotateEntry from '../../assets/3D_Image_File/basic_operation3_rotate_item_entry.png';
 
 import mirrorIcon from '../../assets/3D_Image_File/basic_operation3_mirror.png';
 
-import mirrorResult from '../../assets/3D_Image_File/basic_operation3_mirrored.png';
 
 import copyIcon from '../../assets/3D_Image_File/basic_operation3_copy.png';
 
 import copyDistance from '../../assets/3D_Image_File/basic_operation3_copy_distance.png';
 
-import copyResult from '../../assets/3D_Image_File/basic_operation3_copy_3.png';
 
 import rotateCopyIcon from '../../assets/3D_Image_File/basic_operation3_rotatecopy.png';
 
@@ -151,7 +114,6 @@ import extrudeBothSide from '../../assets/3D_Image_File/basic_operation4_extrusi
 
 import revolveIcon from '../../assets/3D_Image_File/basic_operation4_revolve.png';
 
-import revolveP1 from '../../assets/3D_Image_File/basic_operation4_revolve_p1.png';
 
 import revolveP2 from '../../assets/3D_Image_File/basic_operation4_revolve_p2.png';
 
@@ -166,8 +128,8 @@ import hideUnselectedEntity from '../../assets/3D_Image_File/basic_operation4_hi
 
 import hideUnselectedEntity1 from '../../assets/3D_Image_File/basic_operation4_hide_unselected_entity_1.png';
 
-import fairingChamferImg from '../../assets/3D_Image_File/fairing_chamfer.jpg';
 import stretchIcon from '../../assets/3D_Image_File/basic_operation5_stretch.png';
+import fairingChamferImg from '../../assets/3D_Image_File/fairing_chamfer.jpg';
 
 import stretchItemEntry from '../../assets/3D_Image_File/basic_operation5_item_entry_stretch.png';
 
@@ -304,11 +266,11 @@ interface SubLessonProps {
   nextLabel?: string;
 }
 
-const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'cylinder';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  const { scrollProgress, containerRef, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
@@ -748,7 +710,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1264,8 +1226,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     if (!isSpeaking && wasSpeakingRef.current) {
-      const stepsLength = activeTab === 'sketch' 
-        ? 2 + sketchSteps.length 
+      const stepsLength = activeTab === 'sketch'
+        ? 2 + sketchSteps.length
         : 2 + (activeTab === 'extrude' ? extrudeSteps.length : revolveSteps.length);
       if (lastIndexRef.current === stepsLength - 1) {
         const i = tabs.findIndex(t => t.id === activeTab);
@@ -1324,7 +1286,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
-              
+
             </h3>
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1344,7 +1306,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
-              
+
             </h3>
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1588,11 +1550,11 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 /* ── Basic Operation (4): Show/Hide / Stretch / Resize ── */
 
 
-const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
   const [activeTab, setActiveTab] = useState<'showHide' | 'stretch' | 'resize'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'showHide';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  const { scrollProgress, containerRef, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
@@ -1694,7 +1656,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
-            
+
           </h3>
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1716,7 +1678,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
-            
+
           </h3>
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -2042,7 +2004,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              
+
             </div>
 
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
@@ -2114,18 +2076,12 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'shapeSteels';
   });
   // Note: speak and stop are not used in this component's single-tab layout.
-  const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
 
-  const shapeSteelsSteps = [
-    "Shape Steels Includes: C-CHANNEL, H-BEAM, I-BEAM, EQUAL ANGLE BAR, UNEQUAL ANGLE BAR, UNEQUAL SIDED ANGLE BAR",
-    "Step 1: Select Arrange Machine Part from the icon menu.",
-    "Step 2: The Arrange Machine Part window will appear. Select and provide the necessary specifications tehn Press OK",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin point)"
-  ];
 
   const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
 
@@ -2147,7 +2103,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -2274,6 +2230,6 @@ const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId
   }
 };
 
-export { BasicOperation1, BasicOperation2, BasicOperation3, BasicOperation4, BasicOperation5, BasicOperationLesson };
+export { BasicOperation1,BasicOperation2,BasicOperation3,BasicOperation4,BasicOperation5,BasicOperationLesson };
 export default BasicOperationLesson;
 

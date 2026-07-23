@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { CheckCircle2, XCircle, Clock, Download, Upload, Eye, Search, FileText, ChevronDown, ChevronUp, MessageSquare, Play, TrendingUp, User, Settings, UploadCloud, Bell, Trash2, Unlock, Box, PenTool } from 'lucide-react';
-import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
-import { authService } from '../../../services/authService';
-import { api } from '../../../services/api';
-import { useNotification } from '../../../context/NotificationContext';
-import { useWebSocket } from '../../../context/WebSocketContext';
-import { useUI } from '../../../context/UIContext';
-import { TraineeSetConfiguration } from './TraineeSetConfiguration';
-import { useBulkDownload } from '../../../hooks/useBulkDownload';
+import { Box,CheckCircle2,ChevronDown,ChevronUp,Clock,Download,Eye,FileText,MessageSquare,PenTool,Play,Search,Trash2,TrendingUp,Unlock,Upload,UploadCloud,XCircle } from 'lucide-react';
+import React,{ useCallback,useEffect,useRef,useState } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
+import { useNotification } from '../../../context/NotificationContext';
+import { useUI } from '../../../context/UIContext';
+import { useWebSocket } from '../../../context/WebSocketContext';
+import { useBulkDownload } from '../../../hooks/useBulkDownload';
+import { TraineeProgress } from '../../../services/adminService';
+import { api } from '../../../services/api';
+import { assessmentService,AssessmentSubmission } from '../../../services/assessmentService';
+import { authService } from '../../../services/authService';
+import '../../../styles/mentor/PracticalTrainerDashboard.css';
 import { getAvatarColor } from '../../../utils/avatarUtils';
-import { TraineeTelemetrySidebar } from './TraineeTelemetrySidebar';
-import { NotificationCenter } from './NotificationCenter';
+import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
 import { PerformanceDirectory } from '../../admin/components/PerformanceDirectory';
 import { TraineeDetail } from '../../admin/components/TraineeDetail';
-import { TraineeProgress } from '../../../services/adminService';
-import '../../../styles/mentor/PracticalTrainerDashboard.css';
-import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
+import { NotificationCenter } from './NotificationCenter';
+import { TraineeSetConfiguration } from './TraineeSetConfiguration';
 
 const getOrdinal = (n: number) => {
     const s = ["th", "st", "nd", "rd"];
@@ -727,7 +726,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
         const firstSub = selectedSetSubmissions[0];
         const displaySetNum = firstSub.task?.set_number || '';
         const currentSetOrdinal = displaySetNum ? getOrdinal(Number(displaySetNum)) : '';
-        const traineeName = firstSub.user?.full_name || firstSub.user?.username || 'this trainee';
         const isAssemblySet = selectedSetSubmissions.some((s: any) => s.task?.is_assembly || s.task?.task_code?.startsWith('A'));
         const setTypeString = isAssemblySet ? 'Set Assembly' : 'Set Parts';
 
@@ -998,7 +996,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                 : (latest.status === 'approved' || latest.status === 'rejected');
                                                         });
                                                     })
-                                                    .map((setNum, index) => {
+                                                    .map((setNum) => {
                                                         const displaySetNum = setNum;
                                                         const setKey = `${traineeId}-${setNum}`;
                                                         const isSetExpanded = expandedSets.includes(setKey);

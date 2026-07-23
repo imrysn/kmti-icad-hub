@@ -1,6 +1,6 @@
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, Sliders, Play, Square, ChevronDown } from 'lucide-react';
+import { Sliders,Volume2,VolumeX } from 'lucide-react';
+import React,{ useEffect,useRef,useState } from 'react';
 import { useTTSContext } from '../context/TTSContext';
 
 interface ReadAloudButtonProps {
@@ -42,11 +42,6 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
   };
 
   // Filter voices to English and Japanese since this is an international iCAD environment
-  const filteredVoices = voices.filter(v =>
-    v.lang.toLowerCase().startsWith('en') ||
-
-    v.lang.toLowerCase().startsWith('ja')
-  );
 
   const speedPresets = [0.8, 0.9, 1.0, 1.2, 1.5];
 

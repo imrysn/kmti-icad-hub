@@ -1,17 +1,16 @@
 /** * ToolbarExplorer.tsx  EReusable toolbar selector component * * Displays a list of toolbars in a sidebar. Selecting one shows its * image, description, and features in the main panel. * * Props: * toolbars  Earray of ToolbarItem objects (defined in 3DToolBars.tsx) * * Each ToolbarItem: * id unique string * title display name * description short summary text * features string[] bullet points * imageSrc imported image asset * icon JSX icon element (from lucide-react) * * Used by: 3DToolBars.tsx */
 
-import React, { useState, useRef, useEffect } from "react";
 import {
-  Info,
-  ChevronRight,
-  Settings,
-  Zap,
-  Volume2,
-  VolumeX
+ChevronRight,
+Settings,
+Volume2,
+VolumeX,
+Zap
 } from 'lucide-react';
+import React,{ useEffect,useRef,useState } from "react";
 import { useTTS } from "../../hooks/useTTS";
-import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/3D_Modeling/ToolbarExplorer.css";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 interface ToolbarItem {
   id: string;
@@ -29,9 +28,8 @@ interface ToolbarExplorerProps {
   externalCharIndex?: number;
 }
 
-const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({ 
-    toolbars, 
-    nextLabel,
+const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({
+    toolbars,
     externalIndex = -1,
     externalCharIndex = 0
 }) => {
@@ -78,9 +76,9 @@ const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({
 
           <div className="nav-list" ref={containerRef}>
             {toolbars.map((toolbar, index) => (
-              <div 
-                key={toolbar.id} 
-                className={`toolbar-item ${selectedId === toolbar.id ? "active" : ""}`} 
+              <div
+                key={toolbar.id}
+                className={`toolbar-item ${selectedId === toolbar.id ? "active" : ""}`}
                 onClick={() => handleToolbarClick(toolbar.id)}
                 data-reading-index={index + 2}
               >
@@ -106,7 +104,7 @@ const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({
                 <div className="display-header-text">
                   <div className="title-row">
                     <h3>{activeToolbar.title}</h3>
-                    <button 
+                    <button
                         className={`tts-mini-toggle ${isAnySpeaking ? 'active' : ''}`}
                         onClick={() => {
                             if (isInternalSpeaking) stop();
@@ -116,10 +114,10 @@ const ToolbarExplorer: React.FC<ToolbarExplorerProps> = ({
                         {isAnySpeaking ? <VolumeX size={16} /> : <Volume2 size={16} />}
                     </button>
                   </div>
-                  <KaraokeLessonText 
-                    text={activeToolbar.description} 
-                    isActive={isAnySpeaking} 
-                    currentCharIndex={activeCharIndex - (activeToolbar.title.length + 2)} 
+                  <KaraokeLessonText
+                    text={activeToolbar.description}
+                    isActive={isAnySpeaking}
+                    currentCharIndex={activeCharIndex - (activeToolbar.title.length + 2)}
                     className="toolbar-description"
                   />
                 </div>

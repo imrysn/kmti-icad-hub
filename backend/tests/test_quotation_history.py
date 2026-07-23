@@ -1,6 +1,7 @@
 """Integration coverage for quotation manual-save version history."""
 
 import json
+from datetime import datetime
 from types import SimpleNamespace
 
 import pytest
@@ -36,12 +37,15 @@ def test_manual_save_creates_previewable_history_snapshot(db, trainee_user):
     entry = response["history"]
     assert entry["label"] == "Manual Save"
     assert entry["author"] == trainee_user.full_name
+    parsed_timestamp = datetime.fromisoformat(entry["timestamp"])
+    assert parsed_timestamp.utcoffset().total_seconds() == 8 * 60 * 60
 
     stored = db.query(QuotationHistory).filter_by(id=entry["id"]).one()
     assert json.loads(stored.data) == document
 
     history_response = get_history(quotation.id, db)
     assert history_response["history"][0]["id"] == entry["id"]
+    assert history_response["history"][0]["timestamp"].endswith("+08:00")
 
     preview_response = restore_history(quotation.id, entry["id"], db)
     assert preview_response == document

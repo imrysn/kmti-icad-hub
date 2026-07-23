@@ -1,5 +1,5 @@
+import { CheckCircle2,Upload,XCircle } from 'lucide-react';
 import React from 'react';
-import { CheckCircle2, XCircle, Upload } from 'lucide-react';
 import { AssessmentSubmission } from '../../../services/assessmentService';
 
 interface FeedbackPanelProps {
@@ -35,7 +35,7 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                     <div className="form-scroll-area">
                         <div className="form-group">
                             <label>Your Feedback / Comments</label>
-                            <textarea 
+                            <textarea
                                 placeholder="Provide detailed feedback for the latest attempt..."
                                 value={feedbackComments}
                                 onChange={(e) => setFeedbackComments(e.target.value)}
@@ -45,9 +45,9 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                         <div className="form-group">
                             <label>Excel Checkback File (Optional)</label>
                             <div className="file-upload-area">
-                                <input 
-                                    type="file" 
-                                    id="checkback-file" 
+                                <input
+                                    type="file"
+                                    id="checkback-file"
                                     accept=".xlsx,.xls"
                                     onChange={(e) => setFeedbackFile(e.target.files?.[0] || null)}
                                 />
@@ -56,9 +56,9 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                                     <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
                                 </label>
                                 {feedbackFile && (
-                                    <button 
-                                        type="button" 
-                                        className="clear-file-btn" 
+                                    <button
+                                        type="button"
+                                        className="clear-file-btn"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setFeedbackFile(null);
@@ -75,15 +75,15 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                     </div>
 
                     <div className="modal-action-buttons">
-                        <button 
-                            className="btn-reject" 
+                        <button
+                            className="btn-reject"
                             onClick={() => handleSubmitFeedback('rejected')}
                             disabled={isSubmittingFeedback}
                         >
                             <XCircle size={16} /> Reject
                         </button>
-                        <button 
-                            className="btn-approve" 
+                        <button
+                            className="btn-approve"
                             onClick={() => handleSubmitFeedback('approved')}
                             disabled={isSubmittingFeedback}
                         >

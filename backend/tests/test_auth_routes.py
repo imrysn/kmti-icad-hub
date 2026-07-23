@@ -7,12 +7,7 @@ Tests registration, login, RBAC, quiz submission, and progress retrieval.
 
 import pytest
 from .conftest import auth_headers
-
-
-# ══════════════════════════════════════════════════════════════════
 # POST /api/v1/auth/register
-# ══════════════════════════════════════════════════════════════════
-
 class TestRegister:
     ENDPOINT = "/api/v1/auth/register"
     VALID_PAYLOAD = {
@@ -59,12 +54,7 @@ class TestRegister:
         payload = {**self.VALID_PAYLOAD, "username": "hacker", "email": "hacker@test.kmti", "role": "admin"}
         response = client.post(self.ENDPOINT, json=payload)
         assert response.status_code == 422  # 'admin' is not a valid literal
-
-
-# ══════════════════════════════════════════════════════════════════
 # POST /api/v1/auth/login
-# ══════════════════════════════════════════════════════════════════
-
 class TestLogin:
     ENDPOINT = "/api/v1/auth/login"
 
@@ -128,12 +118,7 @@ class TestLogin:
             "required_role": "admin",
         })
         assert response.status_code == 200
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/auth/me
-# ══════════════════════════════════════════════════════════════════
-
 class TestGetMe:
     ENDPOINT = "/api/v1/auth/me"
 
@@ -151,12 +136,7 @@ class TestGetMe:
     def test_get_me_invalid_token(self, client):
         response = client.get(self.ENDPOINT, headers={"Authorization": "Bearer invalid.token.here"})
         assert response.status_code == 401
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/auth/users  (Admin only)
-# ══════════════════════════════════════════════════════════════════
-
 class TestListUsers:
     ENDPOINT = "/api/v1/auth/users"
 
@@ -178,12 +158,7 @@ class TestListUsers:
     def test_unauthenticated_cannot_list_users(self, client):
         response = client.get(self.ENDPOINT)
         assert response.status_code == 401
-
-
-# ══════════════════════════════════════════════════════════════════
 # PATCH /api/v1/auth/users/{id}/status  (Admin only)
-# ══════════════════════════════════════════════════════════════════
-
 class TestToggleUserStatus:
     def test_admin_can_disable_user(self, client, admin_token, trainee_user):
         response = client.patch(
@@ -224,12 +199,7 @@ class TestToggleUserStatus:
             headers=auth_headers(trainee_token),
         )
         assert response.status_code == 403
-
-
-# ══════════════════════════════════════════════════════════════════
 # POST /api/v1/auth/submit-quiz
-# ══════════════════════════════════════════════════════════════════
-
 class TestSubmitQuiz:
     ENDPOINT = "/api/v1/auth/submit-quiz"
 
@@ -277,12 +247,7 @@ class TestSubmitQuiz:
             "course_id": "2D_Drawing", "lesson_id": seed_quiz.slug, "score": 80.0,
         })
         assert response.status_code == 401
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/auth/progress/{course_id}
-# ══════════════════════════════════════════════════════════════════
-
 class TestCourseProgress:
     def test_get_progress_empty(self, client, trainee_token):
         response = client.get("/api/v1/auth/progress/2D_Drawing", headers=auth_headers(trainee_token))

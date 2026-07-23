@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { ConfirmationModal, ConfirmationModalProps } from '../components/ConfirmationModal';
+import React,{ createContext,useCallback,useContext,useState } from 'react';
+import { ConfirmationModal,ConfirmationModalProps } from '../components/ConfirmationModal';
 
 interface UIContextType {
     requestConfirmation: (options: Omit<ConfirmationModalProps, 'isOpen' | 'onConfirm' | 'onCancel'>) => Promise<boolean>;

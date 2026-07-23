@@ -14,33 +14,33 @@
  * ghost-room creation on the backend.
  */
 
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
-import { useModal } from '../../../../components/ModalContext'
-import {
-  useInvoiceState,
-  useFileOperations,
-  makeBlankTask
-} from '../../../../hooks/quotation'
-import type { Task } from '../../../../types/quotation'
-import { useAuth } from '../../../../context/AuthContext'
-import { quotationApi } from '../../../../services/api'
-import {
-  CompanyInfo,
-  ClientInfo,
-  QuotationDetailsCard,
-  TasksTable,
-  SignatureForm,
-  PrintPreviewModal,
-  BaseRatesPanel
-} from './index'
-import { HistorySidebar } from './HistorySidebar'
-import { QuotationTutorial } from './QuotationTutorial'
-import QuotationLibraryModal from './QuotationLibraryModal'
-import { importFromExcel } from './utils/excelImport'
+import { useCallback,useEffect,useRef,useState } from 'react'
 import { Modal } from '../../../../components/Modal'
-import './QuotationApp.css'
+import { useModal } from '../../../../components/ModalContext'
+import { useAuth } from '../../../../context/AuthContext'
+import {
+makeBlankTask,
+useFileOperations,
+useInvoiceState
+} from '../../../../hooks/quotation'
+import { quotationApi } from '../../../../services/api'
+import type { Task } from '../../../../types/quotation'
+import { HistorySidebar } from './HistorySidebar'
+import {
+BaseRatesPanel,
+ClientInfo,
+CompanyInfo,
+PrintPreviewModal,
+QuotationDetailsCard,
+SignatureForm,
+TasksTable
+} from './index'
 import './Quotation.css'
+import './QuotationApp.css'
+import QuotationLibraryModal from './QuotationLibraryModal'
+import { QuotationTutorial } from './QuotationTutorial'
 import './styles/QuotationTable.css'
+import { importFromExcel } from './utils/excelImport'
 
 export interface WorkspaceSession {
   quotNo: string
@@ -63,7 +63,7 @@ interface Props extends WorkspaceSession {
   customerId?: string
 }
 
-export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: initialQuotNo, password, displayName, mode, onLeave, onSwitchSession, autoStartTutorial, workstation, customerId }: Props) {
+export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: initialQuotNo, mode, onLeave, onSwitchSession, autoStartTutorial, workstation, customerId }: Props) {
   const { notify, confirm: showConfirm } = useModal()
   const { user } = useAuth()
 
@@ -92,8 +92,8 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
     updateCompanyInfo, updateClientInfo, updateQuotationDetails, updateBillingDetails,
     addTask, addSubTask, removeTask, updateTask, reorderTasks,
     updateBaseRate, updateSignatures, setSelectedMainTaskId,
-    updateManualOverrides, setCollapsedTaskIds, updateChatLog, chatLog,
-    layoutVariant, setLayoutVariant,
+    updateManualOverrides, setCollapsedTaskIds,
+    layoutVariant,
     resetToNew, loadData, getSaveData,
     markSaved, setHasUnsavedChanges,
     addChildTask,
@@ -105,7 +105,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
   const effComp = previewData?.companyInfo || companyInfo
   const effClient = previewData?.clientInfo || clientInfo
   const effQuotDetails = previewData?.quotationDetails || quotationDetails
-  const effBilling = previewData?.billingDetails || billingDetails
   const effTasks = (previewData?.tasks || tasks) as Task[]
   const effBaseRates = previewData?.baseRates || baseRates
   const effSignatures = previewData?.signatures || signatures
@@ -131,8 +130,8 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
         try {
           const res = await quotationApi.get(initialQuotId)
 
-          // CRITICAL: If we already received a more up-to-date buffer from 
-          // a collaborative peer while we were waiting for the DB, 
+          // CRITICAL: If we already received a more up-to-date buffer from
+          // a collaborative peer while we were waiting for the DB,
           // don't overwrite the peer's state with the old DB state.
           if (isSyncedFromRemote.current) {
             console.log('[workspace] Skipping DB hydration: already synced from peer.')
@@ -408,23 +407,8 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
     debouncedSyncDb()
   }, [updateBaseRate, debouncedSyncDb])
 
-  const syncDeleteChat = useCallback((msgId: string) => {
-    updateChatLog((prev: any[]) => prev.map((m: any) => m.id === msgId ? { ...m, isDeleted: true, message: '' } : m))
-    setHasUnsavedChanges(true)
-    debouncedSyncDb()
-  }, [updateChatLog, debouncedSyncDb])
 
-  const syncEditChat = useCallback((msgId: string, newMessage: string) => {
-    updateChatLog((prev: any[]) => prev.map((m: any) => m.id === msgId ? { ...m, message: newMessage, isEdited: true } : m))
-    setHasUnsavedChanges(true)
-    debouncedSyncDb()
-  }, [updateChatLog, debouncedSyncDb])
 
-  const syncReadChat = useCallback((msgId: string) => {
-    updateChatLog((prev: any[]) => prev.map((m: any) => m.id === msgId ? { ...m, readBy: Array.from(new Set([...(m.readBy || []), myEffectiveName])) } : m))
-    setHasUnsavedChanges(true)
-    debouncedSyncDb()
-  }, [updateChatLog, myEffectiveName, debouncedSyncDb])
 
   // Sync window title with document identity + unsaved state
   useEffect(() => {
@@ -563,52 +547,6 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
     }
   }
 
-  /*
-  const _handleSubmitToAdmin = async () => {
-    // If there are unsaved changes, prompt the user to save first
-    if (hasUnsavedChanges) {
-      notify?.('Please save your changes before submitting to admin.', 'warning')
-      return
-    }
-
-    const todayStr = new Date().toISOString().split('T')[0] // YYYY-MM-DD
-
-    // Update local states & emit patches
-    syncBillingDetails({
-      quotationStatus: 'For Approval',
-      submittedToAdminAt: todayStr
-    })
-
-    // Perform the save action to persist these updates to the database
-    try {
-      const data = {
-        ...getSaveData(),
-        billingDetails: {
-          ...billingDetails,
-          quotationStatus: 'For Approval',
-          submittedToAdminAt: todayStr
-        }
-      }
-      if (quotId) {
-        await quotationApi.update(quotId, data)
-        notify?.('Quotation successfully submitted to admin for approval!', 'success')
-      } else {
-        const res = await quotationApi.create(data)
-        if (res.data.success) {
-          setQuotId(res.data.id)
-          notify?.('Quotation successfully submitted to admin for approval!', 'success')
-        }
-      }
-      setHasUnsavedChanges(false)
-      await saveInvoice(true)
-      emitSnapshot(data, 'Submit to Admin')
-    } catch (e) {
-      console.error('Submit to admin failed:', e)
-      notify?.('Failed to submit to admin', 'error')
-    }
-  }
-  */
-
   // ── Auto-save (Every 5 minutes) ───────────────────────────────
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -717,14 +655,14 @@ export default function QuotationWorkspace({ quotId: initialQuotId, quotNo: init
           >
             &larr; Back
           </button>
-          
+
           <div className="quot-doc-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
             </svg>
           </div>
-          
+
           <div className="quot-doc-meta">
             <div className="quot-doc-primary">
               <span className="quot-doc-number">

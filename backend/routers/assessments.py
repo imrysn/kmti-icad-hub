@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 import os
 import shutil
-import zipfile
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -12,16 +11,13 @@ from ..database import get_db, APP_PATH
 from sqlalchemy.orm import joinedload
 from ..models import AssessmentTask, AssessmentSubmission, AssessmentFeedback, TrainerTraineeMapping, User, Notification, TraineeSetMapping, UserActivity
 from ..schemas import (
-    AssessmentTaskResponse, AssessmentSubmissionResponse, 
-    AssessmentFeedbackResponse, AssessmentSubmissionCreate,
-    AssessmentTaskCreate, TrainerTraineeMappingResponse,
+    AssessmentTaskResponse, AssessmentSubmissionResponse,
+    TrainerTraineeMappingResponse,
     TrainerTraineeMappingCreate, TraineeSetMappingResponse,
     TraineeSetMappingCreate
 )
 from .auth import get_current_user
 from ..websocket_manager import notification_manager
-from pathlib import Path
-
 from ..services.storage_service import get_safe_path, handle_task_upload
 from ..services.assessment_service import resequence_set_task_codes
 from ..services.progress_service import calculate_all_trainee_progress
@@ -31,20 +27,20 @@ router = APIRouter(prefix="/assessments", tags=["Assessments"])
 def resolve_master_path(master_file_path: str) -> str:
     if not master_file_path:
         return ""
-    
+
     # If it's already an absolute path and exists, use it
     if os.path.isabs(master_file_path) and os.path.exists(master_file_path):
         return master_file_path
-        
+
     base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
-    
+
     # Clean relative path prefix
     rel_path = master_file_path
     if rel_path.startswith("uploads/"):
         rel_path = rel_path.replace("uploads/", "", 1)
     elif rel_path.startswith("uploads\\"):
         rel_path = rel_path.replace("uploads\\", "", 1)
-        
+
     # --- USER REQUESTED Z: DRIVE MAPPING ---
     # Intercept 'Units & Tasks' and map it to Z:\Training\Traning Program
     if "Units & Tasks" in rel_path or "Unts & Tasks" in rel_path:
@@ -52,40 +48,38 @@ def resolve_master_path(master_file_path: str) -> str:
         inner_path = rel_path.replace("Units & Tasks", "").replace("Unts & Tasks", "")
         if inner_path.startswith("/") or inner_path.startswith("\\"):
             inner_path = inner_path[1:]
-            
+
         z_drive_paths = [
             # Exactly as typed by user (Z: drive)
             os.path.join(r"Z:\Training\Traning Program", inner_path),
             os.path.join(r"Z:\Training\Traning Program\Units & Tasks", inner_path),
             os.path.join(r"Z:\Training\Training Program", inner_path),
             os.path.join(r"Z:\Training\Training Program\Units & Tasks", inner_path),
-            
+
             # Direct UNC paths (Bypasses Windows Administrator mapped drive visibility issues)
             os.path.join(r"\\kmti-nas\Shared\Public\Training\Traning Program", inner_path),
             os.path.join(r"\\kmti-nas\Shared\Public\Training\Traning Program\Units & Tasks", inner_path),
             os.path.join(r"\\kmti-nas\Shared\Public\Training\Training Program", inner_path),
             os.path.join(r"\\kmti-nas\Shared\Public\Training\Training Program\Units & Tasks", inner_path),
-            
+
             # Additional direct UNC path mapping specifically for the actual server share where submissions were found earlier
             os.path.join(r"\\kmti-nas\Shared\data\trainingApp\uploads\Units & Tasks", inner_path)
         ]
-        
+
         for p in z_drive_paths:
             print(f"DEBUG Z DRIVE: testing {p} - Exists: {os.path.exists(p)}")
             if os.path.exists(p):
                 return p
-    # ----------------------------------------
-        
     # Build standard full path based on UPLOAD_DIR
     full_path = os.path.abspath(os.path.join(base_upload_dir, rel_path))
     if os.path.exists(full_path):
         return full_path
-        
+
     # Fallback 1: Check if 'uploads' is directly in APP_PATH (handles PyInstaller bundle missing .env)
     fallback_path_1 = os.path.abspath(os.path.join(APP_PATH, "uploads", rel_path))
     if os.path.exists(fallback_path_1):
         return fallback_path_1
-        
+
     # Fallback 2: Check if 'uploads' is one directory up (handles running from backend/dist)
     fallback_path_2 = os.path.abspath(os.path.join(os.path.dirname(APP_PATH), "uploads", rel_path))
     if os.path.exists(fallback_path_2):
@@ -95,7 +89,7 @@ def resolve_master_path(master_file_path: str) -> str:
     fallback_path_3 = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(APP_PATH)), "uploads", rel_path))
     if os.path.exists(fallback_path_3):
         return fallback_path_3
-        
+
     # Try correcting Units & Tasks <-> Unts & Tasks spelling mismatch on the primary path
     if "Units & Tasks" in rel_path:
         alt_rel_path = rel_path.replace("Units & Tasks", "Unts & Tasks")
@@ -107,12 +101,12 @@ def resolve_master_path(master_file_path: str) -> str:
         alt_path = os.path.abspath(os.path.join(base_upload_dir, alt_rel_path))
         if os.path.exists(alt_path):
             return alt_path
-            
+
     # Try normalizing slashes explicitly
     normalized_path = os.path.abspath(os.path.join(base_upload_dir, rel_path.replace('/', '\\')))
     if os.path.exists(normalized_path):
         return normalized_path
-        
+
     return full_path
 
 # --- Trainee Endpoints ---
@@ -124,7 +118,7 @@ def get_assessment_tasks(
 ):
     """Get all assessment tasks with sequential locking logic."""
     tasks = db.query(AssessmentTask).order_by(AssessmentTask.set_number, AssessmentTask.task_code).all()
-    
+
     # If user is admin/employee, return all tasks without restriction
     if current_user.role in ["admin", "employee"]:
         return tasks
@@ -136,27 +130,27 @@ def get_assessment_tasks(
         AssessmentSubmission.user_id == current_user.id,
         AssessmentSubmission.status == "approved"
     ).distinct().all()
-    
+
     # Mapping Logic
     from ..models import TraineeSetMapping
     mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
-    
+
     if mappings:
         mapping_dict_3d = {m.actual_set_number: abs(m.display_set_number) for m in mappings if m.assessment_type != "2D"}
         mapping_dict_2d = {m.actual_set_number: abs(m.display_set_number) for m in mappings if m.assessment_type == "2D"}
-        
+
         filtered_tasks = []
         for t in tasks:
             is_2d = (t.assessment_type == "2D")
             m_dict = mapping_dict_2d if is_2d else mapping_dict_3d
             has_mappings_of_type = len(m_dict) > 0
-            
+
             if has_mappings_of_type:
                 if t.set_number in m_dict:
                     filtered_tasks.append(t)
             else:
                 filtered_tasks.append(t)
-                
+
         filtered_tasks.sort(key=lambda x: (x.set_number, x.order))
         return filtered_tasks
 
@@ -217,10 +211,10 @@ async def create_task(
     """Admin only: Create a new assessment task with file upload."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     # Save the master file
     file_path = handle_task_upload(file, set_number, task_code)
-    
+
     # If set_name not passed, try to look up existing set_name in DB for this set
     if not set_name:
         existing = db.query(AssessmentTask).filter(AssessmentTask.set_number == set_number, AssessmentTask.set_name.isnot(None)).first()
@@ -251,7 +245,7 @@ async def trigger_folder_sync(
     """Admin only: Trigger the script to sync tasks from local Units & Tasks folder."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     import subprocess
     import sys
     try:
@@ -274,7 +268,7 @@ async def bulk_create_tasks(
     """Admin only: Bulk create assessment units from multiple .dwg files."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     created_tasks = []
     # Start task code based on existing count of the same unit type (Part/Assembly)
     existing_count = db.query(AssessmentTask).filter(
@@ -282,12 +276,12 @@ async def bulk_create_tasks(
         AssessmentTask.is_assembly == is_assembly,
         AssessmentTask.assessment_type == assessment_type
     ).count()
-    
+
     total_existing = db.query(AssessmentTask).filter(
         AssessmentTask.set_number == set_number,
         AssessmentTask.assessment_type == assessment_type
     ).count()
-    
+
     # If set_name not passed, try to look up existing
     if not set_name:
         existing = db.query(AssessmentTask).filter(
@@ -300,13 +294,13 @@ async def bulk_create_tasks(
     prefix = "A" if is_assembly else "P"
     for i, file in enumerate(files):
         task_code = f"{prefix}{existing_count + i + 1}"
-        
+
         file_path = handle_task_upload(file, set_number, task_code)
-        
+
         # Strip extension for title
         safe_filename = os.path.basename(file.filename)
         title = os.path.splitext(safe_filename)[0].replace('_', ' ').title()
-        
+
         db_task = AssessmentTask(
             set_number=set_number,
             set_name=set_name,
@@ -319,7 +313,7 @@ async def bulk_create_tasks(
         )
         db.add(db_task)
         created_tasks.append(db_task)
-    
+
     db.commit()
     resequence_set_task_codes(db, set_number, assessment_type)
     return {"message": f"Successfully created {len(created_tasks)} units for Set {set_number}"}
@@ -343,10 +337,10 @@ def assign_trainer(
     """Admin only: Assign a trainee to a trainer."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     # Remove existing mapping for this trainee if any
     db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == mapping.trainee_id).delete()
-    
+
     db_mapping = TrainerTraineeMapping(**mapping.model_dump())
     db.add(db_mapping)
     db.commit()
@@ -383,11 +377,11 @@ def delete_task(
     """Admin only: Delete an assessment task."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-    
+
     set_num = task.set_number
     task_type = task.assessment_type or "3D"
     db.delete(task)
@@ -406,16 +400,16 @@ def bulk_delete_tasks(
 ):
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     tasks = db.query(AssessmentTask).filter(AssessmentTask.id.in_(req.task_ids)).all()
     affected = set((t.set_number, t.assessment_type or "3D") for t in tasks)
-    
+
     db.query(AssessmentTask).filter(AssessmentTask.id.in_(req.task_ids)).delete(synchronize_session=False)
     db.commit()
-    
+
     for set_num, task_type in affected:
         resequence_set_task_codes(db, set_num, task_type)
-        
+
     return {"message": f"Successfully deleted {len(req.task_ids)} tasks"}
 
 @router.put("/admin/sets/{set_number}/rename")
@@ -469,11 +463,11 @@ async def update_task(
     """Admin only: Update an existing assessment task, optionally replacing the file."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     db_task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not db_task:
         raise HTTPException(status_code=404, detail="Task not found")
-    
+
     db_task.set_number = set_number
     db_task.task_code = task_code
     db_task.title = title
@@ -481,12 +475,12 @@ async def update_task(
     db_task.is_assembly = is_assembly
     if assessment_type:
         db_task.assessment_type = assessment_type
-    
+
     if file:
         # Save new file
         file_path = handle_task_upload(file, set_number, task_code)
         db_task.master_file_path = file_path
-    
+
     db.commit()
     resequence_set_task_codes(db, set_number, db_task.assessment_type or "3D")
     db.refresh(db_task)
@@ -500,19 +494,19 @@ def get_task_file_tree(
 ):
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-        
+
     master_path = resolve_master_path(task.master_file_path)
     if not master_path or not os.path.exists(master_path):
         return {"tree": []}
-        
+
     # If it's a file, the "folder" is its directory. But we only manage if it's a directory.
     # To support this properly, let's ensure we are dealing with a directory.
     base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
-    
+
     def build_tree(dir_path):
         tree = []
         for item in os.listdir(dir_path):
@@ -528,7 +522,7 @@ def get_task_file_tree(
                 node["children"] = build_tree(full_path)
             tree.append(node)
         return sorted(tree, key=lambda x: (not x["is_dir"], x["name"].lower()))
-        
+
     return {"tree": build_tree(base_dir), "base_dir": base_dir}
 
 class FolderCreateRequest(BaseModel):
@@ -543,18 +537,18 @@ def create_task_subfolder(
 ):
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-        
+
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-        
+
     master_path = resolve_master_path(task.master_file_path)
     base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
-    
+
     # Secure path boundary check
     new_dir = get_safe_path(base_dir, req.path)
     os.makedirs(new_dir, exist_ok=True)
-    
+
     return {"message": "Folder created"}
 
 @router.post("/admin/tasks/{task_id}/files")
@@ -567,24 +561,24 @@ async def upload_task_file(
 ):
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-        
+
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-        
+
     master_path = resolve_master_path(task.master_file_path)
     base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
-    
+
     # Secure path boundary check
     target_dir = get_safe_path(base_dir, path if path and path != "/" else "")
     os.makedirs(target_dir, exist_ok=True)
-    
+
     safe_filename = os.path.basename(file.filename)
     file_path = os.path.join(target_dir, safe_filename)
-    
+
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-        
+
     return {"message": "File uploaded"}
 
 @router.delete("/admin/tasks/{task_id}/files")
@@ -596,23 +590,23 @@ def delete_task_file(
 ):
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-        
+
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-        
+
     master_path = resolve_master_path(task.master_file_path)
     base_dir = master_path if os.path.isdir(master_path) else os.path.dirname(master_path)
-    
+
     # Secure path boundary check
     target_path = get_safe_path(base_dir, req.path)
-    
+
     if os.path.exists(target_path):
         if os.path.isdir(target_path):
             shutil.rmtree(target_path)
         else:
             os.remove(target_path)
-            
+
     return {"message": "Item deleted"}
 
 
@@ -625,11 +619,11 @@ def delete_mapping(
     """Admin only: Remove a trainer-trainee assignment."""
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin only")
-    
+
     mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.id == mapping_id).first()
     if not mapping:
         raise HTTPException(status_code=404, detail="Mapping not found")
-    
+
     db.delete(mapping)
     db.commit()
     return {"message": "Mapping removed successfully"}
@@ -657,16 +651,16 @@ def download_master_file(
             if task.set_number not in allowed_sets:
                 raise HTTPException(status_code=403, detail="You are not assigned to this task set.")
         # If no mappings exist, fall through — default locking is handled client-side
-    
+
     full_path = resolve_master_path(task.master_file_path)
-        
+
     print("DEBUG DOWNLOAD: task_id=", task_id, "master_file_path=", task.master_file_path, "full_path=", full_path, "exists=", os.path.exists(full_path))
-    
+
     if not os.path.exists(full_path):
         raise HTTPException(status_code=404, detail=f"File does not exist on server: {full_path}")
-        
+
     return FileResponse(
-        path=full_path, 
+        path=full_path,
         filename=task.file_name or os.path.basename(full_path),
         media_type="application/octet-stream"
     )
@@ -689,18 +683,18 @@ async def submit_task(
     # Define upload directory mirroring the master structure
     master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""
     base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
-    
+
     # Safety Check: If UPLOAD_DIR points to a drive that doesn't exist on this machine (e.g. copied .env file), fallback to local APP_PATH
     drive_letter = os.path.splitdrive(base_upload_dir)[0]
     if drive_letter and not os.path.exists(drive_letter + "\\"):
         base_upload_dir = os.path.join(APP_PATH, "uploads")
-        
+
     upload_dir = os.path.join(base_upload_dir, "submissions", str(current_user.id), master_dir)
     os.makedirs(upload_dir, exist_ok=True)
-    
+
     safe_filename = os.path.basename(file.filename) if file.filename else "submission"
     file_path = os.path.join(upload_dir, safe_filename)
-    
+
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
@@ -717,7 +711,7 @@ async def submit_task(
 
     target_submission = None
     file_ext = os.path.splitext(file.filename)[1].lower()
-    
+
     for sub in pending_submissions:
         if sub.submission_file_path:
             existing_name = os.path.basename(sub.submission_file_path)
@@ -748,7 +742,7 @@ async def submit_task(
             status="pending"
         )
         db.add(submission)
-    
+
     db.commit()
     db.refresh(submission)
 
@@ -832,12 +826,12 @@ async def update_trainee_set_mappings(
 ):
     if current_user.role not in ["employee", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
-        
+
     db.query(TraineeSetMapping).filter(
         TraineeSetMapping.trainee_id == trainee_id,
         TraineeSetMapping.assessment_type == assessment_type
     ).delete()
-    
+
     for m in mappings:
         new_map = TraineeSetMapping(
             trainee_id=trainee_id,
@@ -848,7 +842,7 @@ async def update_trainee_set_mappings(
         )
         db.add(new_map)
     db.commit()
-    
+
     # Notify trainee to refresh sets
     db_notification = Notification(
         recipient_id=trainee_id,
@@ -858,7 +852,7 @@ async def update_trainee_set_mappings(
     )
     db.add(db_notification)
     db.commit()
-    
+
     from ..websocket_manager import notification_manager
     try:
         await notification_manager.send_personal_message(
@@ -870,7 +864,7 @@ async def update_trainee_set_mappings(
         )
     except Exception as e:
         print(f"Error sending WebSocket message: {e}")
-    
+
     return {"message": "Mappings updated"}
 
 @router.get("/trainer/submissions", response_model=List[AssessmentSubmissionResponse])
@@ -886,7 +880,7 @@ def get_trainer_submissions(
 
     # Get trainees assigned to this trainer
     trainee_ids = [m.trainee_id for m in db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainer_id == current_user.id).all()]
-    
+
     if not trainee_ids and current_user.role != "admin":
         return []
 
@@ -895,15 +889,15 @@ def get_trainer_submissions(
         joinedload(AssessmentSubmission.task),
         joinedload(AssessmentSubmission.feedback)
     ).filter(AssessmentSubmission.is_deleted == False)
-    
+
     if status == "reviewed":
         query = query.filter(AssessmentSubmission.status.in_(["approved", "rejected"]))
     elif status != "all":
         query = query.filter(AssessmentSubmission.status == status)
-    
+
     if current_user.role != "admin" or strict_trainer:
         query = query.filter(AssessmentSubmission.user_id.in_(trainee_ids))
-    
+
     return query.order_by(AssessmentSubmission.submitted_at.desc()).all()
 
 @router.get("/submissions/{submission_id}/download")
@@ -929,7 +923,7 @@ def download_trainee_submission(
             ).first()
             if not is_assigned:
                 raise HTTPException(status_code=403, detail="You are not assigned to this trainee.")
-        
+
         # Try dynamic path resolution if the hardcoded absolute path fails (handles server migrations)
         full_path = submission.submission_file_path
         if not os.path.exists(full_path):
@@ -947,13 +941,13 @@ def download_trainee_submission(
                         fallback_1 = os.path.join(APP_PATH, "uploads", rel_path)
                         if os.path.exists(fallback_1):
                             full_path = fallback_1
-        
+
         if not os.path.exists(full_path):
             raise HTTPException(status_code=404, detail="File does not exist on server")
-            
+
         print(f"Returning FileResponse for {full_path}")
         return FileResponse(
-            path=full_path, 
+            path=full_path,
             media_type="application/octet-stream"
         )
     except Exception as e:
@@ -979,25 +973,25 @@ async def provide_feedback(
 
     submission.status = status
     submission.trainer_id = current_user.id
-    
+
     file_path = None
     if file:
         base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
-        
+
         # Safety Check: If UPLOAD_DIR points to a drive that doesn't exist on this machine
         # (e.g. copied .env file or hidden mapped drive), fallback to local APP_PATH
         drive_letter = os.path.splitdrive(base_upload_dir)[0]
         if drive_letter and not os.path.exists(drive_letter + "\\"):
             base_upload_dir = os.path.join(APP_PATH, "uploads")
-            
+
         feedback_dir = os.path.join(base_upload_dir, "feedback", str(submission.user_id))
         os.makedirs(feedback_dir, exist_ok=True)
         safe_fb_filename = os.path.basename(file.filename) if file.filename else "feedback"
         file_path = os.path.join(feedback_dir, f"feedback_{submission_id}_{safe_fb_filename}")
-        
+
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-    
+
     # Create feedback record if there's either a file OR comments
     if file or comments:
         # Check if feedback already exists for this submission
@@ -1061,12 +1055,12 @@ def download_feedback_file(
     feedback = db.query(AssessmentFeedback).filter(AssessmentFeedback.id == feedback_id).first()
     if not feedback or not feedback.checkback_file_path:
         raise HTTPException(status_code=404, detail="Feedback file not found")
-    
+
     if not os.path.exists(feedback.checkback_file_path):
         raise HTTPException(status_code=404, detail="File does not exist on server")
-        
+
     return FileResponse(
-        path=feedback.checkback_file_path, 
+        path=feedback.checkback_file_path,
         filename=os.path.basename(feedback.checkback_file_path),
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
@@ -1082,12 +1076,12 @@ async def reply_to_feedback(
     feedback = db.query(AssessmentFeedback).filter(AssessmentFeedback.id == feedback_id).first()
     if not feedback:
         raise HTTPException(status_code=404, detail="Feedback not found")
-    
+
     # Ensure only the trainee who owns the submission can reply
     submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.id == feedback.submission_id).first()
     if not submission or (submission.user_id != current_user.id and current_user.role != "admin"):
         raise HTTPException(status_code=403, detail="Not authorized to reply to this feedback")
-    
+
     feedback.trainee_reply = reply
     feedback.replied_at = datetime.now()
     db.commit()
@@ -1109,10 +1103,10 @@ async def reply_to_feedback(
             import asyncio
             asyncio.create_task(notification_manager.send_personal_message(
                 {
-                    "event": "NEW_REPLY", 
+                    "event": "NEW_REPLY",
                     "trainee_name": current_user.full_name or current_user.username,
                     "message": notification_msg
-                }, 
+                },
                 mapping.trainer_id
             ))
         except Exception as e:
@@ -1131,7 +1125,7 @@ def empty_trash(
             AssessmentSubmission.user_id == current_user.id,
             AssessmentSubmission.is_deleted == True
         ).all()
-        
+
         count = 0
         for sub in submissions:
             file_to_delete = sub.submission_file_path
@@ -1142,7 +1136,7 @@ def empty_trash(
                 except Exception as e:
                     print(f"Cleanup Warning: Could not delete physical file {file_to_delete}: {e}")
             count += 1
-            
+
         db.commit()
         return {"message": f"Successfully emptied {count} files from trash"}
     except Exception as e:
@@ -1160,11 +1154,11 @@ def delete_submission(
         submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.id == submission_id).first()
         if not submission:
             raise HTTPException(status_code=404, detail="Submission record not found in database.")
-        
+
         # Ownership check with explicit int casting for safety
         if int(submission.user_id) != int(current_user.id) and current_user.role != "admin":
             raise HTTPException(status_code=403, detail="You do not have permission to delete this submission.")
-        
+
         # Store file path before deleting record
         file_to_delete = submission.submission_file_path
 
@@ -1173,7 +1167,7 @@ def delete_submission(
         db.commit()
 
         return {"message": "Submission moved to trash"}
-        
+
     except HTTPException as he:
         raise he
     except Exception as e:
@@ -1196,12 +1190,12 @@ def bulk_delete_submissions(
             AssessmentSubmission.task_id.in_(request.task_ids),
             AssessmentSubmission.is_deleted == False
         ).all()
-        
+
         count = 0
         for sub in submissions:
             sub.is_deleted = True
             count += 1
-            
+
         db.commit()
         return {"message": f"{count} submissions moved to trash"}
     except Exception as e:
@@ -1220,10 +1214,10 @@ def restore_submission(
             AssessmentSubmission.id == submission_id,
             AssessmentSubmission.user_id == current_user.id
         ).first()
-        
+
         if not submission:
             raise HTTPException(status_code=404, detail="Submission not found")
-            
+
         submission.is_deleted = False
         db.commit()
         return {"message": "Submission restored successfully"}
@@ -1243,20 +1237,20 @@ def permanent_delete_submission(
             AssessmentSubmission.id == submission_id,
             AssessmentSubmission.user_id == current_user.id
         ).first()
-        
+
         if not submission:
             raise HTTPException(status_code=404, detail="Submission not found")
-            
+
         file_to_delete = submission.submission_file_path
         db.delete(submission)
         db.commit()
-        
+
         if file_to_delete and os.path.exists(file_to_delete):
             try:
                 os.remove(file_to_delete)
             except Exception as e:
                 print(f"Cleanup Warning: Could not delete physical file {file_to_delete}: {e}")
-                
+
         return {"message": "Submission permanently deleted"}
     except Exception as e:
         db.rollback()
@@ -1272,7 +1266,7 @@ def get_trainer_progress(
     """Get the standard Performance Directory progress for assigned trainees."""
     if current_user.role not in ["employee", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
-    
+
     # If admin and not strict, fetch all, otherwise pass trainer_id
     trainer_id = current_user.id if (current_user.role == "employee" or strict_trainer) else None
     return calculate_all_trainee_progress(db, trainer_id=trainer_id)
@@ -1292,7 +1286,7 @@ def get_trainer_trainees_progress(
 
     if current_user.role not in ["employee", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
-    
+
     # 1. Fetch trainees based on role (could also check strict_trainer if needed, but not specified yet. Added here just in case)
     # Wait, get_trainer_trainees_progress doesn't have strict_trainer param yet. I didn't add it to this one in the prompt, but it's safe to skip since PracticalTrainerDashboard doesn't call this directly for progress.
     if current_user.role == "admin":
@@ -1301,27 +1295,27 @@ def get_trainer_trainees_progress(
         mappings = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainer_id == current_user.id).all()
         trainee_ids = [m.trainee_id for m in mappings]
         trainees = db.query(User).filter(User.id.in_(trainee_ids)).all()
-    
+
     results = []
     for trainee in trainees:
         # Fetch Quiz Scores (Lessons completed/passed)
         scores = db.query(QuizScore).filter(QuizScore.user_id == trainee.id).all()
-        
+
         # Calculate completion metrics
         # Course 1 is 3D Modeling, Course 2 is 2D Drawing
         completed_3d = [s for s in scores if s.course_id == "1" and s.score >= 80.0]
         completed_2d = [s for s in scores if s.course_id == "2" and s.score >= 80.0]
-        
+
         # Total quizzes in DB per course type
         total_3d = db.query(Quiz).filter(Quiz.course_type == "3D_Modeling").count()
         total_2d = db.query(Quiz).filter(Quiz.course_type == "2D_Drawing").count()
-        
+
         # Fetch assessment submissions for this trainee
         submissions = db.query(AssessmentSubmission).filter(AssessmentSubmission.user_id == trainee.id).all()
         approved_submissions = [s for s in submissions if s.status == "approved"]
         pending_submissions = [s for s in submissions if s.status == "pending"]
         rejected_submissions = [s for s in submissions if s.status == "rejected"]
-        
+
         # Practical Assessment (3D) Progress
         trainee_mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == trainee.id).all()
         total_3d_practical = len(trainee_mappings)
@@ -1337,7 +1331,7 @@ def get_trainer_trainees_progress(
                 ).first()
                 if is_completed:
                     completed_3d_practical += 1
-                    
+
         # Practical Assessment (2D) Progress — Fix #11: scope to 2D tasks only
         total_2d_practical = db.query(AssessmentTask).filter(
             AssessmentTask.is_assembly == True,
@@ -1353,7 +1347,7 @@ def get_trainer_trainees_progress(
 
         # Determine current activity (from realtime tracker or fallback to most recent quiz/submission)
         current_activity = "Not started yet"
-        
+
         realtime_activity = db.query(UserActivity).filter(UserActivity.user_id == trainee.id).first()
         last_updated = None
         if realtime_activity and realtime_activity.current_activity:
@@ -1424,5 +1418,5 @@ def get_trainer_trainees_progress(
                 }
             }
         })
-        
+
     return results

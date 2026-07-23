@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react'; 
-import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2 } from 'lucide-react'; import { Course } from '../../../types';
-import { useUI } from '../../../context/UIContext'; import { useAuth } from '../../../hooks/useAuth';
-import { Lesson } from '../mentorConstants'; import { QuizModal } from './QuizModal';
-import { authService } from '../../../services/authService';
+import { BookOpen,ChevronLeft,ChevronRight,Loader2,Video } from 'lucide-react';
+import React,{ lazy,Suspense,useCallback,useEffect,useRef,useState } from 'react';
+import { useUI } from '../../../context/UIContext';
+import { useAuth } from '../../../hooks/useAuth';
 import api from '../../../services/api';
+import { authService } from '../../../services/authService';
+import { Course } from '../../../types';
+import { Lesson } from '../mentorConstants';
+import { QuizModal } from './QuizModal';
 
 // 3D Lesson Imports (Lazy Loaded)
 const IcadInterfaceLesson = lazy(() => import('../../../components/3D_Modeling/3D_iCadInterface'));
@@ -51,8 +54,8 @@ const NormalMirrorPartsLesson = lazy(() => import('../../../components/2D_Drawin
 const RevisionCodeLesson = lazy(() => import('../../../components/2D_Drawing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/2D_Drawing/2D_StandardLibrary'));
 
-import { useTTSContext } from '../../../context/TTSContext';
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
+import { useTTSContext } from '../../../context/TTSContext';
 
 interface LessonViewerProps {
   is2DDrawingCourse: boolean;
@@ -78,8 +81,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   allLessonIdsLength,
   goToNextLesson,
   goToPrevLesson,
-  sidebarOpen,
-  setSidebarOpen,
   setSelectedCourse,
   getActiveLessonTitle,
   lessons,
@@ -88,7 +89,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   isEmployeeSide = false
 }) => {
   const { requestConfirmation } = useUI();
-  const { user } = useAuth();
+  useAuth();
   const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
   const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
 
@@ -150,20 +151,19 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [activeQuiz, setActiveQuiz] = useState<any>(null);
-  const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
+  const [, setIsLoadingQuiz] = useState(false);
 
-  const isTrainee = user?.role === 'trainee';
   const [dbContent, setDbContent] = useState<any[]>([]);
-  const [isDbLoading, setIsDbLoading] = useState(false);
+  const [, setIsDbLoading] = useState(false);
 
   useEffect(() => {
     setShowQuiz(false);
     setDbContent([]);
-    
+
     // Fetch dynamic content if available
     const fetchDbContent = async () => {
       if (!activeLessonId) return;
-      
+
       setIsDbLoading(true);
       try {
         const res = await api.get(`/courses/lesson/${activeLessonId}/content?t=${Date.now()}`);
@@ -174,11 +174,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         setIsDbLoading(false);
       }
     };
-    
+
     if (activeLessonId) {
       fetchDbContent();
     }
-    
+
     // Restore quiz state for this lesson if it was open
     const savedShowQuiz = localStorage.getItem(authService.getStorageKey(`showQuiz_${activeLessonId}`));
     if (savedShowQuiz === 'true') {
@@ -240,7 +240,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
     // Retrieve exact same element selectors used for narration scraping to align indices
     const elements = container.querySelectorAll('.section-title, p, .card-header, .step-header, .p-flush');
-    
+
     // Create a filtered list to match speakCurrent exclusions
     const paragraphs: string[] = [];
     const validElements: HTMLElement[] = [];
@@ -400,19 +400,19 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       <div className="lesson-split-layout">
         <div className="lesson-scroll-area">
           {/* Sticky TTS button container: sits next to title initially, freezes on scroll */}
-          <div style={{ 
-            position: 'sticky', 
-            top: '-1.5rem', 
-            float: 'right', 
-            marginRight: '2rem', 
-            zIndex: 100, 
+          <div style={{
+            position: 'sticky',
+            top: '-1.5rem',
+            float: 'right',
+            marginRight: '2rem',
+            zIndex: 100,
             height: 0,
             pointerEvents: 'none'
           }}>
-            <div style={{ 
-              position: 'absolute', 
-              right: 0, 
-              top: '3rem', 
+            <div style={{
+              position: 'absolute',
+              right: 0,
+              top: '3rem',
               pointerEvents: 'auto'
             }}>
               <ReadAloudButton isSpeaking={isSpeaking || isTutorialPlaying} onStart={speakCurrent} onStop={handleStop} />
@@ -460,29 +460,29 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-orthographic': (id) => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-command-menu': (id) => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-line-props': (id) => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-dimensioning': (id) => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-standard-part': (id) => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-surface-app': (id) => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-retaining-ring': (id) => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-geometric-tol': (id) => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-heat-treatment': (id) => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-bom': (id) => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-additional-view': (id) => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-operal-view': (id) => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-normal-mirror': (id) => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-balloon': (id) => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-titleblock': (id) => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-keyway': (id) => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-part-note': (id) => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-machining-symbol': (id) => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-welding-symbol': (id) => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-surface-coating': (id) => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-weight-computation': (id) => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-revision-code': (id) => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-standard-library': (id) => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-orthographic': () => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-command-menu': () => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-line-props': () => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-dimensioning': () => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-standard-part': () => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-surface-app': () => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-retaining-ring': () => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-geometric-tol': () => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-heat-treatment': () => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-bom': () => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-additional-view': () => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-operal-view': () => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-normal-mirror': () => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const exactMatch = activeLessonId ? registry[activeLessonId] : null;
@@ -493,8 +493,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   return prefixRegistry[activeLessonId](activeLessonId);
                 }
 
-                const prefix = activeLessonId?.includes('-') 
-                  ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-')) 
+                const prefix = activeLessonId?.includes('-')
+                  ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-'))
                   : activeLessonId;
 
                 if (prefix && activeLessonId && typeof prefixRegistry[prefix] === 'function') {
@@ -568,8 +568,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
             {/* Premium Quiz Modal */}
             {showQuiz && hasQuiz && (activeQuiz || parentResult?.parent?.quiz) && (
-              <QuizModal 
-                isOpen={showQuiz} 
+              <QuizModal
+                isOpen={showQuiz}
                 onClose={() => {
                   if (parentResult?.parent) {
                     localStorage.removeItem(authService.getStorageKey(`showQuiz_${parentResult.parent.id}`));

@@ -1,6 +1,6 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { splitIntoSentences, normalizeSpeechText, getSentenceMapping } from '../utils/sentenceUtils';
+import { useCallback,useEffect,useRef,useState } from 'react';
 import { api } from '../services/api';
+import { getSentenceMapping,normalizeSpeechText,splitIntoSentences } from '../utils/sentenceUtils';
 
 interface SentenceQueueItem {
   paragraphIndex: number;

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { AlertCircle,CheckCircle2,ChevronLeft,ChevronRight,Edit2,FileText,Plus,Save,Search,Trash2 } from 'lucide-react';
+import React,{ useCallback,useEffect,useMemo,useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Search, Plus, Edit2, Trash2, ChevronRight, ChevronLeft, Save, X, CheckCircle2, AlertCircle, List, FileText } from 'lucide-react';
-import { adminService, Quiz, Question } from '../../../services/adminService';
-import { useUI } from '../../../context/UIContext';
-import { useNotification } from '../../../context/NotificationContext';
 import { Modal } from '../../../components/Modal';
+import { useNotification } from '../../../context/NotificationContext';
+import { useUI } from '../../../context/UIContext';
 import { useLessons } from '../../../hooks/useLessons';
-import { ICAD_3D_LESSONS, ICAD_2D_LESSONS, Lesson } from '../../mentor/mentorConstants';
+import { adminService,Question,Quiz } from '../../../services/adminService';
 import '../../../styles/AssessmentManagement.css';
+import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from '../../mentor/mentorConstants';
 
 export const AssessmentManagement: React.FC = () => {
     const { requestConfirmation } = useUI();
@@ -19,11 +19,11 @@ export const AssessmentManagement: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const location = useLocation();
-    
+
     const [assessmentTab, setAssessmentTab] = useState<'2D_Drawing' | '3D_Modeling'>(
         (localStorage.getItem('kmti_adminAssessmentTab') as '2D_Drawing' | '3D_Modeling') || '3D_Modeling'
     );
-    
+
     // Persist tab and selection
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -64,7 +64,7 @@ export const AssessmentManagement: React.FC = () => {
     useEffect(() => {
         if (selectedQuiz) {
             localStorage.setItem('kmti_adminSelectedQuizId', selectedQuiz.id.toString());
-            
+
             // Robust scroll to top after render
             setTimeout(() => {
                 const content = document.querySelector('.page-content');
@@ -75,25 +75,25 @@ export const AssessmentManagement: React.FC = () => {
             localStorage.removeItem('kmti_adminSelectedQuizId');
         }
     }, [selectedQuiz]);
-    
+
     // Fetch lessons for ordering - use DB for content but constants for canonical ordering
-    const { lessons: dbLessons } = useLessons(assessmentTab === '3D_Modeling' ? 1 : 2);
-    
+    useLessons(assessmentTab==='3D_Modeling'? 1:2);
+
     const globalOrder = useMemo(() => {
         const ids: string[] = [];
         const lessons = assessmentTab === '3D_Modeling' ? ICAD_3D_LESSONS : ICAD_2D_LESSONS;
-        
+
         const traverse = (list: Lesson[]) => {
             list.forEach(l => {
                 if (l.quiz) ids.push(l.id);
                 if (l.children) traverse(l.children);
             });
         };
-        
+
         traverse(lessons);
         return ids;
     }, [assessmentTab]);
-    
+
     const [isEditingQuiz, setIsEditingQuiz] = useState(false);
     const [isEditingQuestion, setIsEditingQuestion] = useState(false);
     const [currentQuiz, setCurrentQuiz] = useState<Partial<Quiz>>({});
@@ -121,12 +121,12 @@ export const AssessmentManagement: React.FC = () => {
         try {
             const detail = await adminService.getQuizDetail(quiz.id);
             setSelectedQuiz(detail);
-            
+
             // Scroll to top immediately and with a slight delay to be sure
             const content = document.querySelector('.page-content');
             if (content) content.scrollTo({ top: 0, behavior: 'instant' });
             window.scrollTo({ top: 0, behavior: 'instant' });
-            
+
             setTimeout(() => {
                 if (content) content.scrollTo({ top: 0, behavior: 'instant' });
                 window.scrollTo({ top: 0, behavior: 'instant' });
@@ -267,7 +267,7 @@ export const AssessmentManagement: React.FC = () => {
 
     const filteredQuizzes = quizzes
         .filter(q => {
-            const matchesSearch = q.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            const matchesSearch = q.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                  q.slug.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesTab = q.course_type === assessmentTab;
             return matchesSearch && matchesTab;
@@ -275,7 +275,7 @@ export const AssessmentManagement: React.FC = () => {
         .sort((a, b) => {
             const indexA = globalOrder.indexOf(a.slug);
             const indexB = globalOrder.indexOf(b.slug);
-            
+
             // If both found in globalOrder, sort by index
             if (indexA !== -1 && indexB !== -1) return indexA - indexB;
             if (indexA !== -1) return -1;
@@ -291,9 +291,9 @@ export const AssessmentManagement: React.FC = () => {
     // Show specialized loader during initial restoration to prevent "page jump"
     if (loading && !hasRestored) {
         return (
-            <div className="assessment-restoring-screen" style={{ 
-                height: '400px', display: 'flex', flexDirection: 'column', 
-                alignItems: 'center', justifyContent: 'center', gap: '1rem', color: '#94a3b8' 
+            <div className="assessment-restoring-screen" style={{
+                height: '400px', display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center', gap: '1rem', color: '#94a3b8'
             }}>
                 <div className="spinner"></div>
                 <p>Restoring Assessment Session...</p>
@@ -371,8 +371,8 @@ export const AssessmentManagement: React.FC = () => {
                 >
                     <div className="form-group">
                         <label>Question Text</label>
-                        <textarea 
-                            value={currentQuestion.text || ''} 
+                        <textarea
+                            value={currentQuestion.text || ''}
                             onChange={e => setCurrentQuestion({...currentQuestion, text: e.target.value})}
                             placeholder="Enter the question..."
                         />
@@ -382,15 +382,15 @@ export const AssessmentManagement: React.FC = () => {
                         <div className="options-editor">
                             {options.map((opt, i) => (
                                 <div key={i} className="opt-row">
-                                    <input 
-                                        type="radio" 
-                                        name="correct" 
+                                    <input
+                                        type="radio"
+                                        name="correct"
                                         checked={currentQuestion.correct_answer === i}
                                         onChange={() => setCurrentQuestion({...currentQuestion, correct_answer: i})}
                                     />
-                                    <input 
-                                        type="text" 
-                                        value={opt} 
+                                    <input
+                                        type="text"
+                                        value={opt}
                                         onChange={e => {
                                             const newOpts = [...options];
                                             newOpts[i] = e.target.value;
@@ -398,9 +398,9 @@ export const AssessmentManagement: React.FC = () => {
                                         }}
                                         placeholder={`Option ${i + 1}`}
                                     />
-                                    <button 
+                                    <button
                                         type="button"
-                                        className="remove-opt-btn" 
+                                        className="remove-opt-btn"
                                         onClick={() => handleRemoveOption(i)}
                                         title="Remove Option"
                                     >
@@ -415,8 +415,8 @@ export const AssessmentManagement: React.FC = () => {
                     </div>
                     <div className="form-group">
                         <label>Explanation (Optional)</label>
-                        <textarea 
-                            value={currentQuestion.explanation || ''} 
+                        <textarea
+                            value={currentQuestion.explanation || ''}
                             onChange={e => setCurrentQuestion({...currentQuestion, explanation: e.target.value})}
                             placeholder="Explain why this is the correct answer..."
                         />

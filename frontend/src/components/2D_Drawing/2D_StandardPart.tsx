@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../ReadAloudButton";
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
 /* Importing assets for Standard Part Detail (1) */
 import pcdImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_pcd.png";
-import taperedThreadImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_tapered_thread.png";
 import standardPartDetailImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_standard_parts.jpg";
+import taperedThreadImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_tapered_thread.png";
 
 /* Importing assets for Standard Part Detail (2) */
 import oilGroove1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(2)_oil_groove_1.png";
@@ -18,7 +17,6 @@ import oilGroove2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(2)_
 
 /* Importing assets for Standard Part Detail (3) */
 import shaftKeyPlate1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_1.png";
-import shaftKeyPlate2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_2.jpg";
 import shaftKeyPlate3Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_3.png";
 
 /* Importing assets for Standard Part Detail (4) */
@@ -29,9 +27,9 @@ import collar1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_col
 import collar2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar_2.png";
 
 /* Importing assets for Standard Part Detail (6) */
+import reliefProcess2Img from "../../assets/2D_Image_File/2D_standard_part_detail(6)_relief_process_2.jpg";
 import scaleImg from "../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
 import reliefProcess1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(6)_relief_process_1.png";
-import reliefProcess2Img from "../../assets/2D_Image_File/2D_standard_part_detail(6)_relief_process_2.jpg";
 
 /* Importing assets for Standard Part Detail (7) */
 import reliefWorkflowImg from "../../assets/2D_Image_File/2D_tandard_part_detail(7)_relief_process_3.png";

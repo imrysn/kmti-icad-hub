@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../KaraokeLessonText";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -12,9 +12,9 @@ import operateView1ImgA1 from "../../assets/2D_Image_File/2D_operate_view(1)_a1.
 import operateView1ImgB2 from "../../assets/2D_Image_File/2D_operate_view(1)_b2.png";
 
 /* Importing assets for Operate View (2) */
+import operateView2ImgB3 from "../../assets/2D_Image_File/2D_operate_view(2)_b2_3.jpg";
 import operateView2ImgB1 from "../../assets/2D_Image_File/2D_operate_view(2)_b_1.png";
 import operateView2ImgB2 from "../../assets/2D_Image_File/2D_operate_view(2)_b_2.jpg";
-import operateView2ImgB3 from "../../assets/2D_Image_File/2D_operate_view(2)_b2_3.jpg";
 
 interface OperalViewLessonProps {
   nextLabel?: string;

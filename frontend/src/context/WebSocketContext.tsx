@@ -2,7 +2,7 @@
  * WebSocketContext.tsx
  *
  * Centralized WebSocket connection provider.
- * Establishes a single persistent WS connection at the app root level and 
+ * Establishes a single persistent WS connection at the app root level and
  * shares it to all consumers via React context. Handles:
  *  - Auto-connection on login
  *  - Auto-reconnection with exponential backoff on disconnect
@@ -10,7 +10,7 @@
  *  - Cleanup on logout
  */
 
-import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
+import React,{ createContext,useCallback,useContext,useEffect,useRef,useState } from 'react';
 import { api } from '../services/api';
 
 // Event listener signature
@@ -169,7 +169,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
   useEffect(() => {
     (window as any).__mockWsMessage = (eventName: string, payload: any) => {
       const data = { event: eventName, ...payload };
-      
+
       const handlers = handlersRef.current.get(eventName);
       if (handlers) handlers.forEach(h => h(data));
 

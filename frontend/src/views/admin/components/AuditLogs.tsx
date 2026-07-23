@@ -1,5 +1,6 @@
+import { Shield,Users } from 'lucide-react';
 import React from 'react';
-import { Shield, Users } from 'lucide-react'; import { SystemAuditLog } from '../../../services/adminService';
+import { SystemAuditLog } from '../../../services/adminService';
 
 interface AuditLogsProps {
     logs: SystemAuditLog[];

@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { assessmentService, AssessmentTask, AssessmentSubmission } from '../services/assessmentService';
-import { authService } from '../services/authService';
+import { useCallback,useEffect,useState } from 'react';
 import { useNotification } from '../context/NotificationContext';
-import { api, invalidateCache } from '../services/api';
+import { api,invalidateCache } from '../services/api';
+import { assessmentService,AssessmentSubmission,AssessmentTask } from '../services/assessmentService';
+import { authService } from '../services/authService';
 
 // Fix #7: confirmFn is injected by the parent component so the hook can
 // use the app's styled ConfirmationModal instead of window.confirm().
@@ -43,7 +43,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
           .filter(t => t.assessment_type === '2D' || t.set_number >= 100)
           .map(t => ({ ...t, set_number: t.set_number >= 100 ? t.set_number - 100 : t.set_number }));
       } else {
-        // Sets 4, 5, 6, and 7 are marked as '2D' in the database but are part of the 
+        // Sets 4, 5, 6, and 7 are marked as '2D' in the database but are part of the
         // 3D practical sequence. They must be allowed in the 3D view.
         processedTasks = processedTasks.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7));
       }
@@ -88,7 +88,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
     try {
       showNotification('Preparing task template download...', 'info');
-      
+
       const originalFilename = task.master_file_path
         ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
         : `Set${task.set_number}_${task.task_code}_Master.dwg`;
@@ -116,7 +116,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
       }
-      
+
       showNotification('Task template download started.', 'success');
     } catch (err) {
       console.error('Download error:', err);
@@ -170,7 +170,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       variant: "primary"
     });
     if (!confirmed) return;
-    
+
     try {
       showNotification('Preparing download...', 'info');
       const filename = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
@@ -218,7 +218,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       variant: "primary"
     });
     if (!confirmed) return;
-    
+
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
       try {
         const url = assessmentService.getFeedbackDownloadUrl(feedback.id);
