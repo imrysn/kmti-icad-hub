@@ -46,7 +46,7 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
                                 </span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                     <img
                                         src={fileProperties1Img}
                                         alt="File Properties Dialog"
@@ -63,7 +63,7 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
                                         The Summary Information will appear.
                                     </p>
 
-                                    <h5 style={{ color: 'var(--text-normal)', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '0.95rem', fontWeight: 600 }}>
+                                    <h5 style={{ color: 'var(--text-normal)', marginTop: '0.5rem', marginBottom: '0.5rem', fontSize: '0.95rem', fontWeight: 600 }}>
                                         Notes:
                                     </h5>
                                     <ul style={{ paddingLeft: '1.25rem', margin: '0', color: 'var(--text-muted)', lineHeight: '1.6' }}>
@@ -85,7 +85,7 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
                                 <span className="step-label">Edit the Properties.</span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                     <img
                                         src={editPropertiesImg}
                                         alt="Edit Properties"

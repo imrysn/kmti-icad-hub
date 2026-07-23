@@ -47,7 +47,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             <span className="step-label">Create New File (See page 3 No. 2)</span>
                         </div>
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                 <img
                                     src={createImg}
                                     alt="Create New File"
@@ -76,7 +76,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                 </li>
                             </ol>
 
-                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                 <img
                                     src={okImg}
                                     alt="Select New Document Dialog"
@@ -84,7 +84,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                 />
                             </div>
 
-                            <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
+                            <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                                 <p className="p-flush red-text">
                                     ※ It varies depending on the project.
                                 </p>
@@ -112,10 +112,10 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                     <span className="step-label">View Layout &gt; Model View &gt; Browse file from the folder &gt; Click Assem1 then Open.</span>
                                 </div>
                                 <div className="step-description">
-                                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                         <img src={layoutImg} alt="Insert Parts/Assembly via View Layout" className="software-screenshot screenshot-wide" />
                                     </div>
-                                    <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
+                                    <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                                         <p className="p-flush red-text">※ It only inserts a part/assy view individually.</p>
                                     </div>
                                 </div>
@@ -127,10 +127,10 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                     <span className="step-label">Drag and Drop</span>
                                 </div>
                                 <div className="step-description">
-                                    <div className="instruction-box" style={{ marginTop: '1rem', border: 'none', background: 'transparent', padding: 0 }}>
+                                    <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
                                         <p className="p-flush red-text">※ Hold the part/assy file from the folder then drag to the dwg sheet.</p>
                                     </div>
-                                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                         <img src={dragImg} alt="Drag and Drop" className="software-screenshot screenshot-wide" />
                                     </div>
                                 </div>
@@ -145,21 +145,21 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                     <p className="p-flush" style={{ color: 'var(--text-normal)' }}>
                                         Open the 3D part/assy &gt; Click <img src={clickImg} alt="Click" style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', margin: '0 4px' }} /> &gt; Make Drawing from Part/Assembly
                                     </p>
-                                    <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', marginTop: '1rem', flexWrap: 'wrap' }}>
+                                    <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', marginTop: '0.2rem', flexWrap: 'wrap' }}>
                                         <div style={{ flex: '1 1 50%', minWidth: '300px' }}>
                                             <div className="image-wrapper">
                                                 <img src={makeImg} alt="Make Drawing from Part/Assembly" className="software-screenshot screenshot-wide" />
                                             </div>
                                         </div>
                                         <div style={{ flex: '0 1 auto', minWidth: '200px' }}>
-                                            <div className="instruction-box" style={{ border: 'none', background: 'transparent', padding: 0 }}>
+                                            <div className="instruction-box" style={{ marginTop: '0.2rem'}}>
                                                 <p className="p-flush red-text">
                                                     ※ It uses <strong>View Palette</strong> where<br />
                                                     the user can choose then<br />
                                                     drag and drop the view.
                                                 </p>
                                             </div>
-                                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                                 <img src={viewImg} alt="View Palette" className="software-screenshot" style={{ maxHeight: '400px', width: 'auto' }} />
                                             </div>
                                         </div>

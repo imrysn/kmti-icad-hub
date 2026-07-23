@@ -39,13 +39,13 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
 
                     <div className="fade-in" style={{ marginTop: '2rem' }}>
                         {/* Step 1 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">1 </span>
                                 <span className="step-label">In <strong>Annotation</strong> toolbar, click <strong>Balloon</strong>.</span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                     <img
                                         src={balloonImg}
                                         alt="Balloon toolbar"
@@ -56,7 +56,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                         </div>
 
                         {/* Step 2 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">2 </span>
                                 <span className="step-label">Select edge/face of part to add balloon.</span>
@@ -64,7 +64,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                         </div>
 
                         {/* Step 3 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">3 </span>
                                 <span className="step-label">Position the balloon.</span>
@@ -72,7 +72,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                         </div>
 
                         {/* Step 4 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">4 </span>
                                 <span className="step-label">
@@ -82,7 +82,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                         </div>
 
                         {/* Step 5 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">5 </span>
                                 <span className="step-label">
@@ -90,7 +90,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                                 </span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                     <img
                                         src={balloon1Img}
                                         alt="Balloon positioning 1"
@@ -104,7 +104,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                                 </div>
                                 
                                 {/* Note Section */}
-                                <div className="instruction-box" style={{ marginTop: '2rem', border: 'none', background: 'transparent', padding: 0 }}>
+                                <div className="instruction-box" style={{ marginTop: '2rem' }}>
                                     <p className="p-flush red-text">
                                         ※ Edit balloon leader if needed.
                                     </p>
@@ -118,9 +118,9 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                         <h4 className="section-title" style={{ fontSize: '1.1rem' }}>Edit Balloon Leader</h4>
                     </div>
 
-                    <div className="fade-in" style={{ marginTop: '1.5rem' }}>
+                    <div className="fade-in" style={{ marginTop: '0.5rem' }}>
                         {/* Step 1 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">1 </span>
                                 <span className="step-label">Click the balloon.</span>
@@ -128,7 +128,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                         </div>
 
                         {/* Step 2 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">2 </span>
                                 <span className="step-label">Click <strong>More Properties</strong>.</span>
@@ -136,13 +136,13 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                         </div>
 
                         {/* Step 3 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">3 </span>
                                 <span className="step-label">Edit Balloon Leader. (Use <strong>Multi-jog Leader</strong>)</span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                     <img
                                         src={balloon3Img}
                                         alt="Edit Balloon Leader"
@@ -154,7 +154,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                     </div>
 
                     {/* Additional Note */}
-                    <div className="instruction-box" style={{ marginTop: '2rem', border: 'none', background: 'transparent', padding: 0 }}>
+                    <div className="instruction-box" style={{ marginTop: '2rem' }}>
                         <p className="p-flush red-text" style={{ textAlign: 'center', width: '100%', fontWeight: 500 }}>
                             ※ Leader can be changed depending on the need of the balloon.
                         </p>

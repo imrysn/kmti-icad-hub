@@ -36,7 +36,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
 
                     <div className="fade-in" style={{ marginTop: '2rem' }}>
                         {/* Step 1 */}
-                        <div className="instruction-step">
+                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">1 </span>
                                 <span className="step-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -54,7 +54,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                                 <span className="step-label">When the dialog box appears, edit the <strong>File Name</strong>, then click <strong>Save</strong>.</span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                     <img
                                         src={fileNameImg}
                                         alt="Edit File Name"

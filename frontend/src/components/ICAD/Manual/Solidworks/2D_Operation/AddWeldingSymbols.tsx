@@ -36,7 +36,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
                     </div>
 
                     {/* Reference Image */}
-                    <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img
                             src={oilLeakageImg}
                             alt="Welding Symbols Reference"
@@ -51,7 +51,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
                             <span className="step-label">Under Annotation, click Weld Symbol.</span>
                         </div>
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                 <img
                                     src={weldSymbolImg}
                                     alt="Weld Symbol"
@@ -68,7 +68,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
                             <span className="step-label">Welding Properties will appear.</span>
                         </div>
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                 <img
                                     src={weldingPropertiesImg}
                                     alt="Welding Properties"

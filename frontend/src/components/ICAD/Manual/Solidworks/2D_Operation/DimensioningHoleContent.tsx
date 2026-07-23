@@ -10,16 +10,14 @@ const DimensioningHoleContent: React.FC = () => {
             <div className="instruction-step">
                 <div className="step-header">
                     <span className="step-number">1 </span>
-                    <span className="step-label">Click Smart Dimension</span>
+                    <span className="step-label" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                        Click <strong>Smart Dimension</strong> 
+                        <img src={smartDimensionImg} alt="Smart Dimension" style={{ height: '36px', verticalAlign: 'middle', display: 'inline-block', margin: '0 8px' }} />
+                        &gt; Select the hole to dimension.
+                    </span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
-                        <img src={smartDimensionImg} alt="Smart Dimension" className="software-screenshot" />
-                    </div>
-                    <p className="p-flush" style={{ color: 'var(--text-normal)', marginTop: '1.5rem' }}>
-                        &gt; Select the hole to dimension.
-                    </p>
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={smartDimension3Img} alt="Select hole to dimension" className="software-screenshot" />
                     </div>
                 </div>
@@ -38,10 +36,10 @@ const DimensioningHoleContent: React.FC = () => {
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={numberHolesImg} alt="Number of Holes" className="software-screenshot screenshot-wide" />
                     </div>
-                    <div className="instruction-box" style={{ marginTop: '1.5rem', border: 'none', background: 'transparent', padding: 0 }}>
+                    <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                         <p className="p-flush red-text">
                             ※ Number of Holes are depending on the number of holes/slot holes in the part/assembly.
                         </p>

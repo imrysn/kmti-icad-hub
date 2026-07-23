@@ -12,7 +12,7 @@ const AddDimensionsAndNotesContent: React.FC = () => {
                     <span className="step-label">Under Annotation, Select Smart Dimension.</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={smartDimension2Img} alt="Smart Dimension" className="software-screenshot screenshot-wide" />
                     </div>
                 </div>
@@ -24,7 +24,7 @@ const AddDimensionsAndNotesContent: React.FC = () => {
                     <span className="step-label">Select line(s) &gt; drag dimension</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '1rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={dragDimensionImg} alt="Drag Dimension" className="software-screenshot screenshot-wide" />
                     </div>
                 </div>
@@ -46,7 +46,7 @@ const AddDimensionsAndNotesContent: React.FC = () => {
                     <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                         Until all the necessary dimensions are indicated.
                     </p>
-                    <div className="instruction-box" style={{ marginTop: '1rem', border: 'none', background: 'transparent', padding: 0 }}>
+                    <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
                         <p className="p-flush red-text">
                             ※ It includes dimensioning of radius.
                         </p>
