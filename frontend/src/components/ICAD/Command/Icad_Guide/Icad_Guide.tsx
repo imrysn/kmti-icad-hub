@@ -1,11 +1,13 @@
-
+import React, { useState } from 'react';
+import Interface_Lesson from './Japanese_Tutorial/Interface_Lesson';
 
 function Icad_Guide() {
+
+
     return (
-        <div>
-            <h1>Icad Guide</h1>
-        </div>
+        <Interface_Lesson />
     );
 }
 
 export default Icad_Guide;
+
