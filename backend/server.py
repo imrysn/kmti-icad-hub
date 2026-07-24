@@ -137,8 +137,14 @@ if __name__ == "__main__":
         import threading
         import webbrowser
         import queue
-        import tkinter as tk
-        from tkinter import scrolledtext
+        try:
+            import tkinter as tk
+            from tkinter import scrolledtext
+        except (ImportError, ModuleNotFoundError) as tkinter_error:
+            print(f"[!] Server console GUI is unavailable ({tkinter_error}).")
+            print("[+] Starting KMTI Training Hub Server in console mode...")
+            uvicorn.run(app, host=host, port=port, log_level="info")
+            sys.exit(0)
 
         # Redirection helper to capture print outputs to GUI console safely via thread-safe queuec
         log_queue = queue.Queue()
