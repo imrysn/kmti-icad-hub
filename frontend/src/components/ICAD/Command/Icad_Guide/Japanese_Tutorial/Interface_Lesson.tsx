@@ -10,6 +10,19 @@ function Interface_Lesson() {
     return (
         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "var(--bg-dark)", fontFamily: "var(--font-main)" }}>
 
+            {/* Page Name / Title */}
+            <div style={{
+                paddingTop: "20px",
+                paddingBottom: "8px",
+                fontSize: "28px",
+                fontWeight: "bold",
+                color: "var(--text-white)",
+                fontFamily: "var(--font-heading)",
+                letterSpacing: "0.5px"
+            }}>
+                {activeTab === "MENU BAR" ? "Menu Bar" : activeTab === "COMMAND MENU" ? "Command Menu" : "Tree View"}
+            </div>
+
             {/* Tab Menu */}
             <div style={{
                 display: "flex",
@@ -18,7 +31,7 @@ function Interface_Lesson() {
                 padding: "6px",
                 borderRadius: "8px",
                 border: "1px solid var(--border-color)",
-                marginTop: "20px",
+                marginTop: "8px",
                 marginBottom: "20px",
                 gap: "8px"
             }}>
