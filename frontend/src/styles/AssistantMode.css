@@ -5,17 +5,17 @@
 .assistant-mode-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 64px);
   padding: 0;
   background: var(--bg-dark);
-  background-image: radial-gradient(rgba(221, 77, 250, 0.08) 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-image: linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
   width: 100%; /* Explicitly set full width */
 }
 
 [data-theme='light'] .assistant-mode-container {
-  background-image: radial-gradient(rgba(181, 23, 158, 0.06) 1.5px, transparent 1.5px);
-  background-size: 20px 20px;
+  background-image: linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 /* ── Tabs Navigation ───────────────────────────────────────── */
@@ -88,7 +88,7 @@
 
 /* Ensure Chatbot layout fills the tab content height and overrides its default fixed height */
 .assistant-tab-content .chatbot-layout {
-  height: 1018px;
+  height: 100%;
 }
 
 /* ── Training/Mentor Wrapper ───────────────────────────────── */

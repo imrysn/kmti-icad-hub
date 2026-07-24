@@ -59,7 +59,9 @@ if not origins:
         "http://localhost:5174",
         "http://localhost:5175",
         "http://localhost:3000",
-        "app://." # For Electron production
+        "app://.", # Custom Electron protocol
+        "null",    # Electron renderer loaded from a packaged file
+        "file://"  # Explicit file origin used by some Electron versions
     ]
 
 cors_options = {

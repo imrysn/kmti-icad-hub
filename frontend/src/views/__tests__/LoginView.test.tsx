@@ -241,19 +241,9 @@ describe('LoginView — Top-Right Control Buttons', () => {
     delete window.electronAPI;
   });
 
-  it('renders settings button and opens API Configuration modal on click', async () => {
-    const user = userEvent.setup();
+  it('does not expose manual API server configuration', () => {
     renderLogin();
-
-    const settingsBtn = screen.getByTitle(/api server settings/i);
-    expect(settingsBtn).toBeInTheDocument();
-
-    // Modal should be closed initially
+    expect(screen.queryByTitle(/api server settings/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/api server configuration/i)).not.toBeInTheDocument();
-
-    await user.click(settingsBtn);
-
-    // Modal should now be open
-    expect(screen.getByText(/api server configuration/i)).toBeInTheDocument();
   });
 });

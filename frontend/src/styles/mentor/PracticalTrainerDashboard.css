@@ -1564,3 +1564,64 @@
     z-index: 10;
     padding: 0.5rem 0 1rem 0;
 }
+.trainer-dashboard {
+  color: var(--text-main);
+}
+
+.trainer-dashboard .trainee-group-card,
+.trainer-dashboard .assessment-card,
+.trainer-dashboard .metric-card {
+  border-color: var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background: var(--bg-surface);
+}
+
+.trainer-dashboard .trainee-group-card:hover,
+.trainer-dashboard .assessment-card:hover,
+.trainer-dashboard .metric-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow), var(--shadow-card);
+}
+
+.trainer-dashboard .trainee-group-header {
+  background: var(--bg-surface);
+  border-bottom-color: var(--border-color);
+}
+
+.trainer-dashboard .trainee-group-header:hover {
+  background: var(--bg-hover);
+}
+
+.trainer-dashboard .set-group {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.trainer-dashboard .dashboard-main-tabs {
+  gap: var(--space-2);
+  border-bottom-color: var(--border-color);
+}
+
+.trainer-dashboard .task-list-row {
+  border-bottom-color: var(--border-color);
+}
+
+.trainer-dashboard .task-list-row:hover {
+  background: var(--bg-hover);
+}
+
+@media (max-width: 900px) {
+  .trainer-dashboard .trainee-group-header {
+    padding: 1rem;
+  }
+
+  .trainer-dashboard .trainee-header-right {
+    gap: var(--space-2);
+  }
+
+  .trainer-dashboard .trainee-group-body {
+    padding: 1rem;
+  }
+}

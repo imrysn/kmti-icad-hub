@@ -1827,3 +1827,53 @@
     height: 90px;
   }
 }
+
+/* ============================================================
+   Shared visual refresh layer
+   Keeps the lesson structure and interaction states unchanged while
+   aligning course cards and navigation with the application shell.
+   ============================================================ */
+.mentor-mode {
+  color: var(--text-main);
+}
+
+.course-selector-container,
+.course-view-container {
+  background: transparent;
+}
+
+.course-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  background: var(--bg-surface);
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.course-card:hover:not(.locked) {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow), var(--shadow-card);
+  transform: translateY(-3px);
+}
+
+.course-sidebar {
+  background: var(--bg-surface);
+  border-color: var(--border-color);
+}
+
+.lesson-item {
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.lesson-item:hover,
+.lesson-item.active {
+  background: var(--color-primary-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-card,
+  .lesson-item {
+    transition: none;
+  }
+}

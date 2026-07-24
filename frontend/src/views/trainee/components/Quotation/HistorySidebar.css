@@ -417,3 +417,38 @@
     transition: none;
   }
 }
+.history-sidebar {
+  background: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+
+.history-sidebar__toggle,
+.history-sidebar__header-actions,
+.history-group-header {
+  border-color: var(--border-color);
+  background: var(--bg-card);
+}
+
+.history-sidebar__content,
+.timeline-item {
+  color: var(--text-main);
+}
+
+.timeline-item {
+  border-color: var(--border-color);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.timeline-item:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+ .timeline-item {
+    transition: none;
+  }
+}

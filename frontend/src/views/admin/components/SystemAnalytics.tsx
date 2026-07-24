@@ -19,10 +19,10 @@ export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
 }) => {
     // Heatmap color logic
     const getHeatmapColor = (count: number) => {
-        if (count > 50) return 'rgba(99, 102, 241, 0.6)';  // Heavy activity
-        if (count > 20) return 'rgba(99, 102, 241, 0.4)';  // Medium activity
-        if (count > 5) return 'rgba(99, 102, 241, 0.2)';  // Light activity
-        return 'rgba(148, 163, 184, 0.1)';              // Idle
+        if (count > 50) return '#9c1689'; // Heavy activity
+        if (count > 20) return '#b5179e'; // Medium activity
+        if (count > 5) return '#d946c5';  // Light activity
+        return '#eef2f7';                 // Idle
     };
 
     return (
@@ -110,7 +110,7 @@ export const SystemAnalytics: React.FC<SystemAnalyticsProps> = ({
                     </div>
                     <div className="heatmap-grid">
                         {heatmap.map((item, idx) => (
-                            <div key={idx} className="heatmap-cell" style={{ backgroundColor: getHeatmapColor(item.count) }} title={`Course: ${item.course_id} - ${item.count} active users`}>
+                            <div key={idx} className="heatmap-cell" style={{ backgroundColor: getHeatmapColor(item.count), color: item.count > 5 ? '#ffffff' : '#334155' }} title={`Course: ${item.course_id} - ${item.count} active users`}>
                                 {item.course_id.toUpperCase()}
                             </div>
                         ))}

@@ -1,7 +1,6 @@
-import { Eye,EyeOff,Lock,Settings,User as UserIcon,X } from 'lucide-react';
-import React,{ useEffect,useState } from 'react';
+import { Eye, EyeOff, Lock, User as UserIcon, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LightPillar from '../components/LightPillar';
 import { Modal } from '../components/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { authService } from '../services/authService';
@@ -13,10 +12,6 @@ export const LoginView: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', password: '' }); const [localError, setLocalError] = useState('');
     const [showPassword, setShowPassword] = useState(false); const [rememberMe, setRememberMe] = useState(false);
-
-    // Custom API Server Settings State
-    const [showApiSettingsModal, setShowApiSettingsModal] = useState(false);
-    const [customApiUrl, setCustomApiUrl] = useState(localStorage.getItem('custom_api_url') || '');
 
     // Forgot Password State
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false); const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
@@ -107,33 +102,10 @@ export const LoginView: React.FC = () => {
         }
     };
 
-    const handleSaveApiUrl = () => {
-        let url = customApiUrl.trim();
-        if (url) {
-            // Strip trailing slashes and duplicate /api/v1 suffix to avoid double pathing
-            url = url.replace(/\/$/, '').replace(/\/api\/v1$/, '');
-            localStorage.setItem('custom_api_url', url);
-        } else {
-            localStorage.removeItem('custom_api_url');
-        }
-        setShowApiSettingsModal(false);
-        window.location.reload();
-    };
-
     return (
         <div className="unified-login-container">
             <div className="app-drag-region"></div>
-            <LightPillar />
             <div className="ambient-particles"></div>
-
-            <button
-                type="button"
-                className="login-settings-btn"
-                onClick={() => setShowApiSettingsModal(true)}
-                title="API Server Settings"
-            >
-                <Settings size={20} />
-            </button>
 
             <button
                 type="button"
@@ -257,70 +229,6 @@ export const LoginView: React.FC = () => {
                             }}
                         >
                             {isForgotPasswordSubmitting ? 'Sending...' : 'Send Reset Link'}
-                        </button>
-                    </div>
-                </div>
-            </Modal>
-
-            {/* API Settings Modal */}
-            <Modal
-                isOpen={showApiSettingsModal}
-                onClose={() => setShowApiSettingsModal(false)}
-                title="API Server Configuration"
-                tag="SYSTEM_CONFIG"
-                size="sm"
-            >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                        Configure the remote server URL (e.g. http://192.168.200.105:3001). Leave empty to use local server.
-                    </p>
-                    <div className="input-group">
-                        <label htmlFor="custom-api-url" className="modal-field-label">Server URL</label>
-                        <input
-                            id="custom-api-url"
-                            type="text"
-                            value={customApiUrl}
-                            onChange={(e) => setCustomApiUrl(e.target.value)}
-                            placeholder="http://127.0.0.1:3001"
-                            style={{
-                                width: '100%',
-                                padding: '0.625rem 0.875rem',
-                                borderRadius: 'var(--radius-md)',
-                                border: '1px solid var(--border-color)',
-                                background: 'var(--bg-surface)',
-                                color: 'var(--text-main)',
-                                outline: 'none'
-                            }}
-                        />
-                    </div>
-                    <div className="modal-buttons" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-                        <button onClick={() => setShowApiSettingsModal(false)} className="cancel-button"
-                            style={{
-                                padding: '0.5rem 1rem',
-                                borderRadius: '8px',
-                                fontSize: '0.8125rem',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                background: 'transparent',
-                                color: 'var(--text-muted)',
-                                border: '1px solid var(--border-color)'
-                            }}
-                        >
-                            Cancel
-                        </button>
-                        <button onClick={handleSaveApiUrl} className="submit-button"
-                            style={{
-                                padding: '0.5rem 1.25rem',
-                                borderRadius: '8px',
-                                fontSize: '0.8125rem',
-                                fontWeight: '700',
-                                cursor: 'pointer',
-                                border: 'none',
-                                background: 'var(--primary)',
-                                color: '#ffffff'
-                            }}
-                        >
-                            Save & Restart
                         </button>
                     </div>
                 </div>

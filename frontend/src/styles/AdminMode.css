@@ -6,7 +6,7 @@
 
 .admin-layout {
   display: flex;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 64px);
   width: 100%;
   background: var(--bg-dark);
   overflow: hidden;
@@ -30,7 +30,7 @@
   flex-shrink: 0;
   z-index: 100;
   overflow: visible;
-  box-shadow: var(--shadow-card);
+  box-shadow: 8px 0 24px rgba(15, 23, 42, 0.06);
 }
 
 /* ── Sidebar ─────────────────────────────────────────────────── */

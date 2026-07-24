@@ -1675,3 +1675,35 @@
   background: transparent !important;
   color: #ef4444 !important;
 }
+.quot-app-root {
+  color: var(--text-main);
+}
+
+/* Interactive quotation surfaces use the shared application language.
+   Print/export layout styles remain in the dedicated print/layout files. */
+.quot-app-root .section-card {
+  border-color: var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background: var(--bg-surface);
+}
+
+.quot-app-root .section-card-header {
+  border-bottom-color: var(--border-color);
+  background: color-mix(in srgb, var(--bg-card) 70%, transparent);
+}
+
+.quot-app-root .section-card-title {
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.quot-app-root .quot-entry-help-link {
+  color: var(--color-primary);
+}
+
+@media (max-width: 900px) {
+  .quot-app-root {
+    padding-inline: var(--space-3);
+  }
+}

@@ -1316,3 +1316,37 @@
         border-color: #3b82f6;
     }
 }
+.task-row-card,
+.assessment-instructions-card,
+.progress-summary-card {
+  border-color: var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background: var(--bg-surface);
+}
+
+.task-row-card:hover {
+  border-color: var(--border-hover);
+}
+
+.task-row-header,
+.upload-header-row {
+  border-color: var(--border-color);
+}
+
+.task-row-body {
+  background: color-mix(in srgb, var(--bg-card) 55%, transparent);
+}
+
+.empty-upload-placeholder,
+.no-submissions-yet {
+  color: var(--text-muted);
+  border-color: var(--border-color);
+}
+
+@media (max-width: 900px) {
+  .task-row-header,
+  .task-row-body {
+    padding-inline: 1rem;
+  }
+}

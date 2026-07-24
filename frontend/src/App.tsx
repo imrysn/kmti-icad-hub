@@ -203,10 +203,12 @@ function AppContent() {
   return (
     <div className="app-container frameless">
       {/* Background Aurora Elements - Restored per user request */}
-      <div className="aurora-bg">
-        <div className="aurora-blob aurora-1"></div>
-        <div className="aurora-blob aurora-2"></div>
-      </div>
+      {isAuthenticated && (
+        <div className="aurora-bg">
+          <div className="aurora-blob aurora-1"></div>
+          <div className="aurora-blob aurora-2"></div>
+        </div>
+      )}
 
       {isInitialLoading ? (
         <LoadingScreen />
