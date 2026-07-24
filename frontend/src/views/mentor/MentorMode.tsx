@@ -690,13 +690,13 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     };
 
     // Render subview components based on URL view parameter
-    if (currentView === 'icad_standard') {
+    if (!selectedCourse && currentView === 'icad_standard') {
         return <ICADStandardView setSelectedCourse={setSelectedCourse} />;
     }
-    if (currentView === 'icad_command') {
+    if (!selectedCourse && currentView === 'icad_command') {
         return <ICADCommandView setSelectedCourse={setSelectedCourse} />;
     }
-    if (currentView === 'solidworks_manual') {
+    if (!selectedCourse && currentView === 'solidworks_manual') {
         return <SolidworksManualView setSelectedCourse={setSelectedCourse} />;
     }
 
