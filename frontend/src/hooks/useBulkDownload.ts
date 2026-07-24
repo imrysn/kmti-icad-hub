@@ -3,6 +3,7 @@ import { useNotification } from '../context/NotificationContext';
 import { api } from '../services/api';
 import { assessmentService } from '../services/assessmentService';
 import { authService } from '../services/authService';
+import { getBulkDownloadErrorMessage } from '../utils/fileOperationErrors';
 
 /** Trigger a single blob download in the browser */
 const triggerBlobDownload = (blob: Blob, filename: string) => {
@@ -96,7 +97,7 @@ export const useBulkDownload = () => {
                     if (result.errors && result.errors.length > 0) {
                         console.error('Bulk download errors:', JSON.stringify(result.errors, null, 2));
                     }
-                    showNotification('No files were downloaded.', 'warning');
+                    showNotification(getBulkDownloadErrorMessage(result.errors), 'warning');
                 }
             } catch (err) {
                 console.error('Bulk download error:', err);

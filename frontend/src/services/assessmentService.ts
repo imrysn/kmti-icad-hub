@@ -1,6 +1,23 @@
 import api,{ cachedGet } from './api';
 import { User } from './authService';
 
+const getBlobWithRetry = async (url: string): Promise<Blob> => {
+    let lastError: any;
+    for (let attempt = 1; attempt <= 3; attempt += 1) {
+        try {
+            const response = await api.get(url, { responseType: 'blob', timeout: 120000 });
+            return response.data;
+        } catch (error: any) {
+            lastError = error;
+            const status = error?.response?.status;
+            const retryable = !error?.response || [502, 503, 504].includes(status);
+            if (!retryable || attempt === 3) break;
+            await new Promise(resolve => setTimeout(resolve, attempt * 500));
+        }
+    }
+    throw lastError;
+};
+
 export interface AssessmentTask {
     id: number;
     set_number: number;
@@ -55,6 +72,14 @@ export const assessmentService = {
             timeout: 120000  // 2 minutes – large CAD files can be slow
         });
         return response.data;
+    },
+
+    getSubmissionFileBlob: async (submissionId: number): Promise<Blob> => {
+        return getBlobWithRetry(`/api/v1/assessments/submissions/${submissionId}/download`);
+    },
+
+    getFeedbackFileBlob: async (feedbackId: number): Promise<Blob> => {
+        return getBlobWithRetry(`/api/v1/assessments/feedback/${feedbackId}/download`);
     },
 
     getDownloadUrl: (taskId: number): string => {

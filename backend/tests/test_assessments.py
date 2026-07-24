@@ -10,6 +10,7 @@ Covers:
 
 import pytest
 from datetime import datetime
+from pathlib import Path
 
 from backend.models import AssessmentTask, AssessmentSubmission, TrainerTraineeMapping, TraineeSetMapping
 from .conftest import auth_headers
@@ -218,6 +219,27 @@ class TestTrainerSubmissions:
         response = client.get(self.ENDPOINT, headers=auth_headers(employee_token))
         assert response.status_code == 200
         assert response.json() == []
+
+
+class TestSubmissionDownloads:
+    def test_recovers_submission_after_upload_root_changes(
+        self, client, db, tmp_path, monkeypatch, employee_token,
+        trainer_mapping, seed_submission
+    ):
+        relocated = tmp_path / "submissions" / "1" / "dummy.dwg"
+        relocated.parent.mkdir(parents=True)
+        relocated.write_bytes(b"valid-cad-content")
+        seed_submission.submission_file_path = str(Path("X:/old-server/uploads/submissions/1/dummy.dwg"))
+        db.commit()
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
+
+        response = client.get(
+            f"/api/v1/assessments/submissions/{seed_submission.id}/download",
+            headers=auth_headers(employee_token),
+        )
+
+        assert response.status_code == 200
+        assert response.content == b"valid-cad-content"
 # Admin-only: POST /api/v1/assessments/admin/assign
 class TestAssignTrainer:
     ENDPOINT = "/api/v1/assessments/admin/assign"

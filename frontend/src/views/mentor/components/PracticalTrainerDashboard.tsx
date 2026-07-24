@@ -12,6 +12,7 @@ import { assessmentService,AssessmentSubmission } from '../../../services/assess
 import { authService } from '../../../services/authService';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 import { getAvatarColor } from '../../../utils/avatarUtils';
+import { getFileOperationErrorMessage } from '../../../utils/fileOperationErrors';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
 import { PerformanceDirectory } from '../../admin/components/PerformanceDirectory';
 import { TraineeDetail } from '../../admin/components/TraineeDetail';
@@ -593,10 +594,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
         if (!confirmed) return;
 
         try {
-            const response = await api.get(`/api/v1/assessments/submissions/${submission.id}/download`, {
-                responseType: 'blob'
-            });
-            const blob = response.data;
+            const blob = await assessmentService.getSubmissionFileBlob(submission.id);
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -606,7 +604,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
             a.remove();
             window.URL.revokeObjectURL(url);
         } catch (err) {
-            showNotification('Download failed.', 'error');
+            console.error('Submission download failed:', err);
+            showNotification(getFileOperationErrorMessage(err), 'error');
         }
     };
 
@@ -635,7 +634,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                 showNotification(`Submission opened.`, 'success');
             } catch (err) {
                 console.error('Failed to open in CAD:', err);
-                showNotification(`Failed to launch ${targetApplication}. Please check if it is installed.`, 'error');
+                showNotification(getFileOperationErrorMessage(err, 'open', targetApplication), 'error');
             }
         } else {
             // Fallback to regular download if not in Electron or IPC missing
@@ -655,10 +654,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
         if (!confirmed) return;
 
         try {
-            const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
-                responseType: 'blob'
-            });
-            const blob = response.data;
+            const blob = await assessmentService.getFeedbackFileBlob(feedback.id);
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;

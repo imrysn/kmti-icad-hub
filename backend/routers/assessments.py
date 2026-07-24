@@ -109,6 +109,48 @@ def resolve_master_path(master_file_path: str) -> str:
 
     return full_path
 
+def resolve_uploaded_file_path(stored_path: str) -> str:
+    """Resolve persisted upload paths after server, drive, or upload-root changes."""
+    if not stored_path:
+        return ""
+    if os.path.exists(stored_path):
+        return stored_path
+
+    normalized = stored_path.replace("\\", "/")
+    relative_path = None
+    for marker in ("submissions/", "feedback/"):
+        marker_index = normalized.lower().find(marker)
+        if marker_index >= 0:
+            relative_path = normalized[marker_index:]
+            break
+    if not relative_path:
+        return stored_path
+    relative_parts = relative_path.split("/")
+    if any(part in ("", ".", "..") for part in relative_parts):
+        return stored_path
+
+    upload_root = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+    candidates = [
+        os.path.join(upload_root, *relative_parts),
+        os.path.join(APP_PATH, "uploads", *relative_parts),
+        os.path.join(os.path.dirname(APP_PATH), "uploads", *relative_parts),
+    ]
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return candidate
+    return candidates[0]
+
+def configured_upload_storage_available() -> bool:
+    upload_root = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+    drive = os.path.splitdrive(upload_root)[0]
+    if drive:
+        return os.path.exists(drive + "\\")
+    if upload_root.startswith("\\\\"):
+        parts = upload_root.strip("\\").split("\\")
+        share_root = "\\\\" + "\\".join(parts[:2]) if len(parts) >= 2 else upload_root
+        return os.path.exists(share_root)
+    return True
+
 # --- Trainee Endpoints ---
 
 @router.get("/tasks", response_model=List[AssessmentTaskResponse])
@@ -660,6 +702,8 @@ def download_master_file(
     print("DEBUG DOWNLOAD: task_id=", task_id, "master_file_path=", task.master_file_path, "full_path=", full_path, "exists=", os.path.exists(full_path))
 
     if not os.path.exists(full_path):
+        if not configured_upload_storage_available():
+            raise HTTPException(status_code=503, detail="File storage is temporarily unavailable")
         raise HTTPException(status_code=404, detail=f"File does not exist on server: {full_path}")
 
     return FileResponse(
@@ -1075,25 +1119,11 @@ def download_trainee_submission(
             if not is_assigned:
                 raise HTTPException(status_code=403, detail="You are not assigned to this trainee.")
 
-        # Try dynamic path resolution if the hardcoded absolute path fails (handles server migrations)
-        full_path = submission.submission_file_path
-        if not os.path.exists(full_path):
-            base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
-            if "submissions" in full_path:
-                # Extract everything after 'submissions'
-                parts = full_path.replace("\\", "/").split("/submissions/")
-                if len(parts) > 1:
-                    rel_path = "submissions/" + parts[1]
-                    dynamic_path = os.path.join(base_upload_dir, rel_path)
-                    if os.path.exists(dynamic_path):
-                        full_path = dynamic_path
-                    else:
-                        # Check PyInstaller/dev fallbacks
-                        fallback_1 = os.path.join(APP_PATH, "uploads", rel_path)
-                        if os.path.exists(fallback_1):
-                            full_path = fallback_1
+        full_path = resolve_uploaded_file_path(submission.submission_file_path)
 
         if not os.path.exists(full_path):
+            if not configured_upload_storage_available():
+                raise HTTPException(status_code=503, detail="File storage is temporarily unavailable")
             raise HTTPException(status_code=404, detail="File does not exist on server")
 
         print(f"Returning FileResponse for {full_path}")
@@ -1207,12 +1237,15 @@ def download_feedback_file(
     if not feedback or not feedback.checkback_file_path:
         raise HTTPException(status_code=404, detail="Feedback file not found")
 
-    if not os.path.exists(feedback.checkback_file_path):
+    full_path = resolve_uploaded_file_path(feedback.checkback_file_path)
+    if not os.path.exists(full_path):
+        if not configured_upload_storage_available():
+            raise HTTPException(status_code=503, detail="File storage is temporarily unavailable")
         raise HTTPException(status_code=404, detail="File does not exist on server")
 
     return FileResponse(
-        path=feedback.checkback_file_path,
-        filename=os.path.basename(feedback.checkback_file_path),
+        path=full_path,
+        filename=os.path.basename(full_path),
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
