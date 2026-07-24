@@ -10,7 +10,7 @@ const AddingNotesContent: React.FC = () => {
         <>
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <span className="step-label">Under Annotation, click Note.</span>
                 </div>
                 <div className="step-description">
@@ -22,21 +22,21 @@ const AddingNotesContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <span className="step-label">Click on the edge or face of part to add note.</span>
                 </div>
             </div>
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">3 </span>
+                    <span className="step-number">3</span>
                     <span className="step-label">Position the Note then type PL2.3.</span>
                 </div>
             </div>
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">4 </span>
+                    <span className="step-number">4</span>
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>
                 <div className="step-description">

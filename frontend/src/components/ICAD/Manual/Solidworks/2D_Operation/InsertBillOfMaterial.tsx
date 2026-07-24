@@ -43,7 +43,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         {/* Step 1 */}
                         <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">1 </span>
+                                <span className="step-number">1</span>
                                 <span className="step-label">In the <strong>Insert</strong> menu, under <strong>Tables</strong>, click <strong>Bill of Materials</strong>.</span>
                             </div>
                         </div>
@@ -51,7 +51,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         {/* Step 2 */}
                         <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">2 </span>
+                                <span className="step-number">2</span>
                                 <span className="step-label">Click the part/assembly drawing.</span>
                             </div>
                             <div className="step-description">
@@ -68,7 +68,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         {/* Step 3 */}
                         <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">3 </span>
+                                <span className="step-number">3</span>
                                 <span className="step-label">Edit the <strong>Table Template</strong>.</span>
                             </div>
                             <div className="step-description">
@@ -83,7 +83,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         {/* Step 4 */}
                         <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">4 </span>
+                                <span className="step-number">4</span>
                                 <span className="step-label">Edit <strong>BOM Type</strong>, then select <strong>Top-level only</strong>.</span>
                             </div>
                         </div>
@@ -91,7 +91,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         {/* Step 5 */}
                         <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">5 </span>
+                                <span className="step-number">5</span>
                                 <span className="step-label">
                                     Click <img src={checkImg} alt="Check mark" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
                                 </span>
@@ -101,7 +101,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         {/* Step 6 */}
                         <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">6 </span>
+                                <span className="step-number">6</span>
                                 <span className="step-label">Position the Bill of Material.</span>
                             </div>
                             <div className="step-description">
@@ -154,7 +154,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         {/* Step 7 */}
                         <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">7 </span>
+                                <span className="step-number">7</span>
                                 <span className="step-label">Click the Bill of Material.</span>
                             </div>
                             <div className="step-description">

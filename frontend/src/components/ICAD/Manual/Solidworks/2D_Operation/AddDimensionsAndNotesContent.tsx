@@ -8,7 +8,7 @@ const AddDimensionsAndNotesContent: React.FC = () => {
         <>
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <span className="step-label">Under Annotation, Select Smart Dimension.</span>
                 </div>
                 <div className="step-description">
@@ -20,7 +20,7 @@ const AddDimensionsAndNotesContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <span className="step-label">Select line(s) &gt; drag dimension</span>
                 </div>
                 <div className="step-description">
@@ -32,14 +32,14 @@ const AddDimensionsAndNotesContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">3 </span>
+                    <span className="step-number">3</span>
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>
             </div>
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">4 </span>
+                    <span className="step-number">4</span>
                     <span className="step-label">Repeat Step 1 to 3</span>
                 </div>
                 <div className="step-description">

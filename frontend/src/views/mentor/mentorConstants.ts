@@ -987,30 +987,6 @@ export const SOLIDWORKS_INTRO_LESSONS: Lesson[] = [
     children: [
       { id: 'sw-interface', title: 'SolidWorks Interface', content: ['Window Layout', 'Software Overview'] }
     ]
-  },
-  {
-    id: 'sw-mouse-control-main',
-    title: 'Mouse Control',
-    content: ['Left Click', 'Right Click', 'Scroll Wheel', 'Pan', 'Rotate'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-mouse-control', title: 'Mouse Control', content: ['Left Click', 'Right Click', 'Scroll Wheel', 'Pan', 'Rotate'] }
-    ]
-  },
-  {
-    id: 'sw-keyboard-shortcuts-main',
-    title: 'Keyboard Shortcuts',
-    content: ['Keyboard Shortcuts', 'Common Shortcuts', 'SolidWorks Shortcuts'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-keyboard-shortcuts', title: 'Keyboard Shortcuts', content: ['Common Shortcuts', 'SolidWorks Shortcuts'] },
-      { id: 'sw-menu-bar', title: 'Menu Bar', content: ['Application Menu', 'Pin Icon', 'Commonly Used Tools'] },
-      { id: 'sw-command-manager', title: 'Command Manager', content: ['Part Mode', 'Assembly Mode', 'Drawing Mode'] },
-      { id: 'sw-heads-up-view-toolbar', title: 'Heads-up View Toolbar', content: ['Section View', 'View Orientation', 'Display Style', 'Hide/Show Items'] },
-      { id: 'sw-feature-manager-tree-view', title: 'FeatureManager Tree View', content: ['Part features', 'Assembly parts', 'Drawing views'] },
-      { id: 'sw-coordinate-system', title: 'Coordinate System', content: ['Front', 'Back', 'Left', 'Right', 'Top', 'Bottom', 'Isometric', 'Trimetric'] },
-      { id: 'sw-status-bar', title: 'Status Bar', content: ['Tool information', 'Current performance'] }
-    ]
   }
 ];
 

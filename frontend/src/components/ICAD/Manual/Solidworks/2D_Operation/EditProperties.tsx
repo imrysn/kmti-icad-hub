@@ -39,7 +39,7 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
                         {/* Step 1 */}
                         <div className="instruction-step">
                             <div className="step-header">
-                                <span className="step-number">1 </span>
+                                <span className="step-number">1</span>
                                 <span className="step-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     In the <strong>Menu Bar</strong>, click <strong>File Properties</strong>
                                     <img src={filePropertiesImg} alt="File Properties Icon" style={{ height: '1.2rem', verticalAlign: 'middle' }} />
@@ -81,7 +81,7 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
                         {/* Step 2 */}
                         <div className="instruction-step">
                             <div className="step-header">
-                                <span className="step-number">2 </span>
+                                <span className="step-number">2</span>
                                 <span className="step-label">Edit the Properties.</span>
                             </div>
                             <div className="step-description">

@@ -8,14 +8,14 @@ const DimensioningChamferContent: React.FC = () => {
         <>
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <span className="step-label">Under Smart Dimension.</span>
                 </div>
             </div>
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <span className="step-label">Click Chamfer Dimension.</span>
                 </div>
                 <div className="step-description">

@@ -776,7 +776,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -792,7 +792,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -807,7 +807,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -854,7 +854,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -870,7 +870,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-4rem" }}>
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -885,7 +885,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginBottom: "-3rem" }}>
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -898,7 +898,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">4 </span>
+                <span className="step-number">4</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -938,7 +938,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -954,7 +954,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-5rem" }}>
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -969,7 +969,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1008,7 +1008,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1024,7 +1024,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -1039,7 +1039,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1141,7 +1141,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1155,7 +1155,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1412,7 +1412,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1437,7 +1437,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -1459,7 +1459,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1472,7 +1472,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">4 </span>
+                <span className="step-number">4</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1515,7 +1515,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1531,7 +1531,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header" style={{ marginBottom: "2rem" }}>
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -1545,7 +1545,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
               <div className={`step-header ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -1749,7 +1749,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1766,7 +1766,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -1792,7 +1792,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1809,7 +1809,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1869,7 +1869,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1886,7 +1886,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -1925,7 +1925,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1942,7 +1942,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -1958,7 +1958,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginTop: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -2047,7 +2047,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -2064,7 +2064,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -2080,7 +2080,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginTop: "-4rem" }}>
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <div className="step-label" style={{ marginTop: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -2181,7 +2181,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -2197,7 +2197,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -2213,7 +2213,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"

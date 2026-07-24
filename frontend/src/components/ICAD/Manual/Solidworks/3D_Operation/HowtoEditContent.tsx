@@ -32,13 +32,13 @@ export const HowToEditSketchContent: React.FC = () => (
             <div style={{ flex: 1, color: 'var(--text-muted)', lineHeight: '2.2' }}>
                 <div style={{ marginBottom: '1rem' }}>
                     <span>1. Click the feature to be edited.</span>
-                    <img src={bossExtrude1Img} alt="Boss-Extrude1" style={{ height: '24px', marginLeft: '0.5rem', verticalAlign: 'middle' }} />
+                    <img src={bossExtrude1Img} alt="Boss-Extrude1" style={{ height: '35px', marginLeft: '0.5rem', verticalAlign: 'middle' }} />
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span>2. This will appear, click <strong>Edit Sketch</strong></span>
-                        <img src={editSketch1Img} alt="Edit Sketch icon" style={{ height: '24px' }} />
+                        <img src={editSketch1Img} alt="Edit Sketch icon" style={{ height: '30px' }} />
                         <span>icon.</span>
                     </div>
                     <img src={editSketch2Img} alt="Edit Sketch selection" style={{ marginTop: '0.5rem', maxWidth: '300px', display: 'block' }} className="software-screenshot" />
@@ -50,13 +50,13 @@ export const HowToEditSketchContent: React.FC = () => (
 
                 <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span>4. Input the required dimension, Click</span>
-                    <img src={checkImg} alt="Check icon" style={{ height: '20px' }} />
+                    <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span>5. Exit sketch</span>
-                        <img src={exitSketchImg} alt="Exit sketch icon" style={{ height: '24px' }} />
+                        <img src={exitSketchImg} alt="Exit sketch icon" style={{ height: '33px' }} />
                     </div>
                     <img src={exitSketch1Img} alt="Exit sketch result" style={{ marginTop: '0.5rem', maxWidth: '400px', display: 'block' }} className="software-screenshot" />
                 </div>
@@ -75,13 +75,13 @@ export const HowToEditSketchContent: React.FC = () => (
 
                 <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span>2. Click</span>
-                    <img src={checkImg} alt="Check icon" style={{ height: '20px' }} />
+                    <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span>3. Click <strong>Rebuild</strong></span>
-                        <img src={rebuildImg} alt="Rebuild icon" style={{ height: '24px' }} />
+                        <img src={rebuildImg} alt="Rebuild icon" style={{ height: '37px' }} />
                         <span>or press "Ctrl + b"</span>
                     </div>
                     <div style={{ marginLeft: '1.25rem', color: 'var(--text-muted)' }}>(It will update the 3D Model)</div>
@@ -107,7 +107,7 @@ export const HowToEditFeatureContent: React.FC = () => (
                 <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span>2. Click <strong>Edit Feature</strong></span>
-                        <img src={editFeatureImg} alt="Edit Feature icon" style={{ height: '24px' }} />
+                        <img src={editFeatureImg} alt="Edit Feature icon" style={{ height: '37px' }} />
                         <span>icon.</span>
                     </div>
                     <img src={editFeature1Img} alt="Edit Feature selection" style={{ marginTop: '0.5rem', maxWidth: '300px', display: 'block' }} className="software-screenshot" />
@@ -120,7 +120,7 @@ export const HowToEditFeatureContent: React.FC = () => (
 
                 <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span>4. Click</span>
-                    <img src={checkImg} alt="Check icon" style={{ height: '20px' }} />
+                    <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                 </div>
             </div>
         </div>
@@ -138,13 +138,13 @@ export const HowToEditFeatureContent: React.FC = () => (
 
                 <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span>2. Click</span>
-                    <img src={checkImg} alt="Check icon" style={{ height: '20px' }} />
+                    <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span>3. Click <strong>Rebuild</strong></span>
-                        <img src={rebuildImg} alt="Rebuild icon" style={{ height: '24px' }} />
+                        <img src={rebuildImg} alt="Rebuild icon" style={{ height: '37px' }} />
                         <span>or press "Ctrl + b"</span>
                     </div>
                     <div style={{ marginLeft: '1.25rem', color: 'var(--text-muted)' }}>(It will update the 3D Model)</div>
@@ -169,7 +169,7 @@ export const HowToEditMatingsContent: React.FC = () => (
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span>This will appear, click <strong>Edit Feature</strong></span>
-                        <img src={editFeatureImg} alt="Edit Feature icon" style={{ height: '24px' }} />
+                        <img src={editFeatureImg} alt="Edit Feature icon" style={{ height: '40px' }} />
                         <span>icon.</span>
                     </div>
                     <img src={clickEditFeaturesImg} alt="Click Edit Features" style={{ marginTop: '0.5rem', maxWidth: '250px', display: 'block' }} className="software-screenshot" />
@@ -195,7 +195,7 @@ export const HowToEditMatingsContent: React.FC = () => (
                 <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0.25rem' }}>5.</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span>Click</span>
-                    <img src={checkImg} alt="Check icon" style={{ height: '20px' }} />
+                    <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                 </div>
             </div>
         </div>

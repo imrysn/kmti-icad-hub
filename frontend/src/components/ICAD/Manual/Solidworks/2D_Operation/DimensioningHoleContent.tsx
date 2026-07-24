@@ -9,7 +9,7 @@ const DimensioningHoleContent: React.FC = () => {
         <>
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <span className="step-label" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                         Click <strong>Smart Dimension</strong> 
                         <img src={smartDimensionImg} alt="Smart Dimension" style={{ height: '36px', verticalAlign: 'middle', display: 'inline-block', margin: '0 8px' }} />
@@ -25,14 +25,14 @@ const DimensioningHoleContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <span className="step-label">Edit the dimension properties if needed.</span>
                 </div>
             </div>
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">3 </span>
+                    <span className="step-number">3</span>
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>
                 <div className="step-description">

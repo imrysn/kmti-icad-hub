@@ -174,7 +174,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <div style={{ flex: 1 }}>
                 <div className={`${getStepClass("color-1")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -190,7 +190,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
                 <div className={`${getStepClass("color-2")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ marginBottom: "2rem", alignItems: 'flex-start' }}>
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -292,7 +292,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <div style={{ flex: 1 }}>
                 <div className={`${getStepClass("layer-1")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginBottom: "1rem" }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -308,7 +308,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
                 <div className={`${getStepClass("layer-2")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -324,7 +324,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
                 <div className={`${getStepClass("layer-3")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">3 </span>
+                    <span className="step-number">3</span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"

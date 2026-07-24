@@ -16,7 +16,7 @@ const Video_SolidWorks_Interface: React.FC<VideoSolidWorksInterfaceProps> = ({ o
     scrollProgress,
     containerRef,
     currentIndex
-  } = useLessonCore('sw-interface', SOLIDWORKS_TUTORIAL_STEPS.map(s => s.text));
+  } = useLessonCore('sw-interface');
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
