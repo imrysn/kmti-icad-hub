@@ -285,16 +285,12 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               <div
                 className="gallery-container"
                 style={{
-                  background: "rgba(255, 255, 255, 0.02)",
-                  border: "1px solid var(--glass-border)",
-                  borderRadius: "12px",
                   padding: "1.5rem",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   position: "relative",
                   width: "100%",
-                  boxShadow: "var(--shadow-card)"
                 }}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
@@ -304,7 +300,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 <div
                   style={{
                     width: "100%",
-                    height: "450px",
+                    height: "650px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",

@@ -76,7 +76,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                             <div className="step-header">
                                 <span className="step-number">4 </span>
                                 <span className="step-label">
-                                    Click <img src={checkImg} alt="Check mark" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                                    Click <img src={checkImg} alt="Check mark" style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
                                 </span>
                             </div>
                         </div>

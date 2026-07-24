@@ -224,11 +224,12 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
           text="REMINDER:"
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
+          style={{ marginBottom: "0.5rem", marginTop: "0.5rem" }}
         />
       </section>
 
-      <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content fade-in">
+      <div className="lesson-grid single-card" style={{ marginTop: "0.5rem" }}>
+        <div className="lesson-card tab-content fade-in" style={{ paddingTop: "1.5rem", gap: "1rem" }}>
           <div
             className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
             data-reading-index="2"

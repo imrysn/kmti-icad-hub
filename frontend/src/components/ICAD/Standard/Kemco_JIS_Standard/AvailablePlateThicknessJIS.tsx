@@ -103,11 +103,11 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                     </div>
 
                     {/* ── Plate Thickness Image ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                         <img
                             src={plateThicknessImg}
-                            alt="Available Plate Thickness Reference"
-                            className="software-screenshot mt-4"
+                            alt="Available Plate Thickness"
+                            className="software-screenshot"
                             style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>

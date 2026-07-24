@@ -88,12 +88,12 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
                 <div className="lesson-card tab-content fade-in">
 
                     {/* Bolt Hole Diameter Image */}
-                    <div className="step-description" style={{ marginTop: "1rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                         <img
                             src={boltAndBoltImg}
                             alt="Bolt Hole Diameter Standard"
-                            className="software-screenshot mt-4"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            className="software-screenshot"
+                            style={{ maxWidth: "70%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
 
@@ -113,11 +113,11 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
                                 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-main)", marginBottom: "1rem" }}
                             />
                         </div>
-                        <div className="step-description">
+                        <div className="step-description" style={{ alignItems: "center" }}>
                             <img
                                 src={boltLengthImg}
                                 alt="Bolt Length Standard"
-                                className="software-screenshot mt-4"
+                                className="software-screenshot"
                                 style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                             />
                         </div>

@@ -103,11 +103,11 @@ const CrossRefPreviousDwg: React.FC<CrossRefPreviousDwgProps> = ({
                     </div>
 
                     {/* ── Cross Ref & Previous Dwg Image ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                         <img
                             src={crossRefImg}
-                            alt="Cross Ref. No. & Previous Dwg. No."
-                            className="software-screenshot mt-4"
+                            alt="Cross Reference Drawing"
+                            className="software-screenshot"
                             style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>

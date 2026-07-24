@@ -93,7 +93,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                             <div className="step-header">
                                 <span className="step-number">5 </span>
                                 <span className="step-label">
-                                    Click <img src={checkImg} alt="Check mark" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                                    Click <img src={checkImg} alt="Check mark" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
                                 </span>
                             </div>
                         </div>
@@ -172,7 +172,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                                         <img 
                                             src={flagImg} 
                                             alt="Flag icon" 
-                                            style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', margin: '0 6px', border: '1px solid #ccc', borderRadius: '2px' }} 
+                                            style={{ height: '35px', verticalAlign: 'middle', display: 'inline-block', margin: '0 6px', border: '1px solid #ccc', borderRadius: '2px' }} 
                                         />{' '}
                                         these icons will appear.
                                     </p>

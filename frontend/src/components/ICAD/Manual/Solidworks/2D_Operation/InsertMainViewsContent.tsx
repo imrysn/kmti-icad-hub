@@ -15,7 +15,7 @@ const InsertMainViewsContent: React.FC = () => {
                 
                 <ol style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-normal)', lineHeight: '2.2' }}>
                     <li>
-                        On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                        On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '30px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
                     </li>
                     <li>
                         Click Use Custom Scale then set the scale to 1:2.
@@ -24,7 +24,7 @@ const InsertMainViewsContent: React.FC = () => {
                         Click on the sheet to drop the part.
                     </li>
                     <li>
-                        Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                        Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
                     </li>
                 </ol>
 

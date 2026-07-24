@@ -53,7 +53,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                     <span className="step-label">
                                         In View Layout, click Section View.
                                         <span className="image-wrapper-flush" style={{ marginLeft: '1rem' }}>
-                                            <img src={svLogoImg} alt="Section View Logo" style={{ height: '40px', verticalAlign: 'middle' }} />
+                                            <img src={svLogoImg} alt="Section View Logo" style={{ height: '50px', verticalAlign: 'middle' }} />
                                         </span>
                                     </span>
                                 </div>
@@ -69,7 +69,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                             <div className="instruction-step" style={{ padding: 0 }}>
                                 <div className="step-header">
                                     <span className="step-number">3 </span>
-                                    <span className="step-label">Position the cutting line then click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />.</span>
+                                    <span className="step-label">Position the cutting line then click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />.</span>
                                 </div>
                             </div>
 
@@ -87,7 +87,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                 </div>
                                 <div className="step-description">
                                     <ol style={{ paddingLeft: '1.25rem', margin: '0.5rem 0 0 0', color: 'var(--text-normal)', lineHeight: '2' }}>
-                                        <li>On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></li>
+                                        <li>On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></li>
                                         <li>Click Use Custom Scale then set the scale to 1:2.</li>
                                     </ol>
                                 </div>
@@ -175,7 +175,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                     <div className="instruction-step" style={{ paddingTop: '0' }}>
                         <div className="step-header">
                             <span className="step-number">4 </span>
-                            <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
+                            <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                         </div>
                         <div className="step-description">
                             <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
