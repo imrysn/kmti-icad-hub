@@ -1,7 +1,9 @@
 # Node / Frontend
 node_modules/
 dist/
-dist-electron/
+dist-electron*/
+dist-electron-fixed/
+dist-electron-release/
 release/
 build/
 *.log

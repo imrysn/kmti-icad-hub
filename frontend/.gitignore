@@ -1,6 +1,8 @@
 node_modules
 dist
-dist-electron
+dist-electron*
+dist-electron-fixed
+dist-electron-release
 .env
 .env.local
 *.log
