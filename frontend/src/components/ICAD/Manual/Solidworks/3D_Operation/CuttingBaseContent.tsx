@@ -18,7 +18,7 @@ const CuttingBaseContent: React.FC = () => (
                         <li>
                             In <strong>Sketch</strong> tab, select <strong>Sketch</strong>{' '}
                             <span className="image-wrapper-flush">
-                                <img src={sImg} alt="Sketch Tab" style={{ height: '24px', verticalAlign: 'middle' }} />
+                                <img src={sImg} alt="Sketch Tab" style={{ height: '38px', verticalAlign: 'middle' }} />
                             </span>
                         </li>
                         <li>
@@ -50,7 +50,7 @@ const CuttingBaseContent: React.FC = () => (
                         <li>
                             In <strong>Features</strong> tab, click <strong>Extruded Cut</strong>{' '}
                             <span className="image-wrapper-flush">
-                                <img src={cutImg} alt="Extruded Cut" style={{ height: '24px', verticalAlign: 'middle' }} />
+                                <img src={cutImg} alt="Extruded Cut" style={{ height: '38px', verticalAlign: 'middle' }} />
                             </span>
                         </li>
                         <li>
@@ -59,7 +59,7 @@ const CuttingBaseContent: React.FC = () => (
                         <li>
                             Click{' '}
                             <span className="image-wrapper-flush">
-                                <img src={checkImg} alt="Check button" style={{ height: '24px', verticalAlign: 'middle' }} />
+                                <img src={checkImg} alt="Check button" style={{ height: '28px', verticalAlign: 'middle' }} />
                             </span>
                         </li>
                     </ol>

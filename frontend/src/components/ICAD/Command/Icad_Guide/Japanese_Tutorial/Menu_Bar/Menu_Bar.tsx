@@ -1,24 +1,26 @@
 import { useState, useRef } from 'react';
 import menuBarVideo from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar.mp4';
+import { VideoControlBar } from '../../Video_Control/VideoControlBar';
 
 interface SpotlightConfig {
     label: string;
     startTime: number;
     endTime: number;
-    x: number;      // % left (relative to 1920)
-    y: number;      // % top (relative to 1080)
-    width: number;  // % width
-    height: number; // % height
+    pxX: number;
+    pxY: number;
+    pxW: number;
+    pxH: number;
 }
 
+// 1920x1080 frame coordinates — widths match actual visible dropdown panel widths from the video
 const SPOTLIGHTS: SpotlightConfig[] = [
-    { label: "File", startTime: 3.0, endTime: 6.4, x: (528 / 1920) * 100, y: (10 / 1080) * 100, width: (710 / 1920) * 100, height: (600 / 1080) * 100 },
-    { label: "View", startTime: 6.4, endTime: 8.4, x: (608 / 1920) * 100, y: (10 / 1080) * 100, width: (240 / 1920) * 100, height: (400 / 1080) * 100 },
-    { label: "Information", startTime: 8.4, endTime: 10.0, x: (675 / 1920) * 100, y: (10 / 1080) * 100, width: (248 / 1920) * 100, height: (496 / 1080) * 100 },
-    { label: "Settings", startTime: 10.0, endTime: 12.75, x: (756 / 1920) * 100, y: (8 / 1080) * 100, width: (307 / 1920) * 100, height: (699 / 1080) * 100 },
-    { label: "Tools", startTime: 12.75, endTime: 14.85, x: (833 / 1920) * 100, y: (10 / 1080) * 100, width: (234 / 1920) * 100, height: (223 / 1080) * 100 },
-    { label: "Window", startTime: 14.85, endTime: 16.85, x: (906 / 1920) * 100, y: (10 / 1080) * 100, width: (356 / 1920) * 100, height: (549 / 1080) * 100 },
-    { label: "Help", startTime: 16.85, endTime: 20.43, x: (1001 / 1920) * 100, y: (10 / 1080) * 100, width: (242 / 1920) * 100, height: (240 / 1080) * 100 }
+    { label: "File", startTime: 3.6, endTime: 4.8, pxX: 0, pxY: 34, pxW: 710, pxH: 570 },
+    { label: "View", startTime: 4.8, endTime: 6.3, pxX: 64, pxY: 34, pxW: 240, pxH: 380 },
+    { label: "Info", startTime: 6.3, endTime: 7.8, pxX: 120, pxY: 34, pxW: 248, pxH: 470 },
+    { label: "Settings", startTime: 7.8, endTime: 9.3, pxX: 197, pxY: 34, pxW: 307, pxH: 660 },
+    { label: "Tools", startTime: 9.3, endTime: 11.1, pxX: 251, pxY: 34, pxW: 234, pxH: 220 },
+    { label: "Window", startTime: 11.1, endTime: 12.9, pxX: 311, pxY: 34, pxW: 356, pxH: 520 },
+    { label: "Help", startTime: 12.9, endTime: 15.7, pxX: 390, pxY: 34, pxW: 242, pxH: 230 }
 ];
 
 function Menu_Bar_Japanese_Tutorial() {
@@ -26,25 +28,45 @@ function Menu_Bar_Japanese_Tutorial() {
     const [currentTime, setCurrentTime] = useState(0);
     const [isEnded, setIsEnded] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const activeSpotlight = !isEnded ? SPOTLIGHTS.find(
+    const activeSpotlightIndex = SPOTLIGHTS.findIndex(
         (spot) => currentTime >= spot.startTime && currentTime <= spot.endTime
-    ) : undefined;
+    );
+    const activeSpotlight = !isEnded && activeSpotlightIndex !== -1 ? SPOTLIGHTS[activeSpotlightIndex] : undefined;
 
     const jumpToTime = (time: number) => {
         if (videoRef.current) {
             setIsEnded(false);
             videoRef.current.currentTime = time;
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
         }
     };
 
+    const handlePrevStep = () => {
+        if (activeSpotlightIndex > 0) {
+            jumpToTime(SPOTLIGHTS[activeSpotlightIndex - 1].startTime);
+        } else {
+            jumpToTime(SPOTLIGHTS[0].startTime);
+        }
+    };
+
+    const handleNextStep = () => {
+        if (activeSpotlightIndex !== -1 && activeSpotlightIndex < SPOTLIGHTS.length - 1) {
+            jumpToTime(SPOTLIGHTS[activeSpotlightIndex + 1].startTime);
+        } else {
+            jumpToTime(SPOTLIGHTS[0].startTime);
+        }
+    };
+
+    // Calculate percent positions relative to 1920x1080 frame
+    const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
+    const spotY = activeSpotlight ? (activeSpotlight.pxY / 1080) * 100 : 0;
+    const spotW = activeSpotlight ? (activeSpotlight.pxW / 1920) * 100 : 0;
+    const spotH = activeSpotlight ? (activeSpotlight.pxH / 1080) * 100 : 0;
+
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
-            <div style={{ padding: "10px 0", fontSize: "28px", fontWeight: "bold", color: "var(--text-white)", fontFamily: "var(--font-heading)" }}>
-                Menu Bar
-            </div>
-
             {/* Quick jump navigation chips */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center", marginBottom: "16px" }}>
                 {SPOTLIGHTS.map((spot) => {
@@ -58,9 +80,9 @@ function Menu_Bar_Japanese_Tutorial() {
                                 fontSize: "12px",
                                 fontWeight: "600",
                                 borderRadius: "16px",
-                                border: isActive ? "1px solid var(--color-primary)" : "1px solid var(--border-color)",
-                                backgroundColor: isActive ? "var(--color-primary-glow)" : "var(--bg-surface)",
-                                color: isActive ? "var(--color-primary)" : "var(--text-muted)",
+                                border: isActive ? "1px solid #ff1493" : "1px solid var(--border-color)",
+                                backgroundColor: isActive ? "rgba(255, 20, 147, 0.2)" : "var(--bg-surface)",
+                                color: isActive ? "#ff1493" : "var(--text-muted)",
                                 cursor: "pointer",
                                 transition: "all 0.2s ease"
                             }}
@@ -90,23 +112,26 @@ function Menu_Bar_Japanese_Tutorial() {
                         </p>
                     </div>
                 ) : (
-                    <div style={{
-                        position: "relative",
-                        width: "80%",
-                        maxWidth: "1000px",
-                        aspectRatio: "16 / 9",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        overflow: "hidden",
-                        borderRadius: "8px",
-                        boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
-                        backgroundColor: "var(--bg-dark)"
-                    }}>
+                    <div
+                        ref={containerRef}
+                        className="video-fullscreen-container"
+                        style={{
+                            position: "relative",
+                            width: "80%",
+                            maxWidth: "1000px",
+                            aspectRatio: "16 / 9",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            overflow: "hidden",
+                            borderRadius: "8px",
+                            boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                            backgroundColor: "var(--bg-dark)"
+                        }}
+                    >
                         <video
                             ref={videoRef}
                             src={menuBarVideo}
-                            controls
                             preload="auto"
                             onPlay={() => setIsEnded(false)}
                             onEnded={() => setIsEnded(true)}
@@ -124,47 +149,103 @@ function Menu_Bar_Japanese_Tutorial() {
                                 width: "100%",
                                 height: "100%",
                                 objectFit: "contain",
-                                outline: "none"
+                                outline: "none",
+                                filter: "brightness(1.3)"
                             }}
                         >
                             Your browser does not support HTML5 video playback.
                         </video>
 
-                        {/* Pink Label beside target coordinates (without box outline) */}
+                        {/* Custom Floating Pill Video Controls Bar */}
+                        <VideoControlBar
+                            videoRef={videoRef}
+                            containerRef={containerRef}
+                            onPrevStep={handlePrevStep}
+                            onNextStep={handleNextStep}
+                        />
+
+                        {/* Spotlight Dimming Overlay with Cutout Mask */}
                         {activeSpotlight && (
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    left: `${activeSpotlight.x}%`,
-                                    top: `${activeSpotlight.y}%`,
-                                    width: `${activeSpotlight.width}%`,
-                                    height: `${activeSpotlight.height}%`,
-                                    pointerEvents: "none",
-                                    transition: "all 0.2s ease-in-out",
-                                    zIndex: 10
-                                }}
-                            >
-                                {/* Label badge beside the box bounds */}
+                            <>
+                                {/* Dimmed backdrop with cutout for active highlight area */}
                                 <div
                                     style={{
                                         position: "absolute",
-                                        left: "calc(100% + 8px)",
-                                        top: 0,
-                                        backgroundColor: "var(--bg-surface)",
-                                        color: "var(--color-primary)",
-                                        border: "1.5px solid var(--color-primary)",
-                                        padding: "4px 12px",
-                                        borderRadius: "6px",
-                                        fontSize: "13px",
-                                        fontWeight: "bold",
-                                        whiteSpace: "nowrap",
-                                        boxShadow: "0 2px 10px rgba(0,0,0,0.5), 0 0 10px rgba(217, 70, 239, 0.3)",
-                                        backdropFilter: "blur(4px)"
+                                        inset: 0,
+                                        pointerEvents: "none",
+                                        backgroundColor: "rgba(0, 0, 0, 0.65)",
+                                        backdropFilter: "brightness(0.4) saturate(0.3)",
+                                        clipPath: `polygon(
+                                            0% 0%,
+                                            100% 0%,
+                                            100% 100%,
+                                            0% 100%,
+                                            0% 0%,
+                                            ${spotX}% ${spotY}%,
+                                            ${spotX}% ${spotY + spotH}%,
+                                            ${spotX + spotW}% ${spotY + spotH}%,
+                                            ${spotX + spotW}% ${spotY}%,
+                                            ${spotX}% ${spotY}%
+                                        )`,
+                                        transition: "clip-path 0.25s ease-out",
+                                        zIndex: 8
+                                    }}
+                                />
+
+                                {/* Brightness Booster — makes inside of spotlight extra bright */}
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${spotX}%`,
+                                        top: `${spotY}%`,
+                                        width: `${spotW}%`,
+                                        height: `${spotH}%`,
+                                        pointerEvents: "none",
+                                        backdropFilter: "brightness(3.0) saturate(1.4)",
+                                        transition: "all 0.25s ease-out",
+                                        zIndex: 9
+                                    }}
+                                />
+
+                                {/* Highlight Box with Deep Pink Border and Soft Outer Glow */}
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${spotX}%`,
+                                        top: `${spotY}%`,
+                                        width: `${spotW}%`,
+                                        height: `${spotH}%`,
+                                        pointerEvents: "none",
+                                        boxSizing: "border-box",
+                                        border: "2.5px solid #ff1493",
+                                        boxShadow: "0 0 10px #ff1493, 0 0 4px #ff1493",
+                                        borderRadius: "2px",
+                                        zIndex: 10,
+                                        transition: "all 0.25s ease-out"
                                     }}
                                 >
-                                    {activeSpotlight.label}
+                                    {/* Category Label Badge */}
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            left: 0,
+                                            top: "calc(100% + 6px)",
+                                            backgroundColor: "rgba(20, 20, 30, 0.9)",
+                                            color: "#ff1493",
+                                            border: "1.5px solid #ff1493",
+                                            padding: "3px 10px",
+                                            borderRadius: "6px",
+                                            fontSize: "12px",
+                                            fontWeight: "bold",
+                                            whiteSpace: "nowrap",
+                                            boxShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 8px rgba(255, 20, 147, 0.4)",
+                                            backdropFilter: "blur(4px)"
+                                        }}
+                                    >
+                                        {activeSpotlight.label}
+                                    </div>
                                 </div>
-                            </div>
+                            </>
                         )}
                     </div>
                 )}

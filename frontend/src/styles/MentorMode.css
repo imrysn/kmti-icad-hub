@@ -199,10 +199,14 @@
 }
 
 .course-card .card-header,
-.course-card p,
-.course-card button {
+.course-card p {
   position: relative;
   z-index: 2;
+}
+
+.course-card button {
+  position: relative;
+  z-index: 3;
 }
 
 /* Text visibility enhancements for 3D model card overlay */

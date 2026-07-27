@@ -14,18 +14,18 @@ const SketchingBaseContent: React.FC = () => (
         {/* Step 7 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">7 </span>
+                <span className="step-number">7</span>
                 <span className="step-label">Add sketch geometry.</span>
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In the <strong>Sketch</strong> tab, click <strong>Corner Rectangle</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={cornerImg} alt="Corner Rectangle" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={cornerImg} alt="Corner Rectangle" style={{ height: '30px', verticalAlign: 'middle' }} />
                     </span>
                     {' '} &gt; Draw a sketch then check{' '}
                     <span className="image-wrapper-flush">
-                        <img src={checkImg} alt="Check" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={checkImg} alt="Check" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                 </p>
             </div>
@@ -34,7 +34,7 @@ const SketchingBaseContent: React.FC = () => (
         {/* Step 8 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">8 </span>
+                <span className="step-number">8</span>
                 <span className="step-label">Add sketch relations (if necessary).</span>
             </div>
             <div className="step-description">
@@ -49,12 +49,11 @@ const SketchingBaseContent: React.FC = () => (
                             />
                         </div>
                     </div>
-
                 </div>
 
                 <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                     <p className="p-flush red-text">
-                        ※ Suggested sketch relation will appear on FeatureManager Design Tree, once sketches and/or origins are both selected.
+                        ※ Suggested sketch relation will appear on <strong>FeatureManager Design Tree</strong>, once sketches and/or origins are both selected.
                     </p>
                     <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>
                         ※ Sketch relation helps the sketch become fully defined by adding the correct sketch relation.
@@ -66,7 +65,7 @@ const SketchingBaseContent: React.FC = () => (
         {/* Step 9 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">9 </span>
+                <span className="step-number">9</span>
                 <span className="step-label">Insert dimension/s.</span>
             </div>
             <div className="step-description">
@@ -76,7 +75,7 @@ const SketchingBaseContent: React.FC = () => (
                             <li>
                                 In <strong>Sketch</strong> tab, click <strong>Smart Dimension</strong>{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={smartImg} alt="Smart Dimension" style={{ height: '24px', verticalAlign: 'middle' }} />
+                                    <img src={smartImg} alt="Smart Dimension" style={{ height: '38px', verticalAlign: 'middle' }} />
                                 </span>
                             </li>
                             <li>Select line(s) to be dimensioned.</li>
@@ -87,18 +86,18 @@ const SketchingBaseContent: React.FC = () => (
                             <li>
                                 Click{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={checkImg} alt="Check" style={{ height: '24px', verticalAlign: 'middle' }} />
+                                    <img src={checkImg} alt="Check" style={{ height: '28px', verticalAlign: 'middle' }} />
                                 </span>
                             </li>
                         </ol>
-                        
+
                         <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                             <p className="p-flush red-text">
                                 ※ Make all the sketches fully defined.
                             </p>
                         </div>
                     </div>
-                    
+
                     <div style={{ flex: '0 0 auto', display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
                         <div className="image-wrapper">
                             <img

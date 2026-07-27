@@ -61,7 +61,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
 
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                                 <div className="step-header">
-                                    <span className="step-number">2 </span>
+                                    <span className="step-number">2</span>
                                     <span className="step-label">Select a cutting line to use. (Select Vertical)</span>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
 
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                                 <div className="step-header">
-                                    <span className="step-number">4 </span>
+                                    <span className="step-number">4</span>
                                     <span className="step-label">Check Flip Direction if needed.</span>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
 
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                                 <div className="step-header">
-                                    <span className="step-number">6 </span>
+                                    <span className="step-number">6</span>
                                     <span className="step-label">Drop the view.</span>
                                 </div>
                             </div>
@@ -153,21 +153,21 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
 
                     <div className="instruction-step" style={{ paddingBottom: '0', marginBottom: '0.5rem' }}>
                         <div className="step-header">
-                            <span className="step-number">1 </span>
+                            <span className="step-number">1</span>
                             <span className="step-label">Click on the hatch area.</span>
                         </div>
                     </div>
 
                     <div className="instruction-step" style={{ paddingBottom: '0', paddingTop: '0', marginBottom: '0.5rem' }}>
                         <div className="step-header">
-                            <span className="step-number">2 </span>
+                            <span className="step-number">2</span>
                             <span className="step-label">Uncheck Material crosshatch.</span>
                         </div>
                     </div>
 
                     <div className="instruction-step" style={{ paddingBottom: '0', paddingTop: '0', marginBottom: '0.5rem' }}>
                         <div className="step-header">
-                            <span className="step-number">3 </span>
+                            <span className="step-number">3</span>
                             <span className="step-label">Click None.</span>
                         </div>
                     </div>

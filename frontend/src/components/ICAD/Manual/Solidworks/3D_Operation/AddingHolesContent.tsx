@@ -11,11 +11,11 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <span className="step-label">
                     In <strong>Features</strong> tab, click <strong>Hole Wizard</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={holeImg} alt="Hole Wizard" style={{ height: '32px', verticalAlign: 'middle' }} />
+                        <img src={holeImg} alt="Hole Wizard" style={{ height: '38px', verticalAlign: 'middle' }} />
                     </span>
                     .
                 </span>
@@ -25,11 +25,11 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <span className="step-label">
                     In{' '}
                     <span className="image-wrapper-flush">
-                        <img src={typeImg} alt="Type Tab" style={{ height: '32px', verticalAlign: 'middle' }} />
+                        <img src={typeImg} alt="Type Tab" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}select <strong>Hole Type</strong>, <strong>Hole Specifications</strong>, and <strong>End Condition</strong> of feature.
                 </span>
@@ -44,11 +44,11 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <span className="step-label">
                     In{' '}
                     <span className="image-wrapper-flush">
-                        <img src={posImg} alt="Positions Tab" style={{ height: '32px', verticalAlign: 'middle' }} />
+                        <img src={posImg} alt="Positions Tab" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}set the position of holes.
                 </span>
@@ -69,11 +69,11 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">4 </span>
+                <span className="step-number">4</span>
                 <span className="step-label">
                     Click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={checkImg} alt="Check button" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={checkImg} alt="Check button" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                     .
                 </span>

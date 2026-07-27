@@ -248,7 +248,12 @@
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-main);
-  /* Theme-aware fallback */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.25rem;
+  /* Use whitespace: pre-wrap to preserve spaces around inline elements inside flex */
+  white-space: pre-wrap;
 }
 
 .lesson-card .step-label {
@@ -281,11 +286,15 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin: 4px 0;
+  margin: 4px 6px;
   background: transparent !important;
   padding: 0 !important;
   border: none !important;
   box-shadow: none !important;
+}
+
+.image-wrapper-flush img {
+  min-height: 28px;
 }
 
 .software-screenshot {

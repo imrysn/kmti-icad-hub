@@ -8,7 +8,7 @@ const CenterlineContent: React.FC = () => {
         <>
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <span className="step-label">In Annotation, click Center line.</span>
                 </div>
                 <div className="step-description">
@@ -20,7 +20,7 @@ const CenterlineContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <span className="step-label">Select two edges to manually insert centerlines.</span>
                 </div>
                 <div className="step-description">

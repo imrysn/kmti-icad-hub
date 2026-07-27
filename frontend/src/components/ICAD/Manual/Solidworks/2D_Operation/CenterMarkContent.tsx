@@ -8,7 +8,7 @@ const CenterMarkContent: React.FC = () => {
         <>
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">1 </span>
+                    <span className="step-number">1</span>
                     <span className="step-label">In Annotation, click Center Mark.</span>
                 </div>
                 <div className="step-description">
@@ -20,7 +20,7 @@ const CenterMarkContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-                    <span className="step-number">2 </span>
+                    <span className="step-number">2</span>
                     <span className="step-label">Select hole/slot hole.</span>
                 </div>
                 <div className="step-description">

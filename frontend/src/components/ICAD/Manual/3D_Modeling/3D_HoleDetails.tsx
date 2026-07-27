@@ -94,7 +94,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-1")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
-              <span className="step-number">1 </span>
+              <span className="step-number">1</span>
               <KaraokeLessonText
                 as="span"
                 className="step-label"
@@ -112,7 +112,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-2")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
             <div className="step-header">
-              <span className="step-number">2 </span>
+              <span className="step-number">2</span>
               <span className="step-label">
                 <KaraokeLessonText
                   as="span"
@@ -131,7 +131,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-3")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
             <div className="step-header">
-              <span className="step-number">3 </span>
+              <span className="step-number">3</span>
               <span className="step-label">
                 <KaraokeLessonText
                   as="span"
@@ -147,7 +147,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-4")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
             <div className="step-header">
-              <span className="step-number">4 </span>
+              <span className="step-number">4</span>
               <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                 <KaraokeLessonText
                   as="span"

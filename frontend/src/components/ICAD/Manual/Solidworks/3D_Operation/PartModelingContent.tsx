@@ -18,7 +18,7 @@ const PartModelingContent: React.FC = () => (
         {/* Step 1 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <span className="step-label">Open a SolidWorks window.</span>
             </div>
         </div>
@@ -26,14 +26,14 @@ const PartModelingContent: React.FC = () => (
         {/* Step 2 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <span className="step-label">Create New File.</span>
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In <strong>Menu Bar</strong>, click <strong>New</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={controlImg} alt="New icon" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={controlImg} alt="New icon" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}or <strong>CTRL + N</strong> key.
                 </p>
@@ -43,7 +43,7 @@ const PartModelingContent: React.FC = () => (
         {/* Step 3 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <span className="step-label">Select New Part Document.</span>
             </div>
             <div className="step-description">
@@ -58,7 +58,7 @@ const PartModelingContent: React.FC = () => (
                             <li>
                                 Select <strong>K&amp;M PART</strong>{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={partImg} alt="K&M PART icon" style={{ height: '35px', verticalAlign: 'middle', marginLeft: '0.5rem' }} />
+                                    <img src={partImg} alt="K&M PART icon" style={{ height: '38px', verticalAlign: 'middle' }} />
                                 </span>
                             </li>
                             <li style={{ marginTop: '0.5rem' }}>Click <strong>OK</strong> or Double click <strong>K&amp;M PART</strong>.</li>
@@ -68,7 +68,7 @@ const PartModelingContent: React.FC = () => (
                             <p className="p-flush red-text" style={{ lineHeight: '1.8' }}>
                                 ※ This{' '}
                                 <span className="image-wrapper-flush" style={{ background: 'white', padding: '2px', border: '1px solid #ddd', borderRadius: '2px', display: 'inline-block', verticalAlign: 'middle', margin: '0 4px' }}>
-                                    <img src={kmTechImg} alt="K M Tech" style={{ height: '22px', display: 'block' }} />
+                                    <img src={kmTechImg} alt="K M Tech" style={{ height: '28px', display: 'block' }} />
                                 </span>
                                 {' '}is where all the KMTI Standard Templates were saved.
                             </p>
@@ -92,11 +92,11 @@ const PartModelingContent: React.FC = () => (
         {/* Step 4 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">4 </span>
+                <span className="step-number">4</span>
                 <span className="step-label">Set the Material.</span>
             </div>
             <div className="step-description">
-                <div className="instruction-box" style={{ marginBottom: '1rem' }}>
+                <div className="instruction-box" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
                     <p className="p-flush red-text">
                         ※ <strong>SS400</strong> is the <strong>default</strong> Material.
                     </p>
@@ -111,7 +111,7 @@ const PartModelingContent: React.FC = () => (
                     <li>
                         Click{' '}
                         <span className="image-wrapper-flush">
-                            <img src={xImg} alt="Close button" style={{ height: '22px', verticalAlign: 'middle' }} />
+                            <img src={xImg} alt="Close button" style={{ height: '28px', verticalAlign: 'middle' }} />
                         </span>
                         {' '}after.
                     </li>
@@ -130,18 +130,18 @@ const PartModelingContent: React.FC = () => (
         {/* Step 5 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">5 </span>
+                <span className="step-number">5</span>
                 <span className="step-label">Show the Origin.</span>
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In <strong>View</strong> tab, select{' '}
                     <span className="image-wrapper-flush">
-                        <img src={originImg} alt="Origins" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={originImg} alt="Origins" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}or in <strong>Heads-up View</strong>, click <strong>Hide/Show Items</strong>{' '}
                     <span className="image-wrapper-flush" style={{ position: 'relative', display: 'inline-block' }}>
-                        <img src={thenImg} alt="Hide/Show Items and Origin" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={thenImg} alt="Hide/Show Items and Origin" style={{ height: '28px', verticalAlign: 'middle' }} />
                         <span style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.9em', pointerEvents: 'none' }}>then</span>
                     </span>
                 </p>
@@ -159,25 +159,25 @@ const PartModelingContent: React.FC = () => (
         {/* Step 6 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">6 </span>
+                <span className="step-number">6</span>
                 <span className="step-label">Select plane to be used.</span>
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In <strong>FeatureManager Design tree</strong>, click <strong>Front Plane</strong> then this will appear{' '}
                     <span className="image-wrapper-flush">
-                        <img src={f1Img} alt="FeatureManager Front Plane" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={f1Img} alt="FeatureManager Front Plane" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                     , click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={f2Img} alt="Click" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={f2Img} alt="Click" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                 </p>
 
                 <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
                     or in <strong>Sketch tab</strong>, click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={sImg} alt="Sketch tab click" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={sImg} alt="Sketch tab click" style={{ height: '38px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}&gt; Select plane
                 </p>

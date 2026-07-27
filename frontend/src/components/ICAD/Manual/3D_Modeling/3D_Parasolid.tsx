@@ -182,7 +182,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className={`${getStepClass('p1-1')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
-                  <span className="step-number">1 </span>
+                  <span className="step-number">1</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -198,7 +198,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className={`${getStepClass('p1-2')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
-                  <span className="step-number">2 </span>
+                  <span className="step-number">2</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -216,7 +216,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
               </div>
               <div className={`${getStepClass('p1-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="step-header">
-                  <span className="step-number">3 </span>
+                  <span className="step-number">3</span>
                   <div className="step-label" style={{marginTop: "-1.5rem"}}>
                   <KaraokeLessonText
                     as="span"
@@ -250,7 +250,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
               
               <div className={`${getStepClass('p2-4')} ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
                 <div className="step-header">
-                  <span className="step-number">4 </span>
+                  <span className="step-number">4</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -271,7 +271,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className={`${getStepClass('p2-5')} ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
-                  <span className="step-number">5 </span>
+                  <span className="step-number">5</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -330,7 +330,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className={`${getStepClass('p2-1')} ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header">
-                  <span className="step-number">1 </span>
+                  <span className="step-number">1</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -347,7 +347,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className={`${getStepClass('p2-2')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" >
                 <div className="step-header" style={{ marginTop: "-2rem" }}>
-                  <span className="step-number">2 </span>
+                  <span className="step-number">2</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -364,7 +364,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className={`${getStepClass('p2-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="step-header" style={{ marginTop: "-2rem" }}>
-                  <span className="step-number">3 </span>
+                  <span className="step-number">3</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -389,7 +389,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 
               <div className={`${getStepClass('p2-4')} ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
                 <div className="step-header" style={{ marginTop: "-2rem" }}>
-                  <span className="step-number">4 </span>
+                  <span className="step-number">4</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -410,7 +410,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
 
               <div className={`${getStepClass('p2-5')} ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9">
                 <div className="step-header" style={{ marginTop: "-2rem" }}>
-                  <span className="step-number">5 </span>
+                  <span className="step-number">5</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"

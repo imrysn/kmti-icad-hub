@@ -193,7 +193,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -209,7 +209,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -225,7 +225,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -294,7 +294,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -311,7 +311,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -328,7 +328,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <span className="step-label" style={{ marginTop: '-1.5rem' }}>
                   <KaraokeLessonText
                     as="span"
@@ -396,7 +396,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -412,7 +412,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
@@ -430,7 +430,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"

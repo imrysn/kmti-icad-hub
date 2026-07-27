@@ -186,7 +186,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 1 */}
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header">
-                  <span className="step-number">1 </span>
+                  <span className="step-number">1</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -204,7 +204,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 2 */}
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header" style={{ marginTop: "-1rem" }}>
-                  <span className="step-number">2 </span>
+                  <span className="step-number">2</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -220,7 +220,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 3 */}
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
-                  <span className="step-number">3 </span>
+                  <span className="step-number">3</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -243,7 +243,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 4 */}
               <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                 <div className="step-header">
-                  <span className="step-number">4 </span>
+                  <span className="step-number">4</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -266,7 +266,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 5 */}
               <div className={`instruction-step ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9">
                 <div className="step-header">
-                  <span className="step-number">5 </span>
+                  <span className="step-number">5</span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"

@@ -70,7 +70,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
-              <span className="step-number">1 </span>
+              <span className="step-number">1</span>
               <span className="step-label">Select Interference Check from the icon menu.</span>
             </div>
             <div className="step-description">
@@ -80,7 +80,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className={`${getStepClass("i2")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
             <div className="step-header">
-              <span className="step-number">2 </span>
+              <span className="step-number">2</span>
               <span className="step-label">On the command menu, unselect High-speed detection.</span>
             </div>
             <div className="step-description">
@@ -90,7 +90,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className={`${getStepClass("i3")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom:"-2rem"}}>
             <div className="step-header">
-              <span className="step-number">3 </span>
+              <span className="step-number">3</span>
               <span className="step-label" style={{marginTop: "-1.5rem"}}>Select specific entities to check if there are interferences &gt; GO 
                 <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
               </span>
@@ -107,7 +107,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
 
           <div className={`${getStepClass("i4")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
             <div className="step-header">
-              <span className="step-number">4 </span>
+              <span className="step-number">4</span>
               <span className="step-label">Analyze possible countermeasures to remove the interference on the parts.</span>
             </div>
               <p className="p-flush mb-4" style={{ marginTop: "-1rem" }}>To remove the red CGS solid, use Undo or Ctrl+Z.</p>
@@ -121,7 +121,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
             </div>
           </div>
           <div className={`step-header ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{marginTop: "2rem"}}>
-              <span className="step-number">1 </span>
+              <span className="step-number">1</span>
               <span className="step-label" style={{marginTop: "-1.5rem"}} >Select the tool on the icon menu &gt; GO <strong className="text-highlight"></strong>
                 <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
               </span>

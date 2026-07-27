@@ -189,7 +189,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             {/* Step 2 */}
             <div className={`${getStepClass('s1-2')} ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{marginTop: "-3rem"}}>
               <div className="step-header" style={{ marginBottom: "1rem" }}>
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <span className="step-label">Arrange Box</span>
               </div>
               <div className="flex-row-wrap" style={{ gap: '2rem' }}>

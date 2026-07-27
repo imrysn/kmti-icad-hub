@@ -38,7 +38,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                         {/* Step 1 */}
                         <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                             <div className="step-header">
-                                <span className="step-number">1 </span>
+                                <span className="step-number">1</span>
                                 <span className="step-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     In the <strong>Menu Bar</strong>, click <strong>Save</strong>
                                     <img src={saveIconImg} alt="Save Icon" style={{ height: '2.5rem', verticalAlign: 'middle' }} />
@@ -50,7 +50,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                         {/* Step 2 */}
                         <div className="instruction-step" style={{ marginTop: '2rem' }}>
                             <div className="step-header">
-                                <span className="step-number">2 </span>
+                                <span className="step-number">2</span>
                                 <span className="step-label">When the dialog box appears, edit the <strong>File Name</strong>, then click <strong>Save</strong>.</span>
                             </div>
                             <div className="step-description">
