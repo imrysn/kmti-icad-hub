@@ -1,0 +1,15 @@
+export const en_components_roadmap = {
+  "roadmap.title": "Candidate Roadmap",
+  "roadmap.skill_radar": "Skill Radar",
+  "roadmap.milestones": "Certification Milestones",
+  "roadmap.novice_title": "iCAD Novice",
+  "roadmap.novice_desc": "Completed 25% of the curriculum",
+  "roadmap.specialist_title": "Quality Specialist",
+  "roadmap.specialist_desc": "Maintained >80% Mastery Score",
+  "roadmap.pro_title": "iCAD Professional",
+  "roadmap.pro_desc": "Course completion (100%)",
+  "roadmap.cert_title": "Certification Readiness",
+  "roadmap.cert_eligible": "Eligible for Digital Certificate",
+  "roadmap.cert_continue": "Continue training to unlock certification",
+  "roadmap.gen_cert": "Generate Certificate",
+};

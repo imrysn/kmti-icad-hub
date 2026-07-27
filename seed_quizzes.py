@@ -28,7 +28,9 @@ def seed_database():
             quiz = Quiz(
                 slug=q_data['slug'],
                 title=q_data['title'],
+                title_ja=q_data.get('title_ja'),
                 description=q_data['description'],
+                description_ja=q_data.get('description_ja'),
                 course_type=q_data['course_type']
             )
             db.add(quiz)
@@ -38,9 +40,12 @@ def seed_database():
                 question = Question(
                     quiz_id=quiz.id,
                     text=qst_data['text'],
+                    text_ja=qst_data.get('text_ja'),
                     options_json=json.dumps(qst_data['options']),
+                    options_json_ja=json.dumps(qst_data['options_ja']) if qst_data.get('options_ja') else None,
                     correct_answer=qst_data['correct_answer'],
                     explanation=qst_data.get('explanation', ''),
+                    explanation_ja=qst_data.get('explanation_ja'),
                     order=i
                 )
                 db.add(question)

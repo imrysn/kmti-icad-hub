@@ -1,0 +1,42 @@
+export const en_3d_2d_to_3d = {
+  "2dto3d.tab1": "2D > 3D",
+  "2dto3d.workPlane": "Work Plane",
+  "2dto3d.intro": "3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension. To create 2D plane on the 3D Dimension, use Open Work Plane from the toolbar.",
+  "2dto3d.rotate": "Use to rotate the work plane to X-Y Plane, X-Z Plane or Y-Z Plane",
+  "2dto3d.commandMenu.title": "COMMAND MENU",
+  "2dto3d.commandMenu.desc": "Most tools use for sketching on the work plane can be found on the command menu.",
+
+  "2dto3d.introTitle": "Extrude, Revolve, Spiral",
+  "2dto3d.introSubtitle": "These are the tools use for extruding 2D sketches to 3D Solid Entities",
+  "2dto3d.introSubtitle2": "Most commonly used tools are the following:",
+  
+  "2dto3d.extrude.tab": "Extrude",
+  "2dto3d.extrude.title": "EXTRUDE",
+  "2dto3d.extrude.desc": "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.",
+  "2dto3d.extrude.step1": "Select Extrude from the icon menu",
+  "2dto3d.extrude.step2": "Pick the cross-section to be extruded.",
+  "2dto3d.extrude.step2hatch": "A hatch will appear to show that the sketch is an enclosed figure > GO",
+  "2dto3d.extrude.step3": "Specify the height of extrusion on the item entry > Press Enter > GO",
+  "2dto3d.extrude.dialog": "A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane",
+  "2dto3d.extrude.dialogNote": "Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone",
+  "2dto3d.extrude.dialogCancel": "Select Cancel to keep the work plane together with all the 2D sketches",
+  
+  "2dto3d.revolve.tab": "Revolve",
+  "2dto3d.revolve.title": "REVOLVE",
+  "2dto3d.revolve.desc": "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.",
+  "2dto3d.revolve.step1": "Select Revolve from the icon menu",
+  "2dto3d.revolve.step2": "Pick the cross section to be revolved > GO",
+  "2dto3d.revolve.step2hatch": "A hatch will appear to show that the sketch is an enclosed figure",
+  "2dto3d.revolve.step3": "Select the axis of rotation > GO",
+  "2dto3d.processOverview": "PROCESS OVERVIEW",
+  
+  "2dto3d.spiral.tab": "Spiral",
+  "2dto3d.spiral.title": "SPIRAL FORM",
+  "2dto3d.spiral.desc": "Creates a 3D spiral form from a section form created on a 2D sketch.",
+  "2dto3d.spiral.step1": "First do the sketch",
+  "2dto3d.spiral.step2": "Select Spiral Form from the icon menu",
+  "2dto3d.spiral.step2hatch": "Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure > GO",
+  "2dto3d.spiral.step3": "Specify the pitch of the spiral on the item entry > Press Enter > GO",
+  "2dto3d.spiral.step3note": "Note: Pitch must be greater than Thickness.",
+  "2dto3d.spiral.step4": "Select the ends of the length of the spiral along the axis of rotation then GO"
+};

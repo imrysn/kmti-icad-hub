@@ -1,0 +1,18 @@
+export const en_components_course_selector = {
+  "course.welcome_title": "Welcome to iCAD Training",
+  "course.welcome_subtitle": "Select your learning path to begin the deep dive",
+  "course.locked": "Locked",
+  "course.unlock_pre": "Complete previous course to unlock",
+  "course.unlock_3d_prac": "Complete 3D Modeling to unlock",
+  "course.unlock_2d_det": "Complete 2D Detailing to unlock",
+  "course.unlock_3d_det": "Complete 3D Practical Assessment to unlock",
+  "course.launch": "Launch Module",
+  "course.title_3d": "3D Modeling",
+  "course.desc_3d": "Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints.",
+  "course.title_3d_prac": "3D Practical Assessment",
+  "course.desc_3d_prac": "Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.",
+  "course.title_2d": "2D Detailing",
+  "course.desc_2d": "Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.",
+  "course.title_2d_assessment": "2D Detailing Assessment",
+  "course.desc_2d_assessment": "Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.",
+};

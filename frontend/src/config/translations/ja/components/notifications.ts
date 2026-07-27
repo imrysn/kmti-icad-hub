@@ -1,0 +1,18 @@
+export const ja_components_notifications = {
+  "notif.title": "通知センター",
+  "notif.read_all": "すべて既読",
+  "notif.clear_all": "すべて削除",
+  "notif.empty_title": "まだ通知はありません",
+  "notif.empty_desc": "アクティビティログとイベントアラートがここに表示されます。",
+  "notif.clear_confirm": "すべての通知を削除しますか？",
+  "notif.marked_read": "すべての通知を既読にしました。",
+  "notif.mark_read_fail": "通知の既読化に失敗しました。",
+  "notif.cleared": "すべての通知を削除しました。",
+  "notif.clear_fail": "通知の削除に失敗しました。",
+  "notif.just_now": "たった今",
+  "notif.mins_ago": "分前",
+  "notif.hours_ago": "時間前",
+  "notif.days_ago": "日前",
+  "notif.unread": "未読",
+  "notif.total": "合計",
+};

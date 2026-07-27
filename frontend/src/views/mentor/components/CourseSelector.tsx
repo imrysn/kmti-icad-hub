@@ -1,5 +1,6 @@
 import { Lock,PlayCircle } from 'lucide-react';
 import React from 'react';
+import { useTranslation } from '../../../context/LanguageContext';
 import drawing2DUrl from '../../../assets/2D.png';
 import drawing2DAssessmentUrl from '../../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png';
 import practical3DImgUrl from '../../../assets/froming4.webp';
@@ -32,6 +33,8 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     is3DAssessmentCompleted,
     isEmployeeSide = false
 }) => {
+    const { t } = useTranslation();
+
     if (loading) {
         return (
             <div className="mentor-mode">
@@ -76,19 +79,27 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     };
 
     const activeCards = [
-        course3D,
+        {
+            ...course3D,
+            title: t('course.title_3d') || course3D.title,
+            description: t('course.desc_3d') || course3D.description
+        },
         ...(isEmployeeSide ? [] : [{
             id: 'practical-assessment',
-            title: '3D Practical Assessment',
-            description: 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
+            title: t('course.title_3d_prac') || '3D Practical Assessment',
+            description: t('course.desc_3d_prac') || 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
             course_type: 'Practical',
             order: 1.5
         }]),
-        course2D,
+        {
+            ...course2D,
+            title: t('course.title_2d') || course2D.title,
+            description: t('course.desc_2d') || course2D.description
+        },
         ...(isEmployeeSide ? [] : [{
             id: '2d-assessment',
-            title: '2D Detailing Assessment',
-            description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
+            title: t('course.title_2d_assessment') || '2D Detailing Assessment',
+            description: t('course.desc_2d_assessment') || 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
             course_type: 'Practical_2D',
             order: 2.5
         }])
@@ -99,8 +110,8 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     return (
         <div className="mentor-mode course-selector-view animate-fade-in">
             <div className="mentor-header">
-                <h1>Welcome to iCAD Training</h1>
-                <p>Select your learning path to begin the deep dive</p>
+                <h1>{t('course.welcome_title') || 'Welcome to iCAD Training'}</h1>
+                <p>{t('course.welcome_subtitle') || 'Select your learning path to begin the deep dive'}</p>
             </div>
 
             <div className="course-selection">
@@ -125,13 +136,13 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                     <div className="locked-overlay">
                                         <div className="locked-overlay-inner">
                                             <Lock size={36} className="overlay-lock-icon" />
-                                            <span>Prerequisite Required</span>
+                                            <span>{t('course.locked') || 'Locked'}</span>
                                             <p className="locked-hint">
                                                 {course.id.toString() === 'practical-assessment'
-                                                    ? 'Complete 3D Modeling to unlock'
+                                                    ? (t('course.unlock_3d_prac') || 'Complete 3D Modeling to unlock')
                                                     : course.id.toString() === '2d-assessment'
-                                                        ? 'Complete 2D Detailing to unlock'
-                                                        : 'Complete 3D Practical Assessment to unlock'}
+                                                        ? (t('course.unlock_2d_det') || 'Complete 2D Detailing to unlock')
+                                                        : (t('course.unlock_3d_det') || 'Complete 3D Practical Assessment to unlock')}
                                             </p>
                                         </div>
                                     </div>
@@ -168,7 +179,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                         if (!isLocked) setSelectedCourse(course as any);
                                     }}
                                 >
-                                    {isLocked ? 'Locked' : 'Launch Module'} <PlayCircle size={18} />
+                                    {isLocked ? (t('course.locked') || 'Locked') : (t('course.launch') || 'Launch Module')} <PlayCircle size={18} />
                                 </button>
                             </div>
                         );

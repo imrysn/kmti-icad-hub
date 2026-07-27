@@ -1,0 +1,16 @@
+export const en_components_time_record = {
+  "time.title": "Time Records",
+  "time.filter_by_set": "Filter by Set:",
+  "time.all_sets": "All Sets",
+  "time.copy_excel": "Copy for Excel",
+  "time.empty_title": "No completed time records found yet.",
+  "time.empty_desc": "Upload a file after the timer runs to see records here.",
+  "time.started": "Started:",
+  "time.finished": "Finished:",
+  "time.mins": "mins",
+  "time.unknown_file": "Unknown File",
+  "time.records": "records",
+  "time.copied": "Copied to clipboard! You can now click on cell F in Excel and Paste.",
+  "time.copy_fail_browser": "Copy failed. Your browser blocked it.",
+  "time.copy_fail_manual": "Copy failed. Please manually copy the table.",
+};

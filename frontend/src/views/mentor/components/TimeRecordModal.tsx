@@ -1,6 +1,7 @@
 import { Clock,Copy,Filter } from 'lucide-react';
 import React,{ useMemo,useState } from 'react';
 import { Modal } from '../../../components/Modal';
+import { useTranslation } from '../../../context/LanguageContext';
 import { useNotification } from '../../../context/NotificationContext';
 import { AssessmentSubmission,AssessmentTask } from '../../../services/assessmentService';
 
@@ -16,6 +17,7 @@ interface TimeRecordModalProps {
 export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClose, tasks, submissions, getSetDisplayNumber }) => {
     const [selectedSet, setSelectedSet] = useState<number | 'ALL'>('ALL');
     const { showNotification } = useNotification();
+    const { t } = useTranslation();
 
     // Group submissions by Set
     const groupedSubmissions = useMemo(() => {
@@ -101,26 +103,26 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
         try {
             const successful = document.execCommand('copy');
             if (successful) {
-                showNotification('Copied to clipboard! You can now click on cell F in Excel and Paste.', 'success');
+                showNotification(t('time.copied'), 'success');
             } else {
-                showNotification('Copy failed. Your browser blocked it.', 'error');
+                showNotification(t('time.copy_fail_browser'), 'error');
             }
         } catch (err) {
             console.error('Fallback copy failed', err);
-            showNotification('Copy failed. Please manually copy the table.', 'error');
+            showNotification(t('time.copy_fail_manual'), 'error');
         }
         document.body.removeChild(textArea);
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Time Records" size="lg">
+        <Modal isOpen={isOpen} onClose={onClose} title={t('time.title')} size="lg">
             <div style={{ padding: '1.5rem', maxHeight: '75vh', overflowY: 'auto' }}>
 
                 {availableSets.length > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', backgroundColor: 'rgba(255,255,255,0.03)', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)' }}>
                             <Filter size={16} />
-                            <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Filter by Set:</span>
+                            <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{t('time.filter_by_set')}</span>
                         </div>
                         <select
                             value={selectedSet}
@@ -136,7 +138,7 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                 fontSize: '0.9rem'
                             }}
                         >
-                            <option value="ALL" style={{ backgroundColor: 'var(--bg-surface)', color: 'var(--text-main)' }}>All Sets</option>
+                            <option value="ALL" style={{ backgroundColor: 'var(--bg-surface)', color: 'var(--text-main)' }}>{t('time.all_sets')}</option>
                             {availableSets.map(setNum => (
                                 <option key={setNum} value={setNum} style={{ backgroundColor: 'var(--bg-surface)', color: 'var(--text-main)' }}>Set {getSetDisplayNumber(setNum)}</option>
                             ))}
@@ -147,8 +149,8 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                 {Object.keys(groupedSubmissions).length === 0 ? (
                     <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '3rem' }}>
                         <Clock size={48} style={{ opacity: 0.3, marginBottom: '1rem' }} />
-                        <p>No completed time records found yet.</p>
-                        <p style={{ fontSize: '0.85rem' }}>Upload a file after the timer runs to see records here.</p>
+                        <p>{t('time.empty_title')}</p>
+                        <p style={{ fontSize: '0.85rem' }}>{t('time.empty_desc')}</p>
                     </div>
                 ) : (
                     setsToRender.map(([setStr, subs]) => {
@@ -160,7 +162,7 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <h4 style={{ margin: 0, color: 'var(--primary-color)', fontSize: '1.1rem' }}>Set {getSetDisplayNumber(setNum)}</h4>
                                         <span style={{ marginLeft: '1rem', fontSize: '0.8rem', color: 'var(--text-main)', backgroundColor: 'var(--color-primary-glow)', padding: '2px 8px', borderRadius: '12px' }}>
-                                            {subs.length} records
+                                            {subs.length} {t('time.records')}
                                         </span>
                                     </div>
                                     <button
@@ -168,12 +170,12 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                         onClick={() => handleCopyToExcel(subs)}
                                         style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.8rem', fontSize: '0.8rem', borderRadius: '4px', cursor: 'pointer' }}
                                     >
-                                        <Copy size={14} /> Copy for Excel
+                                        <Copy size={14} /> {t('time.copy_excel')}
                                     </button>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
                                     {subs.map((sub) => {
-                                        let fileName = sub.submission_file_path?.split(/[\\/]/).pop() || 'Unknown File';
+                                        let fileName = sub.submission_file_path?.split(/[\\/]/).pop() || t('time.unknown_file');
                                         const lastDot = fileName.lastIndexOf('.');
                                         if (lastDot > 0) fileName = fileName.substring(0, lastDot);
 
@@ -207,12 +209,12 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                                                         {fileName}
                                                     </span>
                                                     <span style={{ fontSize: '0.85rem', color: 'var(--text-muted, #64748b)' }}>
-                                                        Started: {formatDate(startedDate)} • Finished: {formatDate(finishedDate)}
+                                                        {t('time.started')} {formatDate(startedDate)} • {t('time.finished')} {formatDate(finishedDate)}
                                                     </span>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
                                                     <span style={{ fontSize: '1.2rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--success-color, #22c55e)' }}>
-                                                        {formatMin} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: 'var(--text-muted)' }}>mins</span>
+                                                        {formatMin} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: 'var(--text-muted)' }}>{t('time.mins')}</span>
                                                     </span>
                                                 </div>
                                             </div>
@@ -225,7 +227,7 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
                 )}
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)' }}>
-                <button className="btn-secondary" onClick={onClose} style={{ padding: '0.5rem 1.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 500 }}>Close</button>
+                <button className="btn-secondary" onClick={onClose} style={{ padding: '0.5rem 1.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 500 }}>{t('common.close')}</button>
             </div>
         </Modal>
     );

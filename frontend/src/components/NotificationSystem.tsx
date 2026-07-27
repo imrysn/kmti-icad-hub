@@ -1,7 +1,7 @@
-import { AlertCircle,CheckCircle2,Info,Megaphone,X } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Info, Megaphone, X } from 'lucide-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Notification,useNotification } from '../context/NotificationContext';
+import { Notification, useNotification } from '../context/NotificationContext';
 import '../styles/NotificationSystem.css';
 
 const NotificationItem: React.FC<{ notification: Notification }> = ({ notification }) => {

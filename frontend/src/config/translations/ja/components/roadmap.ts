@@ -1,0 +1,15 @@
+export const ja_components_roadmap = {
+  "roadmap.title": "受講者ロードマップ",
+  "roadmap.skill_radar": "スキルレーダー",
+  "roadmap.milestones": "認定マイルストーン",
+  "roadmap.novice_title": "iCAD初級者",
+  "roadmap.novice_desc": "カリキュラムの25%完了",
+  "roadmap.specialist_title": "品質スペシャリスト",
+  "roadmap.specialist_desc": "習得スコア80%以上を維持",
+  "roadmap.pro_title": "iCADプロフェッショナル",
+  "roadmap.pro_desc": "コース完了（100%）",
+  "roadmap.cert_title": "認定準備状況",
+  "roadmap.cert_eligible": "デジタル証明書発行対象",
+  "roadmap.cert_continue": "認定を取得するためにトレーニングを続けてください",
+  "roadmap.gen_cert": "証明書を発行",
+};

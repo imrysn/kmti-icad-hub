@@ -10,6 +10,8 @@ import VideoTutorialViewer from "./VideoTutorialViewer";
 import { TOOLBAR_TUTORIAL_STEPS } from "./VideoTutorialData/ToolBarsTutorial";
 
 
+import { useTranslation } from '../../context/LanguageContext';
+
 interface ToolBarsLessonProps {
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -17,6 +19,7 @@ interface ToolBarsLessonProps {
 }
 
 const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
   const {
     scrollProgress,
     containerRef  } = useLessonCore('toolbars');
@@ -39,12 +42,16 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
 
 
           <div className="interactive-stage-container">
-            <VideoTutorialViewer steps={TOOLBAR_TUTORIAL_STEPS} />
+            <VideoTutorialViewer steps={TOOLBAR_TUTORIAL_STEPS.map(s => ({
+              ...s,
+              title: t(`tutorial.toolbars.${s.id}.title`),
+              text: t(`tutorial.toolbars.${s.id}.text`)
+            }))} />
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { AlertCircle,CheckCircle2,ChevronRight,Clock,Download,FileSpreadsheet,Fi
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
+import { useTranslation } from '../../../context/LanguageContext';
 import { useUI } from '../../../context/UIContext';
 import { useNotification } from '../../../context/NotificationContext';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
@@ -25,6 +26,7 @@ interface PracticalAssessmentProps {
 
 export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack, is3DCompleted = false, assessmentType = '3D' }) => {
     const location = useLocation();
+    const { t } = useTranslation();
     const [showInstructions, setShowInstructions] = useState<boolean>(() => {
         return localStorage.getItem('kmti_assessment_instructions_expanded') !== 'false';
     });
@@ -50,7 +52,6 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     // Fix #7: Inject the app's styled ConfirmationModal into the hook
     const { requestConfirmation } = useUI();
     const { showNotification } = useNotification();
-    const [quotationUploadingSet, setQuotationUploadingSet] = useState<number | null>(null);
 
     const {
         tasks,
@@ -81,32 +82,6 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     } = usePracticalTasks(assessmentType, requestConfirmation);
 
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
-
-    const handleQuotationUpload = async (file: File, setNumber: number) => {
-        if (!file.name.toLowerCase().endsWith('.xlsx')) {
-            showNotification('Please select an Excel quotation file (.xlsx).', 'error');
-            return;
-        }
-        const confirmed = await requestConfirmation({
-            title: 'Submit Quotation',
-            message: `Submit ${file.name} to your trainer for review?`,
-            confirmText: 'Submit',
-            type: 'confirm'
-        });
-        if (!confirmed) return;
-
-        setQuotationUploadingSet(setNumber);
-        try {
-            await assessmentService.submitQuotation(file, setNumber, assessmentType);
-            invalidateCache('/assessments/my-submissions');
-            window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
-            showNotification('Quotation submitted successfully! Awaiting trainer review.', 'success');
-        } catch (error: any) {
-            showNotification(error?.response?.data?.detail || 'Failed to submit quotation.', 'error');
-        } finally {
-            setQuotationUploadingSet(null);
-        }
-    };
 
     const [trashModalOpen, setTrashModalOpen] = useState(false);
     const [timeRecordModalOpen, setTimeRecordModalOpen] = useState(false);
@@ -380,9 +355,9 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                 <div className="sidebar-inner-container">
                     <div className="sidebar-course-header">
                         <div className="sidebar-course-meta">
-                            <h2 className="sidebar-course-title">Assessment Sets</h2>
+                            <h2 className="sidebar-course-title">{t('practical.assessment_sets')}</h2>
                         </div>
-                        <span className="task-count">{sets.length} Sets</span>
+                        <span className="task-count">{t('practical.sets_count').replace('{n}', String(sets.length))}</span>
                     </div>
 
                     <div className="sidebar-set-list">
@@ -406,7 +381,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                         {isLocked ? <Lock size={14} /> : isCompleted ? <CheckCircle2 size={14} /> : <span className="set-number-badge">{getSetDisplayNumber(s)}</span>}
                                     </span>
                                     <span className="sidebar-set-label">{getSetDisplayName(s)}</span>
-                                    <span className="sidebar-set-task-count">{setTasks.length} tasks</span>
+                                    <span className="sidebar-set-task-count">{t('practical.tasks_count').replace('{n}', String(setTasks.length))}</span>
                                 </button>
                             );
                         })}
@@ -422,7 +397,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)' }}>
                             {getSetDisplayName(activeSet)}
                         </h3>
-                        <span className="task-count">{currentSetTasks.length} Tasks</span>
+                        <span className="task-count">{t('practical.tasks_count').replace('{n}', String(currentSetTasks.length))}</span>
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <button
@@ -430,7 +405,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                             style={{ background: 'var(--surface-color)', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}
                             onClick={() => setTimeRecordModalOpen(true)}
                         >
-                            <Clock size={16} /> Time Records
+                            <Clock size={16} /> {t('practical.time_records')}
                         </button>
                         <button
                             className="trash-bin-header-btn"
@@ -439,10 +414,10 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                 setTrashModalOpen(true);
                             }}
                         >
-                            <Trash2 size={16} /> Trash Bin
+                            <Trash2 size={16} /> {t('practical.trash_bin')}
                         </button>
                         <button className="exit-course-btn" onClick={onBack}>
-                            EXIT COURSE
+                            {t('practical.exit_course')}
                         </button>
                     </div>
                 </div>
@@ -456,10 +431,10 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                 <div className="instructions-header" onClick={toggleInstructions}>
                                     <div className="instructions-title">
                                         <HelpCircle size={18} className="instructions-icon-animated" />
-                                        <span>How to Complete Practical Assessments</span>
+                                        <span>{t('practical.instructions_title')}</span>
                                     </div>
                                     <button className="instructions-toggle-btn">
-                                        {showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+                                        {showInstructions ? t('practical.hide_instructions') : t('practical.show_instructions')}
                                     </button>
                                 </div>
 
@@ -468,29 +443,29 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                         <div className="steps-container">
                                             <div className="step-card">
                                                 <span className="step-badge">Step 1</span>
-                                                <h5>Launch iJCAD</h5>
-                                                <p>Click <strong>"Open in iJCAD"</strong> to instantly open the master template on your machine.</p>
+                                                <h5>{t('practical.step1_title')}</h5>
+                                                <p>{t('practical.step1_desc')}</p>
                                             </div>
                                             <div className="step-card">
                                                 <span className="step-badge">Step 2</span>
-                                                <h5>Draft & Detail</h5>
-                                                <p>Complete the drawing using correct layers, dimensions, and standard practices.</p>
+                                                <h5>{t('practical.step2_title')}</h5>
+                                                <p>{t('practical.step2_desc')}</p>
                                             </div>
                                             <div className="step-card">
                                                 <span className="step-badge">Step 3</span>
-                                                <h5>Submit File</h5>
-                                                <p>Click <strong>"Upload"</strong> to submit your saved <code>.dwg</code>, <code>.dxf</code>, or a <code>.zip</code> file (for purchased parts) to the trainer.</p>
+                                                <h5>{t('practical.step3_title')}</h5>
+                                                <p>{t('practical.step3_desc')}</p>
                                             </div>
                                             <div className="step-card">
                                                 <span className="step-badge">Step 4</span>
-                                                <h5>Checkback Review</h5>
-                                                <p>Open the trainer's Excel correction file with <strong>"Open in Excel"</strong> to review any revisions.</p>
+                                                <h5>{t('practical.step4_title')}</h5>
+                                                <p>{t('practical.step4_desc')}</p>
                                             </div>
                                         </div>
 
                                         <div className="instructions-footer">
                                             <div className="status-dot success" />
-                                            <span>Once all tasks in the current set are <strong>Approved</strong>, the next assessment set will unlock automatically!</span>
+                                            <span>{t('practical.unlock_msg')}</span>
                                         </div>
                                     </div>
                                 )}
@@ -503,24 +478,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             <div className="lock-icon-container">
                                                 <Lock size={32} className="lock-icon-animated" />
                                             </div>
-                                            <h3>{getSetDisplayName(activeSet)} Locked</h3>
+                                            <h3>{getSetDisplayName(activeSet)} {t('practical.locked')}</h3>
                                             <p className="lock-explanation">
                                                 {activeSet >= 4 && !is3DCompleted ? (
-                                                    <>
-                                                        This assembly set requires completing all prerequisite lessons.
-                                                        Please finish the <strong>3D Modeling Course</strong> to unlock the <strong>4th Set Parts and Assembly</strong>.
-                                                    </>
+                                                        t('practical.prerequisite_3d')
                                                 ) : (
-                                                    <>
-                                                        To access this assessment set, you must first complete all drafting tasks in the previous set and have them approved or submitted for review.
-                                                    </>
+                                                        t('practical.prerequisite_drafting')
                                                 )}
                                             </p>
 
                                             {activeSet >= 4 && !is3DCompleted && (
                                                 <div className="unlock-requirement-badge">
                                                     <Zap size={14} />
-                                                    <span>Prerequisite: Course 1 (3D Modeling) Completed</span>
+                                                    <span>{t('practical.prerequisite_course1')}</span>
                                                 </div>
                                             )}
                                         </div>
@@ -529,7 +499,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                     (() => {
                                         const unitsMap = new Map<string, AssessmentTask[]>();
                                         currentSetTasks.forEach(task => {
-                                            const unitName = task.unit_name || 'Ungrouped Tasks';
+                                            const unitName = task.unit_name || t('practical.ungrouped_tasks');
                                             if (!unitsMap.has(unitName)) {
                                                 unitsMap.set(unitName, []);
                                             }
@@ -563,7 +533,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                     }}>
                                                         <Folder size={20} style={{ color: 'var(--primary, #38bdf8)' }} />
                                                         <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-main, #f8fafc)', fontWeight: 600 }}>{unitName}</h3>
-                                                        <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem', background: 'transparent', border: 'none', padding: 0, color: 'var(--text-muted, #94a3b8)' }}>{unitTasks.length} Files</span>
+                                                        <span className="task-count" style={{ marginLeft: 'auto', fontSize: '0.85rem', background: 'transparent', border: 'none', padding: 0, color: 'var(--text-muted, #94a3b8)' }}>{t('practical.files_count').replace('{n}', String(unitTasks.length))}</span>
                                                         <button
                                                             type="button"
                                                             className={`task-action-btn primary ${isBulkDownloading ? 'disabled' : ''}`}
@@ -571,9 +541,9 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                 e.preventDefault();
                                                                 e.stopPropagation();
                                                                 const confirmed = await requestConfirmation({
-                                                                    title: "Confirm Bulk Download",
-                                                                    message: "Are you sure you want to download all task files for this unit?",
-                                                                    confirmText: "Download All",
+                                                                    title: t('practical.confirm_bulk_download_title'),
+                                                                    message: t('practical.confirm_bulk_download_msg'),
+                                                                    confirmText: t('practical.download_all'),
                                                                     type: "confirm"
                                                                 });
                                                                 if (confirmed) {
@@ -584,7 +554,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                             title="Download All Unit Files"
                                                             style={{ marginLeft: '0.5rem', padding: '0.4rem 0.8rem' }}
                                                         >
-                                                            <UploadCloud size={16} style={{ transform: 'rotate(180deg)' }} /> Bulk Download
+                                                            <UploadCloud size={16} style={{ transform: 'rotate(180deg)' }} /> {t('practical.bulk_download')}
                                                         </button>
                                                         <button
                                                             className="task-action-btn danger"
@@ -610,37 +580,14 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                     id: `virtual_${sortedUnitTasks[0].id}`,
                                                                     real_id: sortedUnitTasks[0].id,
                                                                     task_code: 'EXTRA',
-                                                                    title: 'Additional Folders & Purchase Parts',
-                                                                    description: 'Upload your purchased parts and extra folders here.',
+                                                                    title: t('practical.additional_folders_title'),
+                                                                    description: t('practical.additional_folders_desc'),
                                                                     is_virtual_extra: true
                                                                 } as any);
-                                                                if (unitIndex === unitEntries.length - 1) {
-                                                                    const sourceSetNumber = sortedUnitTasks[0].source_set_number ?? sortedUnitTasks[0].set_number;
-                                                                    const quotationSubmission = submissions.find(submission =>
-                                                                        submission.submission_kind === 'quotation'
-                                                                        && Number(submission.task?.set_number) === Number(sourceSetNumber)
-                                                                        && (submission.assessment_type || '3D') === assessmentType
-                                                                    );
-                                                                    augmentedUnitTasks.push({
-                                                                        ...sortedUnitTasks[0],
-                                                                        id: `quotation_${sourceSetNumber}_${assessmentType}`,
-                                                                        real_id: quotationSubmission?.task?.id || quotationSubmission?.task_id,
-                                                                        source_set_number: sourceSetNumber,
-                                                                        task_code: 'QUOT',
-                                                                        title: 'Quotation',
-                                                                        description: 'Upload an Excel quotation or submit it automatically from Print Preview.',
-                                                                        is_virtual_quotation: true
-                                                                    } as any);
-                                                                }
                                                             }
                                                             return augmentedUnitTasks.map((task: any) => {
-                                                                const actualTaskId = (task.is_virtual_extra || task.is_virtual_quotation) ? task.real_id : task.id;
+                                                                const actualTaskId = task.is_virtual_extra ? task.real_id : task.id;
                                                                 let taskSubmissions = submissions.filter(s => {
-                                                                    if (task.is_virtual_quotation) {
-                                                                        return s.submission_kind === 'quotation'
-                                                                            && Number(s.task?.set_number) === Number(task.source_set_number)
-                                                                            && (s.assessment_type || '3D') === assessmentType;
-                                                                    }
                                                                     const subTaskId = s.task?.id || s.task_id;
                                                                     return Number(subTaskId) === Number(actualTaskId) && (s.assessment_type || '3D') === assessmentType;
                                                                 }).sort((a, b) => {
@@ -651,7 +598,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
                                                                 if (task.is_virtual_extra) {
                                                                     taskSubmissions = taskSubmissions.filter(s => s.submission_file_path?.match(/\.(zip|rar)$/i));
-                                                                } else if (!task.is_virtual_quotation) {
+                                                                } else {
                                                                     taskSubmissions = taskSubmissions.filter(s => s.submission_kind !== 'quotation');
                                                                     if (actualTaskId === sortedUnitTasks[0].id) {
                                                                         taskSubmissions = taskSubmissions.filter(s => !s.submission_file_path?.match(/\.(zip|rar)$/i));
@@ -667,9 +614,6 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                 const targetUnit = params.get('unit');
                                                                 const isHighlighted = targetUnit === task.task_code;
                                                                 const uploadId = `cad-upload-${task.id}`;
-                                                                const quotationUploadId = `quotation-upload-${task.source_set_number}-${assessmentType}`;
-                                                                const isQuotationUploading = task.is_virtual_quotation
-                                                                    && quotationUploadingSet === Number(task.source_set_number);
 
                                                                 return (
                                                                     <div key={task.id} className={`task-row-card ${isHighlighted ? 'highlighted-task-row-card' : ''}`}>
@@ -682,7 +626,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 <div className="task-row-meta">
                                                                                     <h4 className="task-row-title">{task.title}</h4>
                                                                                     <p className="task-row-desc">
-                                                                                        {task.description || "Follow the drafting standards specified in the master drawing."}
+                                                                                        {task.description || t('practical.default_task_desc')}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -703,7 +647,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleOpenInIJCAD(task);
                                                                                         }}>
-                                                                                            <Play size={14} /> Open in iJCAD
+                                                                                            <Play size={14} /> {t('practical.open_in_ijcad')}
                                                                                         </button>
                                                                                         <button type="button" className="task-action-btn secondary" onClick={(e) => {
                                                                                             e.preventDefault();
@@ -711,7 +655,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleDownloadTask(task);
                                                                                         }}>
-                                                                                            <Download size={14} /> Download
+                                                                                            <Download size={14} /> {t('practical.download')}
                                                                                         </button>
                                                                                     </>
                                                                                 )}
@@ -726,36 +670,24 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 onDragEnter={handleDrag}
                                                                                 onDragOver={(e) => handleDragOver(e, task.id)}
                                                                                 onDragLeave={handleDragLeave}
-                                                                                onDrop={task.is_virtual_quotation
-                                                                                    ? (event) => {
-                                                                                        event.preventDefault();
-                                                                                        event.stopPropagation();
-                                                                                        setDragActiveTaskId(null);
-                                                                                        const file = event.dataTransfer.files?.[0];
-                                                                                        if (file) handleQuotationUpload(file, Number(task.source_set_number));
-                                                                                    }
-                                                                                    : (e) => handleDrop(e, task, actualTaskId)}
+                                                                                onDrop={(e) => handleDrop(e, task, actualTaskId)}
                                                                                 style={{ position: 'relative' }}
                                                                             >
                                                                                 {dragActiveTaskId === task.id && (
                                                                                     <div className="drag-drop-overlay">
                                                                                         <UploadCloud size={36} className="drag-drop-icon" />
-                                                                                        <span>{task.is_virtual_quotation ? 'Drop Excel quotation to upload' : 'Drop CAD file to upload'}</span>
+                                                                                        <span>{t('practical.drop_cad_file')}</span>
                                                                                     </div>
                                                                                 )}
                                                                                 <div className="upload-header-row">
-                                                                                    <span className="task-row-section-label">Your Submissions {taskSubmissions.length > 0 ? `(${taskSubmissions.length})` : ''}</span>
-                                                                                    {task.is_virtual_quotation ? (
-                                                                                        <label htmlFor={quotationUploadId} className={`resubmit-trigger-btn ${isQuotationUploading ? 'disabled' : ''}`}>
-                                                                                            <Upload size={14} /> {isQuotationUploading ? 'Uploading...' : (latestSubmission ? 'Resubmit Excel' : 'Upload Excel')}
-                                                                                        </label>
-                                                                                    ) : task.is_virtual_extra ? (
+                                                                                    <span className="task-row-section-label">{t('practical.your_submissions')} {taskSubmissions.length > 0 ? `(${taskSubmissions.length})` : ''}</span>
+                                                                                    {task.is_virtual_extra ? (
                                                                                         <button className={`resubmit-trigger-btn`} onClick={() => { setFolderUploadTargetTask(sortedUnitTasks[0]); setUploadFolderModalOpen(true); }}>
-                                                                                            <Upload size={14} /> {taskSubmissions.length > 0 ? 'Add Another Folder' : 'Upload Folder'}
+                                                                                            <Upload size={14} /> {taskSubmissions.length > 0 ? t('practical.add_another_folder') : t('practical.upload_folder')}
                                                                                         </button>
                                                                                     ) : (
                                                                                         <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`}>
-                                                                                            <Upload size={14} /> {latestSubmission ? 'Resubmit' : 'Upload'}
+                                                                                            <Upload size={14} /> {latestSubmission ? t('practical.resubmit') : t('practical.upload')}
                                                                                         </label>
                                                                                     )}
                                                                                 </div>
@@ -765,16 +697,14 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         taskSubmissions.map((sub, sIdx) => (
                                                                                             <div key={sub.id} className={`uploaded-file-card history-item ${sIdx === 0 ? 'latest' : ''}`}>
                                                                                                 <div className="uploaded-file-info">
-                                                                                                    {task.is_virtual_quotation
-                                                                                                        ? <FileSpreadsheet size={18} />
-                                                                                                        : <FileText size={18} />}
+                                                                                                    <FileText size={18} />
                                                                                                     <div className="file-meta-stack">
                                                                                                         <span className="uploaded-file-name">
                                                                                                             {sub.submission_file_path?.split(/[\\/]/).pop()}
                                                                                                         </span>
                                                                                                         <div className="history-badges">
-                                                                                                            {!task.is_virtual_extra && sIdx === 0 && <span className="history-badge latest">Latest</span>}
-                                                                                                            {!task.is_virtual_extra && sIdx > 0 && <span className="history-badge resubmit">Attempt {taskSubmissions.length - sIdx}</span>}
+                                                                                                            {!task.is_virtual_extra && sIdx === 0 && <span className="history-badge latest">{t('practical.latest')}</span>}
+                                                                                                            {!task.is_virtual_extra && sIdx > 0 && <span className="history-badge resubmit">{t('practical.attempt_n').replace('{n}', String(taskSubmissions.length - sIdx))}</span>}
                                                                                                             <div className={`assessment-status-badge ${sub.status}`}>
                                                                                                                 {sub.status === 'approved' && <CheckCircle2 size={12} />}
                                                                                                                 {sub.status === 'pending' && <Clock size={12} />}
@@ -799,27 +729,12 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         <div className="no-submissions-yet">
                                                                                             <div className="empty-upload-placeholder">
                                                                                                 <UploadCloud size={24} />
-                                                                                                <p>{task.is_virtual_quotation
-                                                                                                    ? 'No quotation submitted yet. Drag and drop an .xlsx file or click Upload Excel.'
-                                                                                                    : 'No files uploaded yet. Drag & drop CAD or .zip file here or click Upload'}</p>
+                                                                                                <p>{t('practical.no_files_yet')}</p>
                                                                                             </div>
                                                                                         </div>
                                                                                     )}
                                                                                 </div>
-                                                                                {task.is_virtual_quotation ? (
-                                                                                    <input
-                                                                                        type="file"
-                                                                                        id={quotationUploadId}
-                                                                                        accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                                                                        onChange={(event) => {
-                                                                                            const file = event.target.files?.[0];
-                                                                                            if (file) handleQuotationUpload(file, Number(task.source_set_number));
-                                                                                            event.target.value = '';
-                                                                                        }}
-                                                                                        disabled={isQuotationUploading}
-                                                                                        style={{ display: 'none' }}
-                                                                                    />
-                                                                                ) : !task.is_virtual_extra && (
+                                                                                {!task.is_virtual_extra && (
                                                                                     <input
                                                                                         type="file" id={uploadId}
                                                                                         accept=".dwg,.icd,.dxf,.step,.stp,.iges,.igs,.sat,.3dm"
@@ -836,7 +751,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
                                                                             {/* Trainer Feedback Section */}
                                                                             <div className="task-row-feedback">
-                                                                                <span className="task-row-section-label">Trainer Feedback</span>
+                                                                                <span className="task-row-section-label">{t('practical.trainer_feedback')}</span>
                                                                                 {latestSubmission?.status === 'pending' ? (
                                                                                     <>
                                                                                         {feedbackSubmission && feedbackSubmission.id !== latestSubmission.id ? (
@@ -846,15 +761,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                         <div className="feedback-header-row" onClick={() => setExpandedFeedbackId(null)}>
                                                                                                             <div className="feedback-status-info">
                                                                                                                 <Clock size={16} />
-                                                                                                                <span>Revision Resubmitted (Pending Review)</span>
+                                                                                                                <span>{t('practical.revision_resubmitted')}</span>
                                                                                                             </div>
-                                                                                                            <span className="close-feedback-btn">Close</span>
+                                                                                                            <span className="close-feedback-btn">{t('common.close')}</span>
                                                                                                         </div>
 
                                                                                                         {feedbackSubmission.feedback && feedbackSubmission.feedback.length > 0 && (
                                                                                                             <div className="feedback-details">
                                                                                                                 <div style={{ padding: '8px 12px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '6px', fontSize: '0.85rem', color: '#fdba74', marginBottom: '10px' }}>
-                                                                                                                    Your corrected work has been submitted and is currently pending trainer review. Below is the feedback from your previous attempt.
+                                                                                                                    {t('practical.pending_feedback_msg')}
                                                                                                                 </div>
                                                                                                                 {feedbackSubmission.feedback[0].comments && (
                                                                                                                     <div className="feedback-comment">
@@ -866,7 +781,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                                 {feedbackSubmission.feedback[0].trainee_reply && (
                                                                                                                     <div className="feedback-trainee-reply">
                                                                                                                         <div className="reply-header">
-                                                                                                                            <span className="reply-badge">Your Reply</span>
+                                                                                                                            <span className="reply-badge">{t('practical.your_reply')}</span>
                                                                                                                             {feedbackSubmission.feedback[0].replied_at && (
                                                                                                                                 <small>{new Date(feedbackSubmission.feedback[0].replied_at).toLocaleDateString()}</small>
                                                                                                                             )}
@@ -882,12 +797,12 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                                             onClick={() => handleOpenFeedbackExcel(feedbackSubmission)}
                                                                                                                         >
                                                                                                                             <FileSpreadsheet size={16} />
-                                                                                                                            Open in Excel
+                                                                                                                            {t('practical.open_in_excel')}
                                                                                                                         </button>
                                                                                                                         <a
                                                                                                                             href="#"
                                                                                                                             className="checkback-download-icon-btn"
-                                                                                                                            title="Download copy"
+                                                                                                                            title={t('practical.download_copy')}
                                                                                                                             onClick={(e) => {
                                                                                                                                 e.preventDefault();
                                                                                                                                 e.stopPropagation();
@@ -908,7 +823,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                     >
                                                                                                         <Clock size={14} style={{ color: '#f59e0b' }} />
                                                                                                         <span className="feedback-preview-text" style={{ color: '#fdba74' }}>
-                                                                                                            Pending Review (Corrected Work Submitted) - View previous feedback
+                                                                                                            {t('practical.pending_review_short')}
                                                                                                         </span>
                                                                                                         <ChevronRight size={14} className="expand-icon" />
                                                                                                     </div>
@@ -917,7 +832,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         ) : (
                                                                                             <div className="feedback-message empty">
                                                                                                 <Clock size={14} />
-                                                                                                <span>Waiting for trainer review</span>
+                                                                                                <span>{t('practical.waiting_review')}</span>
                                                                                             </div>
                                                                                         )}
                                                                                     </>
@@ -1086,13 +1001,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             <Modal
                 isOpen={uploadFolderModalOpen}
                 onClose={() => setUploadFolderModalOpen(false)}
-                title="Upload Custom Folder"
+                title={t('folder.modal_title')}
                 tag="FOLDER_UPLOAD"
                 size="sm"
             >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div className="form-group">
-                        <label>Folder Name:</label>
+                        <label>{t('folder.name_label')}</label>
                         <input
                             type="text"
                             className="modal-input"
@@ -1103,14 +1018,14 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         />
                     </div>
                     <div className="form-group">
-                        <label>Select Folder:</label>
+                        <label>{t('folder.select_label')}</label>
                         <div
                             className="upload-dropzone"
                             onClick={() => folderInputRef.current?.click()}
                             style={{ border: '2px dashed var(--border-color)', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '8px', marginTop: '0.5rem' }}
                         >
                             <UploadCloud size={32} style={{ color: 'var(--text-muted)', marginBottom: '10px' }} />
-                            <p style={{ margin: 0, fontSize: '0.9rem' }}>Click to select a folder from your computer</p>
+                            <p style={{ margin: 0, fontSize: '0.9rem' }}>{t('folder.drop_hint')}</p>
                             <input
                                 type="file"
                                 multiple
@@ -1125,19 +1040,19 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     </div>
                     {folderFiles.length > 0 && (
                         <div className="selected-files-summary">
-                            <p><strong>{folderFiles.length} files selected</strong></p>
+                            <p><strong>{folderFiles.length} {t('folder.files_selected')}</strong></p>
                             <ul style={{ maxHeight: '100px', overflowY: 'auto', fontSize: '12px', paddingLeft: '1rem', marginTop: '0.5rem' }}>
                                 {folderFiles.slice(0, 5).map((f, i) => (
                                     <li key={i}>{f.webkitRelativePath || f.name}</li>
                                 ))}
-                                {folderFiles.length > 5 && <li>...and {folderFiles.length - 5} more</li>}
+                                {folderFiles.length > 5 && <li>...{folderFiles.length - 5} {t('folder.and_more')}</li>}
                             </ul>
                         </div>
                     )}
                     <div className="global-modal-footer" style={{ marginTop: '1rem' }}>
-                        <button className="global-btn-secondary" onClick={() => setUploadFolderModalOpen(false)}>Cancel</button>
+                        <button className="global-btn-secondary" onClick={() => setUploadFolderModalOpen(false)}>{t('common.cancel')}</button>
                         <button className="global-btn-primary" onClick={submitFolderUpload} disabled={isZipping || folderFiles.length === 0 || !customFolderName.trim()}>
-                            {isZipping ? 'Compressing & Uploading...' : 'Upload'}
+                            {isZipping ? t('folder.compressing') : t('common.upload')}
                         </button>
                     </div>
                 </div>
@@ -1147,13 +1062,13 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             <Modal
                 isOpen={trashModalOpen}
                 onClose={() => setTrashModalOpen(false)}
-                title="Trash Bin"
+                title={t('trash.modal_title')}
                 tag="TRASH_BIN"
                 size="lg"
             >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                        <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>Submissions deleted by trainee</p>
+                        <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('trash.subtitle')}</p>
                         {trashSubmissions.length > 0 && (
                             <button
                                 onClick={handleEmptyTrash}
@@ -1161,18 +1076,18 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                 onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
                                 onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
                             >
-                                Empty Trash
+                                {t('trash.empty_trash')}
                             </button>
                         )}
                     </div>
 
                     <div className="global-modal-body" style={{ maxHeight: '60vh', overflowY: 'auto', padding: 0 }}>
                         {loadingTrash ? (
-                            <div style={{ textAlign: 'center', padding: '2rem' }}>Loading trash...</div>
+                            <div style={{ textAlign: 'center', padding: '2rem' }}>{t('trash.loading')}</div>
                         ) : trashSubmissions.length === 0 ? (
                             <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#94a3b8' }}>
                                 <Trash2 size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
-                                <p>Trash is empty</p>
+                                <p>{t('trash.empty')}</p>
                             </div>
                         ) : (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -1193,7 +1108,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                 {sub.submission_file_path?.split(/[\\/]/).pop()}
                                             </span>
                                             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted, #64748b)' }}>
-                                                Deleted: {new Date(sub.updated_at || sub.submitted_at).toLocaleString()}
+                                                {t('trash.deleted')} {new Date(sub.updated_at || sub.submitted_at).toLocaleString()}
                                             </span>
                                         </div>
                                         <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
@@ -1203,7 +1118,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                 onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'; }}
                                                 onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)'; }}
                                             >
-                                                <RotateCcw size={16} /> Restore
+                                                <RotateCcw size={16} /> {t('common.restore')}
                                             </button>
                                             <button
                                                 style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '0.5rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem', fontWeight: 500 }}
@@ -1211,7 +1126,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                 onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'; }}
                                                 onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; }}
                                             >
-                                                <Trash2 size={16} /> Delete
+                                                <Trash2 size={16} /> {t('common.delete')}
                                             </button>
                                         </div>
                                     </div>

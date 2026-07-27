@@ -1,0 +1,15 @@
+export const en_3d_table = {
+  "table.dimensions": "DIMENSIONS",
+  "table.notes": "NOTES",
+  "table.symbols": "SYMBOLS",
+  "table.linear_circular_angular": "Linear/Circular/Angular",
+  "table.chamfer_fillet": "Chamfer/Fillet",
+  "table.text": "Text",
+  "table.part_notes": "Part Notes",
+  "table.welding": "Welding",
+  "table.balloon": "Balloon",
+  "table.arrow_view": "Arrow/Arrow View",
+  "table.cutting_lines": "Cutting Lines",
+  "table.machining_finishing": "Machining/Finishing",
+  "table.hatch": "Hatch",
+};

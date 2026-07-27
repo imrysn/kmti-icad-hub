@@ -10,24 +10,28 @@ interface IcadInterfaceLessonProps {
   nextLabel?: string;
 }
 
-const INTERFACE_STEPS = [
-  "The workspace is divided into several key functional areas designed for maximum modeling efficiency.",
-  "Navigation and Commands: Use the pulsing hotspots on the diagram to explore the specific purpose of the command menus, the hierarchical tree view, and the primary 3D viewport where your designs come to life.",
-  "Title bar: Displays the name of the program and typically the name of the currently active document.",
-  "Menu bar: Contains drop down menus such as File, View, Information, Set, Tool, Window and Help.",
-  "Command Menu: Contains sets of available commands associated with different functions. Preferably use on 2D.",
-  "Tree view: Displays the 3D parts and groups for the drawing currently being worked on.",
-  "Workspace: Area where 3D Modeling and Assembly operations are done.",
-  "Icon Menu: Contains commands to perform operations on 3D Modeling. Other options can be found on the command menu.",
-  "Item Entry: Used for entering the values and characters necessary for command execution.",
-  "Key Entry: Coordinates and other values can be entered from the Key Entry Area.",
-  "Tool Bar: Contains set of tool bars that can be display or hide. These tool bars are the following.",
-  "Message Pane: Displays messages related to operations. Messages displayed in red are error messages."
-];
+import { useTranslation } from '../../context/LanguageContext';
 
 import { TUTORIAL_STEPS } from "./VideoTutorialData/iCadInterfaceTutorial";
 
 const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
+
+  const INTERFACE_STEPS = React.useMemo(() => [
+    t('icad.step0'),
+    t('icad.step1'),
+    t('icad.step2'),
+    t('icad.step3'),
+    t('icad.step4'),
+    t('icad.step5'),
+    t('icad.step6'),
+    t('icad.step7'),
+    t('icad.step8'),
+    t('icad.step9'),
+    t('icad.step10'),
+    t('icad.step11')
+  ], [t]);
+
   const {
     scrollProgress,
     containerRef,
@@ -46,12 +50,16 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
           <div className="interactive-stage-container">
-            <VideoTutorialViewer steps={TUTORIAL_STEPS} />
+            <VideoTutorialViewer steps={TUTORIAL_STEPS.map(s => ({
+              ...s,
+              title: t(`tutorial.icad.${s.id}.title`),
+              text: t(`tutorial.icad.${s.id}.text`)
+            }))} />
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

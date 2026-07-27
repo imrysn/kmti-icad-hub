@@ -1,6 +1,7 @@
 
 import { Sliders,Volume2,VolumeX } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
+import { useTranslation } from '../context/LanguageContext';
 import { useTTSContext } from '../context/TTSContext';
 
 interface ReadAloudButtonProps {
@@ -10,6 +11,7 @@ interface ReadAloudButtonProps {
 }
 
 export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, onStart, onStop }) => {
+  const { t } = useTranslation();
   const { rate, setRate, voices, selectedVoiceURI, setSelectedVoiceURI } = useTTSContext();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -63,8 +65,9 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
       >
         {/* Main Action Button */}
         <button
+          className={`read-aloud-toggle ${isSpeaking ? 'speaking' : ''}`}
           onClick={handleTogglePlay}
-          title={isSpeaking ? "Stop Reading" : "Read Lesson Aloud"}
+          title={isSpeaking ? t('lesson.stop_reading') : t('lesson.read_lesson_aloud')}
           style={{
             background: isSpeaking ? 'rgba(6, 182, 212, 0.15)' : 'transparent',
             border: 'none',
@@ -91,12 +94,14 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
           {isSpeaking ? (
             <>
               <VolumeX size={16} className="animate-pulse" style={{ color: '#22d3ee' }} />
-              <span>Stop Reading</span>
+              <span>{t('lesson.stop_reading')}</span>
             </>
           ) : (
             <>
               <Volume2 size={16} />
-              <span>Read Lesson</span>
+              <div className="button-label">
+                <span>{t('lesson.read_lesson')}</span>
+              </div>
             </>
           )}
         </button>

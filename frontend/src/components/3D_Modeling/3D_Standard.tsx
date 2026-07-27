@@ -1121,7 +1121,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
           </div>
         </div>
       </div>

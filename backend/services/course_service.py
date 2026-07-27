@@ -3,7 +3,7 @@ from ..models import UserProgress, Course as CourseModel
 from ..schemas import CourseList, CourseProgress, CourseResponse
 
 class CourseService:
-    def get_available_courses(self, db: Session) -> CourseList:
+    def get_available_courses(self, db: Session, lang: str = "en") -> CourseList:
         """Fetch all available courses from the database."""
         courses = db.query(CourseModel).order_by(CourseModel.order).all()
         
@@ -11,8 +11,8 @@ class CourseService:
         course_responses = [
             CourseResponse(
                 id=c.id, 
-                title=c.title, 
-                description=c.description, 
+                title=c.title_ja if (lang == "ja" and c.title_ja) else c.title, 
+                description=c.description_ja if (lang == "ja" and c.description_ja) else c.description, 
                 course_type=c.course_type, 
                 order=c.order
             ) for c in courses
@@ -33,7 +33,7 @@ class CourseService:
             progress_percentage=percentage
         )
 
-    def get_course_lessons(self, db: Session, course_id: str):
+    def get_course_lessons(self, db: Session, course_id: str, lang: str = "en"):
         """Fetch lessons for a course in a hierarchical structure."""
         from ..models import Lesson, Quiz, AssessmentTask
         
@@ -48,7 +48,7 @@ class CourseService:
                 if set_key not in sets:
                     sets[set_key] = {
                         "id": f"set-{set_key}",
-                        "title": f"Set {set_key}",
+                        "title": f"セット {set_key}" if lang == "ja" else f"Set {set_key}",
                         "order": set_key,
                         "children": []
                     }
@@ -56,7 +56,7 @@ class CourseService:
                 sets[set_key]["children"].append({
                     "id": f"task-{t.id}",
                     "db_id": t.id,
-                    "title": f"Task {t.task_code}: {t.title}",
+                    "title": f"タスク {t.task_code}: {t.title_ja if (lang == 'ja' and t.title_ja) else t.title}" if lang == "ja" else f"Task {t.task_code}: {t.title}",
                     "order": t.order,
                     "children": []
                 })
@@ -73,7 +73,7 @@ class CourseService:
         lesson_map = {l.id: {
             "id": l.slug, # Use slug as ID for frontend compatibility
             "db_id": l.id,
-            "title": l.title,
+            "title": l.title_ja if (lang == "ja" and l.title_ja) else l.title,
             "order": l.order,
             "quiz": {} if l.slug in quiz_slugs else None, # Restore quiz indicator for gating
             "children": []

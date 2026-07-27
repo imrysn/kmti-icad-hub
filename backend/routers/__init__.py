@@ -1,1 +1,1 @@
-from . import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, quotations, contacts
+from . import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, contacts

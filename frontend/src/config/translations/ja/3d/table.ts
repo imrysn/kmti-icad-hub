@@ -1,0 +1,15 @@
+export const ja_3d_table = {
+  "table.dimensions": "寸法",
+  "table.notes": "注記",
+  "table.symbols": "記号",
+  "table.linear_circular_angular": "線 / 円 / 角度",
+  "table.chamfer_fillet": "面取り / フィレット",
+  "table.text": "テキスト",
+  "table.part_notes": "部品注記",
+  "table.welding": "溶接記号",
+  "table.balloon": "バルーン",
+  "table.arrow_view": "矢印 / 矢視図",
+  "table.cutting_lines": "切断線",
+  "table.machining_finishing": "機械加工 / 仕上げ",
+  "table.hatch": "ハッチング",
+};

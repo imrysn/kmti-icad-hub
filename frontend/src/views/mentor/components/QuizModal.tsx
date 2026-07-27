@@ -3,6 +3,7 @@ import { AnimatePresence,motion } from 'framer-motion';
 import { ArrowRight,ChevronRight,RotateCcw,ShieldAlert,Trophy,X } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { Modal } from '../../../components/Modal';
+import { useTranslation } from '../../../context/LanguageContext';
 import { useUI } from '../../../context/UIContext';
 import { authService } from '../../../services/authService';
 import '../../../styles/mentor/QuizModal.css';
@@ -27,6 +28,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   onSuccessContinue
 }) => {
   const { requestConfirmation } = useUI();
+  const { t } = useTranslation();
 
   const playSound = (type: 'success' | 'error') => {
     try {
@@ -469,9 +471,9 @@ export const QuizModal: React.FC<QuizModalProps> = ({
           <div className="quiz-warning-view">
             <div className="warning-card" style={{ borderColor: 'rgba(239, 68, 68, 0.3)' }}>
               <ShieldAlert className="warning-icon alert" size={80} style={{ color: '#ef4444' }} />
-              <h3 className="warning-title" style={{ color: '#ef4444' }}>Assessment Lockdown</h3>
+              <h3 className="warning-title" style={{ color: '#ef4444' }}>{t('quiz.lockdown_title')}</h3>
               <p className="warning-intro" style={{ marginBottom: '1.5rem' }}>
-                You have failed this assessment 3 times in a row. To ensure thorough comprehension, you must review the module lessons before attempting again.
+                {t('quiz.lockdown_desc')}
               </p>
 
               <div className="lockdown-timer-container" style={{
@@ -483,7 +485,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 border: '1px solid rgba(239, 68, 68, 0.1)'
               }}>
                 <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: '#9ca3af', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                  Lockdown Active
+                  {t('quiz.lockdown_active')}
                 </p>
                 <div style={{
                   fontSize: '3.5rem',
@@ -497,7 +499,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
               </div>
 
               <button className="start-btn" onClick={onClose} style={{ width: '100%', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white' }}>
-                Return to Lesson
+                {t('quiz.return_lesson')}
               </button>
             </div>
           </div>
@@ -505,34 +507,34 @@ export const QuizModal: React.FC<QuizModalProps> = ({
           <div className="quiz-warning-view">
             <div className="warning-card">
               <ShieldAlert className="warning-icon" size={80} />
-              <h3 className="warning-title">Assessment Protocol</h3>
-              <p className="warning-intro">Please review the rules before initiating the assessment:</p>
+              <h3 className="warning-title">{t('quiz.protocol_title')}</h3>
+              <p className="warning-intro">{t('quiz.protocol_intro')}</p>
 
               <div className="warning-list">
                 <div className="warning-item">
-                  <span className="warning-label">No-Exit Policy:</span>
-                  <p>Once started, you cannot exit the assessment until all questions are answered.</p>
+                  <span className="warning-label">{t('quiz.rule_noexit_label')}</span>
+                  <p>{t('quiz.rule_noexit_desc')}</p>
                 </div>
                 <div className="warning-item">
-                  <span className="warning-label">Time Constraints:</span>
-                  <p>Each question has a strict 1-minute limit. Timeouts are marked as incorrect.</p>
+                  <span className="warning-label">{t('quiz.rule_time_label')}</span>
+                  <p>{t('quiz.rule_time_desc')}</p>
                 </div>
                 <div className="warning-item">
-                  <span className="warning-label">Randomized Loadout:</span>
-                  <p>Questions and choices are shuffled dynamically for every attempt.</p>
+                  <span className="warning-label">{t('quiz.rule_random_label')}</span>
+                  <p>{t('quiz.rule_random_desc')}</p>
                 </div>
               </div>
 
               <button className="start-btn" onClick={async () => {
                 const confirmed = await requestConfirmation({
-                  title: "Start Assessment",
-                  message: "Are you sure you want to start this assessment?"
+                  title: t('quiz.start_confirm_title'),
+                  message: t('quiz.start_confirm_msg')
                 });
                 if (confirmed) {
                   setShowWarning(false);
                 }
               }}>
-                Confirm & Start Assessment <ArrowRight size={18} />
+                {t('quiz.confirm_start')} <ArrowRight size={18} />
               </button>
             </div>
           </div>
@@ -541,7 +543,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
             <div className="quiz-progress-wrapper">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '0.8rem' }}>
                 <div className="progress-text" style={{ margin: 0 }}>
-                  Question <span>{currentIdx + 1}</span> of {shuffledQuestions.length}
+                  {t('quiz.question')} <span>{currentIdx + 1}</span> {t('quiz.of')} {shuffledQuestions.length}
                 </div>
                 <div className={`timer-display ${timeLeft <= 30 ? 'urgent' : ''}`} style={{
                   fontSize: '0.9rem',
@@ -656,7 +658,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
 
             <div className="quiz-modal-footer" style={{ borderTop: 'none', padding: 0 }}>
               <button type="button" className={`quiz-next-btn ${isAnswerChecked ? 'checked' : ''}`} disabled={selectedOpt === null} onClick={handleAction}>
-                {!isAnswerChecked ? 'Check Answer' : (isLastQuestion ? 'Finish Assessment' : 'Next Question')}
+                {!isAnswerChecked ? t('quiz.check_answer') : (isLastQuestion ? t('quiz.finish') : t('quiz.next_question'))}
                 <ChevronRight size={18} />
               </button>
             </div>
@@ -672,42 +674,42 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 )}
               </div>
               <h3 className="results-status">
-                {passed ? 'Mastery Achieved!' : 'Evaluation Incomplete'}
+                {passed ? t('quiz.passed') : t('quiz.failed_title')}
               </h3>
 
               {maxStreak >= 3 && (
                 <div className="streak-badge">
                   <span className="streak-flame">🔥</span>
-                  <span className="streak-count">{maxStreak} CORRECT STREAK</span>
+                  <span className="streak-count">{maxStreak} {t('quiz.correct_streak')}</span>
                 </div>
               )}
 
               <div className="results-score-pill">
                 <span className="final-score">{displayScore}%</span>
-                <span className="score-label">Final Grade</span>
+                <span className="score-label">{t('quiz.final_grade')}</span>
               </div>
             </div>
 
             <div className="results-feedback">
               <p>
                 {passed
-                  ? "Congratulations! You've successfully demonstrated competency in this module. The next section of the curriculum is now unlocked."
-                  : "You did not reach the 80% competency threshold. Precision is critical in industrial modeling. Please review the lesson material and try again."}
+                  ? t('quiz.pass_feedback')
+                  : t('quiz.fail_feedback')}
               </p>
             </div>
 
             <div className="results-actions">
               {passed ? (
                 <button type="button" className="finish-btn success" onClick={onSuccessContinue || onClose}>
-                  Continue to Next Module <ArrowRight size={18} />
+                  {t('quiz.continue_module')} <ArrowRight size={18} />
                 </button>
               ) : (
                 <div className="failure-actions">
                   <button type="button" className="finish-btn retry" onClick={resetQuiz}>
-                    <RotateCcw size={18} /> Try Again
+                    <RotateCcw size={18} /> {t('quiz.try_again')}
                   </button>
                   <button type="button" className="finish-btn secondary" onClick={onClose}>
-                    <X size={18} /> Review Lesson
+                    <X size={18} /> {t('quiz.review_lesson')}
                   </button>
                 </div>
               )}

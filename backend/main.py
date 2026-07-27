@@ -42,6 +42,39 @@ try:
                         conn.execute(text(
                             f"ALTER TABLE assessment_submissions ADD COLUMN {column_name} {column_definition}"
                         ))
+            
+            # Bilingual translation fields migrations
+            migrations_map = {
+                "courses": {
+                    "title_ja": "VARCHAR(200) NULL",
+                    "description_ja": "VARCHAR(500) NULL"
+                },
+                "lessons": {
+                    "title_ja": "VARCHAR(200) NULL"
+                },
+                "lesson_contents": {
+                    "data_ja": "TEXT NULL"
+                },
+                "assessment_tasks": {
+                    "title_ja": "VARCHAR(200) NULL",
+                    "description_ja": "TEXT NULL"
+                },
+                "quizzes": {
+                    "title_ja": "VARCHAR(200) NULL",
+                    "description_ja": "VARCHAR(500) NULL"
+                },
+                "questions": {
+                    "text_ja": "VARCHAR(1000) NULL",
+                    "options_json_ja": "VARCHAR(2000) NULL",
+                    "explanation_ja": "VARCHAR(1000) NULL"
+                }
+            }
+            for tbl, cols_dict in migrations_map.items():
+                if tbl in table_names:
+                    existing = {c["name"] for c in inspector.get_columns(tbl)}
+                    for col_name, col_def in cols_dict.items():
+                        if col_name not in existing:
+                            conn.execute(text(f"ALTER TABLE {tbl} ADD COLUMN {col_name} {col_def}"))
             conn.commit()
 except Exception as e:
     print(f"[!] Warning: Could not create tables or run startup migrations: {e}")
@@ -130,7 +163,7 @@ if os.path.exists(assets_path):
 else:
     print(f"[!] Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, quotations, contacts
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, contacts
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -141,7 +174,6 @@ app.include_router(assessments.router, prefix="/api/v1")
 app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(settings.router, prefix="/api/v1")
 app.include_router(tts.router, prefix="/api/v1")
-app.include_router(quotations.router, prefix="/api/v1")
 app.include_router(contacts.router, prefix="/api/v1")
 
 @app.get("/")

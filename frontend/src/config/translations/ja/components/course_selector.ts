@@ -1,0 +1,18 @@
+export const ja_components_course_selector = {
+  "course.welcome_title": "iCADトレーニングへようこそ",
+  "course.welcome_subtitle": "学習するコースを選択してください",
+  "course.locked": "ロック中",
+  "course.unlock_pre": "ロックを解除するには前のコースを完了してください",
+  "course.unlock_3d_prac": "ロックを解除するには3Dモデリングを完了してください",
+  "course.unlock_2d_det": "ロックを解除するには2D詳細設計を完了してください",
+  "course.unlock_3d_det": "ロックを解除するには3D実技評価を完了してください",
+  "course.launch": "コースを開始",
+  "course.title_3d": "3Dモデリング",
+  "course.desc_3d": "複雑な機械部品やマルチコンポーネントアセンブリをモデリングするための高度な空間可視化スキルを開発します。パラメータスケッチ、フィーチャモデリング（押し出し、スイープ、ロフト）、意図設計ロジック、アセンブリ拘束を含みます。",
+  "course.title_3d_prac": "3D実技評価",
+  "course.desc_3d_prac": "構造注記とモデリング精度の検証を行うため、iJCADでの一連 of 10セットの実技ドラフティングタスクとモデリング検証。",
+  "course.title_2d": "2D詳細設計",
+  "course.desc_2d": "テクニカルドラフティングの技術を習得します。生の3Dジオメトリを製造準備完了の図面に変換します。断面ビュー、アイソメ詳細、注記、標準部品表（BOM）、機械的幾何公差に焦点が当てられます。",
+  "course.title_2d_assessment": "2D詳細設計評価",
+  "course.desc_2d_assessment": "標準テストセットでレイアウト、断面図、機械公差を適用し、製図精度を検証します。",
+};

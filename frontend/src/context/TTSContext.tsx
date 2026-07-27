@@ -1,5 +1,6 @@
-import React,{ createContext,useCallback,useContext,useState } from 'react';
+import React,{ createContext,useCallback,useContext,useState,useEffect } from 'react';
 import { useTTS } from '../hooks/useTTS';
+import { useTranslation } from './LanguageContext';
 
 interface TTSVoice {
   voiceURI: string;
@@ -32,8 +33,19 @@ const TTSContext = createContext<TTSContextType | undefined>(undefined);
 
 export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const tts = useTTS();
+  const { language } = useTranslation();
   const [currentText, setCurrentText] = useState<string[]>([]);
   const [currentStartIndex, setCurrentStartIndex] = useState<number>(0);
+
+  useEffect(() => {
+    if (!tts.voices || tts.voices.length === 0) return;
+    const targetLang = language === 'ja' ? 'ja-JP' : 'en-US';
+    const matchingVoice = tts.voices.find(v => v.lang.toLowerCase().startsWith(targetLang.toLowerCase().split('-')[0]))
+      || tts.voices.find(v => v.lang.toLowerCase().includes(targetLang.toLowerCase().split('-')[0]));
+    if (matchingVoice) {
+      tts.setSelectedVoiceURI(matchingVoice.voiceURI);
+    }
+  }, [language, tts.voices]);
 
   const registerText = useCallback((text: string[], startIndex: number = 0) => {
     setCurrentText(text);

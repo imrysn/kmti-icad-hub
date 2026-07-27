@@ -1,6 +1,7 @@
 import { Award,CheckCircle2,Star,Target,TrendingUp } from 'lucide-react';
 import React,{ useMemo } from 'react';
 import { Modal } from '../../../components/Modal';
+import { useTranslation } from '../../../context/LanguageContext';
 import './Roadmap.css';
 
 interface SkillNode {
@@ -16,6 +17,7 @@ interface RoadmapProps {
 }
 
 export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore, onClose }) => {
+    const { t } = useTranslation();
     // Skill Categories Mapping
     const categories: SkillNode[] = useMemo(() => [
         {
@@ -78,7 +80,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
         <Modal
             isOpen={true}
             onClose={onClose}
-            title="Candidate Roadmap"
+            title={t('roadmap.title')}
             tag="ROADMAP"
             size="xl"
         >
@@ -88,7 +90,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                     <div className="roadmap-section skill-analysis">
                         <div className="section-title">
                             <Target size={18} />
-                            <span>Skill Radar</span>
+                            <span>{t('roadmap.skill_radar')}</span>
                         </div>
 
                         <div className="radar-container">
@@ -151,15 +153,15 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                     <div className="roadmap-section milestones">
                         <div className="section-title">
                             <Award size={18} />
-                            <span>Certification Milestones</span>
+                            <span>{t('roadmap.milestones')}</span>
                         </div>
 
                         <div className="milestones-list">
                             <div className={`milestone-card ${totalProgress >= 25 ? 'unlocked' : 'locked'}`}>
                                 <div className="badge"><Award /></div>
                                 <div className="m-info">
-                                    <h4>iCAD Novice</h4>
-                                    <p>Completed 25% of the curriculum</p>
+                                    <h4>{t('roadmap.novice_title')}</h4>
+                                    <p>{t('roadmap.novice_desc')}</p>
                                 </div>
                                 {totalProgress >= 25 && <CheckCircle2 className="check" />}
                             </div>
@@ -167,8 +169,8 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                             <div className={`milestone-card ${averageScore >= 80 ? 'unlocked' : 'locked'}`}>
                                 <div className="badge"><Star /></div>
                                 <div className="m-info">
-                                    <h4>Quality Specialist</h4>
-                                    <p>Maintained {'>'}80% Mastery Score</p>
+                                    <h4>{t('roadmap.specialist_title')}</h4>
+                                    <p>{t('roadmap.specialist_desc')}</p>
                                 </div>
                                 {averageScore >= 80 && <CheckCircle2 className="check" />}
                             </div>
@@ -176,28 +178,28 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                             <div className={`milestone-card ${totalProgress >= 100 ? 'unlocked' : 'locked'}`}>
                                 <div className="badge"><TrendingUp /></div>
                                 <div className="m-info">
-                                    <h4>iCAD Professional</h4>
-                                    <p>Course completion (100%)</p>
+                                    <h4>{t('roadmap.pro_title')}</h4>
+                                    <p>{t('roadmap.pro_desc')}</p>
                                 </div>
                                 {totalProgress >= 100 && <CheckCircle2 className="check" />}
                             </div>
                         </div>
 
                         <div className="certification-status">
-                            <h3>Certification Readiness</h3>
+                            <h3>{t('roadmap.cert_title')}</h3>
                             <div className="readiness-meter">
                                 <div className="meter-fill" style={{ width: `${Math.min(averageScore, totalProgress)}%` }}></div>
                             </div>
                             <p>
                                 {totalProgress >= 100 && averageScore >= 80
-                                    ? "Eligible for Digital Certificate"
-                                    : "Continue training to unlock certification"}
+                                    ? t('roadmap.cert_eligible')
+                                    : t('roadmap.cert_continue')}
                             </p>
                             <button
                                 className="cert-btn"
                                 disabled={totalProgress < 100 || averageScore < 80}
                             >
-                                Generate Certificate
+                                {t('roadmap.gen_cert')}
                             </button>
                         </div>
                     </div>

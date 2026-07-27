@@ -131,7 +131,9 @@ class Quiz(Base):
     id = Column(Integer, primary_key=True, index=True)
     slug = Column(String(100), unique=True, index=True)  # Links to curriculum lesson ID
     title = Column(String(200), nullable=False)
+    title_ja = Column(String(200), nullable=True)
     description = Column(String(500))
+    description_ja = Column(String(500), nullable=True)
     course_type = Column(String(50))  # e.g., "2D_Drawing", "3D_Modeling"
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
@@ -144,9 +146,12 @@ class Question(Base):
     id = Column(Integer, primary_key=True, index=True)
     quiz_id = Column(Integer, ForeignKey("quizzes.id", ondelete="CASCADE"), nullable=False)
     text = Column(String(1000), nullable=False)
+    text_ja = Column(String(1000), nullable=True)
     options_json = Column(String(2000), nullable=False)  # JSON-encoded list of strings
+    options_json_ja = Column(String(2000), nullable=True)
     correct_answer = Column(Integer, nullable=False)     # Index (0-based)
     explanation = Column(String(1000))
+    explanation_ja = Column(String(1000), nullable=True)
     order = Column(Integer, default=0)                   # For manual sorting
 
 
@@ -156,7 +161,9 @@ class Course(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), nullable=False)
+    title_ja = Column(String(200), nullable=True)
     description = Column(String(500))
+    description_ja = Column(String(500), nullable=True)
     course_type = Column(String(50), unique=True) # e.g., "2D_Drawing", "3D_Modeling"
     order = Column(Integer, default=0)
 
@@ -169,6 +176,7 @@ class Lesson(Base):
     course_id = Column(Integer, ForeignKey("courses.id", ondelete="CASCADE"), nullable=False)
     parent_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=True)
     title = Column(String(200), nullable=False)
+    title_ja = Column(String(200), nullable=True)
     slug = Column(String(100), unique=True, index=True) # The ID used in the app routing
     order = Column(Integer, default=0)
     is_published = Column(Boolean, default=True)
@@ -183,6 +191,7 @@ class LessonContent(Base):
     lesson_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=False)
     content_type = Column(String(50)) # "text", "image", "video", "bullet_list"
     data = Column(Text) # Using large String for content
+    data_ja = Column(Text, nullable=True)
     order = Column(Integer, default=0)
 
 
@@ -211,7 +220,9 @@ class AssessmentTask(Base):
     unit_name = Column(String(200), nullable=True) # e.g., "2655RCGR"
     task_code = Column(String(10), nullable=True) # e.g., "A", "B"
     title = Column(String(200), nullable=False)
+    title_ja = Column(String(200), nullable=True)
     description = Column(Text)
+    description_ja = Column(Text, nullable=True)
     master_file_path = Column(String(500)) # Path to master .dwg
     file_name = Column(String(200), nullable=True) # Name of the file
     is_assembly = Column(Boolean, default=False) # True if it's the master assembly

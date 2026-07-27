@@ -107,18 +107,6 @@ export const assessmentService = {
         return response.data;
     },
 
-    submitQuotation: async (file: File, setNumber: number, assessmentType: '3D' | '2D', quotationId?: number): Promise<AssessmentSubmission> => {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('set_number', setNumber.toString());
-        formData.append('assessment_type', assessmentType);
-        if (quotationId) formData.append('quotation_id', quotationId.toString());
-        const response = await api.post<AssessmentSubmission>('/api/v1/assessments/submit-quotation', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        return response.data;
-    },
-
     getTrainerSubmissions: async (status: string = 'pending', strictTrainer: boolean = false): Promise<AssessmentSubmission[]> => {
         return cachedGet(`/api/v1/assessments/trainer/submissions`, 15000, {
             params: { status, strict_trainer: strictTrainer }

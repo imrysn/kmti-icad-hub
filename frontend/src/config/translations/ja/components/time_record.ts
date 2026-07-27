@@ -1,0 +1,16 @@
+export const ja_components_time_record = {
+  "time.title": "作業時間記録",
+  "time.filter_by_set": "セットで絞り込み：",
+  "time.all_sets": "すべてのセット",
+  "time.copy_excel": "Excelにコピー",
+  "time.empty_title": "完了した時間記録はまだありません。",
+  "time.empty_desc": "タイマー終了後にファイルをアップロードすると記録が表示されます。",
+  "time.started": "開始：",
+  "time.finished": "終了：",
+  "time.mins": "分",
+  "time.unknown_file": "不明なファイル",
+  "time.records": "件",
+  "time.copied": "クリップボードにコピーしました！ExcelのFセルをクリックして貼り付けてください。",
+  "time.copy_fail_browser": "コピーに失敗しました。ブラウザがブロックしました。",
+  "time.copy_fail_manual": "コピーに失敗しました。手動でテーブルをコピーしてください。",
+};

@@ -1,5 +1,6 @@
 import { Bell,Check,RefreshCw,Trash2 } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
+import { useTranslation } from '../context/LanguageContext';
 import { useNotification } from '../context/NotificationContext';
 import { api } from '../services/api';
 import { Modal } from './Modal';
@@ -11,6 +12,7 @@ interface NotificationsModalProps {
 
 export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose }) => {
     const { showNotification } = useNotification();
+    const { t } = useTranslation();
     const [notifications, setNotifications] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
 
@@ -36,7 +38,6 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
         try {
             await api.post(`/api/v1/notifications/${id}/read`);
             setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
-            // Dispatch event to refresh unread count in header
             window.dispatchEvent(new CustomEvent('kmti-refresh-unread-count'));
         } catch (err) {
             console.error('Failed to mark notification as read:', err);
@@ -47,10 +48,10 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
         try {
             await api.post('/api/v1/notifications/read-all');
             setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-            showNotification('All notifications marked as read.', 'success');
+            showNotification(t('notif.marked_read'), 'success');
             window.dispatchEvent(new CustomEvent('kmti-refresh-unread-count'));
         } catch (err) {
-            showNotification('Failed to mark notifications as read.', 'error');
+            showNotification(t('notif.mark_read_fail'), 'error');
         }
     };
 
@@ -65,28 +66,28 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
     };
 
     const handleClearAll = async () => {
-        if (!window.confirm('Are you sure you want to clear all notifications?')) return;
+        if (!window.confirm(t('notif.clear_confirm'))) return;
         try {
             await api.delete('/api/v1/notifications/clear-all');
             setNotifications([]);
-            showNotification('All notifications cleared.', 'success');
+            showNotification(t('notif.cleared'), 'success');
             window.dispatchEvent(new CustomEvent('kmti-refresh-unread-count'));
         } catch (err) {
-            showNotification('Failed to clear notifications.', 'error');
+            showNotification(t('notif.clear_fail'), 'error');
         }
     };
 
     const getRelativeTimeString = (dateString: string) => {
         const date = new Date(dateString);
         const diffMs = new Date().getTime() - date.getTime();
-        if (diffMs <= 0) return 'Just now';
+        if (diffMs <= 0) return t('notif.just_now');
         const diffMins = Math.floor(diffMs / 60000);
-        if (diffMins < 1) return 'Just now';
-        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffMins < 1) return t('notif.just_now');
+        if (diffMins < 60) return `${diffMins}${t('notif.mins_ago')}`;
         const diffHours = Math.floor(diffMins / 60);
-        if (diffHours < 24) return `${diffHours}h ago`;
+        if (diffHours < 24) return `${diffHours}${t('notif.hours_ago')}`;
         const diffDays = Math.floor(diffHours / 24);
-        return `${diffDays}d ago`;
+        return `${diffDays}${t('notif.days_ago')}`;
     };
 
     const unreadCount = notifications.filter(n => !n.is_read).length;
@@ -95,7 +96,7 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            title="Notification Center"
+            title={t('notif.title')}
             tag="NOTIFICATIONS_CENTER"
             size="md"
         >
@@ -103,7 +104,7 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                            {unreadCount} unread • {notifications.length} total
+                            {unreadCount} {t('notif.unread')} • {notifications.length} {t('notif.total')}
                         </span>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -142,7 +143,7 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
                                     height: '28px'
                                 }}
                             >
-                                Read All
+                                {t('notif.read_all')}
                             </button>
                         )}
                         {notifications.length > 0 && (
@@ -160,7 +161,7 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
                                     height: '28px'
                                 }}
                             >
-                                Clear All
+                                {t('notif.clear_all')}
                             </button>
                         )}
                     </div>
@@ -174,9 +175,9 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
                     ) : notifications.length === 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, opacity: 0.6, padding: '2rem 0' }}>
                             <Bell size={36} style={{ color: 'var(--text-muted)', marginBottom: '0.75rem' }} />
-                            <h4 style={{ margin: 0, color: 'var(--text-main)' }}>No notifications yet</h4>
+                            <h4 style={{ margin: 0, color: 'var(--text-main)' }}>{t('notif.empty_title')}</h4>
                             <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-                                You will see activity logs and event alerts here.
+                                {t('notif.empty_desc')}
                             </p>
                         </div>
                     ) : (

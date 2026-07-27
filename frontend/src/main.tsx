@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext'
 import { NotificationProvider } from './context/NotificationContext'
 import { TTSProvider } from './context/TTSContext'
 import { UIProvider } from './context/UIContext'
+import { LanguageProvider } from './context/LanguageContext'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -13,11 +14,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <AuthProvider>
             <NotificationProvider>
                 <UIProvider>
-                    <TTSProvider>
-                        <HashRouter>
-                            <App />
-                        </HashRouter>
-                    </TTSProvider>
+                    <LanguageProvider>
+                        <TTSProvider>
+                            <HashRouter>
+                                <App />
+                            </HashRouter>
+                        </TTSProvider>
+                    </LanguageProvider>
                 </UIProvider>
             </NotificationProvider>
         </AuthProvider>

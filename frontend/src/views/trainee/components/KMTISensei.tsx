@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useTTSContext } from '../../../context/TTSContext'
+import { useTranslation } from '../../../context/LanguageContext'
 
 interface Props {
   title?: string
@@ -28,6 +29,7 @@ export const KMTISensei = ({
   autoSpeak = false,
   onNarrationEnd,
 }: Props) => {
+  const { t } = useTranslation()
   const narration = message || text || ''
   const { speak: speakWithManualVoice, stop, isSpeaking } = useTTSContext()
   const speakRef = useRef(speakWithManualVoice)
@@ -86,9 +88,9 @@ export const KMTISensei = ({
           type="button"
           className={`kmti-sensei-speak${isSpeaking ? ' is-speaking' : ''}`}
           onClick={isSpeaking ? stop : speak}
-          aria-label={isSpeaking ? 'Stop tutorial narration' : 'Read tutorial instruction aloud'}
+          aria-label={isSpeaking ? t('sensei.stop_narration') : t('sensei.read_aloud')}
           aria-pressed={isSpeaking}
-          title={isSpeaking ? 'Stop narration' : 'Read aloud'}
+          title={isSpeaking ? t('sensei.stop') : t('sensei.read')}
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -99,8 +101,8 @@ export const KMTISensei = ({
       )}
       {(onClose || onNext) && (
         <div className="kmti-sensei-actions">
-          {onClose && <button type="button" onClick={onClose}>Close</button>}
-          {onNext && <button type="button" onClick={onNext}>Next</button>}
+          {onClose && <button type="button" onClick={onClose}>{t('common.close')}</button>}
+          {onNext && <button type="button" onClick={onNext}>{t('common.next')}</button>}
         </div>
       )}
     </div>

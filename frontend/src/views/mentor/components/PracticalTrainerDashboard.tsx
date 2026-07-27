@@ -2,6 +2,7 @@ import { Box,CheckCircle2,ChevronDown,ChevronUp,Clock,Download,Eye,FileText,Mess
 import React,{ useCallback,useEffect,useRef,useState } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
+import { useTranslation } from '../../../context/LanguageContext';
 import { useNotification } from '../../../context/NotificationContext';
 import { useUI } from '../../../context/UIContext';
 import { useWebSocket } from '../../../context/WebSocketContext';
@@ -35,6 +36,7 @@ const PREDEFINED_COMMENTS = [
 export const PracticalTrainerDashboard: React.FC = () => {
     const { showNotification } = useNotification();
     const { requestConfirmation } = useUI();
+    const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const isAdmin = location.pathname.startsWith('/admin');
@@ -1280,7 +1282,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                             {/* Left Side: Submission History & Chat */}
                             <div className="history-chat-panel" style={{ flex: '1.2', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingRight: '1rem', overflowY: 'auto' }}>
                                 <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)', margin: 0, paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                    <MessageSquare size={18} style={{ color: 'var(--accent-blue)' }} /> Submission History & Feedback
+                                    <MessageSquare size={18} style={{ color: 'var(--accent-blue)' }} /> {t('review.history_title')}
                                 </h4>
                                 <div className="history-timeline" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingLeft: '0.5rem' }}>
                                     {selectedTaskSubmissions.map((sub, index) => {
@@ -1298,7 +1300,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.015)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
                                                 >
                                                     <div className="node-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                                        <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Attempt {selectedTaskSubmissions.length - index}</span>
+                                                        <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>{t('review.attempt')} {selectedTaskSubmissions.length - index}</span>
                                                         <span className="node-date" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-hover)', padding: '4px 10px', borderRadius: '20px' }}>{new Date(sub.submitted_at).toLocaleString()}</span>
                                                     </div>
                                                     <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', background: 'var(--bg-hover)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '1.25rem' }}>
@@ -1312,12 +1314,12 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                             <button
                                                                 className="action-icon-btn primary"
                                                                 onClick={() => handleOpenInIJCAD(sub)}
-                                                                title={sub.submission_kind === 'quotation' ? 'Open in Excel' : 'Open in CAD'}
+                                                                title={sub.submission_kind === 'quotation' ? t('review.open_excel') : t('review.open_cad')}
                                                                 style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
                                                                 onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = 'var(--shadow-glow)'; }}
                                                                 onMouseLeave={(e) => { e.currentTarget.style.filter = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
                                                             >
-                                                                <Play size={14} /> Open
+                                                                <Play size={14} /> {t('common.open')}
                                                             </button>
                                                             <button
                                                                 className="action-icon-btn"
@@ -1339,20 +1341,20 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                 {sub.feedback.map(fb => (
                                                                     <div key={fb.id} className="chat-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                                                         <div className="chat-bubble trainer-chat" style={{ background: 'linear-gradient(145deg, rgba(221, 77, 250, 0.1), rgba(221, 77, 250, 0.02))', border: '1px solid rgba(221, 77, 250, 0.2)', padding: '1rem', borderRadius: '12px 12px 0 12px', width: 'fit-content', maxWidth: '90%', alignSelf: 'flex-end', marginLeft: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                                                                            <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>You (Trainer) <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /></span>
-                                                                            <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-light)' }}>{fb.comments || "No comments provided."}</p>
+                                                                            <span className="chat-author" style={{ fontSize: '0.75rem', color: '#e879f9', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t('review.you_trainer')} <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e879f9' }} /></span>
+                                                                            <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-light)' }}>{fb.comments || t('review.no_comments')}</p>
                                                                             {fb.checkback_file_path && (
                                                                                 <div className="chat-attachment" onClick={() => handleDownloadCheckback(fb)} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#e879f9', marginTop: '0.75rem', padding: '6px 10px', background: 'rgba(221, 77, 250, 0.1)', borderRadius: '6px', transition: 'all 0.2s', fontWeight: 600 }}
                                                                                     onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(221, 77, 250, 0.2)'; }}
                                                                                     onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(221, 77, 250, 0.1)'; }}
                                                                                 >
-                                                                                    <FileText size={14} /> Download Checkback
+                                                                                    <FileText size={14} /> {t('review.download_checkback')}
                                                                                 </div>
                                                                             )}
                                                                         </div>
                                                                         {fb.trainee_reply && (
                                                                             <div className="chat-bubble trainee-chat" style={{ background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '12px 12px 12px 0', width: 'fit-content', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                                                                                <span className="chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} /> {sub.user?.full_name} (Trainee)</span>
+                                                                                <span className="chat-author" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}><div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)' }} /> {sub.user?.full_name} {t('review.trainee_label')}</span>
                                                                                 <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-main)' }}>{fb.trainee_reply}</p>
                                                                                 {fb.replied_at && <span className="chat-time" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', display: 'block', marginTop: '0.5rem', textAlign: 'left' }}>{new Date(fb.replied_at).toLocaleString()}</span>}
                                                                             </div>
@@ -1365,8 +1367,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                 <MessageSquare size={32} className="empty-chat-icon" style={{ opacity: 0.3, marginBottom: '1rem' }} />
                                                                 <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 500 }}>
                                                                     {sub.status === 'pending'
-                                                                        ? `Awaiting your review (Attempt ${selectedTaskSubmissions.length - index}).`
-                                                                        : 'No feedback history for this attempt.'
+                                                                        ? `${t('review.awaiting_review')} (${t('review.attempt')} ${selectedTaskSubmissions.length - index})`
+                                                                        : t('review.no_feedback')
                                                                     }
                                                                 </p>
                                                             </div>
@@ -1500,8 +1502,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                                 }}
                                                                             />
                                                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                                                <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
-                                                                                <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                                <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>{t('common.save')}</button>
+                                                                                <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>{t('common.cancel')}</button>
                                                                             </div>
                                                                         </>
                                                                     ) : (
@@ -1568,7 +1570,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error)'}
                                                     onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
                                                 >
-                                                    Clear
+                                                    {t('common.clear')}
                                                 </span>
                                             )}
                                         </div>
@@ -1653,7 +1655,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="bulk-review-info" style={{ padding: '1rem', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
                                 <h4 style={{ margin: '0 0 0.5rem 0', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <Eye size={18} /> You are reviewing {selectedSetSubmissions.length} tasks
+                                    <Eye size={18} /> {t('bulk.reviewing').replace('{n}', String(selectedSetSubmissions.length))}
                                 </h4>
                                 <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                                     The feedback and status you provide below will be applied to all <strong>{selectedSetSubmissions.length}</strong> tasks simultaneously.
@@ -1668,13 +1670,13 @@ export const PracticalTrainerDashboard: React.FC = () => {
                             </div>
 
                             <div className="feedback-form-panel" style={{ background: 'rgba(255,255,255,0.01)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <h4>Provide Bulk Feedback</h4>
+                                <h4>{t('bulk.provide_feedback')}</h4>
                                 <div className="form-group">
-                                    <label>Overall Comments</label>
+                                    <label>{t('bulk.overall_comments')}</label>
                                     {renderQuickCommentsUI()}
                                     <div style={{ position: 'relative' }}>
                                         <textarea
-                                            placeholder="Provide overall feedback for the entire set..."
+                                            placeholder={t('bulk.feedback_placeholder')}
                                             value={feedbackComments}
                                             onChange={(e) => setFeedbackComments(e.target.value)}
                                             style={{ width: '100%', minHeight: '120px', padding: '0.5rem', paddingBottom: '2.5rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-main)' }}
@@ -1700,7 +1702,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 }}
                                             >
                                                 <div className="custom-comment-group-title" style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                                                    Predefined Comments
+                                                    {t('bulk.predefined')}
                                                 </div>
                                                 {PREDEFINED_COMMENTS.map((comment, idx) => (
                                                     <div
@@ -1727,7 +1729,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     <>
                                                         <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.4rem 0' }} />
                                                         <div className="custom-comment-group-title" style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                                                            My Custom Comments
+                                                            {t('bulk.my_custom')}
                                                         </div>
                                                         {customComments.map((comment, idx) => (
                                                             <div
@@ -1776,8 +1778,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                             }}
                                                                         />
                                                                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                                            <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
-                                                                            <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                            <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>{t('common.save')}</button>
+                                                                            <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>{t('common.cancel')}</button>
                                                                         </div>
                                                                     </>
                                                                 ) : (
@@ -1797,7 +1799,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                                     <input
                                                         type="text"
-                                                        placeholder="Add a new custom comment..."
+                                                        placeholder={t('bulk.add_comment_placeholder')}
                                                         value={newCustomComment}
                                                         onChange={(e) => setNewCustomComment(e.target.value)}
                                                         style={{
@@ -1844,14 +1846,14 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                 onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error)'}
                                                 onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
                                             >
-                                                Clear
+                                                {t('common.clear')}
                                             </span>
                                         )}
                                     </div>
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Excel Checkback File (Optional, applies to all)</label>
+                                    <label>{t('bulk.checkback_label')}</label>
                                     <div className="file-upload-area" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                         <input
                                             type="file"
@@ -1862,7 +1864,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         />
                                         <label htmlFor="bulk-checkback-file" className={feedbackFile ? 'has-file' : ''} style={{ flex: 1, padding: '0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>
                                             <Upload size={18} />
-                                            <span>{feedbackFile ? feedbackFile.name : 'Upload Excel Checkback'}</span>
+                                            <span>{feedbackFile ? feedbackFile.name : t('bulk.upload_checkback')}</span>
                                         </label>
                                         {feedbackFile && (
                                             <button
@@ -1891,7 +1893,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         onMouseEnter={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.4)'; } }}
                                         onMouseLeave={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(239, 68, 68, 0.3)'; } }}
                                     >
-                                        <XCircle size={18} /> Reject Entire Set
+                                        <XCircle size={18} /> {t('bulk.reject_set')}
                                     </button>
                                     <button
                                         onClick={() => handleBulkSubmitFeedback('approved')}
@@ -1900,7 +1902,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         onMouseEnter={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(34, 197, 94, 0.4)'; } }}
                                         onMouseLeave={(e) => { if (!isSubmittingFeedback) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(34, 197, 94, 0.3)'; } }}
                                     >
-                                        <CheckCircle2 size={18} /> Approve Entire Set
+                                        <CheckCircle2 size={18} /> {t('bulk.approve_set')}
                                     </button>
                                 </div>
                             </div>

@@ -6,8 +6,10 @@ import { useAuth } from '../hooks/useAuth';
 import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import { parseBackendError } from '../utils/errorUtils';
+import { useTranslation } from '../context/LanguageContext';
 
 export const LoginView: React.FC = () => {
+    const { t } = useTranslation();
     const { login, isLoggingIn } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', password: '' }); const [localError, setLocalError] = useState('');
@@ -124,23 +126,23 @@ export const LoginView: React.FC = () => {
 
             <div className="login-brand-header">
                 <span className="login-logo-text">KMTI</span>
-                <div className="brand-subtitle">ICAD MANUAL</div>
-                <div className="brand-subtitle">TRAINING & STANDARD</div>
+                <div className="brand-subtitle">{t('login.subtitle_1') || 'ICAD MANUAL'}</div>
+                <div className="brand-subtitle">{t('login.subtitle_2') || 'TRAINING & STANDARD'}</div>
             </div>
 
             <div className="login-form-wrapper">
 
                 <form onSubmit={handleSubmit} className="glass-form">
-                    <div className="input-group">
-                        <label>USERNAME</label>
+                     <div className="input-group">
+                        <label>{t('login.username')}</label>
                         <div className="input-wrapper">
                             <UserIcon className="input-icon" size={20} />
-                            <input type="text" name="username" value={formData.username} onChange={handleInputChange} disabled={isLoggingIn} placeholder="Enter username" />
+                            <input type="text" name="username" value={formData.username} onChange={handleInputChange} disabled={isLoggingIn} placeholder={t('login.username_placeholder') || 'Enter username'} />
                         </div>
                     </div>
 
                     <div className="input-group">
-                        <label>PASSWORD</label>
+                        <label>{t('login.password')}</label>
                         <div className="input-wrapper">
                             <Lock className="input-icon" size={20} />
                             <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleInputChange} disabled={isLoggingIn} placeholder="••••••••" />
@@ -158,17 +160,17 @@ export const LoginView: React.FC = () => {
                                 checked={rememberMe}
                                 onChange={(e) => setRememberMe(e.target.checked)}
                             />
-                            <span>REMEMBER ME</span>
+                            <span>{t('login.remember_me')}</span>
                         </label>
                         <button type="button" className="forgot-password-btn" onClick={handleForgotPassword}>
-                            Forgot Password?
+                            {t('login.forgot_password')}
                         </button>
                     </div>
 
                     {localError && <div className="local-error-msg">{localError}</div>}
 
                     <button type="submit" className="glass-login-btn" disabled={isLoggingIn}>
-                        {isLoggingIn ? 'Logging...' : 'SIGN IN'}
+                        {isLoggingIn ? (t('common.loading') || 'Logging...') : t('login.btn')}
                     </button>
                 </form>
             </div>

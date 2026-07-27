@@ -258,8 +258,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               </div>
 
               <div className="lesson-navigation">
-                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-                <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
+                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+                <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
               </div>
             </div>
           )}
@@ -403,8 +403,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               </div>
 
               <div className="lesson-navigation">
-                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-                <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
+                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+                <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
               </div>
             </div>
           )}
@@ -493,8 +493,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               </div>
 
               <div className="lesson-navigation">
-                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-                <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
+                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+                <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
               </div>
             </div>
           )}
@@ -630,8 +630,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
               </div>
 
               <div className="lesson-navigation">
-                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-                <button className="nav-button next" onClick={() => handleNext()}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+                <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+                <button className="nav-button next" onClick={() => handleNext()}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
               </div>
             </div>
           )}

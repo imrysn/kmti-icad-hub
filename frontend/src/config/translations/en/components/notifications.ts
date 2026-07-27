@@ -1,0 +1,18 @@
+export const en_components_notifications = {
+  "notif.title": "Notification Center",
+  "notif.read_all": "Read All",
+  "notif.clear_all": "Clear All",
+  "notif.empty_title": "No notifications yet",
+  "notif.empty_desc": "You will see activity logs and event alerts here.",
+  "notif.clear_confirm": "Are you sure you want to clear all notifications?",
+  "notif.marked_read": "All notifications marked as read.",
+  "notif.mark_read_fail": "Failed to mark notifications as read.",
+  "notif.cleared": "All notifications cleared.",
+  "notif.clear_fail": "Failed to clear notifications.",
+  "notif.just_now": "Just now",
+  "notif.mins_ago": "m ago",
+  "notif.hours_ago": "h ago",
+  "notif.days_ago": "d ago",
+  "notif.unread": "unread",
+  "notif.total": "total",
+};

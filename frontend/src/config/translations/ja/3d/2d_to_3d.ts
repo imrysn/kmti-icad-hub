@@ -1,0 +1,42 @@
+export const ja_3d_2d_to_3d = {
+  "2dto3d.tab1": "2D > 3D",
+  "2dto3d.workPlane": "作業平面",
+  "2dto3d.intro": "3Dモデリングは、3D空間内の平面を用いて2Dスケッチ上にスケッチを行うことで行うことができます。3D空間上に2D平面を作成するには、ツールバーの「作業平面を開く」を使用します。",
+  "2dto3d.rotate": "作業平面をX-Y平面、X-Z平面、またはY-Z平面に回転させる際に使用します。",
+  "2dto3d.commandMenu.title": "コマンドメニュー",
+  "2dto3d.commandMenu.desc": "ほとんどのツールは、コマンドメニューから選択できます。",
+
+  "2dto3d.introTitle": "Extrude, Revolve, Spiral",
+  "2dto3d.introSubtitle": "これらは、2Dスケッチを3Dソリッドエンティティに押し出しするために使用するツールです。",
+  "2dto3d.introSubtitle2": "最もよく使われるツールは以下の通りです：",
+  
+  "2dto3d.extrude.tab": "Extrude",
+  "2dto3d.extrude.title": "押し出し",
+  "2dto3d.extrude.desc": "作業平面または2D図面上に作成した断面形状を垂直投影し、ソリッドエンティティを作成します。",
+  "2dto3d.extrude.step1": "アイコンメニューから「押し出し」を選択します。",
+  "2dto3d.extrude.step2": "押し出しを行う断面を選択してください。",
+  "2dto3d.extrude.step2hatch": "スケッチが閉じた図形であることを示すハッチングが表示されます > GO",
+  "2dto3d.extrude.step3": "アイテムエントリで押し出しの高さを指定 > Enterキーを押す > GO",
+  "2dto3d.extrude.dialog": "押し出し処理後に作業平面を削除するかどうかを確認するダイアログボックスが表示されます。「OK」を選択して、作業平面を削除します。",
+  "2dto3d.extrude.dialogNote": "注: 作業平面を削除すると、その平面上で作成されたすべてのスケッチが削除されます。ご注意ください。この操作は元に戻せません。",
+  "2dto3d.extrude.dialogCancel": "「キャンセル」を選択すると、作業平面とすべての2Dスケッチがそのまま保持されます。",
+  
+  "2dto3d.revolve.tab": "Revolve",
+  "2dto3d.revolve.title": "回転投影",
+  "2dto3d.revolve.desc": "作業平面または2D図面上に作成された断面形状に対し、回転投影を行うことで、ソリッドエンティティを作成します。",
+  "2dto3d.revolve.step1": "アイコンメニューから「回転投影」を選択します。",
+  "2dto3d.revolve.step2": "回転させる断面を選択 > GO",
+  "2dto3d.revolve.step2hatch": "スケッチが閉じた図形であることを示すハッチングが表示されます",
+  "2dto3d.revolve.step3": "回転軸を選択 > GO",
+  "2dto3d.processOverview": "プロセスの概要",
+  
+  "2dto3d.spiral.tab": "Spiral",
+  "2dto3d.spiral.title": "スパイラルフォーム",
+  "2dto3d.spiral.desc": "2Dスケッチ上で作成された断面形状から、3Dの螺旋形状を作成します。",
+  "2dto3d.spiral.step1": "まず、スケッチを作成します。",
+  "2dto3d.spiral.step2": "アイコンメニューからスパイラル形状を選択します。",
+  "2dto3d.spiral.step2hatch": "回転させる断面を選択してください。スケッチが閉じた図形であることを示すハッチングが表示されます > GO",
+  "2dto3d.spiral.step3": "アイテム登録画面でスパイラルのピッチを指定 > Enterキーを押す > GO",
+  "2dto3d.spiral.step3note": "注: ピッチは厚さよりも大きくなければなりません",
+  "2dto3d.spiral.step4": "回転軸に沿って、らせんの両端を選択してください。次に[GO]をクリックします。"
+};

@@ -12,6 +12,7 @@ import WindowControls from './components/WindowControls';
 import { useNotification } from './context/NotificationContext';
 import { useUI } from './context/UIContext';
 import { WebSocketProvider,useWebSocket } from './context/WebSocketContext';
+import { useTranslation } from './context/LanguageContext';
 import { useAuth } from './hooks/useAuth';
 import { api,getSystemStatus } from './services/api';
 import { assessmentService } from './services/assessmentService';
@@ -21,7 +22,6 @@ import { AdminMode } from './views/admin/AdminMode';
 import AssistantMode from './views/assistant/AssistantMode';
 import MentorMode from './views/mentor/MentorMode';
 import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTelemetrySidebar';
-import Quotation from './views/trainee/components/Quotation/Quotation';
 
 import kmtiLogo from './assets/kmti-training-hub.png';
 import './styles/App.css';
@@ -30,6 +30,7 @@ function AppContent() {
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const { showNotification } = useNotification();
   const { isTelemetryOpen, toggleTelemetry } = useUI();
+  const { language, setLanguage, t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -259,35 +260,31 @@ function AppContent() {
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
                     <GraduationCap size={18} />
-                    <span>iCAD Manuals and Standard</span>
+                    <span>{t('nav.manuals_standard') || 'iCAD Manuals and Standard'}</span>
                   </button>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => navigate('/admin')}>
                     <Settings size={18} />
-                    <span>Admin</span>
+                    <span>{t('nav.admin_tab') || 'Admin'}</span>
                   </button>
                 </nav>
               )}
               {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && hasTrainees && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
-                  <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title="iCAD Manuals and Standard">
+                  <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title={t('nav.manuals_standard') || 'iCAD Manuals and Standard'}>
                     <GraduationCap size={18} />
-                    <span>iCAD Manuals and Standard</span>
+                    <span>{t('nav.manuals_standard') || 'iCAD Manuals and Standard'}</span>
                   </button>
-                  <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
+                  <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title={t('nav.trainee_overview') || 'Trainee Overview'}>
                     <ClipboardList size={18} />
-                    <span>Trainee Overview</span>
+                    <span>{t('nav.trainee_overview') || 'Trainee Overview'}</span>
                   </button>
                 </nav>
               )}
-              {(location.pathname.startsWith('/mentor') || location.pathname.startsWith('/quotation')) && user?.role !== 'admin' && user?.role !== 'employee' && (
+              {location.pathname.startsWith('/mentor') && user?.role !== 'admin' && user?.role !== 'employee' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
-                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')} title="iCAD Manuals and Standard">
+                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')} title={t('nav.manuals_standard') || 'iCAD Manuals and Standard'}>
                     <GraduationCap size={18} />
-                    <span>iCAD Manuals</span>
-                  </button>
-                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/quotation') ? 'active' : ''}`} onClick={() => navigate('/quotation')} title="Quotation">
-                    <Briefcase size={18} />
-                    <span>Quotation</span>
+                    <span>{t('nav.manuals') || 'iCAD Manuals'}</span>
                   </button>
                 </nav>
               )}
@@ -347,6 +344,20 @@ function AppContent() {
                 <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
                 <button
+                  onClick={() => setLanguage(language === 'en' ? 'ja' : 'en')}
+                  className="theme-toggle-btn language-toggle-btn"
+                  title={language === 'en' ? 'Switch to Japanese' : 'Switch to English'}
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                    color: 'var(--text-secondary)'
+                  }}
+                >
+                  {language === 'en' ? 'JA' : 'EN'}
+                </button>
+
+                <button
                   onClick={() => {
                     if (window.electronAPI) window.electronAPI.setWindowSize(440, 550, false);
                     logout();
@@ -372,7 +383,6 @@ function AppContent() {
                   <Route path="/mentor" element={<MentorMode isEmployeeSide={user?.role?.toLowerCase() !== 'trainee'} />} />
                   <Route path="/assistant" element={<AssistantMode />} />
                   <Route path="/admin/*" element={<AdminMode />} />
-                  <Route path="/quotation" element={<Quotation />} />
                   <Route path="/" element={<Navigate to={user?.role === 'admin' ? "/admin" : (user?.role === 'employee' ? "/assistant" : "/mentor")} replace />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>

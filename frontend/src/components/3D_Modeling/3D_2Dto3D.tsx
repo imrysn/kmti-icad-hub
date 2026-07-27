@@ -8,6 +8,7 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import "../../styles/3D_Modeling/CourseLesson.css";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 /* 2D > 3D (1) Assets */
 import commandMenu from "../../assets/3D_Image_File/2d_3d1_1.png";
@@ -36,6 +37,7 @@ interface SubLessonProps {
 
 /* ── 2D > 3D (1) ── */
 const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"workPlane" | "commandMenu">(() => {
     return (localStorage.getItem('2d-3d-1-tab') as any) || 'workPlane';
   });
@@ -57,19 +59,19 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
   }, [activeTab]);
 
   const workPlaneSteps = [
-    "2D to 3D",
-    "3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension. To create 2D plane on the 3D Dimension, use Open Work Plane from the toolbar.",
-    "Use to rotate the work plane to X-Y Plane, X-Z Plane or Y-Z Plane."
+    t('2dto3d.tab1'),
+    t('2dto3d.intro'),
+    t('2dto3d.rotate')
   ];
 
   const menuSteps = [
-    "COMMAND MENU",
-    "Most tools use for sketching on the work plane can be found on the command menu."
+    t('2dto3d.commandMenu.title'),
+    t('2dto3d.commandMenu.desc')
   ];
 
   const tabs = [
-    { id: "workPlane", label: "Work Plane" },
-    { id: "commandMenu", label: "Command Menu" }
+    { id: "workPlane", label: t('2dto3d.workPlane') },
+    { id: "commandMenu", label: t('2dto3d.commandMenu.title') }
   ];
 
   const handleNext = (isAuto = false) => {
@@ -137,7 +139,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4 className={`${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <KaraokeLessonText
                   as="span"
-                  text="2D > 3D"
+                  text={t('2dto3d.tab1')}
                   isActive={isSpeaking && currentIndex === 0}
                   currentCharIndex={currentCharIndex}
                 />
@@ -148,7 +150,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <KaraokeLessonText
                 as="p"
                 className="p-flush"
-                text="3D modeling can be done by sketching on 2D sketch using a plane on the 3D Dimension. To create 2D plane on the 3D Dimension, use Open Work Plane from the toolbar."
+                text={t('2dto3d.intro')}
                 isActive={isSpeaking && currentIndex === 1}
                 currentCharIndex={currentCharIndex}
               />
@@ -159,7 +161,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <KaraokeLessonText
                 as="span"
-                text="Use to rotate the work plane to X-Y Plane, X-Z Plane or Y-Z Plane"
+                text={t('2dto3d.rotate')}
                 isActive={isSpeaking && currentIndex === 2}
                 currentCharIndex={currentCharIndex}
               />
@@ -167,8 +169,8 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -179,7 +181,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4 className={`${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <KaraokeLessonText
                   as="span"
-                  text="COMMAND MENU"
+                  text={t('2dto3d.commandMenu.title')}
                   isActive={isSpeaking && currentIndex === 0}
                   currentCharIndex={currentCharIndex}
                 />
@@ -190,7 +192,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               as="p"
               className="p-flush mb-8"
               style={{ marginTop: "-2rem" }}
-              text="Most tools use for sketching on the work plane can be found on the command menu."
+              text={t('2dto3d.commandMenu.desc')}
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
@@ -199,8 +201,8 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext()}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              <button className="nav-button next" onClick={() => handleNext()}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -212,6 +214,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
 /* ── 2D > 3D (2) ── */
 const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"extrude" | "revolve" | "spiral">(() => {
     return (localStorage.getItem('2d-3d-2-tab') as any) || 'extrude';
   });
@@ -232,9 +235,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     localStorage.setItem('2d-3d-2-tab', activeTab);
   }, [activeTab]);
 
-  const introTitle = "Extrude, Revolve, Spiral";
-  const introSubtitle = "These are the tools use for extruding 2D sketches to 3D Solid Entities";
-  const introSubtitle2 = "Most commonly used tools are the following:";
+  const introTitle = t('2dto3d.introTitle');
+  const introSubtitle = t('2dto3d.introSubtitle');
+  const introSubtitle2 = t('2dto3d.introSubtitle2');
 
   const commonIntroSteps = [
     introTitle,
@@ -244,37 +247,37 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
   const extrudeSteps = [
     ...commonIntroSteps,
-    "EXTRUDE",
-    "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.",
-    "Step 1: Select Extrude from the icon menu.",
-    "Step 2: Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure > GO",
-    "Step 3: Specify the height of extrusion on the item entry then Press Enter then GO",
-    "A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane. ",
-    "Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.",
-    "Select Cancel to keep the work plane together with all the 2D sketches.",
-    "RESULT"
+    t('2dto3d.extrude.title'),
+    t('2dto3d.extrude.desc'),
+    t('2dto3d.extrude.step1'),
+    t('2dto3d.extrude.step2') + " " + t('2dto3d.extrude.step2hatch'),
+    t('2dto3d.extrude.step3'),
+    t('2dto3d.extrude.dialog'),
+    t('2dto3d.extrude.dialogNote'),
+    t('2dto3d.extrude.dialogCancel'),
+    t('lesson.result')
   ];
   const revolveStepsTTS = [
     ...commonIntroSteps,
-    "REVOLVE",
-    "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.",
-    "Step 1: Select Revolve from the icon menu.",
-    "Step 2: Pick the cross section to be revolved then GO. A hatch will appear to show that the sketch is an enclosed figure",
-    "Step 3: Select the axis of rotation then GO",
-    "PROCESS OVERVIEW"
+    t('2dto3d.revolve.title'),
+    t('2dto3d.revolve.desc'),
+    t('2dto3d.revolve.step1'),
+    t('2dto3d.revolve.step2') + " " + t('2dto3d.revolve.step2hatch'),
+    t('2dto3d.revolve.step3'),
+    t('2dto3d.processOverview')
   ];
   const spiralSteps = [
     ...commonIntroSteps,
-    "SPIRAL FORM",
-    "Creates a 3D spiral form from a section form created on a 2D sketch.",
-    "Step 1: First do the sketch",
-    "Step 2: Select Spiral Form from the icon menu. Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure then GO",
-    "Step 3: Specify the pitch of the spiral on the item entry then Press Enter then GO. Note: Pitch must be greater than Thickness",
-    "Step 4: Select the ends of the length of the spiral along the axis of rotation then GO",
-    "RESULT"
+    t('2dto3d.spiral.title'),
+    t('2dto3d.spiral.desc'),
+    t('2dto3d.spiral.step1'),
+    t('2dto3d.spiral.step2') + " " + t('2dto3d.spiral.step2hatch'),
+    t('2dto3d.spiral.step3') + " " + t('2dto3d.spiral.step3note'),
+    t('2dto3d.spiral.step4'),
+    t('lesson.result')
   ];
 
-  const tabs = [{ id: "extrude", label: "Extrude" }, { id: "revolve", label: "Revolve" }, { id: "spiral", label: "Spiral" },];
+  const tabs = [{ id: "extrude", label: t('2dto3d.extrude.tab') }, { id: "revolve", label: t('2dto3d.revolve.tab') }, { id: "spiral", label: t('2dto3d.spiral.tab') },];
   const handleNext = (isAuto = false) => {
     stop();
     if (!isAuto) {
@@ -338,7 +341,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           <KaraokeLessonText
             as="span"
-            text={introTitle}
+            text={t('2dto3d.introTitle')}
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
@@ -347,14 +350,14 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
           data-reading-index="1"
-          text={introSubtitle}
+          text={t('2dto3d.introSubtitle')}
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 2 ? "reading-active" : ""}`}
           data-reading-index="2"
-          text={introSubtitle2}
+          text={t('2dto3d.introSubtitle2')}
           isActive={isSpeaking && currentIndex === 2}
           currentCharIndex={currentCharIndex}
         />
@@ -369,7 +372,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4 className={`${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <KaraokeLessonText
                   as="span"
-                  text="EXTRUDE"
+                  text={t('2dto3d.extrude.title')}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -380,7 +383,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               className={`p-flush ${currentIndex === 4 ? "reading-active" : ""}`}
               style={{ marginTop: "-2rem" }}
               data-reading-index="4"
-              text="Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection."
+              text={t('2dto3d.extrude.desc')}
               isActive={isSpeaking && currentIndex === 4}
               currentCharIndex={currentCharIndex}
             />
@@ -391,7 +394,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Extrude from the icon menu"
+                  text={t('2dto3d.extrude.step1')}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -407,14 +410,14 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Pick the cross-section to be extruded."
+                    text={t('2dto3d.extrude.step2')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                   <br />
                   <KaraokeLessonText
                     as="span"
-                    text="A hatch will appear to show that the sketch is an enclosed figure &gt; GO"
+                    text={t('2dto3d.extrude.step2hatch')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -432,7 +435,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO"
+                    text={t('2dto3d.extrude.step3')}
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -448,21 +451,21 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 as="p"
                 className="p-flush"
                 style={{ marginBottom: "1rem" }}
-                text="A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane"
+                text={t('2dto3d.extrude.dialog')}
                 isActive={isSpeaking && currentIndex === 8}
                 currentCharIndex={currentCharIndex}
               />
               <KaraokeLessonText
                 as="p"
                 className="red-text"
-                text="Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone"
+                text={t('2dto3d.extrude.dialogNote')}
                 isActive={isSpeaking && currentIndex === 9}
                 currentCharIndex={currentCharIndex}
               />
               <KaraokeLessonText
                 as="p"
                 style={{ marginTop: "1rem" }}
-                text="Select Cancel to keep the work plane together with all the 2D sketches"
+                text={t('2dto3d.extrude.dialogCancel')}
                 isActive={isSpeaking && currentIndex === 10}
                 currentCharIndex={currentCharIndex}
               />
@@ -474,7 +477,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <h4 className={`${currentIndex === 11 ? "reading-active" : ""}`} data-reading-index="11">
                   <KaraokeLessonText
                     as="span"
-                    text="RESULT"
+                    text={t('lesson.result')}
                     isActive={isSpeaking && currentIndex === 11}
                     currentCharIndex={currentCharIndex}
                   />
@@ -486,8 +489,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -499,7 +502,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4 className={`${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <KaraokeLessonText
                   as="span"
-                  text="REVOLVE"
+                  text={t('2dto3d.revolve.title')}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -510,7 +513,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               className={`p-flush ${currentIndex === 4 ? "reading-active" : ""}`}
               style={{ marginTop: "-2rem" }}
               data-reading-index="4"
-              text="Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection."
+              text={t('2dto3d.revolve.desc')}
               isActive={isSpeaking && currentIndex === 4}
               currentCharIndex={currentCharIndex}
             />
@@ -521,7 +524,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Revolve from the icon menu"
+                  text={t('2dto3d.revolve.step1')}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -537,7 +540,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ gap: '0px' }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Pick the cross section to be revolved &gt; GO"
+                    text={t('2dto3d.revolve.step2')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -545,7 +548,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   <br />
                   <KaraokeLessonText
                     as="span"
-                    text="A hatch will appear to show that the sketch is an enclosed figure"
+                    text={t('2dto3d.revolve.step2hatch')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -559,7 +562,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the axis of rotation &gt; GO"
+                    text={t('2dto3d.revolve.step3')}
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -575,7 +578,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <h4 className={`${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
                   <KaraokeLessonText
                     as="span"
-                    text="PROCESS OVERVIEW"
+                    text={t('2dto3d.processOverview')}
                     isActive={isSpeaking && currentIndex === 8}
                     currentCharIndex={currentCharIndex}
                   />
@@ -585,8 +588,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -598,7 +601,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               <h4 className={`${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <KaraokeLessonText
                   as="span"
-                  text="SPIRAL FORM"
+                  text={t('2dto3d.spiral.title')}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -609,7 +612,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
               className={`p-flush ${currentIndex === 4 ? "reading-active" : ""}`}
               style={{ marginTop: "-2rem" }}
               data-reading-index="4"
-              text="Creates a 3D spiral form from a section form created on a 2D sketch."
+              text={t('2dto3d.spiral.desc')}
               isActive={isSpeaking && currentIndex === 4}
               currentCharIndex={currentCharIndex}
             />
@@ -620,7 +623,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="First do the sketch"
+                  text={t('2dto3d.spiral.step1')}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -636,7 +639,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Spiral Form from the icon menu"
+                  text={t('2dto3d.spiral.step2')}
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -648,7 +651,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 as="p"
                 className="p-flush"
                 style={{ marginTop: "-1rem" }}
-                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO"
+                text={t('2dto3d.spiral.step2hatch')}
                 isActive={isSpeaking && currentIndex === 6}
                 currentCharIndex={currentCharIndex}
               />
@@ -660,7 +663,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO"
+                    text={t('2dto3d.spiral.step3')}
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -671,7 +674,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="p"
                   className="p-flush red-text"
-                  text="Note: Pitch must be greater than Thickness."
+                  text={t('2dto3d.spiral.step3note')}
                   isActive={isSpeaking && currentIndex === 7}
                   currentCharIndex={currentCharIndex}
                 />
@@ -687,7 +690,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select the ends of the length of the spiral along the axis of rotation then GO"
+                  text={t('2dto3d.spiral.step4')}
                   isActive={isSpeaking && currentIndex === 8}
                   currentCharIndex={currentCharIndex}
                 />
@@ -702,7 +705,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <h4 className={`${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9">
                   <KaraokeLessonText
                     as="span"
-                    text="RESULT"
+                    text={t('lesson.result')}
                     isActive={isSpeaking && currentIndex === 9}
                     currentCharIndex={currentCharIndex}
                   />
@@ -714,8 +717,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              <button className="nav-button next" onClick={onNextLesson}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}

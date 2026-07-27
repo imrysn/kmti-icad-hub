@@ -14,6 +14,7 @@ import { useLessonCore } from '../../hooks/useLessonCore';
 
 import '../../styles/3D_Modeling/CourseLesson.css';
 import { KaraokeLessonText } from '../KaraokeLessonText';
+import { useTranslation } from '../../context/LanguageContext';
 import {
 boxTutorialSteps,
 coneTutorialSteps,
@@ -270,11 +271,20 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'cylinder';
   });
+  const { t } = useTranslation();
   const { scrollProgress, containerRef, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
   }, [subLessonId, activeTab]);
+
+  const mapSteps = React.useCallback((steps: any[], shapeId: string) => {
+    return steps.map(s => {
+      const stepNum = s.id.split('-')[1];
+      const stepKey = stepNum === '0' ? 'intro' : (stepNum === (steps.length - 1).toString() ? 'outro' : `step${stepNum}`);
+      return { ...s, title: t(`basicOp.${shapeId}.title`), text: t(`basicOp.${shapeId}.${stepKey}`) };
+    });
+  }, [t]);
 
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const beforeYouStartRef = useRef<HTMLDivElement>(null);
@@ -283,17 +293,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   // Memoised so the array reference is stable across renders, avoiding
   // spurious re-registrations in the registerText useEffect below.
   const lessonSteps = React.useMemo(() => [
-    "Creating Basic Shapes",                                                         // 0 heading
-    "In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus.", // 1 overview
-    "A Cylinder is a circular solid defined by its Diameter and Height — ideal for shafts, pins, bosses, and round posts.", // 2 → cylinder tab
-    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 → box tab
-    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height — useful for hexagonal bolts and multi-sided columns.", // 4 → polygon tab
-    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 → cone tab
-    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 → torus tab
-    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 → back to cylinder, scroll to Before You Start
-    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 → command menu step
-    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 → scroll to video
-  ], []);
+    t('basicOp1.heading'),                                                         // 0 heading
+    t('basicOp1.overview'), // 1 overview
+    t('basicOp1.cylinder.desc'), // 2 → cylinder tab
+    t('basicOp1.box.desc'), // 3 → box tab
+    t('basicOp1.polygon.desc'), // 4 → polygon tab
+    t('basicOp1.cone.desc'), // 5 → cone tab
+    t('basicOp1.torus.desc'), // 6 → torus tab
+    t('basicOp1.start_front_view'), // 7 → back to cylinder, scroll to Before You Start
+    t('basicOp1.arrange_y_orientation'), // 8 → command menu step
+    t('basicOp1.video_intro') // 9 → scroll to video
+  ], [t]);
 
   // Auto-switch tabs as TTS progresses through the narrated tour
   useEffect(() => {
@@ -326,11 +336,11 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
   const tabs = [
-    { id: 'cylinder', label: 'Cylinder' },
-    { id: 'box', label: 'Box' },
-    { id: 'polygon', label: 'Polygon' },
-    { id: 'cone', label: 'Cone' },
-    { id: 'torus', label: 'Torus' }
+    { id: 'cylinder', label: t('basicOp.cylinder.title') },
+    { id: 'box', label: t('basicOp.box.title') },
+    { id: 'polygon', label: t('basicOp.polygon.title') },
+    { id: 'cone', label: t('basicOp.cone.title') },
+    { id: 'torus', label: t('basicOp.torus.title') }
   ];
 
   const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -374,8 +384,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       <section className="lesson-intro">
         <h3 className={`section-title ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
           <KaraokeLessonText
-            as="span"
-            text="Creating Basic Shapes"
+            text={lessonSteps[0]}
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
@@ -384,7 +393,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {/* TTS index 1 — overview narration */}
         <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
           <KaraokeLessonText
-            text="In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus."
+            text={lessonSteps[1]}
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
@@ -410,12 +419,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {/* Prerequisite steps card — always visible, scrolled to at TTS step 7 */}
         <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
           <div className="card-header">
-            <h4 style={{ margin: 0 }}>BEFORE YOU START</h4>
+            <h4 style={{ margin: 0 }}>{t('lesson.before_you_start')}</h4>
           </div>
 
           <div className={`instruction-step ${isSpeaking && currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{ marginTop: '1.5rem' }}>
             <KaraokeLessonText
-              text="Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning."
+              text={lessonSteps[7]}
               isActive={isSpeaking && currentIndex === 7}
               currentCharIndex={currentCharIndex}
             />
@@ -424,7 +433,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
           <div className={`instruction-box mt-8 instruction-step ${isSpeaking && currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
             <KaraokeLessonText
-              text="On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis."
+              text={lessonSteps[8]}
               isActive={isSpeaking && currentIndex === 8}
               currentCharIndex={currentCharIndex}
             />
@@ -436,7 +445,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cylinder' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>CYLINDER TUTORIAL</h4>
+              <h4 style={{ margin: 0 }}>{t('basicOp.cylinder.title')}</h4>
             </div>
 
 
@@ -444,7 +453,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             {currentIndex === 9 && isSpeaking && (
               <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
                 <KaraokeLessonText
-                  text="Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD."
+                  text={lessonSteps[9]}
                   isActive={true}
                   currentCharIndex={currentCharIndex}
                 />
@@ -452,12 +461,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             )}
 
             <div ref={videoSectionRef} style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer steps={cylinderTutorialSteps} />
+              <VideoTutorialViewer steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next<ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -465,17 +474,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'box' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>BOX TUTORIAL</h4>
+              <h4 style={{ margin: 0 }}>{t('basicOp.box.title')}</h4>
             </div>
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer steps={boxTutorialSteps} />
+              <VideoTutorialViewer steps={mapSteps(boxTutorialSteps, 'box')} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next<ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -483,17 +492,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'polygon' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>POLYGON TUTORIAL</h4>
+              <h4 style={{ margin: 0 }}>{t('basicOp.polygon.title')}</h4>
             </div>
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer steps={polygonTutorialSteps} />
+              <VideoTutorialViewer steps={mapSteps(polygonTutorialSteps, 'polygon')} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -501,17 +510,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cone' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>CONE TUTORIAL</h4>
+              <h4 style={{ margin: 0 }}>{t('basicOp.cone.title')}</h4>
             </div>
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer steps={coneTutorialSteps} />
+              <VideoTutorialViewer steps={mapSteps(coneTutorialSteps, 'cone')} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -519,17 +528,17 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'torus' && (
           <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
             <div className="card-header">
-              <h4 style={{ margin: 0 }}>TORUS TUTORIAL</h4>
+              <h4 style={{ margin: 0 }}>{t('basicOp.torus.title')}</h4>
             </div>
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer steps={torusTutorialSteps} />
+              <VideoTutorialViewer steps={mapSteps(torusTutorialSteps, 'torus')} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -544,6 +553,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'move' | 'copy' | 'mirror' | 'rotate' | 'rotateCopy' | 'mirrorCopy' | 'delete'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'move';
   });
+  const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
@@ -551,41 +561,41 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   }, [subLessonId, activeTab]);
 
   const moveSteps = [
-    "Step 1: Select Move from the icon menu.",
-    "Step 2: Left-click on the entity to be moved and click GO.",
-    "Step 3: Specify the movement distance on the X, Y, and Z-axis on the item entry. Press Enter. Or after step 2, select a point on the entity then left-click on the desired location."
+    t('basicOp2.move.step1'),
+    t('basicOp2.move.step2'),
+    t('basicOp2.move.step3')
   ];
 
   const rotateSteps = [
-    "Step 1: Select Rotate from the icon menu.",
-    "Step 2: Left-click on the entity to be rotated and click GO.",
-    "Step 3: Select 2-points to set the axis of rotation.",
-    "Step 4: Specify the desired angle of rotation on the item entry and press Enter."
+    t('basicOp2.rotate.step1'),
+    t('basicOp2.rotate.step2'),
+    t('basicOp2.rotate.step3'),
+    t('basicOp2.rotate.step4')
   ];
 
   const mirrorSteps = [
-    "Step 1: Select Mirror from the icon menu.",
-    "Step 2: Left-click on the entity to be mirrored and click GO.",
-    "Step 3: Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored."
+    t('basicOp2.mirror.step1'),
+    t('basicOp2.mirror.step2'),
+    t('basicOp2.mirror.step3')
   ];
 
   const copySteps = [
-    "Step 1: Select Copy from the icon menu.",
-    "Step 2: Left-click on the entity to be copied and click GO.",
-    "Step 3: Specify the distance on the X, Y and Z-axis and the number of copies needed then press Enter."
+    t('basicOp2.copy.step1'),
+    t('basicOp2.copy.step2'),
+    t('basicOp2.copy.step3')
   ];
 
   const rotateCopySteps = [
-    "Step 1: Same as rotate tool but makes a rotated duplicate of the entity."
+    t('basicOp2.rotate_copy.desc')
   ];
 
   const mirrorCopySteps = [
-    "Step 1: Same as mirror tool but makes a mirror duplicate of the entity."
+    t('basicOp2.mirror_copy.desc')
   ];
 
   const deleteSteps = [
-    "Step 1: Select Delete from the icon menu.",
-    "Step 2: Left-click on the entity to delete."
+    t('basicOp2.delete.step1'),
+    t('basicOp2.delete.step2')
   ];
 
   // Helper: returns the step array for the currently active tab.
@@ -605,13 +615,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   const tabs = [
-    { id: 'move', label: 'Move' },
-    { id: 'rotate', label: 'Rotate' },
-    { id: 'mirror', label: 'Mirror' },
-    { id: 'copy', label: 'Copy' },
-    { id: 'rotateCopy', label: 'Rotate Copy' },
-    { id: 'mirrorCopy', label: 'Mirror Copy' },
-    { id: 'delete', label: 'Delete' }
+    { id: 'move', label: t('basicOp2.move.title') },
+    { id: 'rotate', label: t('basicOp2.rotate.title') },
+    { id: 'mirror', label: t('basicOp2.mirror.title') },
+    { id: 'copy', label: t('basicOp2.copy.title') },
+    { id: 'rotateCopy', label: t('basicOp2.rotateCopy.title') },
+    { id: 'mirrorCopy', label: t('basicOp2.mirrorCopy.title') },
+    { id: 'delete', label: t('basicOp2.delete.title') }
   ];
 
   const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -637,10 +647,10 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   };
 
   useEffect(() => {
-    const introTitle = "Move, Rotate, Copy, Mirror, Delete";
-    const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
+    const introTitle = t('basicOp2.heading');
+    const introDesc = t('basicOp2.desc');
     const currentSteps = getSteps(activeTab as Op2Tab);
-    const fullSteps = [introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps];
+    const fullSteps = [introTitle, introDesc, t(`basicOp2.${activeTab}.title`), ...currentSteps];
     const startIdx = activeTab === 'move' ? 0 : 2;
     registerText(fullSteps, startIdx);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -679,11 +689,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       if (shouldAutoPlayRef.current) {
         shouldAutoPlayRef.current = false;
         setTimeout(() => {
-          const introTitle = "Move, Rotate, Copy, Mirror, Delete";
-          const introDesc = "Use these tools to reposition, duplicate, or remove entities from your workspace.";
+          const introTitle = t('basicOp2.heading');
+          const introDesc = t('basicOp2.desc');
           const currentSteps = getSteps(activeTab as Op2Tab);
           const startIdx = activeTab === 'move' ? 0 : 2;
-          speak([introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps], startIdx);
+          speak([introTitle, introDesc, t(`basicOp2.${activeTab}.title`), ...currentSteps], startIdx);
         }, 300);
       }
       prevTabRef.current = activeTab;
@@ -706,7 +716,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           <KaraokeLessonText
             as="span"
-            text="Move, Rotate, Copy, Mirror, Delete"
+            text={t('basicOp2.heading')}
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
@@ -715,7 +725,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
           data-reading-index="1"
-          text="Use these tools to reposition, duplicate, or remove entities from your workspace."
+          text={t('basicOp2.desc')}
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
@@ -729,7 +739,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="MOVE"
+                  text={t('basicOp2.move.title')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -742,7 +752,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Move from the icon menu"
+                  text={moveSteps[0]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -758,7 +768,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be moved > GO"
+                    text={moveSteps[1]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -773,30 +783,25 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the movement distance on the X, Y and Z-axis on the item entry > Press Enter"
+                  text={moveSteps[2]}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
                 <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
-                <KaraokeLessonText
-                  className="p-flush mt-4 text-highlight"
-                  text="Or after step 2, select a point on the entity then left-click on the desired location"
-                  isActive={isSpeaking && currentIndex === 5}
-                  currentCharIndex={currentCharIndex}
-                />
+
               </div>
             </div>
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="card-header"><h4>{t('lesson.result')}</h4></div>
               <PremiumVideoPlayer src={vidMove} className="software-screenshot screenshot-wide mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -807,7 +812,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="ROTATE"
+                  text={t('basicOp2.rotate.title')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -820,7 +825,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Rotate from the icon menu"
+                  text={rotateSteps[0]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -836,7 +841,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be rotated > GO"
+                    text={rotateSteps[1]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -851,7 +856,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select 2-points to set the axis of rotation"
+                  text={rotateSteps[2]}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -864,7 +869,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the desired angle of rotation on the item entry > Press Enter"
+                  text={rotateSteps[3]}
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -875,12 +880,12 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
             </div>
 
-            <div className="card-header"><h4>RESULT</h4></div>
+            <div className="card-header"><h4>{t('lesson.result')}</h4></div>
             <PremiumVideoPlayer src={vidRotate} className="software-screenshot" style={{ width: '900px', marginBottom: "-3rem" }} />
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -891,7 +896,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="MIRROR"
+                  text={t('basicOp2.mirror.title')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -904,7 +909,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Mirror from the icon menu"
+                  text={mirrorSteps[0]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -920,7 +925,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be mirrored > GO"
+                    text={mirrorSteps[1]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -936,7 +941,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   as="span"
                   className="step-label"
                   style={{ marginTop: "1.5rem" }}
-                  text="Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored"
+                  text={mirrorSteps[2]}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -944,13 +949,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="card-header"><h4>{t('lesson.result')}</h4></div>
               <PremiumVideoPlayer src={vidMirror} className="software-screenshot mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -961,7 +966,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="COPY"
+                  text={t('basicOp2.copy.title')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -974,7 +979,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Copy from the icon menu"
+                  text={copySteps[0]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -990,7 +995,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be copied > GO"
+                    text={copySteps[1]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1005,7 +1010,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the distance on the X, Y and Z-axis and the number of copies needed > Press Enter"
+                  text={copySteps[2]}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1016,13 +1021,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="card-header"><h4>{t('lesson.result')}</h4></div>
               <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '600px' }} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1033,13 +1038,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="ROTATE COPY"
+                  text={t('basicOp2.rotateCopy.title')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
             </div>
-            <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>Same as rotate tool but makes a rotated duplicate of the entity.</p>
+            <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>{rotateCopySteps[0]}</p>
 
             <div className="step-description">
               <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
@@ -1047,13 +1052,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
-              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="card-header"><h4>{t('lesson.result')}</h4></div>
               <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1064,26 +1069,26 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="MIRROR COPY"
+                  text={t('basicOp2.mirrorCopy.title')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
             </div>
-            <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>Same as mirror tool but makes a mirror duplicate of the entity.</p>
+            <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>{mirrorCopySteps[0]}</p>
 
             <div className="step-description">
               <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
             </div>
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-              <div className="card-header"><h4>RESULT</h4></div>
+              <div className="card-header"><h4>{t('lesson.result')}</h4></div>
               <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1094,7 +1099,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="DELETE"
+                  text={t('basicOp2.delete.title')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1107,7 +1112,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Delete from the icon menu"
+                  text={t('basicOp2.delete.step1')}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1121,7 +1126,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Left-click on the entity to delete"
+                  text={t('basicOp2.delete.step2')}
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1132,8 +1137,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1146,6 +1151,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'sketch' | 'extrude' | 'revolve'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'sketch';
   });
+  const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
@@ -1153,29 +1159,29 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   }, [subLessonId, activeTab]);
 
   const sketchSteps = [
-    "SKETCH",
-    "Tool used to create lines."
+    t('basicOp3.sketch.step1'),
+    t('basicOp3.sketch.step2')
   ];
 
   const extrudeSteps = [
-    "EXTRUDE",
-    "Step 1: Select Extrude from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
-    "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
-    "Step 4: Press ENTER to finalize."
+    t('basicOp3.extrude.title'),
+    t('basicOp3.extrude.step1'),
+    t('basicOp3.extrude.step2'),
+    t('basicOp3.extrude.step3'),
+    t('basicOp3.extrude.step4')
   ];
 
   const revolveSteps = [
-    "REVOLVE",
-    "Step 1: Select Revolve from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be revolve then GO",
-    "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
+    t('basicOp3.revolve.title'),
+    t('basicOp3.revolve.step1'),
+    t('basicOp3.revolve.step2'),
+    t('basicOp3.revolve.step3')
   ];
 
   const tabs = [
-    { id: 'sketch', label: 'SKETCH' },
-    { id: 'extrude', label: 'EXTRUDE' },
-    { id: 'revolve', label: 'REVOLVE' }
+    { id: 'sketch', label: t('basicOp3.sketch.heading') },
+    { id: 'extrude', label: t('basicOp3.extrude.title') },
+    { id: 'revolve', label: t('basicOp3.revolve.title') }
   ];
 
   const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -1202,12 +1208,12 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     if (activeTab === 'sketch') {
-      const introTitle = "Sketch";
-      const introDesc = "Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling.";
+      const introTitle = t('basicOp3.sketch.heading');
+      const introDesc = t('basicOp3.sketch.desc');
       registerText([introTitle, introDesc, ...sketchSteps], 0);
     } else {
-      const introTitle = "Extrude and Revolve";
-      const introDesc = "Tools use to create solids from sketch in the 3D space.";
+      const introTitle = t('basicOp3.extrude.heading');
+      const introDesc = t('basicOp3.extrude.desc');
       const steps = activeTab === 'extrude' ? extrudeSteps : revolveSteps;
       const startIdx = activeTab === 'extrude' ? 0 : 2;
       registerText([introTitle, introDesc, ...steps], startIdx);
@@ -1282,7 +1288,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <KaraokeLessonText
                 as="span"
-                text="Sketch"
+                text={t('basicOp3.sketch.heading')}
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
@@ -1291,7 +1297,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
               data-reading-index="1"
-              text="Tools use to create lines, circles and arcs in the 3D space for creating section forms for modeling."
+              text={t('basicOp3.sketch.desc')}
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
@@ -1302,7 +1308,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <KaraokeLessonText
                 as="span"
-                text="Extrude and Revolve"
+                text={t('basicOp3.extrude.heading')}
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
@@ -1311,7 +1317,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
               data-reading-index="1"
-              text="Tools use to create solids from sketch in the 3D space"
+              text={t('basicOp3.extrude.desc')}
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
@@ -1327,7 +1333,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="SKETCH"
+                  text={sketchSteps[0]}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1337,7 +1343,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               className={`p-flush ${currentIndex === 3 ? 'reading-active' : ''}`}
               data-reading-index="3"
               style={{ marginTop: "-2rem" }}
-              text="Tool used to create lines"
+              text={sketchSteps[1]}
               isActive={isSpeaking && currentIndex === 3}
               currentCharIndex={currentCharIndex}
             />
@@ -1353,8 +1359,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1365,7 +1371,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="EXTRUDE"
+                  text={extrudeSteps[0]}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1378,7 +1384,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Extrude from the icon menu"
+                  text={extrudeSteps[1]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1403,18 +1409,11 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be extruded > GO"
+                    text={extrudeSteps[2]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                  <br />
-                  <KaraokeLessonText
-                    as="span"
-                    text="A hatch will appear indicating the specified area to be extruded."
-                    isActive={isSpeaking && currentIndex === 4}
-                    currentCharIndex={currentCharIndex - 55}
-                  />
                 </div>
               </div>
             </div>
@@ -1425,7 +1424,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the height of extrusion. Can also be set on the item entry"
+                  text={extrudeSteps[3]}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1438,7 +1437,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Press ENTER"
+                  text={extrudeSteps[4]}
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1446,7 +1445,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
-                <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
+                <div className="card-header"><h4>{t('lesson.process_overview')}</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                   <img src={extrudeOneSide} alt="Extrude Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
@@ -1454,8 +1453,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
 
@@ -1468,7 +1467,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="REVOLVE"
+                  text={revolveSteps[0]}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1481,7 +1480,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Revolve from the icon menu"
+                  text={revolveSteps[1]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1497,7 +1496,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be revolved > GO"
+                    text={revolveSteps[2]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1511,24 +1510,17 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the axis of rotation (pick points or edge) > GO"
+                    text={revolveSteps[3]}
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
                   <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
-                  <br />
-                  <KaraokeLessonText
-                    as="span"
-                    text="A hatch will appear indicating the specified area to be revolved."
-                    isActive={isSpeaking && currentIndex === 5}
-                    currentCharIndex={currentCharIndex - 55}
-                  />
                 </div>
               </div>
 
 
               <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-                <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
+                <div className="card-header"><h4>{t('lesson.process_overview')}</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                   <img src={revolveP2} alt="Revolve Result" className="software-screenshot" style={{ "width": "900px" }} />
                 </div>
@@ -1537,8 +1529,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1554,6 +1546,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'showHide' | 'stretch' | 'resize'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'showHide';
   });
+  const { t } = useTranslation();
   const { scrollProgress, containerRef, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
@@ -1561,42 +1554,43 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   }, [subLessonId, activeTab]);
 
   const showHideSteps = [
-    "SHOW / HIDE ENTITY",
-    "Step 1: Select Show/Hide from the icon menu.",
-    "Step 2: Select the entities for showing/hiding then GO",
-    "SHOW/HIDE DRAFTING ENTITY",
-    "Step 1: Select Show/Hide Drafting Entity from the icon menu.",
-    "Step 2: Right-click to show/hide all drafting entities.",
-    "Drafting Entities include: Dimensions, Notes and Symbols.",
-    "HIDE UNSELECTED ENTITY",
-    "Step 1: Select Hide Unselected Entity from the icon menu.",
-    "Step 2: Select all entities to be retain then GO",
-    "All unselected entities will be hidden."
+    t('basicOp4.showHide.title1'),
+    t('basicOp4.showHide.step1'),
+    t('basicOp4.showHide.step2'),
+    t('basicOp4.showHide.title2'),
+    t('basicOp4.showHide.step3'),
+    t('basicOp4.showHide.step4'),
+    t('basicOp4.showHide.step5'),
+    t('basicOp4.showHide.title3'),
+    t('basicOp4.showHide.step6'),
+    t('basicOp4.showHide.step7'),
+    t('basicOp4.showHide.step8')
   ];
 
   const stretchSteps = [
-    "STRETCH / SHAPE / CUT",
-    "Step 1: Select Stretch from the icon menu.",
-    "Step 2: Select the face to be stretch then GO",
-    "Step 3: Specify the desired length of the solid entity on the item entry.",
-    "Also works for circular surfaces.",
-    "OR",
-    "Select face then GO then Left-click on the 3D Space",
-    "A linear scale will appear on the 3D Space",
-    "Specify the additional length of stretch then Press Enter or Left-Click on the scale."
+    t('basicOp4.stretch.title'),
+    t('basicOp4.stretch.step1'),
+    t('basicOp4.stretch.step2'),
+    t('basicOp4.stretch.step3'),
+    t('basicOp4.stretch.step4'),
+    t('basicOp4.stretch.step5'),
+    t('basicOp4.stretch.step6'),
+    t('basicOp4.stretch.step7'),
+    t('basicOp4.stretch.step8')
   ];
 
   const resizeSteps = [
-    "RESIZE",
-    "Step 1: Select Resize from the icon menu.",
-    "Step 2: Select the entity for resizing then GO.",
-    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space."
+    t('basicOp4.resize.title'),
+    t('basicOp4.resize.step1'),
+    t('basicOp4.resize.step2'),
+    t('basicOp4.resize.step3')
   ];
 
   const tabs = [
-    { id: 'showHide', label: 'Show/Hide' },
-    { id: 'stretch', label: 'Stretch' },
-    { id: 'resize', label: 'Resize' }];
+    { id: 'showHide', label: t('basicOp4.showHide.heading') },
+    { id: 'stretch', label: t('basicOp4.stretch.title') },
+    { id: 'resize', label: t('basicOp4.resize.title') }
+  ];
 
   const handleNext = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
     const isAuto = typeof eOrIsAuto === 'boolean' ? eOrIsAuto : false;
@@ -1623,19 +1617,19 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   // Register TTS text per active tab so karaoke indices stay correct
   // for each independently-structured sub-section.
   useEffect(() => {
-    const introTitle = activeTab === 'showHide' ? "Show / Hide"
-      : activeTab === 'stretch' ? "Stretch / Shape / Cut"
-      : "Resize";
+    const introTitle = activeTab === 'showHide' ? t('basicOp4.showHide.heading')
+      : activeTab === 'stretch' ? t('basicOp4.stretch.heading')
+      : t('basicOp4.resize.heading');
     const introDesc = activeTab === 'showHide'
-      ? "Tools use to switch between displaying and hiding entities."
+      ? t('basicOp4.showHide.desc')
       : activeTab === 'stretch'
-      ? "Tools used to modify the length and form of solid entities."
-      : "Tool used to scale up or scale down a solid entity.";
+      ? t('basicOp4.stretch.desc')
+      : t('basicOp4.resize.desc');
     const steps = activeTab === 'showHide' ? showHideSteps
       : activeTab === 'stretch' ? stretchSteps
       : resizeSteps;
     registerText([introTitle, introDesc, ...steps], 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, registerText, t]);
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -1661,7 +1655,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
             data-reading-index="1"
-            text="Tools use to switch between displaying and hiding entities."
+            text={t('basicOp4.showHide.desc')}
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
@@ -1674,7 +1668,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <KaraokeLessonText
               as="span"
-              text="Stretch / Shape / Cut"
+              text={t('basicOp4.stretch.heading')}
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
@@ -1683,7 +1677,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
             data-reading-index="1"
-            text="Tools used to modify the length and form of solid entities."
+            text={t('basicOp4.stretch.desc')}
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
@@ -1702,7 +1696,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="SHOW / HIDE ENTITY"
+                  text={showHideSteps[0]}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1715,7 +1709,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Show/Hide from the icon menu"
+                  text={showHideSteps[1]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1732,7 +1726,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the entities for showing/hiding > GO"
+                    text={showHideSteps[2]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1745,7 +1739,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <KaraokeLessonText
                   as="span"
-                  text="SHOW/HIDE DRAFTING ENTITY"
+                  text={showHideSteps[3]}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1758,7 +1752,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Show/Hide Drafting Entity from the icon menu"
+                  text={showHideSteps[4]}
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1775,41 +1769,41 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Right-click to show/hide all drafting entities"
+                  text={showHideSteps[5]}
                   isActive={isSpeaking && currentIndex === 7}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
-              <p className={`p-flush ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: "-1rem" }}>Drafting Entities include:</p>
+              <p className={`p-flush ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: "-1rem" }}>{showHideSteps[6]}</p>
               <div className="lesson-table-container" style={{ marginTop: "2rem", maxWidth: "900px" }}>
                 <table className="lesson-table">
                   <thead>
                     <tr>
-                      <th>DIMENSIONS</th>
-                      <th>NOTES</th>
-                      <th>SYMBOLS</th>
+                      <th>{t('table.dimensions')}</th>
+                      <th>{t('table.notes')}</th>
+                      <th>{t('table.symbols')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Linear/Circular/Angular</td>
-                      <td>Text</td>
-                      <td>Arrow/Arrow View</td>
+                      <td>{t('table.linear_circular_angular')}</td>
+                      <td>{t('table.text')}</td>
+                      <td>{t('table.arrow_view')}</td>
                     </tr>
                     <tr>
-                      <td>Chamfer/Fillet</td>
-                      <td>Part Notes</td>
-                      <td>Cutting Lines</td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td>Welding</td>
-                      <td>Machining/Finishing</td>
+                      <td>{t('table.chamfer_fillet')}</td>
+                      <td>{t('table.part_notes')}</td>
+                      <td>{t('table.cutting_lines')}</td>
                     </tr>
                     <tr>
                       <td></td>
-                      <td>Balloon</td>
-                      <td>Hatch</td>
+                      <td>{t('table.welding')}</td>
+                      <td>{t('table.machining_finishing')}</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>{t('table.balloon')}</td>
+                      <td>{t('table.hatch')}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1822,7 +1816,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9">
                 <KaraokeLessonText
                   as="span"
-                  text="HIDE UNSELECTED ENTITY"
+                  text={showHideSteps[7]}
                   isActive={isSpeaking && currentIndex === 9}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1835,7 +1829,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Hide Unselected Entity from the icon menu"
+                  text={showHideSteps[8]}
                   isActive={isSpeaking && currentIndex === 10}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1852,7 +1846,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select all entities to be retain > GO"
+                    text={showHideSteps[9]}
                     isActive={isSpeaking && currentIndex === 11}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1860,14 +1854,14 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 </div>
               </div>
               <div className="step-description">
-                <p className={`p-flush ${currentIndex === 12 ? "reading-active" : ""}`} data-reading-index="12" style={{ marginTop: "-1rem" }}>All unselected entities will be hidden.</p>
+                <p className={`p-flush ${currentIndex === 12 ? "reading-active" : ""}`} data-reading-index="12" style={{ marginTop: "-1rem" }}>{showHideSteps[10]}</p>
                 <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot" style={{ width: '900px' }} />
               </div>
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1878,7 +1872,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="STRETCH / SHAPE / CUT"
+                  text={stretchSteps[0]}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1891,7 +1885,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Stretch from the icon menu"
+                  text={stretchSteps[1]}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1908,7 +1902,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the face to be stretch &gt; GO"
+                    text={stretchSteps[2]}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1924,13 +1918,13 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the desired length of the solid entity on the item entry"
+                  text={stretchSteps[3]}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">
-                <p className={`p-flush opacity-80 text-sm mb-4 ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginBottom: "2rem", marginTop: "-1rem" }}> Also works for circular surfaces.</p>
+                <p className={`p-flush opacity-80 text-sm mb-4 ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginBottom: "2rem", marginTop: "-1rem" }}> {stretchSteps[4]}</p>
                 <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot" style={{ width: '850px', height: 'auto' }} />
                 <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large mt-8" style={{ width: '900px', marginTop: "2rem" }} />
               </div>
@@ -1941,7 +1935,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`text-highlight mb-4 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                 <KaraokeLessonText
                   as="span"
-                  text="OR"
+                  text={stretchSteps[5]}
                   isActive={isSpeaking && currentIndex === 7}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1951,7 +1945,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <div className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Select face >  GO"
+                      text={stretchSteps[6]}
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
@@ -1968,7 +1962,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <p className={`p-flush mt-4 ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9" style={{ marginTop: "-1rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="A linear scale will appear on the 3D Space"
+                      text={stretchSteps[7]}
                       isActive={isSpeaking && currentIndex === 9}
                       currentCharIndex={currentCharIndex}
                     />
@@ -1976,7 +1970,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <p className={`p-flush mt-4 ${currentIndex === 10 ? "reading-active" : ""}`} data-reading-index="10" style={{ marginBottom: "2rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Specify the additional length of stretch > Press Enter or Left-Click on the scale."
+                      text={stretchSteps[8]}
                       isActive={isSpeaking && currentIndex === 10}
                       currentCharIndex={currentCharIndex}
                     />
@@ -1987,8 +1981,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1999,7 +1993,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 <KaraokeLessonText
                   as="span"
-                  text="RESIZE"
+                  text={resizeSteps[0]}
                   isActive={isSpeaking && currentIndex === 0}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2013,7 +2007,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select Resize from the icon menu"
+                  text={resizeSteps[1]}
                   isActive={isSpeaking && currentIndex === 1}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2030,7 +2024,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the entity for resizing > GO"
+                    text={resizeSteps[2]}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -2046,7 +2040,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space"
+                    text={resizeSteps[3]}
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -2061,8 +2055,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -2072,6 +2066,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 }; /* ── Basic Operation (5): Shape Steels ── */
 
 const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'shapeSteels'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'shapeSteels';
   });
@@ -2083,7 +2078,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   }, [subLessonId, activeTab]);
 
 
-  const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
+  const tabs = [{ id: 'shapeSteels', label: t('basicOp.shapeSteels.tab') }];
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -2099,7 +2094,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
           <KaraokeLessonText
             as="span"
-            text="Creating Shape Steels"
+            text={t('basicOp.shapeSteels.title')}
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
@@ -2108,7 +2103,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
           data-reading-index="1"
-          text="Learn how to arrange machine parts and steel profiles in 3D space."
+          text={t('basicOp.shapeSteels.intro')}
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
@@ -2122,7 +2117,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
                   as="span"
-                  text="Shape Steels Includes:"
+                  text={t('basicOp.shapeSteels.includes')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2141,7 +2136,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select the Arrange Machine Part from the icon menu"
+                  text={t('basicOp.shapeSteels.step1')}
                   isActive={isSpeaking && currentIndex === 3}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2157,7 +2152,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK"
+                  text={t('basicOp.shapeSteels.step2')}
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2173,7 +2168,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="In the Key Entry Area, enter the coordinates for the position (origin point)"
+                  text={t('basicOp.shapeSteels.step3')}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2188,7 +2183,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <h4 className={`${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                   <KaraokeLessonText
                     as="span"
-                    text="RESULT"
+                    text={t('lesson.result')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -2200,8 +2195,8 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              <button className="nav-button next" onClick={onNextLesson}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
