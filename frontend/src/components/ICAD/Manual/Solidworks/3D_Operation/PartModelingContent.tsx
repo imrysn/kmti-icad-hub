@@ -96,7 +96,7 @@ const PartModelingContent: React.FC = () => (
                 <span className="step-label">Set the Material.</span>
             </div>
             <div className="step-description">
-                <div className="instruction-box" style={{ marginBottom: '1rem' }}>
+                <div className="instruction-box" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
                     <p className="p-flush red-text">
                         ※ <strong>SS400</strong> is the <strong>default</strong> Material.
                     </p>
