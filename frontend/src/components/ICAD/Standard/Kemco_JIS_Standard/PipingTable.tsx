@@ -68,7 +68,7 @@ const tableData: TableRow[] = [
   { english: "Ciccolo", itemName: "チッコロ", spec: "CM-1011", note1: "", note2: "", highlight: false },
   { english: "Tee", itemName: "ティー", spec: "1/2B", note1: "", note2: "", highlight: true },
   { english: "Tapered Pin (with Male Thread)", itemName: "テーパーピン(おねじ付)", spec: "8x60", note1: "Conforms to the internal regulations \"Standard Drawing Fastener Part Abbreviations\"", note2: "", highlight: false },
-  { english: "Tapered Pin (with Female Thread)", itemName: "テーパーピン(めねじ付)", spec: "10x50", note1: "Conforms to the internal regulations \"Standard Drawing Fastener Part Abbreviations\"", note2: "", highlight: false },
+  { english: "Tapered Pin (with Female Thread)", itemName: "テーパーピン（めねじ付き）", spec: "10x50", note1: "Conforms to the internal regulations \"Standard Drawing Fastener Part Abbreviations\"", note2: "", highlight: false },
   { english: "Dester Valve", itemName: "デスターバルブ", spec: "VB2-6", note1: "", note2: "", highlight: false },
   { english: "Dot Socket", itemName: "ドットソケット", spec: "PH-6", note1: "", note2: "", highlight: false },
   { english: "Dot Socket", itemName: "ドットソケット", spec: "WG-100", note1: "", note2: "", highlight: false },

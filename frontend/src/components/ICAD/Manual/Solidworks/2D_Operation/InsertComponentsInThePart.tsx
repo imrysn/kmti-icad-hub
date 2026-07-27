@@ -44,7 +44,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     <div className="instruction-step">
                         <div className="step-header">
                             <span className="step-number">1 </span>
-                            <span className="step-label">Create New File (See page 3 No. 2)</span>
+                            <span className="step-label">Create New File </span>
                         </div>
                         <div className="step-description">
                             <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -61,7 +61,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     <div className="instruction-step">
                         <div className="step-header">
                             <span className="step-number">2 </span>
-                            <span className="step-label">Select New Document (See page 3 No. 3)</span>
+                            <span className="step-label">Select New Document </span>
                         </div>
                         <div className="step-description">
                             <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
@@ -143,7 +143,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                 </div>
                                 <div className="step-description">
                                     <p className="p-flush" style={{ color: 'var(--text-normal)' }}>
-                                        Open the 3D part/assy &gt; Click <img src={clickImg} alt="Click" style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', margin: '0 4px' }} /> &gt; Make Drawing from Part/Assembly
+                                        Open the 3D part/assy &gt; Click <img src={clickImg} alt="Click" style={{ height: '35px', verticalAlign: 'middle', display: 'inline-block', margin: '0 4px' }} /> &gt; Make Drawing from Part/Assembly
                                     </p>
                                     <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', marginTop: '0.2rem', flexWrap: 'wrap' }}>
                                         <div style={{ flex: '1 1 50%', minWidth: '300px' }}>
