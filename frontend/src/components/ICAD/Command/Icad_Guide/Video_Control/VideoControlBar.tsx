@@ -6,35 +6,51 @@ import {
     ChevronRight,
     Maximize,
     Minimize,
-    GripVertical
+    GripVertical,
+    Volume2,
+    VolumeX
 } from "lucide-react";
 
 interface VideoControlBarProps {
     videoRef: React.RefObject<HTMLVideoElement>;
     containerRef?: React.RefObject<HTMLDivElement>;
+    isFullscreen?: boolean;
+    onToggleFullscreen?: () => void;
     onPrevStep?: () => void;
     onNextStep?: () => void;
 }
 
-
+const SPEED_OPTIONS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 2];
 
 export const VideoControlBar: React.FC<VideoControlBarProps> = ({
     videoRef,
     containerRef,
+    isFullscreen: isExternalFullscreen,
+    onToggleFullscreen,
     onPrevStep,
     onNextStep
 }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isNativeFullscreen, setIsNativeFullscreen] = useState(false);
     const [isCssFallback, setIsCssFallback] = useState(false);
-    const isFullscreen = isNativeFullscreen || isCssFallback;
-
+    
+    // Effective fullscreen state: explicit prop takes precedence, else fallback
+    const isFullscreen = isExternalFullscreen !== undefined ? isExternalFullscreen : (isNativeFullscreen || isCssFallback);
 
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [isMuted, setIsMuted] = useState(false);
+    const [volume, setVolume] = useState(1);
+    const [playbackRate, setPlaybackRate] = useState(1);
     const [navPos, setNavPos] = useState({ x: 0, y: 0 });
+    const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+    const [showSpeedMenu, setShowSpeedMenu] = useState(false);
 
+    // Use a ref for seeking so it doesn't trigger effect re-registration
+    const isSeekingRef = useRef(false);
     const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
+    const volumeRef = useRef<HTMLDivElement>(null);
+    const speedRef = useRef<HTMLDivElement>(null);
 
     const checkIsFullscreen = () => {
         const doc = document as any;
@@ -94,27 +110,31 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
         const handlePlay = () => setIsPlaying(true);
         const handlePause = () => setIsPlaying(false);
         const handleTimeUpdate = () => {
-            setCurrentTime(video.currentTime);
+            if (!isSeekingRef.current) setCurrentTime(video.currentTime);
             if (video.duration) setDuration(video.duration);
         };
         const handleLoadedMetadata = () => {
             if (video.duration) setDuration(video.duration);
+        };
+        const syncVolumeState = () => {
+            setIsMuted(video.muted);
+            setVolume(video.volume);
         };
 
         video.addEventListener("play", handlePlay);
         video.addEventListener("pause", handlePause);
         video.addEventListener("timeupdate", handleTimeUpdate);
         video.addEventListener("loadedmetadata", handleLoadedMetadata);
+        video.addEventListener("volumechange", syncVolumeState);
 
         return () => {
             video.removeEventListener("play", handlePlay);
             video.removeEventListener("pause", handlePause);
             video.removeEventListener("timeupdate", handleTimeUpdate);
             video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+            video.removeEventListener("volumechange", syncVolumeState);
         };
     }, [videoRef]);
-
-
 
     // Native Fullscreen change listeners
     useEffect(() => {
@@ -150,48 +170,51 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
         };
     }, [videoRef]);
 
-    // Sync container class with isFullscreen state for full monitor screen expansion
+    // Close popups on outside click
     useEffect(() => {
-        const container = containerRef?.current;
-        if (!container) return;
-        if (isFullscreen) {
-            container.classList.add("is-expanded-fullscreen");
-        } else {
-            container.classList.remove("is-expanded-fullscreen");
-        }
-        return () => {
-            container.classList.remove("is-expanded-fullscreen");
+        const handleOutsideClick = (e: MouseEvent) => {
+            if (volumeRef.current && !volumeRef.current.contains(e.target as Node)) {
+                setShowVolumeSlider(false);
+            }
+            if (speedRef.current && !speedRef.current.contains(e.target as Node)) {
+                setShowSpeedMenu(false);
+            }
         };
-    }, [isFullscreen, containerRef]);
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => document.removeEventListener("mousedown", handleOutsideClick);
+    }, []);
 
     // Keyboard Shortcuts (Space: Play/Pause, Left/Right: Prev/Next, F: Fullscreen, M: Mute, Esc: Exit Fullscreen)
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             const targetTag = (e.target as HTMLElement)?.tagName?.toLowerCase();
-            if (targetTag === 'input' || targetTag === 'textarea' || (e.target as HTMLElement)?.isContentEditable) {
+            if (targetTag === "input" || targetTag === "textarea" || (e.target as HTMLElement)?.isContentEditable) {
                 return;
             }
 
-            if (e.key === 'Escape' && isFullscreen) {
+            if (e.key === "Escape" && isFullscreen) {
                 e.preventDefault();
                 toggleFullscreen();
-            } else if (e.key === ' ' || e.code === 'Space') {
+            } else if (e.key === " " || e.code === "Space") {
                 e.preventDefault();
                 togglePlay();
-            } else if (e.key === 'ArrowLeft') {
+            } else if (e.key === "ArrowLeft") {
                 e.preventDefault();
                 if (onPrevStep) onPrevStep();
-            } else if (e.key === 'ArrowRight') {
+            } else if (e.key === "ArrowRight") {
                 e.preventDefault();
                 if (onNextStep) onNextStep();
-            } else if (e.key === 'f' || e.key === 'F') {
+            } else if (e.key === "f" || e.key === "F") {
                 e.preventDefault();
                 toggleFullscreen();
+            } else if (e.key === "m" || e.key === "M") {
+                e.preventDefault();
+                toggleMute();
             }
         };
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
     }, [onPrevStep, onNextStep, isFullscreen, isPlaying]);
 
     const togglePlay = () => {
@@ -203,16 +226,64 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
         }
     };
 
+    const toggleMute = () => {
+        if (!videoRef.current) return;
+        videoRef.current.muted = !videoRef.current.muted;
+        setIsMuted(videoRef.current.muted);
+    };
 
+    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = parseFloat(e.target.value);
+        if (!videoRef.current) return;
+        videoRef.current.volume = val;
+        videoRef.current.muted = val === 0;
+        setVolume(val);
+        setIsMuted(val === 0);
+    };
 
+    const handleSeekMouseDown = () => {
+        isSeekingRef.current = true;
+    };
+
+    const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = parseFloat(e.target.value);
+        setCurrentTime(val);
+    };
+
+    const handleSeekMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
+        const val = parseFloat((e.target as HTMLInputElement).value);
+        if (videoRef.current) {
+            videoRef.current.currentTime = val;
+        }
+        isSeekingRef.current = false;
+    };
+
+    const handleSeekTouchEnd = (e: React.TouchEvent<HTMLInputElement>) => {
+        const val = parseFloat((e.currentTarget as HTMLInputElement).value);
+        if (videoRef.current) {
+            videoRef.current.currentTime = val;
+        }
+        isSeekingRef.current = false;
+    };
+
+    const handleSpeedChange = (rate: number) => {
+        if (!videoRef.current) return;
+        videoRef.current.playbackRate = rate;
+        setPlaybackRate(rate);
+        setShowSpeedMenu(false);
+    };
 
     const toggleFullscreen = () => {
+        if (onToggleFullscreen) {
+            onToggleFullscreen();
+            return;
+        }
+
         const container = containerRef?.current as any;
         const video = videoRef.current as any;
         const target = container || video;
 
         if (isFullscreen) {
-            // Exit Fullscreen
             if (isNativeFullscreen) {
                 const doc = document as any;
                 const exitFS =
@@ -240,7 +311,6 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
             }
             setIsCssFallback(false);
         } else {
-            // Enter Fullscreen — Expands container to full monitor window size
             setIsCssFallback(true);
 
             if (target) {
@@ -267,36 +337,55 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
         }
     };
 
+    const seekPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+
     return (
         <>
             <style>{`
-                .video-fullscreen-container.is-expanded-fullscreen,
-                .video-fullscreen-container:fullscreen,
-                .video-fullscreen-container:-webkit-full-screen,
-                .video-fullscreen-container:-moz-full-screen,
-                .video-fullscreen-container:-ms-fullscreen {
-                    position: fixed !important;
-                    top: 0 !important;
-                    left: 0 !important;
-                    right: 0 !important;
-                    bottom: 0 !important;
-                    width: 100vw !important;
-                    height: 100vh !important;
-                    max-width: 100vw !important;
-                    max-height: 100vh !important;
-                    aspect-ratio: auto !important;
-                    border-radius: 0 !important;
-                    background-color: #000000 !important;
-                    overflow: visible !important;
-                    z-index: 999999 !important;
+                .vcb-vol-bar {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 4px;
+                    height: 72px;
+                    border-radius: 4px;
+                    outline: none;
+                    cursor: pointer;
+                    background: rgba(255,255,255,0.25);
+                    writing-mode: vertical-lr;
+                    direction: rtl;
+                    border: none;
+                    accent-color: #ffffff;
+                }
+                .vcb-vol-bar::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 13px;
+                    height: 13px;
+                    border-radius: 50%;
+                    background: #ffffff;
+                    cursor: pointer;
+                    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+                }
+                .vcb-vol-bar::-moz-range-thumb {
+                    width: 13px;
+                    height: 13px;
+                    border-radius: 50%;
+                    background: #ffffff;
+                    cursor: pointer;
+                    border: none;
+                    box-shadow: 0 0 4px rgba(0,0,0,0.4);
                 }
             `}</style>
+
+
+
+            {/* Control Pill */}
             <div
                 style={{
                     position: "absolute",
                     bottom: "18px",
                     right: "18px",
-                    zIndex: 30,
+                    zIndex: 1000,
                     display: "flex",
                     alignItems: "center",
                     gap: "6px",
@@ -327,21 +416,6 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                     }}
                 >
                     <GripVertical size={16} color="#ffffff" strokeWidth={2} />
-                </div>
-
-                {/* Live Time Display */}
-                <div
-                    style={{
-                        fontSize: "12px",
-                        fontWeight: "500",
-                        color: "rgba(255, 255, 255, 0.9)",
-                        padding: "0 4px",
-                        fontFamily: "monospace",
-                        letterSpacing: "0.5px"
-                    }}
-                    title="Current Video Time"
-                >
-                    {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
 
                 {/* Play/Pause Pill Button */}
@@ -433,7 +507,143 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                     <ChevronRight size={18} color="#ffffff" strokeWidth={2.2} />
                 </button>
 
+                {/* Mute / Volume Button + Slider */}
+                <div ref={volumeRef} style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowVolumeSlider(v => !v);
+                            setShowSpeedMenu(false);
+                        }}
+                        title={isMuted ? "Unmute (M)" : "Mute (M)"}
+                        onContextMenu={(e) => { e.preventDefault(); toggleMute(); }}
+                        style={{
+                            width: "36px",
+                            height: "36px",
+                            borderRadius: "50%",
+                            backgroundColor: "rgba(255, 255, 255, 0.12)",
+                            color: "#ffffff",
+                            border: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease"
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
+                    >
+                        {isMuted || volume === 0
+                            ? <VolumeX size={16} color="#ffffff" strokeWidth={2.2} />
+                            : <Volume2 size={16} color="#ffffff" strokeWidth={2.2} />
+                        }
+                    </button>
+                    {showVolumeSlider && (
+                        <div style={{
+                            position: "absolute",
+                            bottom: "calc(100% + 10px)",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            backgroundColor: "rgba(18, 18, 26, 0.95)",
+                            backdropFilter: "blur(10px)",
+                            borderRadius: "10px",
+                            padding: "10px 14px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "6px",
+                            boxShadow: "0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)",
+                            zIndex: 1001
+                        }}>
+                            <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.6)" }}>
+                                {Math.round((isMuted ? 0 : volume) * 100)}%
+                            </span>
+                            <input
+                                type="range"
+                                className="vcb-vol-bar"
+                                min={0}
+                                max={1}
+                                step={0.01}
+                                value={isMuted ? 0 : volume}
+                                onChange={handleVolumeChange}
+                            />
+                        </div>
+                    )}
+                </div>
 
+                {/* Playback Speed */}
+                <div ref={speedRef} style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowSpeedMenu(v => !v);
+                            setShowVolumeSlider(false);
+                        }}
+                        title="Playback Speed"
+                        style={{
+                            height: "36px",
+                            borderRadius: "18px",
+                            backgroundColor: "rgba(255, 255, 255, 0.12)",
+                            color: "#ffffff",
+                            border: "none",
+                            padding: "0 10px",
+                            fontSize: "12px",
+                            fontWeight: "700",
+                            display: "flex",
+                            alignItems: "center",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                            fontFamily: "monospace",
+                            whiteSpace: "nowrap"
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
+                    >
+                        {playbackRate}x
+                    </button>
+                    {showSpeedMenu && (
+                        <div style={{
+                            position: "absolute",
+                            bottom: "calc(100% + 10px)",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            backgroundColor: "rgba(18, 18, 26, 0.95)",
+                            backdropFilter: "blur(10px)",
+                            borderRadius: "10px",
+                            padding: "6px",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "2px",
+                            boxShadow: "0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)",
+                            zIndex: 1001,
+                            minWidth: "64px"
+                        }}>
+                            {SPEED_OPTIONS.map(rate => (
+                                <button
+                                    key={rate}
+                                    onClick={() => handleSpeedChange(rate)}
+                                    style={{
+                                        background: rate === playbackRate ? "rgba(255,255,255,0.18)" : "transparent",
+                                        color: rate === playbackRate ? "#ffffff" : "rgba(255,255,255,0.7)",
+                                        border: "none",
+                                        borderRadius: "6px",
+                                        padding: "5px 10px",
+                                        fontSize: "12px",
+                                        fontWeight: rate === playbackRate ? 700 : 500,
+                                        cursor: "pointer",
+                                        textAlign: "center",
+                                        fontFamily: "monospace",
+                                        transition: "all 0.15s ease"
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.14)")}
+                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = rate === playbackRate ? "rgba(255,255,255,0.18)" : "transparent")}
+                                >
+                                    {rate}x
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
                 {/* Fullscreen Button */}
                 <button
