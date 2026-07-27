@@ -137,14 +137,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   }, []);
 
   const handleStop = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'sw-interface') {
       window.dispatchEvent(new CustomEvent('kmti-stop-tutorial'));
     }
     stop();
   }, [activeLessonId, stop]);
 
   const speakCurrent = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'sw-interface') {
       window.dispatchEvent(new CustomEvent('kmti-play-tutorial'));
       return;
     }

@@ -17,7 +17,7 @@ const HideShowLinesContent: React.FC = () => {
                     <div style={{ flex: '1 1 45%', minWidth: '300px' }}>
                         <div className="instruction-step" style={{ padding: '0' }}>
                             <div className="step-header">
-                                <span className="step-number">1 </span>
+                                <span className="step-number">1</span>
                                 <span className="step-label">Tangent Edge</span>
                             </div>
                             <div className="step-description">
@@ -41,7 +41,7 @@ const HideShowLinesContent: React.FC = () => {
                     <div style={{ flex: '1 1 45%', minWidth: '300px' }}>
                         <div className="instruction-step" style={{ padding: '0' }}>
                             <div className="step-header">
-                                <span className="step-number">2 </span>
+                                <span className="step-number">2</span>
                                 <span className="step-label">Hide/Show Edges</span>
                             </div>
                             <div className="step-description">

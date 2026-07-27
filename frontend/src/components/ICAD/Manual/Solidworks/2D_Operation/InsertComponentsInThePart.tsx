@@ -43,7 +43,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     {/* Step 1 */}
                     <div className="instruction-step">
                         <div className="step-header">
-                            <span className="step-number">1 </span>
+                            <span className="step-number">1</span>
                             <span className="step-label">Create New File (See page 3 No. 2)</span>
                         </div>
                         <div className="step-description">
@@ -60,7 +60,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     {/* Step 2 */}
                     <div className="instruction-step">
                         <div className="step-header">
-                            <span className="step-number">2 </span>
+                            <span className="step-number">2</span>
                             <span className="step-label">Select New Document (See page 3 No. 3)</span>
                         </div>
                         <div className="step-description">
@@ -98,7 +98,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     {/* Step 3 */}
                     <div className="instruction-step">
                         <div className="step-header">
-                            <span className="step-number">3 </span>
+                            <span className="step-number">3</span>
                             <span className="step-label">Insert Parts/ Assembly</span>
                         </div>
                         <div className="step-description">
@@ -108,7 +108,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                             <div className="instruction-step" style={{ paddingTop: '1rem', paddingBottom: '0' }}>
                                 <div className="step-header">
-                                    <span className="step-number">1 </span>
+                                    <span className="step-number">1</span>
                                     <span className="step-label">View Layout &gt; Model View &gt; Browse file from the folder &gt; Click Assem1 then Open.</span>
                                 </div>
                                 <div className="step-description">
@@ -123,7 +123,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                             <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
                                 <div className="step-header">
-                                    <span className="step-number">2 </span>
+                                    <span className="step-number">2</span>
                                     <span className="step-label">Drag and Drop</span>
                                 </div>
                                 <div className="step-description">
@@ -138,7 +138,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                             <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
                                 <div className="step-header">
-                                    <span className="step-number">3 </span>
+                                    <span className="step-number">3</span>
                                     <span className="step-label">Make drawing from Part/Assy</span>
                                 </div>
                                 <div className="step-description">

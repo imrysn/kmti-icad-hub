@@ -11,11 +11,11 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <span className="step-label">
                     In <strong>Features</strong> tab, click <strong>Hole Wizard</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={holeImg} alt="Hole Wizard" style={{ height: '32px', verticalAlign: 'middle' }} />
+                        <img src={holeImg} alt="Hole Wizard" style={{ height: '45px', verticalAlign: 'middle' }} />
                     </span>
                     .
                 </span>
@@ -25,7 +25,7 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <span className="step-label">
                     In{' '}
                     <span className="image-wrapper-flush">
@@ -44,7 +44,7 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <span className="step-label">
                     In{' '}
                     <span className="image-wrapper-flush">
@@ -69,11 +69,11 @@ const AddingHolesContent: React.FC = () => (
 
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">4 </span>
+                <span className="step-number">4</span>
                 <span className="step-label">
                     Click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={checkImg} alt="Check button" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={checkImg} alt="Check button" style={{ height: '30px', verticalAlign: 'middle' }} />
                     </span>
                     .
                 </span>

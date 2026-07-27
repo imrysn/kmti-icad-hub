@@ -18,7 +18,7 @@ const PartModelingContent: React.FC = () => (
         {/* Step 1 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">1 </span>
+                <span className="step-number">1</span>
                 <span className="step-label">Open a SolidWorks window.</span>
             </div>
         </div>
@@ -26,14 +26,14 @@ const PartModelingContent: React.FC = () => (
         {/* Step 2 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">2 </span>
+                <span className="step-number">2</span>
                 <span className="step-label">Create New File.</span>
             </div>
             <div className="step-description">
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In <strong>Menu Bar</strong>, click <strong>New</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={controlImg} alt="New icon" style={{ height: '24px', verticalAlign: 'middle' }} />
+                        <img src={controlImg} alt="New icon" style={{ height: '30px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}or <strong>CTRL + N</strong> key.
                 </p>
@@ -43,7 +43,7 @@ const PartModelingContent: React.FC = () => (
         {/* Step 3 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">3 </span>
+                <span className="step-number">3</span>
                 <span className="step-label">Select New Part Document.</span>
             </div>
             <div className="step-description">
@@ -68,7 +68,7 @@ const PartModelingContent: React.FC = () => (
                             <p className="p-flush red-text" style={{ lineHeight: '1.8' }}>
                                 ※ This{' '}
                                 <span className="image-wrapper-flush" style={{ background: 'white', padding: '2px', border: '1px solid #ddd', borderRadius: '2px', display: 'inline-block', verticalAlign: 'middle', margin: '0 4px' }}>
-                                    <img src={kmTechImg} alt="K M Tech" style={{ height: '22px', display: 'block' }} />
+                                    <img src={kmTechImg} alt="K M Tech" style={{ height: '27px', display: 'block' }} />
                                 </span>
                                 {' '}is where all the KMTI Standard Templates were saved.
                             </p>
@@ -92,7 +92,7 @@ const PartModelingContent: React.FC = () => (
         {/* Step 4 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">4 </span>
+                <span className="step-number">4</span>
                 <span className="step-label">Set the Material.</span>
             </div>
             <div className="step-description">
@@ -130,7 +130,7 @@ const PartModelingContent: React.FC = () => (
         {/* Step 5 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">5 </span>
+                <span className="step-number">5</span>
                 <span className="step-label">Show the Origin.</span>
             </div>
             <div className="step-description">
@@ -159,7 +159,7 @@ const PartModelingContent: React.FC = () => (
         {/* Step 6 */}
         <div className="instruction-step">
             <div className="step-header">
-                <span className="step-number">6 </span>
+                <span className="step-number">6</span>
                 <span className="step-label">Select plane to be used.</span>
             </div>
             <div className="step-description">
