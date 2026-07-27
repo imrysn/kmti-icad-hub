@@ -1,97 +1,120 @@
 import { useState, useRef } from 'react';
 import Command_MenuVideo from '../../../../../../assets/Commands/Japanese_Tutorial/Command_Menu.mp4';
+import { VideoControlBar } from '../../Video_Control/VideoControlBar';
 
 interface SpotlightConfig {
     label: string;
     startTime: number;
     endTime: number;
-    x: number;      // % left
-    y: number;      // % top
-    width: number;  // % width
-    height: number; // % height
+    pxX: number;
+    pxY: number;
+    pxW: number;
+    pxH: number;
+    isTransitioning?: boolean;
 }
 
 const CHIPS_NAV = [
-    { label: "Draw", startTime: 3.0 },
-    { label: "Drafting", startTime: 4.0 },
-    { label: "File", startTime: 5.0 },
-    { label: "Subdrawings / Parts / Symbols", startTime: 6.8 },
-    { label: "Tools", startTime: 8.6 },
-    { label: "Top-down", startTime: 10.1 },
-    { label: "Modeling", startTime: 11.6 },
-    { label: "3D Tools", startTime: 13.1 },
-    { label: "3D Verification", startTime: 14.6 },
-    { label: "Manufacturing Info", startTime: 16.7 },
-    { label: "Action Design", startTime: 18.2 },
-    { label: "Raster", startTime: 20.0 },
-    { label: "Drafting (Again)", startTime: 21.9 },
+    { label: "Draw", startTime: 3.6 },
+    { label: "Drafting", startTime: 5.1 },
+    { label: "File", startTime: 6.3 },
+    { label: "Subdrawings / Parts / Symbols", startTime: 7.5 },
+    { label: "Tools", startTime: 8.7 },
+    { label: "Top-down", startTime: 10.2 },
+    { label: "Modeling", startTime: 11.4 },
+    { label: "3D Tools", startTime: 12.6 },
+    { label: "3D Verification", startTime: 14.4 },
+    { label: "Manufacturing Information", startTime: 15.6 },
+    { label: "Action Design", startTime: 16.5 },
+    { label: "Raster", startTime: 18.3 },
+    { label: "Drafting (Cutback)", startTime: 21.6 },
     { label: "Sub-Buttons", startTime: 22.0 }
 ];
 
+// Grid bounds definitions (1920x1080 frame)
+// Col 1: x=4 (w=40), Col 2: x=44 (w=40), Col 3: x=84 (w=40)
+// Row 1: y=306 (h=36), Row 2: y=342 (h=38), Row 3: y=380 (h=40), Row 4: y=420 (h=40)
 function getActiveSpotlight(currentTime: number, isEnded: boolean): SpotlightConfig | undefined {
-    if (isEnded) return undefined;
+    if (isEnded || currentTime < 2.0) return undefined;
 
+    // 3.6s – 5.1s — Draw — R1C1 (4,306)
+    if (currentTime >= 2.0 && currentTime < 3.0) {
+        return { label: "Draw", startTime: 3.6, endTime: 5.1, pxX: 4, pxY: 306, pxW: 40, pxH: 36 };
+    }
+    // 5.1s – 6.3s — Drafting — R1C2 (44,306)
     if (currentTime >= 3.0 && currentTime < 4.0) {
-        return { label: "Draw", startTime: 3.0, endTime: 4.0, x: (541 / 1920) * 100, y: (276 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+        return { label: "Drafting", startTime: 5.1, endTime: 6.3, pxX: 44, pxY: 306, pxW: 40, pxH: 36 };
     }
+    // 6.3s – 7.5s — File — R1C3 (84,306)
     if (currentTime >= 4.0 && currentTime < 5.0) {
-        return { label: "Drafting", startTime: 4.0, endTime: 5.0, x: (589 / 1920) * 100, y: (276 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+        return { label: "File", startTime: 6.3, endTime: 7.5, pxX: 84, pxY: 306, pxW: 40, pxH: 36 };
     }
-    if (currentTime >= 5.0 && currentTime < 6.8) {
-        return { label: "File", startTime: 5.0, endTime: 6.8, x: (638 / 1920) * 100, y: (276 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 7.5s – 8.7s — Subdrawings / Parts / Symbols — R2C1 (4,342)
+    if (currentTime >= 6.0 && currentTime < 7.0) {
+        return { label: "Subdrawings / Parts / Symbols", startTime: 7.5, endTime: 8.7, pxX: 4, pxY: 342, pxW: 40, pxH: 38 };
     }
-    if (currentTime >= 6.8 && currentTime < 8.6) {
-        return { label: "Subdrawings / Parts / Symbols", startTime: 6.8, endTime: 8.6, x: (541 / 1920) * 100, y: (323 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 8.7s – 10.2s — Tools — R2C2 (44,342)
+    if (currentTime >= 7.0 && currentTime < 8.0) {
+        return { label: "Tools", startTime: 8.7, endTime: 10.2, pxX: 44, pxY: 342, pxW: 40, pxH: 38 };
     }
-    if (currentTime >= 8.6 && currentTime < 10.1) {
-        return { label: "Tools", startTime: 8.6, endTime: 10.1, x: (589 / 1920) * 100, y: (323 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 10.2s – 11.4s — Top-down — R2C3 (84,342)
+    if (currentTime >= 8.0 && currentTime < 9.0) {
+        return { label: "Top-down", startTime: 10.2, endTime: 11.4, pxX: 84, pxY: 342, pxW: 40, pxH: 38 };
     }
-    if (currentTime >= 10.1 && currentTime < 11.6) {
-        return { label: "Top-down", startTime: 10.1, endTime: 11.6, x: (638 / 1920) * 100, y: (323 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 11.4s – 12.6s — Modeling — R3C1 (4,380)
+    if (currentTime >= 9.0 && currentTime < 10.4) {
+        return { label: "Modeling", startTime: 11.4, endTime: 12.6, pxX: 4, pxY: 380, pxW: 40, pxH: 40 };
     }
-    if (currentTime >= 11.6 && currentTime < 13.1) {
-        return { label: "Modeling", startTime: 11.6, endTime: 13.1, x: (541 / 1920) * 100, y: (370 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 12.6s – 14.4s — 3D Tools — R3C2 (44,380)
+    if (currentTime >= 10.4 && currentTime < 11.6) {
+        return { label: "3D Tools", startTime: 13.0, endTime: 15.0, pxX: 44, pxY: 380, pxW: 40, pxH: 40 };
     }
-    if (currentTime >= 13.1 && currentTime < 14.6) {
-        return { label: "3D Tools", startTime: 13.1, endTime: 14.6, x: (589 / 1920) * 100, y: (370 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 14.4s – 15.6s — 3D Verification — R3C3 (84,380)
+    if (currentTime >= 11.6 && currentTime < 12.7) {
+        return { label: "3D Verification", startTime: 15.0, endTime: 16.0, pxX: 84, pxY: 380, pxW: 40, pxH: 40 };
     }
-    if (currentTime >= 14.6 && currentTime < 16.7) {
-        return { label: "3D Verification", startTime: 14.6, endTime: 16.7, x: (638 / 1920) * 100, y: (370 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 15.6s – 16.5s — Manufacturing Information — R4C1 (4,420)
+    if (currentTime >= 12.7 && currentTime < 14.3) {
+        return { label: "Manufacturing Information", startTime: 16.0, endTime: 17.5, pxX: 4, pxY: 420, pxW: 40, pxH: 40 };
     }
-    if (currentTime >= 16.7 && currentTime < 18.2) {
-        return { label: "Manufacturing Information", startTime: 16.7, endTime: 18.2, x: (541 / 1920) * 100, y: (417 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 16.5s – 18.3s — Action Design — R4C2 (44,420)
+    if (currentTime >= 14.3 && currentTime < 15.8) {
+        return { label: "Action Design", startTime: 17.5, endTime: 19.5, pxX: 44, pxY: 420, pxW: 40, pxH: 40 };
     }
-    if (currentTime >= 18.2 && currentTime < 20.0) {
-        return { label: "Action Design", startTime: 18.2, endTime: 20.0, x: (589 / 1920) * 100, y: (417 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 18.3s – 21.6s — Raster — R4C3 (84,420)
+    if (currentTime >= 15.8 && currentTime < 16.8) {
+        return { label: "Raster", startTime: 19.5, endTime: 22.3, pxX: 84, pxY: 420, pxW: 40, pxH: 40 };
     }
-    if (currentTime >= 20.0 && currentTime < 21.9) {
-        return { label: "Raster", startTime: 20.0, endTime: 21.9, x: (638 / 1920) * 100, y: (417 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
+    // 21.6s – 22.0s — Cut back to Drafting — R1C2 (44,306)
+    if (currentTime >= 16.8 && currentTime < 17.9) {
+        return { label: "Drafting", startTime: 22.3, endTime: 22.6, pxX: 44, pxY: 306, pxW: 40, pxH: 36 };
     }
-    if (currentTime >= 21.9 && currentTime < 22.0) {
-        return { label: "Drafting", startTime: 21.9, endTime: 22.0, x: (589 / 1920) * 100, y: (276 / 1080) * 100, width: (48 / 1920) * 100, height: (48 / 1080) * 100 };
-    }
-    if (currentTime >= 22.0 && currentTime < 23.0) {
-        const progress = Math.min(1, Math.max(0, (currentTime - 22.0) / 1.0));
-        const currentH = 48 + progress * (616 - 48);
+    // 22.0s – 23.0s — Smooth expansion starting at bottom edge of grid (y=460, x=4, w=120) down to y=1080
+    if (currentTime >= 17.9 && currentTime < 18.2) {
+        const progress = Math.min(1, Math.max(0, (currentTime - 17.9) / 3.0));
+        const maxH = 1080 - 460; // 620px
+        const currentH = Math.max(1, progress * maxH);
         return {
             label: "Sub-Buttons",
-            startTime: 22.0,
-            endTime: 23.0,
-            x: (541 / 1920) * 100,
-            y: (464 / 1080) * 100,
-            width: (145 / 1920) * 100,
-            height: (currentH / 1080) * 100
+            startTime: 17.9,
+            endTime: 18.2,
+            pxX: 4,
+            pxY: 460,
+            pxW: 120,
+            pxH: currentH,
+            isTransitioning: true
         };
     }
-    if (currentTime >= 23.0) {
+    // 23.0s – end — Holds fully expanded at y=460 down to y=1080 (x=4, w=120)
+    if (currentTime >= 18.2) {
         return {
             label: "Sub-Buttons",
-            startTime: 23.0,
-            endTime: 60.0,
-            x: (541 / 1920) * 100,
-            y: (464 / 1080) * 100,
-            width: (145 / 1920) * 100,
-            height: (616 / 1080) * 100
+            startTime: 18.2,
+            endTime: 100.0,
+            pxX: 4,
+            pxY: 460,
+            pxW: 120,
+            pxH: 1080 - 460,
+            isTransitioning: true
         };
     }
 
@@ -103,6 +126,7 @@ function Command_Menu_Japanese_Tutorial() {
     const [currentTime, setCurrentTime] = useState(0);
     const [isEnded, setIsEnded] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const activeSpotlight = getActiveSpotlight(currentTime, isEnded);
 
@@ -110,16 +134,36 @@ function Command_Menu_Japanese_Tutorial() {
         if (videoRef.current) {
             setIsEnded(false);
             videoRef.current.currentTime = time;
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
         }
     };
 
+    const handlePrevStep = () => {
+        const currentIdx = CHIPS_NAV.findIndex(chip => Math.abs(chip.startTime - currentTime) < 1.5 || currentTime >= chip.startTime);
+        if (currentIdx > 0) {
+            jumpToTime(CHIPS_NAV[currentIdx - 1].startTime);
+        } else {
+            jumpToTime(CHIPS_NAV[0].startTime);
+        }
+    };
+
+    const handleNextStep = () => {
+        const currentIdx = CHIPS_NAV.findIndex(chip => currentTime < chip.startTime);
+        if (currentIdx !== -1) {
+            jumpToTime(CHIPS_NAV[currentIdx].startTime);
+        } else {
+            jumpToTime(CHIPS_NAV[0].startTime);
+        }
+    };
+
+    // Calculate percent position for overlay relative to 1920x1080 video frame
+    const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
+    const spotY = activeSpotlight ? (activeSpotlight.pxY / 1080) * 100 : 0;
+    const spotW = activeSpotlight ? (activeSpotlight.pxW / 1920) * 100 : 0;
+    const spotH = activeSpotlight ? (activeSpotlight.pxH / 1080) * 100 : 0;
+
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
-            <div style={{ padding: "10px 0", fontSize: "28px", fontWeight: "bold", color: "var(--text-white)", fontFamily: "var(--font-heading)" }}>
-                Command Menu
-            </div>
-
             {/* Quick jump navigation chips */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center", marginBottom: "16px", maxWidth: "1100px" }}>
                 {CHIPS_NAV.map((chip) => {
@@ -133,9 +177,9 @@ function Command_Menu_Japanese_Tutorial() {
                                 fontSize: "12px",
                                 fontWeight: "600",
                                 borderRadius: "16px",
-                                border: isActive ? "1px solid var(--color-primary)" : "1px solid var(--border-color)",
-                                backgroundColor: isActive ? "var(--color-primary-glow)" : "var(--bg-surface)",
-                                color: isActive ? "var(--color-primary)" : "var(--text-muted)",
+                                border: isActive ? "1px solid #ff1493" : "1px solid var(--border-color)",
+                                backgroundColor: isActive ? "rgba(255, 20, 147, 0.2)" : "var(--bg-surface)",
+                                color: isActive ? "#ff1493" : "var(--text-muted)",
                                 cursor: "pointer",
                                 transition: "all 0.2s ease"
                             }}
@@ -165,23 +209,26 @@ function Command_Menu_Japanese_Tutorial() {
                         </p>
                     </div>
                 ) : (
-                    <div style={{
-                        position: "relative",
-                        width: "80%",
-                        maxWidth: "1000px",
-                        aspectRatio: "16 / 9",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        overflow: "hidden",
-                        borderRadius: "8px",
-                        boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
-                        backgroundColor: "var(--bg-dark)"
-                    }}>
+                    <div
+                        ref={containerRef}
+                        className="video-fullscreen-container"
+                        style={{
+                            position: "relative",
+                            width: "80%",
+                            maxWidth: "1000px",
+                            aspectRatio: "16 / 9",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            overflow: "hidden",
+                            borderRadius: "8px",
+                            boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                            backgroundColor: "var(--bg-dark)"
+                        }}
+                    >
                         <video
                             ref={videoRef}
                             src={Command_MenuVideo}
-                            controls
                             preload="auto"
                             onPlay={() => setIsEnded(false)}
                             onEnded={() => setIsEnded(true)}
@@ -199,47 +246,87 @@ function Command_Menu_Japanese_Tutorial() {
                                 width: "100%",
                                 height: "100%",
                                 objectFit: "contain",
-                                outline: "none"
+                                outline: "none",
+                                filter: "brightness(1.3)"
                             }}
                         >
                             Your browser does not support HTML5 video playback.
                         </video>
 
-                        {/* Pink Label beside target coordinates */}
+                        {/* Custom Floating Pill Video Controls Bar */}
+                        <VideoControlBar
+                            videoRef={videoRef}
+                            containerRef={containerRef}
+                            onPrevStep={handlePrevStep}
+                            onNextStep={handleNextStep}
+                        />
+
+                        {/* Spotlight Dimming Overlay with Cutout Mask */}
                         {activeSpotlight && (
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    left: `${activeSpotlight.x}%`,
-                                    top: `${activeSpotlight.y}%`,
-                                    width: `${activeSpotlight.width}%`,
-                                    height: `${activeSpotlight.height}%`,
-                                    pointerEvents: "none",
-                                    transition: "all 0.1s linear",
-                                    zIndex: 10
-                                }}
-                            >
-                                {/* Pink Label badge beside the box bounds */}
+                            <>
+                                {/* Dimmed backdrop with cutout for active highlight area */}
                                 <div
                                     style={{
                                         position: "absolute",
-                                        left: "calc(100% + 8px)",
-                                        top: 0,
-                                        backgroundColor: "var(--bg-surface)",
-                                        color: "var(--color-primary)",
-                                        border: "1.5px solid var(--color-primary)",
-                                        padding: "4px 12px",
-                                        borderRadius: "6px",
-                                        fontSize: "13px",
-                                        fontWeight: "bold",
-                                        whiteSpace: "nowrap",
-                                        boxShadow: "0 2px 10px rgba(0,0,0,0.5), 0 0 10px rgba(217, 70, 239, 0.3)",
-                                        backdropFilter: "blur(4px)"
+                                        inset: 0,
+                                        pointerEvents: "none",
+                                        backgroundColor: "rgba(0, 0, 0, 0.65)",
+                                        backdropFilter: "brightness(0.4) saturate(0.3)",
+                                        clipPath: `polygon(
+                                            0% 0%,
+                                            100% 0%,
+                                            100% 100%,
+                                            0% 100%,
+                                            0% 0%,
+                                            ${spotX}% ${spotY}%,
+                                            ${spotX}% ${spotY + spotH}%,
+                                            ${spotX + spotW}% ${spotY + spotH}%,
+                                            ${spotX + spotW}% ${spotY}%,
+                                            ${spotX}% ${spotY}%
+                                        )`,
+                                        zIndex: 8
+                                    }}
+                                />
+
+                                {/* Highlight Box with Deep Pink Border and Soft Outer Glow */}
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${spotX}%`,
+                                        top: `${spotY}%`,
+                                        width: `${spotW}%`,
+                                        height: `${spotH}%`,
+                                        pointerEvents: "none",
+                                        boxSizing: "border-box",
+                                        border: "2.5px solid #ff1493",
+                                        boxShadow: "0 0 10px #ff1493, 0 0 4px #ff1493",
+                                        borderRadius: "2px",
+                                        zIndex: 10,
+                                        transition: activeSpotlight.isTransitioning ? "height 0.05s linear" : "none"
                                     }}
                                 >
-                                    {activeSpotlight.label}
+                                    {/* Category Label Badge */}
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            left: "calc(100% + 8px)",
+                                            top: 0,
+                                            backgroundColor: "rgba(20, 20, 30, 0.9)",
+                                            color: "#ff1493",
+                                            border: "1.5px solid #ff1493",
+                                            padding: "4px 10px",
+                                            borderRadius: "6px",
+                                            fontSize: "12px",
+                                            fontWeight: "bold",
+                                            whiteSpace: "nowrap",
+                                            boxShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 8px rgba(255, 20, 147, 0.4)",
+                                            backdropFilter: "blur(4px)"
+                                        }}
+                                    >
+                                        {activeSpotlight.label}
+                                    </div>
                                 </div>
-                            </div>
+                            </>
                         )}
                     </div>
                 )}

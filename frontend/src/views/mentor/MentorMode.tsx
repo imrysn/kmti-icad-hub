@@ -696,7 +696,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     if (currentView === 'icad_command' && !selectedCourse) {
         return <ICADCommandView setSelectedCourse={setSelectedCourse} />;
     }
-    if (currentView === 'solidworks_manual' && !selectedCourse) {
+    if (currentView === 'solidworks_manual') {
         return <SolidworksManualView setSelectedCourse={setSelectedCourse} />;
     }
 
