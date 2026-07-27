@@ -61,9 +61,9 @@ function Menu_Bar_Japanese_Tutorial() {
     };
 
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
-    const spotY = activeSpotlight ? (activeSpotlight.pxY / 1080) * 100 : 0;
+    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30) / 1022) * 100 : 0;
     const spotW = activeSpotlight ? (activeSpotlight.pxW / 1920) * 100 : 0;
-    const spotH = activeSpotlight ? (activeSpotlight.pxH / 1080) * 100 : 0;
+    const spotH = activeSpotlight ? (activeSpotlight.pxH / 1022) * 100 : 0;
 
     const videoContainerMarkup = (
         <div
@@ -85,14 +85,13 @@ function Menu_Bar_Japanese_Tutorial() {
                 position: "relative",
                 width: "80%",
                 maxWidth: "1000px",
-                aspectRatio: "16 / 9",
+                aspectRatio: "1920 / 1022",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                overflow: "visible",
+                overflow: "hidden",
                 borderRadius: "8px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
-                backgroundColor: "var(--bg-dark)"
+                boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
             }}
         >
             {/* 16:9 Video Frame Container — maintains 100% precise spotlight positioning in fullscreen */}
@@ -101,12 +100,13 @@ function Menu_Bar_Japanese_Tutorial() {
                     position: "relative",
                     width: "100%",
                     height: "100%",
-                    maxWidth: isFullscreen ? "calc(100vh * 16 / 9)" : "100%",
-                    maxHeight: isFullscreen ? "calc(100vw * 9 / 16)" : "100%",
-                    aspectRatio: "16 / 9",
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    aspectRatio: isFullscreen ? undefined : "1920 / 1022",
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
+                    overflow: "hidden"
                 }}
             >
                 <video
@@ -129,8 +129,7 @@ function Menu_Bar_Japanese_Tutorial() {
                         width: "100%",
                         height: "100%",
                         objectFit: "contain",
-                        outline: "none",
-                        filter: "brightness(1.0)"
+                        outline: "none"
                     }}
                 >
                     Your browser does not support HTML5 video playback.
@@ -139,41 +138,64 @@ function Menu_Bar_Japanese_Tutorial() {
                 {/* Spotlight Dimming Overlay with Cutout Mask */}
                 {activeSpotlight && (
                     <>
+                        {/* Top band: full width, above the box */}
                         <div
                             style={{
                                 position: "absolute",
-                                inset: 0,
+                                left: 0,
+                                top: 0,
+                                width: "100%",
+                                height: `${spotY}%`,
                                 pointerEvents: "none",
                                 backgroundColor: "rgba(0, 0, 0, 0.65)",
                                 backdropFilter: "brightness(0.4) saturate(0.3)",
-                                clipPath: `polygon(
-                                    0% 0%,
-                                    100% 0%,
-                                    100% 100%,
-                                    0% 100%,
-                                    0% 0%,
-                                    ${spotX}% ${spotY}%,
-                                    ${spotX}% ${spotY + spotH}%,
-                                    ${spotX + spotW}% ${spotY + spotH}%,
-                                    ${spotX + spotW}% ${spotY}%,
-                                    ${spotX}% ${spotY}%
-                                )`,
-                                transition: "clip-path 0.25s ease-out",
+                                transition: "all 0.25s ease-out",
                                 zIndex: 8
                             }}
                         />
-
+                        {/* Bottom band: full width, below the box */}
                         <div
                             style={{
                                 position: "absolute",
-                                left: `${spotX}%`,
+                                left: 0,
+                                top: `${spotY + spotH}%`,
+                                width: "100%",
+                                height: `${100 - (spotY + spotH)}%`,
+                                pointerEvents: "none",
+                                backgroundColor: "rgba(0, 0, 0, 0.65)",
+                                backdropFilter: "brightness(0.4) saturate(0.3)",
+                                transition: "all 0.25s ease-out",
+                                zIndex: 8
+                            }}
+                        />
+                        {/* Left band: only spans the box's vertical range */}
+                        <div
+                            style={{
+                                position: "absolute",
+                                left: 0,
                                 top: `${spotY}%`,
-                                width: `${spotW}%`,
+                                width: `${spotX}%`,
                                 height: `${spotH}%`,
                                 pointerEvents: "none",
-                                backdropFilter: "brightness(3.0) saturate(1.4)",
+                                backgroundColor: "rgba(0, 0, 0, 0.65)",
+                                backdropFilter: "brightness(0.4) saturate(0.3)",
                                 transition: "all 0.25s ease-out",
-                                zIndex: 9
+                                zIndex: 8
+                            }}
+                        />
+                        {/* Right band: only spans the box's vertical range */}
+                        <div
+                            style={{
+                                position: "absolute",
+                                left: `${spotX + spotW}%`,
+                                top: `${spotY}%`,
+                                width: `${100 - (spotX + spotW)}%`,
+                                height: `${spotH}%`,
+                                pointerEvents: "none",
+                                backgroundColor: "rgba(0, 0, 0, 0.65)",
+                                backdropFilter: "brightness(0.4) saturate(0.3)",
+                                transition: "all 0.25s ease-out",
+                                zIndex: 8
                             }}
                         />
 

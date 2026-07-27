@@ -33,20 +33,12 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                     padding: '0.75rem 1.5rem',
                     borderBottom: '1px solid rgba(255,255,255,0.07)',
                     background: 'var(--bg-surface, #1a1a2e)',
                     flexShrink: 0,
                 }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary, #6366f1)', fontWeight: 600, letterSpacing: '0.05em' }}>
-                            iCAD Command Reference
-                        </p>
-                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary, #fff)' }}>
-                            iCAD Commands
-                        </h2>
-                    </div>
 
                     {/* Exit button */}
                     <button
@@ -80,20 +72,14 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                     padding: '0.75rem 1.5rem',
                     borderBottom: '1px solid rgba(255,255,255,0.07)',
                     background: 'var(--bg-surface, #1a1a2e)',
                     flexShrink: 0,
                 }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary, #6366f1)', fontWeight: 600, letterSpacing: '0.05em' }}>
-                            iCAD Guide
-                        </p>
-                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary, #fff)' }}>
-                            iCAD Guide
-                        </h2>
-                    </div>
+
+
 
                     {/* Exit button */}
                     <button
@@ -125,20 +111,12 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                     padding: '0.75rem 1.5rem',
                     borderBottom: '1px solid var(--border-color)',
                     background: 'var(--bg-surface)',
                     flexShrink: 0,
                 }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary, #6366f1)', fontWeight: 600, letterSpacing: '0.05em' }}>
-                            iCAD Menu Setup
-                        </p>
-                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-white)' }}>
-                            iCAD Menu Setup
-                        </h2>
-                    </div>
 
                     {/* Exit button */}
                     <button

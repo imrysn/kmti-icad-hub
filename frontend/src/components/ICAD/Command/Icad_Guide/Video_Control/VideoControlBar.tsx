@@ -33,7 +33,7 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
     const [isPlaying, setIsPlaying] = useState(false);
     const [isNativeFullscreen, setIsNativeFullscreen] = useState(false);
     const [isCssFallback, setIsCssFallback] = useState(false);
-    
+
     // Effective fullscreen state: explicit prop takes precedence, else fallback
     const isFullscreen = isExternalFullscreen !== undefined ? isExternalFullscreen : (isNativeFullscreen || isCssFallback);
 
@@ -97,7 +97,7 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
         if (dragRef.current) {
             try {
                 (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-            } catch (_) {}
+            } catch (_) { }
             dragRef.current = null;
         }
     };
@@ -220,7 +220,7 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
     const togglePlay = () => {
         if (!videoRef.current) return;
         if (videoRef.current.paused) {
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
         } else {
             videoRef.current.pause();
         }
@@ -375,12 +375,18 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                     border: none;
                     box-shadow: 0 0 4px rgba(0,0,0,0.4);
                 }
+                .vcb-pill button svg,
+                .vcb-pill div svg {
+                    display: block;
+                    flex-shrink: 0;
+                }
             `}</style>
 
 
 
             {/* Control Pill */}
             <div
+                className="vcb-pill"
                 style={{
                     position: "absolute",
                     bottom: "18px",
@@ -506,144 +512,6 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                 >
                     <ChevronRight size={18} color="#ffffff" strokeWidth={2.2} />
                 </button>
-
-                {/* Mute / Volume Button + Slider */}
-                <div ref={volumeRef} style={{ position: "relative", display: "flex", alignItems: "center" }}>
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setShowVolumeSlider(v => !v);
-                            setShowSpeedMenu(false);
-                        }}
-                        title={isMuted ? "Unmute (M)" : "Mute (M)"}
-                        onContextMenu={(e) => { e.preventDefault(); toggleMute(); }}
-                        style={{
-                            width: "36px",
-                            height: "36px",
-                            borderRadius: "50%",
-                            backgroundColor: "rgba(255, 255, 255, 0.12)",
-                            color: "#ffffff",
-                            border: "none",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            cursor: "pointer",
-                            transition: "all 0.2s ease"
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
-                    >
-                        {isMuted || volume === 0
-                            ? <VolumeX size={16} color="#ffffff" strokeWidth={2.2} />
-                            : <Volume2 size={16} color="#ffffff" strokeWidth={2.2} />
-                        }
-                    </button>
-                    {showVolumeSlider && (
-                        <div style={{
-                            position: "absolute",
-                            bottom: "calc(100% + 10px)",
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            backgroundColor: "rgba(18, 18, 26, 0.95)",
-                            backdropFilter: "blur(10px)",
-                            borderRadius: "10px",
-                            padding: "10px 14px",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            gap: "6px",
-                            boxShadow: "0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)",
-                            zIndex: 1001
-                        }}>
-                            <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.6)" }}>
-                                {Math.round((isMuted ? 0 : volume) * 100)}%
-                            </span>
-                            <input
-                                type="range"
-                                className="vcb-vol-bar"
-                                min={0}
-                                max={1}
-                                step={0.01}
-                                value={isMuted ? 0 : volume}
-                                onChange={handleVolumeChange}
-                            />
-                        </div>
-                    )}
-                </div>
-
-                {/* Playback Speed */}
-                <div ref={speedRef} style={{ position: "relative", display: "flex", alignItems: "center" }}>
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setShowSpeedMenu(v => !v);
-                            setShowVolumeSlider(false);
-                        }}
-                        title="Playback Speed"
-                        style={{
-                            height: "36px",
-                            borderRadius: "18px",
-                            backgroundColor: "rgba(255, 255, 255, 0.12)",
-                            color: "#ffffff",
-                            border: "none",
-                            padding: "0 10px",
-                            fontSize: "12px",
-                            fontWeight: "700",
-                            display: "flex",
-                            alignItems: "center",
-                            cursor: "pointer",
-                            transition: "all 0.2s ease",
-                            fontFamily: "monospace",
-                            whiteSpace: "nowrap"
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
-                    >
-                        {playbackRate}x
-                    </button>
-                    {showSpeedMenu && (
-                        <div style={{
-                            position: "absolute",
-                            bottom: "calc(100% + 10px)",
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            backgroundColor: "rgba(18, 18, 26, 0.95)",
-                            backdropFilter: "blur(10px)",
-                            borderRadius: "10px",
-                            padding: "6px",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "2px",
-                            boxShadow: "0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)",
-                            zIndex: 1001,
-                            minWidth: "64px"
-                        }}>
-                            {SPEED_OPTIONS.map(rate => (
-                                <button
-                                    key={rate}
-                                    onClick={() => handleSpeedChange(rate)}
-                                    style={{
-                                        background: rate === playbackRate ? "rgba(255,255,255,0.18)" : "transparent",
-                                        color: rate === playbackRate ? "#ffffff" : "rgba(255,255,255,0.7)",
-                                        border: "none",
-                                        borderRadius: "6px",
-                                        padding: "5px 10px",
-                                        fontSize: "12px",
-                                        fontWeight: rate === playbackRate ? 700 : 500,
-                                        cursor: "pointer",
-                                        textAlign: "center",
-                                        fontFamily: "monospace",
-                                        transition: "all 0.15s ease"
-                                    }}
-                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.14)")}
-                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = rate === playbackRate ? "rgba(255,255,255,0.18)" : "transparent")}
-                                >
-                                    {rate}x
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </div>
 
                 {/* Fullscreen Button */}
                 <button
