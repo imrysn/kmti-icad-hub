@@ -61,42 +61,42 @@ function getActiveSpotlight(currentTime: number, isEnded: boolean): SpotlightCon
         return { label: "Top-down", startTime: 10.2, endTime: 11.4, pxX: 84, pxY: 342, pxW: 40, pxH: 38 };
     }
     // 11.4s – 12.6s — Modeling — R3C1 (4,380)
-    if (currentTime >= 9.0 && currentTime < 10.0) {
+    if (currentTime >= 9.0 && currentTime < 10.4) {
         return { label: "Modeling", startTime: 11.4, endTime: 12.6, pxX: 4, pxY: 380, pxW: 40, pxH: 40 };
     }
     // 12.6s – 14.4s — 3D Tools — R3C2 (44,380)
-    if (currentTime >= 10.0 && currentTime < 11.0) {
-        return { label: "3D Tools", startTime: 12.6, endTime: 14.4, pxX: 44, pxY: 380, pxW: 40, pxH: 40 };
+    if (currentTime >= 10.4 && currentTime < 11.6) {
+        return { label: "3D Tools", startTime: 13.0, endTime: 15.0, pxX: 44, pxY: 380, pxW: 40, pxH: 40 };
     }
     // 14.4s – 15.6s — 3D Verification — R3C3 (84,380)
-    if (currentTime >= 11.0 && currentTime < 12.0) {
-        return { label: "3D Verification", startTime: 14.4, endTime: 15.6, pxX: 84, pxY: 380, pxW: 40, pxH: 40 };
+    if (currentTime >= 11.6 && currentTime < 12.7) {
+        return { label: "3D Verification", startTime: 15.0, endTime: 16.0, pxX: 84, pxY: 380, pxW: 40, pxH: 40 };
     }
     // 15.6s – 16.5s — Manufacturing Information — R4C1 (4,420)
-    if (currentTime >= 12.0 && currentTime < 13.0) {
-        return { label: "Manufacturing Information", startTime: 15.6, endTime: 16.5, pxX: 4, pxY: 420, pxW: 40, pxH: 40 };
+    if (currentTime >= 12.7 && currentTime < 14.3) {
+        return { label: "Manufacturing Information", startTime: 16.0, endTime: 17.5, pxX: 4, pxY: 420, pxW: 40, pxH: 40 };
     }
     // 16.5s – 18.3s — Action Design — R4C2 (44,420)
-    if (currentTime >= 13.0 && currentTime < 14.0) {
-        return { label: "Action Design", startTime: 16.5, endTime: 18.3, pxX: 44, pxY: 420, pxW: 40, pxH: 40 };
+    if (currentTime >= 14.3 && currentTime < 15.8) {
+        return { label: "Action Design", startTime: 17.5, endTime: 19.5, pxX: 44, pxY: 420, pxW: 40, pxH: 40 };
     }
     // 18.3s – 21.6s — Raster — R4C3 (84,420)
-    if (currentTime >= 14.0 && currentTime < 15.0) {
-        return { label: "Raster", startTime: 18.3, endTime: 21.6, pxX: 84, pxY: 420, pxW: 40, pxH: 40 };
+    if (currentTime >= 15.8 && currentTime < 16.8) {
+        return { label: "Raster", startTime: 19.5, endTime: 22.3, pxX: 84, pxY: 420, pxW: 40, pxH: 40 };
     }
     // 21.6s – 22.0s — Cut back to Drafting — R1C2 (44,306)
-    if (currentTime >= 15.0 && currentTime < 16.0) {
-        return { label: "Drafting", startTime: 21.6, endTime: 22.0, pxX: 44, pxY: 306, pxW: 40, pxH: 36 };
+    if (currentTime >= 16.8 && currentTime < 17.9) {
+        return { label: "Drafting", startTime: 22.3, endTime: 22.6, pxX: 44, pxY: 306, pxW: 40, pxH: 36 };
     }
     // 22.0s – 23.0s — Smooth expansion starting at bottom edge of grid (y=460, x=4, w=120) down to y=1080
-    if (currentTime >= 16.0 && currentTime < 17.0) {
-        const progress = Math.min(1, Math.max(0, (currentTime - 16.0) / 1.0));
+    if (currentTime >= 17.9 && currentTime < 18.2) {
+        const progress = Math.min(1, Math.max(0, (currentTime - 17.9) / 3.0));
         const maxH = 1080 - 460; // 620px
         const currentH = Math.max(1, progress * maxH);
         return {
             label: "Sub-Buttons",
-            startTime: 16.0,
-            endTime: 17.0,
+            startTime: 17.9,
+            endTime: 18.2,
             pxX: 4,
             pxY: 460,
             pxW: 120,
@@ -105,10 +105,10 @@ function getActiveSpotlight(currentTime: number, isEnded: boolean): SpotlightCon
         };
     }
     // 23.0s – end — Holds fully expanded at y=460 down to y=1080 (x=4, w=120)
-    if (currentTime >= 17.0) {
+    if (currentTime >= 18.2) {
         return {
             label: "Sub-Buttons",
-            startTime: 17.0,
+            startTime: 18.2,
             endTime: 100.0,
             pxX: 4,
             pxY: 460,
@@ -246,7 +246,8 @@ function Command_Menu_Japanese_Tutorial() {
                                 width: "100%",
                                 height: "100%",
                                 objectFit: "contain",
-                                outline: "none"
+                                outline: "none",
+                                filter: "brightness(1.3)"
                             }}
                         >
                             Your browser does not support HTML5 video playback.

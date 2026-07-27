@@ -127,7 +127,8 @@ function Tree_View_Japanese_Tutorial() {
                                 width: "100%",
                                 height: "100%",
                                 objectFit: "contain",
-                                outline: "none"
+                                outline: "none",
+                                filter: "brightness(1.3)"
                             }}
                         >
                             Your browser does not support HTML5 video playback.
