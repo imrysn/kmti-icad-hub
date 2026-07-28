@@ -43,12 +43,8 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     {/* Step 1 */}
                     <div className="instruction-step">
                         <div className="step-header">
-<<<<<<< HEAD
                             <span className="step-number">1</span>
                             <span className="step-label">Create New File (See page 3 No. 2)</span>
-=======
-                            <span className="step-number">1 </span>
-                            <span className="step-label">Create New File (See page 3 No. 2) </span>
                         </div>
                         <div className="step-description">
                             <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -64,12 +60,8 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     {/* Step 2 */}
                     <div className="instruction-step">
                         <div className="step-header">
-<<<<<<< HEAD
                             <span className="step-number">2</span>
                             <span className="step-label">Select New Document (See page 3 No. 3)</span>
-=======
-                            <span className="step-number">2 </span>
-                            <span className="step-label">Select New Document (See page 3 No. 3) </span>
                         </div>
                         <div className="step-description">
                             <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
