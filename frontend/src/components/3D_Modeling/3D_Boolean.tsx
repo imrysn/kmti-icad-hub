@@ -1,5 +1,6 @@
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
+import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -34,6 +35,7 @@ interface BooleanLessonProps {
 }
 
 const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"union" | "subtract" | "intersect" | "separate">(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'union';
   });
