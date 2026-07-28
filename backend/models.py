@@ -83,6 +83,7 @@ class User(Base):
     created_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
     custom_comments = Column(JSON, default=list)
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
 
 class SystemLog(Base):
@@ -266,6 +267,7 @@ class TrainerTraineeMapping(Base):
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     trainee_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     assigned_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     trainee = relationship("User", foreign_keys=[trainee_id])
     trainer = relationship("User", foreign_keys=[trainer_id])
@@ -281,6 +283,7 @@ class TraineeSetMapping(Base):
     actual_set_number = Column(Integer, nullable=False)
     assessment_type = Column(String(50), default="3D", server_default="3D")
     created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     trainee = relationship("User", foreign_keys=[trainee_id])
     trainer = relationship("User", foreign_keys=[trainer_id])
