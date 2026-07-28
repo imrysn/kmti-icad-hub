@@ -25,7 +25,7 @@ const CuttingBaseContent: React.FC = () => (
                             Click the <strong>front face</strong>.
                         </li>
                         <li>
-                            Draw the sketch to be cut. <span style={{ fontWeight: 'normal' }}>(Please see Page 4 No. 9 for adding sketch relation and dimension.)</span>
+                            Draw the sketch to be cut. <span style={{ fontWeight: 'normal' }}></span>
                         </li>
                     </ol>
 
