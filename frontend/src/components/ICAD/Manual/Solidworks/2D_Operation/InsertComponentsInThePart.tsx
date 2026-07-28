@@ -44,7 +44,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     <div className="instruction-step">
                         <div className="step-header">
                             <span className="step-number">1 </span>
-                            <span className="step-label">Create New File (See page 3 No. 2) </span>
+                            <span className="step-label">Create New File </span>
                         </div>
                         <div className="step-description">
                             <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -61,7 +61,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     <div className="instruction-step">
                         <div className="step-header">
                             <span className="step-number">2 </span>
-                            <span className="step-label">Select New Document (See page 3 No. 3) </span>
+                            <span className="step-label">Select New Document </span>
                         </div>
                         <div className="step-description">
                             <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
@@ -152,7 +152,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                             </div>
                                         </div>
                                         <div style={{ flex: '0 1 auto', minWidth: '200px' }}>
-                                            <div className="instruction-box" style={{ marginTop: '0.2rem'}}>
+                                            <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
                                                 <p className="p-flush red-text">
                                                     ※ It uses <strong>View Palette</strong> where<br />
                                                     the user can choose then<br />

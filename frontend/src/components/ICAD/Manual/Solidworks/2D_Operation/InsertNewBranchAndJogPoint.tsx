@@ -106,7 +106,6 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
                                 </div>
                                 <div className="step-description">
                                     <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                                        (See page 28.)
                                     </p>
                                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                         <img
