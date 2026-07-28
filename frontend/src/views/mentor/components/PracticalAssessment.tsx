@@ -796,7 +796,11 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                 <div className="table-actions-horizontal" style={{ gap: '4px' }}>
                                                                                                     <button
                                                                                                         className="action-btn-styled outline"
-                                                                                                        title={task.is_virtual_quotation ? "Open in Excel" : "Open in CAD"}
+                                                                                                        title={
+                                                                                                            task.is_virtual_quotation ? "Open in Excel" :
+                                                                                                            task.is_virtual_extra ? "Open File" :
+                                                                                                            "Open in CAD"
+                                                                                                        }
                                                                                                         onClick={() => handleOpenInCAD(sub.id)}
                                                                                                     >
                                                                                                         <ExternalLink size={14} />
