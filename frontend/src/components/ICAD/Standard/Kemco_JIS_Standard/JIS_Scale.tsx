@@ -103,11 +103,11 @@ const JISScale: React.FC<JISScaleProps> = ({
                     </div>
 
                     {/* ── JIS Scale Image ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem" }}>
                         <img
                             src={jisScaleImg}
                             alt="JIS Scale"
-                            className="software-screenshot mt-4"
+                            className="software-screenshot"
                             style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>

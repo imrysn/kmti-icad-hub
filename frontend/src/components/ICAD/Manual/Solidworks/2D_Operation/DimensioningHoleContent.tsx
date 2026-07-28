@@ -12,7 +12,7 @@ const DimensioningHoleContent: React.FC = () => {
                     <span className="step-number">1</span>
                     <span className="step-label" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                         Click <strong>Smart Dimension</strong> 
-                        <img src={smartDimensionImg} alt="Smart Dimension" style={{ height: '36px', verticalAlign: 'middle', display: 'inline-block', margin: '0 8px' }} />
+                        <img src={smartDimensionImg} alt="Smart Dimension" style={{ height: '40px', verticalAlign: 'middle', display: 'inline-block', margin: '0 8px' }} />
                         &gt; Select the hole to dimension.
                     </span>
                 </div>

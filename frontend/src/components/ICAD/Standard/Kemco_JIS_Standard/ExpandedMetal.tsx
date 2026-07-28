@@ -104,22 +104,22 @@ const ExpandedMetal: React.FC<ExpandedMetalProps> = ({
                     </div>
 
                     {/* ── Expanded Metal Image 1 ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "0rem", alignItems: "center" }}>
                         <img
                             src={expandedMetal1Img}
                             alt="Expanded Metal 1"
-                            className="software-screenshot mt-4"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            className="software-screenshot"
+                            style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
 
                     {/* ── Expanded Metal Image 2 ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                         <img
                             src={expandedMetal2Img}
                             alt="Expanded Metal 2"
-                            className="software-screenshot mt-4"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            className="software-screenshot"
+                            style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
 

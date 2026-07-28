@@ -13,7 +13,7 @@ const ProjectedViewContent: React.FC = () => {
                     <p className="p-flush">2 Click Projected View.</p>
                     <p className="p-flush">3 Position the view needed.</p>
                     <p className="p-flush">4 Click on the sheet to drop the view.</p>
-                    <p className="p-flush">5 Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></p>
+                    <p className="p-flush">5 Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></p>
                 </div>
 
                 <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -48,7 +48,7 @@ const ProjectedViewContent: React.FC = () => {
                 <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                     <p className="p-flush red-text">※ Click the Isometric view.</p>
                     <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>
-                        ※ On Display Style, Click Hidden Lines Removed <img src={hiddenRemoveImg} alt="Hidden Lines Removed" style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                        ※ On Display Style, Click Hidden Lines Removed <img src={hiddenRemoveImg} alt="Hidden Lines Removed" style={{ height: '30px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
                     </p>
                 </div>
             </div>

@@ -34,14 +34,14 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                         <h4 className="section-title">Saving 2D Detail</h4>
                     </div>
 
-                    <div className="fade-in" style={{ marginTop: '2rem' }}>
+                    <div className="fade-in" style={{ marginTop: '1rem' }}>
                         {/* Step 1 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">1</span>
                                 <span className="step-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     In the <strong>Menu Bar</strong>, click <strong>Save</strong>
-                                    <img src={saveIconImg} alt="Save Icon" style={{ height: '1.2rem', verticalAlign: 'middle' }} />
+                                    <img src={saveIconImg} alt="Save Icon" style={{ height: '2.5rem', verticalAlign: 'middle' }} />
                                     or press <strong>Ctrl + S</strong> to save the file.
                                 </span>
                             </div>
@@ -54,7 +54,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                                 <span className="step-label">When the dialog box appears, edit the <strong>File Name</strong>, then click <strong>Save</strong>.</span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
                                     <img
                                         src={fileNameImg}
                                         alt="Edit File Name"

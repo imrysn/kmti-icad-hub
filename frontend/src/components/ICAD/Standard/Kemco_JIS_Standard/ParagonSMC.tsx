@@ -103,12 +103,12 @@ const ParagonSMC: React.FC<ParagonSMCProps> = ({
                     </div>
 
                     {/* ── Paragon SMC Image ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                         <img
                             src={paragonSMCImg}
                             alt="Paragon SMC"
-                            className="software-screenshot mt-4"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            className="software-screenshot"
+                            style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
 

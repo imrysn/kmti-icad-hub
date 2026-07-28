@@ -88,6 +88,22 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
+            {/* Navigation Bar — above the header */}
+            <div className="lesson-tabs" style={{ marginTop: "0", marginBottom: "1rem" }}>
+                <button
+                    className={`tab-button ${activeTab === "page1" ? "active" : ""}`}
+                    onClick={() => setActiveTab("page1")}
+                >
+                    Page 1
+                </button>
+                <button
+                    className={`tab-button ${activeTab === "page2" ? "active" : ""}`}
+                    onClick={() => setActiveTab("page2")}
+                >
+                    Page 2
+                </button>
+            </div>
+
             <section className="lesson-intro">
                 <KaraokeLessonText
                     as="h3"
@@ -97,22 +113,6 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                     isActive={isSpeaking && currentIndex === 0}
                     currentCharIndex={currentCharIndex}
                 />
-                
-                {/* Navigation Bar */}
-                <div className="lesson-tabs" style={{ marginTop: "1rem", marginBottom: "0" }}>
-                    <button
-                        className={`tab-button ${activeTab === "page1" ? "active" : ""}`}
-                        onClick={() => setActiveTab("page1")}
-                    >
-                        Page 1
-                    </button>
-                    <button
-                        className={`tab-button ${activeTab === "page2" ? "active" : ""}`}
-                        onClick={() => setActiveTab("page2")}
-                    >
-                        Page 2
-                    </button>
-                </div>
             </section>
 
             <div className="lesson-grid single-card">
@@ -138,26 +138,26 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                     {/* Images Page 1 */}
                     {activeTab === "page1" && (
                         <>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog1} alt="SHOWA Catalog 1" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog1} alt="SHOWA Catalog 1" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog2} alt="SHOWA Catalog 2" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog2} alt="SHOWA Catalog 2" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog3} alt="SHOWA Catalog 3" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog3} alt="SHOWA Catalog 3" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog4} alt="SHOWA Catalog 4" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog4} alt="SHOWA Catalog 4" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog5} alt="SHOWA Catalog 5" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog5} alt="SHOWA Catalog 5" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog6} alt="SHOWA Catalog 6" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog6} alt="SHOWA Catalog 6" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog7} alt="SHOWA Catalog 7" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog7} alt="SHOWA Catalog 7" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
                         </>
                     )}
@@ -165,26 +165,26 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                     {/* Images Page 2 */}
                     {activeTab === "page2" && (
                         <>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog8} alt="SHOWA Catalog 8" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog8} alt="SHOWA Catalog 8" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog9} alt="SHOWA Catalog 9" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog9} alt="SHOWA Catalog 9" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog10} alt="SHOWA Catalog 10" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog10} alt="SHOWA Catalog 10" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog11} alt="SHOWA Catalog 11" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog11} alt="SHOWA Catalog 11" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog12} alt="SHOWA Catalog 12" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog12} alt="SHOWA Catalog 12" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog13} alt="SHOWA Catalog 13" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog13} alt="SHOWA Catalog 13" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
-                                <img src={showaCatalog14} alt="SHOWA Catalog 14" className="software-screenshot mt-4" style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
+                                <img src={showaCatalog14} alt="SHOWA Catalog 14" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
                             </div>
                         </>
                     )}

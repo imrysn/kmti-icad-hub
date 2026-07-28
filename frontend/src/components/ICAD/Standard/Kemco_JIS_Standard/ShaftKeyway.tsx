@@ -103,12 +103,12 @@ const ShaftKeyway: React.FC<ShaftKeywayProps> = ({
                     </div>
 
                     {/* ── Shaft Keyway Image ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                         <img
                             src={shaftKeywayImg}
                             alt="Shaft Keyway"
-                            className="software-screenshot mt-4"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            className="software-screenshot"
+                            style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
 
