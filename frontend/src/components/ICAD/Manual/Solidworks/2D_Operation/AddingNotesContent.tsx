@@ -36,13 +36,8 @@ const AddingNotesContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-<<<<<<< HEAD
-                    <span className="step-number">4 </span>
-                    <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
-=======
                     <span className="step-number">4</span>
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
->>>>>>> origin/rainiel
                 </div>
                 <div className="step-description">
                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
