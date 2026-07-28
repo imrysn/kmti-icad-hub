@@ -47,7 +47,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             <span className="step-label">Create New File</span>
                         </div>
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
                                 <img
                                     src={createImg}
                                     alt="Create New File"
@@ -127,10 +127,10 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                     <span className="step-label">Drag and Drop</span>
                                 </div>
                                 <div className="step-description">
-                                    <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
+                                    <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                                         <p className="p-flush red-text">※ Hold the part/assy file from the folder then drag to the dwg sheet.</p>
                                     </div>
-                                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                                    <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
                                         <img src={dragImg} alt="Drag and Drop" className="software-screenshot screenshot-wide" />
                                     </div>
                                 </div>

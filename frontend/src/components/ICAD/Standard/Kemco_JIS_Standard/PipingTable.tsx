@@ -264,7 +264,9 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
 
           <div className="table-wrapper" style={{ marginTop: '2rem', marginBottom: '2rem' }}>
             <div className="lesson-table-container" style={{ margin: 0 }}>
-              <table className="lesson-table piping-table-compact">
+              <table
+                className="lesson-table piping-table-compact"
+              >
                 <thead>
                   <tr>
                     <th style={{ width: '16%' }}>English</th>
