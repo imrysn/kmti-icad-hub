@@ -9,9 +9,9 @@ void keyboardSolidworks;
 const KeyboardShortcutsContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>
         <div className="instruction-step" style={{ paddingLeft: '1rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', marginTop: "1rem" }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '3rem', marginTop: "1rem", flexWrap: 'wrap' }}>
 
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1rem' }}>
                     <div className="lesson-table-container" style={{ width: '350px' }}>
                         <table className="lesson-table">
                             <thead>
@@ -31,12 +31,12 @@ const KeyboardShortcutsContent: React.FC = () => (
                             </tbody>
                         </table>
                     </div>
-                    <div style={{ maxWidth: '350px', paddingTop: '0.5rem' }}>
+                    <div style={{ maxWidth: '350px' }}>
                         <p className="p-flush red-text">※ These are the commonly used keyboard shortcuts, it can be used not only in Solidworks but to other softwares as well.</p>
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1rem' }}>
                     <div className="lesson-table-container" style={{ width: '350px' }}>
                         <table className="lesson-table">
                             <thead>
@@ -55,7 +55,7 @@ const KeyboardShortcutsContent: React.FC = () => (
                             </tbody>
                         </table>
                     </div>
-                    <div style={{ maxWidth: '350px', paddingTop: '0.5rem' }}>
+                    <div style={{ maxWidth: '350px' }}>
                         <p className="p-flush red-text">※ It is the commonly used shortcuts in SolidWorks.</p>
                     </div>
                 </div>

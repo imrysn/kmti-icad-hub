@@ -93,22 +93,22 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
                     <div className="lesson-grid single-card">
                         <div className="lesson-card tab-content fade-in">
                             {/* Image 1 */}
-                            <div className="step-description" style={{ marginTop: "1rem" }}>
+                            <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                                 <img
                                     src={retainerRing1Img}
                                     alt="Retainer Ring 1"
-                                    className="software-screenshot mt-4"
-                                    style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                    className="software-screenshot"
+                                    style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                                 />
                             </div>
 
                             {/* Image 2 */}
-                            <div className="step-description" style={{ marginTop: "2rem" }}>
+                            <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                                 <img
                                     src={retainerRing2Img}
                                     alt="Retainer Ring 2"
-                                    className="software-screenshot mt-4"
-                                    style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                    className="software-screenshot"
+                                    style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                                 />
                             </div>
 
@@ -151,22 +151,22 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
                                 style={{ marginTop: "1rem" }}
                             >
                                 {/* Image 3 */}
-                                <div className="step-description">
+                                <div className="step-description" style={{ alignItems: "center" }}>
                                     <img
                                         src={retainerRing3Img}
                                         alt="Retainer Ring Specifications 3"
-                                        className="software-screenshot mt-4"
-                                        style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                        className="software-screenshot"
+                                        style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                                     />
                                 </div>
 
                                 {/* Image 4 */}
-                                <div className="step-description" style={{ marginTop: "2rem" }}>
+                                <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                                     <img
                                         src={retainerRing4Img}
                                         alt="Retainer Ring Specifications 4"
-                                        className="software-screenshot mt-4"
-                                        style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                        className="software-screenshot"
+                                        style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                                     />
                                 </div>
                             </div>

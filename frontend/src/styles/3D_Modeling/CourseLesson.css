@@ -286,11 +286,15 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin: 4px 0;
+  margin: 4px 6px;
   background: transparent !important;
   padding: 0 !important;
   border: none !important;
   box-shadow: none !important;
+}
+
+.image-wrapper-flush img {
+  min-height: 28px;
 }
 
 .software-screenshot {

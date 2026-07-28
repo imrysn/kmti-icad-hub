@@ -12,7 +12,7 @@ const EditingPropertiesContent: React.FC = () => (
                 <span className="step-label"> In <strong>Menu Bar </strong>, Click File Properties{' '}
 
                     <span className="image-wrapper-flush">
-                        <img src={fileImg} alt="File Properties" style={{ height: '40px', verticalAlign: 'middle' }} />
+                        <img src={fileImg} alt="File Properties" style={{ height: '38px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
 
@@ -33,7 +33,7 @@ const EditingPropertiesContent: React.FC = () => (
                 <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
                     <li>While the Summary Information is open, double click the part then the dimensions will appear.</li>
                     <li>Click on the red line area, type PL4.5, type "x", click 32, type "x", click 75.</li>
-                    <li>On the Mat'l Wt Value, Type 0.08 (See page 17 to know how to get the Mat'l Wt Value).</li>
+                    <li>On the Mat'l Wt Value, Type 0.08.</li>
                 </ol>
             </div>
         </div>
@@ -51,7 +51,7 @@ const EditingPropertiesContent: React.FC = () => (
 
                 <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'var(--bg-surface)' }}>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong>MAT'L</strong> - Type of material used on part (See page 3 No.4)
+                        <strong>MAT'L</strong> - Type of material used on part.
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                         <strong>Wt/Pc</strong> - Finished weight of part (automatically updates)

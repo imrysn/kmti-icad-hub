@@ -103,12 +103,12 @@ const OST2Specification: React.FC<OST2SpecificationProps> = ({
                     </div>
 
                     {/* ── OST-2 Specification Image ── */}
-                    <div className="step-description" style={{ marginTop: "2rem" }}>
+                    <div className="step-description" style={{ marginTop: "0rem", alignItems: "center" }}>
                         <img
                             src={ost2Img}
                             alt="OST-2 Specification"
-                            className="software-screenshot mt-4"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            className="software-screenshot"
+                            style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
 

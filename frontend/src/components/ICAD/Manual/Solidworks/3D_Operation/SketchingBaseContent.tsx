@@ -25,7 +25,7 @@ const SketchingBaseContent: React.FC = () => (
                     </span>
                     {' '} &gt; Draw a sketch then check{' '}
                     <span className="image-wrapper-flush">
-                        <img src={checkImg} alt="Check" style={{ height: '30px', verticalAlign: 'middle' }} />
+                        <img src={checkImg} alt="Check" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
                 </p>
             </div>
@@ -75,7 +75,7 @@ const SketchingBaseContent: React.FC = () => (
                             <li>
                                 In <strong>Sketch</strong> tab, click <strong>Smart Dimension</strong>{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={smartImg} alt="Smart Dimension" style={{ height: '40px', verticalAlign: 'middle' }} />
+                                    <img src={smartImg} alt="Smart Dimension" style={{ height: '38px', verticalAlign: 'middle' }} />
                                 </span>
                             </li>
                             <li>Select line(s) to be dimensioned.</li>
@@ -86,7 +86,7 @@ const SketchingBaseContent: React.FC = () => (
                             <li>
                                 Click{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={checkImg} alt="Check" style={{ height: '30px', verticalAlign: 'middle' }} />
+                                    <img src={checkImg} alt="Check" style={{ height: '28px', verticalAlign: 'middle' }} />
                                 </span>
                             </li>
                         </ol>

@@ -88,12 +88,12 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
                 <div className="lesson-card tab-content fade-in">
 
                     {/* Key Plate & Groove Image */}
-                    <div className="step-description" style={{ marginTop: "1rem" }}>
+                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center"}}>
                         <img
                             src={keywayPlateImg}
                             alt="Key Plate & Groove"
-                            className="software-screenshot mt-4"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            className="software-screenshot"
+                            style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
 
@@ -101,7 +101,7 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
                     <div
                         className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
                         data-reading-index="1"
-                        style={{ marginTop: "3rem" }}
+                        style={{ marginTop: "1rem" }}
                     >
                         <div className="step-header">
                             <KaraokeLessonText
@@ -113,12 +113,12 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
                                 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-main)", marginBottom: "1rem" }}
                             />
                         </div>
-                        <div className="step-description">
+                        <div className="step-description" style={{ marginTop: "0rem", alignItems: "center"}}>
                             <img
                                 src={oilGrooveImg}
                                 alt="Oil Groove"
-                                className="software-screenshot mt-4"
-                                style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                className="software-screenshot"
+                                style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                             />
                         </div>
                     </div>

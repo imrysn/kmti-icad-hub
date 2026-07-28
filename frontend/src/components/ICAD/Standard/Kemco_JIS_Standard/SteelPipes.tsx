@@ -112,32 +112,32 @@ const SteelPipesLesson: React.FC<SteelPipesLessonProps> = ({
           </div>
 
           {/* ── Image 1 ── */}
-          <div className="step-description" style={{ marginTop: "2rem" }}>
+          <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
             <img
               src={steelPipe1Img}
               alt="Structural Steel Pipe 1"
-              className="software-screenshot mt-4"
-              style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+              className="software-screenshot"
+              style={{ maxWidth: "70%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
             />
           </div>
 
           {/* ── Image 2 ── */}
-          <div className="step-description" style={{ marginTop: "2rem" }}>
+          <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
             <img
               src={steelPipe2Img}
               alt="Structural Steel Pipe 2"
-              className="software-screenshot mt-4"
-              style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+              className="software-screenshot"
+              style={{ maxWidth: "70%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
             />
           </div>
 
           {/* ── Image 3 ── */}
-          <div className="step-description" style={{ marginTop: "2rem" }}>
+          <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
             <img
               src={steelPipe3Img}
               alt="Structural Steel Pipe 3"
-              className="software-screenshot mt-4"
-              style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+              className="software-screenshot"
+              style={{ maxWidth: "70%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
             />
           </div>
 

@@ -41,7 +41,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
 
                     <div className="fade-in" style={{ marginTop: '2rem' }}>
                         {/* Step 1 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">1</span>
                                 <span className="step-label">In the <strong>Insert</strong> menu, under <strong>Tables</strong>, click <strong>Bill of Materials</strong>.</span>
@@ -49,13 +49,13 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         </div>
 
                         {/* Step 2 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '2rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">2</span>
                                 <span className="step-label">Click the part/assembly drawing.</span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
                                     <img
                                         src={insertMenuImg}
                                         alt="Insert Menu"
@@ -66,7 +66,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         </div>
 
                         {/* Step 3 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">3</span>
                                 <span className="step-label">Edit the <strong>Table Template</strong>.</span>
@@ -81,7 +81,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         </div>
 
                         {/* Step 4 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '2rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">4</span>
                                 <span className="step-label">Edit <strong>BOM Type</strong>, then select <strong>Top-level only</strong>.</span>
@@ -89,23 +89,23 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         </div>
 
                         {/* Step 5 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">5</span>
                                 <span className="step-label">
-                                    Click <img src={checkImg} alt="Check mark" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                                    Click <img src={checkImg} alt="Check mark" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
                                 </span>
                             </div>
                         </div>
 
                         {/* Step 6 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '2rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">6</span>
                                 <span className="step-label">Position the Bill of Material.</span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
                                     <img
                                         src={bomImg}
                                         alt="Position BOM"
@@ -152,7 +152,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                         </div>
 
                         {/* Step 7 */}
-                        <div className="instruction-step" style={{ padding: '0.25rem 0' }}>
+                        <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                             <div className="step-header">
                                 <span className="step-number">7</span>
                                 <span className="step-label">Click the Bill of Material.</span>
@@ -172,7 +172,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                                         <img 
                                             src={flagImg} 
                                             alt="Flag icon" 
-                                            style={{ height: '24px', verticalAlign: 'middle', display: 'inline-block', margin: '0 6px', border: '1px solid #ccc', borderRadius: '2px' }} 
+                                            style={{ height: '35px', verticalAlign: 'middle', display: 'inline-block', margin: '0 6px', border: '1px solid #ccc', borderRadius: '2px' }} 
                                         />{' '}
                                         these icons will appear.
                                     </p>
