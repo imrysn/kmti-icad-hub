@@ -276,10 +276,6 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
       {subLessonId === '2d-gallery' && (
         <>
-          <section className="lesson-intro">
-            <h3 className="section-title">Reference Standard Gallery</h3>
-          </section>
-
           <div className="lesson-grid single-card">
             <div className="lesson-card tab-content fade-in">
               <div
