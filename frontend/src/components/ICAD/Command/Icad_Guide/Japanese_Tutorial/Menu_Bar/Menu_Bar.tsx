@@ -2,25 +2,25 @@ import { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import menuBarVideo from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar.mp4';
 import { VideoControlBar } from '../../Video_Control/VideoControlBar';
+import { SpotlightConfig } from './File_Dropdown_Items/FileDropdownItems';
 
-interface SpotlightConfig {
-    label: string;
-    startTime: number;
-    endTime: number;
-    pxX: number;
-    pxY: number;
-    pxW: number;
-    pxH: number;
-}
+import View_Dropdown from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar_Label/View_Dropdown.png';
+import File_Dropdown from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar_Label/File_Dropdown.png';
+import Info_Dropdown from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar_Label/Infor_Dropdown.png';
+import Settings_Dropdown from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar_Label/Settings_Dropdown.png';
+import Tools_Dropdown from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar_Label/Tools_Dropdown.png';
+import Window_Dropdown from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar_Label/Window_Dropdown.png';
+import Help_Dropdown from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar_Label/Help_Dropdown.png';
+
 
 const SPOTLIGHTS: SpotlightConfig[] = [
-    { label: "File", startTime: 3.6, endTime: 4.8, pxX: 0, pxY: 34, pxW: 710, pxH: 570 },
-    { label: "View", startTime: 4.8, endTime: 6.3, pxX: 64, pxY: 34, pxW: 240, pxH: 380 },
-    { label: "Information", startTime: 6.3, endTime: 7.8, pxX: 120, pxY: 34, pxW: 248, pxH: 470 },
-    { label: "Settings", startTime: 7.8, endTime: 9.3, pxX: 197, pxY: 34, pxW: 307, pxH: 660 },
-    { label: "Tools", startTime: 9.3, endTime: 11.1, pxX: 251, pxY: 34, pxW: 234, pxH: 220 },
-    { label: "Window", startTime: 11.1, endTime: 12.9, pxX: 311, pxY: 34, pxW: 356, pxH: 520 },
-    { label: "Help", startTime: 12.9, endTime: 15.7, pxX: 390, pxY: 34, pxW: 242, pxH: 230 }
+    { label: "File", startTime: 3.6, endTime: 4.8, pxX: 0, pxY: 34, pxW: 710, pxH: 570, dropdownImage: File_Dropdown },
+    { label: "View", startTime: 4.8, endTime: 6.3, pxX: 64, pxY: 34, pxW: 240, pxH: 380, dropdownImage: View_Dropdown },
+    { label: "Information", startTime: 6.3, endTime: 7.8, pxX: 120, pxY: 34, pxW: 248, pxH: 470, dropdownImage: Info_Dropdown },
+    { label: "Settings", startTime: 7.8, endTime: 9.3, pxX: 197, pxY: 34, pxW: 307, pxH: 660, dropdownImage: Settings_Dropdown },
+    { label: "Tools", startTime: 9.3, endTime: 11.1, pxX: 251, pxY: 34, pxW: 234, pxH: 220, dropdownImage: Tools_Dropdown },
+    { label: "Window", startTime: 11.1, endTime: 12.9, pxX: 311, pxY: 34, pxW: 356, pxH: 520, dropdownImage: Window_Dropdown },
+    { label: "Help", startTime: 12.9, endTime: 15.7, pxX: 390, pxY: 34, pxW: 242, pxH: 230, dropdownImage: Help_Dropdown }
 ];
 
 function Menu_Bar_Japanese_Tutorial() {
@@ -28,6 +28,7 @@ function Menu_Bar_Japanese_Tutorial() {
     const [currentTime, setCurrentTime] = useState(0);
     const [isEnded, setIsEnded] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -61,9 +62,13 @@ function Menu_Bar_Japanese_Tutorial() {
     };
 
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
-    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30) / 1022) * 100 : 0;
-    const spotW = activeSpotlight ? (activeSpotlight.pxW / 1920) * 100 : 0;
-    const spotH = activeSpotlight ? (activeSpotlight.pxH / 1022) * 100 : 0;
+    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30 + 9 + 8) / 1022) * 100 : 0;
+
+    // Small box pinned near the label button's footprint — the spotlight cutout now matches this size
+    const smallBoxW = (90 / 1920) * 100;
+    const smallBoxH = (26 / 1022) * 100;
+    const spotW = smallBoxW;
+    const spotH = smallBoxH;
 
     const videoContainerMarkup = (
         <div
@@ -94,7 +99,7 @@ function Menu_Bar_Japanese_Tutorial() {
                 boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
             }}
         >
-            {/* 16:9 Video Frame Container — maintains 100% precise spotlight positioning in fullscreen */}
+            {/* 16:9 Video Frame Container — always locked to the video's aspect ratio so spotlight/box percentages stay aligned with the actual video, even in fullscreen */}
             <div
                 style={{
                     position: "relative",
@@ -102,7 +107,7 @@ function Menu_Bar_Japanese_Tutorial() {
                     height: "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
-                    aspectRatio: isFullscreen ? undefined : "1920 / 1022",
+                    aspectRatio: "1920 / 1022",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -199,13 +204,14 @@ function Menu_Bar_Japanese_Tutorial() {
                             }}
                         />
 
+                        {/* Spotlight border box — follows each spotlight's position in sequence, but stays a fixed small size */}
                         <div
                             style={{
                                 position: "absolute",
                                 left: `${spotX}%`,
                                 top: `${spotY}%`,
-                                width: `${spotW}%`,
-                                height: `${spotH}%`,
+                                width: `${smallBoxW}%`,
+                                height: `${smallBoxH}%`,
                                 pointerEvents: "none",
                                 boxSizing: "border-box",
                                 border: "2.5px solid #ff1493",
@@ -219,22 +225,56 @@ function Menu_Bar_Japanese_Tutorial() {
                                 style={{
                                     position: "absolute",
                                     left: "calc(100% + 6px)",
-                                    top: 0,
-                                    backgroundColor: "rgba(20, 20, 30, 0.9)",
-                                    color: "#ff1493",
-                                    border: "1.5px solid #ff1493",
-                                    padding: "3px 10px",
-                                    borderRadius: "6px",
-                                    fontSize: "12px",
-                                    fontWeight: "bold",
-                                    whiteSpace: "nowrap",
-                                    boxShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 8px rgba(255, 20, 147, 0.4)",
-                                    backdropFilter: "blur(4px)"
+                                    top: "-8px",
+                                    zIndex: 20,
+                                    pointerEvents: "auto"
                                 }}
                             >
-                                {activeSpotlight.label}
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsLabelDropdownOpen(prev => !prev);
+                                    }}
+                                    style={{
+                                        backgroundColor: "#020202ff",
+                                        color: "#ff00f2ff",
+                                        border: "1px solid #ff00d4ff",
+                                        padding: "2px 8px",
+                                        borderRadius: "0px",
+                                        fontSize: "11px",
+                                        fontWeight: 500,
+                                        whiteSpace: "nowrap",
+
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    {activeSpotlight.label}
+                                </button>
                             </div>
                         </div>
+
+                        {/* Image pop-up positioned below the spotlight box, expanded to a larger readable size */}
+                        {isLabelDropdownOpen && activeSpotlight.dropdownImage && (
+                            <img
+                                src={activeSpotlight.dropdownImage}
+                                alt={`${activeSpotlight.label} dropdown`}
+                                style={{
+                                    position: "absolute",
+                                    left: `${spotX}%`,
+                                    top: `${spotY + spotH}%`,
+                                    marginTop: "6px",
+                                    width: activeSpotlight.label === "File" ? "400px" : "200px",
+                                    height: "auto",
+                                    objectFit: "contain",
+                                    border: "1.5px solid #ff1493",
+                                    borderRadius: "4px",
+                                    boxShadow: "0 4px 16px rgba(0,0,0,0.8)",
+                                    zIndex: 15,
+                                    pointerEvents: "auto",
+                                    transition: "all 0.25s ease-out"
+                                }}
+                            />
+                        )}
                     </>
                 )}
 
