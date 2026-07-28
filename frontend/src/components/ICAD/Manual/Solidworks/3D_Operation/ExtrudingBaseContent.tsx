@@ -25,7 +25,7 @@ const ExtrudingBaseContent: React.FC = () => (
                     <li>
                         In <strong>Features</strong> tab, click <strong>Extruded Boss/Base</strong>.{' '}
                         <span className="image-wrapper-flush">
-                            <img src={bossImg} alt="Extruded Boss/Base" style={{ height: '50px', verticalAlign: 'middle' }} />
+                            <img src={bossImg} alt="Extruded Boss/Base" style={{ height: '38px', verticalAlign: 'middle' }} />
                         </span>
                         <br />
                         (<strong>Boss-Extrude</strong> Property Manager will appear)
@@ -35,7 +35,7 @@ const ExtrudingBaseContent: React.FC = () => (
                     <li>
                         Click{' '}
                         <span className="image-wrapper-flush">
-                            <img src={checkImg} alt="Check" style={{ height: '30px', verticalAlign: 'middle' }} />
+                            <img src={checkImg} alt="Check" style={{ height: '28px', verticalAlign: 'middle' }} />
                         </span>
                     </li>
                 </ol>

@@ -31,7 +31,7 @@ const BendedPlateContent: React.FC = () => (
                 <span className="step-label">
                     In the <strong>FeatureManager Design Tree</strong>, click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={flatImg} alt="Flat-Pattern" style={{ height: '40px', verticalAlign: 'middle' }} />
+                        <img src={flatImg} alt="Flat-Pattern" style={{ height: '38px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
             </div>
@@ -49,7 +49,7 @@ const BendedPlateContent: React.FC = () => (
                 <span className="step-label">
                     Click <strong>Unsuppress</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={upImg} alt="Unsuppress" style={{ height: '40px', verticalAlign: 'middle' }} />
+                        <img src={upImg} alt="Unsuppress" style={{ height: '38px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
             </div>
@@ -67,7 +67,7 @@ const BendedPlateContent: React.FC = () => (
                 <span className="step-label">
                     In <strong>Evaluate</strong> Tab, click <strong>Measure</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={m1Img} alt="Measure" style={{ height: '40px', verticalAlign: 'middle' }} />
+                        <img src={m1Img} alt="Measure" style={{ height: '38px', verticalAlign: 'middle' }} />
                     </span>
                     , or type <strong>"M"</strong>.
                 </span>
@@ -86,11 +86,11 @@ const BendedPlateContent: React.FC = () => (
                     <p className="p-flush red-text">
                         ※ To bring the part back to its bended form, right-click <strong>Flat-Pattern1</strong>, click <strong>Suppress</strong>{' '}
                         <span className="image-wrapper-flush">
-                            <img src={downImg} alt="Suppress" style={{ height: '35px', verticalAlign: 'middle' }} />
+                            <img src={downImg} alt="Suppress" style={{ height: '28px', verticalAlign: 'middle' }} />
                         </span>
                         {' '}or just click{' '}
                         <span className="image-wrapper-flush">
-                            <img src={boxImg} alt="Flat-Pattern box" style={{ height: '35px', verticalAlign: 'middle' }} />
+                            <img src={boxImg} alt="Flat-Pattern box" style={{ height: '28px', verticalAlign: 'middle' }} />
                         </span>
                     </p>
                 </div>

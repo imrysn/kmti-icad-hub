@@ -12,7 +12,7 @@ const EditingPropertiesContent: React.FC = () => (
                 <span className="step-label"> In <strong>Menu Bar </strong>, Click File Properties{' '}
 
                     <span className="image-wrapper-flush">
-                        <img src={fileImg} alt="File Properties" style={{ height: '40px', verticalAlign: 'middle' }} />
+                        <img src={fileImg} alt="File Properties" style={{ height: '38px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
 
