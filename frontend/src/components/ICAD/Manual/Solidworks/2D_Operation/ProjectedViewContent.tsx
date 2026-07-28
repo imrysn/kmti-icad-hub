@@ -32,8 +32,7 @@ const ProjectedViewContent: React.FC = () => {
 
                 <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                     <p className="p-flush red-text">
-                        ※ Project view until all the needed views are inserted.<br/>
-                        <span style={{ color: 'var(--text-normal)' }}>(See page 23 Projected View)</span>
+                        ※ Project view until all the needed views are inserted.
                     </p>
                 </div>
 
