@@ -152,7 +152,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                             </div>
                                         </div>
                                         <div style={{ flex: '0 1 auto', minWidth: '200px' }}>
-                                            <div className="instruction-box" style={{ marginTop: '0.2rem'}}>
+                                            <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
                                                 <p className="p-flush red-text">
                                                     ※ It uses <strong>View Palette</strong> where<br />
                                                     the user can choose then<br />

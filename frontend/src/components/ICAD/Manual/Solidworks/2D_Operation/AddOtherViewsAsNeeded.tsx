@@ -47,10 +47,10 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                     <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', marginTop: '0.2rem', flexWrap: 'wrap' }}>
                         {/* Left side: Steps 1 to 6 */}
                         <div style={{ flex: '1 1 50%', minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                            <div className="instruction-step" style={{ padding: 0 }}>
-                                <div className="step-header">
-                                    <span className="step-number">1</span>
-                                    <span className="step-label">
+                            <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
+                                <div className="step-header" style={{ alignItems: 'center' }}>
+                                    <span className="step-number">1 </span>
+                                    <span className="step-label" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                                         In View Layout, click Section View.
                                         <span className="image-wrapper-flush" style={{ marginLeft: '1rem', display: 'flex' }}>
                                             <img src={svLogoImg} alt="Section View Logo" style={{ height: '50px' }} />
@@ -68,8 +68,8 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                             
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                                 <div className="step-header">
-                                    <span className="step-number">3</span>
-                                    <span className="step-label">Position the cutting line then click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />.</span>
+                                    <span className="step-number">3 </span>
+                                    <span className="step-label">Position the cutting line then click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />.</span>
                                 </div>
                             </div>
 
@@ -80,9 +80,9 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                 </div>
                             </div>
 
-                            <div className="instruction-step" style={{ padding: 0 }}>
-                                <div className="step-header">
-                                    <span className="step-number">5</span>
+                            <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
+                                <div className="step-header" style={{ alignItems: 'flex-start' }}>
+                                    <span className="step-number">5 </span>
                                     <span className="step-label">Position the section view. (Edit Property Manager if needed)</span>
                                 </div>
                                 <div className="step-description">
@@ -174,7 +174,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
 
                     <div className="instruction-step" style={{ paddingTop: '0' }}>
                         <div className="step-header">
-                            <span className="step-number">4</span>
+                            <span className="step-number">4 </span>
                             <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                         </div>
                         <div className="step-description">

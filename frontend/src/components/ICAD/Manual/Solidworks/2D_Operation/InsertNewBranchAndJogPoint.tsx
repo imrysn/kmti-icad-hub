@@ -105,6 +105,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
                                     <span className="step-label">Change the Arrow Head.</span>
                                 </div>
                                 <div className="step-description">
+
                                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                         <img
                                             src={arrowHeadImg}
