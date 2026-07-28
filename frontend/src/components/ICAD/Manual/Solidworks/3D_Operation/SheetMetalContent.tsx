@@ -98,22 +98,16 @@ const SheetMetalContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header">
                 <span className="step-number">7</span>
-                <span className="step-label">Edit Properties (See page 8)</span>
+                <span className="step-label">Edit Properties</span>
             </div>
             <div className="step-description">
                 <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
                     <li>While the Summary Information is open, double click the part then the dimensions will appear.</li>
                     <li>
-                        Click on the red line area, Type PL2.3, type "x", click 45, type "x342".
-                        <br />
-                        342 (Total Length of plate). Bended plates total length cannot be linked.
-                        <br />
-                        (See page 11 to know how to get the Total Length of Bended plate.)
+                        Click on the red line area, Type PL2.3, type "x", click 45, type "x342".  342 (Total Length of plate). Bended plates total length cannot be linked.
                     </li>
                     <li>
                         Input Wt/Pc Evaluated Value to Mat'l Wt Value.
-                        <br />
-                        (See page 17 to know how to get the Material weight value.)
                     </li>
                     <li>Click OK.</li>
                 </ol>
@@ -127,7 +121,7 @@ const SheetMetalContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header">
                 <span className="step-number">8</span>
-                <span className="step-label">Save part (See page 8)</span>
+                <span className="step-label">Save part</span>
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>

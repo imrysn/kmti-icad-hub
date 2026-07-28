@@ -19,13 +19,13 @@ const CreatingAssemblyContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header">
                 <span className="step-number">1</span>
-                <span className="step-label">Follow the procedure on <strong>Page 3</strong> except <strong>Step No. 4</strong>.</span>
+                <span className="step-label">Follow the procedure.</span>
             </div>
             <div className="step-description">
                 <div className="instruction-box" style={{ marginTop: '1rem' }}>
                     <p className="p-flush red-text" style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Important Note:</p>
                     <p className="p-flush red-text">
-                        ※ For <strong>Step No. 3</strong>, instead of <strong>K&M PART</strong>, click <strong>K&M ASSEMBLY</strong>{' '}
+                        ※ For <strong>No. 3</strong>, instead of <strong>K&M PART</strong>, click <strong>K&M ASSEMBLY</strong>{' '}
                         <span className="image-wrapper-flush">
                             <img src={kmImg} alt="K&M Assembly Icon" style={{ height: '50px', verticalAlign: 'middle' }} />
                         </span>
