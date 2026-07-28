@@ -32,7 +32,7 @@ const SheetMetalContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={l1Img} alt="Line sketch" className="software-screenshot screenshot-wide" />
+                    <img src={l1Img} alt="Line sketch" style={{width: '900px',height:'150px'}}className="software-screenshot screenshot-wide" />
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@ const SheetMetalContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={l2Img} alt="Sketch relation and dimension" className="software-screenshot screenshot-wide" />
+                    <img src={l2Img} alt="Sketch relation and dimension" style={{width: '900px',height:'150px'}}className="software-screenshot screenshot-wide" />
                 </div>
             </div>
         </div>
@@ -89,7 +89,7 @@ const SheetMetalContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={oImg} alt="Completed sheet metal part" className="software-screenshot screenshot-wide" />
+                    <img src={oImg} alt="Completed sheet metal part"style={{width: '900px',height:'230px'}} className="software-screenshot screenshot-wide" />
                 </div>
             </div>
         </div>

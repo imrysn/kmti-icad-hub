@@ -49,18 +49,18 @@ const EditingPropertiesContent: React.FC = () => (
                     <img src={custom1Img} alt="Dialog box ok" className="software-screenshot screenshot-wide" />
                 </div>
 
-                <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'var(--bg-surface)' }}>
+                <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '1rem' }}>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong>MAT'L</strong> - Type of material used on part.
+                        <strong style={{ color: 'red' }}>MAT'L</strong> - Type of material used on part.
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong>Wt/Pc</strong> - Finished weight of part (automatically updates)
+                        <strong style={{ color: 'red' }}>Wt/Pc</strong> - Finished weight of part (automatically updates)
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong>Description</strong> - Part name or Material Specification (encoded / linked)
+                        <strong style={{ color: 'red' }}>Description</strong> - Part name or Material Specification (encoded / linked)
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                        <strong>Mat'l Wt</strong> - Material weight (manually encoded)
+                        <strong style={{ color: 'red' }}>Mat'l Wt</strong> - Material weight (manually encoded)
                     </p>
                 </div>
             </div>
