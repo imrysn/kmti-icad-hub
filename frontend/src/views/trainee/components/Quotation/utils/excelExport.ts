@@ -1,8 +1,9 @@
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
-import type { Task, BaseRates, ManualOverrides, Signatures, ClientInfo, QuotationDetails, BillingDetails } from '../../../../../hooks/quotation'
-import { calculateTaskTotal, calculateOverhead, getUnitPageCount, getKemcoRankAndPrice } from '../../../../../utils/quotation'
-import { API_BASE } from '../../../../../services/api'
+import KmtiLogo from '../../../../../assets/kmti_logo.png'
+import type { BaseRates,BillingDetails,ClientInfo,ManualOverrides,QuotationDetails,Signatures,Task } from '../../../../../hooks/quotation'
+import { getLocalDateISO } from '../../../../../utils/dateTime'
+import { calculateOverhead,calculateTaskTotal,getKemcoRankAndPrice,getUnitPageCount } from '../../../../../utils/quotation'
 
 export interface ExcelExportData {
   mode: 'quotation' | 'billing'
@@ -15,16 +16,14 @@ export interface ExcelExportData {
   manualOverrides: ManualOverrides
   signatures: Signatures
   layoutVariant?: 'special' | 'kemco'
+  download?: boolean
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // exportToExcel
-// ─────────────────────────────────────────────────────────────────────────────
 export async function exportToExcel(data: ExcelExportData) {
   const {
     mode, quotNo, clientInfo, quotationDetails, billingDetails,
     tasks, baseRates, manualOverrides, signatures,
-    layoutVariant = 'special',
+    layoutVariant = 'special', download = true,
   } = data
 
   // ── 1. Compute totals ─────────────────────────────────────────────────────
@@ -39,22 +38,18 @@ export async function exportToExcel(data: ExcelExportData) {
     : calculateOverhead(subtotal, baseRates.overheadPercentage)
   const showAdmin = baseRates.overheadPercentage > 0
   const grandTotal = subtotal + overheadTotal + (footer.adjustment || 0)
-  const metaDate = (quotationDetails.date || new Date().toISOString().slice(0, 10)).replace(/-/g, '/')
+  const metaDate = (quotationDetails.date || getLocalDateISO()).replace(/-/g, '/')
 
   // ── 2. Fetch template from backend ────────────────────────────────────────
-  const templateKey = mode === 'billing'
-    ? 'billing'
-    : (layoutVariant === 'kemco' ? 'kemco_quotation' : 'quotation')
-  const templateRes = await fetch(`${API_BASE}/quotations/templates/${templateKey}`)
-  if (!templateRes.ok) throw new Error(`Failed to load ${templateKey} template: ${templateRes.status}`)
-  const templateBuffer = await templateRes.arrayBuffer()
+  // Build the workbook locally so export never depends on missing backend files.
 
   // ── 3. Load workbook ──────────────────────────────────────────────────────
   const workbook = new ExcelJS.Workbook()
-  await workbook.xlsx.load(templateBuffer)
+  const sheet = workbook.addWorksheet(mode === 'billing' ? 'Billing' : 'Quotation')
+  await _initializeFallbackTemplate(workbook, sheet, mode, layoutVariant)
   workbook.created = new Date()
   workbook.modified = new Date()
-  const sheet = workbook.worksheets[0]
+  sheet.properties.defaultRowHeight = 18
 
   // ── 4. Logo injection ─────────────────────────────────────────────────────
   // The template already contains the correct high-res logo, so we no longer
@@ -87,7 +82,251 @@ export async function exportToExcel(data: ExcelExportData) {
   const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
   const docType = mode === 'billing' ? 'Billing' : 'Quotation'
   const safeDate = metaDate.replace(/\//g, '-')
-  saveAs(blob, `${docType}_${quotNo}_${safeDate}.xlsx`)
+  const fileName = `${docType}_${quotNo}_${safeDate}.xlsx`
+  const file = new File([blob], fileName, { type: blob.type })
+  if (download) saveAs(file, fileName)
+  return file
+}
+
+async function _initializeKemcoQuotationTemplate(workbook: ExcelJS.Workbook, sheet: ExcelJS.Worksheet) {
+  const thin: Partial<ExcelJS.Borders> = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+  const medium: Partial<ExcelJS.Borders> = { top: { style: 'medium' }, left: { style: 'medium' }, bottom: { style: 'medium' }, right: { style: 'medium' } }
+
+  ;[5.29, 12.43, 11.71, 9.71, 33, 7.71, 7, 27.86].forEach((width, index) => { sheet.getColumn(index + 1).width = width })
+  sheet.properties.defaultRowHeight = 15
+  sheet.views = [{ showGridLines: false, zoomScale: 90 }]
+  sheet.pageSetup = { paperSize: 9, orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 1, printArea: 'A1:H51', margins: { left: 0.2, right: 0.2, top: 0.2, bottom: 0.2, header: 0, footer: 0 } }
+  sheet.getRow(1).height = 21.75
+  sheet.getRow(2).height = 15.75
+  sheet.getRow(3).height = 19.5
+  sheet.getRow(4).height = 13.5
+  sheet.getRow(5).height = 18
+  sheet.getRow(17).height = 36.75
+  for (let row = 18; row <= 27; row++) sheet.getRow(row).height = 19
+  sheet.getRow(28).height = 21
+
+  _safeMerge(sheet, 'D1:H1')
+  Object.assign(sheet.getCell('D1'), { value: 'KUSAKABE & MAENO TECH., INC.', font: { name: 'Arial', size: 22, bold: true }, alignment: { horizontal: 'left', vertical: 'middle' } })
+  _safeMerge(sheet, 'D3:F3')
+  Object.assign(sheet.getCell('D3'), { value: 'Quotation', font: { name: 'Arial', size: 18, bold: true }, alignment: { horizontal: 'center', vertical: 'middle' } })
+
+  ;[
+    'KUSAKABE & MAENO TECH., INC.',
+    'Unit 2-B Building B, Vital Industrial Properties Inc.',
+    'First Cavite Industrial Estates, F-CIB PEZA Zone',
+    'Dasmarinas City, Cavite Philippines',
+    'TEL: +63-46-414-4009',
+  ].forEach((text, index) => {
+    const cell = sheet.getCell(`H${5 + index}`)
+    cell.value = text
+    cell.font = { name: 'Arial', size: 10, bold: index === 0 }
+    cell.alignment = { horizontal: 'right', vertical: 'middle' }
+  })
+
+  try {
+    const response = await fetch(KmtiLogo)
+    if (response.ok) {
+      const logoId = workbook.addImage({ buffer: await response.arrayBuffer(), extension: 'png' })
+      sheet.addImage(logoId, 'A1:B7')
+    }
+  } catch (error) {
+    console.warn('KMTI logo could not be embedded in the Excel export.', error)
+  }
+
+  _safeMerge(sheet, 'A11:D11')
+  sheet.getCell('A11').value = 'Quotation to:'
+  sheet.getCell('A11').font = { name: 'Arial', size: 9, bold: true }
+  ;['A12:E12', 'A13:E13', 'A14:E14', 'A15:E15'].forEach(range => _safeMerge(sheet, range))
+  ;[
+    ['F12:G12', 'H12', 'Quotation NO.:'],
+    ['F13:G13', 'H13', 'REFERENCE NO.:'],
+    ['F14:G14', 'H14', 'DATE:'],
+  ].forEach(([labelRange, valueRange, label]) => {
+    _safeMerge(sheet, labelRange)
+    if (valueRange.includes(':')) _safeMerge(sheet, valueRange)
+    const labelCell = sheet.getCell(labelRange.split(':')[0])
+    labelCell.value = label
+    labelCell.font = { name: 'Arial', size: 9, bold: true }
+    const valueCell = sheet.getCell(valueRange.split(':')[0])
+    valueCell.border = { bottom: { style: 'thin' } }
+    valueCell.alignment = { horizontal: 'center', vertical: 'middle' }
+    valueCell.font = { name: 'Arial', size: 9, bold: label === 'Quotation NO.' }
+  })
+
+  ;['NO.', 'Construction\nNo.', 'Machine\nCode', 'Unit\nCode', 'Description', 'Percent\n%', 'TYPE', 'PRICE'].forEach((header, index) => {
+    const cell = sheet.getRow(17).getCell(index + 1)
+    cell.value = header
+    cell.font = { name: 'Arial', size: 10, bold: true }
+    cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true }
+    cell.border = thin
+  })
+  for (let row = 18; row <= 27; row++) {
+    for (let col = 1; col <= 8; col++) {
+      const cell = sheet.getRow(row).getCell(col)
+      cell.border = thin
+      cell.font = { name: 'Arial', size: 9 }
+      cell.alignment = { horizontal: col === 5 ? 'left' : (col === 8 ? 'right' : 'center'), vertical: 'middle', wrapText: true }
+    }
+  }
+  for (let col = 1; col <= 8; col++) {
+    sheet.getRow(17).getCell(col).border = { ...sheet.getRow(17).getCell(col).border, top: { style: 'medium' } }
+    sheet.getRow(27).getCell(col).border = { ...sheet.getRow(27).getCell(col).border, bottom: { style: 'medium' } }
+  }
+  for (let row = 17; row <= 27; row++) {
+    sheet.getRow(row).getCell(1).border = { ...sheet.getRow(row).getCell(1).border, left: { style: 'medium' } }
+    sheet.getRow(row).getCell(8).border = { ...sheet.getRow(row).getCell(8).border, right: { style: 'medium' } }
+  }
+
+  _safeMerge(sheet, 'A28:G28')
+  sheet.getCell('A28').value = 'Total Amount'
+  sheet.getCell('A28').font = { name: 'Arial', size: 10, bold: true }
+  sheet.getCell('A28').alignment = { horizontal: 'center', vertical: 'middle' }
+  for (let col = 1; col <= 8; col++) sheet.getRow(28).getCell(col).border = medium
+
+  _safeMerge(sheet, 'A30:H30'); _safeMerge(sheet, 'A31:H31')
+  sheet.getCell('A30').value = 'Upon receipt of this quotation sheet, kindly send us one copy with your signature.'
+  sheet.getCell('A31').value = 'The price will be changed without prior notice due to frequent changes of conversion rate.'
+  ;['A30', 'A31'].forEach(address => { sheet.getCell(address).font = { name: 'Arial', size: 8 } })
+
+  sheet.getCell('A35').value = 'Prepared by:'; sheet.getCell('A42').value = 'Approved by:'; sheet.getCell('F42').value = 'Received by:'
+  ;['A35', 'A42', 'F42'].forEach(address => { sheet.getCell(address).font = { name: 'Arial', size: 9 } })
+  _safeMerge(sheet, 'F42:G42')
+  _safeMerge(sheet, 'A38:C38'); _safeMerge(sheet, 'A45:C45'); _safeMerge(sheet, 'F45:H45')
+  ;['A38', 'A45', 'F45'].forEach(address => { sheet.getCell(address).border = { bottom: { style: 'medium' } } })
+  ;['A39:C39', 'A40:C40', 'A46:C46', 'A47:C47', 'F46:H46', 'F47:H47'].forEach(range => _safeMerge(sheet, range))
+  ;['A39', 'A40', 'A46', 'A47', 'F46', 'F47'].forEach(address => { sheet.getCell(address).alignment = { horizontal: 'center', vertical: 'middle' } })
+
+  _safeMerge(sheet, 'A50:C50'); _safeMerge(sheet, 'E50:H50')
+  sheet.getCell('A50').value = 'ce-administrator@kmti.engineering'
+  sheet.getCell('E50').value = 'Admin Quotation Template 03.0-2026'
+  ;['A50', 'E50'].forEach(address => { sheet.getCell(address).font = { name: 'Arial', size: 6 }; sheet.getCell(address).alignment = { horizontal: address === 'A50' ? 'left' : 'right', vertical: 'middle' } })
+}
+
+async function _initializeFallbackTemplate(
+  workbook: ExcelJS.Workbook,
+  sheet: ExcelJS.Worksheet,
+  mode: 'quotation' | 'billing',
+  layoutVariant: 'special' | 'kemco',
+) {
+  const isBilling = mode === 'billing'
+  const isKemco = !isBilling && layoutVariant === 'kemco'
+  if (isKemco) {
+    await _initializeKemcoQuotationTemplate(workbook, sheet)
+    return
+  }
+  const lastCol = isKemco ? 8 : 7
+  const tableHeaderRow = isBilling ? 15 : 17
+  const tableStartRow = tableHeaderRow + 1
+  const tableEndRow = tableStartRow + 9
+  const totalRow = tableEndRow + 1
+  const border: Partial<ExcelJS.Borders> = {
+    top: { style: 'thin' },
+    left: { style: 'thin' },
+    bottom: { style: 'thin' },
+    right: { style: 'thin' },
+  }
+
+  const widths = isKemco
+    ? [5, 14, 13, 13, 35, 10, 10, 18]
+    : [6, 16, 7, 36, 12, 11, 18]
+  widths.forEach((width, index) => { sheet.getColumn(index + 1).width = width })
+
+  sheet.views = [{ showGridLines: false, zoomScale: 85 }]
+  sheet.pageSetup = {
+    paperSize: 9,
+    orientation: 'portrait',
+    fitToPage: true,
+    fitToWidth: 1,
+    fitToHeight: 1,
+    margins: { left: 0.25, right: 0.25, top: 0.35, bottom: 0.35, header: 0, footer: 0 },
+    printArea: `A1:${isKemco ? 'H' : 'G'}${isBilling ? 50 : 51}`,
+  }
+
+  _safeMerge(sheet, `A2:${isKemco ? 'H' : 'G'}2`)
+  const companyCell = sheet.getCell('A2')
+  companyCell.value = 'KUSAKABE & MAENO TECH., INC.'
+  companyCell.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FF17365D' } }
+  companyCell.alignment = { horizontal: 'center', vertical: 'middle' }
+  sheet.getRow(2).height = 24
+
+  _safeMerge(sheet, `A4:${isKemco ? 'H' : 'G'}5`)
+  const titleCell = sheet.getCell('A4')
+  titleCell.value = isBilling ? 'BILLING STATEMENT' : 'QUOTATION'
+  titleCell.font = { name: 'Arial', size: 18, bold: true }
+  titleCell.alignment = { horizontal: 'center', vertical: 'middle' }
+  titleCell.border = { bottom: { style: 'medium', color: { argb: 'FF17365D' } } }
+  sheet.getRow(4).height = 22
+
+  const metaLabels = isBilling
+    ? [['E9', 'DATE'], ['E10', 'INVOICE NO.'], ['E11', 'QUOTATION NO.'], ['E12', 'JOB ORDER NO.']]
+    : isKemco
+      ? [['G12', 'QUOTATION NO.'], ['G13', 'REFERENCE NO.'], ['G14', 'DATE']]
+      : [['E12', 'QUOTATION NO.'], ['E13', 'REFERENCE NO.'], ['E14', 'DATE']]
+  metaLabels.forEach(([address, label]) => {
+    const cell = sheet.getCell(address)
+    cell.value = label
+    cell.font = { name: 'Arial', size: 9, bold: true }
+    cell.alignment = { horizontal: 'right', vertical: 'middle' }
+  })
+
+  const headers = isKemco
+    ? ['No.', 'Construction\nNo.', 'Machine\nCode', 'Unit\nCode', 'DESCRIPTION', 'Percent\n%', 'Type', 'PRICE']
+    : ['NO.', 'REFERENCE NO.', '', 'DESCRIPTION', 'UNIT\n(PAGE)', 'TYPE', 'PRICE']
+  if (!isKemco) _safeMerge(sheet, `B${tableHeaderRow}:C${tableHeaderRow}`)
+  headers.forEach((header, index) => {
+    if (!isKemco && index === 2) return
+    const cell = sheet.getRow(tableHeaderRow).getCell(index + 1)
+    cell.value = header
+  })
+  sheet.getRow(tableHeaderRow).height = 32
+
+  for (let rowNumber = tableHeaderRow; rowNumber <= tableEndRow; rowNumber++) {
+    const row = sheet.getRow(rowNumber)
+    row.height = rowNumber === tableHeaderRow ? 32 : 22
+    for (let col = 1; col <= lastCol; col++) {
+      const cell = row.getCell(col)
+      cell.border = border
+      cell.alignment = {
+        horizontal: rowNumber === tableHeaderRow ? 'center' : (col === (isKemco ? 5 : 4) ? 'left' : 'center'),
+        vertical: 'middle',
+        wrapText: true,
+      }
+      cell.font = { name: 'Arial', size: 9, bold: rowNumber === tableHeaderRow }
+      if (rowNumber === tableHeaderRow) {
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9EAF7' } }
+      }
+    }
+  }
+
+  _safeMerge(sheet, `A${totalRow}:${isKemco ? 'G' : 'F'}${totalRow}`)
+  const totalLabel = sheet.getCell(`A${totalRow}`)
+  totalLabel.value = 'Total Amount'
+  totalLabel.font = { name: 'Arial', size: 11, bold: true }
+  totalLabel.alignment = { horizontal: 'center', vertical: 'middle' }
+  totalLabel.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9EAF7' } }
+  for (let col = 1; col <= lastCol; col++) sheet.getRow(totalRow).getCell(col).border = border
+  sheet.getRow(totalRow).height = 23
+
+  const preparedRow = isBilling ? 33 : 39
+  const approvedRow = isBilling ? 40 : 46
+  sheet.getCell(`A${preparedRow - 2}`).value = 'Prepared by:'
+  sheet.getCell(`A${approvedRow - 2}`).value = 'Approved by:'
+  sheet.getCell(`${isKemco ? 'F' : 'E'}${approvedRow - 2}`).value = 'Received by:'
+  ;[preparedRow - 2, approvedRow - 2].forEach(rowNumber => {
+    sheet.getRow(rowNumber).font = { name: 'Arial', size: 9, bold: true }
+  })
+
+  if (isBilling) {
+    sheet.getCell('A43').value = 'BANK DETAILS'
+    sheet.getCell('A43').font = { name: 'Arial', size: 10, bold: true }
+    ;[
+      ['A44', 'Bank Name'], ['A45', 'Account Name'], ['A46', 'Account Number'],
+      ['A47', 'Bank Address'], ['A49', 'SWIFT Code'], ['A50', 'Branch Code'],
+    ].forEach(([address, label]) => {
+      sheet.getCell(address).value = label
+      sheet.getCell(address).font = { name: 'Arial', size: 9, bold: true }
+    })
+  }
 }
 
 function _fillBreakdownSheet(sheet: ExcelJS.Worksheet, d: {
@@ -435,10 +674,7 @@ function _fillBreakdownSheet(sheet: ExcelJS.Worksheet, d: {
     sheet.getColumn(totalCols).hidden = true
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // safeMerge: merges cells only if not already merged (prevents ExcelJS throw)
-// ─────────────────────────────────────────────────────────────────────────────
 function _safeMerge(sheet: ExcelJS.Worksheet, range: string) {
   try {
     sheet.mergeCells(range)
@@ -446,10 +682,7 @@ function _safeMerge(sheet: ExcelJS.Worksheet, range: string) {
     // Already merged — no-op
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Row insertion helper
-// ─────────────────────────────────────────────────────────────────────────────
 // Inserts `count` blank rows at `afterRow` (1-based), shifting everything below
 // down. Copies cell styles from `styleSourceRow` so new rows match the template.
 // Only row values are cleared on the source style row — borders/fills remain.
@@ -470,10 +703,7 @@ function _insertRows(sheet: ExcelJS.Worksheet, afterRow: number, count: number, 
     destRow.commit()
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // QUOTATION FILLER
-// ─────────────────────────────────────────────────────────────────────────────
 //
 // Template layout (10 pre-styled task rows: 18–27):
 //   A12–A15   client info
@@ -625,6 +855,7 @@ function _fillQuotation(sheet: ExcelJS.Worksheet, d: {
     fitToPage: true,
     fitToWidth: 1,
     fitToHeight: 0,
+    printArea: `A1:${isKemco ? 'H' : 'G'}${51 + extraRows}`,
     margins: { left: 0.25, right: 0.25, top: 0.5, bottom: 0.5, header: 0, footer: 0 }
   }
   sheet.views = [{ showGridLines: false, zoomScale: 70 }]
@@ -794,7 +1025,7 @@ function _fillQuotation(sheet: ExcelJS.Worksheet, d: {
       } else {
         // Empty filler row to pad up to 10 rows
         for (let col = 2; col <= 8; col++) {
-          sheet.getCell(r, col).value = ''
+          sheet.getCell(r, col).value = null
         }
       }
     } else {
@@ -875,7 +1106,7 @@ function _fillQuotation(sheet: ExcelJS.Worksheet, d: {
 
     const leasingRow = sheet.getRow(leasingRowIdx)
 
-    leasingRow.getCell(1).value = ''
+    leasingRow.getCell(1).value = null
     leasingRow.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' }
     leasingRow.getCell(1).font = { name: 'Arial', size: 11 }
 
@@ -985,10 +1216,7 @@ function _fillQuotation(sheet: ExcelJS.Worksheet, d: {
     })
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 // BILLING FILLER
-// ─────────────────────────────────────────────────────────────────────────────
 //
 // Template layout (10 pre-styled task rows: 16–25):
 //   A10–A13   client info

@@ -1,7 +1,7 @@
+import { AlertTriangle,CheckCircle2,Info } from 'lucide-react';
 import React from 'react';
-import { AlertTriangle, Info, CheckCircle2 } from 'lucide-react';
-import { Modal } from './Modal';
 import '../styles/ConfirmationModal.css';
+import { Modal } from './Modal';
 
 export interface ConfirmationModalProps {
     isOpen: boolean;
@@ -36,10 +36,10 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     };
 
     return (
-        <Modal 
-            isOpen={isOpen} 
-            onClose={onCancel} 
-            title={title} 
+        <Modal
+            isOpen={isOpen}
+            onClose={onCancel}
+            title={title}
             tag={`SYSTEM_REQUEST // ${type.toUpperCase()}`}
             size="sm"
         >
@@ -51,7 +51,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                     <p className="hybrid-message">{message}</p>
                 </div>
             </div>
-            
+
             <div className="global-modal-footer">
                 <button className="global-btn-secondary" onClick={onCancel}>
                     {cancelText}

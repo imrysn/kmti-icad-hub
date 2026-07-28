@@ -1,4 +1,4 @@
-import type { Task, BaseRates, ManualOverrides } from '../hooks/quotation/useInvoiceState'
+import type { BaseRates,ManualOverrides,Task } from '../hooks/quotation/useInvoiceState'
 
 export interface CalculatedSubtotals {
   basicLabor: number
@@ -23,7 +23,7 @@ export function calculateTaskTotal(
 
   if (isKemco) {
     const children = allTasks.filter(t => t.parentId === task.id)
-    
+
     // If it has children, sum their calculated totals
     if (children.length > 0) {
       const childrenTotal = children.reduce((sum, child) => {
@@ -202,7 +202,7 @@ export function generateQuotationNumber(date: string, prefix = 'KMTE-', sequenti
   const yy = year.toString().slice(-2)
   const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
   const day = dateObj.getDate().toString().padStart(2, '0')
-  
+
   if (prefix === 'KM-') {
     return `KM-${year}-${month}${day}-${sequential}`
   }

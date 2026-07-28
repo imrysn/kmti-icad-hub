@@ -1,7 +1,7 @@
 import { memo } from 'react'
-import type { CompanyInfo, QuotationDetails, BillingDetails, Task, Signatures, ManualOverrides, TaskOverrides } from '../../../../../hooks/quotation'
-import PrintHeader from './PrintHeader'
+import type { BillingDetails,CompanyInfo,ManualOverrides,QuotationDetails,Signatures,Task,TaskOverrides } from '../../../../../hooks/quotation'
 import { getUnitPageCount } from '../../../../../utils/quotation'
+import PrintHeader from './PrintHeader'
 
 interface PrintPageProps {
   pageTasks: Task[]
@@ -92,7 +92,7 @@ export const PrintPage = memo(({
           currentAssembly = parent
           hasPushedForCurrentAssembly = false
         }
-        
+
         currentSubgroup.push(t)
         if (currentSubgroup.length === 2) {
           pushCurrentGroup()
@@ -483,7 +483,7 @@ export const PrintPage = memo(({
                 )}
                 {(() => {
                   const actualFillerCount = layoutVariant === 'kemco'
-                    ? Math.max(0, 13 - kemcoRows.length)  // 13 = 14 target rows - 1 leasing fee
+                    ? Math.max(0, 9 - kemcoRows.length)  // 9 = 10 target rows - 1 leasing fee
                     : fillerRowCount
                   return Array.from({ length: actualFillerCount }, (_, i) => (
                     <tr key={`empty-${i}`}>

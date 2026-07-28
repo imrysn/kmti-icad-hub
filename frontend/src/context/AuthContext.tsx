@@ -1,11 +1,11 @@
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-import { authService, LoginCredentials, User } from '../services/authService';
+import React,{ createContext,ReactNode,useContext,useEffect,useState } from 'react';
+import { authService,LoginCredentials,User } from '../services/authService';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean; // Keep for backward compatibility or rename
-  isInitialLoading: boolean; 
+  isInitialLoading: boolean;
   isLoggingIn: boolean;
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<void>;

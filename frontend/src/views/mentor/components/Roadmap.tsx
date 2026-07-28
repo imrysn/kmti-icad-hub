@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Trophy, Target, Award, Star, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { Award,CheckCircle2,Star,Target,TrendingUp } from 'lucide-react';
+import React,{ useMemo } from 'react';
 import { Modal } from '../../../components/Modal';
 import './Roadmap.css';
 
@@ -90,12 +90,12 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                             <Target size={18} />
                             <span>Skill Radar</span>
                         </div>
-                        
+
                         <div className="radar-container">
                             <svg viewBox="0 0 200 200" className="radar-svg">
                                 {/* Background Grid */}
                                 {[0.25, 0.5, 0.75, 1].map(scale => (
-                                    <polygon 
+                                    <polygon
                                         key={scale}
                                         points={skillData.map((_, i) => {
                                             const angle = i * ((Math.PI * 2) / skillData.length) - Math.PI / 2;
@@ -105,7 +105,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                                         className="radar-grid"
                                     />
                                 ))}
-                                
+
                                 {/* Labels */}
                                 {skillData.map((d, i) => {
                                     const angle = i * ((Math.PI * 2) / skillData.length) - Math.PI / 2;
@@ -113,11 +113,11 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                                     const x = 100 + r * Math.cos(angle);
                                     const y = 100 + r * Math.sin(angle);
                                     return (
-                                        <text 
-                                            key={i} 
-                                            x={x} 
-                                            y={y} 
-                                            textAnchor="middle" 
+                                        <text
+                                            key={i}
+                                            x={x}
+                                            y={y}
+                                            textAnchor="middle"
                                             className="radar-label"
                                         >
                                             {d.name.split(' ')[0]}
@@ -189,12 +189,12 @@ export const Roadmap: React.FC<RoadmapProps> = ({ completedLessons, averageScore
                                 <div className="meter-fill" style={{ width: `${Math.min(averageScore, totalProgress)}%` }}></div>
                             </div>
                             <p>
-                                {totalProgress >= 100 && averageScore >= 80 
-                                    ? "Eligible for Digital Certificate" 
+                                {totalProgress >= 100 && averageScore >= 80
+                                    ? "Eligible for Digital Certificate"
                                     : "Continue training to unlock certification"}
                             </p>
-                            <button 
-                                className="cert-btn" 
+                            <button
+                                className="cert-btn"
                                 disabled={totalProgress < 100 || averageScore < 80}
                             >
                                 Generate Certificate

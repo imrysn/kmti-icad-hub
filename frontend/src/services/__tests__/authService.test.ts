@@ -10,9 +10,9 @@
  *  - Helper method logic (isAuthenticated, getStoredUser, etc.)
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach,beforeEach,describe,expect,it } from 'vitest';
+import { TEST_TOKEN,TEST_USERS } from '../../test/mocks/handlers';
 import { authService } from '../authService';
-import { TEST_USERS, TEST_TOKEN } from '../../test/mocks/handlers';
 
 // ── Session storage helpers ───────────────────────────────────────
 
@@ -22,11 +22,7 @@ const clearSession = () => sessionStorage.clear();
 
 beforeEach(() => clearSession());
 afterEach(() => clearSession());
-
-// ══════════════════════════════════════════════════════════════════
 // login()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.login()', () => {
   it('stores access_token in sessionStorage on success', async () => {
     await authService.login({ username: 'trainee_test', password: 'Trainee@12345' });
@@ -62,11 +58,7 @@ describe('authService.login()', () => {
     expect(sessionStorage.getItem('access_token')).toBeNull();
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // logout()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.logout()', () => {
   it('removes access_token from sessionStorage', () => {
     setToken(TEST_TOKEN);
@@ -116,11 +108,7 @@ describe('authService.logout()', () => {
     }
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // isAuthenticated()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.isAuthenticated()', () => {
   it('returns false when no token stored', () => {
     expect(authService.isAuthenticated()).toBe(false);
@@ -131,11 +119,7 @@ describe('authService.isAuthenticated()', () => {
     expect(authService.isAuthenticated()).toBe(true);
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // getStoredUser()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.getStoredUser()', () => {
   it('returns null when no user stored', () => {
     expect(authService.getStoredUser()).toBeNull();
@@ -149,11 +133,7 @@ describe('authService.getStoredUser()', () => {
     expect(user?.role).toBe('trainee');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // getToken()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.getToken()', () => {
   it('returns null when no token stored', () => {
     expect(authService.getToken()).toBeNull();
@@ -164,11 +144,7 @@ describe('authService.getToken()', () => {
     expect(authService.getToken()).toBe('my-test-jwt');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // getStorageKey()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.getStorageKey()', () => {
   it('uses guest as prefix when not logged in', () => {
     const key = authService.getStorageKey('progress');
@@ -181,11 +157,7 @@ describe('authService.getStorageKey()', () => {
     expect(key).toBe('kmti_u1_progress');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // getCurrentUser()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.getCurrentUser()', () => {
   it('returns user from /auth/me and updates sessionStorage', async () => {
     setToken(TEST_TOKEN);
@@ -195,11 +167,7 @@ describe('authService.getCurrentUser()', () => {
     expect(stored.username).toBe('trainee_test');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // submitQuiz()
-// ══════════════════════════════════════════════════════════════════
-
 describe('authService.submitQuiz()', () => {
   it('returns passed: true for score >= 80', async () => {
     setToken(TEST_TOKEN);

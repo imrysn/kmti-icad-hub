@@ -8,7 +8,7 @@
  * Organised by feature area to mirror the backend router structure.
  */
 
-import { http, HttpResponse } from 'msw';
+import { http,HttpResponse } from 'msw';
 
 const API_BASE = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || 'http://127.0.0.1:3001';
 const API = `${API_BASE.replace(/\/$/, '')}/api/v1`;

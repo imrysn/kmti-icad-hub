@@ -1,5 +1,5 @@
+import { Target,Trophy,Zap } from 'lucide-react';
 import React from 'react';
-import { Trophy, Target, BarChart2, Zap } from 'lucide-react';
 
 interface AnalyticsCardProps {
     completionPercentage: number;

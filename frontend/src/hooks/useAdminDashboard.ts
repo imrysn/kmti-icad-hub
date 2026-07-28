@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { authService, User } from '../services/authService';
-import { adminService, SystemStats, TraineeProgress, SystemAuditLog } from '../services/adminService';
+import { useCallback,useEffect,useState } from 'react';
 import { useUI } from '../context/UIContext';
+import { adminService,SystemAuditLog,SystemStats,TraineeProgress } from '../services/adminService';
+import { authService,User } from '../services/authService';
 import { parseBackendError } from '../utils/errorUtils';
 
 export const useAdminDashboard = (activeTab: string) => {
@@ -16,7 +16,7 @@ export const useAdminDashboard = (activeTab: string) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTrainee, setSelectedTrainee] = useState<TraineeProgress | null>(null);
   const [heatmap, setHeatmap] = useState<{ course_id: string; count: number }[]>([]);
-  
+
   // User CRUD state
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);

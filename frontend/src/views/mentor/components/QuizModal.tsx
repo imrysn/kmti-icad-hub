@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; import { X, CheckCircle2, AlertCircle, RotateCcw, ChevronRight, Trophy, ShieldAlert, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { Quiz } from '../mentorConstants';
-import { authService } from '../../../services/authService';
-import '../../../styles/mentor/QuizModal.css';
+import { AnimatePresence,motion } from 'framer-motion';
+import { ArrowRight,ChevronRight,RotateCcw,ShieldAlert,Trophy,X } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { Modal } from '../../../components/Modal';
 import { useUI } from '../../../context/UIContext';
+import { authService } from '../../../services/authService';
+import '../../../styles/mentor/QuizModal.css';
+import { Quiz } from '../mentorConstants';
 
 
 interface QuizModalProps {
@@ -70,7 +71,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   const [isFinished, setIsFinished] = useState(false);
   const [score, setScore] = useState(0);
   const [displayScore, setDisplayScore] = useState(0);
-  const [streak, setStreak] = useState(0);
+  const [, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
@@ -401,12 +402,10 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   const qText = currentQuestion.text;
   const qOptions = currentQuestion.displayOptions; // Array of {text, originalIdx}
   const qCorrectOriginal = currentQuestion.originalCorrectIdx;
-  const qExplanation = currentQuestion.explanation;
 
   // Find which UI index is actually correct
   const qCorrectUIIdx = qOptions.findIndex((o: any) => o.originalIdx === qCorrectOriginal);
 
-  const progress = (answers.length / shuffledQuestions.length) * 100;
   const isLastQuestion = currentIdx === shuffledQuestions.length - 1;
 
   const handleSelect = (idx: number) => {

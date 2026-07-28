@@ -1,5 +1,5 @@
-import React, { useEffect, forwardRef, useImperativeHandle } from 'react';
-import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
+import { Clock,Pause,Play,RotateCcw } from 'lucide-react';
+import { forwardRef,useImperativeHandle } from 'react';
 import { useTaskTimer } from '../../../hooks/useTaskTimer';
 
 interface TaskStopwatchProps {
@@ -16,13 +16,13 @@ export interface TaskStopwatchHandle {
 }
 
 export const TaskStopwatch = forwardRef<TaskStopwatchHandle, TaskStopwatchProps>(({ userId, taskId, initialBaseTime = 0 }, ref) => {
-    const { 
-        elapsedSeconds, 
-        formattedTime, 
-        isRunning, 
-        startTimer, 
-        stopTimer, 
-        resetTimer 
+    const {
+        elapsedSeconds,
+        formattedTime,
+        isRunning,
+        startTimer,
+        stopTimer,
+        resetTimer
     } = useTaskTimer(userId, taskId, initialBaseTime);
 
     useImperativeHandle(ref, () => ({

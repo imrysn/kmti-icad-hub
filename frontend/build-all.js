@@ -6,7 +6,6 @@ console.log('===================================================');
 console.log('  KMTI iCAD Hub - Full Build Orchestration');
 console.log('===================================================');
 
-// Clean frontend directories
 console.log('\nCleaning existing frontend builds...');
 const distElectronDir = path.resolve(__dirname, 'dist-electron');
 const distDir = path.resolve(__dirname, 'dist');
@@ -20,59 +19,38 @@ if (fs.existsSync(distDir)) {
     fs.rmSync(distDir, { recursive: true, force: true });
 }
 
-// Step 1: Build the backend EXE
 console.log('\n[1/2] Building Backend Standalone Server...');
 const backendDir = path.resolve(__dirname, '../backend');
 try {
-    execSync('build_exe.bat', { 
-        cwd: backendDir, 
+    execSync('build_exe.bat', {
+        cwd: backendDir,
         stdio: 'inherit',
-        shell: true 
+        shell: true,
     });
 } catch (error) {
-    console.error('❌ Backend compilation failed.');
+    console.error('Backend compilation failed.');
     process.exit(1);
 }
 
-// Step 2: Populate backend/dist/tts_cache
-console.log('\nPopulating backend/dist/tts_cache directory...');
-const srcCacheDir = path.resolve(backendDir, 'tts_cache');
-const destCacheDir = path.resolve(backendDir, 'dist/tts_cache');
-try {
-    if (fs.existsSync(srcCacheDir)) {
-        fs.cpSync(srcCacheDir, destCacheDir, { recursive: true });
-        console.log('✅ tts_cache copied to backend/dist/tts_cache successfully.');
-    } else {
-        console.log('⚠️ Source tts_cache directory not found.');
-    }
+// Runtime configuration and generated TTS cache are intentionally excluded.
+// Deploy a protected .env beside the backend executable on the target server.
+console.log('\nRuntime .env and generated TTS cache are excluded from build artifacts.');
 
-    const envSrc = path.resolve(backendDir, '.env');
-    const envDest = path.resolve(backendDir, 'dist/.env');
-    if (fs.existsSync(envSrc)) {
-        fs.copyFileSync(envSrc, envDest);
-        console.log('✅ .env copied to backend/dist/.env successfully.');
-    } else {
-        console.warn('⚠️ Source .env file not found. Ensure SECRET_KEY is set in production.');
-    }
-} catch (copyError) {
-    console.warn('⚠️ Warning: Failed to copy assets:', copyError.message);
-}
-
-// Step 3: Build and package the frontend installer
 console.log('\n[2/2] Building and Packaging Electron Frontend...');
 try {
-    execSync('npm run package', { 
-        cwd: __dirname, 
+    execSync('npm run package', {
+        cwd: __dirname,
         stdio: 'inherit',
-        shell: true 
+        shell: true,
     });
 } catch (error) {
-    console.error('❌ Frontend packaging failed.');
+    console.error('Frontend packaging failed.');
     process.exit(1);
 }
 
 console.log('\n===================================================');
-console.log('✨ SUCCESS: All builds completed successfully!');
+console.log('SUCCESS: All builds completed successfully!');
 console.log('  - Backend Server: backend/dist/KMTI_iCAD_Server.exe');
 console.log('  - Frontend Setup: frontend/dist-electron/KMTI_iCAD_Hub Setup *.exe');
+console.log('  - Deploy backend/.env separately using protected server configuration.');
 console.log('===================================================');

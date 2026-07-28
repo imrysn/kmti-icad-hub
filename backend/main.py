@@ -1,6 +1,5 @@
 import os
-from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
 # Load environment variables from the backend directory
 env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -10,7 +9,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-from .database import engine, Base, get_db, get_db_mode
+from .database import engine, sqlite_engine, mysql_engine, Base, get_db, get_db_mode
 from .routers import auth, admin, lessons, quizzes, assessments
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -19,19 +18,31 @@ import json
 
 # Create database tables on startup (only if SQLite, or MySQL is ready)
 try:
-    Base.metadata.create_all(bind=engine)
-    
-    # Auto-migration for trainee_set_mappings assessment_type column
+    # Keep both the primary database and the SQLite failover schema compatible.
     from sqlalchemy import text, inspect
-    with engine.connect() as conn:
-        inspector = inspect(engine)
-        if "trainee_set_mappings" in inspector.get_table_names():
-            columns = [c["name"] for c in inspector.get_columns("trainee_set_mappings")]
-            if "assessment_type" not in columns:
-                print("Adding assessment_type column to trainee_set_mappings table...")
-                conn.execute(text("ALTER TABLE trainee_set_mappings ADD COLUMN assessment_type VARCHAR(50) DEFAULT '3D'"))
-                conn.commit()
-                print("Successfully added assessment_type column.")
+    migration_engines = list({id(db_engine): db_engine for db_engine in [engine, sqlite_engine, mysql_engine] if db_engine is not None}.values())
+    for db_engine in migration_engines:
+        Base.metadata.create_all(bind=db_engine)
+        with db_engine.connect() as conn:
+            inspector = inspect(db_engine)
+            table_names = inspector.get_table_names()
+            if "trainee_set_mappings" in table_names:
+                columns = [c["name"] for c in inspector.get_columns("trainee_set_mappings")]
+                if "assessment_type" not in columns:
+                    conn.execute(text("ALTER TABLE trainee_set_mappings ADD COLUMN assessment_type VARCHAR(50) DEFAULT '3D'"))
+            if "assessment_submissions" in table_names:
+                submission_columns = {c["name"] for c in inspector.get_columns("assessment_submissions")}
+                submission_migrations = {
+                    "submission_kind": "VARCHAR(50) NOT NULL DEFAULT 'task'",
+                    "source_quotation_id": "INTEGER NULL",
+                    "display_label": "VARCHAR(200) NULL",
+                }
+                for column_name, column_definition in submission_migrations.items():
+                    if column_name not in submission_columns:
+                        conn.execute(text(
+                            f"ALTER TABLE assessment_submissions ADD COLUMN {column_name} {column_definition}"
+                        ))
+            conn.commit()
 except Exception as e:
     print(f"[!] Warning: Could not create tables or run startup migrations: {e}")
 
@@ -39,25 +50,29 @@ app = FastAPI(title="KMTI iCAD Hub API")
 
 # Enable CORS for Electron app and dev servers
 cors_origins_env = os.getenv("CORS_ORIGINS", "")
-origins = cors_origins_env.split(",") if cors_origins_env else []
+origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()] if cors_origins_env else []
 
 if not origins:
     # Fallback only for local dev if not specified
     origins = [
-        "http://localhost:5173", 
-        "http://localhost:5174", 
-        "http://localhost:5175", 
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
         "http://localhost:3000",
         "app://." # For Electron production
     ]
 
+cors_options = {
+    "allow_origins": origins,
+    "allow_origin_regex": r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
+    "allow_credentials": True,
+    "allow_methods": ["*"],
+    "allow_headers": ["*"],
+}
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    **cors_options,
 )
 
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -113,7 +128,7 @@ if os.path.exists(assets_path):
 else:
     print(f"[!] Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, quotations
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, quotations, contacts
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -125,6 +140,7 @@ app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(settings.router, prefix="/api/v1")
 app.include_router(tts.router, prefix="/api/v1")
 app.include_router(quotations.router, prefix="/api/v1")
+app.include_router(contacts.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():
@@ -133,11 +149,16 @@ def read_root():
 import socketio as _sio_module
 from .socket_manager import sio as global_sio
 
-# Override app with ASGIApp so that server.py imports the combined app correctly
-app = _sio_module.ASGIApp(
-    global_sio, 
-    app, 
+# Keep the FastAPI instance available for dependency overrides and focused tests.
+api_app = app
+
+# CORS must be the outermost layer. FileResponse and Socket.IO can raise after
+# FastAPI's middleware stack has returned, and those error responses must still
+# include Access-Control-Allow-Origin for the renderer to read the real status.
+socketio_app = _sio_module.ASGIApp(
+    global_sio,
+    api_app,
     static_files={},
     socketio_path='socket.io'
 )
-
+app = CORSMiddleware(app=socketio_app, **cors_options)

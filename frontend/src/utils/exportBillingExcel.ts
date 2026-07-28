@@ -1,6 +1,7 @@
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 import type { IQuotation } from '../types'
+import { getLocalDateStamp } from './dateTime'
 
 const parseDate = (dateStr?: string | null) => {
   if (!dateStr) return null
@@ -291,7 +292,7 @@ export const exportBillingToExcel = async (quotations: IQuotation[]) => {
     // Export File
     const buffer = await workbook.xlsx.writeBuffer()
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-    const safeDate = new Date().toISOString().split('T')[0].replace(/-/g, '')
+    const safeDate = getLocalDateStamp()
     saveAs(blob, `General_Quotation_List_${safeDate}.xlsx`)
   } catch (error: any) {
     console.error("Excel Export Error:", error)

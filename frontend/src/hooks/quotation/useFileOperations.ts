@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useModal } from '../../components/ModalContext'
+import { getLocalDateISO } from '../../utils/dateTime'
 
 type NotificationType = 'success' | 'error' | 'info' | 'warning'
 
@@ -34,15 +35,12 @@ export function useFileOperations({
   }, [notify, modal])
 
   // New Invoice
-  const newInvoice = useCallback(() => {
+  const newInvoice = useCallback(async () => {
     if (hasUnsavedChanges) {
-      modal.confirm(
-        'You have unsaved changes. Are you sure you want to create a new invoice?',
-        resetToNew,
-        undefined,
-        'danger',
-        'Discard Changes?'
+      const confirmed = await modal.confirm(
+        'You have unsaved changes. Are you sure you want to create a new invoice?'
       )
+      if (confirmed) resetToNew()
     } else {
       resetToNew()
     }
@@ -54,7 +52,7 @@ export function useFileOperations({
       const data = getSaveData()
       const jsonString = JSON.stringify(data, null, 2)
       const quotNo = getQuotationNo().replace(/[^a-zA-Z0-9_\-]/g, '_') || 'Draft'
-      const dateStamp = new Date().toISOString().split('T')[0]
+      const dateStamp = getLocalDateISO()
       const defaultFileName = `KMTI_Quotation_${quotNo}_${dateStamp}.json`
 
       const electronAPI = (window as any).electronAPI
@@ -64,7 +62,7 @@ export function useFileOperations({
         // If no file path exists, we must ask the user for one (unless it's an auto-save)
         if (!targetPath) {
           if (isAutoSave) return null // Don't interrupt user with dialogs during auto-save
-          
+
           if (electronAPI.showSaveDialog) {
             const { filePath, canceled } = await electronAPI.showSaveDialog({
               defaultPath: defaultFileName,
@@ -86,7 +84,7 @@ export function useFileOperations({
 
       // Fallback: browser download (only for manual save)
       if (isAutoSave) return null
-      
+
       const blob = new Blob([jsonString], { type: 'application/json' })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
@@ -97,7 +95,7 @@ export function useFileOperations({
       link.click()
       document.body.removeChild(link)
       setTimeout(() => URL.revokeObjectURL(url), 100)
-      
+
       markSaved(defaultFileName)
       return defaultFileName
     } catch (error: any) {
@@ -121,15 +119,15 @@ export function useFileOperations({
           filters: [{ name: 'KMTI Quotations', extensions: ['json'] }],
           properties: ['openFile']
         })
-        
+
         if (canceled || !filePath) return
 
         const contents = await electronAPI.readFile(filePath)
         if (!contents) throw new Error('File is empty or could not be read')
-        
+
         const data = JSON.parse(contents)
         const fileName = filePath.split(/[\\/]/).pop() || 'Quotation'
-        
+
         loadData(data, fileName)
         markSaved(filePath)
         showMessage(`Loaded: ${fileName}`, 'success')
@@ -195,15 +193,12 @@ export function useFileOperations({
     }
   }, [loadData, showMessage])
 
-  const loadInvoice = useCallback(() => {
+  const loadInvoice = useCallback(async () => {
     if (hasUnsavedChanges) {
-      modal.confirm(
-        'You have unsaved changes. Are you sure you want to load another invoice?',
-        performLoad,
-        undefined,
-        'danger',
-        'Discard Changes?'
+      const confirmed = await modal.confirm(
+        'You have unsaved changes. Are you sure you want to load another invoice?'
       )
+      if (confirmed) await performLoad()
     } else {
       performLoad()
     }

@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 
 # Load environment variables from the project root
@@ -7,14 +6,14 @@ load_dotenv(find_dotenv())
 
 import hashlib
 import json
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Optional, List
 
 from ..rag_engine import rag_engine
 from ..schemas import SearchResponse, SearchResult, MediaAsset, ChatMessage
 from ..models import MediaMetadata, QueryCache
 from ..database import SessionLocal
-from sqlalchemy import or_
+from ..time_utils import utc_now
 
 CACHE_TTL_HOURS = int(os.getenv("CHAT_CACHE_TTL_HOURS", "24"))
 
@@ -87,7 +86,7 @@ class ChatService:
                 # Hash the base64 data to ensure unique keys for different images
                 img_hash = hashlib.md5(img["data"].encode('utf-8')).hexdigest()
                 img_hashes += f":img{img_hash}"
-        
+
         normalized = f"{language.lower()}:{message.strip().lower()}{img_hashes}"
         return hashlib.sha256(normalized.encode('utf-8')).hexdigest()
 
@@ -97,7 +96,7 @@ class ChatService:
             with SessionLocal() as db:
                 entry = db.query(QueryCache).filter(
                     QueryCache.query_hash == query_hash,
-                    QueryCache.expires_at > datetime.utcnow()
+                    QueryCache.expires_at > utc_now()
                 ).first()
                 if entry:
                     # Increment hit counter
@@ -122,8 +121,8 @@ class ChatService:
                 if existing:
                     existing.answer = answer[:8000]
                     existing.sources_json = json.dumps(sources)[:16000]
-                    existing.created_at = datetime.utcnow()
-                    existing.expires_at = datetime.utcnow() + timedelta(hours=CACHE_TTL_HOURS)
+                    existing.created_at = utc_now()
+                    existing.expires_at = utc_now() + timedelta(hours=CACHE_TTL_HOURS)
                     existing.hit_count = 0
                 else:
                     entry = QueryCache(
@@ -131,14 +130,14 @@ class ChatService:
                         query_text=message[:2000],
                         answer=answer[:8000],
                         sources_json=json.dumps(sources)[:16000],
-                        expires_at=datetime.utcnow() + timedelta(hours=CACHE_TTL_HOURS),
+                        expires_at=utc_now() + timedelta(hours=CACHE_TTL_HOURS),
                     )
                     db.add(entry)
                 db.commit()
         except Exception as e:
             print(f"[Cache] Write error: {e}")
 
-    async def chat(self, message: str, history: List[ChatMessage] = None, session_id: str = None, 
+    async def chat(self, message: str, history: List[ChatMessage] = None, session_id: str = None,
                    images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False,
                    current_lesson_id: str = None) -> dict:
         """RAG-grounded chat using AIService."""
@@ -185,7 +184,7 @@ class ChatService:
             "suggestions": suggestions
         }
 
-    async def chat_stream(self, message: str, history: List[ChatMessage] = None, 
+    async def chat_stream(self, message: str, history: List[ChatMessage] = None,
                            images: List[dict] = None, language: str = "en-US", is_regeneration: bool = False,
                            current_lesson_id: str = None):
         """Streaming version of chat using AIService."""
@@ -221,18 +220,18 @@ class ChatService:
         else:
             suggestions = self._fallback_suggestions(sources)
         yield {
-            "type": "end", 
+            "type": "end",
             "full_answer": full_answer,
-            "sources": serialized_sources, 
+            "sources": serialized_sources,
             "suggestions": suggestions
         }
 
-    def _build_prompts(self, message: str, history: List[ChatMessage], sources: list, language: str, 
+    def _build_prompts(self, message: str, history: List[ChatMessage], sources: list, language: str,
                        is_regeneration: bool, current_lesson_id: str = None):
         """Helper to construct system and user prompts uniformly."""
         pruned_history = self._prune_history(history or [])
         context_text = "\n\n".join([f"[{idx+1}] Source: {s.source}\nContent: {s.content}" for idx, s in enumerate(sources[:5])])
-        
+
         history_text = ""
         if pruned_history:
             history_text = "Recent conversation flow:\n"
@@ -246,7 +245,7 @@ class ChatService:
         reg_text = "\n\nCRITICAL: This is a REGENERATION request. Provide a DIFFERENT approach/explanation." if is_regeneration else ""
 
         lesson_context = f"\n\nCONTEXT: The trainee is currently studying the lesson: '{current_lesson_id.replace('-', ' ').title()}'. Prioritize information relevant to this topic if the user asks ambiguous questions like 'how do I do this?'." if current_lesson_id else ""
-        
+
         system_prompt = (
             "You are the iCAD Technical Instructor. Answer comprehensively using the provided context as your foundation.\n"
             "Your tone is professional, expert, and encouraging. You are a mentor, not just a search engine.\n\n"
@@ -272,7 +271,7 @@ class ChatService:
             "Suggest 3 natural follow-up questions (8-15 words). Return ONLY the questions, one per line."
         )
         user_prompt = f"User asked: {query}\n\nAnswer learned: {answer[:400]}\n\nContext available: {context[:300]}"
-        
+
         response = ai_service.generate_content(system_prompt, user_prompt, temperature=0.7)
         if response:
             lines = [line.strip().strip('-•123456789.') for line in response.strip().split('\n')]
@@ -283,7 +282,7 @@ class ChatService:
         system_prompt = "You are a session titler. Summarize the user's intent in exactly 3-5 words. No punctuation."
         user_history = "\n".join([f"{h.role}: {h.content[:100]}" for h in history[-4:]])
         user_prompt = f"History:\n{user_history}\nCurrent: {message}\n\nTitle:"
-        
+
         title = ai_service.generate_content(system_prompt, user_prompt)
         if title:
             return title.strip().replace('"', '').replace('.', '')
@@ -299,7 +298,7 @@ class ChatService:
                 "---\n\n"
                 "**Next Step:** Try checking the standard operating procedures or rephrasing your query to be more general!"
             )
-            
+
         # --- Small Talk / Self-Awareness Layer ---
         small_talk_patterns = {
             "name": "I'm the **iCAD Technical Instructor's assistant!** 🎓 My main AI brain is taking a quick rest (Gemini API is unavailable), but I've got the manual right here in front of me.",
@@ -316,7 +315,7 @@ class ChatService:
             "awesome": "Indeed! Technology is pretty amazing. What else can I look up for you?",
             "wow": "I know, right? The technical depth of iCAD is quite impressive. 🎓"
         }
-        
+
         lower_query = query.lower().strip()
         for key, response in small_talk_patterns.items():
             if key in lower_query:
@@ -325,10 +324,10 @@ class ChatService:
         # Persona logic: Wit + Empathy-Candor + Instruction-style rephrasing
         summary = "### ALRIGHT, I'VE DUG AROUND FOR YOU...\n\n"
         summary += f"My standard AI personality is currently taking a coffee break (Gemini API is unavailable), but I've found some specific records for **'{query}'** that should keep you moving. 🚀\n\n"
-        
+
         summary += "> **Instructor Note:** I'm pulling these details directly from the source. No AI fluff, just the facts you need to know.\n\n"
         summary += "----\n\n"
-        
+
         # Assertive instructor lead-ins
         lead_ins = [
             "For **{topic}**, remember that {info}",
@@ -336,12 +335,12 @@ class ChatService:
             "Pro Tip for **{topic}**: {info}",
             "Heads up regarding **{topic}**: {info}"
         ]
-        
+
         # Filter sources by score threshold to avoid irrelevant noise
-        # RRF scores with k=60 start around 0.016. 
+        # RRF scores with k=60 start around 0.016.
         # A threshold of 0.015 ensures it was at least a top result in one search.
         relevant_sources = [s for s in sources if getattr(s, 'score', 0) > 0.015]
-        
+
         if not relevant_sources:
             return (
                 "### I'D LOVE TO DIG INTO THAT...\n\n"
@@ -355,34 +354,34 @@ class ChatService:
         for i, source in enumerate(relevant_sources[:3]):
             content = source.content if hasattr(source, 'content') else ""
             meta = source.metadata or {}
-            
+
             # --- Heuristic Data Analyzer ---
             # Split pipe-separated string and clean parts
             parts = [p.strip() for p in content.split('|') if p.strip()]
-            
+
             # 1. Identify Main Topic
             main_topic = meta.get('main_topic') or (parts[0] if parts else 'Technical Detail')
             # Clean up topic (remove parenthetical numbers like (4) if repetitive)
             clean_topic = main_topic.split('(')[0].strip()
-            
+
             # 2. Identify Instructional Content
             # We favor the 'instruction' metadata, or the longest part of the pipe-separated string
             primary_info = meta.get('instruction') or ''
             if len(primary_info) < 15 and parts:
                 primary_info = max(parts, key=lambda p: len(p.split()))
-            
+
             # 3. Format as Casual Conversation with Topic Grouping
             if primary_info and len(primary_info) > 15:
                 # Auto-format lists/notes if detected
                 if "Notes:" in primary_info:
                     primary_info = primary_info.replace("Notes:", "\n**Notes:**\n")
-                
+
                 # Grouping Logic: Only show header if topic changed
                 if clean_topic != last_topic:
                     if last_topic is not None:
                         summary += "---\n\n" # Separator between DIFFERENT topics
                     summary += f"## {clean_topic}\n\n"
-                
+
                 # Use assertive instructor lead-in
                 lead_in = lead_ins[i % len(lead_ins)].format(topic=clean_topic, info=primary_info)
                 summary += f"{lead_in}\n\n"
@@ -394,18 +393,18 @@ class ChatService:
                     summary += f"## {clean_topic}\n\n"
                 summary += f"{content}\n\n"
                 last_topic = clean_topic
-                
+
         summary += "---\n\n"
         summary += "### NEXT STEP\n"
         summary += "Scan those points to see if they address your needs. If not, try checking back in a few minutes when I'm 'fully conscious' again!"
-        
+
         return summary
 
     def _fallback_suggestions(self, sources) -> List[str]:
         """Generate static suggestions from source metadata when Gemini is offline."""
         if not sources:
             return ["Tell me about 2D Drawing", "How do I start a 3D Part?", "What is BOM management?"]
-        
+
         suggestions = []
         topics = set()
         for s in sources[:5]:
@@ -418,13 +417,13 @@ class ChatService:
                     topics.add(topic)
             if len(suggestions) >= 3:
                 break
-        
+
         # Fillers if we don't have enough
         fillers = ["Show me technical tips", "How do I use this Hub?", "Tell me about quizzes"]
         for f in fillers:
             if len(suggestions) < 3:
                 suggestions.append(f)
-        
+
         return suggestions[:3]
 
 

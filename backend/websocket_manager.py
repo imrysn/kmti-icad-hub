@@ -3,6 +3,7 @@ from typing import Dict, List, Optional
 from fastapi import WebSocket
 import json
 import logging
+from .time_utils import utc_now
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +18,7 @@ class NotificationManager:
         await websocket.accept(subprotocol=subprotocol)
         if user_id not in self.active_connections:
             self.active_connections[user_id] = []
-            self.connection_start_times[user_id] = datetime.utcnow()
+            self.connection_start_times[user_id] = utc_now()
         self.active_connections[user_id].append(websocket)
         logger.info(f"User {user_id} connected. Total active connections for user: {len(self.active_connections[user_id])}")
 
@@ -48,7 +49,7 @@ class NotificationManager:
                 except Exception as e:
                     logger.error(f"Error sending message to user {user_id}: {e}")
                     dead_connections.append(connection)
-            
+
             # Cleanup any dead connections
             for conn in dead_connections:
                 self.disconnect(conn, user_id)
@@ -63,7 +64,7 @@ class NotificationManager:
                 except Exception as e:
                     logger.error(f"Error broadcasting to user {user_id}: {e}")
                     dead_connections.append((connection, user_id))
-        
+
         # Cleanup dead connections
         for conn, user_id in dead_connections:
             self.disconnect(conn, user_id)

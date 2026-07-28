@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React,{ createContext,useContext } from 'react';
 
 interface ModalContextType {
   notify: (msg: string, type?: string) => void;
@@ -26,19 +26,19 @@ export const ModalProvider: React.FC<{children: React.ReactNode}> = ({ children 
       alert(msg);
     }
   };
-  
+
   const confirmAction = async (msg: string) => {
     return window.confirm(msg);
   };
-  
+
   const openModal = (content: React.ReactNode) => {
     console.log("Modal opened", content);
   };
-  
+
   const closeModal = () => {
     console.log("Modal closed");
   };
-  
+
   return (
     <ModalContext.Provider value={{ notify, confirm: confirmAction, openModal, closeModal }}>
       {children}

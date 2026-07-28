@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { XCircle } from 'lucide-react';
+import React from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { useAdminDashboard } from '../../hooks/useAdminDashboard';
-import '../../styles/AdminMode.css'; 
+import '../../styles/AdminMode.css';
 
-// Components 
-import ErrorBoundary from '../../components/ErrorBoundary'; 
-import { AdminSidebar } from './components/AdminSidebar';
-import { AdminHeader } from './components/AdminHeader';
-import { SystemAnalytics } from './components/SystemAnalytics';
-import { UserManagement } from './components/UserManagement';
-import { PerformanceDirectory } from './components/PerformanceDirectory';
-import { TraineeDetail } from './components/TraineeDetail';
-import { AuditLogs } from './components/AuditLogs';
-import { AssessmentManagement } from './components/AssessmentManagement';
-import { PracticalManagement } from './components/PracticalManagement';
-import { BroadcastCenter } from './components/BroadcastCenter';
-import { UserModal } from './components/UserModal';
+// Components
+import ErrorBoundary from '../../components/ErrorBoundary';
 import { PracticalTrainerDashboard } from '../mentor/components/PracticalTrainerDashboard';
+import { AdminHeader } from './components/AdminHeader';
+import { AdminSidebar } from './components/AdminSidebar';
+import { AssessmentManagement } from './components/AssessmentManagement';
+import { AuditLogs } from './components/AuditLogs';
+import { BroadcastCenter } from './components/BroadcastCenter';
+import { PerformanceDirectory } from './components/PerformanceDirectory';
+import { PracticalManagement } from './components/PracticalManagement';
+import { SystemAnalytics } from './components/SystemAnalytics';
+import { TraineeDetail } from './components/TraineeDetail';
+import { UserManagement } from './components/UserManagement';
+import { UserModal } from './components/UserModal';
 
 export type AdminTab = 'overview' | 'users' | 'progress' | 'assessments' | 'practical' | 'logs' | 'trainees';
 
 export const AdminMode: React.FC = () => {
     const location = useLocation();
-    
+
     // Derive active tab from URL path
     const pathParts = location.pathname.split('/');
     const activeTab = (pathParts[pathParts.length - 1] as AdminTab) || 'overview';
@@ -117,7 +117,7 @@ export const AdminMode: React.FC = () => {
                             {(() => {
                                 const params = new URLSearchParams(location.search);
                                 const subtab = params.get('subtab') || 'overview';
-                                
+
                                 if (subtab === 'assessments' || subtab === 'sets') {
                                     return <PracticalTrainerDashboard />;
                                 }
@@ -125,11 +125,11 @@ export const AdminMode: React.FC = () => {
                                 return !selectedTrainee ? (
                                     <PerformanceDirectory progress={progress} setSelectedTrainee={setSelectedTrainee} />
                                 ) : (
-                                    <TraineeDetail 
-                                        selectedTrainee={selectedTrainee} 
-                                        setSelectedTrainee={setSelectedTrainee} 
-                                        onExport={handleExport} 
-                                        onRefresh={fetchData} 
+                                    <TraineeDetail
+                                        selectedTrainee={selectedTrainee}
+                                        setSelectedTrainee={setSelectedTrainee}
+                                        onExport={handleExport}
+                                        onRefresh={fetchData}
                                     />
                                 );
                             })()}

@@ -158,7 +158,9 @@ export const quotationApi = {
     verifyPassword: (id: number | string, password?: string) => api.post(`/api/v1/quotations/${id}/verify`, { password }),
     updateBilling: (id: number | string, data: any) => api.patch(`/api/v1/quotations/${id}/billing`, data),
     getHistory: (id: number | string) => api.get(`/api/v1/quotations/${id}/history`),
-    restoreHistory: (id: number | string, historyId: number | string) => api.post(`/api/v1/quotations/${id}/history/${historyId}/restore`)
+    createHistorySnapshot: (id: number | string, label = 'Manual Save') =>
+        api.post(`/api/v1/quotations/${id}/history`, { label }),
+    restoreHistory: (id: number | string, historyId: number | string) => api.get(`/api/v1/quotations/${id}/history/${historyId}`)
 };
 
 export const clientsApi = {

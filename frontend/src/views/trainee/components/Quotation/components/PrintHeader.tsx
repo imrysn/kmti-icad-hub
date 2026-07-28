@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import Logo from '../../../../../assets/kmti_logo.png'
-import type { CompanyInfo, QuotationDetails } from '../../../../../hooks/quotation'
+import type { CompanyInfo,QuotationDetails } from '../../../../../hooks/quotation'
 
 interface Props {
   printMode: 'quotation' | 'billing'

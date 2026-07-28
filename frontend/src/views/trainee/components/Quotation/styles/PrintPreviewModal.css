@@ -66,22 +66,32 @@
   flex: 1;
 }
 
+/* Floating Back Button */
 .ppm-back-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 6px 12px;
-  border-radius: 6px;
-  transition: background 0.2s;
+  gap: 8px;
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  height: auto !important;
+  z-index: 10;
 }
 
 .ppm-back-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #f3f4f6 !important;
+  color: #1f2937 !important;
+  border-color: #9ca3af !important;
 }
 
 .ppm-title {
@@ -216,14 +226,14 @@
   border-color: #9ca3af;
 }
 
-.ppm-action-btn.primary {
+.ppm-action-btn.export-print {
   background: #3b82f6;
   border-color: #3b82f6;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
-.ppm-action-btn.primary:hover:not(:disabled) {
-  background: var(--bg-surface);
+.ppm-action-btn.export-print:hover:not(:disabled) {
+  background: #ffffff;
   color: #3b82f6;
   border-color: #3b82f6;
 }
@@ -231,11 +241,11 @@
 .ppm-action-btn.export-pdf {
   background: #ef4444;
   border-color: #ef4444;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
 .ppm-action-btn.export-pdf:hover:not(:disabled) {
-  background: var(--bg-surface);
+  background: #ffffff;
   color: #ef4444;
   border-color: #ef4444;
 }
@@ -243,11 +253,11 @@
 .ppm-action-btn.export-excel {
   background: #10b981;
   border-color: #10b981;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
 .ppm-action-btn.export-excel:hover:not(:disabled) {
-  background: var(--bg-surface);
+  background: #ffffff;
   color: #10b981;
   border-color: #10b981;
 }
@@ -346,16 +356,16 @@
   justify-content: space-between;
   height: 40px;
   padding: 0 20px;
-  border-top: 1px solid var(--border);
-  background: #f8f9fa;
+  border-top: 1px solid var(--border-color, #cbd5e1);
+  background: var(--bg-surface, #f8f9fa);
   font-size: 13px;
-  color: #6a7282;
+  color: var(--text-muted, #6a7282);
   flex-shrink: 0;
 }
 
 [data-theme="dark"] .ppm-footer-bar {
   background: var(--bg-secondary);
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-color);
 }
 
 .zoom-controls {
@@ -370,21 +380,43 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-color, #cbd5e1);
   border-radius: 4px;
-  background: var(--bg-surface);
-  color: #374151;
+  background: var(--bg-surface, #ffffff);
+  color: var(--text-main, #374151);
   cursor: pointer;
   transition: all 0.12s;
 }
 
+.zoom-button svg,
+.zoom-icon {
+  stroke: var(--text-main, #374151) !important;
+  color: var(--text-main, #374151) !important;
+}
+
 .zoom-button:hover:not(:disabled) {
-  background: #f3f4f6;
+  background: var(--bg-hover, #f3f4f6);
+}
+
+[data-theme="dark"] .zoom-button {
+  background: var(--glass-bg, #21262d);
+  color: var(--text-main, #e6edf3);
+  border-color: var(--border-color, #444c56);
+}
+
+[data-theme="dark"] .zoom-button svg,
+[data-theme="dark"] .zoom-icon {
+  stroke: var(--text-main, #e6edf3) !important;
+  color: var(--text-main, #e6edf3) !important;
+}
+
+[data-theme="dark"] .zoom-button:hover:not(:disabled) {
+  background: var(--bg-hover, rgba(255, 255, 255, 0.08));
 }
 
 .ppm-zoom-label {
   font-weight: 600;
-  color: #374151;
+  color: var(--text-main, #374151);
   padding: 0 8px;
 }
 
@@ -424,6 +456,14 @@
 [data-theme="dark"] .ppm-sidebar {
   background: var(--bg-secondary);
   border-color: var(--border);
+}
+
+[data-theme="dark"] .ppm-sidebar-select,
+[data-theme="dark"] .ppm-sidebar-input,
+[data-theme="dark"] .ppm-sidebar-textarea {
+  background: var(--glass-bg);
+  border-color: var(--border-color);
+  color: var(--text-main);
 }
 
 .ppm-sidebar-header h3 {
@@ -544,4 +584,15 @@
   background: var(--bg-secondary);
   border-color: var(--border);
   color: var(--text-main);
+}
+
+.ppm-submit-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+[data-theme='dark'] .ppm-submit-error {
+  color: #fca5a5;
 }

@@ -1,5 +1,6 @@
+import { Activity,CheckCircle2,Database,HelpCircle,Users } from 'lucide-react';
 import React from 'react';
-import { Users, CheckCircle2, Database, Activity, HelpCircle } from 'lucide-react'; import { SystemStats } from '../../../services/adminService';
+import { SystemStats } from '../../../services/adminService';
 
 interface SystemAnalyticsProps {
     stats: SystemStats;

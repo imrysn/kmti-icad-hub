@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Settings, Save, Plus, Trash2, AlertCircle, FileText, ChevronUp, ChevronDown } from 'lucide-react';
-import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
-import { useNotification } from '../../../context/NotificationContext';
-import { getUnitCodeBadgeClass, getUnitCodeInlineStyle } from '../../../utils/unitCodeUtils';
+import { AlertCircle,ChevronDown,ChevronUp,FileText,Plus,Save,Settings,Trash2 } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { ConfirmationModal } from '../../../components/ConfirmationModal';
+import { useNotification } from '../../../context/NotificationContext';
+import { assessmentService,AssessmentTask } from '../../../services/assessmentService';
 import { getAvatarColor } from '../../../utils/avatarUtils';
+import { getUnitCodeInlineStyle } from '../../../utils/unitCodeUtils';
 
 interface TraineeSetConfigurationProps {
     searchTerm?: string;

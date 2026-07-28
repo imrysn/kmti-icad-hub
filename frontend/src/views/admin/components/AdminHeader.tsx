@@ -1,7 +1,7 @@
+import { Box,FileText,LayoutDashboard,PenTool,Settings,Users } from 'lucide-react';
 import React from 'react';
-import { RefreshCw, LayoutDashboard, FileText, Settings, Box, PenTool, ClipboardList, Users } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { SystemStats, TraineeProgress } from '../../../services/adminService';
+import { useLocation,useNavigate } from 'react-router-dom';
+import { SystemStats,TraineeProgress } from '../../../services/adminService';
 import { AdminTab } from '../AdminMode';
 
 interface AdminHeaderProps {
@@ -15,10 +15,7 @@ interface AdminHeaderProps {
 export const AdminHeader: React.FC<AdminHeaderProps> = ({
     activeTab,
     stats,
-    selectedTrainee,
-    fetchData,
-    loading
-}) => {
+    selectedTrainee}) => {
     const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);

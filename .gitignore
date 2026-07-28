@@ -1,7 +1,9 @@
 # Node / Frontend
 node_modules/
 dist/
-dist-electron/
+dist-electron*/
+dist-electron-fixed/
+dist-electron-release/
 release/
 build/
 *.log
@@ -30,6 +32,7 @@ coverage.xml
 *.db-shm
 *.db-wal
 backend/vector_db/
+backend/tts_cache/
 
 # Project Specific Assets
 backend/knowledge_base/

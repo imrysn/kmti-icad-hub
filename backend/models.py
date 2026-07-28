@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, text, ForeignKey, Text, JSON
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 try:
@@ -219,7 +219,7 @@ class AssessmentTask(Base):
     assessment_type = Column(String(50), default="3D") # "3D" or "2D"
     order = Column(Integer, default=0)
     created_at = Column(DateTime, default=func.now())
-    
+
     submissions = relationship("AssessmentSubmission", back_populates="task")
 
 class AssessmentSubmission(Base):
@@ -232,6 +232,9 @@ class AssessmentSubmission(Base):
     submission_file_path = Column(String(500)) # Path to uploaded .dwg
     status = Column(String(50), default="pending") # "pending", "approved", "rejected"
     assessment_type = Column(String(50), default="3D") # "3D" or "2D"
+    submission_kind = Column(String(50), default="task", nullable=False) # "task" or "quotation"
+    source_quotation_id = Column(Integer, nullable=True, index=True)
+    display_label = Column(String(200), nullable=True)
     trainer_id = Column(Integer, ForeignKey("users.id"), nullable=True) # Trainer who reviewed it
     is_deleted = Column(Boolean, default=False) # Soft delete flag
     time_spent_seconds = Column(Integer, default=0) # Trainee time tracking
@@ -323,12 +326,12 @@ class Quotation(Base):
     workstation = Column(String(255), index=True)
     date = Column(DateTime, default=func.now())
     data = Column(Text, nullable=False)
-    
+
     # Collaboration Session Metadata
     is_active = Column(Boolean, default=False)
     password = Column(String(255), nullable=True)
     display_name = Column(String(255), nullable=True)
-    
+
     # Billing & Monitoring fields
     grand_total = Column(Float, default=0.0) # Changed to Float since Numeric requires imports we may not have
     customer_incharge = Column(String(255), nullable=True)
@@ -342,7 +345,7 @@ class Quotation(Base):
     update_detail = Column(Text, nullable=True)
     billing_status = Column(String(50), nullable=True)
     is_deleted = Column(Boolean, default=False, nullable=False)
-    
+
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now())
 
@@ -361,3 +364,24 @@ class QuotationHistory(Base):
 
     # Relationships
     quotation = relationship("Quotation", back_populates="history")
+
+class ClientPreset(Base):
+    """Stores saved client names for quick selection in quotation forms"""
+    __tablename__ = "client_presets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    english_name = Column(String(255), unique=True, nullable=False, index=True)
+    japanese_name = Column(String(255), nullable=True)
+    email = Column(String(255), nullable=True)
+    created_at = Column(DateTime, default=func.now())
+
+class ProjectInchargePreset(Base):
+    """Stores saved project in-charge names for quick selection in quotation forms"""
+    __tablename__ = "project_incharge_presets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    english_name = Column(String(255), unique=True, nullable=False, index=True)
+    japanese_name = Column(String(255), nullable=True)
+    email = Column(String(255), nullable=True)
+    category = Column(String(100), nullable=True)
+    created_at = Column(DateTime, default=func.now())

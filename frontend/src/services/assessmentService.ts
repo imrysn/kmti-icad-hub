@@ -1,5 +1,22 @@
-import api, { cachedGet } from './api';
+import api,{ cachedGet } from './api';
 import { User } from './authService';
+
+const getBlobWithRetry = async (url: string): Promise<Blob> => {
+    let lastError: any;
+    for (let attempt = 1; attempt <= 3; attempt += 1) {
+        try {
+            const response = await api.get(url, { responseType: 'blob', timeout: 120000 });
+            return response.data;
+        } catch (error: any) {
+            lastError = error;
+            const status = error?.response?.status;
+            const retryable = !error?.response || [502, 503, 504].includes(status);
+            if (!retryable || attempt === 3) break;
+            await new Promise(resolve => setTimeout(resolve, attempt * 500));
+        }
+    }
+    throw lastError;
+};
 
 export interface AssessmentTask {
     id: number;
@@ -14,6 +31,7 @@ export interface AssessmentTask {
     master_file_path: string;
     order: number;
     assessment_type?: string;
+    source_set_number?: number;
 }
 
 export interface AssessmentSubmission {
@@ -23,6 +41,9 @@ export interface AssessmentSubmission {
     submission_file_path: string;
     status: 'pending' | 'approved' | 'rejected';
     assessment_type: '3D' | '2D';
+    submission_kind?: 'task' | 'quotation';
+    source_quotation_id?: number;
+    display_label?: string;
     trainer_id?: number;
     time_spent_seconds?: number;
     submitted_at: string;
@@ -41,7 +62,7 @@ export const assessmentService = {
         return cachedGet('/api/v1/assessments/my-submissions');
     },
 
-    getMySetMappings: async (): Promise<{actual_set_number: number, display_set_number: number}[]> => {
+    getMySetMappings: async (): Promise<{actual_set_number: number, display_set_number: number, assessment_type?: '3D' | '2D'}[]> => {
         return cachedGet('/api/v1/assessments/my-set-mappings');
     },
 
@@ -51,6 +72,14 @@ export const assessmentService = {
             timeout: 120000  // 2 minutes – large CAD files can be slow
         });
         return response.data;
+    },
+
+    getSubmissionFileBlob: async (submissionId: number): Promise<Blob> => {
+        return getBlobWithRetry(`/api/v1/assessments/submissions/${submissionId}/download`);
+    },
+
+    getFeedbackFileBlob: async (feedbackId: number): Promise<Blob> => {
+        return getBlobWithRetry(`/api/v1/assessments/feedback/${feedbackId}/download`);
     },
 
     getDownloadUrl: (taskId: number): string => {
@@ -78,6 +107,18 @@ export const assessmentService = {
         return response.data;
     },
 
+    submitQuotation: async (file: File, setNumber: number, assessmentType: '3D' | '2D', quotationId?: number): Promise<AssessmentSubmission> => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('set_number', setNumber.toString());
+        formData.append('assessment_type', assessmentType);
+        if (quotationId) formData.append('quotation_id', quotationId.toString());
+        const response = await api.post<AssessmentSubmission>('/api/v1/assessments/submit-quotation', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return response.data;
+    },
+
     getTrainerSubmissions: async (status: string = 'pending', strictTrainer: boolean = false): Promise<AssessmentSubmission[]> => {
         return cachedGet(`/api/v1/assessments/trainer/submissions`, 15000, {
             params: { status, strict_trainer: strictTrainer }
@@ -89,7 +130,7 @@ export const assessmentService = {
         formData.append('status', status);
         if (file) formData.append('file', file);
         if (comments) formData.append('comments', comments);
-        
+
         const response = await api.post(`/api/v1/assessments/feedback/${submissionId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',

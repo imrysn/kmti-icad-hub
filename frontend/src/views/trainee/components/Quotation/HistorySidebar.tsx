@@ -1,20 +1,11 @@
-/**
- * HistorySidebar.tsx
- * ─────────────────────────────────────────────────────────────────
- * A collapsible left panel showing the version history snapshots
- * of the currently open shared quotation.
- */
-
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback,useEffect,useRef,useState } from 'react'
 import { quotationApi } from '../../../../services/api'
-import { IQuotationHistory } from '../../../../types/quotation'
+import type { IQuotationHistory } from '../../../../types/quotation'
 import './HistorySidebar.css'
 
-// Internal Premium Icons
 const ClockIcon = ({ size = 16, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
+    <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
   </svg>
 )
 
@@ -24,63 +15,45 @@ const RefreshIcon = ({ size = 16, ...props }) => (
   </svg>
 )
 
-/**
- * Robust date parser for backend formats
- */
-function safeParseDate(ts: string | undefined): Date {
-  if (!ts) return new Date()
-  const d = new Date(ts)
-  return isNaN(d.getTime()) ? new Date() : d
+function parseDate(timestamp?: string): Date | null {
+  if (!timestamp) return null
+  const date = new Date(timestamp)
+  return Number.isNaN(date.getTime()) ? null : date
 }
 
-/** 
- * Simple relative time helper
- */
-function formatTimeAgo(dateStr: string) {
-  const date = safeParseDate(dateStr)
-  const now = new Date()
-  const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
-
-  if (diffInMinutes < 1) return 'just now'
-  if (diffInMinutes < 60) return `${diffInMinutes}m ago`
-
-  const diffInHours = Math.floor(diffInMinutes / 60)
-  if (diffInHours < 24) return `${diffInHours}h ago`
-
+function formatTimeAgo(timestamp: string) {
+  const date = parseDate(timestamp)
+  if (!date) return 'Unknown time'
+  const minutes = Math.max(0, Math.floor((Date.now() - date.getTime()) / 60000))
+  if (minutes < 1) return 'just now'
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
   return date.toLocaleDateString([], { month: 'short', day: 'numeric' })
 }
 
-/** 
- * Buckets items by day (Today, Yesterday, etc.)
- */
-function groupItemsByDate<T extends { timestamp: string }>(items: T[]) {
-  const groups: Record<string, T[]> = {}
-
+function groupItemsByDate(items: IQuotationHistory[]) {
+  const groups: Record<string, IQuotationHistory[]> = {}
   const today = new Date().toLocaleDateString()
   const yesterday = new Date(Date.now() - 86400000).toLocaleDateString()
 
   items.forEach(item => {
-    const dt = safeParseDate(item.timestamp)
-    const date = dt.toLocaleDateString()
-
-    let key = date
-    if (date === today) key = 'Today'
-    else if (date === yesterday) key = 'Yesterday'
-    else {
-      key = dt.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })
-    }
-
+    const date = parseDate(item.timestamp)
+    const dateText = date?.toLocaleDateString()
+    let key = 'Unknown date'
+    if (date && dateText === today) key = 'Today'
+    else if (date && dateText === yesterday) key = 'Yesterday'
+    else if (date) key = date.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })
     if (!groups[key]) groups[key] = []
     groups[key].push(item)
   })
-
   return groups
 }
 
 interface Props {
   quotId: number | undefined
   onRestore: (data: any) => void
-  onPreview?: (data: any, ts: string) => void
+  onPreview?: (data: any, timestamp: string) => void
   previewingTs?: string | null
 }
 
@@ -91,168 +64,136 @@ export function HistorySidebar({ quotId, onRestore, onPreview, previewingTs }: P
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [restoringId, setRestoringId] = useState<number | null>(null)
   const [previewLoadingId, setPreviewLoadingId] = useState<number | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const requestIdRef = useRef(0)
 
-  const fetchHistory = useCallback(async (isSilent = false) => {
+  const fetchHistory = useCallback(async (silent = false) => {
     if (!quotId) return
-    if (!isSilent) setLoading(true)
-    else setIsRefreshing(true)
-
+    silent ? setIsRefreshing(true) : setLoading(true)
+    setError(null)
+    const requestId = ++requestIdRef.current
     try {
-      const res = await quotationApi.getHistory(quotId)
-      setSnapshots(res.data.history || [])
-    } catch (err) {
-      console.error('[history] Failed to fetch:', err)
-      setSnapshots([])
+      const response = await quotationApi.getHistory(quotId)
+      if (requestId === requestIdRef.current) setSnapshots(response.data.history || [])
+    } catch (fetchError) {
+      console.error('[history] Failed to fetch:', fetchError)
+      if (requestId === requestIdRef.current) setError('Unable to load version history.')
     } finally {
-      setLoading(false)
-      setIsRefreshing(false)
-    }
-  }, [quotId])
-
-  // Reset local sidebar state when quotNo changes
-  useEffect(() => {
-    setSnapshots([])
-    setPreviewLoadingId(null)
-  }, [quotId])
-
-  // Fetch whenever the sidebar expands or quotNo changes
-  useEffect(() => {
-    if (expanded && quotId) {
-      fetchHistory()
-    }
-  }, [expanded, quotId, fetchHistory])
-
-  // Listen for background refresh events (triggered by collaboration socket)
-  useEffect(() => {
-    if (!quotId) return
-    const handleRefresh = (e: any) => {
-      if (e.detail?.quotId === quotId) {
-        fetchHistory(true)
+      if (requestId === requestIdRef.current) {
+        setLoading(false)
+        setIsRefreshing(false)
       }
     }
-    window.addEventListener('quot:history-refresh' as any, handleRefresh)
-    return () => window.removeEventListener('quot:history-refresh' as any, handleRefresh)
-  }, [quotId, fetchHistory])
+  }, [quotId])
 
-  const handleRestore = async (snap: IQuotationHistory) => {
-    if (!quotId) return
-    setRestoringId(snap.id)
-    try {
-      const res = await quotationApi.restoreHistory(quotId, snap.id)
-      onRestore(res.data)
-    } catch (e) {
-      alert('Failed to restore snapshot.')
-    } finally {
-      setRestoringId(null)
+  useEffect(() => {
+    requestIdRef.current += 1
+    setSnapshots([])
+    setPreviewLoadingId(null)
+    setRestoringId(null)
+    setError(null)
+  }, [quotId])
+
+  useEffect(() => {
+    if (expanded && quotId) fetchHistory()
+  }, [expanded, quotId, fetchHistory])
+
+  useEffect(() => {
+    if (!quotId || !expanded) return
+    const refresh = (event: Event) => {
+      const customEvent = event as CustomEvent<{ quotId?: number }>
+      if (customEvent.detail?.quotId === quotId) fetchHistory(true)
     }
-  }
+    window.addEventListener('quot:history-refresh', refresh)
+    return () => window.removeEventListener('quot:history-refresh', refresh)
+  }, [quotId, expanded, fetchHistory])
 
-  const handlePreview = async (snap: IQuotationHistory) => {
-    if (!quotId || !onPreview) return
-    if (previewingTs === snap.timestamp) return
-    setPreviewLoadingId(snap.id)
+  const handlePreview = async (snapshot: IQuotationHistory) => {
+    if (!quotId || !onPreview || previewingTs === snapshot.timestamp) return
+    setPreviewLoadingId(snapshot.id)
+    setError(null)
     try {
-      const res = await quotationApi.restoreHistory(quotId, snap.id)
-      onPreview(res.data, snap.timestamp)
-    } catch (e) {
-      alert('Failed to load preview.')
+      const response = await quotationApi.restoreHistory(quotId, snapshot.id)
+      onPreview(response.data, snapshot.timestamp)
+    } catch (previewError) {
+      console.error('[history] Failed to preview:', previewError)
+      setError('Failed to preview this version. Please try again.')
     } finally {
       setPreviewLoadingId(null)
     }
   }
 
+  const handleRestore = async (snapshot: IQuotationHistory) => {
+    if (!quotId) return
+    if (!window.confirm(`Restore “${snapshot.label || 'this version'}”? Your current editor values will be replaced.`)) return
+    setRestoringId(snapshot.id)
+    setError(null)
+    try {
+      const response = await quotationApi.restoreHistory(quotId, snapshot.id)
+      onRestore(response.data)
+    } catch (restoreError) {
+      console.error('[history] Failed to restore:', restoreError)
+      setError('Failed to restore this version. Please try again.')
+    } finally {
+      setRestoringId(null)
+    }
+  }
+
+  const busy = restoringId !== null || previewLoadingId !== null
+
   return (
-    <aside className={`history-sidebar ${expanded ? 'history-sidebar--expanded' : ''}`}>
-      {/* Toggle strip */}
-      <button
-        className="history-sidebar__toggle"
-        onClick={() => setExpanded(v => !v)}
-        title={expanded ? 'Collapse history' : 'Version History'}
-      >
+    <aside className={`history-sidebar ${expanded ? 'history-sidebar--expanded' : ''}`} aria-label="Quotation version history">
+      <button type="button" className="history-sidebar__toggle" onClick={() => setExpanded(value => !value)} title={expanded ? 'Collapse history' : 'Version History'} aria-expanded={expanded} aria-controls="quotation-history-panel">
         <ClockIcon size={16} />
         {expanded && <span className="history-sidebar__title">Version History</span>}
       </button>
 
-      {/* Panel content */}
       {expanded && (
-        <div className="history-sidebar__content">
+        <div className="history-sidebar__content" id="quotation-history-panel">
           <div className="history-sidebar__header-actions">
-            {quotId && !loading && snapshots.length > 0 && (
-              <button
-                className={`history-sidebar__refresh ${isRefreshing ? 'history-sidebar__refresh--active' : ''}`}
-                onClick={() => fetchHistory(true)}
-                disabled={isRefreshing}
-              >
-                <RefreshIcon size={12} style={{ marginRight: '6px' }} />
-                {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            <span className="history-sidebar__summary">{snapshots.length} saved {snapshots.length === 1 ? 'version' : 'versions'}</span>
+            {quotId && !loading && (
+              <button type="button" className={`history-sidebar__refresh ${isRefreshing ? 'history-sidebar__refresh--active' : ''}`} onClick={() => fetchHistory(true)} disabled={isRefreshing} aria-label="Refresh version history">
+                <RefreshIcon size={13} />
+                <span>{isRefreshing ? 'Refreshing…' : 'Refresh'}</span>
               </button>
             )}
           </div>
 
           <div className="history-sidebar__scroll-area">
-            {!quotId && (
-              <p className="history-sidebar__empty">Waiting for database connection...</p>
-            )}
+            {error && <div className="history-sidebar__error" role="alert"><span>{error}</span><button type="button" onClick={() => fetchHistory()}>Try again</button></div>}
+            {!quotId && <p className="history-sidebar__empty">Waiting for database connection…</p>}
+            {quotId && loading && snapshots.length === 0 && <p className="history-sidebar__empty" role="status">Loading versions…</p>}
+            {quotId && !loading && !error && snapshots.length === 0 && <p className="history-sidebar__empty">No snapshots yet.</p>}
 
-            {quotId && (
-              <>
-                {loading && snapshots.length === 0 && <p className="history-sidebar__empty">Loading versions…</p>}
-                {!loading && snapshots.length === 0 && <p className="history-sidebar__empty">No snapshots yet.</p>}
-
-                {Object.entries(groupItemsByDate(snapshots)).map(([dateKey, items]) => (
-                  <div key={dateKey}>
-                    <div className="history-group-header">{dateKey}</div>
-                    {items.map(snap => {
-                      const snapDt = safeParseDate(snap.timestamp)
-                      const timeStr = snapDt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                      const isPreviewing = previewingTs === snap.timestamp
-                      const isPreLoading = previewLoadingId === snap.id
-
-                      return (
-                        <div
-                          key={snap.id}
-                          className={`timeline-item ${isPreviewing ? 'timeline-item--previewing' : ''} ${isPreLoading ? 'timeline-item--loading' : ''} ${restoringId === snap.id ? 'timeline-item--restoring' : ''}`}
-                        >
-                          <div className="timeline-marker"></div>
-                          <div className="timeline-content">
-                            <div className="timeline-header">
-                              <span className="timeline-time">{timeStr}</span>
-                              <div className="timeline-actions">
-                                {onPreview && (
-                                  <button
-                                    className="timeline-action-btn"
-                                    onClick={() => handlePreview(snap)}
-                                    title="Preview this version"
-                                    disabled={isPreLoading}
-                                  >
-                                    {isPreLoading ? 'Loading...' : isPreviewing ? 'Currently Viewing' : 'Preview'}
-                                  </button>
-                                )}
-                                <button
-                                  className="timeline-action-btn timeline-action-btn--restore"
-                                  onClick={() => handleRestore(snap)}
-                                  disabled={restoringId === snap.id}
-                                >
-                                  {restoringId === snap.id ? 'Restoring...' : 'Restore'}
-                                </button>
-                              </div>
-                            </div>
-                            <div className="timeline-desc">
-                              <span className="timeline-primary-label">{snap.label}</span>
-                              <span className="timeline-author"> · {snap.author}</span>
-                            </div>
-                            <div className="timeline-meta" style={{ fontSize: '10px', opacity: 0.6, marginTop: '2px' }}>
-                              {snapDt.toLocaleDateString([], { month: 'short', day: 'numeric' })} at {timeStr}
-                              {' • '}{formatTimeAgo(snap.timestamp)}
-                            </div>
+            {Object.entries(groupItemsByDate(snapshots)).map(([dateKey, items]) => (
+              <section className="history-group" key={dateKey} aria-labelledby={`history-group-${dateKey.replace(/\W+/g, '-').toLowerCase()}`}>
+                <h3 className="history-group-header" id={`history-group-${dateKey.replace(/\W+/g, '-').toLowerCase()}`}>{dateKey}</h3>
+                {items.map(snapshot => {
+                  const date = parseDate(snapshot.timestamp)
+                  const time = date ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Unknown time'
+                  const isPreviewing = previewingTs === snapshot.timestamp
+                  const isPreviewLoading = previewLoadingId === snapshot.id
+                  const isRestoring = restoringId === snapshot.id
+                  return (
+                    <article key={snapshot.id} className={`timeline-item ${isPreviewing ? 'timeline-item--previewing' : ''} ${isPreviewLoading ? 'timeline-item--loading' : ''} ${isRestoring ? 'timeline-item--restoring' : ''}`}>
+                      <div className="timeline-marker" aria-hidden="true" />
+                      <div className="timeline-content">
+                        <div className="timeline-header">
+                          <span className="timeline-time">{time}</span>
+                          <div className="timeline-actions">
+                            {onPreview && <button type="button" className="timeline-action-btn" onClick={() => handlePreview(snapshot)} title="Preview this version" disabled={busy || isPreviewing}>{isPreviewLoading ? 'Loading…' : isPreviewing ? 'Viewing' : 'Preview'}</button>}
+                            <button type="button" className="timeline-action-btn timeline-action-btn--restore" onClick={() => handleRestore(snapshot)} title="Restore this version" disabled={busy}>{isRestoring ? 'Restoring…' : 'Restore'}</button>
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
-                ))}
-              </>
-            )}
+                        <div className="timeline-desc"><span className="timeline-primary-label">{snapshot.label || 'System Snapshot'}</span><span className="timeline-author"> • {snapshot.author || 'Unknown user'}</span></div>
+                        <div className="timeline-meta">{date ? date.toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Unknown date'} • {formatTimeAgo(snapshot.timestamp)}</div>
+                      </div>
+                    </article>
+                  )
+                })}
+              </section>
+            ))}
           </div>
         </div>
       )}

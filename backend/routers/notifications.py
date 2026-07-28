@@ -1,4 +1,4 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException, Query
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..database import SessionLocal, get_db  # Import SessionLocal, get_db
 from ..models import User, UserActivity, TrainerTraineeMapping, Notification
@@ -45,14 +45,14 @@ async def websocket_endpoint(websocket: WebSocket, token: str = None):
             with SessionLocal() as db:
                 user = get_user_from_token(token, db)
                 return user.id if user else None
-                
+
         user_id = await run_in_threadpool(_get_user)
         if not user_id:
             await websocket.close(code=1008)
             return
 
         await notification_manager.connect(websocket, user_id, subprotocol=used_subprotocol)
-        
+
         def _get_trainer_id():
             with SessionLocal() as db:
                 mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
@@ -61,7 +61,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str = None):
                     current_act = act_record.current_activity if act_record else "Online"
                     return mapping.trainer_id, current_act
             return None, None
-            
+
         trainer_id, current_act = await run_in_threadpool(_get_trainer_id)
         if trainer_id:
             import asyncio
@@ -83,7 +83,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str = None):
                     data_json = json.loads(data)
                     if data_json.get("event") == "HEARTBEAT":
                         activity = data_json.get("activity", "Active")
-                        
+
                         def _process_heartbeat():
                             with SessionLocal() as db:
                                 activity_record = db.query(UserActivity).filter(UserActivity.user_id == user_id).first()
@@ -97,7 +97,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str = None):
 
                                 mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
                                 return mapping.trainer_id if mapping else None
-                                
+
                         trainer_id = await run_in_threadpool(_process_heartbeat)
                         if trainer_id:
                             import asyncio
@@ -117,12 +117,12 @@ async def websocket_endpoint(websocket: WebSocket, token: str = None):
                     logger.error(f"Error processing websocket message: {e}")
         except WebSocketDisconnect:
             notification_manager.disconnect(websocket, user_id)
-            
+
             def _get_trainer_for_offline():
                 with SessionLocal() as db:
                     mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == user_id).first()
                     return mapping.trainer_id if mapping else None
-                    
+
             trainer_id = await run_in_threadpool(_get_trainer_for_offline)
             if trainer_id:
                 is_still_online = notification_manager.is_user_online(user_id)
@@ -163,10 +163,10 @@ def mark_notification_as_read(
         Notification.id == notification_id,
         Notification.recipient_id == current_user.id
     ).first()
-    
+
     if not notification:
         raise HTTPException(status_code=404, detail="Notification not found")
-        
+
     notification.is_read = True
     db.commit()
     return {"status": "success"}
@@ -207,10 +207,10 @@ def delete_notification(
         Notification.id == notification_id,
         Notification.recipient_id == current_user.id
     ).first()
-    
+
     if not notification:
         raise HTTPException(status_code=404, detail="Notification not found")
-        
+
     db.delete(notification)
     db.commit()
     return {"status": "success"}

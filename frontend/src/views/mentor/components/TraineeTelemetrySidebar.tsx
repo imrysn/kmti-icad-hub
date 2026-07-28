@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { TrendingUp, User } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useUI } from '../../../context/UIContext';
 import { useWebSocket } from '../../../context/WebSocketContext';
 import { assessmentService } from '../../../services/assessmentService';
@@ -90,9 +90,9 @@ export const TraineeTelemetrySidebar: React.FC = () => {
                 const targetId = data.trainee_id || data.user_id;
                 const existing = prev.find(t => t.id === targetId);
                 if (existing) {
-                    return prev.map(t => t.id === targetId ? { 
-                        ...t, 
-                        is_online: data.is_online, 
+                    return prev.map(t => t.id === targetId ? {
+                        ...t,
+                        is_online: data.is_online,
                         current_activity: data.current_activity || t.current_activity,
                         last_updated: data.last_updated || data.timestamp || data.last_seen || t.last_updated
                     } : t);

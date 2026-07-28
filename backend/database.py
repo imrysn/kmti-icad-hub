@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
 import sys
 # Set up logging
@@ -58,7 +58,7 @@ DB_MODE = "sqlite" # Default/Fallback mode
 
 # Initialize SQLite engine & session maker
 sqlite_engine = create_engine(
-    SQLITE_URL, 
+    SQLITE_URL,
     connect_args={"check_same_thread": False}
 )
 
@@ -87,7 +87,7 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 
 if USE_MYSQL:
 
-    
+
     mysql_url = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8"
     try:
         mysql_engine = create_engine(
@@ -106,7 +106,7 @@ if USE_MYSQL:
         # Test connection immediately
         with mysql_engine.connect() as conn:
             conn.execute(text("SELECT 1"))
-        
+
         MySQLSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=mysql_engine)
         DB_MODE = "mysql"
         logger.info(f"[+] Connected to MySQL database at {DB_HOST}")
@@ -177,11 +177,11 @@ def check_mysql_recovery():
 
 def get_db():
     global DB_MODE
-    
+
     # Check if MySQL has recovered if we're currently down
     if DB_MODE == "sqlite" and USE_MYSQL:
         check_mysql_recovery()
-        
+
     db = None
     if DB_MODE == "mysql" and MySQLSessionLocal is not None:
         try:
@@ -196,10 +196,10 @@ def get_db():
             if db:
                 db.close()
             db = None
-            
+
     if db is None:
         db = SQLiteSessionLocal()
-        
+
     try:
         yield db
     except Exception as e:

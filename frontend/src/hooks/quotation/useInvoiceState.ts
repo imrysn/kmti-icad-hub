@@ -1,20 +1,26 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react'
+import React,{ useCallback,useEffect,useRef,useState } from 'react'
+import { getLocalDateISO } from '../../utils/dateTime'
+import { CUSTOMERS_CONFIG,generateQuotationNumber,getKemcoRankAndPrice } from '../../utils/quotation'
 import { useDebounceCallback } from '../useDebounce'
-import { getKemcoRankAndPrice, generateQuotationNumber, CUSTOMERS_CONFIG } from '../../utils/quotation'
 
 export { generateQuotationNumber }
 
 import type {
-  Task, BaseRates, CompanyInfo, ClientInfo, QuotationDetails, BillingDetails,
-  Signatures, FooterOverrides, TaskOverrides, ManualOverrides, ChatMsg,
+BaseRates,
+BillingDetails,
+ChatMsg,
+ClientInfo,
+CompanyInfo,
+FooterOverrides,
+ManualOverrides,
+QuotationDetails,
+Signatures,
+Task,
+TaskOverrides,
 } from '../../types/quotation'
 
 // Re-export all types for backward compatibility
-export type {
-  Task, BaseRates, CompanyInfo, ClientInfo, QuotationDetails, BillingDetails,
-  SignaturePerson, ReceivedBy, Signatures, FooterOverrides, TaskOverrides,
-  ManualOverrides, ChatMsg,
-} from '../../types/quotation'
+export type { BaseRates,BillingDetails,ChatMsg,ClientInfo,CompanyInfo,FooterOverrides,ManualOverrides,QuotationDetails,ReceivedBy,SignaturePerson,Signatures,Task,TaskOverrides } from '../../types/quotation'
 
 // ─── Local alias ─────────────────────────────────────────────────────────────
 type NotificationType = 'success' | 'error' | 'info' | 'warning'
@@ -206,8 +212,8 @@ function migrateLegacyOverrides(raw: any): ManualOverrides {
 
 // ─── Hook ────────────────────────────────────────────────────────────────────
 
-export function useInvoiceState() {
-  const today = new Date().toISOString().split('T')[0]
+export function useInvoiceState(defaultProjectInCharge?: string) {
+  const today = getLocalDateISO()
 
   // ns is React state so that setNs() triggers a re-render, causing every
   // useStickyState to receive the updated namespace and resync from storage.
@@ -228,7 +234,28 @@ export function useInvoiceState() {
     referenceNo: '',
     date: today,
   }), 'details', ns)
-  const [billingDetails, setBillingDetails] = useStickyState<BillingDetails>(DEFAULT_BILLING_DETAILS, 'billingDetails', ns)
+  const [billingDetails, setBillingDetails] = useStickyState<BillingDetails>(() => ({
+    ...DEFAULT_BILLING_DETAILS,
+    projectInCharge: defaultProjectInCharge || '',
+    clientName: 'Kusakabe Electric Machinery Co., Ltd.',
+  }), 'billingDetails', ns)
+
+  useEffect(() => {
+    let changed = false
+    const newDetails = { ...billingDetails }
+    if (!newDetails.projectInCharge && defaultProjectInCharge) {
+      newDetails.projectInCharge = defaultProjectInCharge
+      changed = true
+    }
+    if (!newDetails.clientName) {
+      newDetails.clientName = 'Kusakabe Electric Machinery Co., Ltd.'
+      changed = true
+    }
+    if (changed) {
+      setBillingDetails(newDetails)
+    }
+  }, [billingDetails.projectInCharge, billingDetails.clientName, defaultProjectInCharge, setBillingDetails])
+
   const [tasks, setTasks] = useStickyState<Task[]>([], 'tasks', ns)
   const [baseRates, setBaseRates] = useStickyState<BaseRates>(DEFAULT_BASE_RATES, 'baseRates', ns)
   const [currentFilePath, setCurrentFilePath] = useStickyState<string | null>(null, 'filePath', ns)
@@ -567,7 +594,7 @@ export function useInvoiceState() {
   }, [setChatLog, setHasUnsavedChanges])
 
   const resetToNew = useCallback((forcedQuotNo?: string, variant: 'special' | 'kemco' = 'special', customerId?: string) => {
-    const newToday = new Date().toISOString().split('T')[0]
+    const newToday = getLocalDateISO()
     const newQuotNo = forcedQuotNo || generateQuotationNumber(newToday)
     const newDetails: QuotationDetails = { quotationNo: newQuotNo, referenceNo: '', date: newToday }
     const newTasks: Task[] = [makeBlankTask(0, null)]
@@ -633,7 +660,7 @@ export function useInvoiceState() {
     const resolvedDetails: QuotationDetails = {
       quotationNo: targetQuotNo,
       referenceNo: qd.referenceNo || '',
-      date: qd.date || new Date().toISOString().split('T')[0],
+      date: qd.date || getLocalDateISO(),
     }
     const resolvedBilling: BillingDetails = {
       ...DEFAULT_BILLING_DETAILS,
@@ -644,9 +671,9 @@ export function useInvoiceState() {
       projectStatus: data.billingDetails?.projectStatus ?? 'On Going',
       submittedToAdminAt: data.billingDetails?.submittedToAdminAt ?? '',
       updateDetail: data.billingDetails?.updateDetail ?? '',
-      projectInCharge: data.billingDetails?.projectInCharge ?? '',
+      projectInCharge: data.billingDetails?.projectInCharge || defaultProjectInCharge || '',
       billTo: data.billingDetails?.billTo ?? '',
-      clientName: data.billingDetails?.clientName ?? data.clientName ?? '',
+      clientName: data.billingDetails?.clientName || data.clientName || 'Kusakabe Electric Machinery Co., Ltd.',
     }
     const resolvedVariant = data.layoutVariant || 'special'
     let resolvedTasks = data.tasks || [makeBlankTask()]
@@ -746,8 +773,8 @@ export function useInvoiceState() {
         const finalId = existing ? existing.id : imported.id
         idMap.set(imported.id, finalId)
 
-        const finalParentId = imported.parentId !== null 
-          ? (idMap.get(imported.parentId) ?? imported.parentId) 
+        const finalParentId = imported.parentId !== null
+          ? (idMap.get(imported.parentId) ?? imported.parentId)
           : null
 
         if (existing) {

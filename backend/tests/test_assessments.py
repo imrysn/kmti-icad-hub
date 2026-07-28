@@ -10,8 +10,9 @@ Covers:
 
 import pytest
 from datetime import datetime
+from pathlib import Path
 
-from backend.models import AssessmentTask, AssessmentSubmission, TrainerTraineeMapping
+from backend.models import AssessmentTask, AssessmentSubmission, TrainerTraineeMapping, TraineeSetMapping
 from .conftest import auth_headers
 
 
@@ -62,12 +63,7 @@ def trainer_mapping(db, employee_user, trainee_user) -> TrainerTraineeMapping:
     db.commit()
     db.refresh(mapping)
     return mapping
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/assessments/tasks
-# ══════════════════════════════════════════════════════════════════
-
 class TestGetTasks:
     ENDPOINT = "/api/v1/assessments/tasks"
 
@@ -88,12 +84,7 @@ class TestGetTasks:
     def test_unauthenticated_cannot_get_tasks(self, client):
         response = client.get(self.ENDPOINT)
         assert response.status_code == 401
-
-
-# ══════════════════════════════════════════════════════════════════
 # GET /api/v1/assessments/my-submissions
-# ══════════════════════════════════════════════════════════════════
-
 class TestMySubmissions:
     ENDPOINT = "/api/v1/assessments/my-submissions"
 
@@ -115,10 +106,93 @@ class TestMySubmissions:
         assert seed_submission.id not in ids
 
 
-# ══════════════════════════════════════════════════════════════════
-# GET /api/v1/assessments/trainer/submissions
-# ══════════════════════════════════════════════════════════════════
+class TestSubmitQuotation:
+    ENDPOINT = "/api/v1/assessments/submit-quotation"
 
+    @staticmethod
+    def assign_set(db, trainee_user, employee_user, set_number=1):
+        db.add(TraineeSetMapping(
+            trainee_id=trainee_user.id,
+            trainer_id=employee_user.id,
+            display_set_number=set_number,
+            actual_set_number=set_number,
+            assessment_type="3D",
+        ))
+        db.commit()
+
+    def test_trainee_submits_excel_to_assigned_trainer(
+        self, client, db, tmp_path, monkeypatch, trainee_token, trainee_user,
+        employee_user, trainer_mapping, seed_task
+    ):
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
+        self.assign_set(db, trainee_user, employee_user)
+
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(trainee_token),
+            data={"set_number": "1", "assessment_type": "3D", "quotation_id": "54"},
+            files={"file": (
+                "Quotation_KMTE-54.xlsx",
+                b"PK\x03\x04test-workbook",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )},
+        )
+
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["submission_kind"] == "quotation"
+        assert payload["source_quotation_id"] == 54
+        assert payload["display_label"] == "Quotation"
+        assert payload["task_id"] != seed_task.id
+        assert payload["task"]["task_code"] == "QUOT"
+        assert payload["status"] == "pending"
+
+    def test_creates_quotation_task_when_set_has_no_cad_tasks(
+        self, client, db, tmp_path, monkeypatch, trainee_token, trainee_user,
+        employee_user, trainer_mapping
+    ):
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
+        self.assign_set(db, trainee_user, employee_user, set_number=9)
+
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(trainee_token),
+            data={"set_number": "9", "assessment_type": "3D"},
+            files={"file": (
+                "Quotation_Set9.xlsx",
+                b"PK\x03\x04test-workbook",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )},
+        )
+
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["task"]["set_number"] == 9
+        assert payload["task"]["task_code"] == "QUOT"
+
+    def test_rejects_non_excel_file(
+        self, client, trainee_token, trainer_mapping, seed_task
+    ):
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(trainee_token),
+            data={"set_number": "1", "assessment_type": "3D"},
+            files={"file": ("quotation.pdf", b"not-excel", "application/pdf")},
+        )
+        assert response.status_code == 400
+        assert ".xlsx" in response.json()["detail"]
+
+    def test_employee_cannot_submit_quotation(
+        self, client, employee_token, seed_task
+    ):
+        response = client.post(
+            self.ENDPOINT,
+            headers=auth_headers(employee_token),
+            data={"set_number": "1", "assessment_type": "3D"},
+            files={"file": ("quotation.xlsx", b"PK\x03\x04", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")},
+        )
+        assert response.status_code == 403
+# GET /api/v1/assessments/trainer/submissions
 class TestTrainerSubmissions:
     ENDPOINT = "/api/v1/assessments/trainer/submissions"
 
@@ -147,10 +221,26 @@ class TestTrainerSubmissions:
         assert response.json() == []
 
 
-# ══════════════════════════════════════════════════════════════════
-# Admin-only: POST /api/v1/assessments/admin/assign
-# ══════════════════════════════════════════════════════════════════
+class TestSubmissionDownloads:
+    def test_recovers_submission_after_upload_root_changes(
+        self, client, db, tmp_path, monkeypatch, employee_token,
+        trainer_mapping, seed_submission
+    ):
+        relocated = tmp_path / "submissions" / "1" / "dummy.dwg"
+        relocated.parent.mkdir(parents=True)
+        relocated.write_bytes(b"valid-cad-content")
+        seed_submission.submission_file_path = str(Path("X:/old-server/uploads/submissions/1/dummy.dwg"))
+        db.commit()
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
 
+        response = client.get(
+            f"/api/v1/assessments/submissions/{seed_submission.id}/download",
+            headers=auth_headers(employee_token),
+        )
+
+        assert response.status_code == 200
+        assert response.content == b"valid-cad-content"
+# Admin-only: POST /api/v1/assessments/admin/assign
 class TestAssignTrainer:
     ENDPOINT = "/api/v1/assessments/admin/assign"
 
@@ -175,12 +265,7 @@ class TestAssignTrainer:
             "trainee_id": trainee_user.id,
         })
         assert response.status_code == 403
-
-
-# ══════════════════════════════════════════════════════════════════
 # DELETE /api/v1/assessments/submissions/{id}
-# ══════════════════════════════════════════════════════════════════
-
 class TestDeleteSubmission:
     def test_trainee_can_delete_own_submission(self, client, trainee_token, seed_submission):
         response = client.delete(

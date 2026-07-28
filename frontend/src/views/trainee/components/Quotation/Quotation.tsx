@@ -11,15 +11,16 @@
  * chosen, eliminating ghost-room creation on the backend.
  */
 
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback,useEffect,useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useModal } from '../../../../components/ModalContext'
 import { useAuth } from '../../../../context/AuthContext'
+import { quotationApi } from '../../../../services/api'
+import { getLocalDateISO,getLocalDateStamp } from '../../../../utils/dateTime'
+import { CUSTOMERS_CONFIG,generateQuotationNumber } from '../../../../utils/quotation'
+import './Quotation.css'
 import QuotationEntryModal from './QuotationEntryModal'
 import QuotationWorkspace from './QuotationWorkspace'
-import { quotationApi } from '../../../../services/api'
-import { CUSTOMERS_CONFIG, generateQuotationNumber } from '../../../../utils/quotation'
-import './Quotation.css'
 
 export default function Quotation() {
   const { notify } = useModal()
@@ -109,19 +110,19 @@ export default function Quotation() {
       // Generate a formal quotation number based on selected customer
       const customerConfig = CUSTOMERS_CONFIG.find(c => c.id === customerId)
       const prefix = customerConfig ? customerConfig.prefix : 'KMTE-'
-      const today = new Date().toISOString().split('T')[0]
+      const today = getLocalDateISO()
       const seq = prefix === 'KM-'
         ? Math.floor(Math.random() * 9000 + 1000).toString() // 4 digits for KEMCO (e.g. 1121)
         : Math.floor(Math.random() * 900 + 100).toString()   // 3 digits for others
-      
+
       const quotNo = generateQuotationNumber(today, prefix, seq)
       // Display name is the user-provided label (e.g. "Draft for Client X")
       const displayName = name || quotNo
 
       // 2. Create a DB record immediately — this gives us a real ID for the socket room
-      const res = await quotationApi.create({ 
-        quot_no: quotNo, 
-        display_name: displayName, 
+      const res = await quotationApi.create({
+        quot_no: quotNo,
+        display_name: displayName,
         password,
         workstation,
         client_name: customerConfig?.clientName || '',
@@ -139,8 +140,8 @@ export default function Quotation() {
 
   const handleStartTutorial = useCallback(async () => {
     try {
-      // For tutorial, we create a temporary "Training Room" 
-      const today = new Date().toISOString().split('T')[0].replace(/-/g, '').slice(2)
+      // For tutorial, we create a temporary "Training Room"
+      const today = getLocalDateStamp().slice(2)
       const quotNo = `TRAIN-${today}-${Math.floor(Math.random() * 100)}`
       const displayName = "Interactive Tutorial Session"
 
@@ -157,17 +158,17 @@ export default function Quotation() {
       const workstation = user ? user.full_name : computerName
 
       // 2. Create a DB record
-      const res = await quotationApi.create({ 
-        quot_no: quotNo, 
+      const res = await quotationApi.create({
+        quot_no: quotNo,
         display_name: displayName,
         workstation
       })
       const { id } = res.data
 
-      setActiveSession({ 
-        quotId: id, 
-        quotNo, 
-        displayName, 
+      setActiveSession({
+        quotId: id,
+        quotNo,
+        displayName,
         mode: 'create',
         autoStartTutorial: true,
         workstation

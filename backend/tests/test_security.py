@@ -18,12 +18,7 @@ from backend.auth.security import (
     SECRET_KEY,
     ALGORITHM,
 )
-
-
-# ══════════════════════════════════════════════════════════════════
 # Password hashing
-# ══════════════════════════════════════════════════════════════════
-
 class TestPasswordHashing:
     def test_hash_returns_string(self):
         hashed = hash_password("MySecret123")
@@ -55,12 +50,7 @@ class TestPasswordHashing:
     def test_verify_case_sensitive(self):
         hashed = hash_password("Password")
         assert verify_password("password", hashed) is False
-
-
-# ══════════════════════════════════════════════════════════════════
 # JWT token creation
-# ══════════════════════════════════════════════════════════════════
-
 class TestTokenCreation:
     def test_create_token_returns_string(self):
         token = create_access_token({"sub": "alice", "role": "trainee"})
@@ -93,12 +83,7 @@ class TestTokenCreation:
         token = create_access_token({"sub": "eve"})
         with pytest.raises(JWTError):
             jwt.decode(token, SECRET_KEY, algorithms=["RS256"])
-
-
-# ══════════════════════════════════════════════════════════════════
 # JWT token decoding
-# ══════════════════════════════════════════════════════════════════
-
 class TestTokenDecoding:
     def test_decode_valid_token(self):
         token = create_access_token({"sub": "frank", "role": "employee"})

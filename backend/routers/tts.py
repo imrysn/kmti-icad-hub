@@ -1,11 +1,10 @@
 import os
-import io
 import logging
 import sys
 import hashlib
 import threading
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.responses import FileResponse
 import soundfile as sf
 
 def get_base_path():
@@ -94,14 +93,14 @@ def get_kokoro_model():
 
         # 1. Try env variable
         model_dir = os.getenv("TTS_MODEL_DIR")
-        
+
         # 2. Try default NAS path
         if not model_dir:
             model_dir = r"\\KMTI-NAS\Shared\data\models\tts"
-            
+
         onnx_path = os.path.join(model_dir, "kokoro-v1.0.onnx")
         voices_path = os.path.join(model_dir, "voices-v1.0.bin")
-        
+
         # 3. Try local fallback if not found
         if not os.path.exists(onnx_path) or not os.path.exists(voices_path):
             local_fallback = os.path.join(BASE_PATH, "backend", "models", "tts")
@@ -114,7 +113,7 @@ def get_kokoro_model():
             else:
                 logger.error(f"Kokoro model files not found. Checked NAS: {onnx_path} and Local Fallback: {local_onnx}")
                 raise HTTPException(
-                    status_code=404, 
+                    status_code=404,
                     detail=f"Kokoro model files not found. Please connect to KMTI-NAS or place the model files (kokoro-v1.0.onnx and voices-v1.0.bin) in '{local_fallback}'."
                 )
 
@@ -125,9 +124,9 @@ def get_kokoro_model():
             opts.intra_op_num_threads = 4
             opts.inter_op_num_threads = 1
             opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-            
+
             sess = ort.InferenceSession(onnx_path, sess_options=opts, providers=['CPUExecutionProvider'])
-            
+
             # Fix kokoro-onnx package bug where from_session calls get_voice_names()
             # which does not exist in KoKoroConfig for this version.
             try:
@@ -138,7 +137,7 @@ def get_kokoro_model():
                     import numpy as np
                     from kokoro_onnx.config import KoKoroConfig
                     from kokoro_onnx.tokenizer import Tokenizer
-                    
+
                     instance = Kokoro.__new__(Kokoro)
                     instance.sess = sess
                     instance.config = KoKoroConfig(sess._model_path, voices_path, None)
@@ -196,7 +195,7 @@ def synthesize(
 
     # Clean text to prevent espeak / phonemizer crashes
     clean_text = clean_text_for_espeak(text)
-    
+
     # Scale speed slightly to remove the slow-mo audiobook effect
     synthesis_speed = speed * 1.25
 
@@ -272,7 +271,7 @@ def synthesize(
             logger.warning(f"Failed to write TTS cache file: {cache_write_err}")
 
         return FileResponse(
-            local_file_path, 
+            local_file_path,
             media_type="audio/wav",
             headers={"Content-Disposition": f"inline; filename={cache_filename}"}
         )

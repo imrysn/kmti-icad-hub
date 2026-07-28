@@ -1,5 +1,6 @@
 import ExcelJS from 'exceljs'
 import type { Task } from '../../../../../hooks/quotation'
+import { getLocalDateISO } from '../../../../../utils/dateTime'
 
 /**
  * Parses the 'Details' worksheet of an uploaded Excel file to extract tasks.
@@ -45,7 +46,7 @@ export async function importFromExcel(file: File, layoutVariant: 'special' | 'ke
 
   for (let r = startRow; r <= maxRows; r++) {
     const row = sheet.getRow(r)
-    
+
     // Check if the row is empty
     let isRowEmpty = true
     for (let c = 1; c <= (isKemco ? 14 : 12); c++) {
@@ -64,9 +65,9 @@ export async function importFromExcel(file: File, layoutVariant: 'special' | 'ke
     for (let c = 1; c <= (isKemco ? 14 : 12); c++) {
       const valStr = String(row.getCell(c).value || '').toLowerCase()
       if (
-        valStr.includes('leasing fee') || 
-        valStr.includes('total amount') || 
-        valStr.includes('overhead') || 
+        valStr.includes('leasing fee') ||
+        valStr.includes('total amount') ||
+        valStr.includes('overhead') ||
         valStr.includes('nothing follow')
       ) {
         isTableEnd = true
@@ -139,8 +140,8 @@ export async function importFromExcel(file: File, layoutVariant: 'special' | 'ke
         unitCode: String(row.getCell(4).value || ''),
         dwgNo: String(row.getCell(5).value || ''),
         description: cleanDesc,
-        startDate: row.getCell(7).value ? new Date(String(row.getCell(7).value)).toISOString().split('T')[0] : '',
-        endDate: row.getCell(8).value ? new Date(String(row.getCell(8).value)).toISOString().split('T')[0] : '',
+        startDate: row.getCell(7).value ? getLocalDateISO(new Date(String(row.getCell(7).value))) : '',
+        endDate: row.getCell(8).value ? getLocalDateISO(new Date(String(row.getCell(8).value))) : '',
         time: Number(row.getCell(9).value) || 0,
         drawingRank: String(row.getCell(10).value || ''),
         type: String(row.getCell(11).value || '3D'),
@@ -175,7 +176,7 @@ export async function importFromExcel(file: File, layoutVariant: 'special' | 'ke
       // Determine isMainTask by checking cell style/boldness
       const descCell = row.getCell(3)
       const isBold = !!(descCell.font?.bold)
-      
+
       // Secondary check: main tasks in our export have a specific light pink fill: FFFF99CC
       const isMainTask = isBold || (descCell.fill as any)?.fgColor?.argb === 'FFFF99CC'
 

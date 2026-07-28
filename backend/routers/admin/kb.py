@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from fastapi.responses import FileResponse
-from sqlalchemy.orm import Session
 from typing import List
 import os
 import shutil
 import csv
 from datetime import datetime
 
-from ...database import get_db
 from ...models import User
 from ...auth.dependencies import require_role
 from ...ingest_knowledge_base import ingest_directory
@@ -66,12 +64,12 @@ async def upload_kb_files(
         # Secure filename or at least check extension
         if not file.filename.endswith(('.xlsx', '.csv', '.py')):
             continue
-            
+
         file_path = os.path.join(kb_dir, file.filename)
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         uploaded_files.append(file.filename)
-        
+
     return {"message": f"Uploaded {len(uploaded_files)} files: {', '.join(uploaded_files)}"}
 
 
@@ -106,7 +104,7 @@ def preview_kb_file(
                 import openpyxl
             except ImportError:
                 raise HTTPException(status_code=500, detail="openpyxl not installed")
-            
+
             wb = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
             sheets = {}
             for sheet_name in wb.sheetnames:
@@ -114,7 +112,7 @@ def preview_kb_file(
                 rows_data = []
                 headers = []
                 # Determine max columns for headers
-                
+
                 for i, row in enumerate(ws.iter_rows(values_only=True)):
                     if i == 0:
                         # Normalize headers
@@ -128,10 +126,10 @@ def preview_kb_file(
                             else:
                                 pass
                         rows_data.append(row_dict)
-                    
+
                     if i >= 500:
                         break
-                
+
                 sheets[sheet_name] = {"headers": headers, "rows": rows_data}
             wb.close()
             return {"filename": filename, "type": "xlsx", "sheets": sheets}
@@ -173,10 +171,10 @@ def delete_kb_file(
         raise HTTPException(status_code=400, detail="Invalid filename")
 
     file_path = os.path.join(KB_DIR, filename)
-    
+
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
-        
+
     try:
         os.remove(file_path)
         return {"message": f"File {filename} deleted successfully"}

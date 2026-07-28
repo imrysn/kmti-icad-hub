@@ -8,7 +8,7 @@
  */
 
 import '@testing-library/jest-dom';
-import { beforeAll, afterEach, afterAll } from 'vitest';
+import { afterAll,afterEach,beforeAll } from 'vitest';
 import { server } from './mocks/server';
 
 // Ensure window.location is defined correctly in jsdom/Vitest environment
@@ -89,7 +89,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 // Reset any request handlers added during a test (for test isolation)
 afterEach(() => {
   server.resetHandlers();
-  
+
   // Ensure window.location is always reset to the default mock URL
   if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'location', {

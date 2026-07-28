@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Search, Shield, User as UserIcon, Trash2, Edit2, UserPlus, Filter } from 'lucide-react'; import { User } from '../../../services/authService';
+import { Edit2,Filter,Search,Shield,Trash2,User as UserIcon,UserPlus } from 'lucide-react';
+import React,{ useState } from 'react';
+import { User } from '../../../services/authService';
 
 interface UserManagementProps {
     users: User[];
@@ -28,9 +29,9 @@ export const UserManagement: React.FC<UserManagementProps> = ({
         const matchesSearch = u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
             u.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             u.email.toLowerCase().includes(searchQuery.toLowerCase());
-        
+
         const matchesRole = roleFilter === 'All' || u.role.toLowerCase() === roleFilter.toLowerCase();
-        
+
         return matchesSearch && matchesRole;
     });
 
@@ -44,8 +45,8 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                 </div>
                 <div className="filter-box" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: 'auto', marginRight: '1rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', padding: '0 1rem', borderRadius: '8px', height: '38px' }}>
                     <Filter size={14} color="var(--text-muted)" />
-                    <select 
-                        value={roleFilter} 
+                    <select
+                        value={roleFilter}
                         onChange={(e) => setRoleFilter(e.target.value)}
                         style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', outline: 'none', fontSize: '0.875rem', cursor: 'pointer', padding: '0.25rem' }}
                     >

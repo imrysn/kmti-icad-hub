@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { X, UserPlus, Save, User as UserIcon, Mail, Shield, Key, Eye, EyeOff } from 'lucide-react'; import { User } from '../../../services/authService';
-import { parseBackendError } from '../../../utils/errorUtils';
+import { Eye,EyeOff,Key,Save,Shield,User as UserIcon } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { Modal } from '../../../components/Modal';
+import { User } from '../../../services/authService';
+import { parseBackendError } from '../../../utils/errorUtils';
 
 interface UserModalProps {
     isOpen: boolean;

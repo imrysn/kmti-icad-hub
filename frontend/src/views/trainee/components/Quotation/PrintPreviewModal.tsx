@@ -1,13 +1,24 @@
-import { memo, useState, useMemo, useCallback, useRef, useEffect } from 'react'
+import { Printer } from 'lucide-react'
+import { memo,useCallback,useEffect,useMemo,useRef,useState } from 'react'
 import { createPortal } from 'react-dom'
+import { clientsApi,projectInchargesApi } from '../../../../services/api'
+import { assessmentService } from '../../../../services/assessmentService'
 import type {
-  Task, BaseRates, Signatures, CompanyInfo, ClientInfo, QuotationDetails, BillingDetails, ManualOverrides, TaskOverrides
+BaseRates,
+BillingDetails,
+ClientInfo,
+CompanyInfo,
+ManualOverrides,
+QuotationDetails,
+Signatures,
+Task,
+TaskOverrides
 } from '../../../../types/quotation'
-import { calculateTaskTotal as calculateTaskSubtotal, calculateOverhead, getUnitPageCount } from '../../../../utils/quotation'
-import { LAYOUT } from './constants'
+import { getLocalDateISO } from '../../../../utils/dateTime'
+import { calculateOverhead,calculateTaskTotal as calculateTaskSubtotal,getUnitPageCount } from '../../../../utils/quotation'
 import PrintPage from './components/PrintPage'
+import { LAYOUT } from './constants'
 import { exportToExcel } from './utils/excelExport'
-import { projectInchargesApi, clientsApi } from '../../../../services/api'
 
 import { PrintTutorial } from './PrintTutorial'
 
@@ -36,6 +47,14 @@ interface Props {
   layoutVariant?: 'special' | 'kemco'
   /** If false (role === 'user'), the Billing Preview tab is hidden entirely */
   canViewBilling?: boolean
+  quotationId?: number
+}
+
+interface SubmissionTarget {
+  actualSetNumber: number
+  displaySetNumber: number
+  assessmentType: '2D' | '3D'
+  label: string
 }
 
 /** A single page slice produced by computePages(). */
@@ -108,6 +127,7 @@ const PrintPreviewModal = memo(({
   autoStartTutorial, onCompleteTutorial,
   layoutVariant = 'special',
   canViewBilling = false,
+  quotationId,
 }: Props) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [printMode, setPrintMode] = useState<'quotation' | 'billing'>('quotation')
@@ -116,6 +136,10 @@ const PrintPreviewModal = memo(({
 
   const [inchargesList, setInchargesList] = useState<string[]>([])
   const [clientsList, setClientsList] = useState<string[]>([])
+  const [submissionTargets, setSubmissionTargets] = useState<SubmissionTarget[]>([])
+  const [submissionTarget, setSubmissionTarget] = useState('')
+  const [isSubmittingToTrainer, setIsSubmittingToTrainer] = useState(false)
+  const [submissionError, setSubmissionError] = useState('')
 
   // Load project incharges and clients from API on mount/open
   useEffect(() => {
@@ -134,6 +158,43 @@ const PrintPreviewModal = memo(({
         }
       }).catch(err => console.error("Error fetching clients:", err))
     }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (!isOpen) return
+    let cancelled = false
+    Promise.all([assessmentService.getMySetMappings(), assessmentService.getTasks()])
+      .then(([mappings, assessmentTasks]) => {
+        if (cancelled) return
+        const targets = mappings.map(mapping => {
+          const assessmentType = (mapping.assessment_type || '3D') as '2D' | '3D'
+          const setTasks = assessmentTasks.filter(task =>
+            Number(task.set_number) === Number(mapping.actual_set_number)
+            && (task.assessment_type || '3D') === assessmentType
+          )
+          const isAssembly = setTasks.some(task => task.is_assembly || task.task_code?.startsWith('A'))
+          const displaySetNumber = Math.abs(Number(mapping.display_set_number))
+          const ordinal = displaySetNumber % 100 >= 11 && displaySetNumber % 100 <= 13
+            ? 'th'
+            : ({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[displaySetNumber % 10] || 'th'
+          return {
+            actualSetNumber: Number(mapping.actual_set_number),
+            displaySetNumber,
+            assessmentType,
+            label: `${displaySetNumber}${ordinal} Set ${isAssembly ? 'Assembly' : 'Parts'} (${assessmentType})`,
+          }
+        }).filter((target, index, all) => all.findIndex(item =>
+          item.actualSetNumber === target.actualSetNumber && item.assessmentType === target.assessmentType
+        ) === index)
+        setSubmissionTargets(targets)
+        setSubmissionTarget(current => current || (targets[0]
+          ? `${targets[0].assessmentType}:${targets[0].actualSetNumber}`
+          : ''))
+      })
+      .catch(() => {
+        if (!cancelled) setSubmissionError('Unable to load your assigned assessment sets.')
+      })
+    return () => { cancelled = true }
   }, [isOpen])
 
   const handleAddIncharge = useCallback((val: string) => {
@@ -534,7 +595,9 @@ const PrintPreviewModal = memo(({
           silent: false, printBackground: true, color: true,
           pageSize: 'A4', margins: { marginType: 'none' }, landscape: false,
         })
-        if (result?.error) console.error('Print error:', result.error)
+        if (!result?.success && !result?.canceled) {
+          throw new Error(result?.error || 'Printing failed.')
+        }
       } else {
         window.print()
       }
@@ -551,7 +614,7 @@ const PrintPreviewModal = memo(({
     let styleEl: HTMLStyleElement | null = null
     try {
       const el = (window as any).electronAPI
-      if (!el?.printToPDF || !el.showSaveDialog || !el.writeFile) {
+      if (!el?.savePDF) {
         window.print(); return
       }
 
@@ -562,17 +625,6 @@ const PrintPreviewModal = memo(({
       const defaultName = `${docType}_${docNo.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`
 
       // Show save dialog first — before injecting print styles
-      const dialogResult = await el.showSaveDialog({
-        title: 'Save PDF',
-        defaultPath: defaultName,
-        filters: [{ name: 'PDF Files', extensions: ['pdf'] }]
-      })
-
-      // User cancelled
-      if (dialogResult.canceled || !dialogResult.filePath) return
-
-      const savePath = dialogResult.filePath
-
       // Inject print styles
       styleEl = document.createElement('style')
       styleEl.id = '__kmti-pdf-print-override'
@@ -581,20 +633,10 @@ const PrintPreviewModal = memo(({
       await new Promise(r => setTimeout(r, 300))
 
       // Generate PDF
-      const pdfResult = await el.printToPDF({
-        printBackground: true,
-        pageSize: 'A4',
-        landscape: false,
-        marginsType: 1
-      })
-
-      if (!pdfResult.success || !pdfResult.data) {
-        console.error('PDF generation failed:', pdfResult.error)
-        return
+      const pdfResult = await el.savePDF({ defaultName })
+      if (!pdfResult.success && !pdfResult.canceled) {
+        throw new Error(pdfResult.error || 'PDF generation failed.')
       }
-
-      // Write to disk
-      await el.writeFile(savePath, pdfResult.data)
     } catch (err) {
       console.error('PDF export failed:', err)
     } finally {
@@ -620,22 +662,59 @@ const PrintPreviewModal = memo(({
       })
     } catch (err) {
       console.error('Excel export failed:', err)
-      alert('Failed to export Excel. Please check if the backend is running.')
+      alert(`Failed to export Excel: ${err instanceof Error ? err.message : 'Unknown error'}`)
     } finally {
       setIsProcessing(false)
     }
-  }, [printMode, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures])
+  }, [printMode, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures, layoutVariant])
+
+  const handleSubmitToTrainer = useCallback(async () => {
+    const target = submissionTargets.find(item =>
+      `${item.assessmentType}:${item.actualSetNumber}` === submissionTarget
+    )
+    if (!target) {
+      setSubmissionError('Select the assessment set for this quotation.')
+      return
+    }
+
+    setIsSubmittingToTrainer(true)
+    setSubmissionError('')
+    try {
+      const file = await exportToExcel({
+        mode: 'quotation',
+        quotNo: quotationDetails.quotationNo || 'Draft',
+        clientInfo,
+        quotationDetails,
+        billingDetails,
+        tasks,
+        baseRates,
+        manualOverrides,
+        signatures,
+        layoutVariant,
+        download: false,
+      })
+      await assessmentService.submitQuotation(
+        file,
+        target.actualSetNumber,
+        target.assessmentType,
+        quotationId,
+      )
+      const todayStr = getLocalDateISO()
+      onBillingDetailsChange?.({
+        quotationStatus: 'For Approval',
+        submittedToAdminAt: todayStr,
+      })
+      window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'))
+      alert(`Quotation submitted to your trainer for ${target.label}.`)
+    } catch (error: any) {
+      const message = error?.response?.data?.detail || error?.message || 'Failed to submit quotation.'
+      setSubmissionError(message)
+    } finally {
+      setIsSubmittingToTrainer(false)
+    }
+  }, [submissionTargets, submissionTarget, quotationDetails, clientInfo, billingDetails, tasks, baseRates, manualOverrides, signatures, layoutVariant, quotationId, onBillingDetailsChange])
 
   // ── Status tracking change handler ─────────────────────────────
-  const handleQuotationStatusChange = useCallback((val: string) => {
-    if (!onBillingDetailsChange) return
-    const updates: Partial<BillingDetails> = { quotationStatus: val }
-    if (val === 'CANCELLED') {
-      updates.projectStatus = 'CANCELLED'
-      updates.updateDetail = 'CANCELLED'
-    }
-    onBillingDetailsChange(updates)
-  }, [onBillingDetailsChange])
 
   // ── Zoom controls ──────────────────────────────────────────────
   const ZOOM_LEVELS = useMemo(() => [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3], [])
@@ -692,17 +771,17 @@ const PrintPreviewModal = memo(({
         {/* ── Header ──────────────────────────────────────────────── */}
         <div className="ppm-header">
           <div className="ppm-header-left">
-            <button className="ppm-back-btn" onClick={onClose}>
-              &larr; Back
-            </button>
             <div className="ppm-title">
-              <h2>{printMode === 'quotation' ? 'Print Preview — Quotation' : 'Print Preview — Billing Statement'}</h2>
+              <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Printer size={20} />
+                {printMode === 'quotation' ? 'Print Preview — Quotation' : 'Print Preview — Billing Statement'}
+              </h2>
             </div>
           </div>
 
           <div className="ppm-header-right">
             <div className="ppm-export-group">
-              <button id="ppm-btn-print" className="ppm-action-btn primary" onClick={handlePrint} disabled={isProcessing}>
+              <button id="ppm-btn-print" className="ppm-action-btn export-print" onClick={handlePrint} disabled={isProcessing}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 6 2 18 2 18 9" />
                   <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
@@ -734,11 +813,17 @@ const PrintPreviewModal = memo(({
 
         {/* ── Main Content Area ───────────────────────────────────── */}
         <div className="ppm-body" ref={containerRef}>
-          {/* Time & Date Pill */}
-          <div className="ppm-time-pill">
-            {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })} | {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase()}
-          </div>
-          
+          {/* Back Button (Floating) */}
+          <button className="ppm-back-btn" onClick={onClose}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Back
+          </button>
+
+
+
           <div className="ppm-body-content">
             <div className="ppm-scroll-area">
               <div
@@ -906,30 +991,48 @@ const PrintPreviewModal = memo(({
 
 
 
-                {(() => {
+                {printMode === 'quotation' && (() => {
                   const isMissingIncharge = !billingDetails?.projectInCharge;
                   const isMissingCustomer = !billingDetails?.clientName;
-                  const isSubmitDisabled = isMissingIncharge || isMissingCustomer;
+                  const isSubmitDisabled = isMissingIncharge || isMissingCustomer || !submissionTarget || isSubmittingToTrainer;
 
                   return (
-                    <button
-                      className="ppm-action-btn submit-to-admin-btn"
-                      disabled={isSubmitDisabled}
-                      onClick={() => {
-                        const todayStr = new Date().toISOString().split('T')[0]
-                        onBillingDetailsChange?.({
-                          quotationStatus: 'For Approval',
-                          submittedToAdminAt: todayStr
-                        })
-                        // Close preview or update UI
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="22 2 11 13 22 2"></polyline>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                      </svg>
-                      Submit to Admin
-                    </button>
+                    <>
+                      <div className="ppm-sidebar-group">
+                        <label htmlFor="ppm-submission-target">Submit under</label>
+                        <select
+                          id="ppm-submission-target"
+                          className="ppm-sidebar-select"
+                          value={submissionTarget}
+                          onChange={event => {
+                            setSubmissionTarget(event.target.value)
+                            setSubmissionError('')
+                          }}
+                        >
+                          <option value="">Select assigned set...</option>
+                          {submissionTargets.map(target => (
+                            <option
+                              key={`${target.assessmentType}:${target.actualSetNumber}`}
+                              value={`${target.assessmentType}:${target.actualSetNumber}`}
+                            >
+                              {target.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      {submissionError && <p className="ppm-submit-error" role="alert">{submissionError}</p>}
+                      <button
+                        className="ppm-action-btn submit-to-admin-btn"
+                        disabled={isSubmitDisabled}
+                        onClick={handleSubmitToTrainer}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="22 2 11 13 22 2"></polyline>
+                          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                        {isSubmittingToTrainer ? 'Submitting Excel...' : 'Submit to Trainer'}
+                      </button>
+                    </>
                   );
                 })()}
               </div>
@@ -947,7 +1050,7 @@ const PrintPreviewModal = memo(({
           </span>
           <div className="zoom-controls">
             <button className="zoom-button" onClick={handleZoomOut} disabled={actualScale <= ZOOM_LEVELS[0]} title="Zoom Out">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /></svg>
+              <span style={{ fontSize: '18px', fontWeight: '500', lineHeight: 1, marginTop: '-2px' }}>−</span>
             </button>
             <span
               className="ppm-zoom-label"
@@ -958,7 +1061,7 @@ const PrintPreviewModal = memo(({
               {zoomMode === 'fit' ? `Fit (${Math.round(actualScale * 100)}%)` : `${Math.round(actualScale * 100)}%`}
             </span>
             <button className="zoom-button" onClick={handleZoomIn} disabled={actualScale >= ZOOM_LEVELS[ZOOM_LEVELS.length - 1]} title="Zoom In">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+              <span style={{ fontSize: '18px', fontWeight: '500', lineHeight: 1, marginTop: '-1px' }}>+</span>
             </button>
           </div>
         </div>
@@ -968,6 +1071,7 @@ const PrintPreviewModal = memo(({
         isOpen={isTutorialOpen}
         onClose={() => setIsTutorialOpen(false)}
         onComplete={onCompleteTutorial}
+        layoutVariant={layoutVariant}
       />
     </div>,
     document.body

@@ -11,14 +11,29 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 24px;
-  background: rgba(245, 158, 11, 0.15);
-  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  background: #fffbeb;
+  border-bottom: 1px solid #f59e0b;
   
-  color: #fcd34d;
+  color: #78350f;
   font-size: 13px;
   font-weight: 500;
   z-index: 50;
   animation: quotSlideDown 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.history-preview-banner strong {
+  color: #92400e;
+  font-weight: 800;
+}
+
+[data-theme='dark'] .history-preview-banner {
+  background: rgba(245, 158, 11, 0.15);
+  border-bottom-color: rgba(245, 158, 11, 0.4);
+  color: #fde68a;
+}
+
+[data-theme='dark'] .history-preview-banner strong {
+  color: #fcd34d;
 }
 
 .history-preview-banner__content {

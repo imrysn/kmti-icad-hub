@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React,{ useCallback,useEffect,useMemo,useState } from 'react'
 import ReactDOM from 'react-dom'
-import { quotationApi } from '../../../../services/api'
-import { useAuth } from '../../../../context/AuthContext'
-import { getDisplayName } from "../../../../utils/nameUtils"
 import { useModal } from '../../../../components/ModalContext'
+import { useAuth } from '../../../../context/AuthContext'
+import { quotationApi } from '../../../../services/api'
 import type { IQuotation } from '../../../../types/quotation'
+import { getDisplayName } from "../../../../utils/nameUtils"
 import './QuotationLibraryModal.css'
 
 interface Props {
@@ -15,9 +15,9 @@ interface Props {
 /**
  * QuotationLibraryModal.tsx
  * ───────────────────────────────────────────────────────────────────────────
- * A centralized library for browsing, searching, and managing collaborative 
- * quotation workspaces. 
- * 
+ * A centralized library for browsing, searching, and managing collaborative
+ * quotation workspaces.
+ *
  * Features:
  * - Real-time "Live" session indicators.
  * - Hostname-based deletion (True Ownership).
@@ -99,31 +99,11 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
   const handleDelete = async (e: React.MouseEvent, q: IQuotation) => {
     e.stopPropagation()
 
-    if (hasRole('user')) {
-      notify?.('Access Denied: Standard users are not permitted to delete records.', 'error')
-      return
-    }
-
-    // Resolve current user display name / full name
     const userWorkstationName = user ? user.full_name : ''
-    const userFullName = user ? user.full_name : ''
-
-    // Ownership Enforcement: 
-    // Match either the hostname (computerName), user's display/FMS name, or user's exact fullName
-    const isOwner = (myWorkstation && q.workstation === myWorkstation) ||
-      (userWorkstationName && q.workstation === userWorkstationName) ||
-      (userFullName && q.workstation === userFullName) ||
-      hasRole('admin', 'it')
-
-    if (!isOwner) {
-      notify?.(`Access Denied: This record belongs to workstation "${q.workstation || 'Legacy'}".`, 'error')
-      return
-    }
 
     const isConfirmed = await confirm(`Are you sure you want to move quotation ${q.quotationNo} to the Trash Bin?`)
     if (isConfirmed) {
       try {
-        // Pass userWorkstationName as workstation query param, and myWorkstation as computer_name query param
         await quotationApi.delete(q.id, userWorkstationName || undefined, false, myWorkstation || undefined) // soft delete
         notify?.('Quotation moved to Trash.', 'success')
         fetchLibrary()
@@ -135,11 +115,6 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
 
   const handleRestore = async (e: React.MouseEvent, q: IQuotation) => {
     e.stopPropagation()
-
-    if (!hasRole('admin', 'it')) {
-      notify?.('Access Denied: Only administrators can restore records.', 'error')
-      return
-    }
 
     const isConfirmed = await confirm(`Are you sure you want to restore quotation ${q.quotationNo}?`)
     if (isConfirmed) {
@@ -156,11 +131,6 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
   const handlePermanentDelete = async (e: React.MouseEvent, q: IQuotation) => {
     e.stopPropagation()
 
-    if (!hasRole('admin', 'it')) {
-      notify?.('Access Denied: Only administrators can permanently delete records.', 'error')
-      return
-    }
-
     const isConfirmed = await confirm(`Are you sure you want to PERMANENTLY purge quotation ${q.quotationNo}? This cannot be undone.`)
     if (isConfirmed) {
       try {
@@ -175,7 +145,6 @@ export default function QuotationLibraryModal({ onSelect, onClose }: Props) {
 
   const handleReveal = async (q: IQuotation) => {
     const pwd = q.password || 'Unknown'
-    const isIT = hasRole('it')
 
     const isConfirmed = await confirm(`Password for ${q.quotationNo} is: [ ${pwd} ]\n\nClick OK to copy to clipboard.`)
     if (isConfirmed) {

@@ -1,6 +1,6 @@
-import { memo, useState } from 'react'
-import { GENERATED_QUOT_PATTERN } from '../../../../../hooks/quotation'
+import { memo,useState } from 'react'
 import type { QuotationDetails } from '../../../../../hooks/quotation'
+import { GENERATED_QUOT_PATTERN } from '../../../../../hooks/quotation'
 
 interface Props {
   quotationDetails: QuotationDetails

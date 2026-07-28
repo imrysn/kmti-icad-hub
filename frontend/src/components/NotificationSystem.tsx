@@ -1,6 +1,7 @@
+import { AlertCircle,CheckCircle2,Info,Megaphone,X } from 'lucide-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification, Notification } from '../context/NotificationContext'; import { CheckCircle2, AlertCircle, Info, Megaphone, X } from 'lucide-react';
+import { Notification,useNotification } from '../context/NotificationContext';
 import '../styles/NotificationSystem.css';
 
 const NotificationItem: React.FC<{ notification: Notification }> = ({ notification }) => {
@@ -19,17 +20,17 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
         if ((e.target as HTMLElement).closest('.notification-close')) {
             return;
         }
-        
+
         if (notification.redirectTo) {
             navigate(notification.redirectTo);
         }
-        
+
         dismissNotification(notification.id);
     };
 
     return (
-        <div 
-            className={`notification-item ${notification.type}`} 
+        <div
+            className={`notification-item ${notification.type}`}
             onClick={handleItemClick}
             style={{ cursor: 'pointer' }}
         >

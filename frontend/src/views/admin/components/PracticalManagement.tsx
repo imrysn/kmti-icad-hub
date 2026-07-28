@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import { BookOpen,Check,ChevronDown,ChevronRight,Edit2,Edit3,GripVertical,Plus,RefreshCw,Save,Trash2,Upload,UploadCloud,UserPlus,Users } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Plus, Users, BookOpen, Save, Trash2, Edit2, Edit3, Check, ChevronDown, CheckCircle2, ChevronRight, UserPlus, Upload, GripVertical, Folder, UploadCloud, Download, RefreshCw } from 'lucide-react';
-import { assessmentService, AssessmentTask } from '../../../services/assessmentService';
-import { authService, User } from '../../../services/authService';
-import { useNotification } from '../../../context/NotificationContext';
 import { Modal } from '../../../components/Modal';
-import { FileManagerModal } from './FileManagerModal';
+import { useNotification } from '../../../context/NotificationContext';
+import { assessmentService,AssessmentTask } from '../../../services/assessmentService';
+import { authService,User } from '../../../services/authService';
 import '../../../styles/admin/PracticalManagement.css';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
+import { FileManagerModal } from './FileManagerModal';
 
 export const PracticalManagement: React.FC = () => {
     const { showNotification } = useNotification();
     const location = useLocation();
     const [activeSubTab, setActiveSubTab] = useState<'tasks_3d' | 'tasks_2d' | 'assignments'>('tasks_3d');
-    
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const subtab = params.get('subtab');
@@ -27,12 +27,12 @@ export const PracticalManagement: React.FC = () => {
     useEffect(() => {
         setSetFilter('all');
     }, [activeSubTab]);
-    
+
     const [tasks, setTasks] = useState<AssessmentTask[]>([]);
     const [setFilter, setSetFilter] = useState<number | 'all'>('all');
     const [allUsers, setAllUsers] = useState<User[]>([]);
     const [mappings, setMappings] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [, setLoading] = useState(true);
     const [availableSets, setAvailableSets] = useState<number[]>([]);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [confirmModal, setConfirmModal] = useState<{
@@ -56,17 +56,17 @@ export const PracticalManagement: React.FC = () => {
             return { '3D': {}, '2D': {} };
         }
     });
-    
+
     useEffect(() => {
         const typeKey = activeSubTab === 'tasks_2d' ? '2D' : '3D';
-        const activeTasks = tasks.filter(t => 
+        const activeTasks = tasks.filter(t =>
             activeSubTab === 'tasks_2d'
                 ? t.assessment_type === '2D'
                 : ((t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7))
         );
         const dbSets = activeTasks.map(t => t.set_number);
         const customSets = Object.keys(customSetNames[typeKey] || {}).map(Number);
-        
+
         if (activeSubTab === 'tasks_2d') {
             const defaultSets = [4, 5, 6, 7];
             const filteredCustomSets = customSets.filter(s => s >= 4);
@@ -217,7 +217,7 @@ export const PracticalManagement: React.FC = () => {
         }
     };
 
-    const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
+    const [] = useState<any>(null);
     const [taskFile, setTaskFile] = useState<File | null>(null);
     const [bulkFiles, setBulkFiles] = useState<File[]>([]);
     const [isBulkMode, setIsBulkMode] = useState(false);
@@ -503,7 +503,7 @@ export const PracticalManagement: React.FC = () => {
         // Important: Extract ONLY the tasks from the specific set being interacted with,
         // otherwise if 'All Sets' is selected, task codes will bleed continuously (e.g. A, B... Z) across sets.
         const setLocalTasks = tasks.filter(t => t.set_number === setNumber).sort((a, b) => a.order - b.order);
-        
+
         const draggedIndex = setLocalTasks.findIndex(t => t.id === draggedTaskId);
         const targetIndex = setLocalTasks.findIndex(t => t.id === targetTaskId);
 
@@ -596,7 +596,7 @@ export const PracticalManagement: React.FC = () => {
                     <div className="toolbar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div className="filter-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative' }}>
                             <label style={{ whiteSpace: 'nowrap' }}>Filter by Set:</label>
-                            
+
                             <div style={{ position: 'relative' }}>
                                 <button
                                     type="button"
@@ -623,7 +623,7 @@ export const PracticalManagement: React.FC = () => {
                                     </span>
                                     <ChevronDown size={16} style={{ color: 'var(--text-dim)' }} />
                                 </button>
-                                
+
                                 {dropdownOpen && (
                                     <div style={{
                                         position: 'absolute',
@@ -659,7 +659,7 @@ export const PracticalManagement: React.FC = () => {
                                             <span style={{ fontWeight: setFilter === 'all' ? 700 : 500, color: 'var(--text-main)' }}>All Sets</span>
                                             {setFilter === 'all' && <Check size={14} color="var(--primary)" />}
                                         </div>
-                                        
+
                                         <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
                                             {availableSets.map(n => {
                                                 const displayName = getSetDisplayName(n);
@@ -692,8 +692,8 @@ export const PracticalManagement: React.FC = () => {
                                                         }}>
                                                             {displayName}
                                                         </span>
-                                                        <div 
-                                                            style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }} 
+                                                        <div
+                                                            style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}
                                                             onClick={e => e.stopPropagation()}
                                                         >
                                                             <button
@@ -739,13 +739,13 @@ export const PracticalManagement: React.FC = () => {
                                                 );
                                             })}
                                         </div>
-                                        
+
                                         <button
                                             type="button"
                                             onClick={() => {
                                                 const nextSet = availableSets.length > 0 ? availableSets[availableSets.length - 1] + 1 : (activeSubTab === 'tasks_2d' ? 4 : 1);
                                                 const typeKey = activeSubTab === 'tasks_2d' ? '2D' : '3D';
-                                                
+
                                                 // Register immediately in customSetNames to prevent dynamic useEffect pruning
                                                 const updatedNames = {
                                                     ...customSetNames,
@@ -753,7 +753,7 @@ export const PracticalManagement: React.FC = () => {
                                                 };
                                                 setCustomSetNames(updatedNames);
                                                 localStorage.setItem('custom_set_names_v2', JSON.stringify(updatedNames));
- 
+
                                                 setAvailableSets([...availableSets, nextSet]);
                                                 setSetFilter(nextSet);
                                                 showNotification(`Set ${nextSet} added.`, 'success');
@@ -782,9 +782,9 @@ export const PracticalManagement: React.FC = () => {
                             </div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                            <button 
-                                className="toolbar-btn" 
-                                onClick={handleSyncTasks} 
+                            <button
+                                className="toolbar-btn"
+                                onClick={handleSyncTasks}
                                 disabled={isSyncing}
                                 style={{
                                     background: 'transparent',
@@ -1011,14 +1011,14 @@ export const PracticalManagement: React.FC = () => {
                                     </thead>
                                     <tbody>
                                         {filteredTasks.map(task => (
-                                            <tr 
+                                            <tr
                                                 key={task.id}
                                                 draggable
                                                 onDragStart={() => handleDragStart(task.id)}
                                                 onDragOver={(e) => handleDragOver(e, task.id)}
                                                 onDrop={(e) => handleDrop(e, task.id, task.set_number)}
                                                 className={`
-                                                    ${draggedTaskId === task.id ? 'opacity-50' : ''} 
+                                                    ${draggedTaskId === task.id ? 'opacity-50' : ''}
                                                     ${dragOverTaskId === task.id ? 'bg-indigo-50 border-t-2 border-indigo-500' : ''}
                                                     cursor-move transition-all
                                                 `}
@@ -1147,10 +1147,10 @@ export const PracticalManagement: React.FC = () => {
             )}
 
             {showEditModal && editingTask && (
-                <Modal 
-                    isOpen={showEditModal} 
-                    onClose={() => setShowEditModal(false)} 
-                    title="Edit Assessment Unit" 
+                <Modal
+                    isOpen={showEditModal}
+                    onClose={() => setShowEditModal(false)}
+                    title="Edit Assessment Unit"
                     tag="UNIT_EDIT"
                     size="md"
                 >
@@ -1246,9 +1246,9 @@ export const PracticalManagement: React.FC = () => {
             )}
 
             {fileManagerTask && (
-                <FileManagerModal 
-                    task={fileManagerTask} 
-                    onClose={() => setFileManagerTask(null)} 
+                <FileManagerModal
+                    task={fileManagerTask}
+                    onClose={() => setFileManagerTask(null)}
                 />
             )}
 
@@ -1277,9 +1277,9 @@ export const PracticalManagement: React.FC = () => {
                             />
                         </div>
                         <div className="global-modal-footer">
-                            <button 
-                                type="button" 
-                                className="global-btn-secondary" 
+                            <button
+                                type="button"
+                                className="global-btn-secondary"
                                 onClick={() => {
                                     setShowRenameModal(false);
                                     setRenameSetNum(null);
@@ -1314,9 +1314,9 @@ export const PracticalManagement: React.FC = () => {
                             ⚠️ This will delete the entire set from the database and cannot be undone!
                         </p>
                         <div className="global-modal-footer">
-                            <button 
-                                type="button" 
-                                className="global-btn-secondary" 
+                            <button
+                                type="button"
+                                className="global-btn-secondary"
                                 onClick={() => {
                                     setShowDeleteConfirmModal(false);
                                     setDeleteSetNum(null);
@@ -1324,9 +1324,9 @@ export const PracticalManagement: React.FC = () => {
                             >
                                 Cancel
                             </button>
-                            <button 
-                                type="button" 
-                                className="global-btn-danger" 
+                            <button
+                                type="button"
+                                className="global-btn-danger"
                                 onClick={submitDeleteSet}
                             >
                                 Yes, Delete Set
@@ -1349,16 +1349,16 @@ export const PracticalManagement: React.FC = () => {
                             {confirmModal.message}
                         </p>
                         <div className="global-modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-                            <button 
-                                type="button" 
-                                className="global-btn-secondary" 
+                            <button
+                                type="button"
+                                className="global-btn-secondary"
                                 onClick={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
                             >
                                 Cancel
                             </button>
-                            <button 
-                                type="button" 
-                                className={confirmModal.isDanger ? "global-btn-danger" : "global-btn-primary"} 
+                            <button
+                                type="button"
+                                className={confirmModal.isDanger ? "global-btn-danger" : "global-btn-primary"}
                                 onClick={confirmModal.onConfirm}
                             >
                                 Confirm

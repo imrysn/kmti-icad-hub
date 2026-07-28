@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User, SystemLog, QuizScore, UserProgress, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
+from ..models import User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
 from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
@@ -22,14 +22,14 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     """
     Register a new user.
-    
+
     Args:
         user_data: User registration data
         db: Database session
-        
+
     Returns:
         Created user information
-        
+
     Raises:
         HTTPException: If username or email already exists
     """
@@ -40,7 +40,7 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username already registered"
         )
-    
+
     # Check if email already exists
     user_email = user_data.email or f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
     existing_email = db.query(User).filter(User.email == user_email).first()
@@ -49,7 +49,7 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
-    
+
     # Create new user
     new_user = User(
         username=user_data.username,
@@ -59,51 +59,51 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
         role=user_data.role,
         created_at=datetime.now(timezone.utc)
     )
-    
+
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    
+
     return new_user
 
 @router.post("/login", response_model=Token)
 def login(login_data: UserLogin, db: Session = Depends(get_db)):
     """
     Login and receive access token.
-    
+
     Args:
         login_data: Login credentials
         db: Database session
-        
+
     Returns:
         Access token
-        
+
     Raises:
         HTTPException: If credentials are invalid
     """
     # Find user by username
     user = db.query(User).filter(User.username == login_data.username).first()
-    
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Account with this email not found.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     if not verify_password(login_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password. Please try again.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     if not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Inactive user account"
         )
-    
+
     # Check for required role if specified
     if login_data.required_role:
         if login_data.required_role == "admin":
@@ -121,22 +121,22 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=f"This account is not authorized for {login_data.required_role} access."
             )
-    
+
     # Update last login
     user.last_login = datetime.now(timezone.utc)
     db.commit()
-    
+
     # Create access token with optional longer expiration
     expires_delta = None
     if login_data.remember_me:
         # 30 days for Remember Me
         expires_delta = timedelta(days=30)
-    
+
     access_token = create_access_token(
         data={"sub": user.username, "role": user.role},
         expires_delta=expires_delta
     )
-    
+
     # Log the login
     log_entry = SystemLog(
         level="INFO",
@@ -146,9 +146,9 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
     )
     db.add(log_entry)
     db.commit()
-    
+
     return {"access_token": access_token, "token_type": "bearer", "user": user}
-    
+
 @router.post("/forgot-password")
 async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
     """
@@ -156,12 +156,12 @@ async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(
     """
     # Find user if possible (for logging context)
     user = db.query(User).filter(
-        (User.username == request.username_or_email) | 
+        (User.username == request.username_or_email) |
         (User.email == request.username_or_email)
     ).first()
-    
+
     message = f"Password reset requested for: {request.username_or_email}"
-    
+
     # Log the request
     log_entry = SystemLog(
         level="WARNING",
@@ -171,17 +171,17 @@ async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(
     )
     db.add(log_entry)
     db.commit()
-    
+
     return {"message": "If an account exists for that username/email, a reset request has been sent to the administrator."}
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_info(current_user: User = Depends(get_current_user)):
     """
     Get current authenticated user information.
-    
+
     Args:
         current_user: Current authenticated user
-        
+
     Returns:
         User information
     """
@@ -239,7 +239,7 @@ def toggle_user_status(
     if user.id == admin.id:
         raise HTTPException(status_code=400, detail="Cannot disable your own account")
     user.is_active = not user.is_active
-    
+
     # Log the status change
     log_entry = SystemLog(
         level="INFO",
@@ -248,7 +248,7 @@ def toggle_user_status(
         user_id=admin.id
     )
     db.add(log_entry)
-    
+
     db.commit()
     db.refresh(user)
     return {"id": user.id, "username": user.username, "is_active": user.is_active}
@@ -276,7 +276,7 @@ def update_realtime_activity(
     else:
         activity_record.current_activity = data.activity
         activity_record.last_updated = datetime.now(timezone.utc)
-    
+
     db.commit()
     return {"status": "success"}
 
@@ -293,7 +293,7 @@ def get_course_progress(
         QuizScore.user_id == current_user.id,
         QuizScore.course_id == course_id
     ).all()
-    
+
     return [
         LessonProgress(
             lesson_id=score.lesson_id,
@@ -320,17 +320,17 @@ async def submit_quiz_score(
         QuizScore.course_id == submission.course_id,
         QuizScore.lesson_id == submission.lesson_id
     ).first()
-    
+
     # Determine if this pass is new (first time scoring >= 80%)
     is_new_pass = False
     if submission.score >= 80.0:
         if not existing_score or (existing_score and existing_score.score < 80.0):
             is_new_pass = True
-            
+
     if existing_score:
         # Increment attempt counter
         existing_score.attempts_count = (existing_score.attempts_count or 0) + 1
-        
+
         # Update best score only if the new one is higher
         if submission.score > existing_score.score:
             existing_score.score = submission.score
@@ -348,14 +348,14 @@ async def submit_quiz_score(
             first_attempt_at=now
         )
         db.add(new_score)
-    
+
     db.commit()
-    
+
     # Update curriculum progress milestones
     if submission.course_id:
         from ..services.progress_service import update_user_course_progress
         update_user_course_progress(db, current_user.id, submission.course_id)
-    
+
     # Save individual question attempts for analytics
     if submission.answers:
         # Find the quiz ID by slug (lesson_id in submission matches slug in Quiz)
@@ -372,14 +372,14 @@ async def submit_quiz_score(
                 )
                 db.add(attempt)
             db.commit()
- 
+
     # Dispatch Trainer progress updates
     if is_new_pass:
         try:
             quiz = db.query(Quiz).filter(Quiz.slug == submission.lesson_id).first()
             quiz_title = quiz.title if quiz else submission.lesson_id
             course_name = "3D Modeling" if submission.course_id == "1" else "2D Drawing" if submission.course_id == "2" else "Curriculum"
- 
+
             mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
             if mapping:
                 # 1. Save and dispatch lesson completion
@@ -392,7 +392,7 @@ async def submit_quiz_score(
                 )
                 db.add(new_notif)
                 db.commit()
- 
+
                 await notification_manager.send_personal_message(
                     {
                         "event": "TRAINEE_PROGRESS",
@@ -404,7 +404,7 @@ async def submit_quiz_score(
                     },
                     mapping.trainer_id
                 )
- 
+
                 # 2. Check and dispatch course completion
                 if quiz:
                     total_quizzes = db.query(Quiz).filter(Quiz.course_type == quiz.course_type).count()
@@ -413,7 +413,7 @@ async def submit_quiz_score(
                         QuizScore.course_id == submission.course_id,
                         QuizScore.score >= 80.0
                     ).count()
- 
+
                     if passed_quizzes >= total_quizzes and total_quizzes > 0:
                         course_msg = f"Trainee {current_user.full_name or current_user.username} completed the ENTIRE {course_name} Course!"
                         course_notif = Notification(
@@ -424,7 +424,7 @@ async def submit_quiz_score(
                         )
                         db.add(course_notif)
                         db.commit()
- 
+
                         await notification_manager.send_personal_message(
                             {
                                 "event": "TRAINEE_COURSE_COMPLETED",
@@ -437,5 +437,5 @@ async def submit_quiz_score(
                         )
         except Exception as e:
             print(f"Error triggering progress notifications: {e}")
-    
+
     return {"message": "Score submitted successfully", "score": submission.score, "passed": submission.score >= 80.0}

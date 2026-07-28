@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo,useState } from 'react'
 import type { CompanyInfo } from '../../../../../hooks/quotation'
 
 interface Props {
@@ -26,7 +26,7 @@ const CompanyInfoForm = memo(({ companyInfo, onUpdate, isCollapsed = false }: Pr
           </svg>
         </div>
         <h2 className="section-title">Company Information</h2>
-        
+
         {onUpdate && (
           <div className="card-header-actions">
             <button

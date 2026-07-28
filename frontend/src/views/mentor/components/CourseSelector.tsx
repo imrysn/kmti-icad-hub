@@ -1,11 +1,12 @@
+import { Lock,PlayCircle } from 'lucide-react';
 import React from 'react';
-import { BookOpen, PlayCircle, Lock, Layers } from 'lucide-react'; import { Course } from '../../../types';
-import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
-import { ModelViewer3D } from '../../../components/ModelViewer3D';
-import uncoilerUrl from '../../../assets/uncoiler.glb';
 import drawing2DUrl from '../../../assets/2D.png';
-import practical3DImgUrl from '../../../assets/froming4.webp';
 import drawing2DAssessmentUrl from '../../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png';
+import practical3DImgUrl from '../../../assets/froming4.webp';
+import uncoilerUrl from '../../../assets/uncoiler.glb';
+import { ModelViewer3D } from '../../../components/ModelViewer3D';
+import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
+import { Course } from '../../../types';
 
 interface CourseSelectorProps {
     courses: Course[];
@@ -27,7 +28,6 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     setSelectedCourse,
     is3DCompleted,
     is2DCompleted,
-    isAnnotationCompleted,
     canBypass,
     is3DAssessmentCompleted,
     isEmployeeSide = false
@@ -110,7 +110,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                         const isCourse2Locked = !is3DAssessmentCompleted && !canBypass;
                         const is2DAssessmentLocked = !is2DCompleted && !canBypass;
 
-                        const isLocked = 
+                        const isLocked =
                             course.id.toString() === 'practical-assessment' ? isPracticalLocked :
                             course.id.toString() === '2' ? (isPracticalLocked || isCourse2Locked) :
                             course.id.toString() === '2d-assessment' ? (isPracticalLocked || isCourse2Locked || is2DAssessmentLocked) :

@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useRef } from 'react'
+import { memo,useEffect,useRef,useState } from 'react'
 import type { Signatures } from '../../../../../types/quotation'
 
 interface Props {
@@ -82,7 +82,7 @@ const QuotationSignaturesCard = memo(({
           </svg>
         </div>
         <h2 className="section-title">Quotation Signatures</h2>
-        
+
         {onUpdate && (
           <div className="card-header-actions">
             <EditToggleBtn isEditing={isEditing} onClick={() => setIsEditing(e => !e)} />
@@ -179,7 +179,7 @@ const BillingSignaturesCard = memo(({
           </svg>
         </div>
         <h2 className="section-title">Billing Statement Signatures</h2>
-        
+
         {onUpdate && (
           <div className="card-header-actions">
             <EditToggleBtn isEditing={isEditing} onClick={() => setIsEditing(e => !e)} />
@@ -262,35 +262,35 @@ BillingSignaturesCard.displayName = 'BillingSignaturesCard'
 function safeSignatures(signatures: Signatures): Signatures {
   return {
     quotation: {
-      preparedBy: { 
-        name: signatures?.quotation?.preparedBy?.name ?? '', 
-        title: signatures?.quotation?.preparedBy?.title ?? '' 
+      preparedBy: {
+        name: signatures?.quotation?.preparedBy?.name ?? '',
+        title: signatures?.quotation?.preparedBy?.title ?? ''
       },
-      checkedBy: { 
-        name: signatures?.quotation?.checkedBy?.name ?? '', 
-        title: signatures?.quotation?.checkedBy?.title ?? '' 
+      checkedBy: {
+        name: signatures?.quotation?.checkedBy?.name ?? '',
+        title: signatures?.quotation?.checkedBy?.title ?? ''
       },
-      approvedBy: { 
-        name: signatures?.quotation?.approvedBy?.name ?? '', 
-        title: signatures?.quotation?.approvedBy?.title ?? '' 
+      approvedBy: {
+        name: signatures?.quotation?.approvedBy?.name ?? '',
+        title: signatures?.quotation?.approvedBy?.title ?? ''
       },
-      receivedBy: { 
-        label: signatures?.quotation?.receivedBy?.label ?? '', 
-        title: signatures?.quotation?.receivedBy?.title ?? '' 
+      receivedBy: {
+        label: signatures?.quotation?.receivedBy?.label ?? '',
+        title: signatures?.quotation?.receivedBy?.title ?? ''
       },
     },
     billing: {
-      preparedBy: { 
-        name: signatures?.billing?.preparedBy?.name ?? '', 
-        title: signatures?.billing?.preparedBy?.title ?? '' 
+      preparedBy: {
+        name: signatures?.billing?.preparedBy?.name ?? '',
+        title: signatures?.billing?.preparedBy?.title ?? ''
       },
-      approvedBy: { 
-        name: signatures?.billing?.approvedBy?.name ?? '', 
-        title: signatures?.billing?.approvedBy?.title ?? '' 
+      approvedBy: {
+        name: signatures?.billing?.approvedBy?.name ?? '',
+        title: signatures?.billing?.approvedBy?.title ?? ''
       },
-      finalApprover: { 
-        name: signatures?.billing?.finalApprover?.name ?? '', 
-        title: signatures?.billing?.finalApprover?.title ?? '' 
+      finalApprover: {
+        name: signatures?.billing?.finalApprover?.name ?? '',
+        title: signatures?.billing?.finalApprover?.title ?? ''
       },
     }
   }

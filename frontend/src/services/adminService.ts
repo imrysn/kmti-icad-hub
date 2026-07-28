@@ -1,4 +1,4 @@
-import { api, cachedGet } from './api';
+import { api,cachedGet } from './api';
 
 export interface KBFile {
     name: string;

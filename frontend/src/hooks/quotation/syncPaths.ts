@@ -10,7 +10,7 @@
  *   emitPatch({ path: companyInfoPath('name'), value: 'KMTI' })
  */
 
-import type { Task, CompanyInfo, ClientInfo, QuotationDetails, BillingDetails, BaseRates } from '../../types/quotation'
+import type { BaseRates,BillingDetails,ClientInfo,CompanyInfo,QuotationDetails,Task } from '../../types/quotation'
 
 // ── Task paths ──────────────────────────────────────────────────────────────
 

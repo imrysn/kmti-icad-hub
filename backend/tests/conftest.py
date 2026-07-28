@@ -20,7 +20,7 @@ os.environ.setdefault("SECRET_KEY", "test-secret-key-for-pytest-do-not-use-in-pr
 os.environ.setdefault("USE_MYSQL", "false")
 
 from backend.database import Base, get_db
-from backend.main import app
+from backend.main import app, api_app
 from backend.models import User, Quiz, Question
 from backend.auth.security import hash_password, create_access_token
 
@@ -63,10 +63,10 @@ def client(db):
         finally:
             pass
 
-    app.dependency_overrides[get_db] = override_get_db
+    api_app.dependency_overrides[get_db] = override_get_db
     with TestClient(app, raise_server_exceptions=True) as c:
         yield c
-    app.dependency_overrides.clear()
+    api_app.dependency_overrides.clear()
 
 
 # ── User seed fixtures ────────────────────────────────────────────────────────

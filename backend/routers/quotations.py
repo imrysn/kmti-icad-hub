@@ -14,22 +14,20 @@ File Persistence Policy:
 
 import os
 import json
-import asyncio
 from datetime import datetime, timezone
-from typing import Any, List, Optional
+from typing import Any, Optional
 from pydantic import BaseModel
 
 from fastapi import APIRouter, HTTPException, Depends, status, Request
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
-from sqlalchemy import select, update, delete, desc, or_
-from sqlalchemy.orm import selectinload
+from sqlalchemy import select, delete, desc, or_
 
-from ..database import get_db, APP_PATH
+from ..database import get_db
 from ..models import Quotation, QuotationHistory
 from ..models import User
 from ..auth.dependencies import get_current_user
-import os
+from ..time_utils import local_now, local_timestamp_iso
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def cache_get(*args, **kwargs): return None
 def cache_set(*args, **kwargs): pass
@@ -38,17 +36,27 @@ def log_activity(*args, **kwargs): pass
 
 router = APIRouter(prefix="/quotations", tags=["quotations"])
 
+
+class HistorySnapshotRequest(BaseModel):
+    label: str = "Manual Save"
+
+_TEMPLATE_MAP = {
+    "quotation": "Quotation Template.xlsx",
+    "billing": "Billing Template.xlsx",
+    "kemco_quotation": "KEMCO Quotation Template.xlsx",
+}
+
 def _get_audit_label(path: str, full_state: dict = None) -> str:
     """Map a technical JSON path to a human-readable field name."""
     if not path: return "Document"
     p = path.lower()
     field = path.split('.')[-1].replace('_', ' ').title()
-    
+
     if "companyinfo" in p: return f"Company {field}"
     if "clientinfo" in p: return f"Client {field}"
     if "quotationdetails" in p: return f"Quotation {field.replace('No', '#')}"
     if "billingdetails" in p: return f"Billing {field}"
-    
+
     if "task" in p:
         parts = path.split('.')
         if len(parts) >= 2:
@@ -63,12 +71,12 @@ def _get_audit_label(path: str, full_state: dict = None) -> str:
                             assembly_name = f"'{desc}'" if desc else f"Task #{target_id}"
                             break
                 except: pass
-            
+
             # Map manual override fields
             if "manual" in field.lower():
                 field = field.replace("manual", "").strip()
                 return f"{assembly_name}'s {field} (Override)"
-                
+
             return f"{assembly_name}'s {field}"
         return "Tasks"
     if "signatures" in p: return "Signatures"
@@ -84,10 +92,121 @@ def safe_json_loads(val: Optional[str]) -> dict:
         print(f"Error decoding JSON: {e}")
         return {}
 
+def _as_number(value: Any, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+def calculate_grand_total(data: dict) -> float:
+    """Mirror the frontend quotation totals closely enough for list metadata."""
+    tasks = data.get("tasks") or []
+    rates = data.get("baseRates") or {}
+    overrides = data.get("manualOverrides") or {}
+    task_overrides = overrides.get("tasks") or {}
+    footer = overrides.get("footer") or {}
+    layout_variant = data.get("layoutVariant") or "special"
+
+    def override_for(task_id: Any) -> dict:
+        return task_overrides.get(str(task_id), task_overrides.get(task_id, {})) or {}
+
+    def task_total(task: dict) -> float:
+        override = override_for(task.get("id"))
+        if "total" in override and override["total"] is not None:
+            return _as_number(override["total"])
+
+        if layout_variant == "kemco":
+            children = [item for item in tasks if item.get("parentId") == task.get("id")]
+            if children:
+                return sum(task_total(child) for child in children)
+            return _as_number(task.get("amount"))
+
+        children = [item for item in tasks if item.get("parentId") == task.get("id")]
+        related = [task, *children]
+        hours = sum(_as_number(item.get("hours")) + _as_number(item.get("minutes")) / 60 for item in related)
+        overtime_hours = sum(_as_number(item.get("overtimeHours")) for item in related)
+        software_units = sum(_as_number(item.get("softwareUnits")) for item in related)
+        task_type = task.get("type") or "3D"
+        if task_type == "2D":
+            time_rate = _as_number(rates.get("timeChargeRate2D"))
+        elif task_type in ("3D", "3D/2D"):
+            time_rate = _as_number(rates.get("timeChargeRate3D"))
+        else:
+            time_rate = _as_number(rates.get("timeChargeRateOthers"))
+        return (
+            hours * time_rate
+            + overtime_hours * _as_number(rates.get("overtimeRate"))
+            + software_units * _as_number(rates.get("softwareRate"))
+        )
+
+    main_tasks = [task for task in tasks if task.get("isMainTask")]
+    subtotal = sum(task_total(task) for task in main_tasks)
+    overhead = (
+        _as_number(footer.get("overhead"))
+        if footer.get("overhead") is not None
+        else subtotal * _as_number(rates.get("overheadPercentage")) / 100
+    )
+    return round(subtotal + overhead + _as_number(footer.get("adjustment")), 2)
+
+def _sync_metadata(q_id: int, data: dict, db: Session, username: str) -> Quotation:
+    """Persist an autosaved document and keep searchable quotation fields in sync."""
+    if not isinstance(data, dict):
+        raise HTTPException(status_code=400, detail="Quotation data must be an object")
+
+    quot = db.execute(select(Quotation).where(Quotation.id == q_id)).scalar_one_or_none()
+    if not quot:
+        raise HTTPException(status_code=404, detail="Quotation not found")
+
+    quotation_details = data.get("quotationDetails") or {}
+    client_info = data.get("clientInfo") or {}
+    billing_details = data.get("billingDetails") or {}
+    quotation_signatures = (data.get("signatures") or {}).get("quotation") or {}
+    prepared_by = quotation_signatures.get("preparedBy") or {}
+
+    new_number = (quotation_details.get("quotationNo") or quot.quotation_no or "").strip()
+    if not new_number:
+        raise HTTPException(status_code=400, detail="Quotation number is required")
+    if new_number != quot.quotation_no:
+        duplicate = db.execute(
+            select(Quotation).where(Quotation.quotation_no == new_number, Quotation.id != q_id)
+        ).scalar_one_or_none()
+        if duplicate:
+            raise HTTPException(status_code=400, detail=f"Quotation number '{new_number}' already exists")
+        old_number = quot.quotation_no
+        quot.quotation_no = new_number
+        if not quot.display_name or quot.display_name == old_number:
+            quot.display_name = new_number
+
+    date_value = quotation_details.get("date")
+    if date_value:
+        try:
+            quot.date = datetime.strptime(str(date_value)[:10], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Quotation date must use YYYY-MM-DD format")
+
+    quot.client_name = client_info.get("company") or ""
+    quot.bill_to = client_info.get("company") or billing_details.get("billTo") or ""
+    quot.customer_incharge = client_info.get("contact") or ""
+    quot.designer_name = billing_details.get("projectInCharge") or prepared_by.get("name") or ""
+    quot.grand_total = calculate_grand_total(data)
+    quot.quotation_status = billing_details.get("quotationStatus") or quot.quotation_status or "DRAFT"
+    quot.project_status = billing_details.get("projectStatus") or quot.project_status or "On Going"
+    quot.update_detail = billing_details.get("updateDetail") or ""
+    quot.updated_by = username
+    quot.last_updated_at = datetime.now(timezone.utc)
+    quot.updated_at = datetime.now(timezone.utc)
+    quot.data = json.dumps(data, ensure_ascii=False)
+
+    db.commit()
+    db.refresh(quot)
+    cache_delete("quot_list")
+    cache_delete("quot_sessions")
+    return quot
+
 @router.get("/templates/{template_name}")
 def get_template(template_name: str):
     """Serve an Excel template file from backend/data/.
-    
+
     Used by the frontend Excel export to load a pixel-perfect base template
     rather than building layout from scratch with ExcelJS.
     template_name: 'quotation' | 'billing'
@@ -95,11 +214,11 @@ def get_template(template_name: str):
     filename = _TEMPLATE_MAP.get(template_name)
     if not filename:
         raise HTTPException(status_code=404, detail=f"Unknown template: '{template_name}'")
-    
+
     file_path = os.path.join(BASE_DIR, "data", filename)
     if not os.path.isfile(file_path):
         raise HTTPException(status_code=404, detail=f"Template file not found on disk: {filename}")
-    
+
     return FileResponse(
         path=file_path,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -108,9 +227,9 @@ def get_template(template_name: str):
 
 @router.get("/")
 def list_quotations(
-    q: Optional[str] = None, 
+    q: Optional[str] = None,
     designer: Optional[str] = None,
-    limit: int = 100, 
+    limit: int = 100,
     offset: int = 0,
     trash_only: bool = False,
     db: Session = Depends(get_db),
@@ -124,14 +243,12 @@ def list_quotations(
         return cached_val
 
     stmt = select(Quotation).order_by(desc(Quotation.updated_at))
-    
+
     if trash_only:
-        if not is_admin:
-            raise HTTPException(status_code=403, detail="Access Denied: Only administrators can access the trash bin.")
         stmt = stmt.where(Quotation.is_deleted == True)
     else:
         stmt = stmt.where(Quotation.is_deleted == False)
-        
+
     if q:
         stmt = stmt.where(or_(
             Quotation.quotation_no.ilike(f"%{q}%"),
@@ -139,11 +256,11 @@ def list_quotations(
         ))
     if designer:
         stmt = stmt.where(Quotation.designer_name.ilike(f"%{designer}%"))
-    
+
     stmt = stmt.limit(limit).offset(offset)
     result = db.execute(stmt)
     items = result.scalars().all()
-    
+
     res_dict = {
         "quotations": [
             {
@@ -158,7 +275,7 @@ def list_quotations(
                 "hasPassword": bool(i.password),
                 "password": i.password if is_admin else None, # Elevated view for recovery
                 "displayName": i.display_name or i.quotation_no,
-                
+
                 # New fields for Billing Monitoring
                 "grandTotal": float(i.grand_total or 0.0),
                 "customerIncharge": i.customer_incharge or "",
@@ -166,8 +283,8 @@ def list_quotations(
                 "projectStatus": i.project_status or "On Going",
                 "submittedToAdminAt": i.submitted_to_admin_at.strftime("%Y-%m-%d") if i.submitted_to_admin_at else None,
                 "billTo": (
-                    (safe_json_loads(i.data).get("clientInfo", {}).get("company", "") if i.data else "") or 
-                    i.bill_to or 
+                    (safe_json_loads(i.data).get("clientInfo", {}).get("company", "") if i.data else "") or
+                    i.bill_to or
                     ""
                 ),
                 "datePaid": i.date_paid.strftime("%Y-%m-%d") if i.date_paid else None,
@@ -181,19 +298,19 @@ def list_quotations(
     }
     cache_set("quot_list", cache_key, res_dict)
     return res_dict
- 
+
 @router.get("/sessions")
 def list_active_sessions(db: Session = Depends(get_db)):
     """Returns list of quotations that are currently active.
-    
+
     Cross-references the database 'is_active' flag with the live Socket.IO presence.
-    This provides a resilient list that doesn't disappear if the socket hasn't 
+    This provides a resilient list that doesn't disappear if the socket hasn't
     finished handshaking or if the server recently restarted.
     """
     cached_val = cache_get("quot_sessions", "all")
     if cached_val is not None:
         return cached_val
- 
+
     # 1. Start with all quotations marked active in DB
     stmt = select(Quotation).where(Quotation.is_active == True, Quotation.is_deleted == False).order_by(desc(Quotation.updated_at))
     result = db.execute(stmt)
@@ -210,7 +327,7 @@ def list_active_sessions(db: Session = Depends(get_db)):
             "hasPassword": bool(i.password),
             "workstation": i.workstation
         })
-    
+
     res_sessions = {"sessions": sessions}
     cache_set("quot_sessions", "all", res_sessions)
     return res_sessions
@@ -218,13 +335,13 @@ def list_active_sessions(db: Session = Depends(get_db)):
 @router.post("/")
 def create_quotation(data: dict, request: Request, db: Session = Depends(get_db)):
     """Create a new quotation record in the database.
-    
+
     Supports two modes:
       Lightweight:  { quot_no, display_name?, password? }  — workspace-first creation
       Full:         { quotationDetails, clientInfo, ... }  — save from within editor
     """
     workstation = data.get("workstation")
-    
+
     # Try to extract authenticated username if available in Bearer token header
     user_label = None
     auth_header = request.headers.get("Authorization")
@@ -238,21 +355,21 @@ def create_quotation(data: dict, request: Request, db: Session = Depends(get_db)
             pass
     if not user_label:
         user_label = workstation or "unknown_workstation"
-    
+
     # ── Lightweight workspace-first creation ──────────────────────
     if "quot_no" in data:
         q_no = data["quot_no"]
         display = data.get("display_name") or q_no
         password = data.get("password")
-        
+
         # Check for duplicate
         stmt = select(Quotation).where(Quotation.quotation_no == q_no)
         res = db.execute(stmt)
         if res.scalar_one_or_none():
             raise HTTPException(status_code=400, detail="Quotation number already exists")
-        
+
         is_direct = any(k in data for k in ["client_name", "designer_name", "grand_total", "customer_incharge", "quotation_status", "project_status", "billing_status", "bill_to"])
-        
+
         # Create a blank/prefilled record
         new_q = Quotation(
             quotation_no=q_no,
@@ -281,7 +398,7 @@ def create_quotation(data: dict, request: Request, db: Session = Depends(get_db)
         db.refresh(new_q)
         cache_delete("quot_list")
         cache_delete("quot_sessions")
-        
+
         log_activity(
             username=user_label,
             action="CREATE_QUOTATION",
@@ -294,17 +411,17 @@ def create_quotation(data: dict, request: Request, db: Session = Depends(get_db)
     qd = data.get("quotationDetails", {})
     ci = data.get("clientInfo", {})
     sig = data.get("signatures", {}).get("quotation", {}).get("preparedBy", {})
-    
+
     q_no = qd.get("quotationNo")
     if not q_no:
         raise HTTPException(status_code=400, detail="Quotation number is required")
-        
+
     # Check if exists
     stmt = select(Quotation).where(Quotation.quotation_no == q_no)
     res = db.execute(stmt)
     if res.scalar_one_or_none():
         raise HTTPException(status_code=400, detail="Quotation number already exists")
-    
+
     client_contact = ci.get("contact", "")
     g_total = calculate_grand_total(data)
 
@@ -332,7 +449,7 @@ def create_quotation(data: dict, request: Request, db: Session = Depends(get_db)
     db.refresh(new_q)
     cache_delete("quot_list")
     cache_delete("quot_sessions")
-    
+
     log_activity(
         username=user_label,
         action="CREATE_QUOTATION",
@@ -353,13 +470,13 @@ def verify_password(q_id: int, req: VerifyPasswordRequest, db: Session = Depends
     quot = result.scalar_one_or_none()
     if not quot:
         raise HTTPException(status_code=404, detail="Quotation not found")
-    
+
     if not quot.password:
         return {"success": True}
-        
+
     if req.password != quot.password:
         raise HTTPException(status_code=401, detail="Invalid password")
-        
+
     return {"success": True}
 
 @router.get("/{q_id}")
@@ -369,11 +486,11 @@ def get_quotation(q_id: int, db: Session = Depends(get_db)):
     quot = result.scalar_one_or_none()
     if not quot:
         raise HTTPException(status_code=404, detail="Quotation not found")
-    
+
     data = safe_json_loads(quot.data) if quot.data else {}
     if "billingDetails" not in data:
         data["billingDetails"] = {}
-        
+
     data["billingDetails"]["quotationStatus"] = quot.quotation_status or "For Approval"
     data["billingDetails"]["projectStatus"] = quot.project_status or "On Going"
     data["billingDetails"]["submittedToAdminAt"] = (
@@ -382,13 +499,13 @@ def get_quotation(q_id: int, db: Session = Depends(get_db)):
     data["billingDetails"]["updateDetail"] = quot.update_detail or ""
     data["billingDetails"]["projectInCharge"] = quot.designer_name or data.get("signatures", {}).get("quotation", {}).get("preparedBy", {}).get("name", "")
     data["billingDetails"]["billTo"] = data.get("clientInfo", {}).get("company", "") or ""
-    
+
     return data
 
 @router.patch("/{q_id}")
 def update_quotation(
-    q_id: int, 
-    data: dict, 
+    q_id: int,
+    data: dict,
     request: Request,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -398,9 +515,9 @@ def update_quotation(
     res = db.execute(stmt)
     quot = res.scalar_one_or_none()
     q_no = quot.quotation_no if quot else f"ID {q_id}"
-    
+
     _sync_metadata(q_id, data, db, current_user.username)
-    
+
     log_activity(
         username=current_user.username,
         action="UPDATE_QUOTATION",
@@ -420,13 +537,13 @@ def update_billing_monitoring(
     """Update billing tracking fields for admin roles."""
     if current_user.role not in ['admin', 'it']:
         raise HTTPException(status_code=403, detail="Access Denied")
-        
+
     stmt = select(Quotation).where(Quotation.id == q_id)
     res = db.execute(stmt)
     quot = res.scalar_one_or_none()
     if not quot:
         raise HTTPException(status_code=404, detail="Quotation not found")
-        
+
     # Editable billing tracking fields
     if "quotationNo" in payload:
         new_no = payload["quotationNo"]
@@ -494,7 +611,7 @@ def update_billing_monitoring(
         quot.update_detail = payload["updateDetail"]
     if "billingStatus" in payload:
         quot.billing_status = payload["billingStatus"] or None
-        
+
     # Enforce cascade logic
     if quot.quotation_status == "CANCELLED":
         quot.project_status = "CANCELLED"
@@ -506,7 +623,7 @@ def update_billing_monitoring(
         quot.updated_by = current_user.username
     quot.last_updated_at = datetime.now(timezone.utc)
     quot.updated_at = datetime.now(timezone.utc)
-    
+
     # Sync with inner JSON
     try:
         data = safe_json_loads(quot.data) if quot.data else {}
@@ -523,18 +640,18 @@ def update_billing_monitoring(
         data["billingDetails"]["clientName"] = quot.client_name or ""
         data["billingDetails"]["updatedBy"] = quot.updated_by
         data["billingDetails"]["lastUpdatedAt"] = quot.last_updated_at.strftime("%Y-%m-%d %H:%M")
-        
+
         if "clientInfo" not in data:
             data["clientInfo"] = {}
         data["clientInfo"]["company"] = quot.bill_to or ""
         data["clientInfo"]["contact"] = quot.customer_incharge or ""
-        
+
         if "quotationDetails" not in data:
             data["quotationDetails"] = {}
         data["quotationDetails"]["quotationNo"] = quot.quotation_no
         if "date" in payload or quot.date:
             data["quotationDetails"]["date"] = quot.date.isoformat()[:10] if quot.date else None
-            
+
         quot.data = json.dumps(data, ensure_ascii=False)
     except Exception as e:
         print(f"Error syncing JSON in update_billing_monitoring: {e}")
@@ -575,16 +692,57 @@ def get_history(q_id: int, db: Session = Depends(get_db)):
     stmt = select(QuotationHistory).where(QuotationHistory.quotation_id == q_id).order_by(desc(QuotationHistory.created_at))
     result = db.execute(stmt)
     items = result.scalars().all()
-    
+
     return {
         "history": [
             {
                 "id": h.id,
                 "label": h.label or "System Snapshot",
                 "author": h.author,
-                "timestamp": h.created_at.isoformat() + "Z"
+                "timestamp": local_timestamp_iso(h.created_at)
             } for h in items
         ]
+    }
+
+
+@router.post("/{q_id}/history", status_code=status.HTTP_201_CREATED)
+def create_history_snapshot(
+    q_id: int,
+    payload: HistorySnapshotRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Capture the persisted quotation after an explicit user save."""
+    quot = db.execute(select(Quotation).where(Quotation.id == q_id)).scalar_one_or_none()
+    if not quot:
+        raise HTTPException(status_code=404, detail="Quotation not found")
+
+    snapshot = QuotationHistory(
+        quotation_id=q_id,
+        label=(payload.label.strip() or "Manual Save")[:255],
+        author=current_user.full_name or current_user.username,
+        data=quot.data or "{}",
+        created_at=local_now(),
+    )
+    db.add(snapshot)
+    db.commit()
+    db.refresh(snapshot)
+
+    log_activity(
+        username=current_user.username,
+        action="CREATE_QUOTATION_HISTORY",
+        details=f"Saved version of quotation '{quot.quotation_no}' (ID: {q_id})",
+        ip_address=request.client.host,
+    )
+    return {
+        "success": True,
+        "history": {
+            "id": snapshot.id,
+            "label": snapshot.label,
+            "author": snapshot.author,
+            "timestamp": local_timestamp_iso(snapshot.created_at),
+        },
     }
 
 @router.get("/{q_id}/history/{h_id}")
@@ -598,7 +756,7 @@ def restore_history(q_id: int, h_id: int, db: Session = Depends(get_db)):
 
 @router.delete("/{q_id}")
 def delete_quotation(
-    q_id: int, 
+    q_id: int,
     request: Request,
     workstation: Optional[str] = None,
     computer_name: Optional[str] = None,
@@ -607,7 +765,7 @@ def delete_quotation(
     current_user: User = Depends(get_current_user)
 ):
     """Delete a quotation (soft delete by default, permanent delete if requested or already soft-deleted).
-    
+
     Authorization:
     - Admin/IT roles can delete any record.
     - Regular users can only delete records owned by their current workstation.
@@ -617,52 +775,28 @@ def delete_quotation(
     stmt = select(Quotation).where(Quotation.id == q_id)
     res = db.execute(stmt)
     quot = res.scalar_one_or_none()
-    
+
     if not quot:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Quotation not found")
-        
+
     # 2. Authorization Check
     is_admin = current_user.role in ['admin', 'it']
-    # Match workstation hostname or fullName for ownership
-    is_owner = (
-        (workstation and quot.workstation == workstation) or
-        (computer_name and quot.workstation == computer_name) or
-        (current_user.username and quot.workstation == current_user.username) or
-        (current_user.full_name and quot.workstation == current_user.full_name) or
-        (getattr(current_user, 'display_name', None) and quot.workstation == current_user.display_name)
-    )
-    print(f"DEBUG: Delete requested for q_id={q_id}, quot.workstation='{quot.workstation}', req_workstation='{workstation}', req_computer_name='{computer_name}'")
-    print(f"DEBUG: current_user.username='{current_user.username}', full_name='{current_user.full_name}', display_name='{getattr(current_user, 'display_name', None)}'")
-    print(f"DEBUG: is_admin={is_admin}, is_owner={is_owner}")
-
-    if not is_admin and not is_owner:
-        owner_label = quot.workstation if quot.workstation else "Legacy/Unknown"
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Deletion Denied: This record belongs to workstation '{owner_label}'. Only the owner or an administrator can delete it."
-        )
-
-    # 3. Perform Deletion
     q_no = quot.quotation_no
     is_soft = not (quot.is_deleted or permanent)
+
     if quot.is_deleted or permanent:
-        # Permanent delete is restricted to admins only
-        if not is_admin:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access Denied: Only administrators can permanently delete records from the trash bin."
-            )
+        # Permanent delete (allowed for all users managing their records)
         db.execute(delete(QuotationHistory).where(QuotationHistory.quotation_id == q_id))
         db.execute(delete(Quotation).where(Quotation.id == q_id))
     else:
-        # Soft delete
+        # Soft delete (allowed for all authenticated users)
         quot.is_deleted = True
         quot.is_active = False
 
     db.commit()
     cache_delete("quot_list")
     cache_delete("quot_sessions")
-    
+
     log_activity(
         username=current_user.username,
         action="PERMANENT_DELETE_QUOTATION" if not is_soft else "DELETE_QUOTATION",
@@ -679,17 +813,10 @@ def restore_quotation(
     current_user: User = Depends(get_current_user)
 ):
     """Restore a soft-deleted quotation from the trash bin."""
-    is_admin = current_user.role in ['admin', 'it']
-    if not is_admin:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Access Denied: Only administrators can restore records from the trash bin."
-        )
-
     stmt = select(Quotation).where(Quotation.id == q_id)
     res = db.execute(stmt)
     quot = res.scalar_one_or_none()
-    
+
     if not quot:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Quotation not found")
 
@@ -697,7 +824,7 @@ def restore_quotation(
     db.commit()
     cache_delete("quot_list")
     cache_delete("quot_sessions")
-    
+
     log_activity(
         username=current_user.username,
         action="RESTORE_QUOTATION",

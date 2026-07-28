@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Bell, Check, Trash2, X, RefreshCw, Eye } from 'lucide-react';
-import { Modal } from './Modal';
-import { api } from '../services/api';
+import { Bell,Check,RefreshCw,Trash2 } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useNotification } from '../context/NotificationContext';
+import { api } from '../services/api';
+import { Modal } from './Modal';
 
 interface NotificationsModalProps {
     isOpen: boolean;

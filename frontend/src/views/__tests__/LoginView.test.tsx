@@ -10,14 +10,11 @@
  * - Use @testing-library/user-event for realistic user interactions.
  */
 
-import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render,screen,waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { http, HttpResponse } from 'msw';
-import { server } from '../../test/mocks/server';
-import { TEST_USERS, TEST_TOKEN } from '../../test/mocks/handlers';
+import { beforeEach,describe,expect,it,vi } from 'vitest';
+import { TEST_TOKEN,TEST_USERS } from '../../test/mocks/handlers';
 
 // ── Mock heavy dependencies that don't render in jsdom ────────────
 
@@ -69,11 +66,7 @@ beforeEach(() => {
     localStorage.clear();
   }
 });
-
-// ══════════════════════════════════════════════════════════════════
 // Rendering
-// ══════════════════════════════════════════════════════════════════
-
 describe('LoginView — rendering', () => {
   it('renders username input', () => {
     renderLogin();
@@ -95,11 +88,7 @@ describe('LoginView — rendering', () => {
     expect(screen.getByText('KMTI')).toBeInTheDocument();
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // Validation
-// ══════════════════════════════════════════════════════════════════
-
 describe('LoginView — client-side validation', () => {
   it('shows error when username is empty on submit', async () => {
     const user = userEvent.setup();
@@ -123,11 +112,7 @@ describe('LoginView — client-side validation', () => {
     expect(mockLogin).not.toHaveBeenCalled();
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // Successful login
-// ══════════════════════════════════════════════════════════════════
-
 describe('LoginView — successful login', () => {
   it('calls login() with correct credentials', async () => {
     const user = userEvent.setup();
@@ -159,11 +144,7 @@ describe('LoginView — successful login', () => {
     });
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // Failed login
-// ══════════════════════════════════════════════════════════════════
-
 describe('LoginView — failed login', () => {
   it('shows error message on login failure', async () => {
     const user = userEvent.setup();
@@ -195,11 +176,7 @@ describe('LoginView — failed login', () => {
     });
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // Password visibility toggle
-// ══════════════════════════════════════════════════════════════════
-
 describe('LoginView — password toggle', () => {
   it('password is hidden by default', () => {
     renderLogin();
@@ -214,11 +191,7 @@ describe('LoginView — password toggle', () => {
     expect(screen.getByPlaceholderText('••••••••')).toHaveAttribute('type', 'text');
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // Remember Me checkbox
-// ══════════════════════════════════════════════════════════════════
-
 describe('LoginView — Remember Me checkbox', () => {
   it('toggles remember me state and saves username on successful login', async () => {
     const user = userEvent.setup();
@@ -247,11 +220,7 @@ describe('LoginView — Remember Me checkbox', () => {
     expect(screen.getByLabelText(/remember me/i)).toBeChecked();
   });
 });
-
-// ══════════════════════════════════════════════════════════════════
 // Close button
-// ══════════════════════════════════════════════════════════════════
-
 describe('LoginView — Top-Right Control Buttons', () => {
   it('renders close button and calls window.electronAPI.close on click', async () => {
     const mockClose = vi.fn();

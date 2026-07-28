@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React,{ useEffect,useRef } from 'react';
 
 const LightPillar: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -126,7 +126,7 @@ const LightPillar: React.FC = () => {
             const isLight = document.documentElement.getAttribute('data-theme') === 'light';
             const gradient = ctx.createLinearGradient(-300, 0, 300, 0);
             gradient.addColorStop(0, 'rgba(0,0,0,0)');
-            gradient.addColorStop(0.5, isLight ? 'rgba(99, 102, 241, 0.05)' : 'rgba(139, 92, 246, 0.1)'); 
+            gradient.addColorStop(0.5, isLight ? 'rgba(99, 102, 241, 0.05)' : 'rgba(139, 92, 246, 0.1)');
             gradient.addColorStop(1, 'rgba(0,0,0,0)');
 
             ctx.fillStyle = gradient;

@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import { assessmentService, AssessmentTask, AssessmentSubmission } from '../services/assessmentService';
-import { authService } from '../services/authService';
+import { useCallback,useEffect,useState } from 'react';
 import { useNotification } from '../context/NotificationContext';
-import { api, invalidateCache } from '../services/api';
+import { api,invalidateCache } from '../services/api';
+import { assessmentService,AssessmentSubmission,AssessmentTask } from '../services/assessmentService';
+import { authService } from '../services/authService';
+import { getFileOperationErrorMessage } from '../utils/fileOperationErrors';
 
 // Fix #7: confirmFn is injected by the parent component so the hook can
 // use the app's styled ConfirmationModal instead of window.confirm().
@@ -36,14 +37,15 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
       let processedTasks = tasksData.map(t => ({
         ...t,
-        set_number: Number(t.set_number)
+        set_number: Number(t.set_number),
+        source_set_number: Number(t.set_number)
       }));
       if (assessmentType === '2D') {
         processedTasks = processedTasks
           .filter(t => t.assessment_type === '2D' || t.set_number >= 100)
           .map(t => ({ ...t, set_number: t.set_number >= 100 ? t.set_number - 100 : t.set_number }));
       } else {
-        // Sets 4, 5, 6, and 7 are marked as '2D' in the database but are part of the 
+        // Sets 4, 5, 6, and 7 are marked as '2D' in the database but are part of the
         // 3D practical sequence. They must be allowed in the 3D view.
         processedTasks = processedTasks.filter(t => (t.assessment_type || '3D') === '3D' || (t.assessment_type === '2D' && t.set_number >= 4 && t.set_number <= 7));
       }
@@ -88,7 +90,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
 
     try {
       showNotification('Preparing task template download...', 'info');
-      
+
       const originalFilename = task.master_file_path
         ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
         : `Set${task.set_number}_${task.task_code}_Master.dwg`;
@@ -96,10 +98,17 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
         const url = assessmentService.getDownloadUrl(task.id);
         const token = authService.getToken();
-        await window.electronAPI.downloadBulkFiles({
-          tasks: [{ url, target_relative_path: originalFilename }],
+        if (!token) {
+          showNotification('Session expired. Please login again.', 'error');
+          return;
+        }
+        const result = await window.electronAPI.downloadBulkFiles({
+          tasks: [{ id: task.id, url, target_relative_path: originalFilename }],
           token
         });
+        if (result.successCount === 0) {
+          throw new Error(result.errors?.[0]?.message || 'No files were downloaded.');
+        }
       } else {
         const blob = await assessmentService.getMasterFileBlob(task.id);
         const url = window.URL.createObjectURL(blob);
@@ -112,11 +121,11 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
       }
-      
+
       showNotification('Task template download started.', 'success');
     } catch (err) {
       console.error('Download error:', err);
-      showNotification('Failed to download task template.', 'error');
+      showNotification(getFileOperationErrorMessage(err), 'error');
     }
   }, [showNotification]);
 
@@ -147,7 +156,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         showNotification(`${task.title} opened in iJCAD.`, 'success');
       } catch (err) {
         console.error('Failed to open in iJCAD:', err);
-        showNotification('Failed to launch iJCAD. Please check if it is installed.', 'error');
+        showNotification(getFileOperationErrorMessage(err, 'open', 'iJCAD'), 'error');
       }
     } else {
       // Web fallback: download the master file directly
@@ -166,7 +175,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       variant: "primary"
     });
     if (!confirmed) return;
-    
+
     try {
       showNotification('Preparing download...', 'info');
       const filename = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
@@ -174,10 +183,17 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
         const url = `${api.defaults.baseURL || ''}/api/v1/assessments/feedback/${feedback.id}/download`;
         const token = authService.getToken();
-        await window.electronAPI.downloadBulkFiles({
-          tasks: [{ url, target_relative_path: filename }],
+        if (!token) {
+          showNotification('Session expired. Please login again.', 'error');
+          return;
+        }
+        const result = await window.electronAPI.downloadBulkFiles({
+          tasks: [{ id: feedback.id, url, target_relative_path: filename }],
           token
         });
+        if (result.successCount === 0) {
+          throw new Error(result.errors?.[0]?.message || 'No files were downloaded.');
+        }
       } else {
         const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {
           responseType: 'blob'
@@ -196,7 +212,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       showNotification('Download started.', 'success');
     } catch (err) {
       console.error('Download error:', err);
-      showNotification('Failed to download file.', 'error');
+      showNotification(getFileOperationErrorMessage(err), 'error');
     }
   }, [showNotification]);
 
@@ -210,7 +226,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       variant: "primary"
     });
     if (!confirmed) return;
-    
+
     if (window.electronAPI && window.electronAPI.downloadAndOpen) {
       try {
         const url = assessmentService.getFeedbackDownloadUrl(feedback.id);
@@ -223,7 +239,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         await window.electronAPI.downloadAndOpen({ url, filename, token });
       } catch (err) {
         console.error('Failed to open Excel:', err);
-        showNotification('Failed to open Excel file.', 'error');
+        showNotification(getFileOperationErrorMessage(err, 'open', 'Excel'), 'error');
       }
     } else {
       handleDownloadFeedback(submission, feedback);

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { FileText, CheckCircle2, BarChart3, RotateCw, Check, X, RotateCcw, Loader2, ArrowLeft } from 'lucide-react';
-import { TraineeProgress, adminService } from '../../../services/adminService';
-import { useLessons } from '../../../hooks/useLessons';
-import { useUI } from '../../../context/UIContext';
-import { ProgressReportPrint } from './ProgressReportPrint';
+import { ArrowLeft,BarChart3,Check,CheckCircle2,FileText,Loader2,RotateCcw,RotateCw,X } from 'lucide-react';
+import React,{ useState } from 'react';
 import { Modal } from '../../../components/Modal';
-import { ICAD_3D_LESSONS, ICAD_2D_LESSONS, Lesson } from '../../mentor/mentorConstants';
+import { useUI } from '../../../context/UIContext';
+import { useLessons } from '../../../hooks/useLessons';
+import { TraineeProgress,adminService } from '../../../services/adminService';
 import '../../../styles/AssessmentManagement.css';
 import { getAvatarColor } from '../../../utils/avatarUtils';
+import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from '../../mentor/mentorConstants';
+import { ProgressReportPrint } from './ProgressReportPrint';
 
 interface TraineeDetailProps {
     selectedTrainee: TraineeProgress;
@@ -20,7 +19,6 @@ interface TraineeDetailProps {
 export const TraineeDetail: React.FC<TraineeDetailProps> = ({
     selectedTrainee,
     setSelectedTrainee,
-    onExport,
     onRefresh
 }) => {
     const { requestConfirmation } = useUI();
@@ -213,9 +211,6 @@ export const TraineeDetail: React.FC<TraineeDetailProps> = ({
         }
     };
 
-    const handlePrintReport = () => {
-        window.print();
-    };
 
     const getScopeBtnStyle = (scope: 'all' | '2D_Drawing' | '3D_Modeling') => {
         const isActive = targetScope === scope;
