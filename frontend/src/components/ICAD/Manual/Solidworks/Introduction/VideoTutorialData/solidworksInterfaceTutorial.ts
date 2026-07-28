@@ -16,7 +16,7 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     text: "Contains the commonly used tool buttons, the Application Menu, Pin Icon (used to show/hide the Application Menu), and Commonly Used Tools such as undo/redo, selection tool, rebuild, file properties and solidworks options settings.",
     zoom: "scale(1)",
     origin: "50% 50%",
-    spotlight: { top: "0%", left: "0%", width: "48%", height: "4%", opacity: 1 },
+    spotlight: { top: "0%", left: "0%", width: "47%", height: "3%", opacity: 1 },
     subtitlePos: { top: "6%", left: "50%", transform: "translateX(-50%)" }
   },
   {
@@ -25,8 +25,8 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     text: "It is a toolbar that consist of different toolbar that has set of commands for every function.",
     zoom: "scale(1)",
     origin: "50% 50%",
-    spotlight: { top: "11%", left: "0%", width: "20%", height: "3%", opacity: 1 },
-    subtitlePos: { top: "16%", left: "50%", transform: "translateX(-50%)" }
+    spotlight: { top: "11%", left: "0%", width: "20%", height: "2.75%", opacity: 1 },
+    subtitlePos: { top: "16%", left: "26%", transform: "translateX(-50%)" }
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     text: "It contains quick access view manipulation commands such as Section View, View Orientation Display Style, Hide/Show Items, Edit Appearance, etc.",
     zoom: "scale(1)",
     origin: "50% 50%",
-    spotlight: { top: "11%", left: "47%", width: "19%", height: "4%", opacity: 1 },
+    spotlight: { top: "11%", left: "47%", width: "19%", height: "3%", opacity: 1 },
     subtitlePos: { top: "17%", left: "50%", transform: "translateX(-50%)" }
   },
   {
@@ -43,7 +43,7 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     text: "It displays all the features used in 3D modeling, parts inserted in 3D Assembly including the features used, and the views that are used in 2D Detailing including Bill of Materials.",
     zoom: "scale(1)",
     origin: "50% 50%",
-    spotlight: { top: "14%", left: "0%", width: "13%", height: "83%", opacity: 1 },
+    spotlight: { top: "15%", left: "0%", width: "13%", height: "80%", opacity: 1 },
     subtitlePos: { top: "50%", left: "16%" }
   },
   {
@@ -61,8 +61,8 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     text: "It shows the position of the 3D Model. (Located on the lower left area of Graphics Area)",
     zoom: "scale(1)",
     origin: "50% 50%",
-    spotlight: { top: "85%", left: "11%", width: "8%", height: "14%", opacity: 1 },
-    subtitlePos: { bottom: "20%", left: "25%" }
+    spotlight: { top: "85%", left: "13%", width: "4.45%", height: "12%", opacity: 1 },
+    subtitlePos: { bottom: "14%", left: "20%" }
   },
   {
     id: 7,

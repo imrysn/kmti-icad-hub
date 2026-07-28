@@ -63,8 +63,6 @@ const CoordinateSystemContent: React.FC = () => {
                 <div style={{
                     width: '100%',
                     padding: '2rem',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid var(--glass-border)',
                     borderRadius: '12px',
                     display: 'flex',
                     justifyContent: 'center',
