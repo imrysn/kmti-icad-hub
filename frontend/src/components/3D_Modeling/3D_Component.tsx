@@ -1,10 +1,10 @@
 /** * 3D_Component.tsx  EComponent operations lessons (Consolidated) */
 
 import {
-ChevronLeft,
-ChevronRight
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
-import React,{ useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { useTranslation } from '../../context/LanguageContext';
@@ -170,23 +170,23 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
 
   useEffect(() => {
     const steps = activeTab === 'move' ? moveStepsTTS :
-                  activeTab === 'copy' ? copyStepsTTS :
-                  activeTab === 'mirror' ? mirrorStepsTTS :
-                  activeTab === 'rotate' ? rotateStepsTTS :
-                  activeTab === 'repeat' ? repeatStepsTTS :
-                  activeTab === 'rotateCopy' ? rotateCopyStepsTTS :
-                  activeTab === 'mirrorCopy' ? mirrorCopyStepsTTS : deleteStepsTTS;
+      activeTab === 'copy' ? copyStepsTTS :
+        activeTab === 'mirror' ? mirrorStepsTTS :
+          activeTab === 'rotate' ? rotateStepsTTS :
+            activeTab === 'repeat' ? repeatStepsTTS :
+              activeTab === 'rotateCopy' ? rotateCopyStepsTTS :
+                activeTab === 'mirrorCopy' ? mirrorCopyStepsTTS : deleteStepsTTS;
     const startIdx = activeTab === 'move' ? 0 : 2;
     registerText(steps, startIdx);
   }, [activeTab, registerText]);
 
   const currentTabSteps = activeTab === 'move' ? moveStepsTTS :
-                          activeTab === 'copy' ? copyStepsTTS :
-                          activeTab === 'mirror' ? mirrorStepsTTS :
-                          activeTab === 'rotate' ? rotateStepsTTS :
-                          activeTab === 'repeat' ? repeatStepsTTS :
-                          activeTab === 'rotateCopy' ? rotateCopyStepsTTS :
-                          activeTab === 'mirrorCopy' ? mirrorCopyStepsTTS : deleteStepsTTS;
+    activeTab === 'copy' ? copyStepsTTS :
+      activeTab === 'mirror' ? mirrorStepsTTS :
+        activeTab === 'rotate' ? rotateStepsTTS :
+          activeTab === 'repeat' ? repeatStepsTTS :
+            activeTab === 'rotateCopy' ? rotateCopyStepsTTS :
+              activeTab === 'mirrorCopy' ? mirrorCopyStepsTTS : deleteStepsTTS;
   const startIdx2 = activeTab === 'move' ? 0 : 2;
   const tabsList = [
     { id: 'move' }, { id: 'copy' }, { id: 'mirror' }, { id: 'rotate' },

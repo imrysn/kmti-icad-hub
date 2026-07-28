@@ -85,7 +85,7 @@ export const ja_3d_basic_operation = {
   "basicOp3.extrude.step4": "ENTERキーを押してください。",
   "basicOp3.revolve.title": "回転体",
   "basicOp3.revolve.step1": "アイコンメニューから「回転体」を選択します。",
-  "basicOp3.revolve.step2": "押し出しするスケッチの外周を選択し、「GO」を選択します。",
+  "basicOp3.revolve.step2": "押し出しするスケッチの外周を選択し、「GO」を選択します。", 
   "basicOp3.revolve.step3": "回転軸（点またはエッジを選択）を指定し、「GO」を選択します。押し出し対象となる指定領域を示すハッチが表示されます。",
   "basicOp4.showHide.heading": "表示・非表示",
   "basicOp4.showHide.desc": "エンティティの表示と非表示を切り替えるために使用するツール。",
