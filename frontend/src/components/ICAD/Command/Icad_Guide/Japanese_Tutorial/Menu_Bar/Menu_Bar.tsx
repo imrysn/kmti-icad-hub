@@ -16,7 +16,7 @@ interface SpotlightConfig {
 const SPOTLIGHTS: SpotlightConfig[] = [
     { label: "File", startTime: 3.6, endTime: 4.8, pxX: 0, pxY: 34, pxW: 710, pxH: 570 },
     { label: "View", startTime: 4.8, endTime: 6.3, pxX: 64, pxY: 34, pxW: 240, pxH: 380 },
-    { label: "Info", startTime: 6.3, endTime: 7.8, pxX: 120, pxY: 34, pxW: 248, pxH: 470 },
+    { label: "Information", startTime: 6.3, endTime: 7.8, pxX: 120, pxY: 34, pxW: 248, pxH: 470 },
     { label: "Settings", startTime: 7.8, endTime: 9.3, pxX: 197, pxY: 34, pxW: 307, pxH: 660 },
     { label: "Tools", startTime: 9.3, endTime: 11.1, pxX: 251, pxY: 34, pxW: 234, pxH: 220 },
     { label: "Window", startTime: 11.1, endTime: 12.9, pxX: 311, pxY: 34, pxW: 356, pxH: 520 },
@@ -218,8 +218,8 @@ function Menu_Bar_Japanese_Tutorial() {
                             <div
                                 style={{
                                     position: "absolute",
-                                    left: 0,
-                                    top: "calc(100% + 6px)",
+                                    left: "calc(100% + 6px)",
+                                    top: 0,
                                     backgroundColor: "rgba(20, 20, 30, 0.9)",
                                     color: "#ff1493",
                                     border: "1.5px solid #ff1493",
@@ -253,31 +253,6 @@ function Menu_Bar_Japanese_Tutorial() {
 
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
-            {/* Quick jump navigation chips */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center", marginBottom: "16px" }}>
-                {SPOTLIGHTS.map((spot) => {
-                    const isActive = activeSpotlight?.label === spot.label;
-                    return (
-                        <button
-                            key={spot.label}
-                            onClick={() => jumpToTime(spot.startTime)}
-                            style={{
-                                padding: "4px 12px",
-                                fontSize: "12px",
-                                fontWeight: "600",
-                                borderRadius: "16px",
-                                border: isActive ? "1px solid #ff1493" : "1px solid var(--border-color)",
-                                backgroundColor: isActive ? "rgba(255, 20, 147, 0.2)" : "var(--bg-surface)",
-                                color: isActive ? "#ff1493" : "var(--text-muted)",
-                                cursor: "pointer",
-                                transition: "all 0.2s ease"
-                            }}
-                        >
-                            {spot.label} ({spot.startTime}s)
-                        </button>
-                    );
-                })}
-            </div>
 
             <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
                 {videoError ? (

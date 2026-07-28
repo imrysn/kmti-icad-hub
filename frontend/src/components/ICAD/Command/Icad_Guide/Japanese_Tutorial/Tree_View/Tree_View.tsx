@@ -229,31 +229,6 @@ function Tree_View_Japanese_Tutorial() {
 
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
-            {/* Quick jump navigation chips */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center", marginBottom: "16px" }}>
-                {SPOTLIGHTS.map((spot) => {
-                    const isActive = activeSpotlight?.label === spot.label;
-                    return (
-                        <button
-                            key={spot.label}
-                            onClick={() => jumpToTime(spot.startTime)}
-                            style={{
-                                padding: "4px 12px",
-                                fontSize: "12px",
-                                fontWeight: "600",
-                                borderRadius: "16px",
-                                border: isActive ? "1px solid #ff1493" : "1px solid var(--border-color)",
-                                backgroundColor: isActive ? "rgba(255, 20, 147, 0.2)" : "var(--bg-surface)",
-                                color: isActive ? "#ff1493" : "var(--text-muted)",
-                                cursor: "pointer",
-                                transition: "all 0.2s ease"
-                            }}
-                        >
-                            {spot.label} ({spot.startTime}s)
-                        </button>
-                    );
-                })}
-            </div>
 
             <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
                 {videoError ? (
