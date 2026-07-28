@@ -23,7 +23,7 @@ export const SolidworksIntroduction: React.FC<Props> = ({ setSelectedCourse }) =
                 onClick={(e) => {
                     e.stopPropagation();
                     setSelectedCourse({
-                        id: 'sw-intro',
+                        id: 'mock-sw-intro',
                         title: 'SolidWorks Introduction',
                         description: 'Learn the basics of SOLIDWORKS interface and workflow.',
                         course_type: 'Manual'

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
-import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2 } from 'lucide-react'; import { Course } from '../../../types';
+import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2, Layers } from 'lucide-react'; import { Course } from '../../../types';
 import { useUI } from '../../../context/UIContext'; import { useAuth } from '../../../hooks/useAuth';
 import { Lesson } from '../mentorConstants'; import { QuizModal } from './QuizModal';
 import { authService } from '../../../services/authService';
@@ -28,6 +28,21 @@ const StandardLesson = lazy(() => import('../../../components/ICAD/Manual/3D_Mod
 const KemcoThreeDStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/3D_Standard'));
 const KemcoTwoDStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/2D_Standard'));
 const PipingTableLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/PipingTable'));
+const GeneralStandardSteelLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/GeneralStandardSteel'));
+const SteelPipesLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/SteelPipes'));
+const AngleBarDimensionsLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/AngleBarDimensions'));
+const AvailablePlateThicknessJISLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/AvailablePlateThicknessJIS'));
+const BoltingKemcoStandardLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/BoltingKemcoStandard'));
+const CrossRefPreviousDwgLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/CrossRef&PreviouDwg'));
+const ExpandedMetalLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ExpandedMetal'));
+const JISScaleLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/JIS_Scale'));
+const KeyplateGrooveLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/Keyplate&Groove'));
+const OST2SpecificationLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/OST-2'));
+const ParagonSMCLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ParagonSMC'));
+const RetainerRingLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/RetainerRing'));
+const ShaftKeywayLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ShaftKeyway'));
+const ShowaCatalogLesson = lazy(() => import('../../../components/ICAD/Standard/Kemco_JIS_Standard/ShowaCatalog'));
+
 
 // 2D Lesson Imports (Lazy Loaded)
 const OrthographicViewLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_OrthographicView'));
@@ -53,9 +68,19 @@ const OperalViewLesson = lazy(() => import('../../../components/ICAD/Manual/2D_D
 const NormalMirrorPartsLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_NormalMirrorParts'));
 const RevisionCodeLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/ICAD/Manual/2D_Detailing/2D_StandardLibrary'));
-const SolidworkInterfaceLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/Introduction/Solidwork_Interface'));
+const SolidworkIntroLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/Introduction/SolidworkIntroLesson'));
 const SolidworkPartModelingLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/3D_Operation/3D_Part_Modeling'));
-const Solidwork2DOperationLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/2D_Operation'));
+const Solidwork2DOperationLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertComponentsInThePart'));
+const Solidwork2DInsertMainViewsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertMainViews'));
+const Solidwork2DAddOtherViewsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddOtherViewsAsNeeded'));
+const Solidwork2DDetailViewLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/DetailViewContent'));
+const Solidwork2DAddDimensionNotesLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddDimentionAndNotes'));
+const Solidwork2DWeldingSymbolsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/AddWeldingSymbols'));
+const Solidwork2DInsertNewBranchLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertNewBranchAndJogPoint'));
+const Solidwork2DInsertBOMLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertBillOfMaterial'));
+const Solidwork2DInsertingBalloonsLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/InsertingBalloons'));
+const Solidwork2DEditPropertiesLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/EditProperties'));
+const Solidwork2DSavingDetailLesson = lazy(() => import('../../../components/ICAD/Manual/Solidworks/2D_Operation/SavingDetails'));
 
 import { useTTSContext } from '../../../context/TTSContext';
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
@@ -112,14 +137,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   }, []);
 
   const handleStop = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'sw-interface') {
       window.dispatchEvent(new CustomEvent('kmti-stop-tutorial'));
     }
     stop();
   }, [activeLessonId, stop]);
 
   const speakCurrent = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'sw-interface') {
       window.dispatchEvent(new CustomEvent('kmti-play-tutorial'));
       return;
     }
@@ -452,11 +477,69 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '3d': () => <KemcoThreeDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d': () => <KemcoTwoDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'piping': () => <PipingTableLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-interface': () => <SolidworkInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-interface': () => <SolidworkIntroLesson subLessonId="sw-interface" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-mouse-control': () => <SolidworkIntroLesson subLessonId="sw-mouse-control" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-keyboard-shortcuts': () => <SolidworkIntroLesson subLessonId="sw-keyboard-shortcuts" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-menu-bar': () => <SolidworkIntroLesson subLessonId="sw-menu-bar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-command-manager': () => <SolidworkIntroLesson subLessonId="sw-command-manager" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-heads-up-view-toolbar': () => <SolidworkIntroLesson subLessonId="sw-heads-up-view-toolbar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-feature-manager-tree-view': () => <SolidworkIntroLesson subLessonId="sw-feature-manager-tree-view" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-coordinate-system': () => <SolidworkIntroLesson subLessonId="sw-coordinate-system" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-status-bar': () => <SolidworkIntroLesson subLessonId="sw-status-bar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-part-modeling': () => <SolidworkPartModelingLesson subLessonId="sw-part-modeling" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-sketching-base': () => <SolidworkPartModelingLesson subLessonId="sw-sketching-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-extruding-base': () => <SolidworkPartModelingLesson subLessonId="sw-extruding-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-cutting-base': () => <SolidworkPartModelingLesson subLessonId="sw-cutting-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-adding-holes': () => <SolidworkPartModelingLesson subLessonId="sw-adding-holes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-inserting-chamfer': () => <SolidworkPartModelingLesson subLessonId="sw-inserting-chamfer" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-editing-properties': () => <SolidworkPartModelingLesson subLessonId="sw-editing-properties" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-part-saving': () => <SolidworkPartModelingLesson subLessonId="sw-part-saving" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-sheet-metal': () => <SolidworkPartModelingLesson subLessonId="sw-sheet-metal" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-bended-plate': () => <SolidworkPartModelingLesson subLessonId="sw-bended-plate" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-material-weight': () => <SolidworkPartModelingLesson subLessonId="sw-material-weight" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-creating-assembly': () => <SolidworkPartModelingLesson subLessonId="sw-creating-assembly" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-assembly-saving': () => <SolidworkPartModelingLesson subLessonId="sw-assembly-saving" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-linear-pattern': () => <SolidworkPartModelingLesson subLessonId="sw-linear-pattern" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-mirror-component': () => <SolidworkPartModelingLesson subLessonId="sw-mirror-component" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-how-to-edit-sketch': () => <SolidworkPartModelingLesson subLessonId="sw-how-to-edit-sketch" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-how-to-edit-feature': () => <SolidworkPartModelingLesson subLessonId="sw-how-to-edit-feature" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-how-to-edit-matings': () => <SolidworkPartModelingLesson subLessonId="sw-how-to-edit-matings" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-2d-operation-page1': () => <Solidwork2DOperationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-main-views': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-insert-main-views" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-main-views-base': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-insert-main-views-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-projected-view': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-projected-view" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-hide-show-lines': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-hide-show-lines" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-centerline': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-centerline" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-center-mark': () => <Solidwork2DInsertMainViewsLesson subLessonId="sw-2d-center-mark" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-other-views': () => <Solidwork2DAddOtherViewsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-detail-view': () => <Solidwork2DDetailViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-dimension-notes': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-add-dimension-notes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-dimension-notes-base': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-add-dimension-notes-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-dimensioning-hole': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-dimensioning-hole" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-dimensioning-chamfer': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-dimensioning-chamfer" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-adding-notes': () => <Solidwork2DAddDimensionNotesLesson subLessonId="sw-2d-adding-notes" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-welding-symbols': () => <Solidwork2DWeldingSymbolsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-new-branch': () => <Solidwork2DInsertNewBranchLesson subLessonId="sw-2d-insert-new-branch-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-new-branch-base': () => <Solidwork2DInsertNewBranchLesson subLessonId="sw-2d-insert-new-branch-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-add-jog-point': () => <Solidwork2DInsertNewBranchLesson subLessonId="sw-2d-add-jog-point" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-insert-bom': () => <Solidwork2DInsertBOMLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-inserting-balloons': () => <Solidwork2DInsertingBalloonsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-edit-properties': () => <Solidwork2DEditPropertiesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-2d-saving-detail': () => <Solidwork2DSavingDetailLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+
+                  'general-standard-steel': () => <GeneralStandardSteelLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'steel-pipes': () => <SteelPipesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'angle-bar-dimensions': () => <AngleBarDimensionsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'available-plate-thickness-jis': () => <AvailablePlateThicknessJISLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'bolting-kemco': () => <BoltingKemcoStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'cross-ref': () => <CrossRefPreviousDwgLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'expanded-metal': () => <ExpandedMetalLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'jis-scale': () => <JISScaleLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'keyplate-groove': () => <KeyplateGrooveLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'ost-2': () => <OST2SpecificationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'paragon-smc': () => <ParagonSMCLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'shaft-keyway': () => <ShaftKeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'showa-catalog': () => <ShowaCatalogLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
@@ -497,6 +580,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '2d-weight-computation': (id) => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d-revision-code': (id) => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d-standard-library': (id) => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d': (id) => <KemcoTwoDStandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'general-standard-steel': (id) => <GeneralStandardSteelLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'retainer-ring': (id) => <RetainerRingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
                 const exactMatch = activeLessonId ? registry[activeLessonId] : null;
@@ -558,12 +644,25 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   );
                 }
 
+                const activeLesson = lessons.find(l => l.id === activeLessonId) || lessons.flatMap(l => l.children || []).find(c => c.id === activeLessonId);
+                const isParentNode = activeLesson && activeLesson.children && activeLesson.children.length > 0;
+
+                if (isParentNode) {
+                    return (
+                        <div className="content-placeholder" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+                            <Layers size={48} className="content-placeholder__icon" style={{ opacity: 0.5, marginBottom: '1rem' }} />
+                            <h3 style={{ fontSize: '1.25rem', color: 'var(--text-color)', letterSpacing: '1px' }}>{activeLesson.title.toUpperCase()}</h3>
+                            <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>Please select a sub-lesson from the sidebar to begin.</p>
+                        </div>
+                    );
+                }
+
                 return (
                   <div className="content-placeholder">
-                    <Video size={48} className="content-placeholder__icon" />
+                    <BookOpen size={48} className="content-placeholder__icon" />
                     <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
                     <p className="content-placeholder__note">
-                      This area will host the instructional text, video demonstrations, and active testing prompts.
+                      This area will host the instructional text, images, and active testing prompts.
                     </p>
 
                     <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>

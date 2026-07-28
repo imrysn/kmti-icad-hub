@@ -2,9 +2,11 @@ import React, { useState, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../../hooks/useLessonCore";
 import "../../../../../styles/3D_Modeling/CourseLesson.css";
+import VideoTutorialViewer from '../../3D_Modeling/VideoTutorialViewer';
+import { SOLIDWORKS_TUTORIAL_STEPS } from './VideoTutorialData/solidworksInterfaceTutorial';
 
 // --- Assets ---
-import mainInterface from "../../../../../assets/Solidworks/Introduction/Solidwork_Interface.png";
+import mainInterface from "../../../../../assets/Solidworks/Introduction/SW_UI_Main.png";
 import mouseLeft from "../../../../../assets/Solidworks/Introduction/Solidwork_Left.png";
 import mouseRight from "../../../../../assets/Solidworks/Introduction/Solidwork_Right.png";
 import mouseScroll from "../../../../../assets/Solidworks/Introduction/Solidwork_Scroll.png";
@@ -247,14 +249,14 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
 /* ------------------------------------------------------------------ */
 
 const coordinateImages = [
-    { src: coordinate1, alt: "Coordinate System — Front view" },
-    { src: coordinate2, alt: "Coordinate System — Back view" },
-    { src: coordinate3, alt: "Coordinate System — Left view" },
-    { src: coordinate4, alt: "Coordinate System — Right view" },
-    { src: coordinate5, alt: "Coordinate System — Top view" },
-    { src: coordinate6, alt: "Coordinate System — Bottom view" },
-    { src: coordinate7, alt: "Coordinate System — Isometric view" },
-    { src: coordinate8, alt: "Coordinate System — Trimetric view" },
+    { src: coordinate1, alt: "Front view", label: "Front" },
+    { src: coordinate2, alt: "Back view", label: "Back" },
+    { src: coordinate3, alt: "Left view", label: "Left" },
+    { src: coordinate4, alt: "Right view", label: "Right" },
+    { src: coordinate5, alt: "Top view", label: "Top" },
+    { src: coordinate6, alt: "Bottom view", label: "Bottom" },
+    { src: coordinate7, alt: "Isometric view", label: "Isometric" },
+    { src: coordinate8, alt: "Trimetric view", label: "Trimetric" },
 ];
 
 const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
@@ -287,73 +289,48 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
             </div>
 
             <div className="lesson-grid single-card">
-                <div className="lesson-card fade-in">
+                {activeTab === 'page1' && (
+                    <div className="lesson-card fade-in" style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0, marginBottom: '2rem' }}>
+                        <div className="interactive-stage-container" style={{ width: '100%' }}>
+                            <VideoTutorialViewer 
+                                steps={SOLIDWORKS_TUTORIAL_STEPS} 
+                                imageSrc={mainInterface}
+                            />
+                        </div>
+                    </div>
+                )}
 
+                <div className="lesson-card fade-in">
                     {activeTab === 'page1' && (
                         <>
-                            {/* Header */}
-                            <div className="card-header">
-                                <h4 className="section-title">SolidWorks Interface</h4>
-                            </div>
-                            <div className="instruction-step" style={{ marginTop: "1rem" }}>
-                                <img
-                                    src={mainInterface}
-                                    alt="SolidWorks Interface"
-                                    className="software-screenshot screenshot-wide"
-                                    style={{ marginBottom: "1.5rem" }}
-                                />
-                            </div>
-
                             {/* SECTION 1: Mouse Control */}
                             <div className="card-header" style={{ marginTop: "2rem" }}>
                                 <h4 className="section-title">Mouse Control</h4>
                             </div>
-                            <div className="instruction-step">
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', marginTop: "1rem" }}>
-
-                                    <div className="course-card card-2d" style={{ flex: '1 1 200px', minWidth: '200px', maxWidth: '100%', display: 'flex', flexDirection: 'column' }}>
-                                        <div className="card-header">
-                                            <h3>Left Mouse Button</h3>
-                                        </div>
-                                        <div className="card-graphic-container" style={{ background: 'transparent', padding: '1rem' }}>
-                                            <img src={mouseLeft} alt="Left Mouse Button" style={{ maxHeight: '80px', objectFit: 'contain' }} />
-                                        </div>
-                                        <div style={{ flexGrow: 1, padding: '0 1rem 1rem' }}>
-                                            <ul style={{ paddingLeft: '1.25rem', margin: 0, color: 'var(--text-muted)' }}>
-                                                <li>Left - Used to select objects.</li>
-                                            </ul>
-                                        </div>
+                            <div className="instruction-step" style={{ paddingLeft: '1rem' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: "1rem" }}>
+                                    
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                                        <img src={mouseLeft} alt="Left Mouse Button" style={{ width: '40px', objectFit: 'contain' }} />
+                                        <span style={{ fontSize: '1rem', color: 'var(--text-primary)' }}><strong>Left</strong> - use to Select object.</span>
                                     </div>
 
-                                    <div className="course-card card-2d" style={{ flex: '1 1 200px', minWidth: '200px', maxWidth: '100%', display: 'flex', flexDirection: 'column' }}>
-                                        <div className="card-header">
-                                            <h3>Right Mouse Button</h3>
-                                        </div>
-                                        <div className="card-graphic-container" style={{ background: 'transparent', padding: '1rem' }}>
-                                            <img src={mouseRight} alt="Right Mouse Button" style={{ maxHeight: '80px', objectFit: 'contain' }} />
-                                        </div>
-                                        <div style={{ flexGrow: 1, padding: '0 1rem 1rem' }}>
-                                            <ul style={{ paddingLeft: '1.25rem', margin: 0, color: 'var(--text-muted)' }}>
-                                                <li>Right - Opens the shortcut menu.</li>
-                                                <li>The available commands change depending on the current cursor position or selected object.</li>
-                                            </ul>
-                                        </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                                        <img src={mouseRight} alt="Right Mouse Button" style={{ width: '40px', objectFit: 'contain' }} />
+                                        <span style={{ fontSize: '1rem', color: 'var(--text-primary)' }}><strong>Right</strong> - contains Shortcut Menu. It differs depending on the active cursor of mouse.</span>
                                     </div>
 
-                                    <div className="course-card card-2d" style={{ flex: '1 1 200px', minWidth: '200px', maxWidth: '100%', display: 'flex', flexDirection: 'column' }}>
-                                        <div className="card-header">
-                                            <h3>Scroll Wheel</h3>
-                                        </div>
-                                        <div className="card-graphic-container" style={{ background: 'transparent', padding: '1rem' }}>
-                                            <img src={mouseScroll} alt="Scroll Wheel" style={{ maxHeight: '80px', objectFit: 'contain' }} />
-                                        </div>
-                                        <div style={{ flexGrow: 1, padding: '0 1rem 1rem' }}>
-                                            <ul style={{ paddingLeft: '1.25rem', margin: 0, color: 'var(--text-muted)' }}>
-                                                <li>Scroll Up — Zoom Out</li>
-                                                <li>Scroll Down — Zoom In</li>
-                                                <li>Click Scroll Wheel — Rotate Model</li>
-                                                <li>Ctrl + Scroll Wheel — Pan</li>
-                                            </ul>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                                        <img src={mouseScroll} alt="Scroll Wheel" style={{ width: '40px', objectFit: 'contain' }} />
+                                        <div style={{ display: 'flex', gap: '4rem', fontSize: '1rem', color: 'var(--text-primary)' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                                <span><strong>Scroll Up</strong> - Zoom Out</span>
+                                                <span><strong>Scroll Down</strong> - Zoom In</span>
+                                            </div>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                                <span><strong>Click Scroll</strong> - Rotate model</span>
+                                                <span><strong>Ctrl + Scroll</strong> - Pan</span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -364,30 +341,55 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                             <div className="card-header" style={{ marginTop: "2rem" }}>
                                 <h4 className="section-title">Keyboard Shortcuts</h4>
                             </div>
-                            <div className="instruction-step">
-                                <div className="course-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: "1rem" }}>
+                            <div className="instruction-step" style={{ paddingLeft: '1rem' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', marginTop: "1rem" }}>
 
-                                    <div className="course-card card-2d" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                                        <div className="card-header">
-                                            <h3>Common Keyboard Shortcuts</h3>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
+                                        <div className="lesson-table-container" style={{ width: '350px' }}>
+                                            <table className="lesson-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>Ctrl + N</td><td>New</td></tr>
+                                                    <tr><td>Ctrl + O</td><td>Open</td></tr>
+                                                    <tr><td>Ctrl + S</td><td>Save</td></tr>
+                                                    <tr><td>Ctrl + C</td><td>Copy</td></tr>
+                                                    <tr><td>Ctrl + V</td><td>Paste</td></tr>
+                                                    <tr><td>Ctrl + Z</td><td>Undo</td></tr>
+                                                    <tr><td>Ctrl + Y</td><td>Redo</td></tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <p style={{ padding: '0 1rem', marginBottom: '1rem', color: 'var(--text-muted)' }}>
-                                            These are the commonly used keyboard shortcuts. They can be used not only in SolidWorks but also in many other software applications.
-                                        </p>
-                                        <div className="card-graphic-container card-2d-graphic-container" style={{ background: 'transparent', padding: '1rem', flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <img src={keyboardCommon} alt="Common Keyboard Shortcuts" style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} />
+                                        <div style={{ maxWidth: '350px', paddingTop: '0.5rem' }}>
+                                            <p className="p-flush red-text">※ These are the commonly used keyboard shortcuts, it can be used not only in Solidworks but to other softwares as well.</p>
                                         </div>
                                     </div>
 
-                                    <div className="course-card card-2d" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                                        <div className="card-header">
-                                            <h3>SolidWorks Keyboard Shortcuts</h3>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
+                                        <div className="lesson-table-container" style={{ width: '350px' }}>
+                                            <table className="lesson-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
+                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>Spacebar</td><td>View Orientation</td></tr>
+                                                    <tr><td>Ctrl + b</td><td>Rebuild</td></tr>
+                                                    <tr><td>f</td><td>Fit to view</td></tr>
+                                                    <tr><td>g</td><td>Magnify</td></tr>
+                                                    <tr><td>l</td><td>Line</td></tr>
+                                                    <tr><td>m</td><td>Measure</td></tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <p style={{ padding: '0 1rem', marginBottom: '1rem', color: 'var(--text-muted)' }}>
-                                            These are the commonly used keyboard shortcuts specifically for SolidWorks.
-                                        </p>
-                                        <div className="card-graphic-container card-2d-graphic-container" style={{ background: 'transparent', padding: '1rem', flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <img src={keyboardSolidworks} alt="SolidWorks Keyboard Shortcuts" style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} />
+                                        <div style={{ maxWidth: '350px', paddingTop: '0.5rem' }}>
+                                            <p className="p-flush red-text">※ It is the commonly used shortcuts in SolidWorks.</p>
                                         </div>
                                     </div>
 
@@ -543,7 +545,7 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                             </div>
 
                             {/* ======================================================= */}
-                            {/* SECTION 7: Coordinate System (Carousel)                  */}
+                            {/* SECTION 7: Coordinate System                             */}
                             {/* ======================================================= */}
                             <div className="card-header" style={{ marginTop: "2rem" }}>
                                 <h4 className="section-title">Coordinate System</h4>
@@ -552,8 +554,17 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                                     It shows the position of the 3D model. It is located at the lower-left area of the Graphics Area.
                                 </p>
-                                <div style={{ marginTop: '1rem' }}>
-                                    <ImageCarousel images={coordinateImages} />
+                                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
+                                    {coordinateImages.map((img, idx) => (
+                                        <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            <img
+                                                src={img.src}
+                                                alt={img.alt}
+                                                style={{ height: '60px', objectFit: 'contain' }}
+                                            />
+                                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>{img.label}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 

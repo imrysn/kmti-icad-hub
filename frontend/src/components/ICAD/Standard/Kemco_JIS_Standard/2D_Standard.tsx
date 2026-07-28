@@ -29,6 +29,7 @@ interface TwoDStandardLessonProps {
   nextLabel?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
+  subLessonId?: string;
 }
 
 const galleryImages = [
@@ -58,7 +59,8 @@ const reminderSteps = [
 const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   onNextLesson,
   onPrevLesson,
-  nextLabel
+  nextLabel,
+  subLessonId = '2d-main'
 }) => {
   const {
     scrollProgress,
@@ -145,216 +147,233 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <KaraokeLessonText
-          as="h3"
-          className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-          data-reading-index="0"
-          text="2D STANDARD"
-          isActive={isSpeaking && currentIndex === 0}
-          currentCharIndex={currentCharIndex}
-        />
-        <KaraokeLessonText
-          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-          data-reading-index="1"
-          text="REMINDER:"
-          isActive={isSpeaking && currentIndex === 1}
-          currentCharIndex={currentCharIndex}
-        />
-      </section>
+      {(!subLessonId || subLessonId === '2d-main' || subLessonId === '2d') && (
+        <>
+          <section className="lesson-intro">
+            <KaraokeLessonText
+              as="h3"
+              className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+              data-reading-index="0"
+              text="2D STANDARD"
+              isActive={isSpeaking && currentIndex === 0}
+              currentCharIndex={currentCharIndex}
+            />
+            <KaraokeLessonText
+              className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
+              data-reading-index="1"
+              text="REMINDER:"
+              isActive={isSpeaking && currentIndex === 1}
+              currentCharIndex={currentCharIndex}
+            />
+          </section>
 
-      <div className="lesson-grid single-card">
-        <div className="lesson-card tab-content fade-in">
-
-          {/* Item 1 */}
-          <div
-            className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
-            data-reading-index="2"
-          >
-            <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
-              <div style={{ flex: "1.2", minWidth: "280px" }}>
-                <div className="step-header" style={{ marginBottom: "1.5rem" }}>
-                  <span className="step-number">1 </span>
-                  <KaraokeLessonText
-                    as="span"
-                    className="step-label"
-                    text='Use the main views. <span class="red-text">(Front View, Top View, Right Side View)</span>'
-                    isActive={isSpeaking && currentIndex === 2}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-              </div>
-              <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
-                <img
-                  src={mainViewsImg}
-                  alt="Main Views"
-                  className="software-screenshot"
-                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Item 2 */}
-          <div
-            className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}
-            data-reading-index="3"
-          >
-            <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
-              <div style={{ flex: "1.2", minWidth: "280px" }}>
-                <div className="step-header" style={{ marginBottom: "1.5rem" }}>
-                  <span className="step-number">2 </span>
-                  <KaraokeLessonText
-                    as="span"
-                    className="step-label"
-                    text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views</span>. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create <span class="red-text">detailed/section views</span>.'
-                    isActive={isSpeaking && currentIndex === 3}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-              </div>
-              <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
-                <img
-                  src={dimensioningOrderImg}
-                  alt="Dimensioning Order"
-                  className="software-screenshot"
-                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Item 3 */}
-          <div
-            className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`}
-            data-reading-index="4"
-          >
-            <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
-              <div style={{ flex: "1.2", minWidth: "280px" }}>
-                <div className="step-header" style={{ marginBottom: "1.5rem" }}>
-                  <span className="step-number">3 </span>
-                  <KaraokeLessonText
-                    as="span"
-                    className="step-label"
-                    text='Ensure all <span class="red-text">dimensions</span> and <span class="red-text">critical details</span> are applied to the 2D detailing of parts and assemblies <span class="red-text">(example: chamfers, radius, machining symbols, welding symbols or notes, special notes, BOM and Isometric)</span>.'
-                    isActive={isSpeaking && currentIndex === 4}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-              </div>
-              <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
-                <img
-                  src={criticalDetailsImg}
-                  alt="Critical Details"
-                  className="software-screenshot"
-                  style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Horizontal Image Gallery */}
-          <div className="gallery-section mt-12" style={{ borderTop: "1px solid var(--glass-border)", paddingTop: "3rem", width: "100%" }}>
-            <h4 style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.25rem", fontWeight: 700, marginBottom: "1.5rem", color: "var(--text-main)" }}>
-              <ImageIcon size={20} style={{ color: "var(--color-primary)" }} /> Reference Standard Gallery
-            </h4>
-
-            <div
-              className="gallery-container"
-              style={{
-                background: "rgba(255, 255, 255, 0.02)",
-                border: "1px solid var(--glass-border)",
-                borderRadius: "12px",
-                padding: "1.5rem",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                boxShadow: "var(--shadow-card)"
-              }}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {/* Image Frame */}
+          <div className="lesson-grid single-card">
+            <div className="lesson-card tab-content fade-in">
+              {/* Item 1 */}
               <div
-                style={{
-                  width: "100%",
-                  height: "450px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  overflow: "hidden",
-                  borderRadius: "8px",
-                  background: "#000"
-                }}
+                className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
+                data-reading-index="2"
               >
-                <img
-                  src={galleryImages[galleryIndex].src}
-                  alt={galleryImages[galleryIndex].label}
-                  loading="lazy"
+                <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
+                  <div style={{ flex: "1.2", minWidth: "280px" }}>
+                    <div className="step-header" style={{ marginBottom: "1.5rem" }}>
+                      <span className="step-number">1 </span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text='Use the main views. <span class="red-text">(Front View, Top View, Right Side View)</span>'
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
+                    <img
+                      src={mainViewsImg}
+                      alt="Main Views"
+                      className="software-screenshot"
+                      style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Item 2 */}
+              <div
+                className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}
+                data-reading-index="3"
+              >
+                <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
+                  <div style={{ flex: "1.2", minWidth: "280px" }}>
+                    <div className="step-header" style={{ marginBottom: "1.5rem", alignItems: "flex-start" }}>
+                      <span className="step-number">2 </span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views</span>. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create <span class="red-text">detailed/section views</span>.'
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
+                    <img
+                      src={dimensioningOrderImg}
+                      alt="Dimensioning Order"
+                      className="software-screenshot"
+                      style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Item 3 */}
+              <div
+                className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`}
+                data-reading-index="4"
+              >
+                <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
+                  <div style={{ flex: "1.2", minWidth: "280px" }}>
+                    <div className="step-header" style={{ marginBottom: "1.5rem", alignItems: "flex-start" }}>
+                      <span className="step-number">3 </span>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text='Ensure all <span class="red-text">dimensions</span> and <span class="red-text">critical details</span> are applied to the 2D detailing of parts and assemblies <span class="red-text">(example: chamfers, radius, machining symbols, welding symbols or notes, special notes, BOM and Isometric)</span>.'
+                        isActive={isSpeaking && currentIndex === 4}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
+                    <img
+                      src={criticalDetailsImg}
+                      alt="Critical Details"
+                      className="software-screenshot"
+                      style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Page Navigation */}
+              <div className="lesson-navigation mt-12">
+                <button
+                  className="nav-button"
+                  onClick={handlePrev}
+                  disabled={!onPrevLesson}
+                >
+                  <ChevronLeft size={18} /> Previous
+                </button>
+                <button className="nav-button next" onClick={handleNext}>
+                  {nextLabel || "Next Lesson"} <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {subLessonId === '2d-gallery' && (
+        <>
+          <section className="lesson-intro">
+            <h3 className="section-title">Reference Standard Gallery</h3>
+          </section>
+
+          <div className="lesson-grid single-card">
+            <div className="lesson-card tab-content fade-in">
+              <div
+                className="gallery-container"
+                style={{
+                  padding: "1.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                {/* Image Frame */}
+                <div
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain"
+                    width: "100%",
+                    height: "650px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                    borderRadius: "8px",
                   }}
-                />
-              </div>
-
-              {/* Slider Controls & Indicators */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  marginTop: "1.5rem"
-                }}
-              >
-                <button
-                  className="nav-button"
-                  onClick={handleGalleryPrev}
-                  style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
                 >
-                  <ChevronLeft size={16} /> Previous Image
-                </button>
-
-                <div style={{ textAlign: "center" }}>
-                  <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
-                    {galleryImages[galleryIndex].label}
-                  </span>
-                  <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                    Image {galleryImages[galleryIndex].number} of 13
-                  </span>
+                  <img
+                    src={galleryImages[galleryIndex].src}
+                    alt={galleryImages[galleryIndex].label}
+                    loading="lazy"
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain"
+                    }}
+                  />
                 </div>
 
+                {/* Slider Controls & Indicators */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    marginTop: "1.5rem"
+                  }}
+                >
+                  <button
+                    className="nav-button"
+                    onClick={handleGalleryPrev}
+                    style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                  >
+                    <ChevronLeft size={16} /> Previous Image
+                  </button>
+
+                  <div style={{ textAlign: "center" }}>
+                    <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
+                      {galleryImages[galleryIndex].label}
+                    </span>
+                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                      Image {galleryImages[galleryIndex].number} of 13
+                    </span>
+                  </div>
+
+                  <button
+                    className="nav-button"
+                    onClick={handleGalleryNext}
+                    style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                  >
+                    Next Image <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Page Navigation */}
+              <div className="lesson-navigation mt-12">
                 <button
                   className="nav-button"
-                  onClick={handleGalleryNext}
-                  style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                  onClick={handlePrev}
+                  disabled={!onPrevLesson}
                 >
-                  Next Image <ChevronRight size={16} />
+                  <ChevronLeft size={18} /> Previous
+                </button>
+                <button className="nav-button next" onClick={handleNext}>
+                  {nextLabel || "Next Lesson"} <ChevronRight size={18} />
                 </button>
               </div>
             </div>
           </div>
-
-          {/* Page Navigation */}
-          <div className="lesson-navigation mt-12">
-            <button
-              className="nav-button"
-              onClick={handlePrev}
-              disabled={!onPrevLesson}
-            >
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              {nextLabel || "Next Lesson"} <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

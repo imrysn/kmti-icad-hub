@@ -1,0 +1,32 @@
+import React from "react";
+import mainInterface from "../../../../../assets/Solidworks/Introduction/SW_UI_Main.png";
+
+const SolidworksInterfaceContent: React.FC = () => (
+    <div style={{
+        position: 'relative',
+        width: '100%',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        background: '#000',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }}>
+        <img
+            src={mainInterface}
+            alt="SolidWorks Interface"
+            style={{
+                display: 'block',
+                width: '100%',
+                maxWidth: '100%',
+                maxHeight: 'calc(100vh - 200px)',
+                aspectRatio: '16 / 9',
+                objectFit: 'contain'
+            }}
+        />
+    </div>
+);
+
+export default SolidworksInterfaceContent;

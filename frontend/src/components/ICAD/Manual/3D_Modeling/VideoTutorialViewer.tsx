@@ -38,9 +38,10 @@ export interface TutorialStep {
 
 interface VideoTutorialViewerProps {
   steps: TutorialStep[];
+  imageSrc?: string;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageSrc }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -205,13 +206,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     setCurrentCharIndex(0);
     setIsPaused(false);
 
-
     const title = steps[currentStep].title;
     const text = steps[currentStep].text;
+    const fullTextToSpeak = `${title}. ${text}`;
 
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
-    const spokenText = sanitizeSpeech(text);
-    const spokenTitle = sanitizeSpeech(title);
+    const spokenText = sanitizeSpeech(fullTextToSpeak);
 
     const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
     const isKokoro = savedVoice.startsWith('kokoro://');
@@ -227,7 +227,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       audioRef.current = textAudio;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
-      const estimatedDuration = (text.length * 60) / savedRate;
+      const estimatedDuration = (fullTextToSpeak.length * 60) / savedRate;
 
       let wordIdx = 0;
       let searchFrom = 0;
@@ -235,13 +235,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       textAudio.onplaying = () => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
         
-        setCurrentCharIndex(searchFrom);
+        setCurrentCharIndex(0);
         const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration)) 
           ? textAudio.duration 
           : (estimatedDuration / 1000);
         const totalMs = durationSec * 1000;
-        const msPerChar = totalMs / (text.length || 1);
+        const msPerChar = totalMs / (fullTextToSpeak.length || 1);
         
+        const titleDurationMs = (title.length + 2) * msPerChar; // account for title and ". "
+
         const highlightNextWord = () => {
           if (!isPlaying) return;
           if (wordIdx < words.length) {
@@ -256,7 +258,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             activeIntervalRef.current = setTimeout(highlightNextWord, delay);
           }
         };
-        highlightNextWord();
+        
+        activeIntervalRef.current = setTimeout(highlightNextWord, titleDurationMs);
       };
 
       textAudio.onpause = () => {
@@ -280,12 +283,10 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
         }
         setCurrentCharIndex(0);
         if (currentStep < steps.length - 1) {
-          // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
           }, 400);
         } else {
-          // Last step: if there is no video, stop playback automatically
           if (!steps[currentStep].videoSrc) {
             handleStop();
           }
@@ -313,16 +314,16 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       textUtterance.rate = savedRate * 0.9;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
-      const estimatedDuration = (text.length * 60) / textUtterance.rate;
+      const estimatedDuration = (fullTextToSpeak.length * 60) / textUtterance.rate;
       let boundaryFired = false;
 
       const getOriginalIndex = (spokenIdx: number) => {
-        if (text.length === spokenText.length) return spokenIdx;
+        if (fullTextToSpeak.length === spokenText.length) return spokenIdx;
         const regex = /i\s*cad/ig;
         let match;
         let shift = 0;
         regex.lastIndex = 0;
-        while ((match = regex.exec(text)) !== null) {
+        while ((match = regex.exec(fullTextToSpeak)) !== null) {
           const matchIdx = match.index;
           const matchText = match[0];
           const diff = 7 - matchText.length;
@@ -340,7 +341,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
           if (!boundaryFired && synthRef.current) {
             let wordIdx = 0;
             let searchFrom = 0;
-            const msPerChar = estimatedDuration / (text.length || 1);
+            const msPerChar = estimatedDuration / (fullTextToSpeak.length || 1);
+            const titleDurationMs = (title.length + 2) * msPerChar;
 
             const highlightNextWord = () => {
               if (wordIdx < words.length) {
@@ -355,7 +357,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
                 activeIntervalRef.current = setTimeout(highlightNextWord, delay);
               }
             };
-            highlightNextWord();
+            activeIntervalRef.current = setTimeout(highlightNextWord, titleDurationMs);
           }
         }, 300);
       };
@@ -367,7 +369,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             clearTimeout(activeIntervalRef.current);
             activeIntervalRef.current = null;
           }
-          setCurrentCharIndex(getOriginalIndex(e.charIndex));
+          const origIdx = getOriginalIndex(e.charIndex);
+          const titleOffset = title.length + 2; // For ". "
+          
+          if (origIdx >= titleOffset) {
+             setCurrentCharIndex(origIdx - titleOffset);
+          } else {
+             setCurrentCharIndex(0); // Still reading title
+          }
         }
       };
 
@@ -375,12 +384,10 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
         setCurrentCharIndex(0);
         if (currentStep < steps.length - 1) {
-          // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
           }, 400);
         } else {
-          // Last step: if there is no video, stop playback automatically
           if (!steps[currentStep].videoSrc) {
             handleStop();
           }
@@ -631,14 +638,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             />
           ) : (
             <img
-              src={icadInterfaceImg}
+              src={imageSrc || icadInterfaceImg}
               alt="iCAD Interface"
               className="tutorial-image"
               style={{
                 display: 'block',
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain'
+                objectFit: 'fill'
               }}
             />
           )}

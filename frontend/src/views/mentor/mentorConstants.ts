@@ -935,9 +935,26 @@ export const ICAD_2D_LESSONS: Lesson[] = [
 
 export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: '3d', title: '3D Standard', content: ['3D Standard reminder: origin placement, dimensions, materials & layers, interference check.'] },
-  { id: '2d', title: '2D Standard', content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'] },
+  { 
+    id: '2d', 
+    title: '2D Standard', 
+    content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'],
+    children: [
+      { id: '2d-main', title: '2D Standard Main', content: [] },
+      { id: '2d-gallery', title: 'Reference Standard Gallery', content: [] }
+    ]
+  },
   { id: 'piping', title: 'Piping', content: ['Placeholder for Piping'] },
-  { id: 'general-standard-steel', title: 'General Standard Steel', content: ['Placeholder'] },
+  { 
+    id: 'general-standard-steel', 
+    title: 'General Standard Steel', 
+    content: ['Placeholder'],
+    children: [
+      { id: 'general-standard-steel-main', title: 'General Standard Steel Material Table', content: [] },
+      { id: 'general-standard-steel-flat', title: 'Flat Bar Reference Table', content: [] },
+      { id: 'general-standard-steel-round', title: 'Round Bar', content: [] }
+    ]
+  },
   { id: 'steel-pipes', title: 'Steel Pipes', content: ['Placeholder'] },
   { id: 'angle-bar-dimensions', title: 'Angle Bar Dimensions', content: ['Placeholder'] },
   { id: 'available-plate-thickness-jis', title: 'Available Plate Thickness JIS', content: ['Placeholder'] },
@@ -948,45 +965,339 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: 'keyplate-groove', title: 'Keyplate & Groove', content: ['Placeholder'] },
   { id: 'ost-2', title: 'OST-2', content: ['Placeholder'] },
   { id: 'paragon-smc', title: 'Paragon SMC', content: ['Placeholder'] },
-  { id: 'retainer-ring', title: 'Retainer Ring', content: ['Placeholder'] },
+  { 
+    id: 'retainer-ring', 
+    title: 'Retainer Ring', 
+    content: ['Placeholder'],
+    children: [
+      { id: 'retainer-ring-main', title: 'Retainer Ring (JIS Standard)', content: [] },
+      { id: 'retainer-ring-spec', title: 'Retainer Ring Specifications (OCHIAI)', content: [] }
+    ]
+  },
   { id: 'shaft-keyway', title: 'Shaft Keyway', content: ['Placeholder'] },
   { id: 'showa-catalog', title: 'Showa Catalog', content: ['Placeholder'] }
 ];
 
 export const SOLIDWORKS_INTRO_LESSONS: Lesson[] = [
   {
-    id: 'sw-interface',
+    id: 'sw-interface-main',
     title: 'SolidWorks Interface',
-    content: ['Mouse Control', 'Keyboard Shortcuts'],
+    content: ['SolidWorks Interface', 'Window Layout', 'Software Overview'],
     isCompleted: false,
     children: [
-      { id: 'sw-interface', title: 'SolidWorks Interface', content: ['Mouse Control', 'Keyboard Shortcuts'] }
+      { id: 'sw-interface', title: 'SolidWorks Interface', content: ['Window Layout', 'Software Overview'] }
+    ]
+  },
+  {
+    id: 'sw-mouse-control-main',
+    title: 'Mouse Control',
+    content: ['Left Click', 'Right Click', 'Scroll Wheel'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-mouse-control', title: 'Mouse Control', content: ['Left Click', 'Right Click', 'Scroll Wheel'] }
+    ]
+  },
+  {
+    id: 'sw-keyboard-shortcuts-main',
+    title: 'Keyboard Shortcuts',
+    content: ['Ctrl + N', 'Ctrl + S', 'Ctrl + Z', 'Ctrl + Y', 'Ctrl + C', 'Ctrl + V'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-keyboard-shortcuts', title: 'Keyboard Shortcuts', content: ['Ctrl + N', 'Ctrl + S', 'Ctrl + Z', 'Ctrl + Y', 'Ctrl + C', 'Ctrl + V'] }
+    ]
+  },
+  {
+    id: 'sw-menu-bar-main',
+    title: 'Menu Bar',
+    content: ['Menu Bar'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-menu-bar', title: 'Menu Bar', content: ['Menu Bar'] }
+    ]
+  },
+  {
+    id: 'sw-command-manager-main',
+    title: 'Command Manager',
+    content: ['Command Manager'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-command-manager', title: 'Command Manager', content: ['Command Manager'] }
+    ]
+  },
+  {
+    id: 'sw-heads-up-view-toolbar-main',
+    title: 'Heads-up View Toolbar',
+    content: ['Heads-up View Toolbar'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-heads-up-view-toolbar', title: 'Heads-up View Toolbar', content: ['Heads-up View Toolbar'] }
+    ]
+  },
+  {
+    id: 'sw-feature-manager-tree-view-main',
+    title: 'FeatureManager Tree View',
+    content: ['FeatureManager Tree View'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-feature-manager-tree-view', title: 'FeatureManager Tree View', content: ['FeatureManager Tree View'] }
+    ]
+  },
+  {
+    id: 'sw-coordinate-system-main',
+    title: 'Coordinate System',
+    content: ['Coordinate System'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-coordinate-system', title: 'Coordinate System', content: ['Coordinate System'] }
+    ]
+  },
+  {
+    id: 'sw-status-bar-main',
+    title: 'Status Bar',
+    content: ['Status Bar'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-status-bar', title: 'Status Bar', content: ['Status Bar'] }
     ]
   }
 ];
 
 export const SOLIDWORKS_3D_OPERATION_LESSONS: Lesson[] = [
   {
-    id: 'sw-3d-operation',
-    title: '3D Operation',
+    id: 'sw-part-modeling-main',
+    title: '3D Part Modeling',
     content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'],
     isCompleted: false,
     children: [
-      { id: 'sw-part-modeling', title: '3D Part Modeling', content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'] },
-      { id: 'sw-sketching-base', title: 'Sketching the Base', content: ['Add sketch geometry', 'Add sketch relations', 'Insert dimension/s'] },
-      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extrude the sketch into a solid'] }
+      { id: 'sw-part-modeling', title: '3D Part Modeling', content: ['Create New File', 'Select New Part Document', 'Set the Material', 'Show the Origin'] }
+    ]
+  },
+  {
+    id: 'sw-sketching-base-main',
+    title: 'Sketching the Base',
+    content: ['Sketch', 'Front Plane', 'Center Rectangle', 'Sketch relation', 'Smart dimension'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-sketching-base', title: 'Sketching the Base', content: ['Sketch', 'Front Plane', 'Center Rectangle', 'Sketch relation', 'Smart dimension'] }
+    ]
+  },
+  {
+    id: 'sw-extruding-base-main',
+    title: 'Extruding the Base',
+    content: ['Extruded Boss/Base'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-extruding-base', title: 'Extruding the Base', content: ['Extruded Boss/Base'] }
+    ]
+  },
+  {
+    id: 'sw-cutting-base-main',
+    title: 'Cutting the Base',
+    content: ['Extrude Cut'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-cutting-base', title: 'Cutting the Base', content: ['Extrude Cut'] }
+    ]
+  },
+  {
+    id: 'sw-adding-holes-main',
+    title: 'Adding of Holes',
+    content: ['Hole Wizard'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-adding-holes', title: 'Adding of Holes', content: ['Hole Wizard'] }
+    ]
+  },
+  {
+    id: 'sw-inserting-chamfer-main',
+    title: 'Inserting Chamfer',
+    content: ['Fillet', 'Chamfer'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-inserting-chamfer', title: 'Inserting Chamfer', content: ['Fillet', 'Chamfer'] }
+    ]
+  },
+  {
+    id: 'sw-editing-properties-main',
+    title: 'Editing Properties of part',
+    content: ['File Properties', 'Dialog Box'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-editing-properties', title: 'Editing Properties of Part', content: ['File Properties', 'Dialog Box'] }
+    ]
+  },
+  {
+    id: 'sw-part-saving-main',
+    title: 'Part Saving',
+    content: ['File Name', 'Filename Extension'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-part-saving', title: 'Part Saving', content: ['File Name', 'Filename Extension'] }
+    ]
+  },
+  {
+    id: 'sw-sheet-metal-main',
+    title: 'Sheet Metal (Creating other part)',
+    content: ['3D Part Modeling', 'Base Flange / Tab'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-sheet-metal', title: 'Sheet Metal (Creating Other Part)', content: ['3D Part Modeling', 'Base Flange / Tab'] }
+    ]
+  },
+  {
+    id: 'sw-bended-plate-main',
+    title: 'Getting the Total Length of Bended Plate',
+    content: ['Flat-Pattern', 'Measure'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-bended-plate', title: 'Getting the Total Length of Bended Plate', content: ['Flat-Pattern', 'Measure'] }
+    ]
+  },
+  {
+    id: 'sw-creating-assembly-main',
+    title: 'Creating Assembly',
+    content: ['Insert Component', 'Mate'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-creating-assembly', title: 'Creating Assembly', content: ['Insert Component', 'Mate'] }
+    ]
+  },
+  {
+    id: 'sw-linear-pattern-main',
+    title: 'Linear Pattern',
+    content: ['Linear Component', 'Distance', 'Quantity'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-linear-pattern', title: 'Linear Pattern', content: ['Linear Component', 'Distance', 'Quantity'] }
+    ]
+  },
+  {
+    id: 'sw-mirror-component-main',
+    title: 'Mirror Component',
+    content: ['Mirror Components', 'Mirror Plane'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-mirror-component', title: 'Mirror Component', content: ['Mirror Components', 'Mirror Plane'] }
+    ]
+  },
+  {
+    id: 'sw-assembly-saving-main',
+    title: 'Assembly Saving',
+    content: ['Save', 'File Name', 'Filename Extension'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-assembly-saving', title: 'Assembly Saving', content: ['Save', 'File Name', 'Filename Extension'] }
+    ]
+  },
+  {
+    id: 'sw-material-weight-main',
+    title: 'Getting the Mat\'l Wt (Material weight) of a part',
+    content: ['Rollback Bar', 'File Properties', 'Mat\'l Wt Value'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-material-weight', title: 'Getting the Mat\'l Wt (Material weight) of a part', content: ['Rollback Bar', 'File Properties', 'Mat\'l Wt Value'] }
+    ]
+  },
+  {
+    id: 'sw-how-to-edit-sketch-main',
+    title: 'How to edit Sketch',
+    content: ['Edit Sketch'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-how-to-edit-sketch', title: 'How to edit Sketch', content: ['Edit Sketch'] }
+    ]
+  },
+  {
+    id: 'sw-how-to-edit-feature-main',
+    title: 'How to edit Feature',
+    content: ['Edit Feature'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-how-to-edit-feature', title: 'How to edit Feature', content: ['Edit Feature'] }
+    ]
+  },
+  {
+    id: 'sw-how-to-edit-matings-main',
+    title: 'How to edit matings',
+    content: ['Matings'],
+    isCompleted: false,
+    children: [
+      { id: 'sw-how-to-edit-matings', title: 'How to edit matings', content: ['Matings'] }
     ]
   }
 ];
 
 export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
-  {
-    id: 'sw-2d-operation',
-    title: '2D Operation',
-    content: ['Insert Components in the Part', 'Create New File', 'Select New Document', 'Insert Parts/ Assembly'],
-    isCompleted: false,
+  { 
+    id: 'sw-2d-operation-page1', 
+    title: 'Insert Components in the Part', 
+    content: ['Create New File', 'Select New Document', 'Insert Parts/ Assembly'] 
+  },
+  { 
+    id: 'sw-2d-insert-main-views', 
+    title: 'Insert Main Views', 
+    content: ['Projected View', 'Hide/Show Lines', 'Centerline', 'Center Mark'],
     children: [
-      { id: 'sw-2d-operation-page1', title: 'Insert Components in the Part', content: [] }
+      { id: 'sw-2d-insert-main-views-base', title: 'Insert Main Views', content: ['Insert Main Views'] },
+      { id: 'sw-2d-projected-view', title: 'Projected View', content: ['Projected View'] },
+      { id: 'sw-2d-hide-show-lines', title: 'Hide/Show Lines', content: ['Hide/Show Lines'] },
+      { id: 'sw-2d-centerline', title: 'Centerline', content: ['Centerline'] },
+      { id: 'sw-2d-center-mark', title: 'Center Mark', content: ['Center Mark'] }
     ]
+  },
+  { 
+    id: 'sw-2d-add-dimension-notes', 
+    title: 'Add Dimensions and Notes', 
+    content: ['Dimensioning', 'Dimensioning Hole', 'Dimensioning Chamfer', 'Adding Notes'],
+    children: [
+      { id: 'sw-2d-add-dimension-notes-base', title: 'Add Dimensions and Notes', content: ['Dimensioning'] },
+      { id: 'sw-2d-dimensioning-hole', title: 'Dimensioning Hole', content: ['Dimensioning Hole'] },
+      { id: 'sw-2d-dimensioning-chamfer', title: 'Dimensioning Chamfer', content: ['Dimensioning Chamfer'] },
+      { id: 'sw-2d-adding-notes', title: 'Adding Notes', content: ['Adding Notes'] }
+    ]
+  },
+  { 
+    id: 'sw-2d-add-other-views', 
+    title: 'Add other views as needed', 
+    content: ['Section View', 'Remove Hatch'] 
+  },
+  { 
+    id: 'sw-2d-detail-view', 
+    title: 'Detail View', 
+    content: ['Detail View', 'Detail View Property Manager'] 
+  },
+  { 
+    id: 'sw-2d-welding-symbols', 
+    title: 'Welding Symbols', 
+    content: ['Weld Symbol', 'Welding Properties'] 
+  },
+  {
+    id: 'sw-2d-insert-new-branch',
+    title: 'Insert New Branch and Jog Point',
+    content: ['Insert New Branch', 'Add Jog Point'],
+    children: [
+      { id: 'sw-2d-insert-new-branch-base', title: 'Insert New Branch', content: ['Insert New Branch'] },
+      { id: 'sw-2d-add-jog-point', title: 'Add Jog Point', content: ['Add Jog Point'] }
+    ]
+  },
+  {
+    id: 'sw-2d-insert-bom',
+    title: 'Insert Bill of Material (BOM)',
+    content: ['Insert Menu', 'Table Template', 'BOM Type']
+  },
+  {
+    id: 'sw-2d-inserting-balloons',
+    title: 'Inserting Balloons',
+    content: ['Annotation', 'Edit Balloon Leader']
+  },
+  {
+    id: 'sw-2d-edit-properties',
+    title: 'Edit Properties',
+    content: ['File Properties', 'Summary Information', 'Edit Properties']
+  },
+  {
+    id: 'sw-2d-saving-detail',
+    title: 'Saving 2D Detail',
+    content: ['Save', 'File Name', 'Filename Extension']
   }
 ];

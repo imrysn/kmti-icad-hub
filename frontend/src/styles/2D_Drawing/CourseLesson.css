@@ -283,7 +283,7 @@
 
 .step-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
 }
 
@@ -307,6 +307,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-main);
+  margin-top: 0.25rem;
   /* Theme-aware fallback */
 }
 
@@ -473,7 +474,7 @@
   background: rgba(99, 102, 241, 0.04);
   border-left: 4px solid var(--primary);
   border-radius: var(--radius-md);
-  padding: 1.5rem 2rem;
+  padding: 0.75rem 1.25rem;
   color: var(--text-main);
   transition: all 0.3s ease;
 }
@@ -870,6 +871,48 @@
 .lesson-table td.highlight-cell-yellow {
   background-color: #facc15 !important;
   color: #000000 !important;
+}
+
+/* --- Compact modifier for Piping Table --- */
+.lesson-table.piping-table-compact {
+  font-size: 0.75rem;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.lesson-table.piping-table-compact th,
+.lesson-table.piping-table-compact td {
+  padding: 0.35rem 0.6rem;
+  line-height: 1.35;
+  vertical-align: middle;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.lesson-table.piping-table-compact thead th {
+  font-size: 0.72rem;
+  padding: 0.5rem 0.6rem;
+  letter-spacing: 0.03em;
+}
+
+/* Spec column — wrap long part numbers */
+.lesson-table.piping-table-compact td:nth-child(3) {
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  font-family: monospace;
+  font-size: 0.7rem;
+}
+
+/* Notes column — smaller, compressed text */
+.lesson-table.piping-table-compact td:nth-child(4) {
+  font-size: 0.68rem;
+  line-height: 1.3;
+}
+
+[data-theme='light'] .lesson-table.piping-table-compact td {
+  color: #1e293b !important;
 }
 
 /* --- Spacing Utilities --- */

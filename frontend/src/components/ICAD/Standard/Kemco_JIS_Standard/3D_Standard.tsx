@@ -6,7 +6,7 @@ import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
-import originPlacementImg from "../../../../assets/Standard/Kemco_JIS_Standard/3d_standard_origin_placement.png";
+import originPlacementImg from "../../../../assets/3D_Image_File/origin_change_3d_part_layout_2345.png";
 import materialsLayersImg from "../../../../assets/Standard/Kemco_JIS_Standard/3d_standard_materials&layers.png";
 
 interface ThreeDStandardLessonProps {
@@ -95,7 +95,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
             </section>
 
             <div className="lesson-grid single-card">
-                <div className="lesson-card tab-content fade-in">
+                <div className="lesson-card tab-content fade-in" style={{ gap: "1rem" }}>
 
                     {/* Item 1 */}
                     <div
@@ -112,12 +112,12 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
-                        <div className="step-description">
+                        <div className="step-description" style={{ alignItems: "center", marginTop: "0.5rem" }}>
                             <img
                                 src={originPlacementImg}
                                 alt="Origin Placement"
-                                className="software-screenshot mt-4"
-                                style={{ maxWidth: "100%", height: "auto" }}
+                                className="software-screenshot"
+                                style={{ maxWidth: "80%", height: "auto" }}
                             />
                         </div>
                     </div>
@@ -154,12 +154,12 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
-                        <div className="step-description">
+                        <div className="step-description" style={{ alignItems: "center", marginTop: "0.5rem" }}>
                             <img
                                 src={materialsLayersImg}
                                 alt="Materials and Layers"
-                                className="software-screenshot mt-4"
-                                style={{ maxWidth: "100%", height: "auto" }}
+                                className="software-screenshot"
+                                style={{ maxWidth: "90%", height: "auto" }}
                             />
                         </div>
                     </div>

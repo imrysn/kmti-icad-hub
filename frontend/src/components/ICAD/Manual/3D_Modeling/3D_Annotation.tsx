@@ -255,7 +255,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap">
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1 </span>
+                        <span className="step-number">1</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -265,7 +265,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2 </span>
+                        <span className="step-number">2</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -300,7 +300,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1 </span>
+                        <span className="step-number">1</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -310,7 +310,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2 </span>
+                        <span className="step-number">2</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -345,7 +345,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1 </span>
+                        <span className="step-number">1</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -355,7 +355,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2 </span>
+                        <span className="step-number">2</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -390,7 +390,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1 </span>
+                        <span className="step-number">1</span>
                         <span className="step-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                           <KaraokeLessonText
                             as="span"
@@ -402,7 +402,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         </span>
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-                        <span className="step-number">2 </span>
+                        <span className="step-number">2</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -413,7 +413,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                       </div>
                       <img src={noteWindow} alt="Note String Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '400px', marginBottom: "2rem" }} />
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3 </span>
+                        <span className="step-number">3</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -423,7 +423,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">4 </span>
+                        <span className="step-number">4</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -458,7 +458,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`}>
-                        <span className="step-number">1 </span>
+                        <span className="step-number">1</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -469,7 +469,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                       </div>
                       <img src={textWindow} alt="Text Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '500px', marginBottom: "2rem" }} />
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2 </span>
+                        <span className="step-number">2</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -479,7 +479,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3 </span>
+                        <span className="step-number">3</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -514,7 +514,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1 </span>
+                        <span className="step-number">1</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -525,7 +525,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
-                        <span className="step-number">2 </span>
+                        <span className="step-number">2</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -535,7 +535,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3 </span>
+                        <span className="step-number">3</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -570,7 +570,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1 </span>
+                        <span className="step-number">1</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -581,7 +581,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
-                        <span className="step-number">2 </span>
+                        <span className="step-number">2</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -591,7 +591,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3 </span>
+                        <span className="step-number">3</span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
