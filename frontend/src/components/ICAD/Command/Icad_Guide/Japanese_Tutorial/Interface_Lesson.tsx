@@ -43,7 +43,7 @@ function Interface_Lesson() {
                             padding: "8px 24px",
                             border: "none",
                             borderRadius: "6px",
-                            backgroundColor: activeTab === tab ? "var(--color-primary)" : "transparent",
+                            backgroundColor: activeTab === tab ? "#ff32ddff" : "transparent",
                             color: activeTab === tab ? "#ffffff" : "var(--text-muted)",
                             fontWeight: "bold",
                             fontSize: "14px",
@@ -52,7 +52,7 @@ function Interface_Lesson() {
                             fontFamily: "var(--font-main)"
                         }}
                         onMouseEnter={(e) => {
-                            if (activeTab !== tab) e.currentTarget.style.color = "var(--text-main)";
+                            if (activeTab !== tab) e.currentTarget.style.color = "#ff32ddff";
                         }}
                         onMouseLeave={(e) => {
                             if (activeTab !== tab) e.currentTarget.style.color = "var(--text-muted)";

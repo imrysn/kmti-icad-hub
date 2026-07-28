@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { CheckCircle2, Menu, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 import { IcadCommandsGrid } from './icad/IcadCommandsGrid';
 import { IcadGuideGrid } from './icad/IcadGuideGrid';
 import { IcadMenuSetupGrid } from './icad/IcadMenuSetupGrid';
 import Icad_Commands from '../../../components/ICAD/Command/Icad_Commands/Icad_Commands';
 import Icad_Guide from '../../../components/ICAD/Command/Icad_Guide/Icad_Guide';
 import Icad_Menu_Setup from '../../../components/ICAD/Command/Icad_Menu_Setup/menuSetup';
+import { useUI } from '../../../context/UIContext';
+
 
 
 interface Props {
@@ -20,38 +22,55 @@ const SIDEBAR_LESSONS = [
 ];
 
 export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
+    const { requestConfirmation } = useUI();
     const [commandsPage, setCommandsPage] = useState<string | null>(null);
     const [guidePage, setGuidePage] = useState<string | null>(null);
     const [menuSetupPage, setMenuSetupPage] = useState<string | null>(null);
 
+    useEffect(() => {
+        const handleReset = () => {
+            setCommandsPage(null);
+            setGuidePage(null);
+            setMenuSetupPage(null);
+        };
+        window.addEventListener('resetCourseView', handleReset);
+        return () => window.removeEventListener('resetCourseView', handleReset);
+    }, []);
+
+
+
+    const handleExitCourse = async () => {
+        const confirmed = await requestConfirmation({
+            title: 'SUSPEND LEARNING SESSION',
+            message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
+            confirmText: 'Suspend Session',
+            type: 'info'
+        });
+        if (confirmed) {
+            setSelectedCourse(null);
+        }
+    };
+
     // ── Full-page Commands view (LessonViewer-like layout) ──────────────────
     if (commandsPage === 'icad_commands') {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-deep, #0d0d1a)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-dark)', overflow: 'hidden' }}>
 
                 {/* Top bar */}
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                     padding: '0.75rem 1.5rem',
-                    borderBottom: '1px solid rgba(255,255,255,0.07)',
-                    background: 'var(--bg-surface, #1a1a2e)',
+                    borderBottom: '1px solid var(--border-color)',
+                    background: 'var(--bg-surface)',
                     flexShrink: 0,
                 }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary, #6366f1)', fontWeight: 600, letterSpacing: '0.05em' }}>
-                            iCAD Command Reference
-                        </p>
-                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary, #fff)' }}>
-                            iCAD Commands
-                        </h2>
-                    </div>
 
                     {/* Exit button */}
                     <button
                         className="exit-course-btn"
-                        onClick={() => setCommandsPage(null)}
+                        onClick={handleExitCourse}
                     >
                         EXIT COURSE
                     </button>
@@ -74,31 +93,25 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
 
     if (guidePage === 'icad_guide') {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-deep, #0d0d1a)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-dark)', overflow: 'hidden' }}>
 
                 {/* Top bar */}
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                     padding: '0.75rem 1.5rem',
-                    borderBottom: '1px solid rgba(255,255,255,0.07)',
-                    background: 'var(--bg-surface, #1a1a2e)',
+                    borderBottom: '1px solid var(--border-color)',
+                    background: 'var(--bg-surface)',
                     flexShrink: 0,
                 }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary, #6366f1)', fontWeight: 600, letterSpacing: '0.05em' }}>
-                            iCAD Guide
-                        </p>
-                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary, #fff)' }}>
-                            iCAD Guide
-                        </h2>
-                    </div>
+
+
 
                     {/* Exit button */}
                     <button
                         className="exit-course-btn"
-                        onClick={() => setGuidePage(null)}
+                        onClick={handleExitCourse}
                     >
                         EXIT COURSE
                     </button>
@@ -125,25 +138,17 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-end',
                     padding: '0.75rem 1.5rem',
                     borderBottom: '1px solid var(--border-color)',
                     background: 'var(--bg-surface)',
                     flexShrink: 0,
                 }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary, #6366f1)', fontWeight: 600, letterSpacing: '0.05em' }}>
-                            iCAD Menu Setup
-                        </p>
-                        <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-white)' }}>
-                            iCAD Menu Setup
-                        </h2>
-                    </div>
 
                     {/* Exit button */}
                     <button
                         className="exit-course-btn"
-                        onClick={() => setMenuSetupPage(null)}
+                        onClick={handleExitCourse}
                     >
                         EXIT COURSE
                     </button>
