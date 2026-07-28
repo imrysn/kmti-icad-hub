@@ -32,13 +32,8 @@ const CenterMarkContent: React.FC = () => {
 
             <div className="instruction-step">
                 <div className="step-header">
-<<<<<<< HEAD
-                    <span className="step-number">3</span>
-                    <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
-=======
                     <span className="step-number">3 </span>
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
->>>>>>> origin/RevenJoe
                 </div>
                 <div className="step-description">
                     <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
