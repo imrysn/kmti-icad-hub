@@ -98,6 +98,11 @@ export const assessmentService = {
         return response.data;
     },
 
+    openSubmissionInCAD: async (submissionId: number): Promise<{ message: string }> => {
+        const response = await api.post<{ message: string }>(`/api/v1/assessments/submissions/${submissionId}/open`);
+        return response.data;
+    },
+
     replyToFeedback: async (feedbackId: number, reply: string) => {
         const formData = new FormData();
         formData.append('reply', reply);

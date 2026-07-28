@@ -1208,6 +1208,44 @@ def bulk_delete_submissions(
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.post("/submissions/{submission_id}/open")
+def open_submission_in_cad(
+    submission_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Launch a submission file using the local desktop's default application."""
+    try:
+        submission = db.query(AssessmentSubmission).filter(
+            AssessmentSubmission.id == submission_id
+        ).first()
+
+        if not submission or not submission.submission_file_path:
+            raise HTTPException(status_code=404, detail="Submission file not found")
+
+        # Must ensure only admins, mentors, or the owner can open
+        if current_user.role == "trainee" and submission.user_id != current_user.id:
+            raise HTTPException(status_code=403, detail="Not authorized")
+
+        file_path = resolve_uploaded_file_path(submission.submission_file_path)
+        
+        if not file_path or not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail="File is missing on the server disk")
+            
+        import subprocess
+        if os.name == 'nt':
+            os.startfile(file_path)
+        elif sys.platform == "darwin":
+            subprocess.call(["open", file_path])
+        else:
+            subprocess.call(["xdg-open", file_path])
+
+        return {"message": "File launched successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.post("/submissions/{submission_id}/restore")
 def restore_submission(
     submission_id: int,

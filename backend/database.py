@@ -11,6 +11,32 @@ import sys
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def patch_schema(engine, is_mysql=False):
+    """Safely adds updated_at column to existing tables without crashing."""
+    tables = ["users", "trainer_trainee_mappings", "trainee_set_mappings"]
+    for table in tables:
+        try:
+            with engine.begin() as conn:
+                try:
+                    if is_mysql:
+                        # MySQL ignores duplicate column errors if we catch the specific code, but it's easier to just try/except
+                        conn.execute(text(f"ALTER TABLE {table} ADD COLUMN updated_at DATETIME NULL"))
+                    else:
+                        # SQLite
+                        conn.execute(text(f"ALTER TABLE {table} ADD COLUMN updated_at DATETIME NULL"))
+                except Exception as e:
+                    if "Duplicate column name" not in str(e) and "duplicate column name" not in str(e).lower():
+                        logger.info(f"Schema patch updated_at skipped or failed for {table}: {e}")
+                        
+                if table == "users":
+                    try:
+                        conn.execute(text(f"ALTER TABLE {table} ADD COLUMN custom_comments JSON DEFAULT NULL"))
+                    except Exception as e:
+                        if "Duplicate column name" not in str(e) and "duplicate column name" not in str(e).lower():
+                            logger.info(f"Schema patch custom_comments skipped or failed for {table}: {e}")
+        except Exception as e:
+            logger.warning(f"Schema patcher failed for {table}: {e}")
+
 # Path helper for PyInstaller
 def get_app_path():
     if getattr(sys, 'frozen', False):
@@ -43,6 +69,11 @@ def set_sqlite_pragma(dbapi_connection, _connection_record):
     cursor.close()
 
 SQLiteSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engine)
+try:
+    Base.metadata.create_all(bind=sqlite_engine)
+    patch_schema(sqlite_engine, is_mysql=False)
+except Exception as e:
+    logger.warning(f"Failed to patch SQLite schema: {e}")
 
 # Initialize MySQL engine & session maker (if enabled)
 mysql_engine = None
@@ -81,6 +112,7 @@ if USE_MYSQL:
         logger.info(f"[+] Connected to MySQL database at {DB_HOST}")
         try:
             Base.metadata.create_all(bind=mysql_engine)
+            patch_schema(mysql_engine, is_mysql=True)
             logger.info("[+] MySQL tables created/verified successfully on startup connection.")
         except Exception as startup_err:
             logger.warning(f"[!] MySQL table creation failed on startup: {startup_err}")
@@ -136,6 +168,7 @@ def check_mysql_recovery():
                 logger.info("[+] MySQL has recovered! Switching database mode to MySQL.")
                 try:
                     Base.metadata.create_all(bind=mysql_engine)
+                    patch_schema(mysql_engine, is_mysql=True)
                     logger.info("[+] MySQL tables created/verified successfully on recovery.")
                 except Exception as recovery_err:
                     logger.warning(f"[!] MySQL table creation failed on recovery: {recovery_err}")

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle, Folder, RotateCcw } from 'lucide-react';
+import { FileText, Upload, Play, CheckCircle2, AlertCircle, Clock, Download, Lock, Zap, Trash2, FileSpreadsheet, ChevronRight, UploadCloud, HelpCircle, Folder, RotateCcw, ExternalLink } from 'lucide-react';
 import { AssessmentTask, AssessmentSubmission } from '../../../services/assessmentService';
 import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
@@ -81,6 +81,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
         handleEmptyTrash,
         mySetMappings
     } = usePracticalTasks(assessmentType, requestConfirmation);
+
+    const handleOpenInCAD = async (submissionId: number) => {
+        try {
+            await assessmentService.openSubmissionInCAD(submissionId);
+            showNotification('File sent to CAD software', 'success');
+        } catch (error: any) {
+            showNotification(error?.response?.data?.detail || 'Failed to open file in CAD.', 'error');
+        }
+    };
 
     const { handleBulkDownload, isDownloading: isBulkDownloading } = useBulkDownload();
 
@@ -644,7 +653,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 )}
                                                                                 {!task.is_virtual_extra && (
                                                                                     <>
-                                                                                        <button type="button" className="task-action-btn primary" onClick={(e) => {
+                                                                                        <button type="button" className="task-action-btn primary" title="Open the reference drawing" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
@@ -652,7 +661,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         }}>
                                                                                             <Play size={14} /> Open in iJCAD
                                                                                         </button>
-                                                                                        <button type="button" className="task-action-btn secondary" onClick={(e) => {
+                                                                                        <button type="button" className="task-action-btn secondary" title="Download the reference drawing" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
@@ -717,7 +726,14 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div className="table-actions-horizontal">
+                                                                                                <div className="table-actions-horizontal" style={{ gap: '4px' }}>
+                                                                                                    <button
+                                                                                                        className="action-btn-styled"
+                                                                                                        title="Open in CAD"
+                                                                                                        onClick={() => handleOpenInCAD(sub.id)}
+                                                                                                    >
+                                                                                                        <ExternalLink size={14} />
+                                                                                                    </button>
                                                                                                     <button
                                                                                                         className="action-btn-styled delete"
                                                                                                         title="Delete submission"
