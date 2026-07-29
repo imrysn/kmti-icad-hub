@@ -85,7 +85,7 @@
   width: 400px;
   background: rgba(20, 20, 25, 0.95);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(221, 77, 250, 0.4);
+  border: 1px solid var(--primary);
   border-radius: 12px;
   padding: 20px;
   color: #fff;
@@ -211,8 +211,8 @@
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-weight: 600;
   color: var(--color-primary);
-  background: rgba(221, 77, 250, 0.08);
-  border: 1px solid rgba(221, 77, 250, 0.25);
+  background: var(--color-primary-glow);
+  border: 1px solid var(--primary);
   border-radius: 20px;
   padding: 4px 10px;
   white-space: nowrap;
@@ -226,7 +226,7 @@
   aspect-ratio: 16 / 9;
   max-height: calc(100vh - 200px);
   background: linear-gradient(135deg, rgba(20, 20, 25, 0.9) 0%, rgba(10, 10, 15, 0.95) 100%);
-  border: 1px dashed rgba(221, 77, 250, 0.3);
+  border: 1px dashed var(--primary);
   border-radius: 16px;
   display: flex;
   justify-content: center;
@@ -249,21 +249,21 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: rgba(221, 77, 250, 0.1);
-  border: 1px solid rgba(221, 77, 250, 0.3);
+  background: var(--color-primary-glow);
+  border: 1px solid var(--primary);
   display: flex;
   justify-content: center;
   align-items: center;
   color: var(--color-primary);
-  box-shadow: 0 0 20px rgba(221, 77, 250, 0.2);
+  box-shadow: 0 0 20px var(--color-primary-glow);
   transition: all 0.3s ease;
 }
 
 .play-icon-wrapper:hover {
   transform: scale(1.05);
-  background: rgba(221, 77, 250, 0.2);
+  background: var(--color-primary-glow);
   border-color: var(--color-primary);
-  box-shadow: 0 0 30px rgba(221, 77, 250, 0.4);
+  box-shadow: 0 0 30px var(--color-primary-glow);
 }
 
 .tutorial-viewer-placeholder h3 {
@@ -290,13 +290,13 @@
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(221, 77, 250, 0.3);
+  box-shadow: 0 4px 12px var(--color-primary-glow);
   transition: all 0.2s ease;
 }
 
 .start-tutorial-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(221, 77, 250, 0.5);
+  box-shadow: 0 6px 20px var(--color-primary-glow);
 }
 
 .start-tutorial-btn:active {

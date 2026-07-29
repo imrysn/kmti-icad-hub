@@ -1,3 +1,4 @@
+import { useTranslation } from '../../../context/LanguageContext';
 import React from 'react';
 import { MediaAsset } from '../../../types';
 
@@ -7,6 +8,7 @@ interface MediaModalProps {
 }
 
 export const MediaModal: React.FC<MediaModalProps> = ({ selectedMedia, setSelectedMedia }) => {
+    const { t } = useTranslation();
     return (
         <div className="media-modal" onClick={() => setSelectedMedia(null)}>
             <div className="media-modal-content" onClick={(e) => e.stopPropagation()}>
@@ -18,7 +20,7 @@ export const MediaModal: React.FC<MediaModalProps> = ({ selectedMedia, setSelect
                 ) : (
                     <img src={selectedMedia.media_url} alt={selectedMedia.description} />
                 )}
-                <button onClick={() => setSelectedMedia(null)}>Close</button>
+                <button onClick={() => setSelectedMedia(null)}>{t("common.close")}</button>
             </div>
         </div>
     );

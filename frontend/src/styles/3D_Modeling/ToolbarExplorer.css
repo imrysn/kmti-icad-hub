@@ -39,7 +39,7 @@
 }
 
 [data-theme='light'] .toolbar-nav {
-  background: rgba(99, 102, 241, 0.03);
+  background: var(--bg-card);
 }
 
 @media (min-width: 1024px) {
@@ -99,26 +99,16 @@
 }
 
 .toolbar-item.active {
-  background: rgba(99, 102, 241, 0.12);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--color-primary-glow);
+  border-color: var(--primary);
   color: var(--primary);
   font-weight: 700;
-  box-shadow: inset 0 0 20px rgba(99, 102, 241, 0.05);
+  box-shadow: none;
 }
 
-/* Aurora Glow for Active Item */
+/* Simple active indicator */
 .toolbar-item.active::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg,
-      rgba(99, 102, 241, 0.15),
-      rgba(6, 182, 212, 0.15),
-      rgba(99, 102, 241, 0.15));
-  background-size: 200% 100%;
-  animation: auroraFlow 4s linear infinite;
-  z-index: 1;
-  opacity: 0.5;
+  display: none;
 }
 
 @keyframes auroraFlow {
@@ -147,7 +137,7 @@
 }
 
 [data-theme='light'] .toolbar-item-icon {
-  background: rgba(99, 102, 241, 0.05);
+  background: var(--color-primary-glow);
 }
 
 .toolbar-item.active .toolbar-item-icon {

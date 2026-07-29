@@ -675,7 +675,7 @@
 }
 
 .admin-btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #b5179e 100%);
+  background: var(--primary);
   color: white;
   border: none;
   padding: 0.75rem 1.25rem;
@@ -686,14 +686,14 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(221, 77, 250, 0.3);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .admin-btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e673ff 0%, #cc1bc2 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(221, 77, 250, 0.4);
+  background: color-mix(in srgb, var(--primary) 88%, #000);
+  transform: none;
+  box-shadow: 0 8px 25px var(--color-primary-glow);
 }
 
 .admin-btn-secondary {
@@ -2039,4 +2039,24 @@
 .reset-all-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* KMTI corporate theme: clear surfaces and restrained interaction. */
+.admin-layout,
+.admin-main-content {
+  background: var(--bg-dark);
+}
+
+.admin-card,
+.stat-card,
+.heatmap-container,
+.admin-table-container {
+  border-color: var(--border-color);
+  box-shadow: none;
+}
+
+.reopen-btn:hover:not(:disabled),
+.reset-all-btn:hover:not(:disabled) {
+  transform: none;
+  box-shadow: none;
 }

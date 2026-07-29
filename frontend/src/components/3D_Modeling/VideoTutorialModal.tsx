@@ -1,4 +1,5 @@
 import { ChevronLeft,ChevronRight,GripHorizontal,Pause,Play,Square,X } from 'lucide-react';
+import { useTranslation } from '../../context/LanguageContext';
 import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../../services/api';
@@ -42,7 +43,8 @@ interface VideoTutorialModalProps {
   steps: TutorialStep[];
 }
 
-const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose, steps }) => {
+const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
+  const { t } = useTranslation(); isOpen, onClose, steps }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -384,7 +386,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     return (
       <p className="tutorial-description" style={{ lineHeight: '1.5' }}>
         <span style={{ color: '#fff' }}>{pre}</span>
-        <span style={{ color: '#dd4dfa', textShadow: '0 0 8px rgba(221,77,250,0.6)', fontWeight: 'bold' }}>{current}</span>
+        <span style={{ color: 'var(--primary)', textShadow: '0 0 8px var(--color-primary-glow)', fontWeight: 'bold' }}>{current}</span>
         <span style={{ color: '#888' }}>{post}</span>
       </p>
     );
@@ -586,7 +588,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
           ) : (
             <img
               src={icadInterfaceImg}
-              alt="iCAD Interface"
+              alt={t('common.icad_interface')}
               className="tutorial-image"
               style={{
                 display: 'block',
@@ -641,7 +643,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          title="Drag to move panel"
+          title={t("common.drag_move_panel")}
           style={{ cursor: 'grab', padding: '8px', marginRight: '4px', borderRadius: '4px', display: 'flex' }}
         >
           <GripHorizontal size={20} color="#888" />
@@ -652,7 +654,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
             <button
               className="tutorial-btn"
               onClick={togglePlayback}
-              title="Play Narration"
+              title={t("common.play_narration")}
             >
               <Play size={16} /> Play
             </button>
@@ -669,7 +671,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
               <button
                 className="tutorial-btn"
                 onClick={handleStop}
-                title="Stop Narration"
+                title={t("common.stop_narration")}
               >
                 <Square size={16} /> Stop
               </button>

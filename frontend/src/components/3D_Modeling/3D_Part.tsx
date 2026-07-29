@@ -1,3 +1,4 @@
+import { useTranslation } from '../../context/LanguageContext';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -26,6 +27,8 @@ const PartLesson: React.FC<PartLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState<"create" | "change">(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'create';
   });
@@ -46,23 +49,23 @@ const PartLesson: React.FC<PartLessonProps> = ({
   } = useLessonCore(subLessonId);
 
   const createSteps = [
-    "CREATE 3D PART",
-    "Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Detailing.",
-    "Step 1: Select Create 3D Part from the icon menu.",
-    "Step 2: Select a single entity then GO",
-    "Step 3: A window will appear showing the informations to fill-up.",
-    "Step 4: All created 3D Part will appear on the tree view.",
-    "Refer to the material description for notation and plate thickness standards."
+    t('part.createSteps.step0'),
+    t('part.createSteps.step1'),
+    t('part.createSteps.step2'),
+    t('part.createSteps.step3'),
+    t('part.changeSteps.step4'),
+    t('part.createSteps.step5'),
+    t('part.createSteps.step6')
   ];
 
   const changeSteps = [
-    "CHANGE 3D PART NAME",
-    "Tool use to change 3D part names, drawing names of external 3D parts, and comments.",
-    "Step 1: Select Change 3D Part Name from the icon menu.",
-    "Step 2: Select an entity or right-click on the 3D space.",
-    "Step 3: A window will appear showing the informations to fill-up.",
-    "Step 4: A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name then Select Yes",
-    "Note: All 3D Part Names and 2D part names must always match each other. Differences on the 3D and 2D part name will cut the link"
+    t('part.changeSteps.step0'),
+    t('part.changeSteps.step1'),
+    t('part.changeSteps.step2'),
+    t('part.changeSteps.step3'),
+    t('part.changeSteps.step4'),
+    t('part.changeSteps.step5'),
+    t('part.changeSteps.step6')
   ];
   const tabs = [
     { id: "create", label: "Create 3D Part" },
@@ -89,8 +92,8 @@ const PartLesson: React.FC<PartLessonProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const introTitle = activeTab === 'create' ? 'Creating 3D Part' : 'Changing 3D Part Name';
-  const introSubtitle = activeTab === 'create' ? "Tool use to name 3D parts and provide information." : "Tool use to Changes 3D part names, drawing names, and comments.";
+  const introTitle = activeTab === 'create' ? t('common.part.title_create') : t('common.part.title_change');
+  const introSubtitle = activeTab === 'create' ? t('common.part.desc_create') : t('common.part.desc_change');
 
   const commonIntroSteps = [
     introTitle,
@@ -176,7 +179,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CREATE 3D PART"
+                    text={t('part.createSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -187,7 +190,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 className={`p-flush ${currentIndex === 3 ? 'reading-active' : ''}`}
                 style={{ marginTop: "-2rem" }}
                 data-reading-index="3"
-                text="Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Detailing."
+                text={t('part.createSteps.step1')}
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
@@ -198,13 +201,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select Create 3D Part from the icon menu"
+                    text={t('part.createSteps.step2')}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={createPartIcon} alt="Create 3D Part Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px" }} />
+                  <img src={createPartIcon} alt={t('common.create_3d_part_icon')} className="software-screenshot mt-4" style={{ height: 'auto', width: "200px" }} />
                 </div>
               </div>
 
@@ -214,11 +217,11 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select a single entity > GO"
+                    text={t('part.createSteps.step3')}
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', marginTop: '-2rem' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', marginTop: '-2rem' }} />
                 </div>
               </div>
 
@@ -228,13 +231,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="A window will appear showing the informations to fill-up"
+                    text={t('part.changeSteps.step4')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={modalInfo1} alt="Create 3D Part Window" className="software-screenshot mt-4" style={{ marginBottom: '-2rem' }} />
+                  <img src={modalInfo1} alt={t('common.create_3d_part_window')} className="software-screenshot mt-4" style={{ marginBottom: '-2rem' }} />
                 </div>
               </div>
 
@@ -244,13 +247,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="All created 3D Part will appear on the tree view"
+                    text={t('part.createSteps.step5')}
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={treeViewInfo1} alt="Tree View Status" className="software-screenshot mt-4" style={{ height: '300px' }} />
+                  <img src={treeViewInfo1} alt={t('common.tree_view_status')} className="software-screenshot mt-4" style={{ height: '300px' }} />
                 </div>
               </div>
 
@@ -259,13 +262,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Refer to the material description for notation and plate thickness standards."
+                    text={t('part.createSteps.step6')}
                     isActive={isSpeaking && currentIndex === 8}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot mt-4" style={{ width: '900px' }} />
+                  <img src={materialDescriptionImg} alt={t('common.material_description')} className="software-screenshot mt-4" style={{ width: '900px' }} />
                 </div>
               </div>
 
@@ -282,7 +285,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CHANGE 3D PART NAME"
+                    text={t('part.changeSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -293,7 +296,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                 className={`p-flush ${currentIndex === 3 ? 'reading-active' : ''}`}
                 style={{ marginTop: "-2rem" }}
                 data-reading-index="3"
-                text="Tool use to change 3D part names, drawing names of external 3D parts, and comments."
+                text={t('part.changeSteps.step1')}
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
@@ -304,13 +307,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select Change 3D Part Name from the icon menu"
+                    text={t('part.changeSteps.step2')}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={changePartIcon} alt="Change 3D Part Name Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px" }} />
+                  <img src={changePartIcon} alt={t('common.change_3d_part_name_icon')} className="software-screenshot mt-4" style={{ height: 'auto', width: "200px" }} />
                 </div>
               </div>
 
@@ -320,7 +323,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select an entity or right-click on the 3D space"
+                    text={t('part.changeSteps.step3')}
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -333,13 +336,13 @@ const PartLesson: React.FC<PartLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="A window will appear showing the informations to fill-up"
+                    text={t('part.changeSteps.step4')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={modalInfo2} alt="Change Name Window" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
+                  <img src={modalInfo2} alt={t('common.change_name_window')} className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
                 </div>
               </div>
 
@@ -350,20 +353,20 @@ const PartLesson: React.FC<PartLessonProps> = ({
                     as="span"
                     className="step-label"
                     style={{ marginTop: "2rem" }}
-                    text="A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name > Select Yes"
+                    text={t('part.changeSteps.step5')}
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={treeViewInfo2} alt="Dialog and Tree View Update" className="software-screenshot screenshot-wide mt-4" />
+                  <img src={treeViewInfo2} alt={t('common.dialog_and_tree_view_update')} className="software-screenshot screenshot-wide mt-4" />
                 </div>
 
                 <div className={`instruction-box ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{ marginTop: "2rem" }}>
                   <KaraokeLessonText
                     as="p"
                     className="p-flush red-text"
-                    text="Note: All 3D Part Names and 2D part names must always match each other. Differences on the 3D and 2D part name will cut the link"
+                    text={t('part.changeSteps.step6')}
                     isActive={isSpeaking && currentIndex === 8}
                     currentCharIndex={currentCharIndex}
                   />

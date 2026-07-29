@@ -6,22 +6,22 @@ export const ja_3d_2d_to_3d = {
   "2dto3d.commandMenu.title": "コマンドメニュー",
   "2dto3d.commandMenu.desc": "ほとんどのツールは、コマンドメニューから選択できます。",
 
-  "2dto3d.introTitle": "Extrude, Revolve, Spiral",
+  "2dto3d.introTitle": "\u62bc\u3057\u51fa\u3057\u3001\u56de\u8ee2\u3001\u30b9\u30d1\u30a4\u30e9\u30eb",
   "2dto3d.introSubtitle": "これらは、2Dスケッチを3Dソリッドエンティティに押し出しするために使用するツールです。",
   "2dto3d.introSubtitle2": "最もよく使われるツールは以下の通りです：",
   
-  "2dto3d.extrude.tab": "Extrude",
+  "2dto3d.extrude.tab": "\u62bc\u3057\u51fa\u3057",
   "2dto3d.extrude.title": "押し出し",
   "2dto3d.extrude.desc": "作業平面または2D図面上に作成した断面形状を垂直投影し、ソリッドエンティティを作成します。",
   "2dto3d.extrude.step1": "アイコンメニューから「押し出し」を選択します。",
   "2dto3d.extrude.step2": "押し出しを行う断面を選択してください。",
   "2dto3d.extrude.step2hatch": "スケッチが閉じた図形であることを示すハッチングが表示されます > GO",
-  "2dto3d.extrude.step3": "アイテムエントリで押し出しの高さを指定 > Enterキーを押す > GO",
+  "2dto3d.extrude.step3": "\u30a2\u30a4\u30c6\u30e0\u30a8\u30f3\u30c8\u30ea\u3067\u62bc\u3057\u51fa\u3057\u306e\u9ad8\u3055\u3092\u6307\u5b9a > Enter\u30ad\u30fc\u3092\u62bc\u3059 > GO",
   "2dto3d.extrude.dialog": "押し出し処理後に作業平面を削除するかどうかを確認するダイアログボックスが表示されます。「OK」を選択して、作業平面を削除します。",
   "2dto3d.extrude.dialogNote": "注: 作業平面を削除すると、その平面上で作成されたすべてのスケッチが削除されます。ご注意ください。この操作は元に戻せません。",
   "2dto3d.extrude.dialogCancel": "「キャンセル」を選択すると、作業平面とすべての2Dスケッチがそのまま保持されます。",
   
-  "2dto3d.revolve.tab": "Revolve",
+  "2dto3d.revolve.tab": "\u56de\u8ee2",
   "2dto3d.revolve.title": "回転投影",
   "2dto3d.revolve.desc": "作業平面または2D図面上に作成された断面形状に対し、回転投影を行うことで、ソリッドエンティティを作成します。",
   "2dto3d.revolve.step1": "アイコンメニューから「回転投影」を選択します。",
@@ -30,13 +30,13 @@ export const ja_3d_2d_to_3d = {
   "2dto3d.revolve.step3": "回転軸を選択 > GO",
   "2dto3d.processOverview": "プロセスの概要",
   
-  "2dto3d.spiral.tab": "Spiral",
+  "2dto3d.spiral.tab": "\u30b9\u30d1\u30a4\u30e9\u30eb",
   "2dto3d.spiral.title": "スパイラルフォーム",
   "2dto3d.spiral.desc": "2Dスケッチ上で作成された断面形状から、3Dの螺旋形状を作成します。",
   "2dto3d.spiral.step1": "まず、スケッチを作成します。",
   "2dto3d.spiral.step2": "アイコンメニューからスパイラル形状を選択します。",
   "2dto3d.spiral.step2hatch": "回転させる断面を選択してください。スケッチが閉じた図形であることを示すハッチングが表示されます > GO",
-  "2dto3d.spiral.step3": "アイテム登録画面でスパイラルのピッチを指定 > Enterキーを押す > GO",
+  "2dto3d.spiral.step3": "\u30a2\u30a4\u30c6\u30e0\u767b\u9332\u753b\u9762\u3067\u30b9\u30d1\u30a4\u30e9\u30eb\u306e\u30d4\u30c3\u30c1\u3092\u6307\u5b9a > Enter\u30ad\u30fc\u3092\u62bc\u3059 > GO",
   "2dto3d.spiral.step3note": "注: ピッチは厚さよりも大きくなければなりません",
   "2dto3d.spiral.step4": "回転軸に沿って、らせんの両端を選択してください。次に[GO]をクリックします。"
 };

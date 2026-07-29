@@ -6,7 +6,7 @@ export const getAvatarColor = (name: string) => {
         '#d97706', // Amber 600
         '#dc2626', // Red 600
         '#7c3aed', // Violet 600
-        '#db2777', // Pink 600
+        '#1d4ed8', // Blue 700
         '#0891b2', // Cyan 600
         '#0d9488', // Teal 600
         '#e11d48', // Rose 600

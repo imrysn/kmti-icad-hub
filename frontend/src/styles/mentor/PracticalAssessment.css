@@ -46,7 +46,7 @@
 
 .sidebar-set-pill:hover:not(.locked) {
     background: var(--bg-card);
-    border-color: #DD4DFA;
+    border-color: var(--primary);
 }
 
 .sidebar-set-pill.active {
@@ -198,7 +198,7 @@
     background: var(--unit-assembly-bg);
     color: var(--unit-assembly-color);
     border-color: var(--unit-assembly-border);
-    box-shadow: 0 2px 8px rgba(221, 77, 250, 0.2);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
 .task-row-code.code-parts {
@@ -293,8 +293,9 @@
 }
 
 .task-action-btn.primary:hover {
-    border-color: #DD4DFA;
-    color: #DD4DFA;
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--color-primary-glow);
 }
 
 .task-action-btn.secondary {
@@ -304,8 +305,8 @@
 }
 
 .task-action-btn.secondary:hover {
-    border-color: #DD4DFA;
-    color: #DD4DFA;
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 /* ── Row Body: Upload + Feedback ─────────────────────────────────────── */
@@ -458,7 +459,7 @@
 }
 
 .action-btn-styled.edit:hover {
-    color: #DD4DFA !important;
+    color: var(--primary) !important;
 }
 
 .action-btn-styled.delete:hover {
@@ -653,7 +654,7 @@
 .checkback-download-icon-btn:hover {
     color: var(--text-white);
     border-color: var(--primary);
-    background: rgba(221, 77, 250, 0.05);
+    background: var(--color-primary-glow);
 }
 
 /* ── Status Badge (inline) ───────────────────────────────────────────── */
@@ -841,7 +842,7 @@
     font-weight: 800;
     text-transform: uppercase;
     color: var(--primary);
-    background: rgba(221, 77, 250, 0.1);
+    background: var(--color-primary-glow);
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
 }
@@ -904,7 +905,7 @@
     min-width: unset !important;
     width: 100%;
     gap: 0.6rem !important;
-    background: #DD4DFA !important;
+    background: var(--primary) !important;
     border: none !important;
     font-size: 0.85rem !important;
     padding: 0.8rem !important;
@@ -913,7 +914,7 @@
 .resubmit-work-btn:hover {
     filter: brightness(1.1);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(221, 77, 250, 0.3);
+    box-shadow: 0 4px 15px var(--color-primary-glow);
 }
 
 /* ���� Submissions History �������������������������������������������������������������������������������������������� */
@@ -929,14 +930,14 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.4rem 0.8rem;
-    background: rgba(221, 77, 250, 0.1);
+    background: var(--color-primary-glow);
     color: var(--primary);
     border-radius: var(--radius-md);
     font-size: 0.75rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
-    border: 1px solid rgba(221, 77, 250, 0.2);
+    border: 1px solid var(--primary);
 }
 
 .resubmit-trigger-btn:hover:not(.disabled) {
@@ -962,7 +963,7 @@
 
 .history-item.latest {
     border-left-color: var(--primary);
-    background: rgba(221, 77, 250, 0.03);
+    background: var(--color-primary-glow);
 }
 
 .file-meta-stack {
@@ -1342,6 +1343,12 @@
 .no-submissions-yet {
   color: var(--text-muted);
   border-color: var(--border-color);
+}
+
+.highlighted-task-row-card {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--color-primary-glow) !important;
+  animation: none;
 }
 
 @media (max-width: 900px) {

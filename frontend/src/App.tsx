@@ -142,16 +142,12 @@ function AppContent() {
   }, []);
 
   // Theme Management
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
-    // Force dark mode on login page, otherwise use saved theme
-    const activeTheme = location.pathname === '/login' ? 'dark' : theme;
-    document.documentElement.setAttribute('data-theme', activeTheme);
+    document.documentElement.setAttribute('data-theme', theme);
 
-    if (location.pathname !== '/login') {
-      localStorage.setItem('theme', theme);
-    }
+    localStorage.setItem('theme', theme);
   }, [theme, location.pathname]);
 
   const toggleTheme = () => {

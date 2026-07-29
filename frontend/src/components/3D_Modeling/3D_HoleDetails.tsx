@@ -1,3 +1,4 @@
+import { useTranslation } from '../../context/LanguageContext';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -19,6 +20,8 @@ interface HoleDetailsLessonProps {
 }
 
 const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
+
   const {
     scrollProgress,
     containerRef,
@@ -31,8 +34,8 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
   const getStepClass = (_stepId: string) => "instruction-step";
   const tabs = [{ id: "holeDetails", label: "Hole Details" }];
 
-  const introTitle = "Creating Hole Details on Parts";
-  const introSubtitle = "We have standard tools for creating holes such as drill holes, tapping holes and counterbores on the parts.";
+  const introTitle = t('holedetails.introTitle');
+  const introSubtitle = t('holedetails.introSubtitle');
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -65,7 +68,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <img src={partsPlacement} alt="Part Placement" className="software-screenshot screenshot-large mt-4" style={{ height: 'auto', width: "400px" }} />
+        <img src={partsPlacement} alt={t('common.part_placement')} className="software-screenshot screenshot-large mt-4" style={{ height: 'auto', width: "400px" }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -74,7 +77,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             <h4 className={`${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
               <KaraokeLessonText
                 as="span"
-                text="HOLE DETAILS"
+                text={t('holedetails.extra.step0')}
                 isActive={isSpeaking && currentIndex === 2}
                 currentCharIndex={currentCharIndex}
               />
@@ -87,13 +90,13 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               <KaraokeLessonText
                 as="span"
                 className="step-label"
-                text="Select Arrange Machine Part from the icon menu"
+                text={t('holedetails.extra.step1')}
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
             </div>
             <div className="step-description">
-              <img src={arrangeMachinePart} alt="Arrange Machine Part" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
+              <img src={arrangeMachinePart} alt={t('common.arrange_machine_part')} className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
             </div>
           </div>
 
@@ -105,14 +108,14 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               <span className="step-label">
                 <KaraokeLessonText
                   as="span"
-                  text="A window will appear showing the list of available tools, such as drill holes and counterbores"
+                  text={t('holedetails.extra.step2')}
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
               </span>
             </div>
             <div className="step-description">
-              <img src={listTools} alt="List of available tools" className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
+              <img src={listTools} alt={t('common.list_of_available_tools')} className="software-screenshot mt-4" style={{ width: '900px', marginBottom: "-2rem" }} />
             </div>
           </div>
 
@@ -124,7 +127,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               <span className="step-label">
                 <KaraokeLessonText
                   as="span"
-                  text="After setting the specifications, click OK"
+                  text={t('holedetails.extra.step3')}
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -140,15 +143,15 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                 <KaraokeLessonText
                   as="span"
-                  text="Click the location of the hole on the solid entity &gt; GO"
+                  text={t('holedetails.extra.step4')}
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
-                <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
               </span>
             </div>
             <div className="step-description">
-              <img src={holeResult} alt="Hole Creation Result" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
+              <img src={holeResult} alt={t('common.hole_creation_result')} className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
             </div>
           </div>
 
@@ -156,13 +159,13 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             <KaraokeLessonText
               as="p"
               className="p-flush red-text"
-              text="Note: Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes."
+              text={t('holedetails.extra.step5')}
               isActive={isSpeaking && currentIndex === 7}
               currentCharIndex={currentCharIndex}
             />
           </div>
           <div className={`${currentIndex === 7 ? "reading-active" : ""}`}>
-            <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide mt-4" />
+            <img src={tappedHoles} alt={t('common.tapped_holes_examples')} className="software-screenshot screenshot-wide mt-4" />
           </div>
         </div>
 

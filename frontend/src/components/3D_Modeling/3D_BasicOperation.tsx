@@ -428,7 +428,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 7}
               currentCharIndex={currentCharIndex}
             />
-            <img src={threeDView} alt="3D View" className="software-screenshot mt-8" style={{ width: '350px' }} />
+            <img src={threeDView} alt={t('common.3d_view')} className="software-screenshot mt-8" style={{ width: '350px' }} />
           </div>
 
           <div className={`instruction-box mt-8 instruction-step ${isSpeaking && currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
@@ -437,7 +437,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 8}
               currentCharIndex={currentCharIndex}
             />
-            <img src={cmdMenu} alt="Command Menu" className="software-screenshot" style={{ width: '200px', marginTop: '1rem' }} />
+            <img src={cmdMenu} alt={t('common.command_menu')} className="software-screenshot" style={{ width: '200px', marginTop: '1rem' }} />
           </div>
         </div>
 
@@ -729,7 +729,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <img src={operationsMenu} alt="Operations Menu" className="software-screenshot screenshot-small mt-8" style={{ width: '180px' }} />
+        <img src={operationsMenu} alt={t('common.operations_menu')} className="software-screenshot screenshot-small mt-8" style={{ width: '180px' }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -758,7 +758,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={moveMenu} alt="Move menu icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-2rem" }} />
+                <img src={moveMenu} alt={t('common.move_menu_icon')} className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-2rem" }} />
               </div>
             </div>
 
@@ -772,7 +772,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -789,7 +789,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={itemEntryMove} alt="Item Entry Move" className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
+                <img src={itemEntryMove} alt={t('common.item_entry_move')} className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
 
               </div>
             </div>
@@ -831,7 +831,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={rotateIcon} alt="Rotate icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
+                <img src={rotateIcon} alt={t('common.rotate_icon')} className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
               </div>
             </div>
 
@@ -845,7 +845,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -876,7 +876,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
 
               <div className="step-description">
-                <img src={rotateEntry} alt="Rotate Item Entry" className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
+                <img src={rotateEntry} alt={t('common.rotate_item_entry')} className="software-screenshot screenshot-medium" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -915,7 +915,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={mirrorIcon} alt="Mirror icon" className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
+                <img src={mirrorIcon} alt={t('common.mirror_icon')} className="software-screenshot screenshot-small" style={{ width: '190px', marginBottom: "-4rem" }} />
               </div>
             </div>
 
@@ -929,7 +929,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -985,7 +985,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={copyIcon} alt="Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px', marginBottom: "-2rem" }} />
+                <img src={copyIcon} alt={t('common.copy_icon')} className="software-screenshot screenshot-small" style={{ width: '250px', marginBottom: "-2rem" }} />
               </div>
             </div>
 
@@ -999,7 +999,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -1016,7 +1016,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={copyDistance} alt="Copy Distance" className="software-screenshot screenshot-wide" style={{ width: '1000px', height: "100px" }} />
+                <img src={copyDistance} alt={t('common.copy_distance')} className="software-screenshot screenshot-wide" style={{ width: '1000px', height: "100px" }} />
               </div>
             </div>
 
@@ -1047,13 +1047,13 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>{rotateCopySteps[0]}</p>
 
             <div className="step-description">
-              <img src={rotateCopyIcon} alt="Rotate Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+              <img src={rotateCopyIcon} alt={t('common.rotate_copy_icon')} className="software-screenshot screenshot-small" style={{ width: '250px' }} />
             </div>
 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="card-header"><h4>{t('lesson.result')}</h4></div>
-              <img src={rotateCopyAxis} alt="Rotate Copy Result" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
+              <img src={rotateCopyAxis} alt={t('common.rotate_copy_result')} className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1078,12 +1078,12 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             <p className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "-2rem" }}>{mirrorCopySteps[0]}</p>
 
             <div className="step-description">
-              <img src={mirrorCopyIcon} alt="Mirror Copy icon" className="software-screenshot screenshot-small" style={{ width: '250px' }} />
+              <img src={mirrorCopyIcon} alt={t('common.mirror_copy_icon')} className="software-screenshot screenshot-small" style={{ width: '250px' }} />
             </div>
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>{t('lesson.result')}</h4></div>
-              <img src={mirrorCopyResult} alt="Mirror Copy Preview" className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
+              <img src={mirrorCopyResult} alt={t('common.mirror_copy_preview')} className="software-screenshot screenshot-large mt-8" style={{ width: '900px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1132,7 +1132,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={deleteIcon} alt="Delete icon" className="software-screenshot screenshot-small" style={{ width: '300px' }} />
+                <img src={deleteIcon} alt={t('common.delete_icon')} className="software-screenshot screenshot-small" style={{ width: '300px' }} />
               </div>
             </div>
 
@@ -1301,7 +1301,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
-            <img src={sketchIntroImg} alt="Sketch Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '280px' }} />
+            <img src={sketchIntroImg} alt={t('common.sketch_intro')} className="software-screenshot screenshot-small mt-8" style={{ width: '280px' }} />
           </>
         ) : (
           <>
@@ -1321,7 +1321,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
-            <img src={extrudeRevolveMenu} alt="Extrude and Revolve Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '280px' }} />
+            <img src={extrudeRevolveMenu} alt={t('common.extrude_and_revolve_intro')} className="software-screenshot screenshot-small mt-8" style={{ width: '280px' }} />
           </>
         )}
       </section>
@@ -1350,12 +1350,12 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="step-description">
               <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
-                <img src={sketchIcon} alt="Sketch Tool" className="software-screenshot screenshot-small" style={{ width: '280px' }} />
+                <img src={sketchIcon} alt={t('common.sketch_tool')} className="software-screenshot screenshot-small" style={{ width: '280px' }} />
               </div>
             </div>
 
             <div className="step-description" style={{ marginTop: "3rem" }}>
-              <img src={sketchResultImg} alt="Sketch Result" className="software-screenshot mt-4" style={{ width: "600px" }} />
+              <img src={sketchResultImg} alt={t('common.sketch_result')} className="software-screenshot mt-4" style={{ width: "600px" }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1392,11 +1392,11 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <div className="step-description" style={{ marginTop: "1rem" }}>
                 <div className="mt-6" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                   <div>
-                    <img src={extrudeOneSide} alt="Extrusion One Side" className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
+                    <img src={extrudeOneSide} alt={t('common.extrusion_one_side')} className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
                     <div className="text-center font-bold text-lg mt-4" style={{ marginLeft: "-8rem" }}>EXTRUSION (ONE SIDE)</div>
                   </div>
                   <div>
-                    <img src={extrudeBothSide} alt="Extrude Both Side" className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
+                    <img src={extrudeBothSide} alt={t('common.extrude_both_side')} className="software-screenshot screenshot-small" style={{ width: '100%', marginBottom: "1rem" }} />
                     <div className="text-center font-bold text-lg mt-4" style={{ marginLeft: "-8em" }}>EXTRUSION (BOTH SIDES)</div>
                   </div>
                 </div>
@@ -1413,7 +1413,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -1447,7 +1447,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="card-header"><h4>{t('lesson.process_overview')}</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <img src={extrudeOneSide} alt="Extrude Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
+                  <img src={extrudeOneSide} alt={t('common.extrude_process_overview')} className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
               </div>
             </div>
@@ -1486,7 +1486,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={revolveIcon} alt="Revolve Icon" className="software-screenshot mt-4" style={{ width: '280px', marginBottom: "1rem" }} />
+                <img src={revolveIcon} alt={t('common.revolve_icon')} className="software-screenshot mt-4" style={{ width: '280px', marginBottom: "1rem" }} />
               </div>
             </div>
 
@@ -1500,7 +1500,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
 
@@ -1514,7 +1514,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
 
@@ -1522,7 +1522,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="card-header"><h4>{t('lesson.process_overview')}</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <img src={revolveP2} alt="Revolve Result" className="software-screenshot" style={{ "width": "900px" }} />
+                  <img src={revolveP2} alt={t('common.revolve_result')} className="software-screenshot" style={{ "width": "900px" }} />
                 </div>
               </div>
             </div>
@@ -1646,7 +1646,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
             <KaraokeLessonText
               as="span"
-              text="Show / Hide"
+              text={t('common.show_hide')}
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
@@ -1659,7 +1659,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
-          <img src={showHideMenu} alt="Show/Hide Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '192px' }} />
+          <img src={showHideMenu} alt={t('common.show_hide_intro')} className="software-screenshot screenshot-small mt-8" style={{ width: '192px' }} />
         </section>
       )}
 
@@ -1681,7 +1681,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 1}
             currentCharIndex={currentCharIndex}
           />
-          <img src={fairingChamferImg} alt="Stretch and Shape Intro" className="software-screenshot screenshot-small mt-8" style={{ width: '192px' }} />
+          <img src={fairingChamferImg} alt={t('common.stretch_and_shape_intro')} className="software-screenshot screenshot-small mt-8" style={{ width: '192px' }} />
         </section>
       )}
 
@@ -1715,7 +1715,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={showHideEntity} alt="Show/Hide Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
+                <img src={showHideEntity} alt={t('common.show_hide_entity_icon')} className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -1730,7 +1730,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -1758,7 +1758,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={showHideDraftingEntity} alt="Show/Hide Drafting Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
+                <img src={showHideDraftingEntity} alt={t('common.show_hide_drafting_entity_icon')} className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -1835,7 +1835,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={hideUnselectedEntity} alt="Hide Unselected Entity Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
+                <img src={hideUnselectedEntity} alt={t('common.hide_unselected_entity_icon')} className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -1850,12 +1850,12 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 11}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
               <div className="step-description">
                 <p className={`p-flush ${currentIndex === 12 ? "reading-active" : ""}`} data-reading-index="12" style={{ marginTop: "-1rem" }}>{showHideSteps[10]}</p>
-                <img src={hideUnselectedEntity1} alt="Hide Unselected Entity Example" className="software-screenshot" style={{ width: '900px' }} />
+                <img src={hideUnselectedEntity1} alt={t('common.hide_unselected_entity_example')} className="software-screenshot" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -1891,7 +1891,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={stretchIcon} alt="Stretch Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
+                <img src={stretchIcon} alt={t('common.stretch_icon')} className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-3rem" }} />
               </div>
             </div>
 
@@ -1906,7 +1906,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -1925,8 +1925,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
               <div className="step-description">
                 <p className={`p-flush opacity-80 text-sm mb-4 ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginBottom: "2rem", marginTop: "-1rem" }}> {stretchSteps[4]}</p>
-                <img src={stretchItemEntry} alt="Stretch Item Entry" className="software-screenshot" style={{ width: '850px', height: 'auto' }} />
-                <img src={stretchImg1} alt="Stretch Drag Example" className="software-screenshot screenshot-large mt-8" style={{ width: '900px', marginTop: "2rem" }} />
+                <img src={stretchItemEntry} alt={t('common.stretch_item_entry')} className="software-screenshot" style={{ width: '850px', height: 'auto' }} />
+                <img src={stretchImg1} alt={t('common.stretch_drag_example')} className="software-screenshot screenshot-large mt-8" style={{ width: '900px', marginTop: "2rem" }} />
               </div>
             </div>
 
@@ -1949,10 +1949,10 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                    <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                     <KaraokeLessonText
                       as="span"
-                      text=" > Left-click on the 3D Space"
+                      text={t('common.left_click_on_the_3d_5')}
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex - 17}
                     />
@@ -1975,7 +1975,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                       currentCharIndex={currentCharIndex}
                     />
                   </p>
-                  <img src={stretchImg2} alt="Stretch Scale Example" className="software-screenshot screenshot-large mt-6" style={{ width: '900px' }} />
+                  <img src={stretchImg2} alt={t('common.stretch_scale_example')} className="software-screenshot screenshot-large mt-6" style={{ width: '900px' }} />
                 </div>
               </div>
             </div>
@@ -2013,7 +2013,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={resizeIcon} alt="Resize Icon" className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-4rem" }} />
+                <img src={resizeIcon} alt={t('common.resize_icon')} className="software-screenshot screenshot-small" style={{ width: '280px', marginBottom: "-4rem" }} />
               </div>
             </div>
 
@@ -2028,7 +2028,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                 </div>
               </div>
             </div>
@@ -2048,8 +2048,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               </div>
               <div className="step-description">
                 <div className="flex-row-center--wrap mt-6" style={{ gap: '2rem' }}>
-                  <img src={resizeItemEntry} alt="Resize Item Entry" className="software-screenshot" style={{ width: '200px', height: 'auto' }} />
-                  <img src={resize3_2} alt="Resize Scale Result" className="software-screenshot screenshot-large mt-8" style={{ width: '900px', marginTop: "2rem" }} />
+                  <img src={resizeItemEntry} alt={t('common.resize_item_entry')} className="software-screenshot" style={{ width: '200px', height: 'auto' }} />
+                  <img src={resize3_2} alt={t('common.resize_scale_result')} className="software-screenshot screenshot-large mt-8" style={{ width: '900px', marginTop: "2rem" }} />
                 </div>
               </div>
             </div>
@@ -2107,7 +2107,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <img src={shapeSteels1} alt="Shape Steels Overview" className="software-screenshot" style={{ height: 'auto', width: "400px" }} />
+        <img src={shapeSteels1} alt={t('common.shape_steels_overview')} className="software-screenshot" style={{ height: 'auto', width: "400px" }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -2126,7 +2126,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-description">
-                <img src={shapeSteelsTypes} alt="Shape Steels Options" className="software-screenshot" style={{ width: '900px' }} />
+                <img src={shapeSteelsTypes} alt={t('common.shape_steels_options')} className="software-screenshot" style={{ width: '900px' }} />
               </div>
             </div>
 
@@ -2142,7 +2142,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={arrangeMachinePartMenu} alt="Arrange Machine Part Menu" className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
+                <img src={arrangeMachinePartMenu} alt={t('common.arrange_machine_part_menu')} className="software-screenshot screenshot-small" style={{ width: '14rem' }} />
               </div>
             </div>
 
@@ -2158,7 +2158,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={arrangeMachinePartWindow} alt="Arrange Machine Part Window" className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
+                <img src={arrangeMachinePartWindow} alt={t('common.arrange_machine_part_window')} className="software-screenshot" style={{ width: '900px', height: 'auto' }} />
               </div>
             </div>
 
@@ -2174,7 +2174,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 />
               </div>
               <div className="step-description">
-                <img src={keyEntryArea} alt="Key Entry Area" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                <img src={keyEntryArea} alt={t('common.key_entry_area')} className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
               </div>
             </div>
 
@@ -2190,7 +2190,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 </h4>
               </div>
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                <img src={shapeSteels2} alt="Shape Steels Result" className="software-screenshot screenshot-large" style={{ width: '900px', height: 'auto' }} />
+                <img src={shapeSteels2} alt={t('common.shape_steels_result')} className="software-screenshot screenshot-large" style={{ width: '900px', height: 'auto' }} />
               </div>
             </div>
 

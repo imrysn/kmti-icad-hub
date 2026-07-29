@@ -285,7 +285,7 @@
 }
 
 .action-btn-styled.edit:hover {
-    color: #DD4DFA !important;
+    color: var(--primary) !important;
 }
 
 .action-btn-styled.delete:hover {
@@ -574,8 +574,8 @@ select.admin-input-styled option {
 
 .draggable-row:hover .drag-handle {
     opacity: 1;
-    color: #DD4DFA;
-    background: rgba(221, 77, 250, 0.08);
+    color: var(--primary);
+    background: var(--color-primary-glow);
 }
 
 .drag-handle:active {
@@ -588,12 +588,12 @@ select.admin-input-styled option {
 
 .row-dragging {
     opacity: 0.35;
-    background: rgba(221, 77, 250, 0.04) !important;
+    background: var(--color-primary-glow) !important;
 }
 
 .row-drag-over {
-    box-shadow: 0 -3px 0 0 #DD4DFA inset;
-    background: rgba(221, 77, 250, 0.06) !important;
+    box-shadow: 0 -3px 0 0 var(--primary) inset;
+    background: var(--color-primary-glow) !important;
 }
 
 .set-option-item:hover {

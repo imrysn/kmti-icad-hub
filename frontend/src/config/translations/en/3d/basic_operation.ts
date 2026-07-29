@@ -117,4 +117,11 @@ export const en_3d_basic_operation = {
   "basicOp4.resize.step1": "Select Resize from the icon menu.",
   "basicOp4.resize.step2": "Select the entity for resizing then GO.",
   "basicOp4.resize.step3": "Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space.",
+
+  "basicOp2.mirror.desc": "Use this tool to mirror an entity.",
+  "basicOp2.rotate.desc": "Use this tool to rotate an entity.",
+  "basicOp2.rotateCopy.desc": "Same as rotate tool but makes a rotated duplicate of the entity.",
+  "basicOp2.rotateCopy.step2": "Select the entity to rotate and click GO.",
+  "basicOp2.mirrorCopy.desc": "Same as mirror tool but makes a mirror duplicate of the entity.",
+  "basicOp2.mirrorCopy.step1": "Select Mirror Copy from the icon menu.",
 };

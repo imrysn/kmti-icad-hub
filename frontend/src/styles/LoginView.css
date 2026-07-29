@@ -225,7 +225,7 @@
 }
 
 .forgot-password-btn:hover {
-  color: #dd4dfa;
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
@@ -256,7 +256,7 @@
 
 .remember-me-checkbox input[type="checkbox"] {
   cursor: pointer;
-  accent-color: #dd4dfa;
+  accent-color: var(--color-primary);
   width: 14px;
   height: 14px;
   border-radius: 4px;

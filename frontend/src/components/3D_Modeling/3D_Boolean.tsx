@@ -56,45 +56,45 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
   } = useLessonCore(subLessonId);
 
   const unionSteps = [
-    "UNION",
-    "Tool for joining 3D entities into a single entity.",
-    "Step 1: Select Union from the icon menu.",
-    "Step 2: Select all 3D entities for joining then GO",
+    t('boolean.union.title'),
+    t('boolean.union.desc'),
+    t('boolean.union.step1'),
+    t('boolean.union.step2'),
   ];
 
   const subtractSteps = [
-    "SUBTRACT",
-    "Tool for creating cutouts on 3D entities.",
-    "Step 1: Select Subtract from the icon menu.",
-    "Step 2: First, select the Target entity.",
-    "Step 3: Select the tool entities then GO. Tool entities will disappear and become components after subtraction.",
-    "This subtract tool will retain the tool entities after subtraction.",
+    t('boolean.subtract.title'),
+    t('boolean.subtract.desc'),
+    t('boolean.subtract.step1'),
+    t('boolean.subtract.step2'),
+    t('boolean.subtract.step3'),
+    t('boolean.subtract.note'),
   ];
 
   const intersectSteps = [
-    "INTERSECT",
-    "Tool that creates entity of the product of two intersecting entities.",
-    "Step 1: Select Intersect from the icon menu.",
-    "Step 2: Select the intersecting entities then GO",
-    "Intersecting entities will not disappear after the process.",
+    t('boolean.intersect.title'),
+    t('boolean.intersect.desc'),
+    t('boolean.intersect.step1'),
+    t('boolean.intersect.step2'),
+    t('boolean.intersect.note'),
   ];
 
   const separateSteps = [
-    "SEPARATE ENTITY",
-    "Tool use to reverse boolean operations by creating CSG solid.",
-    "Component: By product of boolean operations (entities joined by union, cutout, holes). This tool is use to separate specified entities from the solid entity.",
-    "Step 1: Select the desired components to be separated from the solid entity then GO",
-    "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK",
-    "This tool is use to separate all components from the solid entity.",
-    "Step 1: Select the solid entity then GO",
-    "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK"
+    t('boolean.separate.title'),
+    t('boolean.separate.desc'),
+    t('boolean.separate.note'),
+    t('boolean.separate.step1'),
+    t('boolean.separate.step2'),
+    t('boolean.separate.desc2'),
+    t('boolean.separate.step3'),
+    t('boolean.separate.step4')
   ];
 
   const tabs = [
-    { id: "union", label: "Union" },
-    { id: "subtract", label: "Subtract" },
-    { id: "intersect", label: "Intersect" },
-    { id: "separate", label: "Separate Entity" },
+    { id: "union", label: t("boolean.tab.union") },
+    { id: "subtract", label: t("boolean.tab.subtract") },
+    { id: "intersect", label: t("boolean.tab.intersect") },
+    { id: "separate", label: t("boolean.tab.separate") },
   ];
 
   const handleNext = (isAuto = false) => {
@@ -121,8 +121,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const introTitle = "Boolean Operation";
-  const introSubtitle = "Use boolean operations to join, cut, or intersect 3D entities.";
+  const introTitle = t("boolean.introTitle");
+  const introSubtitle = t("boolean.introSubtitle");
 
 
   useEffect(() => {
@@ -184,7 +184,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <img src={booleanOpMenu} alt="Boolean Operation Menu" className="software-screenshot" style={{ height: 'auto', width: "200px" }} />
+        <img src={booleanOpMenu} alt={t('common.boolean_operation_menu')} className="software-screenshot" style={{ height: 'auto', width: "200px" }} />
       </section>
 
       <div className="lesson-grid single-card">
@@ -195,7 +195,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <h4 className={`${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="UNION"
+                    text={t('boolean.union.title')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -206,7 +206,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`}
                 style={{ marginTop: "-2rem" }}
                 data-reading-index="3"
-                text="Tool for joining 3D entities into a single entity"
+                text={t('boolean.union.desc')}
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
@@ -217,14 +217,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Select Union from the icon menu."
+                      text={t('boolean.union.step1')}
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
                   </span>
                 </div>
                 <div className="step-description">
-                  <img src={unionIcon} alt="Union Icon" className="software-screenshot " style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
+                  <img src={unionIcon} alt={t('common.union_icon')} className="software-screenshot " style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
                 </div>
               </div>
 
@@ -234,11 +234,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select entities to join then GO"
+                      text={t('boolean.union.step2')}
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                    <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
 
@@ -247,14 +247,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <h4 className={`${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
                       <KaraokeLessonText
                         as="span"
-                        text="RESULT"
+                        text={t('boolean.extra.step4')}
                         isActive={isSpeaking && currentIndex === 6}
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
                   </div>
                   <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                    <img src={select3D} alt="Select 3D entities" className="software-screenshot" style={{ width: '900px', marginTop: "1rem" }} />
+                    <img src={select3D} alt={t('common.select_3d_entities')} className="software-screenshot" style={{ width: '900px', marginTop: "1rem" }} />
                   </div>
                 </div>
               </div>
@@ -272,7 +272,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <h4 className={`${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="SUBTRACT"
+                    text={t('boolean.subtract.title')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -283,7 +283,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`}
                 style={{ marginTop: "-2rem" }}
                 data-reading-index="3"
-                text="Tool for creating cutouts on 3D entities"
+                text={t('boolean.extra.step0')}
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
@@ -294,14 +294,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Select Subtract from the icon menu"
+                      text={t('boolean.extra.step1')}
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
                   </span>
                 </div>
                 <div className="step-description">
-                  <img src={subtractIcon} alt="Subtract Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-2rem" }} />
+                  <img src={subtractIcon} alt={t('common.subtract_icon')} className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-2rem" }} />
                 </div>
               </div>
 
@@ -311,7 +311,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="First, select the Target entity."
+                      text={t('boolean.subtract.step2')}
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -325,7 +325,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                         <li><strong className="red-text">Tool Entity:</strong> Entities to be subtracted on the target entity.</li>
                       </ul>
                     </div>
-                    <img src={subtractEntity} alt="Target and Tool Entity" className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
+                    <img src={subtractEntity} alt={t('common.target_and_tool_entity')} className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '900px', marginBottom: "-2rem" }} />
                   </div>
                 </div>
               </div>
@@ -336,11 +336,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the tool entities then GO"
+                      text={t('boolean.extra.step2')}
                       isActive={isSpeaking && currentIndex === 6}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                    <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
                 <div className="step-description">
@@ -349,7 +349,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     className={`p-flush ${currentIndex === 6 ? "reading-active" : ""}`}
                     style={{ marginTop: "-1rem" }}
                     data-reading-index="6"
-                    text="Tool entities will disappear and become components after subtraction"
+                    text={t('boolean.extra.step3')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -361,14 +361,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     <h4 className={`${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                       <KaraokeLessonText
                         as="span"
-                        text="RESULT"
+                        text={t('boolean.extra.step4')}
                         isActive={isSpeaking && currentIndex === 7}
                         currentCharIndex={currentCharIndex}
                       />
                     </h4>
                   </div>
                   <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                    <img src={subtractAfter} alt="Subtraction Result" className="software-screenshot" style={{ width: '900px', marginTop: "2rem" }} />
+                    <img src={subtractAfter} alt={t('common.subtraction_result')} className="software-screenshot" style={{ width: '900px', marginTop: "2rem" }} />
                   </div>
                 </div>
               </div>
@@ -378,12 +378,12 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   as="span"
                   className={`p-flush ${currentIndex === 8 ? "reading-active" : ""}`}
                   data-reading-index="8"
-                  text="This subtract tool will retain the tool entities after subtraction"
+                  text={t('boolean.extra.step5')}
                   isActive={isSpeaking && currentIndex === 8}
                   currentCharIndex={currentCharIndex}
                 />
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <img src={subtractRetain} alt="Subtract and retain entities" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem", marginTop: "1rem" }} />
+                  <img src={subtractRetain} alt={t('common.subtract_and_retain_entities')} className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem", marginTop: "1rem" }} />
 
 
                   <div className={`instruction-step ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9">
@@ -391,14 +391,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                       <h4 className={`${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9">
                         <KaraokeLessonText
                           as="span"
-                          text="RESULT"
+                          text={t('boolean.extra.step4')}
                           isActive={isSpeaking && currentIndex === 9}
                           currentCharIndex={currentCharIndex}
                         />
                       </h4>
                     </div>
                     <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                      <img src={booleanSubtract} alt="Boolean Subtract Icon" className="software-screenshot" style={{ width: '900px' }} />
+                      <img src={booleanSubtract} alt={t('common.boolean_subtract_icon')} className="software-screenshot" style={{ width: '900px' }} />
                     </div>
                   </div>
                 </div>
@@ -417,7 +417,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <h4 className={`${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="INTERSECT"
+                    text={t('boolean.intersect.title')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -429,7 +429,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`}
                 style={{ marginTop: "-2rem" }}
                 data-reading-index="3"
-                text="Tool that creates entity of the product of two intersecting entities"
+                text={t('boolean.extra.step6')}
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
@@ -440,14 +440,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Select Intersect from the icon menu"
+                      text={t('boolean.extra.step7')}
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
                   </span>
                 </div>
                 <div className="step-description">
-                  <img src={intersectIcon} alt="Intersect Icon" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
+                  <img src={intersectIcon} alt={t('common.intersect_icon')} className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "-1rem" }} />
                 </div>
               </div>
 
@@ -457,11 +457,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select intersecting entities then GO"
+                      text={t('boolean.extra.step8')}
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                    <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
 
@@ -471,7 +471,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                     className={`p-flush ${currentIndex === 6 ? "reading-active" : ""}`}
                     style={{ marginTop: "-1rem" }}
                     data-reading-index="6"
-                    text="Intersecting entities will not disappear after the process"
+                    text={t('boolean.extra.step9')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -483,14 +483,14 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <h4 className={`${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                     <KaraokeLessonText
                       as="span"
-                      text="RESULT"
+                      text={t('boolean.extra.step4')}
                       isActive={isSpeaking && currentIndex === 7}
                       currentCharIndex={currentCharIndex}
                     />
                   </h4>
                 </div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <img src={intersectingEntities} alt="Intersecting entities" className="software-screenshot mt-8" style={{ width: '900px' }} />
+                  <img src={intersectingEntities} alt={t('common.intersecting_entities')} className="software-screenshot mt-8" style={{ width: '900px' }} />
                 </div>
               </div>
 
@@ -507,7 +507,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 <h4 className={`${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="SEPARATE ENTITY"
+                    text={t('boolean.separate.title')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -519,7 +519,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 className={`p-flush ${currentIndex === 3 ? "reading-active" : ""}`}
                 style={{ marginTop: "-2rem" }}
                 data-reading-index="3"
-                text="Tool use to reverse boolean operations by creating CSG solid"
+                text={t('boolean.extra.step10')}
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
@@ -532,17 +532,17 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <KaraokeLessonText
                     as="p"
                     className="p-flush"
-                    text="By product of boolean operations (entities joined by union, cutout, holes)"
+                    text={t('boolean.extra.step11')}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
                   <div className="flex-col">
-                    <img src={componentIcon} alt="Component Icon" className="software-screenshot" style={{ height: 'auto', width: "200px" }} />
+                    <img src={componentIcon} alt={t('common.component_icon')} className="software-screenshot" style={{ height: 'auto', width: "200px" }} />
                     <KaraokeLessonText
                       as="p"
                       className="p-flush"
                       style={{ marginTop: "1rem" }}
-                      text="This tool is use to separate specified entities from the solid entity"
+                      text={t('boolean.extra.step12')}
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
@@ -556,11 +556,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the desired components to be separated from the solid entity &gt; GO"
+                      text={t('boolean.extra.step13')}
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                    <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
               </div>
@@ -571,7 +571,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Separated components will be displayed in a form of CSG solid. Select OK"
+                      text={t('boolean.extra.step14')}
                       isActive={isSpeaking && currentIndex === 6}
                       currentCharIndex={currentCharIndex}
                     />
@@ -579,18 +579,18 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
 
                 <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                  <img src={componentOk} alt="Confirm Dialog" className="software-screenshot mt-4" style={{ height: 'auto', width: '350px' }} />
-                  <img src={componentSeparated} alt="Separated Result" className="software-screenshot mt-4" style={{ height: 'auto', width: '400px' }} />
+                  <img src={componentOk} alt={t('common.confirm_dialog')} className="software-screenshot mt-4" style={{ height: 'auto', width: '350px' }} />
+                  <img src={componentSeparated} alt={t('common.separated_result')} className="software-screenshot mt-4" style={{ height: 'auto', width: '400px' }} />
                 </div>
               </div>
 
               <div className={`mt-4 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7" style={{ marginTop: "-3rem", marginBottom: "2rem" }}>
-                <img src={componentSeparate} alt="Separate All Components" className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem" }} />
+                <img src={componentSeparate} alt={t('common.separate_all_components')} className="software-screenshot" style={{ height: 'auto', width: "200px", marginBottom: "1rem" }} />
                 <KaraokeLessonText
                   as="p"
                   className="p-flush"
                   style={{ marginTop: "1rem" }}
-                  text="This tool is use to separate all components from the solid entity"
+                  text={t('boolean.extra.step15')}
                   isActive={isSpeaking && currentIndex === 7}
                   currentCharIndex={currentCharIndex}
                 />
@@ -602,11 +602,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the solid entity &gt; GO"
+                      text={t('boolean.extra.step16')}
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
-                    <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                    <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                   </span>
                 </div>
               </div>
@@ -617,7 +617,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Separated components will be displayed in a form of CSG solid. Select OK"
+                      text={t('boolean.extra.step14')}
                       isActive={isSpeaking && currentIndex === 9}
                       currentCharIndex={currentCharIndex}
                     />
@@ -625,8 +625,8 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                 </div>
                 <div className="step-description">
                   <div className="flex-row-wrap" style={{ gap: '2rem' }}>
-                    <img src={selectOk} alt="Confirm Dialog All" className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '350px' }} />
-                    <img src={selectEntity} alt="All Separated Result" className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '400px' }} />
+                    <img src={selectOk} alt={t('common.confirm_dialog_all')} className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '350px' }} />
+                    <img src={selectEntity} alt={t('common.all_separated_result')} className="software-screenshot screenshot-medium mt-4" style={{ height: 'auto', width: '400px' }} />
                   </div>
                 </div>
               </div>

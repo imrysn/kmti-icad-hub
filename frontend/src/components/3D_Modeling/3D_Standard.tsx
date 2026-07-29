@@ -1,4 +1,5 @@
-import { ChevronLeft } from 'lucide-react';
+import { useTranslation } from '../../context/LanguageContext';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
@@ -38,8 +39,12 @@ interface StandardLessonProps {
 const StandardLesson: React.FC<StandardLessonProps> = ({
   subLessonId = 'standard-1',
   onNextLesson,
-  onPrevLesson }) => {
-  const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTIONS" | "sgp pipes">(() => {
+  onPrevLesson,
+  nextLabel
+}) => {
+  const { t } = useTranslation();
+
+  const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTION OF ALUMINUM FRAME" | "sgp pipes">(() => {
     if (subLessonId === 'standard-4') {
       return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'screw';
     }
@@ -105,67 +110,67 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
   const getStepClass = (_stepId: string) => "instruction-step";
 
   const pointerSteps = [
-    "SCALE POINTER",
-    "Based on the image. We must apply it on 3D Modeling and 2D Detailing",
-    "Another type of Scale Pointer is by putting V groove. We must also apply this on 3D and 2D"
+    t('standard.pointerSteps.step0'),
+    t('standard.pointerSteps.step1'),
+    t('standard.pointerSteps.step2')
   ];
 
   const scaleSteps = [
-    "SCALE",
-    "On 3D: Text and linear graduations of scale are Black. On 2D: Text must be Yellow #4, and linear graduations of scale must be Skin Color #15."
+    t('standard.scaleSteps.step0'),
+    t('standard.scaleSteps.step1')
   ];
 
   const gasSteps = [
-    "GAS DISCHARGE",
-    "Deformation may happen due to the presence of heat and gas at time of welding. Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
+    t('standard.gasSteps.step0'),
+    t('standard.gasSteps.step1')
   ];
 
   const oilSteps = [
-    "OIL GROOVE",
-    "Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole.",
-    "Follow oil way standard of KEM. Depth of manufacturing should be 1.5mm. In case drill hole and tap hole reach to ditch, the diameter of hole should be smaller than width of groove."
+    t('standard.oilSteps.step0'),
+    t('standard.oilSteps.step1'),
+    t('standard.oilSteps.step2')
   ];
 
   const sprocketSteps = [
-    "SPROCKET",
-    "In 2D detail of sprocket, there is a safety color note.",
-    "This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint.",
-    "Location of Sprocket Keyway",
-    "Note: 1. Location of keyway always indicated on special notes. Key groove should be machined at the center of the tooth. 2. Purchase part with additional process. CORRECT."
+    t('standard.sprocketSteps.step0'),
+    t('standard.sprocketSteps.step1'),
+    t('standard.sprocketSteps.step2'),
+    t('standard.sprocketSteps.step3'),
+    t('standard.sprocketSteps.step4')
   ];
 
   const boltLengthSteps = [
-    "BOLT LENGTH",
-    "Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm.",
-    "Note: 1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5 to 2 to get the length of bolt fasten on thread part. 2. In case the result is not standard, it will round up to the nearest standard bolt length."
+    t('standard.boltLengthSteps.step0'),
+    t('standard.boltLengthSteps.step1'),
+    t('standard.boltLengthSteps.step2')
   ];
 
   const boltingSetupSteps = [
-    "BOLTING SETUP",
-    "Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup.",
-    "Note: Hexagonal Bolt can be change to Capscrew if there will be problems at installation like tight spaces for tools or hard to reach areas.",
-    "Bolting for Pillow Block: Hexagonal Bolt, Spring Washer, and Flat Washer (Hardening) Slotted.",
-    "For Flange-type Pillow Block: Hexagonal Bolt and Spring Washer."
+    t('standard.boltingSetupSteps.step0'),
+    t('standard.boltingSetupSteps.step1'),
+    t('standard.boltingSetupSteps.step2'),
+    t('standard.boltingSetupSteps.step3'),
+    t('standard.boltingSetupSteps.step4')
   ];
 
   const slottedHoleSteps = [
-    "SLOTTED HOLE",
-    "For Parts that need adjustments.",
-    "Note: Slotted holes need Flat washer. For normal bolting, Spring Washer is enough.",
-    "CASE 1: Slotted plus Threaded Hole. Hexagonal Bolt, Spring Washer, Flat Washer.",
-    "CASE 2: Slotted plus Drill hole. Hexagonal Bolt, Flat washer, Spring Washer, Hex Nut."
+    t('standard.slottedHoleSteps.step0'),
+    t('standard.slottedHoleSteps.step1'),
+    t('standard.slottedHoleSteps.step2'),
+    t('standard.slottedHoleSteps.step3'),
+    t('standard.slottedHoleSteps.step4')
   ];
 
   const connectionSteps = [
-    "CONNECTIONS",
-    "CASE 1: On C-Channel. Hexagonal Bolt, Taper washer, Flat washer (If slotted), Spring Washer, Hex Nut.",
-    "CASE 2: Both Drill hole. Hex Sockethead Cap Screw, Spring Washer, Hex Nut."
+    t('standard.connectionSteps.step0'),
+    t('standard.connectionSteps.step1'),
+    t('standard.connectionSteps.step2')
   ];
 
   const sgpPipeSteps = [
-    "SGP PIPES",
-    "a. SGP White: Apply for fluid (Oil, Air and Coolant). b. SGP Black: Apply for Structural Parts or Fabricated Parts.",
-    "These two types of SGP Pipes must be strictly applied on all drawings to avoid mistakes on purchasing. Red Colored Pipes are SGP White. Yellow Colored Pipes are SGP Black."
+    t('standard.sgpPipeSteps.step0'),
+    t('standard.sgpPipeSteps.step1'),
+    t('standard.sgpPipeSteps.step2')
   ];
 
   const handleNext = () => {
@@ -339,11 +344,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
       {subLessonId === 'standard-1' && (
         <div className="lesson-tabs">
           {[
-            { id: 'pointer', label: 'SCALE POINTER' },
-            { id: 'scale', label: 'SCALE' },
-            { id: 'gas', label: 'GAS DISCHARGE' },
-            { id: 'oil', label: 'OIL GROOVE' },
-            { id: 'sprocket', label: 'SPROCKET' }
+            { id: 'pointer', label: t('standard.tabs.pointer') },
+            { id: 'scale', label: t('standard.tabs.scale') },
+            { id: 'gas', label: t('standard.tabs.gas') },
+            { id: 'oil', label: t('standard.tabs.oil') },
+            { id: 'sprocket', label: t('standard.tabs.sprocket') }
           ].map(tab => (
             <button
               key={tab.id}
@@ -359,10 +364,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
       {subLessonId === 'standard-4' && (
         <div className="lesson-tabs">
           {[
-            { id: 'screw', label: 'SCREW' },
-            { id: 'stainless', label: 'STAINLESS STEEL' },
-            { id: 'hardware', label: 'HARDWARE' },
-            { id: 'bolt', label: 'BOLT' }
+            { id: 'screw', label: t('standard.tabs.screw') },
+            { id: 'stainless', label: t('standard.tabs.stainless') },
+            { id: 'hardware', label: t('standard.tabs.hardware') },
+            { id: 'bolt', label: t('standard.tabs.bolt') }
           ].map(tab => (
             <button
               key={tab.id}
@@ -378,11 +383,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
       {subLessonId === 'standard-6' && (
         <div className="lesson-tabs">
           {[
-            { id: 'bolt length', label: 'BOLT LENGTH' },
-            { id: 'bolting setup', label: 'BOLTING SETUP' },
-            { id: 'SLOTTED HOLE', label: 'SLOTTED HOLE' },
-            { id: 'CONNECTIONS', label: 'CONNECTIONS' },
-            { id: 'sgp pipes', label: 'SGP PIPES' }
+            { id: 'bolt length', label: t('standard.tabs.bolt_length') },
+            { id: 'bolting setup', label: t('standard.tabs.bolting_setup') },
+            { id: 'SLOTTED HOLE', label: t('standard.tabs.slotted_hole') },
+            { id: 'CONNECTIONS', label: t('standard.tabs.connections') },
+            { id: 'sgp pipes', label: t('standard.tabs.sgp_pipes') }
           ].map(tab => (
             <button
               key={tab.id}
@@ -405,7 +410,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="SCALE POINTER"
+                        text={t('standard.pointerSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -418,13 +423,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Based on the image. We must apply it on 3D Modeling and 2D Detailing"
+                        text={t('standard.pointerSteps.step1')}
                         isActive={isSpeaking && currentIndex === 1}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                      <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot mt-4" style={{ width: "900px" }} />
+                      <img src={scalePointer} alt={t('common.scale_pointer_detail')} className="software-screenshot mt-4" style={{ width: "900px" }} />
                     </div>
                   </div>
 
@@ -434,13 +439,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Another type of Scale Pointer is by putting V groove. We must also apply this on 3D and 2D"
+                        text={t('standard.pointerSteps.step2')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                      <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot mt-4" style={{ width: "900px" }} />
+                      <img src={scalePointerVGroove} alt={t('common.v_groove_pointer_detail')} className="software-screenshot mt-4" style={{ width: "900px" }} />
                     </div>
                   </div>
                 </>
@@ -452,7 +457,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="SCALE"
+                        text={t('standard.scaleSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -464,13 +469,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <div className="info-box mb-8">
                       <KaraokeLessonText
                         as="div"
-                        text="On 3D: Text and linear graduations of scale are Black. <br />On 2D: Text must be Yellow #4, and linear graduations of scale must be Skin Color #15."
+                        text={t('standard.scaleSteps.step1')}
                         isActive={isSpeaking && currentIndex === 1}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
-                    <img src={scale2D} alt="Scale in 2D" className="software-screenshot mt-8" style={{ width: "900px" }} />
-                    <img src={scale3D} alt="Scale in 3D" className="software-screenshot mt-8" style={{ marginTop: "2rem", width: "900px" }} />
+                    <img src={scale2D} alt={t('common.scale_in_2d')} className="software-screenshot mt-8" style={{ width: "900px" }} />
+                    <img src={scale3D} alt={t('common.scale_in_3d')} className="software-screenshot mt-8" style={{ marginTop: "2rem", width: "900px" }} />
                   </div>
                 </>
               )}
@@ -481,7 +486,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="GAS DISCHARGE"
+                        text={t('standard.gasSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -492,15 +497,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <KaraokeLessonText
                       as="div"
                       className='p-flush'
-                      text="Deformation may happen due to the presence of heat and gas at time of welding.
-                        <br /> Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
+                      text={t('standard.gasSteps.step1')}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
 
                   <div className="step-description">
-                    <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                    <img src={gasDischarge} alt={t('common.gas_discharge_layout')} className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
                   </div>
                 </div>
               )}
@@ -511,7 +515,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="OIL GROOVE"
+                        text={t('standard.oilSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -522,7 +526,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <KaraokeLessonText
                       as="div"
                       className='p-flush'
-                      text="Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole."
+                      text={t('standard.oilSteps.step1')}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -531,12 +535,12 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
                       <div className="flex-1">
                         <ul className="list-flush">
-                          <li>Follow oil way standard of KEM</li>
-                          <li>Depth of manufacturing should be 1.5mm</li>
-                          <li>In case drill hole and tap hole reach to ditch, the diameter of hole should be smaller than width of groove.</li>
+                          <li>{t('standard.oil.list1')}</li>
+                          <li>{t('standard.oil.list2')}</li>
+                          <li>{t('standard.oil.list3')}</li>
                         </ul>
                       </div>
-                      <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot mt-8" style={{ width: "900px" }} />
+                      <img src={oilGroove} alt={t('common.oil_groove_detail')} className="software-screenshot mt-8" style={{ width: "900px" }} />
                     </div>
                   </div>
                 </div>
@@ -548,7 +552,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="SPROCKET"
+                        text={t('standard.sprocketSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -559,40 +563,40 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <KaraokeLessonText
                       as="div"
                       className='p-flush'
-                      text="In 2D detail of sprocket, there is a safety color note."
+                      text={t('standard.sprocketSteps.step1')}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
                   <div className={`step-description`}>
-                    <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot mt-8" style={{ width: "900px", marginBottom: "2rem" }} />
+                    <img src={sprocketNote} alt={t('common.sprocket_safety_color_note')} className="software-screenshot mt-8" style={{ width: "900px", marginBottom: "2rem" }} />
 
                     <div className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint."
+                        text={t('standard.sprocketSteps.step2')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={sprocketColoring} alt="Sprocket Coloring Standard" className="software-screenshot mt-4" style={{ marginTop: "1rem", width: "600px" }} />
+                      <img src={sprocketColoring} alt={t('common.sprocket_coloring_standard')} className="software-screenshot mt-4" style={{ marginTop: "1rem", width: "600px" }} />
                     </div>
 
                     <div className={`${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "2rem" }}>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Location of Sprocket Keyway"
+                        text={t('standard.sprocketSteps.step3')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
-                      <img src={sprocketKeywayLoc} alt="Sprocket Keyway Location Standard" className="software-screenshot mt-4" style={{ marginTop: "1rem", width: "600px" }} />
+                      <img src={sprocketKeywayLoc} alt={t('common.sprocket_keyway_location_standard')} className="software-screenshot mt-4" style={{ marginTop: "1rem", width: "600px" }} />
                       <div className={`instruction-box ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginTop: "2rem" }}>
-                        <p className='p-flush'> <strong className='red-text'>Note:</strong></p>
+                        <p className='p-flush'> <strong className='red-text'>{t('standard.misc.note')}</strong></p>
                         <KaraokeLessonText
                           as="div"
                           className='p-flush'
-                          text="1. Location of keyway always indicated on special notes <br /> キー溝は歯山部中心に合わせ加工すること (Key groove should be machined at the center of the tooth) <br /> 2. 本図ハ市販品ノ追加加工図デアル (Purchase part with additional process) <br /> 本図は市販品の追加加工図である (CORRECT)"
+                          text={t('standard.sprocketSteps.step4')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
@@ -612,9 +616,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
             <div className="fade-in">
               <div className="card-header">
                 <h4>
-                  {activeTab === 'hardware' ? 'STANDARD OF SYMBOL OF HARDWARE' :
-                    activeTab === 'bolt' ? 'BOLT HOLE DIAMETER STANDARD' :
-                      'Kusakabe Standard Code for Screw, etc.'}
+                  {activeTab === 'hardware' ? t('standard.titles.hardware') :
+                    activeTab === 'bolt' ? t('standard.titles.bolt') :
+                      t('standard.titles.screw')}
                 </h4>
 
               </div>
@@ -625,49 +629,49 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Types</th>
-                          <th>Code</th>
-                          <th>Size</th>
-                          <th>Japanese Name</th>
+                          <th>{t('common.table.types')}</th>
+                          <th>{t('common.table.code')}</th>
+                          <th>{t('common.table.size')}</th>
+                          <th>{t('common.table.japanese_name')}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr><td>Hexagon Head Bolt</td><td>HB</td><td>M10 x 20</td><td>六角ボルト</td></tr>
-                        <tr><td>Hexagon Head Bolt (High Tension)</td><td>HBH</td><td>M10 x 20</td><td>六角ボルト（ハイテン10.9）</td></tr>
-                        <tr><td>Hexagon Socket Flat Head Bolt</td><td>FB</td><td>M10 x 20</td><td>六角穴付さらボルト</td></tr>
-                        <tr><td>Hexagon Head Screw (Full Length)</td><td>HS</td><td>M10 x 20</td><td>六角ボルト（全ネジ）</td></tr>
-                        <tr><td>Hexagon Head Bolt (Full Length High Tension)</td><td>HSH</td><td>M10 x 20</td><td>六角ボルト（全ネジハイテン）</td></tr>
-                        <tr><td>Hexagon Socket Head Cap Screw</td><td>CS</td><td>M10 x 20</td><td>六角穴付ボルト</td></tr>
-                        <tr><td>Hexagon Socket Low Head Cap Screw</td><td>CSL</td><td>M10 x 20</td><td>六角穴付ボルト（低頭）</td></tr>
-                        <tr><td>Hexagon Socket Button Head Screw</td><td>BS</td><td>M10 x 20</td><td>六角穴付ボタンボルト</td></tr>
-                        <tr><td>Hexagon Nut 1 (Class 1)</td><td>HN1</td><td>M10</td><td>六角ナット（1種）</td></tr>
-                        <tr><td>Hexagon Nut 2 (Class 2)</td><td>HN2</td><td>M10</td><td>六角ナット（2種）</td></tr>
-                        <tr><td>Hexagon Nut 3 (Class 3)</td><td>HN3</td><td>M10</td><td>六角ナット（3種）</td></tr>
-                        <tr><td>Spring Lock Washer (#2)</td><td>SW</td><td>M10</td><td>ばね座金（2号）</td></tr>
-                        <tr><td>Spring Lock Washer (For Hexagon Socket head)</td><td>SWS</td><td>M10</td><td>方形ばね座金</td></tr>
-                        <tr><td>Conical Spring Washer (Class 1)</td><td>CW1</td><td>M10</td><td>さらばね座金（1種）</td></tr>
-                        <tr><td>Conical Spring Washer (Class 2)</td><td>CW2</td><td>M10</td><td>さらばね座金（2種）</td></tr>
-                        <tr><td>Plain Washer (Normal Series)</td><td>FW</td><td>M10</td><td>平座金（並丸）</td></tr>
-                        <tr><td>Plain Washer (Small Series)</td><td>FWS</td><td>M10</td><td>平座金（小並丸）</td></tr>
-                        <tr><td>Plain Washer (Quenched)</td><td>FWH</td><td>M10</td><td>平座金（焼入れ）</td></tr>
-                        <tr><td>Square Taper Washer (For U Section)</td><td>AW5</td><td>M10</td><td>傾斜座金（溝形鋼に適用）5°傾斜</td></tr>
-                        <tr><td>Square Taper Washer (For I Section)</td><td>AW8</td><td>M10</td><td>傾斜座金（I形鋼に適用）8°傾斜</td></tr>
-                        <tr><td>Cross Recessed Flat Head Screw</td><td>FS</td><td>M8 x 20</td><td>十字穴付き 皿小ネジ</td></tr>
-                        <tr><td>Cross Recessed Flat Head Screw (Brass)</td><td>FSB</td><td>M8 x 20</td><td>十字穴付き 皿小ネジ (真鍮製)</td></tr>
-                        <tr><td>Cross Recessed Pan Head Screw</td><td>PS</td><td>M8 x 20</td><td>十字穴付きなべ小ネジ</td></tr>
-                        <tr><td>Cross Recessed Pan Head Screw Unichrome Plated</td><td>PS-U</td><td>M8 x 20</td><td>十字穴付きなべ小ネジ (ユニクロメッキ)</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Flat Point)</td><td>SSF</td><td>M10 x 20</td><td>六角穴付止めネジ（平先）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Truncated Cone Point)</td><td>SSC</td><td>M10 x 20</td><td>六角穴付止めネジ（とがり先）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Long Dog Point)</td><td>SSD</td><td>M10 x 20</td><td>六角穴付止めネジ（棒先）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Cup Point)</td><td>SSH</td><td>M10 x 20</td><td>六角穴付止めネジ（くぼみ先）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Rounded Point)</td><td>SSR</td><td>M10 x 20</td><td>六角穴付止めネジ（丸先）</td></tr>
-                        <tr><td>Spring Pin</td><td>SP</td><td>8 x 20</td><td>スプリングピン</td></tr>
-                        <tr><td>Split Lock</td><td>CP</td><td>4 x 20</td><td>割りピン</td></tr>
-                        <tr><td>Nord Lock</td><td>NL</td><td>M10</td><td>ノルトロック NOBEX 製</td></tr>
-                        <tr><td>Rivet</td><td>PR</td><td>3.51 x 4.8</td><td>打ち込み鋲（パーカー鋲） 目盛用・黄銅</td></tr>
-                        <tr><td>Taper Pin (With External Thread)</td><td>TPI</td><td>8 x 20</td><td>テーパーピン（おねじ付）</td></tr>
-                        <tr><td>Taper Pin (With Internal Thread)</td><td>TPE</td><td>8 x 20</td><td>テーパーピン（めねじ付）</td></tr>
-                        <tr><td>Straight Pin</td><td>PP</td><td>8 x 20</td><td>平行ピン</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_bolt')}</td><td>HB</td><td>M10 x 20</td><td>六角ボルト</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_bolt_high_tension')}</td><td>HBH</td><td>M10 x 20</td><td>六角ボルト（ハイテン10.9）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_flat_head_bolt')}</td><td>FB</td><td>M10 x 20</td><td>六角穴付さらボルト</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_screw_full_length')}</td><td>HS</td><td>M10 x 20</td><td>六角ボルト（全ネジ）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_bolt_full_length_high_tension')}</td><td>HSH</td><td>M10 x 20</td><td>六角ボルト（全ネジハイテン）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_cap_screw')}</td><td>CS</td><td>M10 x 20</td><td>六角穴付ボルト</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_low_head_cap_screw')}</td><td>CSL</td><td>M10 x 20</td><td>六角穴付ボルト（低頭）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_button_head_screw')}</td><td>BS</td><td>M10 x 20</td><td>六角穴付ボタンボルト</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_1_class_1')}</td><td>HN1</td><td>M10</td><td>六角ナット（1種）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_2_class_2')}</td><td>HN2</td><td>M10</td><td>六角ナット（2種）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_3_class_3')}</td><td>HN3</td><td>M10</td><td>六角ナット（3種）</td></tr>
+                        <tr><td>{t('standard.table.spring_lock_washer_2')}</td><td>SW</td><td>M10</td><td>ばね座金（2号）</td></tr>
+                        <tr><td>{t('standard.table.spring_lock_washer_for_hexagon_socket_head')}</td><td>SWS</td><td>M10</td><td>方形ばね座金</td></tr>
+                        <tr><td>{t('standard.table.conical_spring_washer_class_1')}</td><td>CW1</td><td>M10</td><td>さらばね座金（1種）</td></tr>
+                        <tr><td>{t('standard.table.conical_spring_washer_class_2')}</td><td>CW2</td><td>M10</td><td>さらばね座金（2種）</td></tr>
+                        <tr><td>{t('standard.table.plain_washer_normal_series')}</td><td>FW</td><td>M10</td><td>平座金（並丸）</td></tr>
+                        <tr><td>{t('standard.table.plain_washer_small_series')}</td><td>FWS</td><td>M10</td><td>平座金（小並丸）</td></tr>
+                        <tr><td>{t('standard.table.plain_washer_quenched')}</td><td>FWH</td><td>M10</td><td>平座金（焼入れ）</td></tr>
+                        <tr><td>{t('standard.table.square_taper_washer_for_u_section')}</td><td>AW5</td><td>M10</td><td>傾斜座金（溝形鋼に適用）5°傾斜</td></tr>
+                        <tr><td>{t('standard.table.square_taper_washer_for_i_section')}</td><td>AW8</td><td>M10</td><td>傾斜座金（I形鋼に適用）8°傾斜</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_flat_head_screw')}</td><td>FS</td><td>M8 x 20</td><td>十字穴付き 皿小ネジ</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_flat_head_screw_brass')}</td><td>FSB</td><td>M8 x 20</td><td>十字穴付き 皿小ネジ (真鍮製)</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_pan_head_screw')}</td><td>PS</td><td>M8 x 20</td><td>十字穴付きなべ小ネジ</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_pan_head_screw_unichrome_plated')}</td><td>PS-U</td><td>M8 x 20</td><td>十字穴付きなべ小ネジ (ユニクロメッキ)</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_flat_point')}</td><td>SSF</td><td>M10 x 20</td><td>六角穴付止めネジ（平先）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_truncated_cone_point')}</td><td>SSC</td><td>M10 x 20</td><td>六角穴付止めネジ（とがり先）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_long_dog_point')}</td><td>SSD</td><td>M10 x 20</td><td>六角穴付止めネジ（棒先）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_cup_point')}</td><td>SSH</td><td>M10 x 20</td><td>六角穴付止めネジ（くぼみ先）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_rounded_point')}</td><td>SSR</td><td>M10 x 20</td><td>六角穴付止めネジ（丸先）</td></tr>
+                        <tr><td>{t('standard.table.spring_pin')}</td><td>SP</td><td>8 x 20</td><td>スプリングピン</td></tr>
+                        <tr><td>{t('standard.table.split_lock')}</td><td>CP</td><td>4 x 20</td><td>割りピン</td></tr>
+                        <tr><td>{t('standard.table.nord_lock')}</td><td>NL</td><td>M10</td><td>ノルトロック NOBEX 製</td></tr>
+                        <tr><td>{t('standard.table.rivet')}</td><td>PR</td><td>3.51 x 4.8</td><td>打ち込み鋲（パーカー鋲） 目盛用・黄銅</td></tr>
+                        <tr><td>{t('standard.table.taper_pin_with_external_thread')}</td><td>TPI</td><td>8 x 20</td><td>テーパーピン（おねじ付）</td></tr>
+                        <tr><td>{t('standard.table.taper_pin_with_internal_thread')}</td><td>TPE</td><td>8 x 20</td><td>テーパーピン（めねじ付）</td></tr>
+                        <tr><td>{t('standard.table.straight_pin')}</td><td>PP</td><td>8 x 20</td><td>平行ピン</td></tr>
                       </tbody>
                     </table>
                   </div>
@@ -678,28 +682,28 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Stainless Types</th>
-                          <th>Code</th>
-                          <th>Size</th>
-                          <th>Japanese Name</th>
+                          <th>{t('common.table.stainless_types')}</th>
+                          <th>{t('common.table.code')}</th>
+                          <th>{t('common.table.size')}</th>
+                          <th>{t('common.table.japanese_name')}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr><td>Hexagon Head Bolt</td><td>HB-S</td><td>M10 x 20</td><td>六角ボルト（SUS）</td></tr>
-                        <tr><td>Hexagon Head Screw (Full Length)</td><td>HS-S</td><td>M10 x 20</td><td>六角ボルト（全ネジSUS）</td></tr>
-                        <tr><td>Hexagon Socket Head Cap Screw</td><td>CS-S</td><td>M10 x 20</td><td>六角穴付ボルト（SUS）</td></tr>
-                        <tr><td>Hexagon Socket Low Head Cap Screw</td><td>CSL-S</td><td>M10 x 20</td><td>六角穴付ボルト（低頭）</td></tr>
-                        <tr><td>Hexagon Socket Button Head Screw</td><td>BS-S</td><td>M10 x 20</td><td>六角穴付ボタンボルト（SUS）</td></tr>
-                        <tr><td>Hexagon Nut 1 (Class 1)</td><td>HN1-S</td><td>M10</td><td>六角ナット（1種）中H6（SUS）</td></tr>
-                        <tr><td>Hexagon Nut 2 (Class 2)</td><td>HN2-S</td><td>M10</td><td>六角ナット（2種）中H6（SUS）</td></tr>
-                        <tr><td>Hexagon Nut 3 (Class 3)</td><td>HN3-S</td><td>M10</td><td>六角ナット（2種）中H6（SUS）</td></tr>
-                        <tr><td>Spring Lock Washer (#2)</td><td>SW-S</td><td>M10</td><td>ばね座金（2号SUS）</td></tr>
-                        <tr><td>Plain Washer (Normal Series)</td><td>FW-S</td><td>M10</td><td>平座金（並丸SUS）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Flat Point)</td><td>SSF-S</td><td>M10 x 20</td><td>六角穴付止めネジ（平先SUS）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Truncated Cone Point)</td><td>SSC-S</td><td>M10 x 20</td><td>六角穴付止めネジ（とがり先SUS）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Long Dog Point)</td><td>SSD-S</td><td>M10 x 20</td><td>六角穴付止めネジ（棒先SUS）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Cup Point)</td><td>SSH-S</td><td>M10 x 20</td><td>六角穴付止めネジ（くぼみ先SUS）</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Rounded Point)</td><td>SSR-S</td><td>M10 x 20</td><td>六角穴付止めネジ（丸先SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_bolt')}</td><td>HB-S</td><td>M10 x 20</td><td>六角ボルト（SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_screw_full_length')}</td><td>HS-S</td><td>M10 x 20</td><td>六角ボルト（全ネジSUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_cap_screw')}</td><td>CS-S</td><td>M10 x 20</td><td>六角穴付ボルト（SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_low_head_cap_screw')}</td><td>CSL-S</td><td>M10 x 20</td><td>六角穴付ボルト（低頭）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_button_head_screw')}</td><td>BS-S</td><td>M10 x 20</td><td>六角穴付ボタンボルト（SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_1_class_1')}</td><td>HN1-S</td><td>M10</td><td>六角ナット（1種）中H6（SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_2_class_2')}</td><td>HN2-S</td><td>M10</td><td>六角ナット（2種）中H6（SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_3_class_3')}</td><td>HN3-S</td><td>M10</td><td>六角ナット（2種）中H6（SUS）</td></tr>
+                        <tr><td>{t('standard.table.spring_lock_washer_2')}</td><td>SW-S</td><td>M10</td><td>ばね座金（2号SUS）</td></tr>
+                        <tr><td>{t('standard.table.plain_washer_normal_series')}</td><td>FW-S</td><td>M10</td><td>平座金（並丸SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_flat_point')}</td><td>SSF-S</td><td>M10 x 20</td><td>六角穴付止めネジ（平先SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_truncated_cone_point')}</td><td>SSC-S</td><td>M10 x 20</td><td>六角穴付止めネジ（とがり先SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_long_dog_point')}</td><td>SSD-S</td><td>M10 x 20</td><td>六角穴付止めネジ（棒先SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_cup_point')}</td><td>SSH-S</td><td>M10 x 20</td><td>六角穴付止めネジ（くぼみ先SUS）</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_rounded_point')}</td><td>SSR-S</td><td>M10 x 20</td><td>六角穴付止めネジ（丸先SUS）</td></tr>
                       </tbody>
                     </table>
                   </div>
@@ -710,49 +714,49 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Type</th>
-                          <th>Code</th>
-                          <th>Size</th>
-                          <th>Article (JIS)</th>
+                          <th>{t('common.table.type')}</th>
+                          <th>{t('common.table.code')}</th>
+                          <th>{t('common.table.size')}</th>
+                          <th>{t('common.table.article_jis')}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr><td>Hexagon Head Bolt</td><td>HB</td><td>M10 x 20</td><td>JIS B 1180</td></tr>
-                        <tr><td>Hexagon Head Bolt (High Tension 10.9)</td><td>HBH</td><td>M10 x 20</td><td>JIS B 1186</td></tr>
-                        <tr><td>Hexagon Socket Flat Head Bolt</td><td>FB</td><td>M10 x 20</td><td>Japan Socket Screw工業協同組合</td></tr>
-                        <tr><td>Hexagon Head Screw (Full Length)</td><td>HS</td><td>M10 x 20</td><td>JIS B 1180</td></tr>
-                        <tr><td>Hexagon Head Bolt (Full Length High Tension)</td><td>HSH</td><td>M10 x 20</td><td>JIS B 1186 Added on 1999/11/29</td></tr>
-                        <tr><td>Hexagon Socket Head Cap Screw</td><td>CS</td><td>M10 x 20</td><td>JIS B 1176</td></tr>
-                        <tr><td>Hexagon Socket Low Head Cap Screw</td><td>CSL</td><td>M10 x 20</td><td>Added on 1999/11/29</td></tr>
-                        <tr><td>Hexagon Socket Button Head Screw</td><td>BS</td><td>M10 x 20</td><td>JIS B 1174</td></tr>
-                        <tr><td>Hexagon Nut 1 (Class 1)</td><td>HN1</td><td>M10</td><td>JIS B 1181</td></tr>
-                        <tr><td>Hexagon Nut 2 (Class 2)</td><td>HN2</td><td>M10</td><td>JIS B 1181</td></tr>
-                        <tr><td>Hexagon Nut 3 (Class 3)</td><td>HN3</td><td>M10</td><td>JIS B 1181</td></tr>
-                        <tr><td>Spring Lock Washer (#2)</td><td>SW</td><td>M10</td><td>JIS B 1251</td></tr>
-                        <tr><td>Spring Lock Washer (For Hexagon Socket head)</td><td>SWS</td><td>M10</td><td>DIN7980</td></tr>
-                        <tr><td>Conical Spring Washer (Class 1)</td><td>CW1</td><td>M10</td><td>JIS B 1152</td></tr>
-                        <tr><td>Conical Spring Washer (Class 2)</td><td>CW2</td><td>M10</td><td>JIS B 1152</td></tr>
-                        <tr><td>Plain Washer (Normal Series)</td><td>FW</td><td>M10</td><td>JIS B 1156</td></tr>
-                        <tr><td>Plain Washer (Small Series)</td><td>FWS</td><td>M10</td><td>JIS B 1156</td></tr>
-                        <tr><td>Plain Washer (Quenched)</td><td>FWH</td><td>M10</td><td>-</td></tr>
-                        <tr><td>Square Taper Washer (For U Section)</td><td>AW5</td><td>M10</td><td>Inclination 5°</td></tr>
-                        <tr><td>Square Taper Washer (For I Section)</td><td>AW8</td><td>M10</td><td>Inclination 8°</td></tr>
-                        <tr><td>Cross Recessed Flat Head Screw</td><td>FS</td><td>M8 x 20</td><td>JIS B 1111</td></tr>
-                        <tr><td>Cross Recessed Flat Head Screw (Brass)</td><td>FSB</td><td>M8 x 20</td><td>JIS B 1111 Added on 1999/6/30</td></tr>
-                        <tr><td>Cross Recessed Pan Head Screw</td><td>PS</td><td>M8 x 20</td><td>JIS B 1111 Added on 1999/11/29</td></tr>
-                        <tr><td>Cross Recessed Pan Head Screw Unichorme Plated</td><td>PS-U</td><td>M8 x 20</td><td>JIS B 1111 Added on 2013/12/19</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Flat Point)</td><td>SSF</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Truncated Cone Point)</td><td>SSC</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Long Dog Point)</td><td>SSD</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Cup Point)</td><td>SSH</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
-                        <tr><td>Hexagon Socket Head Set Screw (Rounded Point)</td><td>SSR</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
-                        <tr><td>Spring Pin</td><td>SP</td><td>8 x 20</td><td>JIS B 2808 Revised on 1999/9/3</td></tr>
-                        <tr><td>Split Pin</td><td>CP</td><td>4 x 20</td><td>JIS B 1351 Revised on 1999/9/3</td></tr>
-                        <tr><td>Nord Lock</td><td>NL</td><td>M10</td><td>NOBEX Added on 1999/6/30</td></tr>
-                        <tr><td>Rivet</td><td>PR</td><td>3.51 x 4.8</td><td>For Measure - Chalcopyrite Added on 1999/12/7</td></tr>
-                        <tr><td>Taper Pin (With External Thread)</td><td>TPI</td><td>8 x 20</td><td>JIS B 1352 Added on 2000/6/9</td></tr>
-                        <tr><td>Taper Pin (With Internal Thread)</td><td>TPE</td><td>8 x 20</td><td>JIS B 1352 Added on 2000/6/9</td></tr>
-                        <tr><td>Straight Pin</td><td>PP</td><td>8 x 20</td><td>JIS B 1354 Added on 2000/6/9</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_bolt')}</td><td>HB</td><td>M10 x 20</td><td>JIS B 1180</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_bolt_high_tension_10_9')}</td><td>HBH</td><td>M10 x 20</td><td>JIS B 1186</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_flat_head_bolt')}</td><td>FB</td><td>M10 x 20</td><td>Japan Socket Screw工業協同組合</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_screw_full_length')}</td><td>HS</td><td>M10 x 20</td><td>JIS B 1180</td></tr>
+                        <tr><td>{t('standard.table.hexagon_head_bolt_full_length_high_tension')}</td><td>HSH</td><td>M10 x 20</td><td>JIS B 1186 Added on 1999/11/29</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_cap_screw')}</td><td>CS</td><td>M10 x 20</td><td>JIS B 1176</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_low_head_cap_screw')}</td><td>CSL</td><td>M10 x 20</td><td>Added on 1999/11/29</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_button_head_screw')}</td><td>BS</td><td>M10 x 20</td><td>JIS B 1174</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_1_class_1')}</td><td>HN1</td><td>M10</td><td>JIS B 1181</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_2_class_2')}</td><td>HN2</td><td>M10</td><td>JIS B 1181</td></tr>
+                        <tr><td>{t('standard.table.hexagon_nut_3_class_3')}</td><td>HN3</td><td>M10</td><td>JIS B 1181</td></tr>
+                        <tr><td>{t('standard.table.spring_lock_washer_2')}</td><td>SW</td><td>M10</td><td>JIS B 1251</td></tr>
+                        <tr><td>{t('standard.table.spring_lock_washer_for_hexagon_socket_head')}</td><td>SWS</td><td>M10</td><td>DIN7980</td></tr>
+                        <tr><td>{t('standard.table.conical_spring_washer_class_1')}</td><td>CW1</td><td>M10</td><td>JIS B 1152</td></tr>
+                        <tr><td>{t('standard.table.conical_spring_washer_class_2')}</td><td>CW2</td><td>M10</td><td>JIS B 1152</td></tr>
+                        <tr><td>{t('standard.table.plain_washer_normal_series')}</td><td>FW</td><td>M10</td><td>JIS B 1156</td></tr>
+                        <tr><td>{t('standard.table.plain_washer_small_series')}</td><td>FWS</td><td>M10</td><td>JIS B 1156</td></tr>
+                        <tr><td>{t('standard.table.plain_washer_quenched')}</td><td>FWH</td><td>M10</td><td>-</td></tr>
+                        <tr><td>{t('standard.table.square_taper_washer_for_u_section')}</td><td>AW5</td><td>M10</td><td>Inclination 5°</td></tr>
+                        <tr><td>{t('standard.table.square_taper_washer_for_i_section')}</td><td>AW8</td><td>M10</td><td>Inclination 8°</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_flat_head_screw')}</td><td>FS</td><td>M8 x 20</td><td>JIS B 1111</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_flat_head_screw_brass')}</td><td>FSB</td><td>M8 x 20</td><td>JIS B 1111 Added on 1999/6/30</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_pan_head_screw')}</td><td>PS</td><td>M8 x 20</td><td>JIS B 1111 Added on 1999/11/29</td></tr>
+                        <tr><td>{t('standard.table.cross_recessed_pan_head_screw_unichorme_plated')}</td><td>PS-U</td><td>M8 x 20</td><td>JIS B 1111 Added on 2013/12/19</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_flat_point')}</td><td>SSF</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_truncated_cone_point')}</td><td>SSC</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_long_dog_point')}</td><td>SSD</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_cup_point')}</td><td>SSH</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>{t('standard.table.hexagon_socket_head_set_screw_rounded_point')}</td><td>SSR</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>{t('standard.table.spring_pin')}</td><td>SP</td><td>8 x 20</td><td>JIS B 2808 Revised on 1999/9/3</td></tr>
+                        <tr><td>{t('standard.table.split_pin')}</td><td>CP</td><td>4 x 20</td><td>JIS B 1351 Revised on 1999/9/3</td></tr>
+                        <tr><td>{t('standard.table.nord_lock')}</td><td>NL</td><td>M10</td><td>NOBEX Added on 1999/6/30</td></tr>
+                        <tr><td>{t('standard.table.rivet')}</td><td>PR</td><td>3.51 x 4.8</td><td>For Measure - Chalcopyrite Added on 1999/12/7</td></tr>
+                        <tr><td>{t('standard.table.taper_pin_with_external_thread')}</td><td>TPI</td><td>8 x 20</td><td>JIS B 1352 Added on 2000/6/9</td></tr>
+                        <tr><td>{t('standard.table.taper_pin_with_internal_thread')}</td><td>TPE</td><td>8 x 20</td><td>JIS B 1352 Added on 2000/6/9</td></tr>
+                        <tr><td>{t('standard.table.straight_pin')}</td><td>PP</td><td>8 x 20</td><td>JIS B 1354 Added on 2000/6/9</td></tr>
                       </tbody>
                     </table>
                   </div>
@@ -763,9 +767,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table highlight-table">
                       <thead>
                         <tr>
-                          <th>BOLT SIZE</th>
-                          <th>CLASS 2 (MACHINE)</th>
-                          <th>CLASS 3 (WELD)</th>
+                          <th>{t('common.table.bolt_size')}</th>
+                          <th>{t('common.table.class2')}</th>
+                          <th>{t('common.table.class3')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -797,7 +801,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="BOLT LENGTH"
+                        text={t('standard.boltLengthSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -810,7 +814,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       <div className="info-box">
                         <KaraokeLessonText
                           as="div"
-                          text="Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm."
+                          text={t('standard.boltLengthSteps.step1')}
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
                           style={{ color: 'white', marginBottom: '1rem' }}
@@ -818,18 +822,18 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <table style={{ border: 'none', background: 'transparent' }}>
                           <tbody>
                             <tr>
-                              <td style={{ paddingRight: '20px' }}>Example:</td>
-                              <td style={{ paddingRight: '20px' }}>Bolt size</td>
+                              <td style={{ paddingRight: '20px' }}>{t('standard.misc.example')}</td>
+                              <td style={{ paddingRight: '20px' }}>{t('standard.misc.bolt_size')}</td>
                               <td style={{ paddingLeft: '20px' }}>M8</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Washer thickness</td>
+                              <td>{t('standard.misc.washer_thickness')}</td>
                               <td style={{ paddingLeft: '20px' }}>2mm</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Material thickness</td>
+                              <td>{t('standard.misc.material_thickness')}</td>
                               <td style={{ paddingLeft: '20px' }}>9mm</td>
                             </tr>
                           </tbody>
@@ -845,13 +849,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush"><strong className="red-text">Note: </strong> </p>
                         <KaraokeLessonText
                           as="div"
-                          text="1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5 to 2 to get the length of bolt fasten on thread part. <br /> 2. In case the result is not standard, it will round up to the nearest standard bolt length."
+                          text={t('standard.boltLengthSteps.step2')}
                           isActive={isSpeaking && currentIndex === 2}
                           currentCharIndex={currentCharIndex}
                           style={{ paddingLeft: '40px' }}
                         />
                       </div>
-                      <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot mt-4" style={{ width: "900px" }} />
+                      <img src={boltLengthCalc} alt={t('common.bolt_length_visualization')} className="software-screenshot mt-4" style={{ width: "900px" }} />
                     </div>
                   </div>
                 </>
@@ -863,7 +867,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="BOLTING SETUP"
+                        text={t('standard.boltingSetupSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -873,7 +877,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <KaraokeLessonText
                       as="span"
-                      text="Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup."
+                      text={t('standard.boltingSetupSteps.step1')}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -883,7 +887,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <p className="p-flush"><strong className="red-text">Note: </strong> </p>
                     <KaraokeLessonText
                       as="div"
-                      text="Hexagonal Bolt can be change to Capscrew if there will be problems at installation like tight spaces for tools or hard to reach areas."
+                      text={t('standard.boltingSetupSteps.step2')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                       style={{ paddingLeft: '40px' }}
@@ -893,7 +897,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                     <div className="step-description">
                       <div className="mt-8">
-                        <h4 style={{ marginBottom: '10px' }}>Pillow Block</h4>
+                        <h4 style={{ marginBottom: '10px' }}>{t('standard.misc.pillow_block')}</h4>
                         <KaraokeLessonText
                           as="div"
                           text=""
@@ -901,13 +905,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           currentCharIndex={currentCharIndex}
                           style={{ color: "white", marginBottom: '1rem' }}
                         />
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>Bolting for Pillow Block:</p>
-                        <p className="p-flush">Hexagonal Bolt (HB)</p>
-                        <p className="p-flush">Spring Washer (SW)</p>
-                        <p className="p-flush">Flat Washer (Hardening) - <strong className="red-text">SLOTTED</strong></p>
+                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>{t('standard.pillow.bolting_for')}</p>
+                        <p className="p-flush">{t('standard.misc.hb')}</p>
+                        <p className="p-flush">{t('standard.misc.sw')}</p>
+                        <p className="p-flush">{t('standard.misc.fwh_slotted1')} - <strong className="red-text">{t('standard.misc.fwh_slotted2')}</strong></p>
 
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginTop: "2rem" }}>
-                          <img src={pillowBlock1} alt="Pillow Block Setup 1" className="software-screenshot mt-8" style={{ width: "900px", marginBottom: "2rem" }} />
+                          <img src={pillowBlock1} alt={t('common.pillow_block_setup_1')} className="software-screenshot mt-8" style={{ width: "900px", marginBottom: "2rem" }} />
                         </div>
                       </div>
                     </div>
@@ -916,11 +920,11 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>For Flange-type Pillow Block:</p>
-                        <p className="p-flush">Hexagonal Bolt (HB)</p>
-                        <p className="p-flush">Spring Washer (SW)</p>
+                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>{t('standard.pillow.flange_type')}</p>
+                        <p className="p-flush">{t('standard.misc.hb')}</p>
+                        <p className="p-flush">{t('standard.misc.sw')}</p>
 
-                        <img src={pillowBlock3} alt="Flange Setup" className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem" }} />
+                        <img src={pillowBlock3} alt={t('common.flange_setup')} className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem" }} />
                       </div>
                     </div>
                   </div>
@@ -933,7 +937,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="SLOTTED HOLE"
+                        text={t('standard.slottedHoleSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -943,7 +947,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
                     <KaraokeLessonText
                       as="span"
-                      text="For Parts that need adjustments."
+                      text={t('standard.slottedHoleSteps.step1')}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -954,7 +958,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                         <p className="p-flush"><strong className="red-text">Note: </strong> </p>
                         <KaraokeLessonText
                           as="div"
-                          text="Slotted holes need Flat washer. For normal bolting, Spring Washer is enough."
+                          text={t('standard.slottedHoleSteps.step2')}
                           isActive={isSpeaking && currentIndex === 2}
                           currentCharIndex={currentCharIndex}
                           style={{ paddingLeft: '1rem' }}
@@ -973,14 +977,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           currentCharIndex={currentCharIndex}
                           style={{ color: 'white', marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />Slotted + Threaded Hole</p>
+                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />{t('standard.misc.slotted_threaded_hole')}</p>
                         <br />
-                        <p className="p-flush">Hexagonal Bolt (HB)</p>
-                        <p className="p-flush">Spring Washer (SW)</p>
-                        <p className="p-flush">FlatWasher (Hardening)</p>
+                        <p className="p-flush">{t('standard.misc.hb')}</p>
+                        <p className="p-flush">{t('standard.misc.sw')}</p>
+                        <p className="p-flush">{t('standard.misc.fwh')}</p>
 
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
-                          <img src={slottedThreaded} alt="Slotted Threaded Case" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                          <img src={slottedThreaded} alt={t('common.slotted_threaded_case')} className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
                         </div>
                       </div>
                     </div>
@@ -996,15 +1000,15 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           currentCharIndex={currentCharIndex}
                           style={{ color: 'white', marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"><strong style={{ color: "white" }}>CASE 2: </strong><br />Slotted + Drill hole</p>
+                        <p className="p-flush"><strong style={{ color: "white" }}>CASE 2: </strong><br />{t('standard.misc.slotted_drill_hole')}</p>
                         <br />
-                        <p className="p-flush">Hexagonal Bolt (HB)</p>
-                        <p className="p-flush">Flatwasher (FWH)</p>
-                        <p className="p-flush">Spring Washer (SW)</p>
-                        <p className="p-flush">Hex Nut (HN1)</p>
+                        <p className="p-flush">{t('standard.misc.hb')}</p>
+                        <p className="p-flush">{t('standard.misc.fwh_only')}</p>
+                        <p className="p-flush">{t('standard.misc.sw')}</p>
+                        <p className="p-flush">{t('standard.misc.hn1')}</p>
 
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                          <img src={slottedDrill} alt="Slotted Drill Case" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                          <img src={slottedDrill} alt={t('common.slotted_drill_case')} className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
                         </div>
                       </div>
                     </div>
@@ -1018,7 +1022,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="CONNECTIONS"
+                        text={t('standard.connectionSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -1035,16 +1039,16 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           currentCharIndex={currentCharIndex}
                           style={{ color: 'white', marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />On C-Channel</p>
+                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />{t('standard.misc.on_c_channel')}</p>
                         <br />
-                        <p className="p-flush">Hexagonal Bolt (HB)</p>
-                        <p className="p-flush">Taper washer (AW5)</p>
-                        <p className="p-flush">Flatwasher (FWH) - <strong className="red-text">IF SLOTTED</strong></p>
-                        <p className="p-flush">Spring Washer (SW)</p>
-                        <p className="p-flush">Hex Nut (HN1)</p>
+                        <p className="p-flush">{t('standard.misc.hb')}</p>
+                        <p className="p-flush">{t('standard.misc.aw5')}</p>
+                        <p className="p-flush">{t('standard.misc.fwh_if_slotted1')} - <strong className="red-text">{t('standard.misc.fwh_if_slotted2')}</strong></p>
+                        <p className="p-flush">{t('standard.misc.sw')}</p>
+                        <p className="p-flush">{t('standard.misc.hn1')}</p>
 
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
-                          <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                          <img src={connectionCChannel} alt={t('common.c_channel_connection')} className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
                         </div>
                       </div>
                     </div>
@@ -1053,14 +1057,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 2: </strong><br />Both Drill hole</p>
+                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 2: </strong><br />{t('standard.misc.both_drill_hole')}</p>
                         <br />
-                        <p className="p-flush">Hex Sockethead Cap Screw (CS)</p>
-                        <p className="p-flush">Spring Washer (SW)</p>
-                        <p className="p-flush">Hex Nut (HN1)</p>
+                        <p className="p-flush">{t('standard.misc.cs')}</p>
+                        <p className="p-flush">{t('standard.misc.sw')}</p>
+                        <p className="p-flush">{t('standard.misc.hn1')}</p>
 
                         <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
-                          <img src={connectionBothDrill} alt="Dual Drill Connection" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                          <img src={connectionBothDrill} alt={t('common.dual_drill_connection')} className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
                         </div>
                       </div>
                     </div>
@@ -1074,7 +1078,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <h4>
                       <KaraokeLessonText
                         as="span"
-                        text="SGP PIPES"
+                        text={t('standard.sgpPipeSteps.step0')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -1085,10 +1089,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <div className="step-description">
                       <div className="mt-8">
                         <div>
-                          <p className="p-flush">a. <strong className="red-text">SGP (White)</strong></p>
-                          <p className="p-flush">Apply for fluid(Oil, Air and Coolant)</p>
-                          <p className="p-flush mt-2">b. <strong className="red-text">SGP (Black)</strong></p>
-                          <p className="p-flush">Apply for Structural Parts/Fabricated Parts.</p>
+                          <p className="p-flush">a. <strong className="red-text">{t('standard.sgp.white')}</strong></p>
+                          <p className="p-flush">{t('standard.sgp.apply_fluid')}</p>
+                          <p className="p-flush mt-2">b. <strong className="red-text">{t('standard.sgp.black')}</strong></p>
+                          <p className="p-flush">{t('standard.sgp.apply_structural')}</p>
                         </div>
                       </div>
                     </div>
@@ -1097,19 +1101,19 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush mt-4" style={{ marginTop: "1rem", textIndent: "2rem" }}>These two types of SGP Pipes will be added on Icad Material List and must be strictly applied on all the drawings to avoid mistakes on purchasing of pipes. This means, we need to identify the 2 types of pipes separately. We will apply it on 3D modeling and 2D detailing of parts.</p>
-                        <p className="p-flush mt-4" style={{ marginTop: "1rem", textIndent: "2rem" }}>Inspite of having distinction of White and Black, it does not mean that we also apply it on the 3D Modeling. The color that we will apply on SGP Pipes will based on its usage and application. We must not be confused about the color of SGP Pipes.</p>
+                        <p className="p-flush mt-4" style={{ marginTop: "1rem", textIndent: "2rem" }}>{t('standard.sgp.p1')}</p>
+                        <p className="p-flush mt-4" style={{ marginTop: "1rem", textIndent: "2rem" }}>{t('standard.sgp.p2')}</p>
 
                         <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
                           <div className="flex-1">
-                            <img src={sgpPipesRed} alt="SGP White Pipes" className="software-screenshot mt-8" style={{ width: "500px", marginTop: "2rem", marginBottom: "1rem" }} />
-                            <p className="p-flush mt-2">Red Colored Pipes are <strong className="red-text">SGP (White) Pipes</strong>.</p>
-                            <p className="p-flush">ex. Pipes for Outfitting</p>
+                            <img src={sgpPipesRed} alt={t('common.sgp_white_pipes')} className="software-screenshot mt-8" style={{ width: "500px", marginTop: "2rem", marginBottom: "1rem" }} />
+                            <p className="p-flush mt-2">{t("standard.sgp.red_pipes1")} <strong className="red-text">{t("standard.sgp.red_pipes2")}</strong>.</p>
+                            <p className="p-flush">{t('standard.sgp.ex_outfitting')}</p>
                           </div>
                           <div className="flex-1">
-                            <img src={sgpPipesYellow} alt="SGP Black Pipes" className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem", marginBottom: "1rem" }} />
-                            <p className="p-flush mt-2">Yellow Colored Pipes are <strong className="red-text">SGP (Black) Pipes</strong>.</p>
-                            <p className="p-flush">ex. Hand Rails</p>
+                            <img src={sgpPipesYellow} alt={t('common.sgp_black_pipes')} className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem", marginBottom: "1rem" }} />
+                            <p className="p-flush mt-2">{t("standard.sgp.yellow_pipes1")} <strong className="red-text">{t("standard.sgp.yellow_pipes2")}</strong>.</p>
+                            <p className="p-flush">{t('standard.sgp.ex_handrails')}</p>
                           </div>
                         </div>
                       </div>
@@ -1122,6 +1126,13 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            <button className="nav-button next" onClick={handleNext}>
+              {(subLessonId === 'standard-1' && activeTab === 'sprocket') ||
+               (subLessonId === 'standard-4' && activeTab === 'bolt') ||
+               (subLessonId === 'standard-6' && activeTab === 'sgp pipes')
+                ? (nextLabel || t('common.next'))
+                : t('common.next')} <ChevronRight size={18} />
+            </button>
           </div>
         </div>
       </div>

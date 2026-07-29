@@ -1,5 +1,6 @@
 import { BookOpen,CheckCircle2,ChevronDown,ChevronRight,Lock,Menu,Search,X,Zap } from 'lucide-react';
 import React,{ useEffect,useMemo,useRef,useState } from 'react';
+import { useTranslation } from '../../../context/LanguageContext';
 import { Course } from '../../../types';
 import { Lesson } from '../mentorConstants';
 import { AnalyticsCard } from './AnalyticsCard';
@@ -80,6 +81,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     lessons
 }) => {
     // Search State
+    const { t } = useTranslation();
     const [isSearchOpen, setIsSearchOpen] = useState(false); const [searchTerm, setSearchTerm] = useState('');
     const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -259,7 +261,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 }
                                             }
                                         }}
-                                        title={!sidebarOpen ? lesson.title : ""}
+                                        title={!sidebarOpen ? (t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id)) : ""}
                                     >
                                         <div className="lesson-item-title">
                                             <div className="lesson-icon-wrapper">
@@ -282,7 +284,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 </div>
                                             </div>
                                             <div className="lesson-title-text-group">
-                                                <span>{lesson.title}</span>
+                                                <span>{t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id)}</span>
                                                 {searchTerms.length > 0 &&
                                                  !searchTerms.every(t => lesson.title.toLowerCase().includes(t)) &&
                                                  searchTerms.some(t => lesson.content?.some(c => c.toLowerCase().includes(t)) || lesson.quiz?.title.toLowerCase().includes(t) || lesson.quiz?.description.toLowerCase().includes(t) || lesson.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
@@ -325,7 +327,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                                 <BookOpen size={14} className={`sub-lesson-icon ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                             )}
                                                             <div className="lesson-title-text-group">
-                                                                <span>{child.title}</span>
+                                                                <span>{t('lesson.title.' + child.id) === 'lesson.title.' + child.id ? child.title : t('lesson.title.' + child.id)}</span>
                                                                 {searchTerms.length > 0 &&
                                                                  !searchTerms.every(t => child.title.toLowerCase().includes(t)) &&
                                                                  searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t)) || child.quiz?.title.toLowerCase().includes(t) || child.quiz?.description.toLowerCase().includes(t) || child.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (

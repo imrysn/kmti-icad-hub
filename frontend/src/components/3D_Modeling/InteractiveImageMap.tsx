@@ -105,7 +105,7 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
       {/* Center Image Area */}
       <div className="image-stage">
         <div className="image-container-inner">
-          <img src={imageSrc} alt="iCAD Window Structure" className="base-image" />
+          <img src={imageSrc} alt={t('common.icad_window_structure')} className="base-image" />
           {HOTSPOTS.map((hotspot) => (
             <div
               key={hotspot.id}

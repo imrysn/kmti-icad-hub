@@ -1,9 +1,9 @@
-import { Clock,Copy,Filter } from 'lucide-react';
-import React,{ useMemo,useState } from 'react';
+import { Clock, Copy, Filter } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
 import { Modal } from '../../../components/Modal';
 import { useTranslation } from '../../../context/LanguageContext';
 import { useNotification } from '../../../context/NotificationContext';
-import { AssessmentSubmission,AssessmentTask } from '../../../services/assessmentService';
+import { AssessmentSubmission, AssessmentTask } from '../../../services/assessmentService';
 
 interface TimeRecordModalProps {
     isOpen: boolean;
@@ -29,6 +29,7 @@ export const TimeRecordModal: React.FC<TimeRecordModalProps> = ({ isOpen, onClos
         // Filter to only keep the latest attempt for each unique task (cumulative time)
         const latestSubmissionsMap = new Map<number, AssessmentSubmission>();
         validSubmissions.forEach(sub => {
+
             const taskId = sub.task_id || sub.task?.id;
             if (!taskId) return;
             const existing = latestSubmissionsMap.get(taskId);

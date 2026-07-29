@@ -1,3 +1,4 @@
+import { useTranslation } from '../../context/LanguageContext';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -26,6 +27,8 @@ interface MaterialSettingLessonProps {
 }
 
 const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLessonId = "material-1", onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState<"set" | "unlisted" | "procedure">(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'set';
   });
@@ -46,28 +49,28 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
   } = useLessonCore(subLessonId);
 
   const material1Steps = [
-    "MATERIAL SETTING",
-    "Step 1: Select the Set Material from the icon menu.",
-    "Step 2: Select the entity/entities then GO",
-    "Step 3: The Material Setting Window will appear. Select the material from the list then Press OK",
-    "The list consists of the materials and their corresponding Notation, Specific Gravity and Color. However, we follow the color base on the color codes. Materials that don't have color code must be machine color (WHITE).",
-    "Step 4: After setting the material, a dialog box will appear then Select OK",
-    "Parts that already have material set will be highlighted to show distinction with parts that does not have yet.",
-    "Step 5: In case there are changes in the material, select Set Material from the icon menu.",
-    "A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not.",
-    "Select OK then the Material Settings window will appear then reselect new material for the part",
-    "OR",
-    "Select Cancel then no changes will be made."
+    t('materialsetting.material1Steps.step0'),
+    t('materialsetting.material1Steps.step1'),
+    t('materialsetting.material1Steps.step2'),
+    t('materialsetting.material1Steps.step3'),
+    t('materialsetting.material1Steps.step4'),
+    t('materialsetting.material1Steps.step5'),
+    t('materialsetting.material1Steps.step6'),
+    t('materialsetting.material1Steps.step7'),
+    t('materialsetting.material1Steps.step8'),
+    t('materialsetting.material1Steps.step9'),
+    t('materialsetting.material1Steps.step10'),
+    t('materialsetting.material1Steps.step11')
   ];
 
   const material2Steps = [
-    "MATERIAL THAT ARE NOT INCLUDED ON ICAD MATERIAL LIST",
-    "On ICAD, S35C is not included on the material list. In this case, we can use S45C as material on 3D. In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is use as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same.",
-    "Other materials that are not on ICAD Material List include:"
+    t('materialsetting.material2Steps.step0'),
+    t('materialsetting.material2Steps.step1'),
+    t('materialsetting.material2Steps.step2')
   ];
 
   const tabs = [
-    { id: "set", label: "MATERIAL SETTING" },
+    { id: "set", label: t('materialsetting.material1Steps.step0') },
     { id: "unlisted", label: "UNLISTED MATERIALS" },
   ];
 
@@ -91,8 +94,8 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const introTitle = "Material Setting";
-  const introSubtitle = "Setting material is important in order to measure the weight of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part.";
+  const introTitle = t('materialsetting.introTitle');
+  const introSubtitle = t('materialsetting.introSubtitle');
 
   const commonIntroSteps = [
     introTitle,
@@ -164,7 +167,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           currentCharIndex={currentCharIndex}
         />
         {activeTab === 'set' && (
-          <img src={materialSettingImg} alt="Material Setting" className="software-screenshot" style={{ height: 'auto', width: "200px", marginTop: "1rem" }} />
+          <img src={materialSettingImg} alt={t('materialsetting.introTitle')} className="software-screenshot" style={{ height: 'auto', width: "200px", marginTop: "1rem" }} />
         )}
       </section>
 
@@ -176,7 +179,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="MATERIAL SETTING"
+                    text={t('materialsetting.material1Steps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -190,13 +193,13 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select the Set Material from the icon menu"
+                    text={t('materialsetting.material1Steps.step1')}
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                  <img src={setMaterialIcon} alt="Set Material Icon" className="software-screenshot mt-4" style={{ height: 'auto', width: "200px", marginBottom: '-3rem' }} />
+                  <img src={setMaterialIcon} alt={t('common.set_material_icon')} className="software-screenshot mt-4" style={{ height: 'auto', width: "200px", marginBottom: '-3rem' }} />
                 </div>
               </div>
 
@@ -208,11 +211,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select the entity/entities > GO"
+                    text={t('materialsetting.material1Steps.step2')}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginTop: "-2rem" }} />
+                  <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginTop: "-2rem" }} />
                 </div>
               </div>
 
@@ -224,7 +227,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="The Material Setting Window will appear. Select the material from the list > Press OK"
+                    text={t('materialsetting.material1Steps.step3')}
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -232,11 +235,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="step-description">
                   <KaraokeLessonText
                     className="p-flush mb-4"
-                    text=" The list consists of the materials and their corresponding Notation, Specific Gravity and Color. However, we follow the color base on the color codes. Materials that don't have color code must be machine color (WHITE)."
+                    text={t('materialsetting.material1Steps.step4')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={materialListImg} alt="Material Settings Window" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
+                  <img src={materialListImg} alt={t('common.material_settings_window')} className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
                 </div>
               </div>
 
@@ -247,7 +250,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="After setting the material, a dialog box will appear > Select OK"
+                    text={t('materialsetting.material1Steps.step5')}
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -255,11 +258,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="step-description">
                   <KaraokeLessonText
                     className="p-flush mb-4"
-                    text="Parts that already have material set will be highlighted to show distinction with parts that does not have yet"
+                    text={t('materialsetting.material1Steps.step6')}
                     isActive={isSpeaking && currentIndex === 8}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={step4ResultImg} alt="Material Distinction result" className="software-screenshot screenshot-wide mt-4" style={{ marginTop: "1rem" }} />
+                  <img src={step4ResultImg} alt={t('common.material_distinction_result')} className="software-screenshot screenshot-wide mt-4" style={{ marginTop: "1rem" }} />
                 </div>
               </div>
 
@@ -270,7 +273,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="In case there are changes in the material, select Set Material from the icon menu"
+                    text={t('materialsetting.material1Steps.step7')}
                     isActive={isSpeaking && currentIndex === 9}
                     currentCharIndex={currentCharIndex}
                   />
@@ -278,21 +281,21 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <div className="step-description">
                   <KaraokeLessonText
                     className="p-flush mb-4"
-                    text="A dialog box will appear. It tells that the selected entity's material info had already been set and asks whether you like to proceed in changing the material or not."
+                    text={t('materialsetting.material1Steps.step8')}
                     isActive={isSpeaking && currentIndex === 10}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
 
                 <div className="step-description">
-                  <img src={step5DialogImg} alt="Material Overwrite Dialog" className="software-screenshot screenshot-medium mt-4" style={{ height: '190px' }} />
+                  <img src={step5DialogImg} alt={t('common.material_overwrite_dialog')} className="software-screenshot screenshot-medium mt-4" style={{ height: '190px' }} />
                 </div>
               </div>
 
               <div className="step-description">
                 <KaraokeLessonText
                   className="p-flush mb-4"
-                  text="Select OK > Material Settings window will appear > Reselect new material for the part"
+                  text={t('materialsetting.material1Steps.step9')}
                   isActive={isSpeaking && currentIndex === 11}
                   currentCharIndex={currentCharIndex}
                 />
@@ -301,7 +304,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className="step-description" style={{ marginTop: "-1rem" }}>
                 <KaraokeLessonText
                   className="p-flush mb-4"
-                  text="OR"
+                  text={t('materialsetting.material1Steps.step10')}
                   isActive={isSpeaking && currentIndex === 12}
                   currentCharIndex={currentCharIndex}
                 />
@@ -310,7 +313,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className="step-description" style={{ marginTop: "-1rem" }}>
                 <KaraokeLessonText
                   className="p-flush mb-4"
-                  text="Select Cancel > No changes will be made"
+                  text={t('materialsetting.material1Steps.step11')}
                   isActive={isSpeaking && currentIndex === 13}
                   currentCharIndex={currentCharIndex}
                 />
@@ -330,7 +333,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="MATERIAL THAT ARE NOT INCLUDED ON ICAD MATERIAL LIST"
+                    text={t('materialsetting.material2Steps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -338,16 +341,16 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               </div>
 
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
-                <img src={mat2VerifyImg} alt="2D Drawing Reference" className="software-screenshot screenshot-wide mt-4" style={{ marginBottom: "1rem" }} />
+                <img src={mat2VerifyImg} alt={t('common.2d_drawing_reference')} className="software-screenshot screenshot-wide mt-4" style={{ marginBottom: "1rem" }} />
                 <div className="instruction-box instruction-box--warning mt-8">
                   <KaraokeLessonText
                     className="p-flush"
-                    text="On ICAD, S35C is not included on the material list. In this case, we can use S45C as material on 3D. In case of 2D detailing, we need to put S35C on BOM instead of S45C.  S45C is use as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same."
+                    text={t('materialsetting.material2Steps.step1')}
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                <img src={mat2RefImg} alt="3D Information Verification" className="software-screenshot screenshot-wide mt-8" style={{ marginTop: "1rem" }} />
+                <img src={mat2RefImg} alt={t('common.3d_information_verification')} className="software-screenshot screenshot-wide mt-8" style={{ marginTop: "1rem" }} />
               </div>
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
@@ -355,7 +358,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <h4 className={`${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                     <KaraokeLessonText
                       as="span"
-                      text="Other materials that are not on ICAD Material List include: "
+                      text={t('materialsetting.material2Steps.step2')}
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
@@ -365,8 +368,8 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <table className="lesson-table">
                     <thead>
                       <tr>
-                        <th>Material</th>
-                        <th>Equivalent Material on Icad Material List</th>
+                        <th>{t('common.table.material')}</th>
+                        <th>{t('common.table.equivalent_material')}</th>
                       </tr>
                     </thead>
                     <tbody>

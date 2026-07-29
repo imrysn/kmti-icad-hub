@@ -1,4 +1,5 @@
 import { Eye,EyeOff,Key,Save,Shield,User as UserIcon } from 'lucide-react';
+import { useTranslation } from '../../../context/LanguageContext';
 import React,{ useEffect,useState } from 'react';
 import { Modal } from '../../../components/Modal';
 import { User } from '../../../services/authService';
@@ -12,6 +13,7 @@ interface UserModalProps {
 }
 
 export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, user }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({ username: '', full_name: '', role: 'trainee', password: '', is_active: true });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -67,25 +69,25 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
 
                 <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
                     <div className="form-group full" style={{ gridColumn: 'span 2' }}>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><Shield size={14} /> System Role</label>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><Shield size={14} /> {t("admin.system_role")}</label>
                         <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}
                         >
-                            <option value="trainee">Trainee</option>
-                            <option value="employee">Employee</option>
-                            <option value="admin">Administrator</option>
+                            <option value="trainee">{t("admin.role_trainee")}</option>
+                            <option value="employee">{t("admin.role_employee")}</option>
+                            <option value="admin">{t("admin.role_admin")}</option>
                         </select>
                     </div>
 
                     <div className="form-group full" style={{ gridColumn: 'span 2' }}>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Full Name</label>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>{t("admin.full_name")}</label>
                         <input type="text" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })}
-                            placeholder="John Doe"
+                            placeholder={t("admin.placeholder_name")}
                             required
                         />
                     </div>
 
                     <div className="form-group">
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><UserIcon size={14} /> Username</label>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><UserIcon size={14} /> {t("admin.username")}</label>
                         <input type="text" value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })}
                             placeholder="e.g. jd"
                             minLength={2}

@@ -1,5 +1,6 @@
 import { AlertTriangle,CheckCircle2,Info } from 'lucide-react';
 import React from 'react';
+import { useTranslation } from '../context/LanguageContext';
 import '../styles/ConfirmationModal.css';
 import { Modal } from './Modal';
 
@@ -18,12 +19,13 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
     title,
     message,
-    confirmText = 'Confirm Action',
-    cancelText = 'Cancel',
+    confirmText,
+    cancelText,
     type = 'confirm',
     onConfirm,
     onCancel
 }) => {
+    const { t } = useTranslation();
     if (!isOpen) return null;
 
     const getIcon = () => {
@@ -54,10 +56,10 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
             <div className="global-modal-footer">
                 <button className="global-btn-secondary" onClick={onCancel}>
-                    {cancelText}
+                    {cancelText || t('common.cancel')}
                 </button>
                 <button className={`global-btn-${type === 'danger' ? 'danger' : 'primary'}`} onClick={onConfirm}>
-                    {confirmText}
+                    {confirmText || t('common.confirm_action')}
                 </button>
             </div>
         </Modal>

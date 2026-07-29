@@ -1,4 +1,5 @@
 import { File as FileIcon,Folder,FolderPlus,Trash2,Upload } from 'lucide-react';
+import { useTranslation } from '../../../context/LanguageContext';
 import React,{ useEffect,useState } from 'react';
 import { Modal } from '../../../components/Modal';
 import { useNotification } from '../../../context/NotificationContext';
@@ -10,6 +11,7 @@ interface FileManagerModalProps {
 }
 
 export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClose }) => {
+    const { t } = useTranslation();
     const { showNotification } = useNotification();
     const [tree, setTree] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -127,7 +129,7 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
                         ))}
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button className="btn-ghost" onClick={handleCreateFolder} title="New Folder">
+                        <button className="btn-ghost" onClick={handleCreateFolder} title={t("common.new_folder")}>
                             <FolderPlus size={18} />
                         </button>
                         <label className="btn-primary" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.8rem' }}>
@@ -171,7 +173,7 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({ task, onClos
                                                 className="btn-ghost"
                                                 style={{ color: '#ef4444', padding: '0.25rem' }}
                                                 onClick={() => handleDelete(node.path)}
-                                                title="Delete"
+                                                title={t("common.delete")}
                                             >
                                                 <Trash2 size={16} />
                                             </button>

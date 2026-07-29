@@ -185,8 +185,8 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, 
                             <div
                                 key={notif.id}
                                 style={{
-                                    background: notif.is_read ? 'rgba(255, 255, 255, 0.01)' : 'rgba(221, 77, 250, 0.03)',
-                                    border: notif.is_read ? '1px solid var(--border-color)' : '1px solid rgba(221, 77, 250, 0.2)',
+                                    background: notif.is_read ? 'rgba(255, 255, 255, 0.01)' : 'var(--color-primary-glow)',
+                                    border: notif.is_read ? '1px solid var(--border-color)' : '1px solid var(--primary)',
                                     borderRadius: '6px',
                                     padding: '0.75rem',
                                     display: 'flex',

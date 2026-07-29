@@ -116,3 +116,10 @@
   min-height: 0;
   overflow-y: auto;
 }
+
+.assistant-mode,
+.assistant-mode-container,
+[data-theme='light'] .assistant-mode-container {
+  background: var(--bg-dark);
+  background-image: none;
+}

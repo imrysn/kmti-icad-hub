@@ -65,8 +65,8 @@
 }
 
 .order-badge.\32 D_Drawing {
-    border-color: rgba(236, 72, 153, 0.3);
-    color: #f9a8d4;
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 
@@ -122,8 +122,8 @@
 .add-question-btn:hover,
 .edit-quiz-btn:hover,
 .save-btn-secondary:hover {
-    border-color: #DD4DFA !important;
-    color: #DD4DFA !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
     background: var(--bg-card) !important;
 }
 

@@ -305,7 +305,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       title: t('lesson.suspend_title'),
       message: t('lesson.suspend_message'),
       confirmText: t('lesson.suspend_confirm'),
-      type: 'info'
+      type: 'danger'
     });
     if (confirmed) {
       setSelectedCourse(null);

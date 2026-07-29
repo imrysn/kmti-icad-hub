@@ -211,7 +211,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                           }}>
                             <div style={{ display: "flex", alignItems: "center" }}>
                               <span style={{
-                                background: "#DD4DFA",
+                                background: "var(--primary)",
                                 color: "white",
                                 padding: "4px 8px",
                                 borderRadius: "6px",

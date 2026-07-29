@@ -8,7 +8,7 @@
   flex-direction: column;
   height: calc(100vh - 60px);
   background: var(--bg-dark);
-  background-image: radial-gradient(rgba(221, 77, 250, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(var(--color-primary-glow) 1px, transparent 1px);
   background-size: 20px 20px;
   overflow: hidden;
   position: relative;
@@ -115,7 +115,7 @@
   bottom: 0px;
   width: 100px;
   height: 12px;
-  background: radial-gradient(ellipse at center, rgba(221, 77, 250, 0.4) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, var(--color-primary-glow) 0%, transparent 70%);
   border-radius: 50%;
   z-index: 0;
   pointer-events: none;
@@ -409,8 +409,8 @@
 }
 
 [data-theme='light'] .course-card button {
-  border-color: #b5179e !important;
-  color: #b5179e !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
 }
 
 /* Hover Reveals */
@@ -438,31 +438,31 @@
 }
 
 [data-theme='light'] .course-card:hover:not(.locked) button {
-  background: #b5179e !important;
-  border-color: #b5179e !important;
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
   color: #ffffff !important;
 }
 
 .course-card button:hover {
-  background: #c72bfa !important;
-  border-color: #c72bfa !important;
+  background: color-mix(in srgb, var(--primary) 88%, #000) !important;
+  border-color: color-mix(in srgb, var(--primary) 88%, #000) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 15px rgba(221, 77, 250, 0.4) !important;
+  box-shadow: none !important;
 }
 
 [data-theme='light'] .course-card button:hover {
-  background: #9d1282 !important;
-  border-color: #9d1282 !important;
+  background: color-mix(in srgb, var(--primary) 88%, #000) !important;
+  border-color: color-mix(in srgb, var(--primary) 88%, #000) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 15px rgba(181, 23, 158, 0.3) !important;
+  box-shadow: none !important;
 }
 
-/* Premium card hover state with Brand Magenta Glow */
+/* Premium card hover state with KMTI red glow */
 .course-card:hover {
   border-color: var(--primary);
   background: var(--bg-surface);
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(221, 77, 250, 0.22);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--color-primary-glow);
 }
 
 [data-theme='light'] .course-card:hover {
@@ -894,9 +894,9 @@
 }
 
 .analytics-badge.master {
-  background: rgba(244, 63, 94, 0.2);
-  color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  background: var(--color-primary-glow);
+  color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .analytics-badge.pro {
@@ -1869,6 +1869,31 @@
 .lesson-item:hover,
 .lesson-item.active {
   background: var(--color-primary-glow);
+}
+
+/* Keep training screens calm and task-focused. */
+.course-card {
+  box-shadow: none;
+}
+
+.course-card:hover:not(.locked) {
+  border-color: var(--primary);
+  box-shadow: none;
+  transform: none;
+}
+
+.mentor-mode,
+[data-theme='light'] .mentor-mode {
+  background-image: none;
+}
+
+.course-card.card-3d .card-graphic-container::after {
+  display: none;
+}
+
+.course-welcome-icon:hover,
+.course-card:hover:not(.locked) .card-graphic-container {
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

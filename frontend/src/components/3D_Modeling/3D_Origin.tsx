@@ -165,7 +165,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
-                <img src={originOverview} alt="Origin Overview" className="software-screenshot screenshot-wide mt-4" />
+                <img src={originOverview} alt={t('common.origin_overview')} className="software-screenshot screenshot-wide mt-4" />
               </div>
             </div>
           ) : (
@@ -203,7 +203,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                   />
                 </div>
                 <div className="step-description">
-                  <img src={toolSelection} alt="Tool Selection" className="software-screenshot" style={{ height: 'auto', width: "400px" }} />
+                  <img src={toolSelection} alt={t('common.tool_selection')} className="software-screenshot" style={{ height: 'auto', width: "400px" }} />
                 </div>
               </div>
 
@@ -269,7 +269,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img src={interactionSteps} alt="Interaction Steps" className="software-screenshot screenshot-medium mt-4" />
+                  <img src={interactionSteps} alt={t('common.interaction_steps')} className="software-screenshot screenshot-medium mt-4" />
                 </div>
               </div>
             </div>

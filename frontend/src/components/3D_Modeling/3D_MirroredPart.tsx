@@ -1,3 +1,4 @@
+import { useTranslation } from '../../context/LanguageContext';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -24,6 +25,8 @@ interface MirroredPartLessonProps {
 }
 
 const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "mirrored-1", onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState<"mirrored-part" | "3d-modeling">(() => {
     return (localStorage.getItem('mirroredActiveTab') as "mirrored-part" | "3d-modeling") || "mirrored-part";
   });
@@ -44,24 +47,24 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
   } = useLessonCore(subLessonId);
 
   const mirrored1Steps = [
-    "NORMAL PARTS",
-    "Parts that are exactly the same as the original part if you create a mirror copy of it. No changes will be recognized. Normal parts have drawing number with N.",
-    "MIRROR PARTS",
-    "Parts that are symmetrically the same. Mirror parts have drawing number with A and B.",
-    "To check if a part is normal or mirror part: Use Mirror copy tool on the icon menu",
-    "Place mirror copy over the original part. If there are no changes or the part details are all exactly the same, it is a Normal Part. If there are changes that can be recognize like hole location, cutouts or fairings and if its function as a part can no longer be the same as the function of Mirror Part A, it is a Mirror Part."
+    t('mirroredpart.mirrored1Steps.step0'),
+    t('mirroredpart.mirrored1Steps.step1'),
+    t('mirroredpart.mirrored1Steps.step2'),
+    t('mirroredpart.mirrored1Steps.step3'),
+    t('mirroredpart.mirrored1Steps.step4'),
+    t('mirroredpart.mirrored1Steps.step5')
   ];
 
   const mirrored2Steps = [
-    "3D MODELING OF MIRROR PARTS",
-    "Step 1: Identify the proper location of origin of the part.",
-    "Step 2: After doing the 3D modeling of the part, Save it as Part A",
-    "Step 3: In doing the 3D model of the mirror part, Part A must be saved to another file as Part B.",
-    "Step 4: Use Mirror to convert the 3D Model of Part A to Part B"
+    t('mirroredpart.mirrored2Steps.step0'),
+    t('mirroredpart.mirrored2Steps.step1'),
+    t('mirroredpart.mirrored2Steps.step2'),
+    t('mirroredpart.mirrored2Steps.step3'),
+    t('mirroredpart.mirrored2Steps.step4')
   ];
 
-  const introTitle = activeTab === 'mirrored-part' ? 'MIRRORED PARTS' : '3D MODELING OF MIRROR PARTS';
-  const introSubtitle = activeTab === 'mirrored-part' ? "Based on KEMCO Standard" : "Step-by-step guide on how to create and mirror parts correctly.";
+  const introTitle = activeTab === 'mirrored-part' ? t('common.mirror.title1') : t('common.mirror.title2');
+  const introSubtitle = activeTab === 'mirrored-part' ? t('common.mirror.desc1') : t('common.mirror.desc2');
 
   const commonIntroSteps = [
     introTitle,
@@ -138,13 +141,13 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
           className={`tab-button ${activeTab === 'mirrored-part' ? 'active' : ''}`}
           onClick={() => handleTabChange('mirrored-part')}
         >
-          Mirrored Part
+          {t('common.mirror.tab1')}
         </button>
         <button
           className={`tab-button ${activeTab === '3d-modeling' ? 'active' : ''}`}
           onClick={() => handleTabChange('3d-modeling')}
         >
-          3D MODELING OF MIRROR PARTS
+          {t('common.mirror.tab2')}
         </button>
       </div>
 
@@ -179,7 +182,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <KaraokeLessonText
                     as="span"
                     className="red-text"
-                    text="NORMAL PARTS"
+                    text={t('mirroredpart.mirrored1Steps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -190,9 +193,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 <div className="step-description">
                   <KaraokeLessonText
                     as="div"
-                    text="Parts that are exactly the same as the original part if you create a mirror copy of it. No changes will be recognized.
-                    <br />
-                    Normal parts have drawing number with N."
+                    text={t('mirroredpart.mirrored1Steps.step1')}
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -201,8 +202,8 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   </div>
 
                   <div className="flex-row-wrap mt-4" style={{ gap: '2rem', alignItems: 'center' }}>
-                    <p style={{ marginTop: "2rem", marginBottom: "-3rem"}} className="p-flush">Here is an example of a normal part.</p>
-                    <img src={normalPartA} alt="Normal Part Example" className="software-screenshot mt-4" style={{ height: "300px" }} />
+                    <p style={{ marginTop: "2rem", marginBottom: "-3rem"}} className="p-flush">{t('common.mirrored.example_normal')}</p>
+                    <img src={normalPartA} alt={t('common.normal_part_example')} className="software-screenshot mt-4" style={{ height: "300px" }} />
                   </div>
                 </div>
               </div>
@@ -214,7 +215,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <KaraokeLessonText
                       as="span"
                       className="red-text"
-                      text="MIRROR PARTS"
+                      text={t('mirroredpart.mirrored1Steps.step2')}
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
@@ -223,9 +224,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 <div className="step-description">
                   <KaraokeLessonText
                     as="div"
-                    text="Parts that are symmetrically the same.
-                    <br />
-                    Mirror parts have drawing number with A and B."
+                    text={t('mirroredpart.mirrored1Steps.step3')}
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -234,12 +233,12 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                     <p className="p-flush">MTXXXXX<strong className="red-text">B</strong>01</p>
                   </div>
 
-                    <p className="p-flush" style={{marginTop: "1rem"}}>Mirror Parts A are the original part</p>
-                    <p className="p-flush">Mirror Parts B are the mirror copy of Mirror Parts A. Mirror Parts B cannot exist without Mirror Parts A.</p>
-                    <p className="p-flush red-text" >*Note: If there are no existing part to be mirrored, use A when naming the part.</p>
-                    <p className="p-flush">Here is an example of mirror parts.</p>
+                    <p className="p-flush" style={{marginTop: "1rem"}}>{t('common.mirrored.mirror_a_original')}</p>
+                    <p className="p-flush">{t('common.mirrored.mirror_b_copy')}</p>
+                    <p className="p-flush red-text" >{t('common.mirrored.mirror_a_note')}</p>
+                    <p className="p-flush">{t('common.mirrored.example_mirror')}</p>
 
-                    <img src={mirrorPartA} alt="Mirror Part A and B" className="software-screenshot mt-4" style={{ width: "900px", marginTop: "2rem" }} />
+                    <img src={mirrorPartA} alt={t('common.mirror_part_a_and_b')} className="software-screenshot mt-4" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
               </div>
 
@@ -248,23 +247,17 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                 <div className="step-description">
                   <KaraokeLessonText
                     as="div"
-                    text="To check if a part is normal or mirror part:
-                    <br />
-                    Use Mirror copy tool on the icon menu"
+                    text={t('mirroredpart.mirrored1Steps.step4')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
-                    <img src={mirrorCopyTool} alt="Mirror Copy Tool" className="software-screenshot mt-4 mb-4" style={{ height: '60px', display: 'block', margin: '0 auto 0 0', marginTop: "1rem", marginBottom: "1rem"}} />
+                    <img src={mirrorCopyTool} alt={t('common.mirror_copy_tool')} className="software-screenshot mt-4 mb-4" style={{ height: '60px', display: 'block', margin: '0 auto 0 0', marginTop: "1rem", marginBottom: "1rem"}} />
 
                   <div className={`${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                     <KaraokeLessonText
                       as="div"
                       style={{marginBottom: "2rem"}}
-                      text="Place mirror copy over the original part.
-                      <br /><br />
-                      If there are no changes or the part details are all exactly the same, it is a Normal Part.
-                      <br /><br />
-                      If there are changes that can be recognize like hole location, cutouts or fairings and if its function as a part can no longer be the same as the function of Mirror Part A, it is a Mirror Part."
+                      text={t('mirroredpart.mirrored1Steps.step5')}
                       isActive={isSpeaking && currentIndex === 7}
                       currentCharIndex={currentCharIndex}
                     />
@@ -272,10 +265,10 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
 
                   <div className="instruction-box">
-                    <p className="p-flush mt-8" style={{marginBottom: "1rem"}}><strong className="red-text">※Be careful in identifying Normal and Mirror parts because it may cause trouble in assigning of drawing numbers.</strong></p>
-                    <p className="p-flush mt-8" style={{marginBottom: "1rem"}}>※Be careful if you see this note on the reference drawings:</p>
-                    <p className="p-flush" style={{marginBottom: "0.5rem"}}>This means <strong className="red-text">Mirror Image</strong>.</p>
-                    <img src={mirrorNotes} alt="Mirror Image Notes" className="software-screenshot mt-4" style={{ height: '60px', display: 'block', margin: '0 auto 0 0' }} />
+                    <p className="p-flush mt-8" style={{marginBottom: "1rem"}}><strong className="red-text">{t('common.mirrored.note_normal_mirror')}</strong></p>
+                    <p className="p-flush mt-8" style={{marginBottom: "1rem"}}>{t('common.mirrored.note_reference_drawing')}</p>
+                    <p className="p-flush" style={{marginBottom: "0.5rem"}}>{t("common.mirrored.note_mirror_image_pt1")} <strong className="red-text">{t("common.mirrored.note_mirror_image_pt2")}</strong>{t("common.mirrored.note_mirror_image_pt3")}</p>
+                    <img src={mirrorNotes} alt={t('common.mirror_image_notes')} className="software-screenshot mt-4" style={{ height: '60px', display: 'block', margin: '0 auto 0 0' }} />
                   </div>
                 </div>
               </div>
@@ -283,7 +276,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
           ) : (
             <div className="fade-in">
               <div className={`card-header ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{marginBottom: "2rem"}}>
-                <h4>3D MODELING OF MIRROR PARTS</h4>
+                <h4>{t('common.mirror.title2')}</h4>
               </div>
 
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
@@ -292,13 +285,13 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Identify the proper location of origin of the part."
+                    text={t('mirroredpart.mirrored2Steps.step1')}
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={originLocation} alt="Location of Origin" className="software-screenshot screenshot-wide mt-4" style={{ width: "600px" }} />
+                    <img src={originLocation} alt={t('common.location_of_origin')} className="software-screenshot screenshot-wide mt-4" style={{ width: "600px" }} />
                 </div>
               </div>
 
@@ -309,7 +302,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="After doing the 3D modeling of the part, Save it as Part A"
+                    text={t('mirroredpart.mirrored2Steps.step2')}
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -323,7 +316,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="In doing the 3D model of the mirror part, Part A must be saved to another file as Part B."
+                    text={t('mirroredpart.mirrored2Steps.step3')}
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -337,19 +330,19 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Use Mirror to convert the 3D Model of Part A to Part B"
+                    text={t('mirroredpart.mirrored2Steps.step4')}
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>
                 <div className="step-description">
-                    <img src={mirrorTool} alt="Mirror Tool" className="software-screenshot mt-4" style={{ width: "200px", marginBottom: "1rem" }} />
-                   <span className="p-flush" style={{marginBottom: "1rem"}}>Pick 3 points consecutively from the Part, starting from the origin.</span>
-                    <img src={pick3Points} alt="Mirror Plane Visualization" className="software-screenshot mt-4" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
-                  <span className="p-flush">After doing the command, this will be the outcome as Part B.</span>
-                    <img src={pick3PointsPartA} alt="Outcome Part B" className="software-screenshot mt-4" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
+                    <img src={mirrorTool} alt={t('common.mirror_tool')} className="software-screenshot mt-4" style={{ width: "200px", marginBottom: "1rem" }} />
+                   <span className="p-flush" style={{marginBottom: "1rem"}}>{t('common.mirrored.pick_3_points')}</span>
+                    <img src={pick3Points} alt={t('common.mirror_plane_visualization')} className="software-screenshot mt-4" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
+                  <span className="p-flush">{t('common.mirrored.outcome_part_b')}</span>
+                    <img src={pick3PointsPartA} alt={t('common.outcome_part_b')} className="software-screenshot mt-4" style={{ width: "600px", marginBottom: "3rem", marginTop: "2rem"}} />
                   <div className="instruction-box">
-                    <span className="p-flush red-text" style={{marginBottom: "1rem"}}>※ The Origin of Part B must be the same location as in Part A.</span>
+                    <span className="p-flush red-text" style={{marginBottom: "1rem"}}>{t('common.mirrored.note_origin')}</span>
                   </div>
                 </div>
               </div>
@@ -358,7 +351,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
-            <button className="nav-button next" onClick={() => handleNext()}>{activeTab === '3d-modeling' ? nextLabel || t('common.next') : 'Next'} <ChevronRight size={18} /></button>
+            <button className="nav-button next" onClick={() => handleNext()}>{activeTab === '3d-modeling' ? nextLabel || t('common.next') : t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

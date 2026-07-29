@@ -411,7 +411,7 @@
 
 .lesson-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
   transition: width 0.4s ease;
 }
 
@@ -674,10 +674,10 @@
 }
 
 .tab-button.active {
-  background: #DD4DFA !important;
+  background: var(--primary) !important;
   color: white !important;
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 15px var(--color-primary-glow);
+  border-color: var(--primary);
+  box-shadow: none;
   transform: none !important;
 }
 
@@ -693,7 +693,7 @@
 }
 
 [data-theme='light'] .tab-button.active {
-  background: #DD4DFA !important;
+  background: var(--primary) !important;
   color: white !important;
 }
 
@@ -702,8 +702,8 @@
 }
 
 [data-theme='light'] .tab-button:hover:not(.active) {
-  background: rgba(221, 77, 250, 0.05);
-  color: #DD4DFA;
+  background: var(--color-primary-glow);
+  color: var(--primary);
 }
 
 /* --- Highlight Text Styles --- */
@@ -793,14 +793,14 @@
 }
 
 .lesson-table thead th {
-  background: rgba(221, 77, 250, 0.1);
-  color: #DD4DFA;
+  background: var(--color-primary-glow);
+  color: var(--primary);
   font-family: var(--font-heading);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.85rem;
-  border-bottom: 2px solid #DD4DFA;
+  border-bottom: 2px solid var(--primary);
   padding: 1.25rem 1rem;
 }
 
@@ -809,17 +809,16 @@
 }
 
 [data-theme='light'] .lesson-table thead th {
-  background: rgba(99, 102, 241, 0.08);
-  color: #6366F1 !important;
-  /* Darker indigo for visibility in light mode */
+  background: var(--color-primary-glow);
+  color: var(--primary) !important;
 }
 
 .lesson-table tbody tr:hover {
-  background: rgba(221, 77, 250, 0.03);
+  background: var(--bg-hover);
 }
 
 [data-theme='light'] .lesson-table tbody tr:hover {
-  background: rgba(221, 77, 250, 0.02);
+  background: var(--bg-hover);
 }
 
 
@@ -855,11 +854,11 @@
 
 [data-theme='light'] .lesson-table-container {
   background: #ffffff;
-  border-color: rgba(99, 102, 241, 0.15);
+  border-color: var(--border-color);
 }
 
 [data-theme='light'] .lesson-table thead th {
-  background: rgba(99, 102, 241, 0.05);
+  background: var(--color-primary-glow);
 }
 
 [data-theme='light'] .lesson-table th,

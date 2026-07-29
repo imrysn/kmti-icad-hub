@@ -2,6 +2,7 @@ import { ChevronLeft,ChevronRight,GripHorizontal,Maximize,Minimize,Pause,Play,Sq
 import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../../services/api';
+import { useTranslation } from '../../context/LanguageContext';
 import './VideoTutorialViewer.css';
 
 // We import the specific image for this tutorial
@@ -41,6 +42,7 @@ interface VideoTutorialViewerProps {
 }
 
 const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -414,7 +416,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     return (
       <p className="tutorial-description" style={{ lineHeight: '1.5' }}>
         <span style={{ color: '#fff' }}>{pre}</span>
-        <span style={{ color: '#dd4dfa', textShadow: '0 0 8px rgba(221,77,250,0.6)', fontWeight: 'bold' }}>{current}</span>
+        <span style={{ color: 'var(--primary)', textShadow: '0 0 8px var(--color-primary-glow)', fontWeight: 'bold' }}>{current}</span>
         <span style={{ color: '#888' }}>{post}</span>
       </p>
     );
@@ -630,7 +632,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
           ) : (
             <img
               src={icadInterfaceImg}
-              alt="iCAD Interface"
+              alt={t('common.icad_interface')}
               className="tutorial-image"
               style={{
                 display: 'block',

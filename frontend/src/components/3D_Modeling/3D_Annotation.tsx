@@ -1,3 +1,4 @@
+import { useTranslation } from '../../context/LanguageContext';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -36,6 +37,8 @@ interface AnnotationLessonProps {
 }
 
 const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState<AnnotationTab>(() => {
     return (localStorage.getItem('annotationActiveTab') as AnnotationTab) || "linear";
   });
@@ -56,58 +59,58 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
   } = useLessonCore("annotation");
 
   const linearSteps = [
-    "CREATE LINEAR DIMENSION",
-    "Step 1: Select edges to be measured.",
-    "Step 2: Left-click on the 3D Space to position the linear dimension."
+    t('annotation.linearSteps.step0'),
+    t('annotation.angularSteps.step1'),
+    t('annotation.linearSteps.step2')
   ];
 
   const diameterSteps = [
-    "CREATE DIAMETER DIMENSION",
-    "Step 1: Select the edge of the circle to be measured.",
-    "Step 2: Left-click on the 3D Space to position the circular dimension."
+    t('annotation.diameterSteps.step0'),
+    t('annotation.diameterSteps.step1'),
+    t('annotation.diameterSteps.step2')
   ];
 
   const angularSteps = [
-    "CREATE ANGULAR DIMENSION",
-    "Step 1: Select edges to be measured.",
-    "Step 2: Left-click on the 3D Space to position the angular dimension."
+    t('annotation.angularSteps.step0'),
+    t('annotation.angularSteps.step1'),
+    t('annotation.angularSteps.step2')
   ];
 
   const notesSteps = [
-    "CREATES NOTES WITH LEADER LINES",
-    "Step 1: Pick any edge of the entity, then left-click.",
-    "Step 2: Left-click to show the Note String Entry window.",
-    "Step 3: Enter the note, then press OK.",
-    "Step 4: Left-click on the 3D Space to place the note."
+    t('annotation.notesSteps.step0'),
+    t('annotation.notesSteps.step1'),
+    t('annotation.notesSteps.step2'),
+    t('annotation.notesSteps.step3'),
+    t('annotation.notesSteps.step4')
   ];
 
   const characterSteps = [
-    "CREATE CHARACTER STRINGS",
-    "Step 1: Left-click on the 3D Space to show the Text Entry window.",
-    "Step 2: Enter the note, then press OK.",
-    "Step 3: Left-click on the 3D Space to place the note."
+    t('annotation.characterSteps.step0'),
+    t('annotation.characterSteps.step1'),
+    t('annotation.characterSteps.step2'),
+    t('annotation.characterSteps.step3')
   ];
 
   const editsSteps = [
-    "EDITS DRAFTING ENTITY CHARACTERS",
-    "Step 1: Select drafting entity, then click GO.",
-    "Step 2: Edit Dimension Characters window will appear.",
-    "Step 3: After editing the dimension characters, Press OK."
+    t('annotation.editsSteps.step0'),
+    t('annotation.attributesSteps.step1'),
+    t('annotation.editsSteps.step2'),
+    t('annotation.editsSteps.step3')
   ];
 
   const attributesSteps = [
-    "CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY",
-    "Step 1: Select drafting entity, then click GO.",
-    "Step 2: Change Properties window will appear.",
-    "Step 3: After changing the properties, Press OK."
+    t('annotation.attributesSteps.step0'),
+    t('annotation.attributesSteps.step1'),
+    t('annotation.attributesSteps.step2'),
+    t('annotation.attributesSteps.step3')
   ];
 
   const positionSteps = [
-    "Changes the positions of drafting entities.",
+    t('annotation.positionSteps.step0'),
   ];
 
-  const introTitle = "ANNOTATION";
-  const introSubtitle = "Tools use to create drafting entities such as dimension text and notes.";
+  const introTitle = t('annotation.introTitle');
+  const introSubtitle = t('annotation.introSubtitle');
 
   const commonIntroSteps = [
     introTitle,
@@ -218,18 +221,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           isActive={isSpeaking && currentIndex === 1}
           currentCharIndex={currentCharIndex}
         />
-        <img src={annotationTop} alt="Annotation Top" className="software-screenshot mt-4" style={{ height: 'auto', width: '200px' }} />
+        <img src={annotationTop} alt={t('common.annotation_top')} className="software-screenshot mt-4" style={{ height: 'auto', width: '200px' }} />
       </section>
 
       <div className="lesson-tabs mt-8">
-        <button className={`tab-button ${activeTab === 'linear' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('linear')}>linear</button>
-        <button className={`tab-button ${activeTab === 'diameter' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('diameter')}>Diameter</button>
-        <button className={`tab-button ${activeTab === 'angular' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('angular')}>Angular</button>
-        <button className={`tab-button ${activeTab === 'notes' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('notes')}>Notes</button>
-        <button className={`tab-button ${activeTab === 'character' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('character')}>Character</button>
-        <button className={`tab-button ${activeTab === 'edits' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('edits')}>Edits</button>
-        <button className={`tab-button ${activeTab === 'attributes' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('attributes')}>Attributes</button>
-        <button className={`tab-button ${activeTab === 'position' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('position')}>Position</button>
+        <button className={`tab-button ${activeTab === 'linear' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('linear')}>{t("annotation.tab.linear")}</button>
+        <button className={`tab-button ${activeTab === 'diameter' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('diameter')}>{t("annotation.tab.diameter")}</button>
+        <button className={`tab-button ${activeTab === 'angular' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('angular')}>{t("annotation.tab.angular")}</button>
+        <button className={`tab-button ${activeTab === 'notes' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('notes')}>{t("annotation.tab.notes")}</button>
+        <button className={`tab-button ${activeTab === 'character' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('character')}>{t("annotation.tab.character")}</button>
+        <button className={`tab-button ${activeTab === 'edits' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('edits')}>{t("annotation.tab.edits")}</button>
+        <button className={`tab-button ${activeTab === 'attributes' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('attributes')}>{t("annotation.tab.attributes")}</button>
+        <button className={`tab-button ${activeTab === 'position' ? 'active' : ''}`} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => handleTabChange('position')}>{t("annotation.tab.position")}</button>
       </div>
 
       <div className="lesson-grid single-card">
@@ -241,7 +244,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CREATE LINEAR DIMENSION"
+                    text={t('annotation.linearSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -250,7 +253,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
 
-                  <img src={linearIcon} alt="Linear Dimension Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                  <img src={linearIcon} alt={t('common.linear_dimension_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap">
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
@@ -258,7 +261,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select edges to be measured"
+                          text={t('common.select_edges_to_be_measured')}
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
@@ -268,13 +271,13 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Left-click on the 3D Space to position the linear dimension"
+                          text={t('common.left_click_on_the_3d')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
                     </div>
-                    <img src={linearImage} alt="Linear Dimension Result" className="software-screenshot mt-4" style={{ height: '300px' }} />
+                    <img src={linearImage} alt={t('common.linear_dimension_result')} className="software-screenshot mt-4" style={{ height: '300px' }} />
                   </div>
                 </div>
               </div>
@@ -287,7 +290,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CREATE DIAMETER DIMENSION"
+                    text={t('annotation.diameterSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -295,7 +298,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <img src={diameterIcon} alt="Diameter Dimension Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                  <img src={diameterIcon} alt={t('common.diameter_dimension_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
@@ -303,7 +306,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select the edge of the circle to be measured"
+                          text={t('common.select_the_edge_of_the')}
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
@@ -313,13 +316,13 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Left-click on the 3D Space to position the circular dimension"
+                          text={t('common.left_click_on_the_3d_1')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
                     </div>
-                    <img src={diameterImage} alt="Diameter Dimension Result" className="software-screenshot mt-4" style={{ height: '300px' }} />
+                    <img src={diameterImage} alt={t('common.diameter_dimension_result')} className="software-screenshot mt-4" style={{ height: '300px' }} />
                   </div>
                 </div>
               </div>
@@ -332,7 +335,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CREATE ANGULAR DIMENSION"
+                    text={t('annotation.angularSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -340,7 +343,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <img src={angularIcon} alt="Angular Dimension Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                  <img src={angularIcon} alt={t('common.angular_dimension_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
@@ -348,7 +351,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select edges to be measured"
+                          text={t('common.select_edges_to_be_measured')}
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
@@ -358,13 +361,13 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Left-click on the 3D Space to position the angular dimension"
+                          text={t('common.left_click_on_the_3d_2')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
                     </div>
-                    <img src={angularImage} alt="Angular Dimension Result" className="software-screenshot mt-4" style={{ height: '200px' }} />
+                    <img src={angularImage} alt={t('common.angular_dimension_result')} className="software-screenshot mt-4" style={{ height: '200px' }} />
                   </div>
                 </div>
               </div>
@@ -377,7 +380,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CREATES NOTES WITH LEADER LINES"
+                    text={t('annotation.notesSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -385,7 +388,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <img src={noteIcon} alt="Notes Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                  <img src={noteIcon} alt={t('common.notes_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
@@ -393,11 +396,11 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <span className="step-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                           <KaraokeLessonText
                             as="span"
-                            text="Pick any edge of the entity, then left-click"
+                            text={t('common.pick_any_edge_of_the')}
                             isActive={isSpeaking && currentIndex === 3}
                             currentCharIndex={currentCharIndex}
                           />
-                          <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
+                          <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
                         </span>
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
@@ -405,18 +408,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Left-click to show the Note String Entry window"
+                          text={t('common.left_click_to_show_the')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <img src={noteWindow} alt="Note String Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '400px', marginBottom: "2rem" }} />
+                      <img src={noteWindow} alt={t('common.note_string_entry_window')} className="software-screenshot mt-4 mb-4" style={{ width: '400px', marginBottom: "2rem" }} />
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
                         <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Enter the note, then press OK"
+                          text={t('common.enter_the_note_then_press')}
                           isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
@@ -426,13 +429,13 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Left-click on the 3D Space to place the note"
+                          text={t('common.left_click_on_the_3d_3')}
                           isActive={isSpeaking && currentIndex === 6}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
                     </div>
-                    <img src={annotation1NoteStringEntry1} alt="Angular Dimension" className="software-screenshot mt-4" style={{ width: '450px', marginBottom: "2rem" }} />
+                    <img src={annotation1NoteStringEntry1} alt={t('common.angular_dimension')} className="software-screenshot mt-4" style={{ width: '450px', marginBottom: "2rem" }} />
                   </div>
                 </div>
               </div>
@@ -445,7 +448,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CREATE CHARACTER STRINGS"
+                    text={t('annotation.characterSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -453,7 +456,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <img src={textIcon} alt="Character Strings Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                  <img src={textIcon} alt={t('common.character_strings_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`}>
@@ -461,18 +464,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Left-click on the 3D Space to show the Text Entry window"
+                          text={t('common.left_click_on_the_3d_4')}
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
-                      <img src={textWindow} alt="Text Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '500px', marginBottom: "2rem" }} />
+                      <img src={textWindow} alt={t('common.text_entry_window')} className="software-screenshot mt-4 mb-4" style={{ width: '500px', marginBottom: "2rem" }} />
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Enter the note, then press OK"
+                          text={t('common.enter_the_note_then_press')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
@@ -482,13 +485,13 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Left-click on the 3D Space to place the note"
+                          text={t('common.left_click_on_the_3d_3')}
                           isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
                     </div>
-                    <img src={textResult} alt="Attributes Window" className="software-screenshot mt-4" style={{ width: '500px' }} />
+                    <img src={textResult} alt={t('common.attributes_window')} className="software-screenshot mt-4" style={{ width: '500px' }} />
                   </div>
                 </div>
               </div>
@@ -501,7 +504,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="EDITS DRAFTING ENTITY CHARACTERS"
+                    text={t('annotation.editsSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -509,7 +512,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <img src={editsIcon} alt="Edits Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                  <img src={editsIcon} alt={t('common.edits_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
@@ -517,18 +520,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click GO"
+                          text={t('common.select_drafting_entity_then_click')}
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
+                        <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Edit Dimension Characters window will appear"
+                          text={t('common.edit_dimension_characters_window_will')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
@@ -538,13 +541,13 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="After editing the dimension characters, Press OK"
+                          text={t('common.after_editing_the_dimension_characters')}
                           isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
                     </div>
-                    <img src={editsWindow} alt="Edits Window" className="software-screenshot mt-4" style={{ width: '900px' }} />
+                    <img src={editsWindow} alt={t('common.edits_window')} className="software-screenshot mt-4" style={{ width: '900px' }} />
                   </div>
                 </div>
               </div>
@@ -557,7 +560,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY"
+                    text={t('annotation.attributesSteps.step0')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -565,7 +568,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <img src={attrIcon} alt="Attributes Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
+                  <img src={attrIcon} alt={t('common.attributes_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", marginBottom: "2rem" }} />
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
@@ -573,18 +576,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click GO"
+                          text={t('common.select_drafting_entity_then_click')}
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
-                        <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
+                        <img src={leftClick} alt={t('common.left_click')} className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
                         <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Change Properties window will appear"
+                          text={t('common.change_properties_window_will_appear')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
@@ -594,13 +597,13 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="After changing the properties, Press OK"
+                          text={t('common.after_changing_the_properties_press')}
                           isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
                       </div>
                     </div>
-                    <img src={attrWindow} alt="Attributes Window" className="software-screenshot mt-4" style={{ width: '500px' }} />
+                    <img src={attrWindow} alt={t('common.attributes_window')} className="software-screenshot mt-4" style={{ width: '500px' }} />
                   </div>
                 </div>
               </div>
@@ -613,7 +616,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                 <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                   <KaraokeLessonText
                     as="span"
-                    text="CHANGES THE POSITION OF DRAFTING ENTITIES"
+                    text={t('common.changes_the_position_of_drafting')}
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -621,7 +624,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
               </div>
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-description">
-                  <img src={positionIcon} alt="Position Tool" className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", }} />
+                  <img src={positionIcon} alt={t('common.position_tool')} className="software-screenshot mt-4 mb-4" style={{ height: 'auto', width: "200px", }} />
                 </div>
               </div>
             </div>

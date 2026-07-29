@@ -1,3 +1,4 @@
+import { useTranslation } from '../../context/LanguageContext';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -16,6 +17,8 @@ interface PurchasePartsLessonProps {
 }
 
 const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId = "purchase-parts-1", onNextLesson, onPrevLesson, nextLabel }) => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState<'part1' | 'part2'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'part1';
   });
@@ -57,19 +60,19 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
 
 
   const part1Steps = [
-    "PURCHASE PARTS MODELING",
-    "Relationship between vendor data, ICAD formatting, and assembly integration.",
-    "Step 1: Check dimensions from vendor catalogs.",
-    "Step 2: Simplify details (e.g. remove tiny fillets, gears) to save file size.",
-    "Step 3: Save as standard ICAD format in local library."
+    t('purchaseparts.part1Steps.step0'),
+    t('purchaseparts.part1Steps.step1'),
+    t('purchaseparts.part1Steps.step2'),
+    t('purchaseparts.part1Steps.step3'),
+    t('purchaseparts.part1Steps.step4')
   ];
 
   const part2Steps = [
-    "SERVER UPLOAD PROTOCOL",
-    "Protocol for synchronizing purchase parts with the central repository.",
-    "Step 1: Upload process must follow KMTI numbering standard.",
-    "Step 2: Complete the registration form on the server.",
-    "Step 3: Double check dependencies before finalizing upload."
+    t('purchaseparts.part2Steps.step0'),
+    t('purchaseparts.part2Steps.step1'),
+    t('purchaseparts.part2Steps.step2'),
+    t('purchaseparts.part2Steps.step3'),
+    t('purchaseparts.part2Steps.step4')
   ];
 
   useEffect(() => {
@@ -99,8 +102,8 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
       </div>
 
       <div className="lesson-tabs">
-        <button className={`tab-button ${activeTab === 'part1' ? 'active' : ''}`} onClick={() => setActiveTab('part1')}>PURCHASE PARTS MODELING</button>
-        <button className={`tab-button ${activeTab === 'part2' ? 'active' : ''}`} onClick={() => setActiveTab('part2')}>SERVER UPLOAD PROTOCOL</button>
+        <button className={`tab-button ${activeTab === 'part1' ? 'active' : ''}`} onClick={() => setActiveTab('part1')}>{t("purchaseparts.tab.part1")}</button>
+        <button className={`tab-button ${activeTab === 'part2' ? 'active' : ''}`} onClick={() => setActiveTab('part2')}>{t("purchaseparts.tab.part2")}</button>
       </div>
 
 
@@ -112,7 +115,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
         <div className="lesson-card tab-content fade-in">
           <div className="fade-in">
             <div className="card-header">
-              <h4>{activeTab === 'part1' ? "PURCHASE PART 3D MODELING" : "SAMPLE FLOW CHART FOR UPLOADING PURCHASE PARTS ON THE SERVER"}</h4>
+              <h4>{activeTab === 'part1' ? t('common.purchase.title1') : t('common.purchase.title2')}</h4>
             </div>
 
             <img
